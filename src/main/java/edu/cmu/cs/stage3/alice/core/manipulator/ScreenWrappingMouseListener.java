@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -38,7 +38,7 @@ public class ScreenWrappingMouseListener implements java.awt.event.MouseListener
 	private int topEdge;
 	private int bottomEdge;
 	protected boolean doWrap = false;
-	private java.awt.Point tempPoint = new java.awt.Point();
+	private final java.awt.Point tempPoint = new java.awt.Point();
 	private boolean actionAborted = false;
 	protected java.awt.Component component;
 
@@ -81,7 +81,7 @@ public class ScreenWrappingMouseListener implements java.awt.event.MouseListener
 	}
 
 	@Override
-	synchronized public void mousePressed(java.awt.event.MouseEvent ev) {
+	synchronized public void mousePressed(final java.awt.event.MouseEvent ev) {
 		component = ev.getComponent();
 
 		if (edu.cmu.cs.stage3.awt.AWTUtilities.isSetCursorLocationSupported()) {
@@ -90,9 +90,9 @@ public class ScreenWrappingMouseListener implements java.awt.event.MouseListener
 			doWrap = false;
 		}
 
-		java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-		int screenWidth = (int) screenSize.getWidth();
-		int screenHeight = (int) screenSize.getHeight();
+		final java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+		final int screenWidth = (int) screenSize.getWidth();
+		final int screenHeight = (int) screenSize.getHeight();
 		leftEdge = 0;
 		rightEdge = screenWidth - 1;
 		topEdge = 0;
@@ -109,7 +109,7 @@ public class ScreenWrappingMouseListener implements java.awt.event.MouseListener
 	}
 
 	@Override
-	synchronized public void mouseReleased(java.awt.event.MouseEvent ev) {
+	synchronized public void mouseReleased(final java.awt.event.MouseEvent ev) {
 		if (!actionAborted) {
 			mouseIsDown = false;
 			ev.getComponent().removeMouseMotionListener(this);
@@ -119,10 +119,10 @@ public class ScreenWrappingMouseListener implements java.awt.event.MouseListener
 	}
 
 	@Override
-	synchronized public void mouseDragged(java.awt.event.MouseEvent ev) {
+	synchronized public void mouseDragged(final java.awt.event.MouseEvent ev) {
 		if (mouseIsDown) {
-			int x = ev.getX();
-			int y = ev.getY();
+			final int x = ev.getX();
+			final int y = ev.getY();
 
 			offsetx = x - pressedx;
 			offsety = y - pressedy;
@@ -163,15 +163,18 @@ public class ScreenWrappingMouseListener implements java.awt.event.MouseListener
 	}
 
 	@Override
-	public void mouseClicked(java.awt.event.MouseEvent ev) {
+	public void mouseClicked(final java.awt.event.MouseEvent ev) {
 	}
+
 	@Override
-	public void mouseEntered(java.awt.event.MouseEvent ev) {
+	public void mouseEntered(final java.awt.event.MouseEvent ev) {
 	}
+
 	@Override
-	public void mouseExited(java.awt.event.MouseEvent ev) {
+	public void mouseExited(final java.awt.event.MouseEvent ev) {
 	}
+
 	@Override
-	public void mouseMoved(java.awt.event.MouseEvent ev) {
+	public void mouseMoved(final java.awt.event.MouseEvent ev) {
 	}
 }

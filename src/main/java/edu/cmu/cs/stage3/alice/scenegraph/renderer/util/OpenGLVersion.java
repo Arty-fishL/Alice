@@ -4,5 +4,6 @@ public class OpenGLVersion {
 	static {
 		System.loadLibrary("jni_openglversion");
 	}
+
 	public static native double getVersion();
 }

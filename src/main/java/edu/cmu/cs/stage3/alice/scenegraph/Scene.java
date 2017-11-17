@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -27,7 +27,7 @@ import edu.cmu.cs.stage3.math.Matrix44;
 
 /**
  * the root of the scenegraph
- * 
+ *
  * @author Dennis Cosgrove
  */
 public class Scene extends ReferenceFrame {
@@ -45,14 +45,14 @@ public class Scene extends ReferenceFrame {
 
 	@Override
 	public javax.vecmath.Matrix4d getAbsoluteTransformation() {
-		javax.vecmath.Matrix4d m = new javax.vecmath.Matrix4d();
+		final javax.vecmath.Matrix4d m = new javax.vecmath.Matrix4d();
 		m.setIdentity();
 		return m;
 	}
 
 	@Override
 	public javax.vecmath.Matrix4d getInverseAbsoluteTransformation() {
-		javax.vecmath.Matrix4d m = new javax.vecmath.Matrix4d();
+		final javax.vecmath.Matrix4d m = new javax.vecmath.Matrix4d();
 		m.setIdentity();
 		return m;
 	}
@@ -68,13 +68,14 @@ public class Scene extends ReferenceFrame {
 	public Background getBackground() {
 		return m_background;
 	}
+
 	/**
-	 * 
+	 *
 	 * @param Background
 	 *            (default: null)
 	 * @see #getBackground
 	 */
-	public void setBackground(Background background) {
+	public void setBackground(final Background background) {
 		if (m_background != background) {
 			m_background = background;
 			onPropertyChange(BACKGROUND_PROPERTY);
@@ -82,7 +83,7 @@ public class Scene extends ReferenceFrame {
 	}
 
 	@Override
-	public Matrix44 getTransformation(ReferenceFrame asSeenBy) {
+	public Matrix44 getTransformation(final ReferenceFrame asSeenBy) {
 		return new Matrix44(asSeenBy.getInverseAbsoluteTransformation());
 	}
 }

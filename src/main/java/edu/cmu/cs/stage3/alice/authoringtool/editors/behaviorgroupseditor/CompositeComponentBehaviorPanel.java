@@ -46,10 +46,16 @@ import edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty;
 
 public class CompositeComponentBehaviorPanel extends CompositeComponentElementPanel {
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 6128347792849064694L;
+
 	public CompositeComponentBehaviorPanel() {
 	}
 
-	public void set(ObjectArrayProperty elements, BehaviorGroupEditor owner, AuthoringTool authoringToolIn) {
+	public void set(final ObjectArrayProperty elements, final BehaviorGroupEditor owner,
+			final AuthoringTool authoringToolIn) {
 		super.set(elements, owner, authoringToolIn);
 	}
 
@@ -59,7 +65,7 @@ public class CompositeComponentBehaviorPanel extends CompositeComponentElementPa
 	}
 
 	@Override
-	protected Component makeGUI(Element currentElement) {
+	protected Component makeGUI(final Element currentElement) {
 		JComponent toAdd = null;
 		if (currentElement instanceof Behavior) {
 			toAdd = GUIFactory.getGUI(currentElement);
@@ -70,11 +76,11 @@ public class CompositeComponentBehaviorPanel extends CompositeComponentElementPa
 	}
 
 	@Override
-	public void drop(DropTargetDropEvent dtde) {
-		Transferable transferable = dtde.getTransferable();
+	public void drop(final DropTargetDropEvent dtde) {
+		final Transferable transferable = dtde.getTransferable();
 		boolean dropSuccess = true;
 		try {
-			int type = BehaviorGroupsEditor.checkTransferable(transferable);
+			final int type = BehaviorGroupsEditor.checkTransferable(transferable);
 			if (type == -1 || type == 1) {
 				if (super.m_owner.getParent() instanceof DropTargetListener) {
 					((DropTargetListener) super.m_owner.getParent()).drop(dtde);
@@ -82,15 +88,17 @@ public class CompositeComponentBehaviorPanel extends CompositeComponentElementPa
 			} else if (type == 2) {
 				dtde.acceptDrop(2);
 				Behavior b;
-				if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable, CopyFactoryTransferable.copyFactoryFlavor)) {
-					CopyFactory copyFactory = (CopyFactory) transferable.getTransferData(CopyFactoryTransferable.copyFactoryFlavor);
+				if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable,
+						CopyFactoryTransferable.copyFactoryFlavor)) {
+					final CopyFactory copyFactory = (CopyFactory) transferable
+							.getTransferData(CopyFactoryTransferable.copyFactoryFlavor);
 					b = (Behavior) copyFactory.manufactureCopy(super.componentElements.getOwner().getWorld());
 				} else {
 					b = (Behavior) transferable.getTransferData(ElementReferenceTransferable.behaviorReferenceFlavor);
 				}
 				performDrop(b, dtde);
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("The drop failed.", e);
 			dropSuccess = false;
 		}
@@ -98,7 +106,7 @@ public class CompositeComponentBehaviorPanel extends CompositeComponentElementPa
 	}
 
 	@Override
-	public void dragOver(DropTargetDragEvent dtde) {
+	public void dragOver(final DropTargetDragEvent dtde) {
 		if (!super.m_owner.isExpanded() && super.m_owner.getParent() instanceof DropTargetListener) {
 			((DropTargetListener) super.m_owner.getParent()).dragOver(dtde);
 		}
@@ -111,7 +119,7 @@ public class CompositeComponentBehaviorPanel extends CompositeComponentElementPa
 				insertDropPanel(dtde);
 				dtde.acceptDrag(dtde.getDropAction());
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 			dtde.rejectDrag();
 			return;

@@ -24,25 +24,30 @@
 package edu.cmu.cs.stage3.alice.core.criterion;
 
 public class ElementNameContainsCriterion implements edu.cmu.cs.stage3.util.Criterion {
-	private String m_contains;
-	private boolean m_ignoreCase;
-	public ElementNameContainsCriterion(String contains) {
+	private final String m_contains;
+	private final boolean m_ignoreCase;
+
+	public ElementNameContainsCriterion(final String contains) {
 		this(contains, true);
 	}
-	public ElementNameContainsCriterion(String contains, boolean ignoreCase) {
+
+	public ElementNameContainsCriterion(final String contains, final boolean ignoreCase) {
 		m_contains = contains;
 		m_ignoreCase = ignoreCase;
 	}
+
 	public String getContains() {
 		return m_contains;
 	}
+
 	public boolean getIgnoreCase() {
 		return m_ignoreCase;
 	}
+
 	@Override
-	public boolean accept(Object o) {
+	public boolean accept(final Object o) {
 		if (o instanceof edu.cmu.cs.stage3.alice.core.Element) {
-			String name = ((edu.cmu.cs.stage3.alice.core.Element) o).name.getStringValue();
+			final String name = ((edu.cmu.cs.stage3.alice.core.Element) o).name.getStringValue();
 			if (m_contains == null) {
 				return name == null;
 			} else if (name == null) {
@@ -64,22 +69,22 @@ public class ElementNameContainsCriterion implements edu.cmu.cs.stage3.util.Crit
 		return getClass().getName() + "[" + m_contains + "]";
 	}
 
-	protected static ElementNameContainsCriterion valueOf(String s, Class cls) {
-		String beginMarker = cls.getName() + "[";
-		String endMarker = "]";
-		int begin = s.indexOf(beginMarker) + beginMarker.length();
-		int end = s.lastIndexOf(endMarker);
+	protected static ElementNameContainsCriterion valueOf(final String s, final Class cls) {
+		final String beginMarker = cls.getName() + "[";
+		final String endMarker = "]";
+		final int begin = s.indexOf(beginMarker) + beginMarker.length();
+		final int end = s.lastIndexOf(endMarker);
 		try {
-			Class[] types = {String.class};
-			Object[] values = {s.substring(begin, end)};
-			java.lang.reflect.Constructor constructor = cls.getConstructor(types);
+			final Class[] types = { String.class };
+			final Object[] values = { s.substring(begin, end) };
+			final java.lang.reflect.Constructor constructor = cls.getConstructor(types);
 			return (ElementNameContainsCriterion) constructor.newInstance(values);
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			throw new RuntimeException();
 		}
 	}
 
-	public static ElementNameContainsCriterion valueOf(String s) {
+	public static ElementNameContainsCriterion valueOf(final String s) {
 		return valueOf(s, edu.cmu.cs.stage3.alice.core.criterion.ElementNameContainsCriterion.class);
 	}
 }

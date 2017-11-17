@@ -33,28 +33,28 @@ public class ForEach extends Composite {
 	public final ListProperty list = new ListProperty(this, "list", null);
 
 	@Override
-	protected void internalFindAccessibleExpressions(Class cls, java.util.Vector v) {
+	protected void internalFindAccessibleExpressions(final Class cls, final java.util.Vector v) {
 		internalAddExpressionIfAssignableTo((edu.cmu.cs.stage3.alice.core.Expression) each.get(), cls, v);
 		super.internalFindAccessibleExpressions(cls, v);
 	}
 
 	@Override
 	public Object[] execute() {
-		edu.cmu.cs.stage3.alice.core.World world = getWorld();
+		final edu.cmu.cs.stage3.alice.core.World world = getWorld();
 		if (world != null) {
-			edu.cmu.cs.stage3.alice.core.Sandbox sandbox = world.getCurrentSandbox();
+			final edu.cmu.cs.stage3.alice.core.Sandbox sandbox = world.getCurrentSandbox();
 			if (sandbox != null) {
-				edu.cmu.cs.stage3.alice.core.Behavior currentBehavior = sandbox.getCurrentBehavior();
+				final edu.cmu.cs.stage3.alice.core.Behavior currentBehavior = sandbox.getCurrentBehavior();
 				if (currentBehavior != null) {
-					edu.cmu.cs.stage3.alice.core.List listValue = list.getListValue();
+					final edu.cmu.cs.stage3.alice.core.List listValue = list.getListValue();
 					if (listValue.size() > 0) {
-						edu.cmu.cs.stage3.alice.core.Variable eachVariable = each.getVariableValue();
-						edu.cmu.cs.stage3.alice.core.Variable eachRuntimeVariable = new edu.cmu.cs.stage3.alice.core.Variable();
+						final edu.cmu.cs.stage3.alice.core.Variable eachVariable = each.getVariableValue();
+						final edu.cmu.cs.stage3.alice.core.Variable eachRuntimeVariable = new edu.cmu.cs.stage3.alice.core.Variable();
 						eachRuntimeVariable.valueClass.set(eachVariable.valueClass.get());
 						for (int i = 0; i < listValue.size(); i++) {
 							eachRuntimeVariable.value.set(listValue.values.get(i));
 							currentBehavior.pushEach(eachVariable, eachRuntimeVariable);
-							Object[] returnValue = super.execute();
+							final Object[] returnValue = super.execute();
 							currentBehavior.popStack();
 							if (returnValue != null) {
 								return returnValue;

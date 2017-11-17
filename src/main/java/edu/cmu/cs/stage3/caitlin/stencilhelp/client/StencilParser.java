@@ -15,43 +15,46 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import edu.cmu.cs.stage3.caitlin.stencilhelp.application.StencilApplication;
+
 public class StencilParser { // extends org.xml.sax.helpers.DefaultHandler{
 	StringBuffer textBuffer;
 	StencilManager stencilManager;
 	ObjectPositionManager positionManager;
 	StencilApplication stencilApp;
 
-	public StencilParser(StencilManager stencilManager, ObjectPositionManager positionManager, StencilApplication stencilApp) {
+	public StencilParser(final StencilManager stencilManager, final ObjectPositionManager positionManager,
+			final StencilApplication stencilApp) {
 		this.stencilManager = stencilManager;
 		this.positionManager = positionManager;
 		this.stencilApp = stencilApp;
 	}
 
-	protected void loadStateCapsule(Node node, StencilManager.Stencil newStencil) {
-		NodeList nl = node.getChildNodes();
+	protected void loadStateCapsule(final Node node, final StencilManager.Stencil newStencil) {
+		final NodeList nl = node.getChildNodes();
 		for (int i = 0; i < nl.getLength(); i++) {
-			Node child = nl.item(i);
+			final Node child = nl.item(i);
 			if (child.getNodeValue() != null) {
-				String capsuleString = child.getNodeValue().trim();
+				final String capsuleString = child.getNodeValue().trim();
 				if (capsuleString.length() > 0) {
-					edu.cmu.cs.stage3.caitlin.stencilhelp.application.StateCapsule stateCapsule = stencilApp.getStateCapsuleFromString(capsuleString);
+					final edu.cmu.cs.stage3.caitlin.stencilhelp.application.StateCapsule stateCapsule = stencilApp
+							.getStateCapsuleFromString(capsuleString);
 					newStencil.setEndState(stateCapsule);
 				}
 			}
 		}
 	}
 
-	protected void loadNote(Node node, StencilManager.Stencil newStencil, NavigationBar navBar) {
-		NodeList noteParts = node.getChildNodes();
+	protected void loadNote(final Node node, final StencilManager.Stencil newStencil, final NavigationBar navBar) {
+		final NodeList noteParts = node.getChildNodes();
 
 		// get the attributes of the node
-		NamedNodeMap attr = node.getAttributes();
-		Node objectType = attr.getNamedItem("type");
-		Node xPosNode = attr.getNamedItem("xPos");
-		Node yPosNode = attr.getNamedItem("yPos");
-		Node autoAdvanceNode = attr.getNamedItem("autoAdvance");
-		Node advanceEventNode = attr.getNamedItem("advanceEvent");
-		Node hasNextNode = attr.getNamedItem("hasNext");
+		final NamedNodeMap attr = node.getAttributes();
+		final Node objectType = attr.getNamedItem("type");
+		final Node xPosNode = attr.getNamedItem("xPos");
+		final Node yPosNode = attr.getNamedItem("yPos");
+		final Node autoAdvanceNode = attr.getNamedItem("autoAdvance");
+		final Node advanceEventNode = attr.getNamedItem("advanceEvent");
+		final Node hasNextNode = attr.getNamedItem("hasNext");
 		boolean hasNext = false;
 		int advanceEvent = 0;
 
@@ -63,11 +66,11 @@ public class StencilParser { // extends org.xml.sax.helpers.DefaultHandler{
 
 		// then we need to get the text of the note too....
 		String message = "hello world";
-		Vector msgs = new Vector();
-		Vector colors = new Vector();
+		final Vector msgs = new Vector();
+		final Vector colors = new Vector();
 		String id = "id";
 		for (int i = 0; i < noteParts.getLength(); i++) {
-			Node noteDetails = noteParts.item(i);
+			final Node noteDetails = noteParts.item(i);
 			if (noteDetails.getNodeName().equals("id")) {
 				id = edu.cmu.cs.stage3.xml.NodeUtilities.getNodeText(noteDetails);
 			} else if (noteDetails.getNodeName().equals("message")) {
@@ -80,14 +83,14 @@ public class StencilParser { // extends org.xml.sax.helpers.DefaultHandler{
 					 * textList.item(j); message = textIHope.getNodeValue(); if
 					 * (message != null) message = message.trim(); if
 					 * (message.length() > 0) msgs.addElement(message);
-					 * 
+					 *
 					 * }
 					 */
 				}
 
-				NamedNodeMap textAttr = noteDetails.getAttributes();
+				final NamedNodeMap textAttr = noteDetails.getAttributes();
 				if (textAttr != null) {
-					Node textColor = textAttr.getNamedItem("color");
+					final Node textColor = textAttr.getNamedItem("color");
 					if (textColor != null) {
 						colors.addElement(textColor.getNodeValue());
 						// System.out.println("adding color");
@@ -106,10 +109,11 @@ public class StencilParser { // extends org.xml.sax.helpers.DefaultHandler{
 		// COME BACK - make this save and restore the author's approximate
 		// positions for the objects
 		if (objectType.getNodeValue().equals("hole")) {
-			Hole hole = new Hole(id, positionManager, stencilApp, stencilManager);
-			Point p = hole.getNotePoint();
-			Point initPos = new Point((int) Double.parseDouble(xPosNode.getNodeValue()), (int) Double.parseDouble(yPosNode.getNodeValue()));
-			Note note = new Note(p, initPos, hole, positionManager, stencilManager, hasNext);
+			final Hole hole = new Hole(id, positionManager, stencilApp, stencilManager);
+			final Point p = hole.getNotePoint();
+			final Point initPos = new Point((int) Double.parseDouble(xPosNode.getNodeValue()),
+					(int) Double.parseDouble(yPosNode.getNodeValue()));
+			final Note note = new Note(p, initPos, hole, positionManager, stencilManager, hasNext);
 			// note.setText(message);
 			for (int i = 0; i < msgs.size(); i++) {
 				note.addText((String) msgs.elementAt(i), (String) colors.elementAt(i));
@@ -133,10 +137,11 @@ public class StencilParser { // extends org.xml.sax.helpers.DefaultHandler{
 			newStencil.addObject(hole);
 			newStencil.addObject(note);
 		} else if (objectType.getNodeValue().equals("frame")) {
-			Frame frame = new Frame(id, positionManager);
-			Point p = frame.getNotePoint();
-			Point initPos = new Point((int) Double.parseDouble(xPosNode.getNodeValue()), (int) Double.parseDouble(yPosNode.getNodeValue()));
-			Note note = new Note(p, initPos, frame, positionManager, stencilManager, hasNext);
+			final Frame frame = new Frame(id, positionManager);
+			final Point p = frame.getNotePoint();
+			final Point initPos = new Point((int) Double.parseDouble(xPosNode.getNodeValue()),
+					(int) Double.parseDouble(yPosNode.getNodeValue()));
+			final Note note = new Note(p, initPos, frame, positionManager, stencilManager, hasNext);
 			// note.setText(message);
 			for (int i = 0; i < msgs.size(); i++) {
 				note.addText((String) msgs.elementAt(i), (String) colors.elementAt(i));
@@ -144,19 +149,21 @@ public class StencilParser { // extends org.xml.sax.helpers.DefaultHandler{
 			newStencil.addObject(frame);
 			newStencil.addObject(note);
 		} else if (objectType.getNodeValue().equals("navBar")) {
-			Point p = navBar.getNotePoint();
-			Point initPos = new Point((int) Double.parseDouble(xPosNode.getNodeValue()), (int) Double.parseDouble(yPosNode.getNodeValue()));
-			Note note = new Note(p, initPos, navBar, positionManager, stencilManager, hasNext);
+			final Point p = navBar.getNotePoint();
+			final Point initPos = new Point((int) Double.parseDouble(xPosNode.getNodeValue()),
+					(int) Double.parseDouble(yPosNode.getNodeValue()));
+			final Note note = new Note(p, initPos, navBar, positionManager, stencilManager, hasNext);
 			// note.setText(message);
 			for (int i = 0; i < msgs.size(); i++) {
 				note.addText((String) msgs.elementAt(i), (String) colors.elementAt(i));
 			}
 			newStencil.addObject(note);
 		} else {
-			double xRatio = Double.parseDouble(xPosNode.getNodeValue());
-			double yRatio = Double.parseDouble(yPosNode.getNodeValue());
-			Point p = new Point((int) (stencilApp.getScreenSize().getWidth() * xRatio), (int) (stencilApp.getScreenSize().getHeight() * yRatio));
-			Note note = new Note(p, new Point(0, 0), null, positionManager, stencilManager, hasNext);
+			final double xRatio = Double.parseDouble(xPosNode.getNodeValue());
+			final double yRatio = Double.parseDouble(yPosNode.getNodeValue());
+			final Point p = new Point((int) (stencilApp.getScreenSize().getWidth() * xRatio),
+					(int) (stencilApp.getScreenSize().getHeight() * yRatio));
+			final Note note = new Note(p, new Point(0, 0), null, positionManager, stencilManager, hasNext);
 			// note.setText(message);
 			for (int i = 0; i < msgs.size(); i++) {
 				note.addText((String) msgs.elementAt(i), (String) colors.elementAt(i));
@@ -165,25 +172,25 @@ public class StencilParser { // extends org.xml.sax.helpers.DefaultHandler{
 		}
 	}
 
-	protected StencilManager.Stencil loadStencil(Node node) {
-		NamedNodeMap attr = node.getAttributes();
-		Node stencilTitle = attr.getNamedItem("title");
-		NavigationBar navBar = new NavigationBar(stencilManager, positionManager);
+	protected StencilManager.Stencil loadStencil(final Node node) {
+		final NamedNodeMap attr = node.getAttributes();
+		final Node stencilTitle = attr.getNamedItem("title");
+		final NavigationBar navBar = new NavigationBar(stencilManager, positionManager);
 		if (stencilTitle != null && stencilTitle.getNodeValue() != null) {
 			navBar.setTitleString(stencilTitle.getNodeValue());
 		}
 
-		NodeList objects = node.getChildNodes();
-		Node stepsToGoBackNode = attr.getNamedItem("stepsToGoBack");
+		final NodeList objects = node.getChildNodes();
+		final Node stepsToGoBackNode = attr.getNamedItem("stepsToGoBack");
 		int stepsToGoBack = 1;
 		if (stepsToGoBackNode != null && stepsToGoBackNode.getNodeValue() != null) {
 			stepsToGoBack = Integer.parseInt(stepsToGoBackNode.getNodeValue());
 		}
-		StencilManager.Stencil newStencil = stencilManager.newStencil(stepsToGoBack);
+		final StencilManager.Stencil newStencil = stencilManager.newStencil(stepsToGoBack);
 		newStencil.addObject(navBar);
 		newStencil.addObject(new Menu(stencilManager));
 		for (int i = 0; i < objects.getLength(); i++) {
-			Node childNode = objects.item(i);
+			final Node childNode = objects.item(i);
 			if (childNode.getNodeName().equals("note")) {
 				loadNote(childNode, newStencil, navBar);
 			} else if (childNode.getNodeName().equals("stateCapsule")) {
@@ -193,57 +200,57 @@ public class StencilParser { // extends org.xml.sax.helpers.DefaultHandler{
 		return newStencil;
 	}
 
-	public Vector parseFile(java.io.File fileToLoad) {
+	public Vector parseFile(final java.io.File fileToLoad) {
 		Document document;
 		try {
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder builder = factory.newDocumentBuilder();
+			final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			final DocumentBuilder builder = factory.newDocumentBuilder();
 			document = builder.parse(fileToLoad);
-		} catch (IOException ioe) {
+		} catch (final IOException ioe) {
 			document = null;
 			ioe.printStackTrace();
-		} catch (ParserConfigurationException pce) {
+		} catch (final ParserConfigurationException pce) {
 			document = null;
 			pce.printStackTrace();
-		} catch (org.xml.sax.SAXException se) {
+		} catch (final org.xml.sax.SAXException se) {
 			document = null;
 			se.printStackTrace();
 		}
 
 		if (document != null) {
-			Vector stencilList = new Vector();
-			NamedNodeMap attr = document.getDocumentElement().getAttributes();
-			Node readPermission = attr.getNamedItem("access");
+			final Vector stencilList = new Vector();
+			final NamedNodeMap attr = document.getDocumentElement().getAttributes();
+			final Node readPermission = attr.getNamedItem("access");
 			if (readPermission.getNodeValue().equals("read")) {
 				stencilManager.setWriteEnabled(false);
 			} else {
 				stencilManager.setWriteEnabled(true);
 			}
-			Node worldToLoad = attr.getNamedItem("world");
+			final Node worldToLoad = attr.getNamedItem("world");
 			if (worldToLoad != null) {
 				stencilManager.setWorld(worldToLoad.getNodeValue());
 			}
 			// load next and previous stacks
 			String nextStack = null;
 			String previousStack = null;
-			Node nextStackNode = attr.getNamedItem("nextStack");
+			final Node nextStackNode = attr.getNamedItem("nextStack");
 			if (nextStackNode != null) {
 				nextStack = nextStackNode.getNodeValue();
 			}
-			Node previousStackNode = attr.getNamedItem("previousStack");
+			final Node previousStackNode = attr.getNamedItem("previousStack");
 			if (previousStackNode != null) {
 				previousStack = previousStackNode.getNodeValue();
 			}
 			if (nextStack != null || previousStack != null) {
 				stencilManager.setNextAndPreviousStacks(previousStack, nextStack);
 			}
-			NodeList stencils = document.getElementsByTagName("stencil");
-			ProgressMonitor monitor = new ProgressMonitor(null, "Loading Tutorial", "", 0, stencils.getLength());
+			final NodeList stencils = document.getElementsByTagName("stencil");
+			final ProgressMonitor monitor = new ProgressMonitor(null, "Loading Tutorial", "", 0, stencils.getLength());
 			monitor.setProgress(0);
 			monitor.setMillisToDecideToPopup(1000);
 			for (int i = 0; i < stencils.getLength(); i++) {
-				Node stencilNode = stencils.item(i);
-				StencilManager.Stencil newStencil = loadStencil(stencilNode);
+				final Node stencilNode = stencils.item(i);
+				final StencilManager.Stencil newStencil = loadStencil(stencilNode);
 				stencilList.addElement(newStencil);
 				monitor.setProgress(i);
 			}
@@ -257,15 +264,16 @@ public class StencilParser { // extends org.xml.sax.helpers.DefaultHandler{
 	}
 
 	public StencilManager.Stencil getErrorStencil() {
-		NavigationBar navBar = new NavigationBar(stencilManager, positionManager, true);
+		final NavigationBar navBar = new NavigationBar(stencilManager, positionManager, true);
 		navBar.setTitleString("Ooops!");
 
-		StencilManager.Stencil newStencil = stencilManager.newStencil();
+		final StencilManager.Stencil newStencil = stencilManager.newStencil();
 		newStencil.addObject(navBar);
 
 		// create note
-		Point p = new Point((int) ((float) stencilApp.getScreenSize().getWidth() * 0.292), (int) ((float) stencilApp.getScreenSize().getHeight() * 0.448));
-		Note note = new Note(p, new Point(0, 0), null, positionManager, stencilManager, false);
+		final Point p = new Point((int) ((float) stencilApp.getScreenSize().getWidth() * 0.292),
+				(int) ((float) stencilApp.getScreenSize().getHeight() * 0.448));
+		final Note note = new Note(p, new Point(0, 0), null, positionManager, stencilManager, false);
 		note.addText("The Alice tutorial thinks maybe you didn't follow the instructions carefully.", null);
 		note.addText("Please back up to your mistake or restart.", null);
 		note.initializeNote();

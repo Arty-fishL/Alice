@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -34,15 +34,16 @@ import edu.cmu.cs.stage3.alice.core.property.TransformableProperty;
 
 /**
  * Title: Description: Copyright: Copyright (c) 2001 Company: Stage3
- * 
+ *
  * @author
  * @version 1.0
  */
-public class MouseNavigationBehavior extends InternalResponseBehavior implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
+public class MouseNavigationBehavior extends InternalResponseBehavior
+		implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
 
 	private RenderTarget renderTarget;
 
-	private javax.vecmath.Vector3d turning = new javax.vecmath.Vector3d(0, 0, 0);
+	private final javax.vecmath.Vector3d turning = new javax.vecmath.Vector3d(0, 0, 0);
 	private double movement = 0;
 
 	private boolean mouseActive;
@@ -52,7 +53,8 @@ public class MouseNavigationBehavior extends InternalResponseBehavior implements
 
 	public NumberProperty speed = new NumberProperty(this, "speed", new Double(.1));
 	public NumberProperty turningRate = new NumberProperty(this, "turningRate", new Double(.001));
-	public TransformableProperty subject = new edu.cmu.cs.stage3.alice.core.property.TransformableProperty(this, "subject", null);
+	public TransformableProperty subject = new edu.cmu.cs.stage3.alice.core.property.TransformableProperty(this,
+			"subject", null);
 	public BooleanProperty looking = new BooleanProperty(this, "looking", Boolean.FALSE);
 	public BooleanProperty stayOnGround = new BooleanProperty(this, "stayOnGround", Boolean.TRUE);
 	public BooleanProperty positionRelative = new BooleanProperty(this, "positionRelative", Boolean.TRUE);
@@ -70,14 +72,14 @@ public class MouseNavigationBehavior extends InternalResponseBehavior implements
 	}
 
 	@Override
-	public void started(World world, double time) {
+	public void started(final World world, final double time) {
 		super.started(world, time);
 		if (isEnabled.booleanValue()) {
-			RenderTarget[] rts = (RenderTarget[]) world.getDescendants(RenderTarget.class);
+			final RenderTarget[] rts = (RenderTarget[]) world.getDescendants(RenderTarget.class);
 			if (rts.length > 0) {
 				renderTarget = rts[0];
 				if (subject.getTransformableValue() == null) {
-					Camera[] cameras = renderTarget.getCameras();
+					final Camera[] cameras = renderTarget.getCameras();
 					if (cameras.length > 0) {
 						subject.set(cameras[0]);
 					}
@@ -89,7 +91,7 @@ public class MouseNavigationBehavior extends InternalResponseBehavior implements
 	}
 
 	@Override
-	public void stopped(World world, double time) {
+	public void stopped(final World world, final double time) {
 		super.stopped(world, time);
 		if (isEnabled.booleanValue()) {
 			disable();
@@ -97,7 +99,7 @@ public class MouseNavigationBehavior extends InternalResponseBehavior implements
 	}
 
 	@Override
-	public void internalSchedule(double time, double dt) {
+	public void internalSchedule(final double time, double dt) {
 
 		if (!mouseActive) {
 			return;
@@ -113,18 +115,19 @@ public class MouseNavigationBehavior extends InternalResponseBehavior implements
 
 		subject.getTransformableValue().turnRightNow(Direction.FORWARD, turning.x * dt);
 
-		Transformable t = new Transformable();
+		final Transformable t = new Transformable();
 		t.setPositionRightNow(subject.getTransformableValue().getPosition());
-		t.setOrientationRightNow(subject.getTransformableValue().vehicle.getReferenceFrameValue().getOrientationAsQuaternion());
+		t.setOrientationRightNow(
+				subject.getTransformableValue().vehicle.getReferenceFrameValue().getOrientationAsQuaternion());
 
 		subject.getTransformableValue().turnRightNow(Direction.RIGHT, turning.y * dt, t);
 
 		// move
 
-		double yPos = subject.getTransformableValue().getPosition().y;
+		final double yPos = subject.getTransformableValue().getPosition().y;
 		subject.getTransformableValue().moveRightNow(Direction.FORWARD, dt * movement);
 		if (stayOnGround.getBooleanValue().booleanValue()) {
-			javax.vecmath.Vector3d pos = subject.getTransformableValue().getPosition();
+			final javax.vecmath.Vector3d pos = subject.getTransformableValue().getPosition();
 			pos.y = yPos;
 			subject.getTransformableValue().setPositionRightNow(pos);
 		}
@@ -139,29 +142,31 @@ public class MouseNavigationBehavior extends InternalResponseBehavior implements
 
 	// Implements MouseListener
 	@Override
-	public void mouseClicked(java.awt.event.MouseEvent e) {
+	public void mouseClicked(final java.awt.event.MouseEvent e) {
 	}
+
 	@Override
-	public void mouseEntered(java.awt.event.MouseEvent e) {
+	public void mouseEntered(final java.awt.event.MouseEvent e) {
 		if (!positionRelative.getBooleanValue().booleanValue()) {
 			lastX = e.getX();
 			lastY = e.getY();
 		}
 
 	}
+
 	@Override
-	public void mouseExited(java.awt.event.MouseEvent e) {
+	public void mouseExited(final java.awt.event.MouseEvent e) {
 	}
 
 	@Override
-	public void mousePressed(java.awt.event.MouseEvent e) {
+	public void mousePressed(final java.awt.event.MouseEvent e) {
 		lastX = e.getX();
 		lastY = e.getY();
 		mouseActive = true;
 	}
 
 	@Override
-	public void mouseReleased(java.awt.event.MouseEvent e) {
+	public void mouseReleased(final java.awt.event.MouseEvent e) {
 		mouseActive = false;
 		turning.x = 0;
 		turning.y = 0;
@@ -171,7 +176,7 @@ public class MouseNavigationBehavior extends InternalResponseBehavior implements
 
 	// Implements MouseMotionListener
 	@Override
-	public void mouseDragged(java.awt.event.MouseEvent e) {
+	public void mouseDragged(final java.awt.event.MouseEvent e) {
 		int x = e.getX() - lastX;
 		int y = e.getY() - lastY;
 		if (lastX == -1) {
@@ -185,19 +190,22 @@ public class MouseNavigationBehavior extends InternalResponseBehavior implements
 			lastY = e.getY();
 		}
 		if (mouseActive) {
-			turning.y = (positionRelative.getBooleanValue().booleanValue() ? 0 : turning.y) + x * turningRate.getNumberValue().doubleValue();
+			turning.y = (positionRelative.getBooleanValue().booleanValue() ? 0 : turning.y)
+					+ x * turningRate.getNumberValue().doubleValue();
 			if (((Boolean) looking.get()).booleanValue()) {
-				turning.x = (positionRelative.getBooleanValue().booleanValue() ? 0 : turning.x) + y * turningRate.getNumberValue().doubleValue();
+				turning.x = (positionRelative.getBooleanValue().booleanValue() ? 0 : turning.x)
+						+ y * turningRate.getNumberValue().doubleValue();
 			} else {
-				movement = (positionRelative.getBooleanValue().booleanValue() ? 0 : movement) - y * speed.getNumberValue().doubleValue();
+				movement = (positionRelative.getBooleanValue().booleanValue() ? 0 : movement)
+						- y * speed.getNumberValue().doubleValue();
 			}
 		}
 	}
 
 	@Override
-	public void mouseMoved(java.awt.event.MouseEvent e) {
-		int x = e.getX() - lastX;
-		int y = e.getY() - lastY;
+	public void mouseMoved(final java.awt.event.MouseEvent e) {
+		final int x = e.getX() - lastX;
+		final int y = e.getY() - lastY;
 		if (!positionRelative.getBooleanValue().booleanValue()) {
 			lastX = e.getX();
 			lastY = e.getY();
@@ -207,11 +215,14 @@ public class MouseNavigationBehavior extends InternalResponseBehavior implements
 			lastY = e.getY();
 		}
 		if (mouseActive) {
-			turning.y = (positionRelative.getBooleanValue().booleanValue() ? 0 : turning.y) + x * turningRate.getNumberValue().doubleValue();
+			turning.y = (positionRelative.getBooleanValue().booleanValue() ? 0 : turning.y)
+					+ x * turningRate.getNumberValue().doubleValue();
 			if (((Boolean) looking.get()).booleanValue()) {
-				turning.x = (positionRelative.getBooleanValue().booleanValue() ? 0 : turning.x) + y * turningRate.getNumberValue().doubleValue();
+				turning.x = (positionRelative.getBooleanValue().booleanValue() ? 0 : turning.x)
+						+ y * turningRate.getNumberValue().doubleValue();
 			} else {
-				movement = (positionRelative.getBooleanValue().booleanValue() ? 0 : movement) - y * speed.getNumberValue().doubleValue();
+				movement = (positionRelative.getBooleanValue().booleanValue() ? 0 : movement)
+						- y * speed.getNumberValue().doubleValue();
 			}
 		}
 	}

@@ -12,20 +12,22 @@ import edu.cmu.cs.stage3.math.Matrix33;
 
 /**
  * @author caitlin
- * 
+ *
  *         To change the template for this generated type comment go to
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class WalkOffscreen extends AbstractWalkAnimation {
-	public final edu.cmu.cs.stage3.alice.core.property.DirectionProperty exitDirection = new edu.cmu.cs.stage3.alice.core.property.DirectionProperty(this, "exit direction", edu.cmu.cs.stage3.alice.core.Direction.RIGHT);
+	public final edu.cmu.cs.stage3.alice.core.property.DirectionProperty exitDirection = new edu.cmu.cs.stage3.alice.core.property.DirectionProperty(
+			this, "exit direction", edu.cmu.cs.stage3.alice.core.Direction.RIGHT);
 
 	double turnLength = 0.25;
 
 	@Override
-	protected void propertyChanged(Property property, Object value) {
+	protected void propertyChanged(final Property property, final Object value) {
 		super.propertyChanged(property, value);
 		if (property.equals(duration)) {
-			if (Double.isNaN(((Double) value).doubleValue())) {} else {
+			if (Double.isNaN(((Double) value).doubleValue())) {
+			} else {
 				if (duration.doubleValue() > 2) {
 					turnLength = 0.5;
 				} else {
@@ -33,13 +35,15 @@ public class WalkOffscreen extends AbstractWalkAnimation {
 				}
 			}
 		} else if (property.equals(stepSpeed)) {
-			if (Double.isNaN(((Double) value).doubleValue())) {} else {
+			if (Double.isNaN(((Double) value).doubleValue())) {
+			} else {
 				turnLength = 0.5;
 			}
 		}
 	}
 
-	public class RuntimeWalkOffScreen extends RuntimeAbstractWalkAnimation implements edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationListener {
+	public class RuntimeWalkOffScreen extends RuntimeAbstractWalkAnimation
+			implements edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationListener {
 
 		private edu.cmu.cs.stage3.math.Matrix33 m_orient0;
 		private edu.cmu.cs.stage3.math.Matrix33 m_orient1;
@@ -62,7 +66,8 @@ public class WalkOffscreen extends AbstractWalkAnimation {
 		// double turnLength = 0.25;
 
 		@Override
-		public void absoluteTransformationChanged(edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent) {
+		public void absoluteTransformationChanged(
+				final edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent) {
 			// findCamera();
 			// stepLength = -1.0;
 			// numberOfSteps = -1.0;
@@ -70,7 +75,7 @@ public class WalkOffscreen extends AbstractWalkAnimation {
 		}
 
 		@Override
-		public void prologue(double t) {
+		public void prologue(final double t) {
 			super.prologue(t);
 			findCamera();
 			getActualStepLength();
@@ -103,7 +108,7 @@ public class WalkOffscreen extends AbstractWalkAnimation {
 		}
 
 		@Override
-		public double getTimeRemaining(double t) {
+		public double getTimeRemaining(final double t) {
 			double walkTime = duration.doubleValue() - turnLength;
 			double totalTime = walkTime + turnLength;
 
@@ -116,7 +121,7 @@ public class WalkOffscreen extends AbstractWalkAnimation {
 		}
 
 		@Override
-		protected double getPortion(double t) {
+		protected double getPortion(final double t) {
 			double duration = getDuration();
 			if (Double.isNaN(duration)) {
 				duration = numberOfSteps / WalkOffscreen.this.stepSpeed.doubleValue() + turnLength;
@@ -125,16 +130,19 @@ public class WalkOffscreen extends AbstractWalkAnimation {
 		}
 
 		@Override
-		public void update(double t) {
+		public void update(final double t) {
 
 			if (getTimeElapsed(t) <= turnLength) {
-				double portion = m_style.getPortion(Math.min(getTimeElapsed(t), turnLength), turnLength);
+				final double portion = m_style.getPortion(Math.min(getTimeElapsed(t), turnLength), turnLength);
 
-				edu.cmu.cs.stage3.math.Matrix33 q = edu.cmu.cs.stage3.math.Matrix33.interpolate(m_orient0, m_orient1, portion);
+				final edu.cmu.cs.stage3.math.Matrix33 q = edu.cmu.cs.stage3.math.Matrix33.interpolate(m_orient0,
+						m_orient1, portion);
 				subject.setOrientationRightNow(q, camera);
 			} else {
 				if (firstOver1) {
-					edu.cmu.cs.stage3.math.Matrix33 q = edu.cmu.cs.stage3.math.Matrix33.interpolate(m_orient0, m_orient1, m_style.getPortion(Math.min(getTimeElapsed(turnLength), turnLength), turnLength));
+					final edu.cmu.cs.stage3.math.Matrix33 q = edu.cmu.cs.stage3.math.Matrix33.interpolate(m_orient0,
+							m_orient1,
+							m_style.getPortion(Math.min(getTimeElapsed(turnLength), turnLength), turnLength));
 					subject.setOrientationRightNow(q, camera);
 					firstOver1 = false;
 				}
@@ -173,12 +181,14 @@ public class WalkOffscreen extends AbstractWalkAnimation {
 					stepLeft(portionOfStep, lastStep);
 				}
 
-				double portion = (getTimeElapsed(t) - turnLength) / (getTimeElapsed(t) - turnLength + getTimeRemaining(t));
-				double targetDistance = distanceToMove * portion;
+				final double portion = (getTimeElapsed(t) - turnLength)
+						/ (getTimeElapsed(t) - turnLength + getTimeRemaining(t));
+				final double targetDistance = distanceToMove * portion;
 				// System.out.println("move portion: " + portion + " " +
 				// getTimeElapsed(t));
 
-				WalkOffscreen.this.subject.getTransformableValue().moveRightNow(edu.cmu.cs.stage3.alice.core.Direction.FORWARD, targetDistance - currentPos);
+				WalkOffscreen.this.subject.getTransformableValue()
+						.moveRightNow(edu.cmu.cs.stage3.alice.core.Direction.FORWARD, targetDistance - currentPos);
 				currentPos += targetDistance - currentPos;
 			}
 			super.update(t);
@@ -187,7 +197,7 @@ public class WalkOffscreen extends AbstractWalkAnimation {
 
 		protected void findCamera() {
 			if (camera == null) {
-				edu.cmu.cs.stage3.alice.core.Element camElement = subject.getWorld().getChildNamed("Camera");
+				final edu.cmu.cs.stage3.alice.core.Element camElement = subject.getWorld().getChildNamed("Camera");
 
 				if (camElement != null) {
 					camera = (edu.cmu.cs.stage3.alice.core.Camera) camElement;
@@ -205,7 +215,7 @@ public class WalkOffscreen extends AbstractWalkAnimation {
 			}
 
 			if (cameraAngle != 0.0) {
-				double hypot = subject.getPosition(camera).z;
+				final double hypot = subject.getPosition(camera).z;
 				distanceToCenter = hypot * java.lang.Math.sin(cameraAngle / 2.0);
 			}
 

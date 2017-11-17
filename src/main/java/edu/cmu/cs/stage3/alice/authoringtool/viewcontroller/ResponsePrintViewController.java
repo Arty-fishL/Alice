@@ -28,7 +28,12 @@ import java.awt.Component;
 /**
  * @author Jason Pratt
  */
-public class ResponsePrintViewController extends edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel implements edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement {
+public class ResponsePrintViewController extends edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel
+		implements edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 572997458805723898L;
 	protected edu.cmu.cs.stage3.alice.core.response.Print printStatement;
 	protected javax.swing.JPanel subPanel = new edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel();
 	protected javax.swing.JLabel printPrefixLabel = new javax.swing.JLabel("Print: ");
@@ -37,10 +42,11 @@ public class ResponsePrintViewController extends edu.cmu.cs.stage3.alice.authori
 	protected MouseListener mouseListener = new MouseListener();
 	protected edu.cmu.cs.stage3.alice.core.event.PropertyListener commentedListener = new edu.cmu.cs.stage3.alice.core.event.PropertyListener() {
 		@Override
-		public void propertyChanging(edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev) {
+		public void propertyChanging(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev) {
 		}
+
 		@Override
-		public void propertyChanged(edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev) {
+		public void propertyChanged(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev) {
 			if (ev.getValue().equals(Boolean.TRUE)) {
 				setEnabled(false);
 			} else {
@@ -52,10 +58,11 @@ public class ResponsePrintViewController extends edu.cmu.cs.stage3.alice.authori
 	};
 	protected edu.cmu.cs.stage3.alice.core.event.PropertyListener updateListener = new edu.cmu.cs.stage3.alice.core.event.PropertyListener() {
 		@Override
-		public void propertyChanging(edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev) {
+		public void propertyChanging(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev) {
 		}
+
 		@Override
-		public void propertyChanged(edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev) {
+		public void propertyChanged(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev) {
 			ResponsePrintViewController.this.refreshGUI();
 		}
 	};
@@ -79,14 +86,15 @@ public class ResponsePrintViewController extends edu.cmu.cs.stage3.alice.authori
 		return printStatement;
 	}
 
-	public void set(edu.cmu.cs.stage3.alice.core.response.Print printStatement) {
+	public void set(final edu.cmu.cs.stage3.alice.core.response.Print printStatement) {
 		super.reset();
 
 		stopListening();
 
 		this.printStatement = printStatement;
 		if (this.printStatement != null) {
-			setTransferable(edu.cmu.cs.stage3.alice.authoringtool.datatransfer.TransferableFactory.createTransferable(printStatement));
+			setTransferable(edu.cmu.cs.stage3.alice.authoringtool.datatransfer.TransferableFactory
+					.createTransferable(printStatement));
 			setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("Print"));
 
 			this.add(subPanel, java.awt.BorderLayout.CENTER);
@@ -115,16 +123,16 @@ public class ResponsePrintViewController extends edu.cmu.cs.stage3.alice.authori
 	}
 
 	@Override
-	public void setEnabled(boolean b) {
+	public void setEnabled(final boolean b) {
 		super.setEnabled(b);
-		java.awt.Component[] children = subPanel.getComponents();
-		for (Component element : children) {
+		final java.awt.Component[] children = subPanel.getComponents();
+		for (final Component element : children) {
 			element.setEnabled(b);
 		}
 	}
 
 	@Override
-	public void paintForeground(java.awt.Graphics g) {
+	public void paintForeground(final java.awt.Graphics g) {
 		super.paintForeground(g);
 		if (printStatement.isCommentedOut.booleanValue()) {
 			edu.cmu.cs.stage3.alice.authoringtool.util.GUIEffects.paintDisabledEffect(g, getBounds());
@@ -166,8 +174,10 @@ public class ResponsePrintViewController extends edu.cmu.cs.stage3.alice.authori
 		subPanel.removeAll();
 
 		if (printStatement != null) {
-			String format = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getFormat(printStatement.getClass());
-			edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer formatTokenizer = new edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer(format);
+			final String format = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+					.getFormat(printStatement.getClass());
+			final edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer formatTokenizer = new edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer(
+					format);
 			if (formatTokenizer.hasMoreTokens()) {
 				printPrefixLabel.setText(formatTokenizer.nextToken());
 			} else {
@@ -185,32 +195,70 @@ public class ResponsePrintViewController extends edu.cmu.cs.stage3.alice.authori
 
 			int i = 0;
 			if (printStatement.text.get() == null) {
-				boolean omitName = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitPropertyName(printStatement.object);
-				javax.swing.JComponent objectPropertyGui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getPropertyViewController(printStatement.object, true, true, omitName, new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(printStatement.object));
+				final boolean omitName = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+						.shouldGUIOmitPropertyName(printStatement.object);
+				final javax.swing.JComponent objectPropertyGui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
+						.getPropertyViewController(printStatement.object, true, true, omitName,
+								new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(
+										printStatement.object));
 
-				subPanel.add(printPrefixLabel, new java.awt.GridBagConstraints(i++, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
-				subPanel.add(objectPropertyGui, new java.awt.GridBagConstraints(i++, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
-				subPanel.add(printSuffixLabel, new java.awt.GridBagConstraints(i++, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+				subPanel.add(printPrefixLabel,
+						new java.awt.GridBagConstraints(i++, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER,
+								java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+				subPanel.add(objectPropertyGui,
+						new java.awt.GridBagConstraints(i++, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER,
+								java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+				subPanel.add(printSuffixLabel,
+						new java.awt.GridBagConstraints(i++, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER,
+								java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
 			} else if (printStatement.object.get() == null) {
-				boolean omitName = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitPropertyName(printStatement.text);
-				javax.swing.JComponent textPropertyGui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getPropertyViewController(printStatement.text, true, true, omitName, new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(printStatement.text));
+				final boolean omitName = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+						.shouldGUIOmitPropertyName(printStatement.text);
+				final javax.swing.JComponent textPropertyGui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
+						.getPropertyViewController(printStatement.text, true, true, omitName,
+								new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(
+										printStatement.text));
 
-				subPanel.add(printPrefixLabel, new java.awt.GridBagConstraints(i++, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
-				subPanel.add(textPropertyGui, new java.awt.GridBagConstraints(i++, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
-				subPanel.add(printSuffixLabel, new java.awt.GridBagConstraints(i++, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+				subPanel.add(printPrefixLabel,
+						new java.awt.GridBagConstraints(i++, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER,
+								java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+				subPanel.add(textPropertyGui,
+						new java.awt.GridBagConstraints(i++, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER,
+								java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+				subPanel.add(printSuffixLabel,
+						new java.awt.GridBagConstraints(i++, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER,
+								java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
 			} else {
-				boolean omitName = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitPropertyName(printStatement.text);
-				javax.swing.JComponent textPropertyGui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getPropertyViewController(printStatement.text, true, true, omitName, new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(printStatement.text));
-				omitName = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitPropertyName(printStatement.text);
-				javax.swing.JComponent objectPropertyGui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getPropertyViewController(printStatement.object, true, true, omitName, new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(printStatement.object));
+				boolean omitName = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+						.shouldGUIOmitPropertyName(printStatement.text);
+				final javax.swing.JComponent textPropertyGui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
+						.getPropertyViewController(printStatement.text, true, true, omitName,
+								new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(
+										printStatement.text));
+				omitName = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+						.shouldGUIOmitPropertyName(printStatement.text);
+				final javax.swing.JComponent objectPropertyGui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
+						.getPropertyViewController(printStatement.object, true, true, omitName,
+								new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(
+										printStatement.object));
 
-				subPanel.add(printPrefixLabel, new java.awt.GridBagConstraints(i++, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
-				subPanel.add(textPropertyGui, new java.awt.GridBagConstraints(i++, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 2), 0, 0));
-				subPanel.add(objectPropertyGui, new java.awt.GridBagConstraints(i++, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
-				subPanel.add(printSuffixLabel, new java.awt.GridBagConstraints(i++, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+				subPanel.add(printPrefixLabel,
+						new java.awt.GridBagConstraints(i++, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER,
+								java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+				subPanel.add(textPropertyGui,
+						new java.awt.GridBagConstraints(i++, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER,
+								java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 2), 0, 0));
+				subPanel.add(objectPropertyGui,
+						new java.awt.GridBagConstraints(i++, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER,
+								java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+				subPanel.add(printSuffixLabel,
+						new java.awt.GridBagConstraints(i++, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER,
+								java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
 			}
 
-			subPanel.add(javax.swing.Box.createGlue(), new java.awt.GridBagConstraints(i++, 0, 1, 1, 1.0, 0.0, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.HORIZONTAL, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+			subPanel.add(javax.swing.Box.createGlue(),
+					new java.awt.GridBagConstraints(i++, 0, 1, 1, 1.0, 0.0, java.awt.GridBagConstraints.CENTER,
+							java.awt.GridBagConstraints.HORIZONTAL, new java.awt.Insets(0, 0, 0, 0), 0, 0));
 		}
 
 		revalidate();
@@ -220,10 +268,12 @@ public class ResponsePrintViewController extends edu.cmu.cs.stage3.alice.authori
 	class MouseListener extends edu.cmu.cs.stage3.alice.authoringtool.util.CustomMouseAdapter {
 
 		@Override
-		public void popupResponse(java.awt.event.MouseEvent ev) {
-			java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.getDefaultStructure(printStatement);
+		public void popupResponse(final java.awt.event.MouseEvent ev) {
+			final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities
+					.getDefaultStructure(printStatement);
 			if (structure != null && !structure.isEmpty()) {
-				edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.createAndShowElementPopupMenu(printStatement, structure, ResponsePrintViewController.this, ev.getX(), ev.getY());
+				edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.createAndShowElementPopupMenu(
+						printStatement, structure, ResponsePrintViewController.this, ev.getX(), ev.getY());
 			}
 		}
 	}

@@ -4,7 +4,7 @@ public class Push extends StackVisualizationWithItemAnimation {
 	public class RuntimePush extends RuntimeStackVisualizationWithItemAnimation {
 
 		@Override
-		public void epilogue(double t) {
+		public void epilogue(final double t) {
 			super.epilogue(t);
 			getCollection().values.addValue(getItem());
 		}

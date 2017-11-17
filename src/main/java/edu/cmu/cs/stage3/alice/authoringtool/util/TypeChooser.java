@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -35,23 +35,27 @@ import edu.cmu.cs.stage3.util.StringTypePair;
  * @author Jason Pratt
  */
 public class TypeChooser extends javax.swing.JPanel {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 4056975601661381544L;
 	private Class type;
-	private javax.swing.ButtonGroup buttonGroup;
-	private java.util.HashMap typeMap = new java.util.HashMap();
-	private java.util.HashSet changeListeners = new java.util.HashSet();
-	private JRadioButton numberButton = new JRadioButton("Number");
-	private JRadioButton booleanButton = new JRadioButton("Boolean");
-	private JRadioButton objectButton = new JRadioButton("Object");
-	private JRadioButton otherButton = new JRadioButton("Other...");
-	private JComboBox otherCombo = new JComboBox();
-	private edu.cmu.cs.stage3.alice.authoringtool.util.CheckForValidityCallback okButtonCallback;
+	private final javax.swing.ButtonGroup buttonGroup;
+	private final java.util.HashMap typeMap = new java.util.HashMap();
+	private final java.util.HashSet changeListeners = new java.util.HashSet();
+	private final JRadioButton numberButton = new JRadioButton("Number");
+	private final JRadioButton booleanButton = new JRadioButton("Boolean");
+	private final JRadioButton objectButton = new JRadioButton("Object");
+	private final JRadioButton otherButton = new JRadioButton("Other...");
+	private final JComboBox otherCombo = new JComboBox();
+	private final edu.cmu.cs.stage3.alice.authoringtool.util.CheckForValidityCallback okButtonCallback;
 
-	public TypeChooser(edu.cmu.cs.stage3.alice.authoringtool.util.CheckForValidityCallback okButtonCallback) {
+	public TypeChooser(final edu.cmu.cs.stage3.alice.authoringtool.util.CheckForValidityCallback okButtonCallback) {
 		otherCombo.setEditable(true);
 		this.okButtonCallback = okButtonCallback;
 		setLayout(new GridBagLayout());
 
-		GridBagConstraints gbc = new GridBagConstraints();
+		final GridBagConstraints gbc = new GridBagConstraints();
 		gbc.anchor = GridBagConstraints.NORTHWEST;
 		// gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.gridx = 0;
@@ -70,9 +74,9 @@ public class TypeChooser extends javax.swing.JPanel {
 		buttonGroup.add(objectButton);
 		buttonGroup.add(otherButton);
 
-		java.awt.event.ActionListener radioListener = new java.awt.event.ActionListener() {
+		final java.awt.event.ActionListener radioListener = new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				if (ev.getSource() == numberButton) {
 					type = Number.class;
 					otherCombo.setEnabled(false);
@@ -100,26 +104,30 @@ public class TypeChooser extends javax.swing.JPanel {
 		objectButton.addActionListener(radioListener);
 		otherButton.addActionListener(radioListener);
 
-		edu.cmu.cs.stage3.util.StringTypePair[] defaultVariableTypes = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getDefaultVariableTypes();
-		for (StringTypePair defaultVariableType : defaultVariableTypes) {
+		final edu.cmu.cs.stage3.util.StringTypePair[] defaultVariableTypes = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+				.getDefaultVariableTypes();
+		for (final StringTypePair defaultVariableType : defaultVariableTypes) {
 			typeMap.put(defaultVariableType.getString().trim(), defaultVariableType.getType());
 			otherCombo.addItem(defaultVariableType.getString());
 		}
 
-		((javax.swing.JTextField) otherCombo.getEditor().getEditorComponent()).getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-			@Override
-			public void changedUpdate(javax.swing.event.DocumentEvent ev) {
-				TypeChooser.this.parseOtherType();
-			}
-			@Override
-			public void insertUpdate(javax.swing.event.DocumentEvent ev) {
-				TypeChooser.this.parseOtherType();
-			}
-			@Override
-			public void removeUpdate(javax.swing.event.DocumentEvent ev) {
-				TypeChooser.this.parseOtherType();
-			}
-		});
+		((javax.swing.JTextField) otherCombo.getEditor().getEditorComponent()).getDocument()
+				.addDocumentListener(new javax.swing.event.DocumentListener() {
+					@Override
+					public void changedUpdate(final javax.swing.event.DocumentEvent ev) {
+						TypeChooser.this.parseOtherType();
+					}
+
+					@Override
+					public void insertUpdate(final javax.swing.event.DocumentEvent ev) {
+						TypeChooser.this.parseOtherType();
+					}
+
+					@Override
+					public void removeUpdate(final javax.swing.event.DocumentEvent ev) {
+						TypeChooser.this.parseOtherType();
+					}
+				});
 
 		numberButton.setSelected(true);
 		type = Number.class;
@@ -127,12 +135,13 @@ public class TypeChooser extends javax.swing.JPanel {
 	}
 
 	protected void parseOtherType() {
-		String typeString = ((javax.swing.JTextField) otherCombo.getEditor().getEditorComponent()).getText().trim();
+		final String typeString = ((javax.swing.JTextField) otherCombo.getEditor().getEditorComponent()).getText()
+				.trim();
 		Class newType = (Class) typeMap.get(typeString);
 		if (newType == null) {
 			try {
 				newType = Class.forName(typeString);
-			} catch (ClassNotFoundException e) {
+			} catch (final ClassNotFoundException e) {
 				newType = null;
 			}
 		}
@@ -160,7 +169,8 @@ public class TypeChooser extends javax.swing.JPanel {
 
 	public void addCurrentTypeToList() {
 		if (otherButton.isSelected() && type != null) {
-			String typeString = ((javax.swing.JTextField) otherCombo.getEditor().getEditorComponent()).getText().trim();
+			final String typeString = ((javax.swing.JTextField) otherCombo.getEditor().getEditorComponent()).getText()
+					.trim();
 			if (!typeMap.containsKey(typeString)) {
 				otherCombo.addItem(typeString);
 				typeMap.put(typeString, type);
@@ -168,17 +178,17 @@ public class TypeChooser extends javax.swing.JPanel {
 		}
 	}
 
-	public void addChangeListener(javax.swing.event.ChangeListener listener) {
+	public void addChangeListener(final javax.swing.event.ChangeListener listener) {
 		changeListeners.add(listener);
 	}
 
-	public void removeChangeListener(javax.swing.event.ChangeListener listener) {
+	public void removeChangeListener(final javax.swing.event.ChangeListener listener) {
 		changeListeners.remove(listener);
 	}
 
-	protected void fireStateChanged(Object source) {
-		javax.swing.event.ChangeEvent ev = new javax.swing.event.ChangeEvent(source);
-		for (java.util.Iterator iter = changeListeners.iterator(); iter.hasNext();) {
+	protected void fireStateChanged(final Object source) {
+		final javax.swing.event.ChangeEvent ev = new javax.swing.event.ChangeEvent(source);
+		for (final java.util.Iterator iter = changeListeners.iterator(); iter.hasNext();) {
 			((javax.swing.event.ChangeListener) iter.next()).stateChanged(ev);
 		}
 	}

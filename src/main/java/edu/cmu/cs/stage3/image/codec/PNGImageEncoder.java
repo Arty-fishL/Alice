@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -82,7 +82,7 @@ class CRC {
 		}
 	}
 
-	public static int updateCRC(int crc, byte[] data, int off, int len) {
+	public static int updateCRC(final int crc, final byte[] data, final int off, final int len) {
 		int c = crc;
 
 		for (int n = 0; n < len; n++) {
@@ -95,11 +95,11 @@ class CRC {
 
 class ChunkStream extends OutputStream implements DataOutput {
 
-	private String type;
-	private ByteArrayOutputStream baos;
-	private DataOutputStream dos;
+	private final String type;
+	private final ByteArrayOutputStream baos;
+	private final DataOutputStream dos;
 
-	public ChunkStream(String type) throws IOException {
+	public ChunkStream(final String type) throws IOException {
 		this.type = type;
 
 		baos = new ByteArrayOutputStream();
@@ -107,77 +107,77 @@ class ChunkStream extends OutputStream implements DataOutput {
 	}
 
 	@Override
-	public void write(byte[] b) throws IOException {
+	public void write(final byte[] b) throws IOException {
 		dos.write(b);
 	}
 
 	@Override
-	public void write(byte[] b, int off, int len) throws IOException {
+	public void write(final byte[] b, final int off, final int len) throws IOException {
 		dos.write(b, off, len);
 	}
 
 	@Override
-	public void write(int b) throws IOException {
+	public void write(final int b) throws IOException {
 		dos.write(b);
 	}
 
 	@Override
-	public void writeBoolean(boolean v) throws IOException {
+	public void writeBoolean(final boolean v) throws IOException {
 		dos.writeBoolean(v);
 	}
 
 	@Override
-	public void writeByte(int v) throws IOException {
+	public void writeByte(final int v) throws IOException {
 		dos.writeByte(v);
 	}
 
 	@Override
-	public void writeBytes(String s) throws IOException {
+	public void writeBytes(final String s) throws IOException {
 		dos.writeBytes(s);
 	}
 
 	@Override
-	public void writeChar(int v) throws IOException {
+	public void writeChar(final int v) throws IOException {
 		dos.writeChar(v);
 	}
 
 	@Override
-	public void writeChars(String s) throws IOException {
+	public void writeChars(final String s) throws IOException {
 		dos.writeChars(s);
 	}
 
 	@Override
-	public void writeDouble(double v) throws IOException {
+	public void writeDouble(final double v) throws IOException {
 		dos.writeDouble(v);
 	}
 
 	@Override
-	public void writeFloat(float v) throws IOException {
+	public void writeFloat(final float v) throws IOException {
 		dos.writeFloat(v);
 	}
 
 	@Override
-	public void writeInt(int v) throws IOException {
+	public void writeInt(final int v) throws IOException {
 		dos.writeInt(v);
 	}
 
 	@Override
-	public void writeLong(long v) throws IOException {
+	public void writeLong(final long v) throws IOException {
 		dos.writeLong(v);
 	}
 
 	@Override
-	public void writeShort(int v) throws IOException {
+	public void writeShort(final int v) throws IOException {
 		dos.writeShort(v);
 	}
 
 	@Override
-	public void writeUTF(String str) throws IOException {
+	public void writeUTF(final String str) throws IOException {
 		dos.writeUTF(str);
 	}
 
-	public void writeToStream(DataOutputStream output) throws IOException {
-		byte[] typeSignature = new byte[4];
+	public void writeToStream(final DataOutputStream output) throws IOException {
+		final byte[] typeSignature = new byte[4];
 		typeSignature[0] = (byte) type.charAt(0);
 		typeSignature[1] = (byte) type.charAt(1);
 		typeSignature[2] = (byte) type.charAt(2);
@@ -186,8 +186,8 @@ class ChunkStream extends OutputStream implements DataOutput {
 		dos.flush();
 		baos.flush();
 
-		byte[] data = baos.toByteArray();
-		int len = data.length;
+		final byte[] data = baos.toByteArray();
+		final int len = data.length;
 
 		output.writeInt(len);
 		output.write(typeSignature);
@@ -202,13 +202,13 @@ class ChunkStream extends OutputStream implements DataOutput {
 
 class IDATOutputStream extends FilterOutputStream {
 
-	private static final byte[] typeSignature = {(byte) 'I', (byte) 'D', (byte) 'A', (byte) 'T'};
+	private static final byte[] typeSignature = { (byte) 'I', (byte) 'D', (byte) 'A', (byte) 'T' };
 
 	private int bytesWritten = 0;
-	private int segmentLength;
+	private final int segmentLength;
 	byte[] buffer;
 
-	public IDATOutputStream(OutputStream output, int segmentLength) {
+	public IDATOutputStream(final OutputStream output, final int segmentLength) {
 		super(output);
 		this.segmentLength = segmentLength;
 		buffer = new byte[segmentLength];
@@ -219,7 +219,7 @@ class IDATOutputStream extends FilterOutputStream {
 		flush();
 	}
 
-	private void writeInt(int x) throws IOException {
+	private void writeInt(final int x) throws IOException {
 		out.write(x >> 24);
 		out.write(x >> 16 & 0xff);
 		out.write(x >> 8 & 0xff);
@@ -247,14 +247,14 @@ class IDATOutputStream extends FilterOutputStream {
 	}
 
 	@Override
-	public void write(byte[] b) throws IOException {
+	public void write(final byte[] b) throws IOException {
 		this.write(b, 0, b.length);
 	}
 
 	@Override
-	public void write(byte[] b, int off, int len) throws IOException {
+	public void write(final byte[] b, int off, int len) throws IOException {
 		while (len > 0) {
-			int bytes = Math.min(segmentLength - bytesWritten, len);
+			final int bytes = Math.min(segmentLength - bytesWritten, len);
 			System.arraycopy(b, off, buffer, bytesWritten, bytes);
 			off += bytes;
 			len -= bytes;
@@ -267,7 +267,7 @@ class IDATOutputStream extends FilterOutputStream {
 	}
 
 	@Override
-	public void write(int b) throws IOException {
+	public void write(final int b) throws IOException {
 		buffer[bytesWritten++] = (byte) b;
 		if (bytesWritten == segmentLength) {
 			flush();
@@ -277,7 +277,7 @@ class IDATOutputStream extends FilterOutputStream {
 
 /**
  * An ImageEncoder for the PNG file format.
- * 
+ *
  */
 public class PNGImageEncoder extends ImageEncoderImpl {
 
@@ -287,7 +287,8 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 	private static final int PNG_COLOR_GRAY_ALPHA = 4;
 	private static final int PNG_COLOR_RGB_ALPHA = 6;
 
-	private static final byte[] magic = {(byte) 137, (byte) 80, (byte) 78, (byte) 71, (byte) 13, (byte) 10, (byte) 26, (byte) 10};
+	private static final byte[] magic = { (byte) 137, (byte) 80, (byte) 78, (byte) 71, (byte) 13, (byte) 10, (byte) 26,
+			(byte) 10 };
 
 	private PNGEncodeParam param;
 
@@ -311,9 +312,9 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 	private byte[] bluePalette = null;
 	private byte[] alphaPalette = null;
 
-	private DataOutputStream dataOutput;
+	private final DataOutputStream dataOutput;
 
-	public PNGImageEncoder(OutputStream output, PNGEncodeParam param) {
+	public PNGImageEncoder(final OutputStream output, final PNGEncodeParam param) {
 		super(output, param);
 
 		if (param != null) {
@@ -327,7 +328,7 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 	}
 
 	private void writeIHDR() throws IOException {
-		ChunkStream cs = new ChunkStream("IHDR");
+		final ChunkStream cs = new ChunkStream("IHDR");
 		cs.writeInt(width);
 		cs.writeInt(height);
 		cs.writeByte((byte) bitDepth);
@@ -344,25 +345,26 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
 	private byte[][] filteredRows = null;
 
-	private static int clamp(int val, int maxValue) {
+	private static int clamp(final int val, final int maxValue) {
 		return val > maxValue ? maxValue : val;
 	}
 
-	private void encodePass(OutputStream os, Raster ras, int xOffset, int yOffset, int xSkip, int ySkip) throws IOException {
-		int minX = ras.getMinX();
-		int minY = ras.getMinY();
-		int width = ras.getWidth();
-		int height = ras.getHeight();
+	private void encodePass(final OutputStream os, final Raster ras, int xOffset, final int yOffset, int xSkip,
+			final int ySkip) throws IOException {
+		final int minX = ras.getMinX();
+		final int minY = ras.getMinY();
+		final int width = ras.getWidth();
+		final int height = ras.getHeight();
 
 		xOffset *= numBands;
 		xSkip *= numBands;
 
-		int samplesPerByte = 8 / bitDepth;
+		final int samplesPerByte = 8 / bitDepth;
 
-		int numSamples = width * numBands;
-		int[] samples = new int[numSamples];
+		final int numSamples = width * numBands;
+		final int[] samples = new int[numSamples];
 
-		int pixels = (numSamples - xOffset + xSkip - 1) / xSkip;
+		final int pixels = (numSamples - xOffset + xSkip - 1) / xSkip;
 		int bytesPerRow = pixels * numBands;
 		if (bitDepth < 8) {
 			bytesPerRow = (bytesPerRow + samplesPerByte - 1) / samplesPerByte;
@@ -379,13 +381,13 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
 		filteredRows = new byte[5][bytesPerRow + bpp];
 
-		int maxValue = (1 << bitDepth) - 1;
+		final int maxValue = (1 << bitDepth) - 1;
 
 		for (int row = minY + yOffset; row < minY + height; row += ySkip) {
 			ras.getPixels(minX, row, width, 1, samples);
 
 			if (compressGray) {
-				int shift = 8 - bitDepth;
+				final int shift = 8 - bitDepth;
 				for (int i = 0; i < width; i++) {
 					samples[i] >>= shift;
 				}
@@ -396,71 +398,71 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 			int tmp = 0;
 
 			switch (bitDepth) {
-				case 1 :
-				case 2 :
-				case 4 :
-					// Image can only have a single band
+			case 1:
+			case 2:
+			case 4:
+				// Image can only have a single band
 
-					int mask = samplesPerByte - 1;
-					for (int s = xOffset; s < numSamples; s += xSkip) {
-						int val = clamp(samples[s] >> bitShift, maxValue);
-						tmp = tmp << bitDepth | val;
+				final int mask = samplesPerByte - 1;
+				for (int s = xOffset; s < numSamples; s += xSkip) {
+					final int val = clamp(samples[s] >> bitShift, maxValue);
+					tmp = tmp << bitDepth | val;
 
-						if ((pos++ & mask) == mask) {
-							currRow[count++] = (byte) tmp;
-							tmp = 0;
-						}
-					}
-
-					// Left shift the last byte
-					if ((pos & mask) != 0) {
-						tmp <<= (8 / bitDepth - pos) * bitDepth;
+					if ((pos++ & mask) == mask) {
 						currRow[count++] = (byte) tmp;
+						tmp = 0;
 					}
-					break;
+				}
 
-				case 8 :
-					for (int s = xOffset; s < numSamples; s += xSkip) {
-						for (int b = 0; b < numBands; b++) {
-							currRow[count++] = (byte) clamp(samples[s + b] >> bitShift, maxValue);
-						}
-					}
-					break;
+				// Left shift the last byte
+				if ((pos & mask) != 0) {
+					tmp <<= (8 / bitDepth - pos) * bitDepth;
+					currRow[count++] = (byte) tmp;
+				}
+				break;
 
-				case 16 :
-					for (int s = xOffset; s < numSamples; s += xSkip) {
-						for (int b = 0; b < numBands; b++) {
-							int val = clamp(samples[s + b] >> bitShift, maxValue);
-							currRow[count++] = (byte) (val >> 8);
-							currRow[count++] = (byte) (val & 0xff);
-						}
+			case 8:
+				for (int s = xOffset; s < numSamples; s += xSkip) {
+					for (int b = 0; b < numBands; b++) {
+						currRow[count++] = (byte) clamp(samples[s + b] >> bitShift, maxValue);
 					}
-					break;
+				}
+				break;
+
+			case 16:
+				for (int s = xOffset; s < numSamples; s += xSkip) {
+					for (int b = 0; b < numBands; b++) {
+						final int val = clamp(samples[s + b] >> bitShift, maxValue);
+						currRow[count++] = (byte) (val >> 8);
+						currRow[count++] = (byte) (val & 0xff);
+					}
+				}
+				break;
 			}
 
 			// Perform filtering
-			int filterType = param.filterRow(currRow, prevRow, filteredRows, bytesPerRow, bpp);
+			final int filterType = param.filterRow(currRow, prevRow, filteredRows, bytesPerRow, bpp);
 
 			os.write(filterType);
 			os.write(filteredRows[filterType], bpp, bytesPerRow);
 
 			// Swap current and previous rows
-			byte[] swap = currRow;
+			final byte[] swap = currRow;
 			currRow = prevRow;
 			prevRow = swap;
 		}
 	}
 
 	private void writeIDAT() throws IOException {
-		IDATOutputStream ios = new IDATOutputStream(dataOutput, 8192);
-		DeflaterOutputStream dos = new DeflaterOutputStream(ios, new Deflater(9));
+		final IDATOutputStream ios = new IDATOutputStream(dataOutput, 8192);
+		final DeflaterOutputStream dos = new DeflaterOutputStream(ios, new Deflater(9));
 
 		// Future work - don't convert entire image to a Raster
 		Raster ras = image.getData();
 
 		if (skipAlpha) {
-			int numBands = ras.getNumBands() - 1;
-			int[] bandList = new int[numBands];
+			final int numBands = ras.getNumBands() - 1;
+			final int[] bandList = new int[numBands];
 			for (int i = 0; i < numBands; i++) {
 				bandList[i] = i;
 			}
@@ -491,15 +493,15 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 	}
 
 	private void writeIEND() throws IOException {
-		ChunkStream cs = new ChunkStream("IEND");
+		final ChunkStream cs = new ChunkStream("IEND");
 		cs.writeToStream(dataOutput);
 	}
 
-	private static final float[] srgbChroma = {0.31270F, 0.329F, 0.64F, 0.33F, 0.3F, 0.6F, 0.15F, 0.06F};
+	private static final float[] srgbChroma = { 0.31270F, 0.329F, 0.64F, 0.33F, 0.3F, 0.6F, 0.15F, 0.06F };
 
 	private void writeCHRM() throws IOException {
 		if (param.isChromaticitySet() || param.isSRGBIntentSet()) {
-			ChunkStream cs = new ChunkStream("cHRM");
+			final ChunkStream cs = new ChunkStream("cHRM");
 
 			float[] chroma;
 			if (!param.isSRGBIntentSet()) {
@@ -517,7 +519,7 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
 	private void writeGAMA() throws IOException {
 		if (param.isGammaSet() || param.isSRGBIntentSet()) {
-			ChunkStream cs = new ChunkStream("gAMA");
+			final ChunkStream cs = new ChunkStream("gAMA");
 
 			float gamma;
 			if (!param.isSRGBIntentSet()) {
@@ -533,8 +535,8 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
 	private void writeICCP() throws IOException {
 		if (param.isICCProfileDataSet()) {
-			ChunkStream cs = new ChunkStream("iCCP");
-			byte[] ICCProfileData = param.getICCProfileData();
+			final ChunkStream cs = new ChunkStream("iCCP");
+			final byte[] ICCProfileData = param.getICCProfileData();
 			cs.write(ICCProfileData);
 			cs.writeToStream(dataOutput);
 		}
@@ -542,9 +544,9 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
 	private void writeSBIT() throws IOException {
 		if (param.isSignificantBitsSet()) {
-			ChunkStream cs = new ChunkStream("sBIT");
-			int[] significantBits = param.getSignificantBits();
-			int len = significantBits.length;
+			final ChunkStream cs = new ChunkStream("sBIT");
+			final int[] significantBits = param.getSignificantBits();
+			final int len = significantBits.length;
 			for (int i = 0; i < len; i++) {
 				cs.writeByte(significantBits[i]);
 			}
@@ -554,9 +556,9 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
 	private void writeSRGB() throws IOException {
 		if (param.isSRGBIntentSet()) {
-			ChunkStream cs = new ChunkStream("sRGB");
+			final ChunkStream cs = new ChunkStream("sRGB");
 
-			int intent = param.getSRGBIntent();
+			final int intent = param.getSRGBIntent();
 			cs.write(intent);
 			cs.writeToStream(dataOutput);
 		}
@@ -567,7 +569,7 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 			return;
 		}
 
-		ChunkStream cs = new ChunkStream("PLTE");
+		final ChunkStream cs = new ChunkStream("PLTE");
 		for (int i = 0; i < redPalette.length; i++) {
 			cs.writeByte(redPalette[i]);
 			cs.writeByte(greenPalette[i]);
@@ -579,27 +581,27 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
 	private void writeBKGD() throws IOException {
 		if (param.isBackgroundSet()) {
-			ChunkStream cs = new ChunkStream("bKGD");
+			final ChunkStream cs = new ChunkStream("bKGD");
 
 			switch (colorType) {
-				case PNG_COLOR_GRAY :
-				case PNG_COLOR_GRAY_ALPHA :
-					int gray = ((PNGEncodeParam.Gray) param).getBackgroundGray();
-					cs.writeShort(gray);
-					break;
+			case PNG_COLOR_GRAY:
+			case PNG_COLOR_GRAY_ALPHA:
+				final int gray = ((PNGEncodeParam.Gray) param).getBackgroundGray();
+				cs.writeShort(gray);
+				break;
 
-				case PNG_COLOR_PALETTE :
-					int index = ((PNGEncodeParam.Palette) param).getBackgroundPaletteIndex();
-					cs.writeByte(index);
-					break;
+			case PNG_COLOR_PALETTE:
+				final int index = ((PNGEncodeParam.Palette) param).getBackgroundPaletteIndex();
+				cs.writeByte(index);
+				break;
 
-				case PNG_COLOR_RGB :
-				case PNG_COLOR_RGB_ALPHA :
-					int[] rgb = ((PNGEncodeParam.RGB) param).getBackgroundRGB();
-					cs.writeShort(rgb[0]);
-					cs.writeShort(rgb[1]);
-					cs.writeShort(rgb[2]);
-					break;
+			case PNG_COLOR_RGB:
+			case PNG_COLOR_RGB_ALPHA:
+				final int[] rgb = ((PNGEncodeParam.RGB) param).getBackgroundRGB();
+				cs.writeShort(rgb[0]);
+				cs.writeShort(rgb[1]);
+				cs.writeShort(rgb[2]);
+				break;
 			}
 
 			cs.writeToStream(dataOutput);
@@ -608,10 +610,10 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
 	private void writeHIST() throws IOException {
 		if (param.isPaletteHistogramSet()) {
-			ChunkStream cs = new ChunkStream("hIST");
+			final ChunkStream cs = new ChunkStream("hIST");
 
-			int[] hist = param.getPaletteHistogram();
-			for (int element : hist) {
+			final int[] hist = param.getPaletteHistogram();
+			for (final int element : hist) {
 				cs.writeShort(element);
 			}
 
@@ -621,18 +623,18 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
 	private void writeTRNS() throws IOException {
 		if (param.isTransparencySet() && colorType != PNG_COLOR_GRAY_ALPHA && colorType != PNG_COLOR_RGB_ALPHA) {
-			ChunkStream cs = new ChunkStream("tRNS");
+			final ChunkStream cs = new ChunkStream("tRNS");
 
 			if (param instanceof PNGEncodeParam.Palette) {
-				byte[] t = ((PNGEncodeParam.Palette) param).getPaletteTransparency();
-				for (byte element : t) {
+				final byte[] t = ((PNGEncodeParam.Palette) param).getPaletteTransparency();
+				for (final byte element : t) {
 					cs.writeByte(element);
 				}
 			} else if (param instanceof PNGEncodeParam.Gray) {
-				int t = ((PNGEncodeParam.Gray) param).getTransparentGray();
+				final int t = ((PNGEncodeParam.Gray) param).getTransparentGray();
 				cs.writeShort(t);
 			} else if (param instanceof PNGEncodeParam.RGB) {
-				int[] t = ((PNGEncodeParam.RGB) param).getTransparentRGB();
+				final int[] t = ((PNGEncodeParam.RGB) param).getTransparentRGB();
 				cs.writeShort(t[0]);
 				cs.writeShort(t[1]);
 				cs.writeShort(t[2]);
@@ -640,7 +642,7 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
 			cs.writeToStream(dataOutput);
 		} else if (colorType == PNG_COLOR_PALETTE) {
-			int lastEntry = Math.min(255, alphaPalette.length - 1);
+			final int lastEntry = Math.min(255, alphaPalette.length - 1);
 			int nonOpaque;
 			for (nonOpaque = lastEntry; nonOpaque >= 0; nonOpaque--) {
 				if (alphaPalette[nonOpaque] != (byte) 255) {
@@ -649,7 +651,7 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 			}
 
 			if (nonOpaque >= 0) {
-				ChunkStream cs = new ChunkStream("tRNS");
+				final ChunkStream cs = new ChunkStream("tRNS");
 				for (int i = 0; i <= nonOpaque; i++) {
 					cs.writeByte(alphaPalette[i]);
 				}
@@ -660,9 +662,9 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
 	private void writePHYS() throws IOException {
 		if (param.isPhysicalDimensionSet()) {
-			ChunkStream cs = new ChunkStream("pHYs");
+			final ChunkStream cs = new ChunkStream("pHYs");
 
-			int[] dims = param.getPhysicalDimension();
+			final int[] dims = param.getPhysicalDimension();
 			cs.writeInt(dims[0]);
 			cs.writeInt(dims[1]);
 			cs.writeByte((byte) dims[2]);
@@ -673,7 +675,7 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
 	private void writeSPLT() throws IOException {
 		if (param.isSuggestedPaletteSet()) {
-			ChunkStream cs = new ChunkStream("sPLT");
+			final ChunkStream cs = new ChunkStream("sPLT");
 
 			System.out.println("sPLT not supported yet.");
 
@@ -683,20 +685,20 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
 	private void writeTIME() throws IOException {
 		if (param.isModificationTimeSet()) {
-			ChunkStream cs = new ChunkStream("tIME");
+			final ChunkStream cs = new ChunkStream("tIME");
 
-			Date date = param.getModificationTime();
-			TimeZone gmt = TimeZone.getTimeZone("GMT");
+			final Date date = param.getModificationTime();
+			final TimeZone gmt = TimeZone.getTimeZone("GMT");
 
-			GregorianCalendar cal = new GregorianCalendar(gmt);
+			final GregorianCalendar cal = new GregorianCalendar(gmt);
 			cal.setTime(date);
 
-			int year = cal.get(Calendar.YEAR);
-			int month = cal.get(Calendar.MONTH);
-			int day = cal.get(Calendar.DAY_OF_MONTH);
-			int hour = cal.get(Calendar.HOUR_OF_DAY);
-			int minute = cal.get(Calendar.MINUTE);
-			int second = cal.get(Calendar.SECOND);
+			final int year = cal.get(Calendar.YEAR);
+			final int month = cal.get(Calendar.MONTH);
+			final int day = cal.get(Calendar.DAY_OF_MONTH);
+			final int hour = cal.get(Calendar.HOUR_OF_DAY);
+			final int minute = cal.get(Calendar.MINUTE);
+			final int second = cal.get(Calendar.SECOND);
 
 			cs.writeShort(year);
 			cs.writeByte(month + 1);
@@ -711,13 +713,13 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
 	private void writeTEXT() throws IOException {
 		if (param.isTextSet()) {
-			String[] text = param.getText();
+			final String[] text = param.getText();
 
 			for (int i = 0; i < text.length / 2; i++) {
-				byte[] keyword = text[2 * i].getBytes();
-				byte[] value = text[2 * i + 1].getBytes();
+				final byte[] keyword = text[2 * i].getBytes();
+				final byte[] value = text[2 * i + 1].getBytes();
 
-				ChunkStream cs = new ChunkStream("tEXt");
+				final ChunkStream cs = new ChunkStream("tEXt");
 
 				cs.write(keyword, 0, Math.min(keyword.length, 79));
 				cs.write(0);
@@ -730,19 +732,19 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
 	private void writeZTXT() throws IOException {
 		if (param.isCompressedTextSet()) {
-			String[] text = param.getCompressedText();
+			final String[] text = param.getCompressedText();
 
 			for (int i = 0; i < text.length / 2; i++) {
-				byte[] keyword = text[2 * i].getBytes();
-				byte[] value = text[2 * i + 1].getBytes();
+				final byte[] keyword = text[2 * i].getBytes();
+				final byte[] value = text[2 * i + 1].getBytes();
 
-				ChunkStream cs = new ChunkStream("zTXt");
+				final ChunkStream cs = new ChunkStream("zTXt");
 
 				cs.write(keyword, 0, Math.min(keyword.length, 79));
 				cs.write(0);
 				cs.write(0);
 
-				DeflaterOutputStream dos = new DeflaterOutputStream(cs);
+				final DeflaterOutputStream dos = new DeflaterOutputStream(cs);
 				dos.write(value);
 				dos.finish();
 
@@ -752,20 +754,24 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 	}
 
 	private void writePrivateChunks() throws IOException {
-		int numChunks = param.getNumPrivateChunks();
+		final int numChunks = param.getNumPrivateChunks();
 		for (int i = 0; i < numChunks; i++) {
-			String type = param.getPrivateChunkType(i);
-			char char3 = type.charAt(3);
+			final String type = param.getPrivateChunkType(i);
+			final char char3 = type.charAt(3);
 
-			byte[] data = param.getPrivateChunkData(i);
+			final byte[] data = param.getPrivateChunkData(i);
 
-			ChunkStream cs = new ChunkStream(type);
+			final ChunkStream cs = new ChunkStream(type);
 			cs.write(data);
 			cs.writeToStream(dataOutput);
 		}
 	}
 
-	private final byte[][] expandBits = {null, {(byte) 0x00, (byte) 0xff}, {(byte) 0x00, (byte) 0x55, (byte) 0xaa, (byte) 0xff}, null, {(byte) 0x00, (byte) 0x11, (byte) 0x22, (byte) 0x33, (byte) 0x44, (byte) 0x55, (byte) 0x66, (byte) 0x77, (byte) 0x88, (byte) 0x99, (byte) 0xaa, (byte) 0xbb, (byte) 0xcc, (byte) 0xdd, (byte) 0xee, (byte) 0xff}};
+	private final byte[][] expandBits = { null, { (byte) 0x00, (byte) 0xff },
+			{ (byte) 0x00, (byte) 0x55, (byte) 0xaa, (byte) 0xff }, null,
+			{ (byte) 0x00, (byte) 0x11, (byte) 0x22, (byte) 0x33, (byte) 0x44, (byte) 0x55, (byte) 0x66, (byte) 0x77,
+					(byte) 0x88, (byte) 0x99, (byte) 0xaa, (byte) 0xbb, (byte) 0xcc, (byte) 0xdd, (byte) 0xee,
+					(byte) 0xff } };
 
 	/**
 	 * Analyzes a set of palettes and determines if it can be expressed as a
@@ -774,19 +780,20 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 	 * the data thusly, the method returns a suitable instance of
 	 * PNGEncodeParam.Gray; otherwise it returns null.
 	 */
-	private PNGEncodeParam.Gray createGrayParam(byte[] redPalette, byte[] greenPalette, byte[] bluePalette, byte[] alphaPalette) {
-		PNGEncodeParam.Gray param = new PNGEncodeParam.Gray();
+	private PNGEncodeParam.Gray createGrayParam(final byte[] redPalette, final byte[] greenPalette,
+			final byte[] bluePalette, final byte[] alphaPalette) {
+		final PNGEncodeParam.Gray param = new PNGEncodeParam.Gray();
 		int numTransparent = 0;
 
-		int entries = 1 << bitDepth;
+		final int entries = 1 << bitDepth;
 		for (int i = 0; i < entries; i++) {
-			byte red = redPalette[i];
+			final byte red = redPalette[i];
 			if (red != greenPalette[i] || red != bluePalette[i] || red != expandBits[bitDepth][i]) {
 				return null;
 			}
 
 			// All alphas must be 255 except at most 1 can be 0
-			byte alpha = alphaPalette[i];
+			final byte alpha = alphaPalette[i];
 			if (alpha == (byte) 0) {
 				param.setTransparentGray(i);
 
@@ -803,14 +810,14 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 	}
 
 	@Override
-	public void encode(RenderedImage im) throws IOException {
+	public void encode(final RenderedImage im) throws IOException {
 		image = im;
 		width = image.getWidth();
 		height = image.getHeight();
 
-		SampleModel sampleModel = image.getSampleModel();
+		final SampleModel sampleModel = image.getSampleModel();
 
-		int[] sampleSize = sampleModel.getSampleSize();
+		final int[] sampleSize = sampleModel.getSampleSize();
 
 		// Set bitDepth to a sentinel value
 		bitDepth = -1;
@@ -818,7 +825,7 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
 		// Allow user to override the bit depth of gray images
 		if (param instanceof PNGEncodeParam.Gray) {
-			PNGEncodeParam.Gray paramg = (PNGEncodeParam.Gray) param;
+			final PNGEncodeParam.Gray paramg = (PNGEncodeParam.Gray) param;
 			if (paramg.isBitDepthSet()) {
 				bitDepth = paramg.getBitDepth();
 			}
@@ -855,7 +862,7 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 		numBands = sampleModel.getNumBands();
 		bpp = numBands * (bitDepth == 16 ? 2 : 1);
 
-		ColorModel colorModel = image.getColorModel();
+		final ColorModel colorModel = image.getColorModel();
 		if (colorModel instanceof IndexColorModel) {
 			if (bitDepth < 1 || bitDepth > 8) {
 				throw new RuntimeException();
@@ -864,7 +871,7 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 				throw new RuntimeException();
 			}
 
-			IndexColorModel icm = (IndexColorModel) colorModel;
+			final IndexColorModel icm = (IndexColorModel) colorModel;
 			int size = icm.getMapSize();
 
 			redPalette = new byte[size];
@@ -890,9 +897,9 @@ public class PNGImageEncoder extends ImageEncoderImpl {
 
 			if (param instanceof PNGEncodeParam.Palette) {
 				// If palette not set in param, create one from the ColorModel.
-				PNGEncodeParam.Palette parami = (PNGEncodeParam.Palette) param;
+				final PNGEncodeParam.Palette parami = (PNGEncodeParam.Palette) param;
 				if (parami.isPaletteSet()) {
-					int[] palette = parami.getPalette();
+					final int[] palette = parami.getPalette();
 					size = palette.length / 3;
 
 					int index = 0;

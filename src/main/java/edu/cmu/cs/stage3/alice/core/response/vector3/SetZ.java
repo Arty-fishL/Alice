@@ -4,7 +4,7 @@ public class SetZ extends Vector3Response {
 	public class RuntimeSetZ extends RuntimeVector3Response {
 
 		@Override
-		protected void set(javax.vecmath.Vector3d vector3, double v) {
+		protected void set(final javax.vecmath.Vector3d vector3, final double v) {
 			vector3.z = v;
 		}
 	}

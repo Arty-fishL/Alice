@@ -10,22 +10,23 @@ import edu.cmu.cs.stage3.alice.core.style.TraditionalAnimationStyle;
 
 /**
  * @author caitlin
- * 
+ *
  *         To change the template for this generated type comment go to
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class WalkAnimation extends AbstractWalkAnimation {
-	public final edu.cmu.cs.stage3.alice.core.property.NumberProperty distance = new edu.cmu.cs.stage3.alice.core.property.NumberProperty(this, "distance", new Double(1.0));
+	public final edu.cmu.cs.stage3.alice.core.property.NumberProperty distance = new edu.cmu.cs.stage3.alice.core.property.NumberProperty(
+			this, "distance", new Double(1.0));
 
 	public WalkAnimation() {
 		style.set(TraditionalAnimationStyle.BEGIN_AND_END_ABRUPTLY);
 	}
 
 	@Override
-	protected void propertyChanging(edu.cmu.cs.stage3.alice.core.Property property, Object value) {
+	protected void propertyChanging(final edu.cmu.cs.stage3.alice.core.Property property, final Object value) {
 		if (property == distance) {
 			if (value instanceof Number) {
-				double distance = ((Number) value).doubleValue();
+				final double distance = ((Number) value).doubleValue();
 
 				// duration.set((new Double(distance * 3)));
 			}
@@ -69,18 +70,18 @@ public class WalkAnimation extends AbstractWalkAnimation {
 		}
 
 		@Override
-		public double getTimeRemaining(double t) {
+		public double getTimeRemaining(final double t) {
 			return getTotalTime() - getTimeElapsed(t);
 		}
 
 		@Override
-		public void prologue(double t) {
+		public void prologue(final double t) {
 			super.prologue(t);
 			currentPos = 0.0;
 		}
 
 		@Override
-		public void update(double t) {
+		public void update(final double t) {
 			if (getTimeRemaining(t) > 0) {
 				super.update(t);
 
@@ -118,12 +119,13 @@ public class WalkAnimation extends AbstractWalkAnimation {
 					stepLeft(portionOfStep, lastStep);
 				}
 
-				double portion = getTimeElapsed(t) / getTotalTime();
-				double targetDistance = distance.doubleValue() * portion;
+				final double portion = getTimeElapsed(t) / getTotalTime();
+				final double targetDistance = distance.doubleValue() * portion;
 
 				if (targetDistance - currentPos > 0) {
 
-					WalkAnimation.this.subject.getTransformableValue().moveRightNow(edu.cmu.cs.stage3.alice.core.Direction.FORWARD, targetDistance - currentPos);
+					WalkAnimation.this.subject.getTransformableValue()
+							.moveRightNow(edu.cmu.cs.stage3.alice.core.Direction.FORWARD, targetDistance - currentPos);
 					currentPos += targetDistance - currentPos;
 
 					adjustHeight();

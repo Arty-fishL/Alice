@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -47,18 +47,22 @@ import javax.swing.tree.TreePath;
  * This is a wrapper class takes a TreeTableModel and implements the table model
  * interface. The implementation is trivial, with all of the event dispatching
  * support provided by the superclass: the AbstractTableModel.
- * 
+ *
  * @version %I% %G%
- * 
+ *
  * @author Philip Milne
  * @author Scott Violet
  */
 
 public class TreeTableModelAdapter extends AbstractTableModel implements TypedTableModel {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 2853123205024708059L;
 	JTree tree;
 	TreeTableModel treeTableModel;
 
-	public TreeTableModelAdapter(TreeTableModel treeTableModel, JTree tree) {
+	public TreeTableModelAdapter(final TreeTableModel treeTableModel, final JTree tree) {
 		this.tree = tree;
 		this.treeTableModel = treeTableModel;
 
@@ -66,11 +70,12 @@ public class TreeTableModelAdapter extends AbstractTableModel implements TypedTa
 			// Don't use fireTableRowsInserted() here;
 			// the selection model would get updated twice.
 			@Override
-			public void treeExpanded(TreeExpansionEvent event) {
+			public void treeExpanded(final TreeExpansionEvent event) {
 				TreeTableModelAdapter.this.fireTableDataChanged();
 			}
+
 			@Override
-			public void treeCollapsed(TreeExpansionEvent event) {
+			public void treeCollapsed(final TreeExpansionEvent event) {
 				TreeTableModelAdapter.this.fireTableDataChanged();
 			}
 		});
@@ -84,12 +89,12 @@ public class TreeTableModelAdapter extends AbstractTableModel implements TypedTa
 	}
 
 	@Override
-	public String getColumnName(int column) {
+	public String getColumnName(final int column) {
 		return treeTableModel.getColumnName(column);
 	}
 
 	@Override
-	public Class getColumnClass(int column) {
+	public Class getColumnClass(final int column) {
 		return treeTableModel.getColumnClass(column);
 	}
 
@@ -98,33 +103,33 @@ public class TreeTableModelAdapter extends AbstractTableModel implements TypedTa
 		return tree.getRowCount();
 	}
 
-	public Object nodeForRow(int row) {
-		TreePath treePath = tree.getPathForRow(row);
+	public Object nodeForRow(final int row) {
+		final TreePath treePath = tree.getPathForRow(row);
 		return treePath.getLastPathComponent();
 	}
 
 	@Override
-	public Object getValueAt(int row, int column) {
+	public Object getValueAt(final int row, final int column) {
 		return treeTableModel.getValueAt(nodeForRow(row), column);
 	}
 
 	@Override
-	public Class getTypeAt(int row, int column) {
+	public Class getTypeAt(final int row, final int column) {
 		return treeTableModel.getTypeAt(nodeForRow(row), column);
 	}
 
 	@Override
-	public boolean isNullValidAt(int row, int column) {
+	public boolean isNullValidAt(final int row, final int column) {
 		return treeTableModel.isNullValidAt(nodeForRow(row), column);
 	}
 
 	@Override
-	public boolean isCellEditable(int row, int column) {
+	public boolean isCellEditable(final int row, final int column) {
 		return treeTableModel.isCellEditable(nodeForRow(row), column);
 	}
 
 	@Override
-	public void setValueAt(Object value, int row, int column) {
+	public void setValueAt(final Object value, final int row, final int column) {
 		treeTableModel.setValueAt(value, nodeForRow(row), column);
 	}
 }

@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -34,14 +34,16 @@ public abstract class ForEach extends DoInOrder {
 	public final ListProperty list = new ListProperty(this, "list", null);
 
 	@Override
-	protected void internalFindAccessibleExpressions(Class cls, java.util.Vector v) {
+	protected void internalFindAccessibleExpressions(final Class cls, final java.util.Vector v) {
 		internalAddExpressionIfAssignableTo((Expression) each.get(), cls, v);
 		super.internalFindAccessibleExpressions(cls, v);
 	}
+
 	public class RuntimeForEach extends RuntimeDoInOrder {
 		protected int m_listSize = -1;
-		protected void setForkIndex(int index) {
-			edu.cmu.cs.stage3.alice.core.Behavior currentBehavior = getCurrentBehavior();
+
+		protected void setForkIndex(final int index) {
+			final edu.cmu.cs.stage3.alice.core.Behavior currentBehavior = getCurrentBehavior();
 			if (currentBehavior != null) {
 				if (m_listSize > 0) {
 					currentBehavior.setForkIndex(this, index);
@@ -50,10 +52,10 @@ public abstract class ForEach extends DoInOrder {
 		}
 
 		@Override
-		public void prologue(double t) {
-			edu.cmu.cs.stage3.alice.core.Behavior currentBehavior = getCurrentBehavior();
+		public void prologue(final double t) {
+			final edu.cmu.cs.stage3.alice.core.Behavior currentBehavior = getCurrentBehavior();
 			if (currentBehavior != null) {
-				edu.cmu.cs.stage3.alice.core.List listValue = list.getListValue();
+				final edu.cmu.cs.stage3.alice.core.List listValue = list.getListValue();
 				if (listValue != null) {
 					m_listSize = listValue.size();
 				} else {
@@ -63,8 +65,8 @@ public abstract class ForEach extends DoInOrder {
 					currentBehavior.openFork(this, m_listSize);
 					for (int i = 0; i < m_listSize; i++) {
 						currentBehavior.setForkIndex(this, i);
-						edu.cmu.cs.stage3.alice.core.Variable eachVariable = each.getVariableValue();
-						edu.cmu.cs.stage3.alice.core.Variable eachRuntimeVariable = new edu.cmu.cs.stage3.alice.core.Variable();
+						final edu.cmu.cs.stage3.alice.core.Variable eachVariable = each.getVariableValue();
+						final edu.cmu.cs.stage3.alice.core.Variable eachRuntimeVariable = new edu.cmu.cs.stage3.alice.core.Variable();
 						eachRuntimeVariable.valueClass.set(eachVariable.valueClass.get());
 						eachRuntimeVariable.value.set(list.getListValue().itemAtIndex(i));
 						currentBehavior.pushEach(eachVariable, eachRuntimeVariable);
@@ -75,9 +77,9 @@ public abstract class ForEach extends DoInOrder {
 		}
 
 		@Override
-		public void epilogue(double t) {
+		public void epilogue(final double t) {
 			super.epilogue(t);
-			edu.cmu.cs.stage3.alice.core.Behavior currentBehavior = getCurrentBehavior();
+			final edu.cmu.cs.stage3.alice.core.Behavior currentBehavior = getCurrentBehavior();
 			if (currentBehavior != null) {
 				if (m_listSize > 0) {
 					for (int i = 0; i < m_listSize; i++) {

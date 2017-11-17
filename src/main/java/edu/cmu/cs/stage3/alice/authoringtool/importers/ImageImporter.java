@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -30,23 +30,23 @@ public class ImageImporter extends edu.cmu.cs.stage3.alice.authoringtool.Abstrac
 
 	@Override
 	public java.util.Map getExtensionMap() {
-		java.util.HashMap knownCodecPrettyNames = new java.util.HashMap();
+		final java.util.HashMap knownCodecPrettyNames = new java.util.HashMap();
 		knownCodecPrettyNames.put("BMP", "Windows Bitmap");
 		knownCodecPrettyNames.put("GIF", "Graphic Interchange Format");
 		knownCodecPrettyNames.put("JPEG", "Joint Photographic Experts Group format");
 		knownCodecPrettyNames.put("PNG", "Portable Network Graphics format");
 		knownCodecPrettyNames.put("TIFF", "Tagged Image File Format");
 
-		java.util.HashMap map = new java.util.HashMap();
+		final java.util.HashMap map = new java.util.HashMap();
 
-		String[] codecNames = edu.cmu.cs.stage3.image.ImageIO.getCodecNames();
-		for (String codecName : codecNames) {
+		final String[] codecNames = edu.cmu.cs.stage3.image.ImageIO.getCodecNames();
+		for (final String codecName : codecNames) {
 			String prettyName = (String) knownCodecPrettyNames.get(codecName.toUpperCase());
 			if (prettyName == null) {
 				prettyName = codecName;
 			}
-			String[] extensions = edu.cmu.cs.stage3.image.ImageIO.getExtensionsForCodec(codecName);
-			for (String extension : extensions) {
+			final String[] extensions = edu.cmu.cs.stage3.image.ImageIO.getExtensionsForCodec(codecName);
+			for (final String extension : extensions) {
 				map.put(extension.toUpperCase(), prettyName);
 			}
 		}
@@ -55,8 +55,9 @@ public class ImageImporter extends edu.cmu.cs.stage3.alice.authoringtool.Abstrac
 	}
 
 	@Override
-	protected edu.cmu.cs.stage3.alice.core.Element load(java.io.InputStream istream, String ext) throws java.io.IOException {
-		String codecName = edu.cmu.cs.stage3.image.ImageIO.mapExtensionToCodecName(ext);
+	protected edu.cmu.cs.stage3.alice.core.Element load(final java.io.InputStream istream, final String ext)
+			throws java.io.IOException {
+		final String codecName = edu.cmu.cs.stage3.image.ImageIO.mapExtensionToCodecName(ext);
 		if (codecName == null) {
 			throw new IllegalArgumentException("Unsupported Extension: " + ext);
 		}
@@ -67,12 +68,12 @@ public class ImageImporter extends edu.cmu.cs.stage3.alice.authoringtool.Abstrac
 		} else {
 			bis = new java.io.BufferedInputStream(istream);
 		}
-		java.awt.Image image = edu.cmu.cs.stage3.image.ImageIO.load(codecName, bis);
+		final java.awt.Image image = edu.cmu.cs.stage3.image.ImageIO.load(codecName, bis);
 
-		edu.cmu.cs.stage3.alice.core.TextureMap texture = new edu.cmu.cs.stage3.alice.core.TextureMap();
+		final edu.cmu.cs.stage3.alice.core.TextureMap texture = new edu.cmu.cs.stage3.alice.core.TextureMap();
 
 		if (image instanceof java.awt.image.BufferedImage) {
-			java.awt.image.BufferedImage bi = (java.awt.image.BufferedImage) image;
+			final java.awt.image.BufferedImage bi = (java.awt.image.BufferedImage) image;
 			if (bi.getColorModel().hasAlpha()) {
 				texture.format.set(new Integer(edu.cmu.cs.stage3.alice.scenegraph.TextureMap.RGBA));
 			}

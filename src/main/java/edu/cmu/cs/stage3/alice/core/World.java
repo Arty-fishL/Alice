@@ -37,23 +37,29 @@ public class World extends ReferenceFrame {
 	private static boolean HACK_s_isPropetryListeningDisabledWhileWorldIsRunning = false;
 	static {
 		try {
-			HACK_s_isPropetryListeningDisabledWhileWorldIsRunning = Boolean.getBoolean("alice.isPropetryListeningDisabledWhileWorldIsRunning");
-		} catch (Throwable t) {
+			HACK_s_isPropetryListeningDisabledWhileWorldIsRunning = Boolean
+					.getBoolean("alice.isPropetryListeningDisabledWhileWorldIsRunning");
+		} catch (final Throwable t) {
 			HACK_s_isPropetryListeningDisabledWhileWorldIsRunning = false;
 		}
 	}
 
 	public final ElementArrayProperty sandboxes = new ElementArrayProperty(this, "sandboxes", null, Sandbox[].class);
 	public final ElementArrayProperty groups = new ElementArrayProperty(this, "groups", null, Group[].class);
-	public final ColorProperty atmosphereColor = new ColorProperty(this, "atmosphereColor", edu.cmu.cs.stage3.alice.scenegraph.Color.BLACK);
-	public final ColorProperty ambientLightColor = new ColorProperty(this, "ambientLightColor", edu.cmu.cs.stage3.alice.scenegraph.Color.WHITE);
-	public final NumberProperty ambientLightBrightness = new NumberProperty(this, "ambientLightBrightness", new Double(0.2));
-	public final ObjectProperty fogStyle = new ObjectProperty(this, "fogStyle", edu.cmu.cs.stage3.alice.core.FogStyle.NONE, edu.cmu.cs.stage3.alice.core.FogStyle.class);
+	public final ColorProperty atmosphereColor = new ColorProperty(this, "atmosphereColor",
+			edu.cmu.cs.stage3.alice.scenegraph.Color.BLACK);
+	public final ColorProperty ambientLightColor = new ColorProperty(this, "ambientLightColor",
+			edu.cmu.cs.stage3.alice.scenegraph.Color.WHITE);
+	public final NumberProperty ambientLightBrightness = new NumberProperty(this, "ambientLightBrightness",
+			new Double(0.2));
+	public final ObjectProperty fogStyle = new ObjectProperty(this, "fogStyle",
+			edu.cmu.cs.stage3.alice.core.FogStyle.NONE, edu.cmu.cs.stage3.alice.core.FogStyle.class);
 	public final NumberProperty fogDensity = new NumberProperty(this, "fogDensity", new Double(0));
 	public final NumberProperty fogNearDistance = new NumberProperty(this, "fogNearDistance", new Double(0));
 	public final NumberProperty fogFarDistance = new NumberProperty(this, "fogFarDistance", new Double(1));
 
-	public final ObjectArrayProperty bubbles = new ObjectArrayProperty(this, "bubbles", null, edu.cmu.cs.stage3.alice.core.bubble.Bubble[].class);
+	public final ObjectArrayProperty bubbles = new ObjectArrayProperty(this, "bubbles", null,
+			edu.cmu.cs.stage3.alice.core.bubble.Bubble[].class);
 
 	public final NumberProperty speedMultiplier = new NumberProperty(this, "speedMultiplier", new Double(1));
 
@@ -63,22 +69,22 @@ public class World extends ReferenceFrame {
 	private edu.cmu.cs.stage3.alice.scenegraph.LinearFog m_sgLinearFog;
 	private edu.cmu.cs.stage3.alice.scenegraph.ExponentialFog m_sgExponentialFog;
 
-	private edu.cmu.cs.stage3.alice.scenegraph.collision.CollisionManager m_collisionManager = new edu.cmu.cs.stage3.alice.scenegraph.collision.CollisionManager();
+	private final edu.cmu.cs.stage3.alice.scenegraph.collision.CollisionManager m_collisionManager = new edu.cmu.cs.stage3.alice.scenegraph.collision.CollisionManager();
 	private edu.cmu.cs.stage3.alice.scenegraph.Visual[][] m_collisions = {};
 
-	private java.util.Vector m_capsulePropertyValuePairs = new java.util.Vector();
-	private java.util.Hashtable m_capsuleElements = new java.util.Hashtable();
+	private final java.util.Vector m_capsulePropertyValuePairs = new java.util.Vector();
+	private final java.util.Hashtable m_capsuleElements = new java.util.Hashtable();
 	private edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTargetFactory m_renderTargetFactory = null;
 
 	private edu.cmu.cs.stage3.alice.scripting.ScriptingFactory m_scriptingFactory;
 	private edu.cmu.cs.stage3.alice.scripting.Interpreter m_interpreter;
 
-	private java.util.Vector m_messageListeners = new java.util.Vector();
+	private final java.util.Vector m_messageListeners = new java.util.Vector();
 	private edu.cmu.cs.stage3.alice.core.event.MessageListener[] m_messageListenerArray = null;
 
 	private Sandbox m_currentSandbox = null;
 
-	private edu.cmu.cs.stage3.alice.core.bubble.BubbleManager m_bubbleManager = new edu.cmu.cs.stage3.alice.core.bubble.BubbleManager();
+	private final edu.cmu.cs.stage3.alice.core.bubble.BubbleManager m_bubbleManager = new edu.cmu.cs.stage3.alice.core.bubble.BubbleManager();
 
 	private Clock m_clock = null;
 	private boolean m_isRunning = false;
@@ -109,7 +115,8 @@ public class World extends ReferenceFrame {
 	public Clock getClock() {
 		return m_clock;
 	}
-	public void setClock(Clock clock) {
+
+	public void setClock(final Clock clock) {
 		m_clock = clock;
 	}
 
@@ -128,37 +135,39 @@ public class World extends ReferenceFrame {
 	}
 
 	@Override
-	public edu.cmu.cs.stage3.alice.scripting.Code compile(String script, Object source, edu.cmu.cs.stage3.alice.scripting.CompileType compileType) {
+	public edu.cmu.cs.stage3.alice.scripting.Code compile(final String script, final Object source,
+			final edu.cmu.cs.stage3.alice.scripting.CompileType compileType) {
 		return getInterpreter().compile(script, source, compileType);
 	}
 
 	@Override
-	public Object eval(edu.cmu.cs.stage3.alice.scripting.Code code) {
+	public Object eval(final edu.cmu.cs.stage3.alice.scripting.Code code) {
 		return getInterpreter().eval(code);
 	}
 
 	@Override
-	public void exec(edu.cmu.cs.stage3.alice.scripting.Code code) {
+	public void exec(final edu.cmu.cs.stage3.alice.scripting.Code code) {
 		getInterpreter().exec(code);
 	}
 
 	public edu.cmu.cs.stage3.alice.scenegraph.Visual[][] getCollisions() {
 		return m_collisions;
 	}
-	public void addCollisionManagementFor(Transformable t) {
+
+	public void addCollisionManagementFor(final Transformable t) {
 		if (t != null) {
-			edu.cmu.cs.stage3.alice.scenegraph.Visual[] sgVisuals = t.getAllSceneGraphVisuals();
-			for (Visual sgVisual : sgVisuals) {
-				edu.cmu.cs.stage3.math.Sphere sphere = sgVisual.getBoundingSphere();
+			final edu.cmu.cs.stage3.alice.scenegraph.Visual[] sgVisuals = t.getAllSceneGraphVisuals();
+			for (final Visual sgVisual : sgVisuals) {
+				final edu.cmu.cs.stage3.math.Sphere sphere = sgVisual.getBoundingSphere();
 				if (sphere != null && sphere.getRadius() > 0) {
 					m_collisionManager.activateObject(sgVisual);
 				}
 			}
 			for (int i = 0; i < sgVisuals.length; i++) {
 				for (int j = i + 1; j < sgVisuals.length; j++) {
-					edu.cmu.cs.stage3.math.Sphere sphereI = sgVisuals[i].getBoundingSphere();
+					final edu.cmu.cs.stage3.math.Sphere sphereI = sgVisuals[i].getBoundingSphere();
 					if (sphereI != null && sphereI.getRadius() > 0) {
-						edu.cmu.cs.stage3.math.Sphere sphereJ = sgVisuals[j].getBoundingSphere();
+						final edu.cmu.cs.stage3.math.Sphere sphereJ = sgVisuals[j].getBoundingSphere();
 						if (sphereJ != null && sphereJ.getRadius() > 0) {
 							m_collisionManager.deactivatePair(sgVisuals[i], sgVisuals[j]);
 						}
@@ -167,7 +176,8 @@ public class World extends ReferenceFrame {
 			}
 		}
 	}
-	public void removeCollisionManagementFor(Transformable t) {
+
+	public void removeCollisionManagementFor(final Transformable t) {
 		// edu.cmu.cs.stage3.alice.scenegraph.Visual[] sgVisuals =
 		// t.getAllSceneGraphVisuals();
 		// for( int i=0; i<sgVisuals.length; i++ ) {
@@ -176,38 +186,38 @@ public class World extends ReferenceFrame {
 	}
 
 	@Override
-	protected void internalRelease(int pass) {
+	protected void internalRelease(final int pass) {
 		switch (pass) {
-			case 1 :
-				if (m_interpreter != null) {
-					m_interpreter.release();
-					m_interpreter = null;
-				}
-				if (m_sgExponentialFog != null) {
-					m_sgExponentialFog.setParent(null);
-				}
-				if (m_sgLinearFog != null) {
-					m_sgLinearFog.setParent(null);
-				}
-				m_sgAmbientLight.setParent(null);
-				m_sgScene.setBackground(null);
-				break;
-			case 2 :
-				m_sgScene.release();
-				m_sgScene = null;
-				m_sgAmbientLight.release();
-				m_sgAmbientLight = null;
-				m_sgBackground.release();
-				m_sgBackground = null;
-				if (m_sgExponentialFog != null) {
-					m_sgExponentialFog.release();
-					m_sgExponentialFog = null;
-				}
-				if (m_sgLinearFog != null) {
-					m_sgLinearFog.release();
-					m_sgLinearFog = null;
-				}
-				break;
+		case 1:
+			if (m_interpreter != null) {
+				m_interpreter.release();
+				m_interpreter = null;
+			}
+			if (m_sgExponentialFog != null) {
+				m_sgExponentialFog.setParent(null);
+			}
+			if (m_sgLinearFog != null) {
+				m_sgLinearFog.setParent(null);
+			}
+			m_sgAmbientLight.setParent(null);
+			m_sgScene.setBackground(null);
+			break;
+		case 2:
+			m_sgScene.release();
+			m_sgScene = null;
+			m_sgAmbientLight.release();
+			m_sgAmbientLight = null;
+			m_sgBackground.release();
+			m_sgBackground = null;
+			if (m_sgExponentialFog != null) {
+				m_sgExponentialFog.release();
+				m_sgExponentialFog = null;
+			}
+			if (m_sgLinearFog != null) {
+				m_sgLinearFog.release();
+				m_sgLinearFog = null;
+			}
+			break;
 		}
 		super.internalRelease(pass);
 	}
@@ -225,29 +235,35 @@ public class World extends ReferenceFrame {
 	public edu.cmu.cs.stage3.alice.scenegraph.ReferenceFrame getSceneGraphReferenceFrame() {
 		return m_sgScene;
 	}
+
 	public edu.cmu.cs.stage3.alice.scenegraph.AmbientLight getSceneGraphAmbientLight() {
 		return m_sgAmbientLight;
 	}
+
 	public edu.cmu.cs.stage3.alice.scenegraph.Background getSceneGraphBackground() {
 		return m_sgBackground;
 	}
+
 	public edu.cmu.cs.stage3.alice.scenegraph.ExponentialFog getSceneGraphExponentialFog() {
 		return m_sgExponentialFog;
 	}
+
 	public edu.cmu.cs.stage3.alice.scenegraph.LinearFog getSceneGraphLinearFog() {
 		return m_sgLinearFog;
 	}
 
 	@Override
-	public void addAbsoluteTransformationListener(edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationListener absoluteTransformationListener) {
+	public void addAbsoluteTransformationListener(
+			final edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationListener absoluteTransformationListener) {
 	}
 
 	@Override
-	public void removeAbsoluteTransformationListener(edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationListener absoluteTransformationListener) {
+	public void removeAbsoluteTransformationListener(
+			final edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationListener absoluteTransformationListener) {
 	}
 
 	@Override
-	protected void nameValueChanged(String value) {
+	protected void nameValueChanged(final String value) {
 		super.nameValueChanged(value);
 		if (value != null) {
 			m_sgScene.setName(value + ".m_sgScene");
@@ -263,43 +279,50 @@ public class World extends ReferenceFrame {
 			m_sgLinearFog.setName(null);
 		}
 	}
-	protected void atmosphereColorValueChanged(edu.cmu.cs.stage3.alice.scenegraph.Color value) {
+
+	protected void atmosphereColorValueChanged(final edu.cmu.cs.stage3.alice.scenegraph.Color value) {
 		m_sgBackground.setColor(value);
 		m_sgLinearFog.setColor(value);
 		m_sgExponentialFog.setColor(value);
 	}
-	protected void ambientLightColorValueChanged(edu.cmu.cs.stage3.alice.scenegraph.Color value) {
+
+	protected void ambientLightColorValueChanged(final edu.cmu.cs.stage3.alice.scenegraph.Color value) {
 		m_sgAmbientLight.setColor(value);
 	}
-	protected void ambientLightBrightnessValueChanged(Number value) {
+
+	protected void ambientLightBrightnessValueChanged(final Number value) {
 		double d = Double.NaN;
 		if (value != null) {
 			d = value.doubleValue();
 		}
 		m_sgAmbientLight.setBrightness(d);
 	}
-	protected void fogDensityValueChanged(Number value) {
+
+	protected void fogDensityValueChanged(final Number value) {
 		double d = Double.NaN;
 		if (value != null) {
 			d = value.doubleValue();
 		}
 		m_sgExponentialFog.setDensity(d);
 	}
-	protected void fogNearDistanceValueChanged(Number value) {
+
+	protected void fogNearDistanceValueChanged(final Number value) {
 		double d = Double.NaN;
 		if (value != null) {
 			d = value.doubleValue();
 		}
 		m_sgLinearFog.setNearDistance(d);
 	}
-	protected void fogFarDistanceValueChanged(Number value) {
+
+	protected void fogFarDistanceValueChanged(final Number value) {
 		double d = Double.NaN;
 		if (value != null) {
 			d = value.doubleValue();
 		}
 		m_sgLinearFog.setFarDistance(d);
 	}
-	protected void fogStyleValueChanged(FogStyle value) {
+
+	protected void fogStyleValueChanged(final FogStyle value) {
 		if (value == FogStyle.EXPONENTIAL) {
 			m_sgLinearFog.setParent(null);
 			m_sgExponentialFog.setParent(m_sgScene);
@@ -313,7 +336,7 @@ public class World extends ReferenceFrame {
 	}
 
 	@Override
-	protected void propertyChanged(Property property, Object value) {
+	protected void propertyChanged(final Property property, final Object value) {
 		if (property == atmosphereColor) {
 			atmosphereColorValueChanged((edu.cmu.cs.stage3.alice.scenegraph.Color) value);
 		} else if (property == ambientLightColor) {
@@ -336,7 +359,7 @@ public class World extends ReferenceFrame {
 	}
 
 	@Override
-	public edu.cmu.cs.stage3.math.Matrix44 getTransformation(ReferenceFrame asSeenBy) {
+	public edu.cmu.cs.stage3.math.Matrix44 getTransformation(final ReferenceFrame asSeenBy) {
 		if (asSeenBy == null) {
 			return edu.cmu.cs.stage3.math.Matrix44.IDENTITY;
 		} else {
@@ -345,9 +368,9 @@ public class World extends ReferenceFrame {
 	}
 
 	@Override
-	protected void internalFindAccessibleExpressions(Class cls, java.util.Vector v) {
+	protected void internalFindAccessibleExpressions(final Class cls, final java.util.Vector v) {
 		for (int i = 0; i < sandboxes.size(); i++) {
-			Sandbox sandbox = (Sandbox) sandboxes.get(i);
+			final Sandbox sandbox = (Sandbox) sandboxes.get(i);
 			for (int j = 0; j < sandbox.variables.size(); j++) {
 				internalAddExpressionIfAssignableTo((Expression) sandbox.variables.get(j), cls, v);
 			}
@@ -361,36 +384,45 @@ public class World extends ReferenceFrame {
 	public edu.cmu.cs.stage3.alice.scripting.ScriptingFactory getScriptingFactory() {
 		return m_scriptingFactory;
 	}
-	public void setScriptingFactory(edu.cmu.cs.stage3.alice.scripting.ScriptingFactory scriptingFactory) {
+
+	public void setScriptingFactory(final edu.cmu.cs.stage3.alice.scripting.ScriptingFactory scriptingFactory) {
 		m_scriptingFactory = scriptingFactory;
 	}
 
 	public edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTargetFactory getRenderTargetFactory() {
 		return m_renderTargetFactory;
 	}
-	public void setRenderTargetFactory(edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTargetFactory renderTargetFactory) {
+
+	public void setRenderTargetFactory(
+			final edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTargetFactory renderTargetFactory) {
 		m_renderTargetFactory = renderTargetFactory;
-		RenderTarget[] renderTargets = (RenderTarget[]) getDescendants(RenderTarget.class);
-		for (RenderTarget renderTarget : renderTargets) {
+		final RenderTarget[] renderTargets = (RenderTarget[]) getDescendants(RenderTarget.class);
+		for (final RenderTarget renderTarget : renderTargets) {
 			renderTarget.commit(m_renderTargetFactory);
 		}
 	}
 
-	public void sendMessage(Element source, String message, Transformable fromWho, Transformable toWhom, long when) {
-		edu.cmu.cs.stage3.alice.core.event.MessageEvent messageEvent = new edu.cmu.cs.stage3.alice.core.event.MessageEvent(source, message, fromWho, toWhom, when);
+	public void sendMessage(final Element source, final String message, final Transformable fromWho,
+			final Transformable toWhom, final long when) {
+		final edu.cmu.cs.stage3.alice.core.event.MessageEvent messageEvent = new edu.cmu.cs.stage3.alice.core.event.MessageEvent(
+				source, message, fromWho, toWhom, when);
 		for (int i = 0; i < m_messageListeners.size(); i++) {
-			edu.cmu.cs.stage3.alice.core.event.MessageListener messageListener = (edu.cmu.cs.stage3.alice.core.event.MessageListener) m_messageListeners.elementAt(i);
+			final edu.cmu.cs.stage3.alice.core.event.MessageListener messageListener = (edu.cmu.cs.stage3.alice.core.event.MessageListener) m_messageListeners
+					.elementAt(i);
 			messageListener.messageSent(messageEvent);
 		}
 	}
-	public void addMessageListener(edu.cmu.cs.stage3.alice.core.event.MessageListener messageListener) {
+
+	public void addMessageListener(final edu.cmu.cs.stage3.alice.core.event.MessageListener messageListener) {
 		m_messageListeners.addElement(messageListener);
 		m_messageListenerArray = null;
 	}
-	public void removeMessageListener(edu.cmu.cs.stage3.alice.core.event.MessageListener messageListener) {
+
+	public void removeMessageListener(final edu.cmu.cs.stage3.alice.core.event.MessageListener messageListener) {
 		m_messageListeners.removeElement(messageListener);
 		m_messageListenerArray = null;
 	}
+
 	public edu.cmu.cs.stage3.alice.core.event.MessageListener[] getMessageListeners() {
 		if (m_messageListenerArray == null) {
 			m_messageListenerArray = new edu.cmu.cs.stage3.alice.core.event.MessageListener[m_messageListeners.size()];
@@ -402,55 +434,60 @@ public class World extends ReferenceFrame {
 	public void preserve() {
 		m_capsulePropertyValuePairs.clear();
 		m_capsuleElements.clear();
-		Element[] elements = getDescendants();
-		for (Element element : elements) {
-			edu.cmu.cs.stage3.alice.core.event.ChildrenListener[] childrenListeners = element.getChildrenListeners();
+		final Element[] elements = getDescendants();
+		for (final Element element : elements) {
+			final edu.cmu.cs.stage3.alice.core.event.ChildrenListener[] childrenListeners = element
+					.getChildrenListeners();
 			if (childrenListeners != null && childrenListeners.length != 0) {
 				warnln("WARNING: " + element.getKey() + " has CHILDREN listeners: ");
-				for (ChildrenListener childrenListener : childrenListeners) {
+				for (final ChildrenListener childrenListener : childrenListeners) {
 					warnln("\t" + childrenListener.getClass());
 				}
 			}
 			m_capsuleElements.put(element, Boolean.TRUE);
-			Property[] properties = element.getProperties();
-			for (Property property : properties) {
-				edu.cmu.cs.stage3.alice.core.event.PropertyListener[] propertyListeners = property.getPropertyListeners();
+			final Property[] properties = element.getProperties();
+			for (final Property property : properties) {
+				final edu.cmu.cs.stage3.alice.core.event.PropertyListener[] propertyListeners = property
+						.getPropertyListeners();
 				if (propertyListeners != null && propertyListeners.length != 0) {
 					warnln("WARNING: " + element.getKey() + "." + property.getName() + " has PROPERTY listeners: ");
-					for (PropertyListener propertyListener : propertyListeners) {
+					for (final PropertyListener propertyListener : propertyListeners) {
 						warnln("\t" + propertyListener.getClass());
 					}
 				}
 				if (property instanceof ObjectArrayProperty) {
-					ObjectArrayProperty objectArrayPropery = (ObjectArrayProperty) property;
-					edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyListener[] objectArrayProperyListeners = objectArrayPropery.getObjectArrayPropertyListeners();
+					final ObjectArrayProperty objectArrayPropery = (ObjectArrayProperty) property;
+					final edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyListener[] objectArrayProperyListeners = objectArrayPropery
+							.getObjectArrayPropertyListeners();
 					if (objectArrayProperyListeners != null && objectArrayProperyListeners.length != 0) {
-						warnln("WARNING: " + element.getKey() + "." + objectArrayPropery.getName() + " has OBJECT ARRAY PROPERTY listeners: ");
-						for (ObjectArrayPropertyListener objectArrayProperyListener : objectArrayProperyListeners) {
+						warnln("WARNING: " + element.getKey() + "." + objectArrayPropery.getName()
+								+ " has OBJECT ARRAY PROPERTY listeners: ");
+						for (final ObjectArrayPropertyListener objectArrayProperyListener : objectArrayProperyListeners) {
 							warnln("\t" + objectArrayProperyListener.getClass());
 						}
 					}
 				}
-				Object[] tuple = {property, property.get()};
+				final Object[] tuple = { property, property.get() };
 				m_capsulePropertyValuePairs.addElement(tuple);
 			}
 		}
 	}
+
 	public void restore() {
-		java.util.Enumeration preserves = m_capsulePropertyValuePairs.elements();
+		final java.util.Enumeration preserves = m_capsulePropertyValuePairs.elements();
 		while (preserves.hasMoreElements()) {
-			Object[] tuple = (Object[]) preserves.nextElement();
-			Property property = (Property) tuple[0];
-			Object value = tuple[1];
+			final Object[] tuple = (Object[]) preserves.nextElement();
+			final Property property = (Property) tuple[0];
+			final Object value = tuple[1];
 			property.set(value);
 		}
-		Element[] elements = getDescendants();
-		for (Element element : elements) {
+		final Element[] elements = getDescendants();
+		for (final Element element : elements) {
 			if (m_capsuleElements.get(element) == null) {
 				element.removeFromParent();
 			}
 		}
-		for (Element element : elements) {
+		for (final Element element : elements) {
 			if (m_capsuleElements.get(element) == null) {
 				element.release();
 			}
@@ -458,7 +495,7 @@ public class World extends ReferenceFrame {
 	}
 
 	@Override
-	protected void scheduleBehaviors(double t) {
+	protected void scheduleBehaviors(final double t) {
 		super.scheduleBehaviors(t);
 		for (int i = 0; i < sandboxes.size(); i++) {
 			m_currentSandbox = (Sandbox) sandboxes.get(i);
@@ -490,7 +527,8 @@ public class World extends ReferenceFrame {
 		}
 		if (m_scriptingFactory != null) {
 			getInterpreter().start();
-			edu.cmu.cs.stage3.alice.scripting.Code code = script.getCode(edu.cmu.cs.stage3.alice.scripting.CompileType.EXEC_MULTIPLE);
+			final edu.cmu.cs.stage3.alice.scripting.Code code = script
+					.getCode(edu.cmu.cs.stage3.alice.scripting.CompileType.EXEC_MULTIPLE);
 			if (code != null) {
 				exec(code);
 			}
@@ -506,6 +544,7 @@ public class World extends ReferenceFrame {
 		m_collisions = m_collisionManager.update(256);
 		m_currentSandbox = null;
 	}
+
 	public void stop() {
 		bubbles.clear();
 		m_isRunning = false;

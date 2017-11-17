@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -138,15 +138,15 @@ public class ASFBone {
 		lengthKeyframeAnim.duration.set(null);
 	}
 
-	public ASFBone(String n) {
+	public ASFBone(final String n) {
 		this();
 		name = n;
 	}
 
 	private IndexedTriangleArray buildUnitCube() {
 
-		Vertex3d[] vertices = new Vertex3d[24];
-		int[] indices = new int[36];
+		final Vertex3d[] vertices = new Vertex3d[24];
+		final int[] indices = new int[36];
 		indices[0] = 0;
 		indices[1] = 1;
 		indices[2] = 2;
@@ -214,26 +214,26 @@ public class ASFBone {
 		vertices[22] = Vertex3d.createXYZIJKUV(.5, -.5, 1, 0, -1, 0, 0, 0);
 		vertices[23] = Vertex3d.createXYZIJKUV(-.5, -.5, 1, 0, -1, 0, 0, 0);
 
-		IndexedTriangleArray ita = new IndexedTriangleArray();
+		final IndexedTriangleArray ita = new IndexedTriangleArray();
 		ita.indices.set(indices);
 		ita.vertices.set(vertices);
 		return ita;
 	}
 
-	private IndexedTriangleArray buildBoneGeometry(double width, double length) {
+	private IndexedTriangleArray buildBoneGeometry(final double width, final double length) {
 		/*
 		 * Transformable tmp = new Transformable(); if (direction.x==0.0 &&
 		 * direction.z==0.0) tmp.setOrientationRightNow(direction,new
 		 * Vector3(0,0,-1)); else tmp.setOrientationRightNow(direction,new
 		 * Vector3(0,1,0)); Matrix44 coordSys = tmp.getLocalTransformation();
 		 */
-		Matrix44 coordSys = Matrix44.IDENTITY;
+		final Matrix44 coordSys = Matrix44.IDENTITY;
 
 		javax.vecmath.Vector4d point;
 		javax.vecmath.Vector4d normal;
 
-		Vertex3d[] vertices = new Vertex3d[24];
-		int[] indices = new int[36];
+		final Vertex3d[] vertices = new Vertex3d[24];
+		final int[] indices = new int[36];
 		indices[0] = 0;
 		indices[1] = 1;
 		indices[2] = 2;
@@ -338,18 +338,18 @@ public class ASFBone {
 		point = MathUtilities.multiply(coordSys, new javax.vecmath.Vector4d(-width / 2, -width / 2, length, 1));
 		vertices[23] = Vertex3d.createXYZIJKUV(point.x, point.y, point.z, normal.x, normal.y, normal.z, 0, 0);
 
-		IndexedTriangleArray ita = new IndexedTriangleArray();
+		final IndexedTriangleArray ita = new IndexedTriangleArray();
 		ita.indices.set(indices);
 		ita.vertices.set(vertices);
 
 		return ita;
 	}
 
-	public Model buildBone(ASFBone parent) {
+	public Model buildBone(final ASFBone parent) {
 		return buildBone(parent, false);
 	}
 
-	public Model buildBone(ASFBone parent, boolean length_geometry) {
+	public Model buildBone(final ASFBone parent, final boolean length_geometry) {
 		if (parent != null) {
 			base_position = parent.endPoint;
 			model = new Model();
@@ -386,7 +386,7 @@ public class ASFBone {
 		if (length_geometry && length != 0.0 && parent != null) {
 			// model.isShowing.set(false,edu.cmu.cs.stage3.util.HowMuch.INSTANCE);
 
-			Model unit_cube = new Model();
+			final Model unit_cube = new Model();
 			geom = buildBoneGeometry(.04, length);// buildUnitCube();
 			unit_cube.addChild(geom);
 			unit_cube.geometry.set(geom);
@@ -410,16 +410,16 @@ public class ASFBone {
 		while (li.hasNext()) {
 			child = (ASFBone) li.next();
 
-			Model child_piece = child.buildBone(this);
+			final Model child_piece = child.buildBone(this);
 		}
 		return model;
 	}
 
-	public void setBasePose(Model mod) {
+	public void setBasePose(final Model mod) {
 		setBasePose(mod, true);
 	}
 
-	public void setBasePose(Model mod, boolean use) {
+	public void setBasePose(Model mod, final boolean use) {
 		if (mod == null) {
 			mod = model;
 		}
@@ -435,8 +435,8 @@ public class ASFBone {
 
 			base_axis = model.getOrientationAsAxes(mod.vehicle.getReferenceFrameValue());
 
-			Matrix33 toCharacter = mod.getOrientationAsAxes();
-			Matrix33 base_axis_inv = new Matrix33(base_axis);
+			final Matrix33 toCharacter = mod.getOrientationAsAxes();
+			final Matrix33 base_axis_inv = new Matrix33(base_axis);
 			base_axis_inv.invert();
 
 			model_transform = Matrix33.multiply(toCharacter, base_axis_inv);
@@ -484,11 +484,11 @@ public class ASFBone {
 		addFrames(false, Matrix44.IDENTITY);
 	}
 
-	public void addFrames(Matrix44 accum) {
+	public void addFrames(final Matrix44 accum) {
 		addFrames(true, accum);
 	}
 
-	public void addFrames(boolean hasAccum, Matrix44 accum) {
+	public void addFrames(final boolean hasAccum, final Matrix44 accum) {
 		Matrix44 newAccum = Matrix44.IDENTITY;
 		if (hasAccum) {
 			accumulated = true;
@@ -499,11 +499,18 @@ public class ASFBone {
 				if (dof.contains(DOF_TX) || dof.contains(DOF_TY) || dof.contains(DOF_TZ)) {
 					// positionSpline.addKey(new
 					// Vector3SimpleKey(lastTime,newAccum.getPosition()));
-					positionSpline.addKey(new Vector3SimpleKey(lastTime, Matrix44.multiply(new Matrix44(model_transform, new javax.vecmath.Vector3d()), Matrix44.multiply(newAccum, new Matrix44(base_axis, new javax.vecmath.Vector3d()))).getPosition()));
+					positionSpline
+							.addKey(new Vector3SimpleKey(lastTime, Matrix44
+									.multiply(new Matrix44(model_transform, new javax.vecmath.Vector3d()),
+											Matrix44.multiply(newAccum,
+													new Matrix44(base_axis, new javax.vecmath.Vector3d())))
+									.getPosition()));
 				}
 
 				if (dof.contains(DOF_RX) || dof.contains(DOF_RY) || dof.contains(DOF_RZ) || hasAccum) {
-					quaternionSpline.addKey(new QuaternionKey(lastTime, Matrix33.multiply(model_transform, Matrix33.multiply(newAccum.getAxes(), base_axis)).getQuaternion()));
+					quaternionSpline.addKey(new QuaternionKey(lastTime,
+							Matrix33.multiply(model_transform, Matrix33.multiply(newAccum.getAxes(), base_axis))
+									.getQuaternion()));
 				}
 			}
 		}
@@ -516,9 +523,10 @@ public class ASFBone {
 			child = (ASFBone) li.next();
 
 			if (realMod == null && (hasFrame || hasAccum)) {
-				Matrix44 newInvBase = child.model.getPointOfView(model);
+				final Matrix44 newInvBase = child.model.getPointOfView(model);
 				newInvBase.invert();
-				child.addFrames(Matrix44.multiply(Matrix44.multiply(child.model.getPointOfView(model), newAccum), newInvBase));
+				child.addFrames(
+						Matrix44.multiply(Matrix44.multiply(child.model.getPointOfView(model), newAccum), newInvBase));
 			} else {
 				child.addFrames();
 			}
@@ -527,7 +535,7 @@ public class ASFBone {
 		hasFrame = false;
 	}
 
-	public Response buildAnim(CompositeResponse anim) {
+	public Response buildAnim(final CompositeResponse anim) {
 		if (realMod != null) {
 			if (dof.contains(ASFBone.DOF_TX) || dof.contains(ASFBone.DOF_TY) || dof.contains(ASFBone.DOF_TZ)) {
 				positionKeyframeAnim.subject.set(realMod);
@@ -535,7 +543,8 @@ public class ASFBone {
 				anim.addChild(positionKeyframeAnim);
 				anim.componentResponses.add(positionKeyframeAnim);
 			}
-			if (dof.contains(ASFBone.DOF_RX) || dof.contains(ASFBone.DOF_RY) || dof.contains(ASFBone.DOF_RZ) || accumulated) {
+			if (dof.contains(ASFBone.DOF_RX) || dof.contains(ASFBone.DOF_RY) || dof.contains(ASFBone.DOF_RZ)
+					|| accumulated) {
 				quaternionKeyframeAnim.subject.set(realMod);
 				quaternionKeyframeAnim.name.set(name.concat(quaternionKeyframeAnim.name.getStringValue()));
 				anim.addChild(quaternionKeyframeAnim);
@@ -563,7 +572,7 @@ public class ASFBone {
 		return anim;
 	}
 
-	public void buildPoses(Model rootMod, Pose startPose, Pose endPose) {
+	public void buildPoses(final Model rootMod, final Pose startPose, final Pose endPose) {
 		Key positionKey;
 		Key quaternionKey;
 		Vector3 position;
@@ -576,21 +585,25 @@ public class ASFBone {
 				position = (Vector3) positionKey.createSample(positionKey.getValueComponents());
 			}
 			orientation = realMod.getOrientationAsQuaternion();
-			if (dof.contains(ASFBone.DOF_RX) || dof.contains(ASFBone.DOF_RY) || dof.contains(ASFBone.DOF_RZ) || accumulated) {
+			if (dof.contains(ASFBone.DOF_RX) || dof.contains(ASFBone.DOF_RY) || dof.contains(ASFBone.DOF_RZ)
+					|| accumulated) {
 				quaternionKey = quaternionSpline.getFirstKey();
 				orientation = (Quaternion) quaternionKey.createSample(quaternionKey.getValueComponents());
 			}
-			((java.util.Hashtable) startPose.poseMap.getDictionaryValue()).put(realMod.getKey(rootMod), new Matrix44(orientation, position));
+			((java.util.Hashtable) startPose.poseMap.getDictionaryValue()).put(realMod.getKey(rootMod),
+					new Matrix44(orientation, position));
 
 			if (dof.contains(ASFBone.DOF_TX) || dof.contains(ASFBone.DOF_TY) || dof.contains(ASFBone.DOF_TZ)) {
 				positionKey = positionSpline.getLastKey();
 				position = (Vector3) positionKey.createSample(positionKey.getValueComponents());
 			}
-			if (dof.contains(ASFBone.DOF_RX) || dof.contains(ASFBone.DOF_RY) || dof.contains(ASFBone.DOF_RZ) || accumulated) {
+			if (dof.contains(ASFBone.DOF_RX) || dof.contains(ASFBone.DOF_RY) || dof.contains(ASFBone.DOF_RZ)
+					|| accumulated) {
 				quaternionKey = quaternionSpline.getLastKey();
 				orientation = (Quaternion) quaternionKey.createSample(quaternionKey.getValueComponents());
 			}
-			((java.util.Hashtable) endPose.poseMap.getDictionaryValue()).put(realMod.getKey(rootMod), new Matrix44(orientation, position));
+			((java.util.Hashtable) endPose.poseMap.getDictionaryValue()).put(realMod.getKey(rootMod),
+					new Matrix44(orientation, position));
 		}
 
 		ASFBone child;

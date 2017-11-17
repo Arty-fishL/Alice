@@ -17,7 +17,8 @@ public class Frame implements StencilObject, LayoutChangeListener {
 	protected boolean isInitialized = false;
 	protected ObjectPositionManager positionManager = null;
 	protected boolean missingID = false;
-	public Frame(String id, ObjectPositionManager positionManager) {
+
+	public Frame(final String id, final ObjectPositionManager positionManager) {
 		this.positionManager = positionManager;
 		this.id = id;
 		// setInitialPosition();
@@ -36,13 +37,15 @@ public class Frame implements StencilObject, LayoutChangeListener {
 		Rectangle r = null;
 		try {
 			r = positionManager.getBoxForID(id);
-		} catch (java.lang.NullPointerException npu) {}
+		} catch (final java.lang.NullPointerException npu) {
+		}
 
 		if (r != null) {
 
 			rect = new Rectangle2D.Double(r.x - 3, r.y - 3, r.width + 6, r.height + 6);
 
-			RoundRectangle2D.Double rr = new RoundRectangle2D.Double(r.x - 3, r.y - 3, r.width + 6, r.height + 6, 1, 1);
+			final RoundRectangle2D.Double rr = new RoundRectangle2D.Double(r.x - 3, r.y - 3, r.width + 6, r.height + 6,
+					1, 1);
 			shapes.addElement(new ScreenShape(null, rr, true, 0));
 
 			Rectangle2D.Double temp = new Rectangle2D.Double(r.x - 6, r.y - 6, 3, r.height + 12);
@@ -79,11 +82,12 @@ public class Frame implements StencilObject, LayoutChangeListener {
 		}
 		shapes.removeAllElements();
 
-		Rectangle r = positionManager.getInitialBox(id);
+		final Rectangle r = positionManager.getInitialBox(id);
 		if (r != null) {
 			rect = new Rectangle2D.Double(r.x - 3, r.y - 3, r.width + 6, r.height + 6);
 
-			RoundRectangle2D.Double rr = new RoundRectangle2D.Double(r.x - 3, r.y - 3, r.width + 6, r.height + 6, 1, 1);
+			final RoundRectangle2D.Double rr = new RoundRectangle2D.Double(r.x - 3, r.y - 3, r.width + 6, r.height + 6,
+					1, 1);
 			shapes.addElement(new ScreenShape(null, rr, true, 0));
 
 			Rectangle2D.Double temp = new Rectangle2D.Double(r.x - 6, r.y - 6, 3, r.height + 12);
@@ -114,6 +118,7 @@ public class Frame implements StencilObject, LayoutChangeListener {
 	public Vector getShapes() {
 		return shapes;
 	}
+
 	@Override
 	public Rectangle getRectangle() {
 		if (rect != null) {
@@ -122,6 +127,7 @@ public class Frame implements StencilObject, LayoutChangeListener {
 			return null;
 		}
 	}
+
 	@Override
 	public Rectangle getPreviousRectangle() {
 		if (previousRect == null && rect != null) {
@@ -130,6 +136,7 @@ public class Frame implements StencilObject, LayoutChangeListener {
 			return previousRect;
 		}
 	}
+
 	@Override
 	public boolean isModified() {
 		if (isModified) {
@@ -139,14 +146,16 @@ public class Frame implements StencilObject, LayoutChangeListener {
 			return false;
 		}
 	}
+
 	@Override
-	public boolean intersectsRectangle(Rectangle rect) {
+	public boolean intersectsRectangle(final Rectangle rect) {
 		if (this.rect != null) {
 			return rect.intersects(getRectangle());
 		} else {
 			return false;
 		}
 	}
+
 	// COME BACK - should stencil app really get passed in?
 	public Point getNotePoint() {
 		if (rect != null) {
@@ -155,14 +164,17 @@ public class Frame implements StencilObject, LayoutChangeListener {
 			return new Point(0, 0);
 		}
 	}
+
 	@Override
-	public void addStencilObjectPositionListener(StencilObjectPositionListener posListener) {
+	public void addStencilObjectPositionListener(final StencilObjectPositionListener posListener) {
 		stencilObjectPositionListeners.addElement(posListener);
 	}
+
 	@Override
-	public void removeStencilObjectPositionListener(StencilObjectPositionListener posListener) {
+	public void removeStencilObjectPositionListener(final StencilObjectPositionListener posListener) {
 		stencilObjectPositionListeners.remove(posListener);
 	}
+
 	@Override
 	public String getComponentID() {
 		return id;

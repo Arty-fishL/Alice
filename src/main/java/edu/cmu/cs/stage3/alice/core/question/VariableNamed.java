@@ -16,13 +16,13 @@ public class VariableNamed extends Question {
 
 	@Override
 	public Object getValue() {
-		Transformable ownerValue = owner.getTransformableValue();
-		String nameValue = variableName.getStringValue();
+		final Transformable ownerValue = owner.getTransformableValue();
+		final String nameValue = variableName.getStringValue();
 		if (ownerValue != null) {
 			for (int i = 0; i < ownerValue.variables.size(); i++) {
-				Variable variableI = (Variable) ownerValue.variables.get(i);
+				final Variable variableI = (Variable) ownerValue.variables.get(i);
 				if (variableI != null) {
-					String nameI = variableI.name.getStringValue();
+					final String nameI = variableI.name.getStringValue();
 					if (nameI != null) {
 						if (ignoreCase.booleanValue()) {
 							if (nameI.equalsIgnoreCase(nameValue)) {
@@ -42,7 +42,7 @@ public class VariableNamed extends Question {
 
 	@Override
 	public Class getValueClass() {
-		Class cls = valueClass.getClassValue();
+		final Class cls = valueClass.getClassValue();
 		if (cls != null) {
 			return cls;
 		} else {

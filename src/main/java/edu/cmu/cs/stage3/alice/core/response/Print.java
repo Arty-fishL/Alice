@@ -44,11 +44,11 @@ public class Print extends edu.cmu.cs.stage3.alice.core.Response {
 	}
 
 	public String getPrefix() {
-		String t = text.getStringValue();
+		final String t = text.getStringValue();
 		if (t != null) {
 			return null;
 		} else {
-			Object o = object.get();
+			final Object o = object.get();
 			if (o != null) {
 				if (o instanceof edu.cmu.cs.stage3.alice.core.Element) {
 					return "the value of " + ((edu.cmu.cs.stage3.alice.core.Element) o).getTrimmedKey() + " is ";
@@ -62,14 +62,15 @@ public class Print extends edu.cmu.cs.stage3.alice.core.Response {
 	}
 
 	public static String outputtext = null;
+
 	public class RuntimePrint extends RuntimeResponse {
 
 		@Override
-		public void update(double t) {
+		public void update(final double t) {
 			super.update(t);
 			outputtext = null;
-			String s = text.getStringValue();
-			Object o = object.get();
+			final String s = text.getStringValue();
+			final Object o = object.get();
 			// Time
 			if (o instanceof edu.cmu.cs.stage3.alice.core.question.time.TimeElapsedSinceWorldStart) {
 				outputtext = "time elapsed is ";
@@ -113,7 +114,7 @@ public class Print extends edu.cmu.cs.stage3.alice.core.Response {
 
 			Object value = object.getValue();
 			if (value instanceof Double) {
-				java.text.NumberFormat formatter = new java.text.DecimalFormat("#.######");
+				final java.text.NumberFormat formatter = new java.text.DecimalFormat("#.######");
 				value = Double.valueOf(formatter.format(value));
 			}
 
@@ -121,9 +122,9 @@ public class Print extends edu.cmu.cs.stage3.alice.core.Response {
 			if (value instanceof edu.cmu.cs.stage3.alice.core.Element) {
 				valueText = ((edu.cmu.cs.stage3.alice.core.Element) value).getTrimmedKey();
 			} else if (value instanceof edu.cmu.cs.stage3.alice.scenegraph.Color) {
-				double blue = ((edu.cmu.cs.stage3.alice.scenegraph.Color) value).getBlue();
-				double green = ((edu.cmu.cs.stage3.alice.scenegraph.Color) value).getGreen();
-				double red = ((edu.cmu.cs.stage3.alice.scenegraph.Color) value).getRed();
+				final double blue = ((edu.cmu.cs.stage3.alice.scenegraph.Color) value).getBlue();
+				final double green = ((edu.cmu.cs.stage3.alice.scenegraph.Color) value).getGreen();
+				final double red = ((edu.cmu.cs.stage3.alice.scenegraph.Color) value).getRed();
 				if (blue == 1 && green == 1 && red == 1) {
 					valueText = "white";
 				} else if (blue == 0 && green == 0 && red == 0) {

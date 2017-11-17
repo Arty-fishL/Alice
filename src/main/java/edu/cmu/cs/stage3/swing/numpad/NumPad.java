@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -30,6 +30,11 @@ import java.awt.Insets;
  * @author Jason Pratt, Dennis Cosgrove
  */
 public class NumPad extends edu.cmu.cs.stage3.swing.ContentPane {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 4596823857888471123L;
+
 	public NumPad() {
 		init();
 	}
@@ -40,33 +45,35 @@ public class NumPad extends edu.cmu.cs.stage3.swing.ContentPane {
 	}
 
 	@Override
-	public void addOKActionListener(java.awt.event.ActionListener l) {
+	public void addOKActionListener(final java.awt.event.ActionListener l) {
 		okayButton.addActionListener(l);
 	}
 
 	@Override
-	public void removeOKActionListener(java.awt.event.ActionListener l) {
+	public void removeOKActionListener(final java.awt.event.ActionListener l) {
 		okayButton.removeActionListener(l);
 	}
 
 	@Override
-	public void addCancelActionListener(java.awt.event.ActionListener l) {
+	public void addCancelActionListener(final java.awt.event.ActionListener l) {
 		cancelButton.addActionListener(l);
 	}
 
 	@Override
-	public void removeCancelActionListener(java.awt.event.ActionListener l) {
+	public void removeCancelActionListener(final java.awt.event.ActionListener l) {
 		cancelButton.removeActionListener(l);
 	}
-	private void doKey(javax.swing.JButton button, String imageString, java.awt.event.ActionListener onClick) {
+
+	private void doKey(final javax.swing.JButton button, final String imageString,
+			final java.awt.event.ActionListener onClick) {
 		button.addActionListener(onClick);
 
 		java.awt.Image image = null;
-		java.net.URL resource = NumPad.class.getResource(imageString + ".gif");
+		final java.net.URL resource = NumPad.class.getResource(imageString + ".gif");
 		if (resource != null) {
 			image = java.awt.Toolkit.getDefaultToolkit().getImage(resource);
 		}
-		javax.swing.ImageIcon icon = new javax.swing.ImageIcon(image);
+		final javax.swing.ImageIcon icon = new javax.swing.ImageIcon(image);
 		javax.swing.ImageIcon rolloverIcon = null;
 		javax.swing.ImageIcon pressedIcon = null;
 		if (image != null) {
@@ -78,7 +85,7 @@ public class NumPad extends edu.cmu.cs.stage3.swing.ContentPane {
 			button.setText(null);
 			button.setBorder(null);
 			button.setIcon(icon);
-			java.awt.Dimension iconSize = new java.awt.Dimension(icon.getIconWidth(), icon.getIconHeight());
+			final java.awt.Dimension iconSize = new java.awt.Dimension(icon.getIconWidth(), icon.getIconHeight());
 			button.setMinimumSize(iconSize);
 			button.setMaximumSize(iconSize);
 			button.setPreferredSize(iconSize);
@@ -94,91 +101,115 @@ public class NumPad extends edu.cmu.cs.stage3.swing.ContentPane {
 	private void keyInit() {
 		doKey(oneButton, "one", new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				numberTextField.grabFocus();
-				numberTextField.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED, System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '1'));
+				numberTextField
+						.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED,
+								System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '1'));
 			}
 		});
 		doKey(twoButton, "two", new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				numberTextField.grabFocus();
-				numberTextField.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED, System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '2'));
+				numberTextField
+						.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED,
+								System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '2'));
 			}
 		});
 		doKey(threeButton, "three", new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				numberTextField.grabFocus();
-				numberTextField.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED, System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '3'));
+				numberTextField
+						.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED,
+								System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '3'));
 			}
 		});
 		doKey(fourButton, "four", new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				numberTextField.grabFocus();
-				numberTextField.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED, System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '4'));
+				numberTextField
+						.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED,
+								System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '4'));
 			}
 		});
 		doKey(fiveButton, "five", new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				numberTextField.grabFocus();
-				numberTextField.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED, System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '5'));
+				numberTextField
+						.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED,
+								System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '5'));
 			}
 		});
 		doKey(sixButton, "six", new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				numberTextField.grabFocus();
-				numberTextField.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED, System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '6'));
+				numberTextField
+						.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED,
+								System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '6'));
 			}
 		});
 		doKey(sevenButton, "seven", new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				numberTextField.grabFocus();
-				numberTextField.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED, System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '7'));
+				numberTextField
+						.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED,
+								System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '7'));
 			}
 		});
 		doKey(eightButton, "eight", new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				numberTextField.grabFocus();
-				numberTextField.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED, System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '8'));
+				numberTextField
+						.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED,
+								System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '8'));
 			}
 		});
 		doKey(nineButton, "nine", new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				numberTextField.grabFocus();
-				numberTextField.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED, System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '9'));
+				numberTextField
+						.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED,
+								System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '9'));
 			}
 		});
 		doKey(zeroButton, "zero", new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				numberTextField.grabFocus();
-				numberTextField.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED, System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '0'));
+				numberTextField
+						.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED,
+								System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '0'));
 			}
 		});
 		doKey(decimalButton, "decimal", new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				numberTextField.grabFocus();
-				numberTextField.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED, System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '.'));
+				numberTextField
+						.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED,
+								System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '.'));
 			}
 		});
 		doKey(slashButton, "slash", new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				numberTextField.grabFocus();
-				numberTextField.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED, System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '/'));
+				numberTextField
+						.dispatchEvent(new java.awt.event.KeyEvent(numberTextField, java.awt.event.KeyEvent.KEY_TYPED,
+								System.currentTimeMillis(), 0, java.awt.event.KeyEvent.VK_UNDEFINED, '/'));
 			}
 		});
 		doKey(backspaceButton, "backspace", new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				// numberTextField.grabFocus();
 				// numberTextField.dispatchEvent(new
 				// java.awt.event.KeyEvent(numberTextField,
@@ -186,26 +217,28 @@ public class NumPad extends edu.cmu.cs.stage3.swing.ContentPane {
 				// System.currentTimeMillis(), 0,
 				// java.awt.event.KeyEvent.VK_UNDEFINED, (char) 8));
 				try {
-					numberTextField.setText(numberTextField.getText(0, numberTextField.getText().length() - 1).toString());
-				} catch (Exception e) {}
+					numberTextField
+							.setText(numberTextField.getText(0, numberTextField.getText().length() - 1).toString());
+				} catch (final Exception e) {
+				}
 			}
 		});
 		doKey(clearButton, "clear", new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				numberTextField.setText("");
 			}
 		});
 		doKey(plusMinusButton, "plusminus", new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				try {
 					if ("-".equals(numberTextField.getDocument().getText(0, 1))) {
 						numberTextField.getDocument().remove(0, 1);
 					} else {
 						numberTextField.getDocument().insertString(0, "-", null);
 					}
-				} catch (javax.swing.text.BadLocationException e) {
+				} catch (final javax.swing.text.BadLocationException e) {
 					throw new RuntimeException(e.getMessage());
 				}
 			}
@@ -217,21 +250,23 @@ public class NumPad extends edu.cmu.cs.stage3.swing.ContentPane {
 		keyInit();
 		numberTextField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
 			@Override
-			public void changedUpdate(javax.swing.event.DocumentEvent e) {
+			public void changedUpdate(final javax.swing.event.DocumentEvent e) {
 				NumPad.this.refresh();
 			}
+
 			@Override
-			public void insertUpdate(javax.swing.event.DocumentEvent e) {
+			public void insertUpdate(final javax.swing.event.DocumentEvent e) {
 				NumPad.this.refresh();
 			}
+
 			@Override
-			public void removeUpdate(javax.swing.event.DocumentEvent e) {
+			public void removeUpdate(final javax.swing.event.DocumentEvent e) {
 				NumPad.this.refresh();
 			}
 		});
 		numberTextField.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				if (okayButton.isEnabled()) {
 					okayButton.doClick();
 				} else {
@@ -246,7 +281,7 @@ public class NumPad extends edu.cmu.cs.stage3.swing.ContentPane {
 		return numberTextField.getText();
 	}
 
-	public void setNumberString(String value) {
+	public void setNumberString(final String value) {
 		if (value != null) {
 			numberTextField.setText(value);
 		} else {
@@ -259,7 +294,7 @@ public class NumPad extends edu.cmu.cs.stage3.swing.ContentPane {
 	}
 
 	protected void refresh() {
-		Double number = NumPad.parseDouble(numberTextField.getText());
+		final Double number = NumPad.parseDouble(numberTextField.getText());
 
 		if (number != null) {
 			okayButton.setEnabled(true);
@@ -274,7 +309,7 @@ public class NumPad extends edu.cmu.cs.stage3.swing.ContentPane {
 	// Duplicated code
 	// ///////////////////
 
-	public static Double parseDouble(String doubleString) {
+	public static Double parseDouble(final String doubleString) {
 		Double number = null;
 		if (doubleString.trim().equalsIgnoreCase("infinity")) {
 			number = new Double(Double.POSITIVE_INFINITY);
@@ -282,16 +317,18 @@ public class NumPad extends edu.cmu.cs.stage3.swing.ContentPane {
 			number = new Double(Double.NEGATIVE_INFINITY);
 		} else if (doubleString.indexOf('/') > -1) {
 			if (doubleString.lastIndexOf('/') == doubleString.indexOf('/')) {
-				String numeratorString = doubleString.substring(0, doubleString.indexOf('/'));
-				String denominatorString = doubleString.substring(doubleString.indexOf('/') + 1);
+				final String numeratorString = doubleString.substring(0, doubleString.indexOf('/'));
+				final String denominatorString = doubleString.substring(doubleString.indexOf('/') + 1);
 				try {
 					number = new Double(Double.parseDouble(numeratorString) / Double.parseDouble(denominatorString));
-				} catch (NumberFormatException e) {}
+				} catch (final NumberFormatException e) {
+				}
 			}
 		} else {
 			try {
 				number = Double.valueOf(doubleString);
-			} catch (NumberFormatException e) {}
+			} catch (final NumberFormatException e) {
+			}
 		}
 
 		return number;
@@ -300,28 +337,28 @@ public class NumPad extends edu.cmu.cs.stage3.swing.ContentPane {
 	/**
 	 * positive percent value lightens, negative percent value darkens
 	 */
-	public java.awt.Image createLightenedOrDarkenedImage(java.awt.Image i, int percent) {
-		LightenDarkenFilter filter = new LightenDarkenFilter(percent);
-		java.awt.image.ImageProducer prod = new java.awt.image.FilteredImageSource(i.getSource(), filter);
-		java.awt.Image filteredImage = java.awt.Toolkit.getDefaultToolkit().createImage(prod);
+	public java.awt.Image createLightenedOrDarkenedImage(final java.awt.Image i, final int percent) {
+		final LightenDarkenFilter filter = new LightenDarkenFilter(percent);
+		final java.awt.image.ImageProducer prod = new java.awt.image.FilteredImageSource(i.getSource(), filter);
+		final java.awt.Image filteredImage = java.awt.Toolkit.getDefaultToolkit().createImage(prod);
 
 		return filteredImage;
 	}
 
 	public class LightenDarkenFilter extends java.awt.image.RGBImageFilter {
-		private int percent;
+		private final int percent;
 
 		/**
 		 * positive percent value lightens, negative percent value darkens
 		 */
-		public LightenDarkenFilter(int p) {
+		public LightenDarkenFilter(final int p) {
 			percent = p;
 
 			canFilterIndexColorModel = true;
 		}
 
 		@Override
-		public int filterRGB(int x, int y, int rgb) {
+		public int filterRGB(final int x, final int y, final int rgb) {
 			int r = rgb >> 16 & 0xff;
 			int g = rgb >> 8 & 0xff;
 			int b = rgb >> 0 & 0xff;
@@ -415,25 +452,44 @@ public class NumPad extends edu.cmu.cs.stage3.swing.ContentPane {
 		decimalButton.setText(".");
 		slashButton.setText("/");
 		add(mainPanel, java.awt.BorderLayout.NORTH);
-		mainPanel.add(numberTextField, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
+		mainPanel.add(numberTextField, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 0));
 		add(buttonPanel, java.awt.BorderLayout.CENTER);
-		buttonPanel.add(okayButton, new GridBagConstraints(0, 1, 1, 1, 0.0, 1.0, GridBagConstraints.NORTHEAST, GridBagConstraints.NONE, new Insets(4, 4, 4, 4), 0, 0));
-		buttonPanel.add(cancelButton, new GridBagConstraints(1, 1, 1, 1, 0.0, 1.0, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(4, 4, 4, 4), 0, 0));
-		mainPanel.add(keyWell, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 8, 8, 8), 0, 0));
-		keyWell.add(sevenButton, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(4, 4, 0, 0), 0, 0));
-		keyWell.add(eightButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(4, 4, 0, 0), 0, 0));
-		keyWell.add(nineButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(4, 4, 0, 0), 0, 0));
-		keyWell.add(backspaceButton, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(4, 4, 0, 4), 0, 0));
-		keyWell.add(fourButton, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(4, 4, 0, 0), 0, 0));
-		keyWell.add(fiveButton, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(4, 4, 0, 0), 0, 0));
-		keyWell.add(sixButton, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(4, 4, 0, 0), 0, 0));
-		keyWell.add(clearButton, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(4, 4, 0, 4), 0, 0));
-		keyWell.add(oneButton, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(4, 4, 0, 0), 0, 0));
-		keyWell.add(twoButton, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(4, 4, 0, 0), 0, 0));
-		keyWell.add(threeButton, new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(4, 4, 0, 0), 0, 0));
-		keyWell.add(plusMinusButton, new GridBagConstraints(3, 2, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(4, 4, 0, 4), 0, 0));
-		keyWell.add(zeroButton, new GridBagConstraints(0, 3, 2, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(4, 4, 4, 0), 0, 0));
-		keyWell.add(decimalButton, new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(4, 4, 4, 0), 0, 0));
-		keyWell.add(slashButton, new GridBagConstraints(3, 3, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(4, 4, 4, 4), 0, 0));
+		buttonPanel.add(okayButton, new GridBagConstraints(0, 1, 1, 1, 0.0, 1.0, GridBagConstraints.NORTHEAST,
+				GridBagConstraints.NONE, new Insets(4, 4, 4, 4), 0, 0));
+		buttonPanel.add(cancelButton, new GridBagConstraints(1, 1, 1, 1, 0.0, 1.0, GridBagConstraints.NORTHWEST,
+				GridBagConstraints.NONE, new Insets(4, 4, 4, 4), 0, 0));
+		mainPanel.add(keyWell, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.NONE, new Insets(0, 8, 8, 8), 0, 0));
+		keyWell.add(sevenButton, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
+				GridBagConstraints.BOTH, new Insets(4, 4, 0, 0), 0, 0));
+		keyWell.add(eightButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
+				GridBagConstraints.BOTH, new Insets(4, 4, 0, 0), 0, 0));
+		keyWell.add(nineButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
+				GridBagConstraints.BOTH, new Insets(4, 4, 0, 0), 0, 0));
+		keyWell.add(backspaceButton, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
+				GridBagConstraints.BOTH, new Insets(4, 4, 0, 4), 0, 0));
+		keyWell.add(fourButton, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
+				GridBagConstraints.BOTH, new Insets(4, 4, 0, 0), 0, 0));
+		keyWell.add(fiveButton, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
+				GridBagConstraints.BOTH, new Insets(4, 4, 0, 0), 0, 0));
+		keyWell.add(sixButton, new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
+				GridBagConstraints.BOTH, new Insets(4, 4, 0, 0), 0, 0));
+		keyWell.add(clearButton, new GridBagConstraints(3, 1, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
+				GridBagConstraints.BOTH, new Insets(4, 4, 0, 4), 0, 0));
+		keyWell.add(oneButton, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
+				GridBagConstraints.BOTH, new Insets(4, 4, 0, 0), 0, 0));
+		keyWell.add(twoButton, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
+				GridBagConstraints.BOTH, new Insets(4, 4, 0, 0), 0, 0));
+		keyWell.add(threeButton, new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
+				GridBagConstraints.BOTH, new Insets(4, 4, 0, 0), 0, 0));
+		keyWell.add(plusMinusButton, new GridBagConstraints(3, 2, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
+				GridBagConstraints.BOTH, new Insets(4, 4, 0, 4), 0, 0));
+		keyWell.add(zeroButton, new GridBagConstraints(0, 3, 2, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
+				GridBagConstraints.BOTH, new Insets(4, 4, 4, 0), 0, 0));
+		keyWell.add(decimalButton, new GridBagConstraints(2, 3, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
+				GridBagConstraints.BOTH, new Insets(4, 4, 4, 0), 0, 0));
+		keyWell.add(slashButton, new GridBagConstraints(3, 3, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
+				GridBagConstraints.BOTH, new Insets(4, 4, 4, 4), 0, 0));
 	}
 }

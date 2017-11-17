@@ -16,16 +16,21 @@ import edu.cmu.cs.stage3.util.HowMuch;
 
 /**
  * @author caitlin
- * 
+ *
  *         To change the template for this generated type comment go to
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class AbstractWalkAnimation extends Animation implements PropertyListener {
-	public final edu.cmu.cs.stage3.alice.core.property.TransformableProperty subject = new edu.cmu.cs.stage3.alice.core.property.TransformableProperty(this, "subject", null);
-	public final edu.cmu.cs.stage3.alice.core.property.AmountProperty stepAmount = new edu.cmu.cs.stage3.alice.core.property.AmountProperty(this, "step size", edu.cmu.cs.stage3.alice.core.Amount.NORMAL);
-	public final edu.cmu.cs.stage3.alice.core.property.AmountProperty bounceAmount = new edu.cmu.cs.stage3.alice.core.property.AmountProperty(this, "bounce size", edu.cmu.cs.stage3.alice.core.Amount.NORMAL);
-	public final edu.cmu.cs.stage3.alice.core.property.AmountProperty armAmount = new edu.cmu.cs.stage3.alice.core.property.AmountProperty(this, "arm swing size", edu.cmu.cs.stage3.alice.core.Amount.NORMAL);
-	public final edu.cmu.cs.stage3.alice.core.property.BooleanProperty swingArms = new edu.cmu.cs.stage3.alice.core.property.BooleanProperty(this, "swing arms", Boolean.TRUE);
+	public final edu.cmu.cs.stage3.alice.core.property.TransformableProperty subject = new edu.cmu.cs.stage3.alice.core.property.TransformableProperty(
+			this, "subject", null);
+	public final edu.cmu.cs.stage3.alice.core.property.AmountProperty stepAmount = new edu.cmu.cs.stage3.alice.core.property.AmountProperty(
+			this, "step size", edu.cmu.cs.stage3.alice.core.Amount.NORMAL);
+	public final edu.cmu.cs.stage3.alice.core.property.AmountProperty bounceAmount = new edu.cmu.cs.stage3.alice.core.property.AmountProperty(
+			this, "bounce size", edu.cmu.cs.stage3.alice.core.Amount.NORMAL);
+	public final edu.cmu.cs.stage3.alice.core.property.AmountProperty armAmount = new edu.cmu.cs.stage3.alice.core.property.AmountProperty(
+			this, "arm swing size", edu.cmu.cs.stage3.alice.core.Amount.NORMAL);
+	public final edu.cmu.cs.stage3.alice.core.property.BooleanProperty swingArms = new edu.cmu.cs.stage3.alice.core.property.BooleanProperty(
+			this, "swing arms", Boolean.TRUE);
 
 	public final NumberProperty stepSpeed = new NumberProperty(this, "stepsPerSecond", new Double(1.5));
 
@@ -38,15 +43,17 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 	}
 
 	@Override
-	protected void propertyChanged(Property property, Object value) {
+	protected void propertyChanged(final Property property, final Object value) {
 		super.propertyChanged(property, value);
 		if (property.equals(duration)) {
-			if (Double.isNaN(((Double) value).doubleValue())) {} else {
+			if (Double.isNaN(((Double) value).doubleValue())) {
+			} else {
 				stepSpeed.set(new Double(Double.NaN));
 
 			}
 		} else if (property.equals(stepSpeed)) {
-			if (Double.isNaN(((Double) value).doubleValue())) {} else {
+			if (Double.isNaN(((Double) value).doubleValue())) {
+			} else {
 				duration.set(new Double(Double.NaN));
 			}
 		}
@@ -204,7 +211,7 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 		protected edu.cmu.cs.stage3.math.Matrix33 leftLowerArmCurrentOrient = new edu.cmu.cs.stage3.math.Matrix33();
 
 		@Override
-		public void prologue(double t) {
+		public void prologue(final double t) {
 
 			// System.out.println("abstract walk prologue");
 			super.prologue(t);
@@ -275,15 +282,16 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 		// the animation
 		// as a whole.
 
-		public void stepRight(double portion, boolean lastStep) {
+		public void stepRight(final double portion, final boolean lastStep) {
 			step(rightUpper, portion, lastStep);
 		}
 
-		public void stepLeft(double portion, boolean lastStep) {
+		public void stepLeft(final double portion, final boolean lastStep) {
 			step(leftUpper, portion, lastStep);
 		}
 
-		protected void step(edu.cmu.cs.stage3.alice.core.Transformable leg, double portion, boolean lastStep) {
+		protected void step(final edu.cmu.cs.stage3.alice.core.Transformable leg, double portion,
+				final boolean lastStep) {
 			// move arms...
 			// System.out.println("update: " + portion);
 			adjustHeight();
@@ -335,16 +343,18 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 		protected void adjustHeight() {
 			double distanceAboveGround = 0.0;
 			if (rightFoot != null && leftFoot != null) {
-				double rightHeight = rightFoot.getBoundingBox(subject.getWorld()).getCenterOfBottomFace().y;
-				double leftHeight = leftFoot.getBoundingBox(subject.getWorld()).getCenterOfBottomFace().y;
+				final double rightHeight = rightFoot.getBoundingBox(subject.getWorld()).getCenterOfBottomFace().y;
+				final double leftHeight = leftFoot.getBoundingBox(subject.getWorld()).getCenterOfBottomFace().y;
 
 				distanceAboveGround = java.lang.Math.min(rightHeight, leftHeight);
 			} else {
 				distanceAboveGround = subject.getBoundingBox(subject.getWorld()).getCenterOfBottomFace().y;
 			}
-			double roundHeight = java.lang.Math.round(subject.getBoundingBox(subject.getWorld()).getCenterOfBottomFace().y);
-			int level = (int) java.lang.Math.round(roundHeight / 256);
-			subject.moveRightNow(edu.cmu.cs.stage3.alice.core.Direction.DOWN, distanceAboveGround - 256.0 * level, subject.getWorld());
+			final double roundHeight = java.lang.Math
+					.round(subject.getBoundingBox(subject.getWorld()).getCenterOfBottomFace().y);
+			final int level = (int) java.lang.Math.round(roundHeight / 256);
+			subject.moveRightNow(edu.cmu.cs.stage3.alice.core.Direction.DOWN, distanceAboveGround - 256.0 * level,
+					subject.getWorld());
 		}
 
 		public void getCurrentOrientations() {
@@ -387,8 +397,9 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 
 		// search model to find the legs
 		public void findLegs() {
-			edu.cmu.cs.stage3.alice.core.Element[] legs = subject.search(new ElementNameContainsCriterion("UpperLeg"));
-			for (Element leg : legs) {
+			final edu.cmu.cs.stage3.alice.core.Element[] legs = subject
+					.search(new ElementNameContainsCriterion("UpperLeg"));
+			for (final Element leg : legs) {
 				if (leg.getKey().indexOf("leftU") != -1 && leg instanceof edu.cmu.cs.stage3.alice.core.Transformable) {
 					leftUpper = (edu.cmu.cs.stage3.alice.core.Transformable) leg;
 					leftLower = getTransformableChild(leftUpper);
@@ -401,7 +412,8 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 					} else {
 						leftFoot = getTransformableChild(leftUpper);
 					}
-				} else if (leg.getKey().indexOf("rightU") != -1 && leg instanceof edu.cmu.cs.stage3.alice.core.Transformable) {
+				} else if (leg.getKey().indexOf("rightU") != -1
+						&& leg instanceof edu.cmu.cs.stage3.alice.core.Transformable) {
 					rightUpper = (edu.cmu.cs.stage3.alice.core.Transformable) leg;
 					// System.out.println("right upper " + rightUpper);
 					rightLower = getTransformableChild(rightUpper);
@@ -419,15 +431,17 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 		}
 
 		public void findArms() {
-			edu.cmu.cs.stage3.alice.core.Element[] arms = subject.search(new ElementNameContainsCriterion("UpperArm"));
-			for (Element arm : arms) {
+			final edu.cmu.cs.stage3.alice.core.Element[] arms = subject
+					.search(new ElementNameContainsCriterion("UpperArm"));
+			for (final Element arm : arms) {
 				if (arm.getKey().indexOf("left") != -1 && arm instanceof edu.cmu.cs.stage3.alice.core.Transformable) {
 					leftUpperArm = (edu.cmu.cs.stage3.alice.core.Transformable) arm;
 					leftLowerArm = getTransformableChild(leftUpperArm);
 					if (leftLowerArm != null && leftLowerArm.name.getStringValue().indexOf("Hand") != -1) {
 						leftLowerArm = null;
 					}
-				} else if (arm.getKey().indexOf("right") != -1 && arm instanceof edu.cmu.cs.stage3.alice.core.Transformable) {
+				} else if (arm.getKey().indexOf("right") != -1
+						&& arm instanceof edu.cmu.cs.stage3.alice.core.Transformable) {
 					rightUpperArm = (edu.cmu.cs.stage3.alice.core.Transformable) arm;
 					rightLowerArm = getTransformableChild(rightUpperArm);
 					if (rightLowerArm != null && rightLowerArm.name.getStringValue().indexOf("Hand") != -1) {
@@ -614,7 +628,7 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 
 				top = leftUpper.getPosition(leftUpper);
 				bottom = leftUpper.getBoundingBox(leftUpper).getCenterOfBottomFace();
-				double offset2 = top.y - bottom.y - totalLength;
+				final double offset2 = top.y - bottom.y - totalLength;
 
 				if (offset2 > offset) {
 					offset = offset2;
@@ -632,7 +646,7 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 				rightUpper.getBoundingBox(rightUpper.getWorld(), HowMuch.INSTANCE);
 
 				double boundingBoxHeight = rightUpper.getBoundingBox(rightUpper.getWorld()).getHeight();
-				double boundingBoxHeight2 = leftUpper.getBoundingBox(leftUpper.getWorld()).getHeight();
+				final double boundingBoxHeight2 = leftUpper.getBoundingBox(leftUpper.getWorld()).getHeight();
 				if (boundingBoxHeight2 > boundingBoxHeight) {
 					boundingBoxHeight = boundingBoxHeight2;
 				}
@@ -652,8 +666,11 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 				rotationUpper = contactAngle;
 			} else {
 
-				double lowerLegEffectiveLength = java.lang.Math.sqrt(footHorizLength * footHorizLength + (lowerLength + footLength) * (lowerLength + footLength));
-				double kneeAngle = (totalLength * totalLength - upperLength * upperLength - lowerLegEffectiveLength * lowerLegEffectiveLength) / (-2.0 * upperLength * lowerLegEffectiveLength);
+				final double lowerLegEffectiveLength = java.lang.Math.sqrt(
+						footHorizLength * footHorizLength + (lowerLength + footLength) * (lowerLength + footLength));
+				double kneeAngle = (totalLength * totalLength - upperLength * upperLength
+						- lowerLegEffectiveLength * lowerLegEffectiveLength)
+						/ (-2.0 * upperLength * lowerLegEffectiveLength);
 
 				// System.out.println("knee Angle: " + kneeAngle);
 				// System.out.println("lowerLegLength: " +
@@ -661,8 +678,10 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 				kneeAngle = java.lang.Math.acos(kneeAngle);
 				// System.out.println("knee Angle: " + kneeAngle);
 
-				rotationLower = java.lang.Math.PI - kneeAngle + java.lang.Math.atan(footHorizLength / (footLength + lowerLength));
-				rotationUpper = contactAngle - java.lang.Math.asin(lowerLegEffectiveLength * java.lang.Math.sin(kneeAngle) / totalLength);
+				rotationLower = java.lang.Math.PI - kneeAngle
+						+ java.lang.Math.atan(footHorizLength / (footLength + lowerLength));
+				rotationUpper = contactAngle
+						- java.lang.Math.asin(lowerLegEffectiveLength * java.lang.Math.sin(kneeAngle) / totalLength);
 
 				recoilBackLowerAngle += rotationLower;
 				recoilFrontUpperAngle += contactAngle;
@@ -680,7 +699,8 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 			backLowerContactOrient.rotateX(rotationLower);
 
 			distanceToMoveContact = totalLength - totalLength * java.lang.Math.cos(contactAngle);
-			contactPos = subject.getPosition(new javax.vecmath.Vector3d(0, -1.0 * distanceToMoveContact, 0), subject.getWorld());
+			contactPos = subject.getPosition(new javax.vecmath.Vector3d(0, -1.0 * distanceToMoveContact, 0),
+					subject.getWorld());
 		}
 
 		public void setRecoilData() {
@@ -688,7 +708,8 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 			frontLowerRecoilOrient.rotateX(recoilFrontUpperAngle);
 			backLowerRecoilOrient.rotateX(recoilBackLowerAngle);
 
-			double distance = upperLength - upperLength * java.lang.Math.cos(passingFrontUpperAngle) + lowerLength - lowerLength * java.lang.Math.cos(passingFrontLowerAngle - passingFrontUpperAngle);
+			final double distance = upperLength - upperLength * java.lang.Math.cos(passingFrontUpperAngle) + lowerLength
+					- lowerLength * java.lang.Math.cos(passingFrontLowerAngle - passingFrontUpperAngle);
 			recoilPos = subject.getPosition(new javax.vecmath.Vector3d(0, -1.0 * distance, 0), subject.getWorld());
 		}
 
@@ -700,7 +721,7 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 			backUpperPassingOrient.rotateX(-1.0 * passingFrontUpperAngle);
 			backLowerPassingOrient.rotateX(passingBackLowerAngle);
 
-			double distance = upperLength - upperLength * java.lang.Math.cos(recoilFrontUpperAngle);
+			final double distance = upperLength - upperLength * java.lang.Math.cos(recoilFrontUpperAngle);
 			passingPos = subject.getPosition(new javax.vecmath.Vector3d(0, -1.0 * distance, 0), subject.getWorld());
 
 		}
@@ -711,7 +732,7 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 			backUpperHighPointOrient.rotateX(-1.0 * highPointBackUpperAngle);
 			backLowerHighPointOrient.rotateX(highPointBackLowerAngle);
 
-			double distance = totalLength - totalLength * java.lang.Math.cos(highPointFrontUpperAngle);
+			final double distance = totalLength - totalLength * java.lang.Math.cos(highPointFrontUpperAngle);
 			highPointPos = subject.getPosition(new javax.vecmath.Vector3d(0, -1.0 * distance, 0), subject.getWorld());
 		}
 
@@ -722,11 +743,13 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 			backUpperArmOrient.rotateX(2.0 * upperArmAngle);
 		}
 
-		public edu.cmu.cs.stage3.alice.core.Transformable getTransformableChild(edu.cmu.cs.stage3.alice.core.Transformable parent) {
+		public edu.cmu.cs.stage3.alice.core.Transformable getTransformableChild(
+				final edu.cmu.cs.stage3.alice.core.Transformable parent) {
 			if (parent == null) {
 				return null;
 			}
-			edu.cmu.cs.stage3.alice.core.Element[] legBits = parent.getChildren(edu.cmu.cs.stage3.alice.core.Transformable.class);
+			final edu.cmu.cs.stage3.alice.core.Element[] legBits = parent
+					.getChildren(edu.cmu.cs.stage3.alice.core.Transformable.class);
 
 			// if this leg has more than one part, we've got a problem
 			if (legBits.length == 1) {
@@ -736,9 +759,10 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 			}
 		}
 
-		public void updateContact(edu.cmu.cs.stage3.alice.core.Transformable leg, double portion) {
+		public void updateContact(final edu.cmu.cs.stage3.alice.core.Transformable leg, final double portion) {
 			if (portion <= 1.0) {
-				if (leg == null) {} else if (leg.equals(rightUpper)) {
+				if (leg == null) {
+				} else if (leg.equals(rightUpper)) {
 					setQuaternion(rightUpper, rightUpperCurrentOrient, frontUpperContactOrient, portion);
 					setQuaternion(rightLower, rightLowerCurrentOrient, frontLowerContactOrient, portion);
 
@@ -754,8 +778,9 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 			}
 		}
 
-		public void updateRecoil(edu.cmu.cs.stage3.alice.core.Transformable leg, double portion) {
-			if (leg == null) {} else if (portion <= 1.0) {
+		public void updateRecoil(final edu.cmu.cs.stage3.alice.core.Transformable leg, final double portion) {
+			if (leg == null) {
+			} else if (portion <= 1.0) {
 				if (leg.equals(rightUpper)) {
 					setQuaternion(rightUpper, rightUpperCurrentOrient, frontUpperRecoilOrient, portion);
 					setQuaternion(rightLower, rightLowerCurrentOrient, frontLowerRecoilOrient, portion);
@@ -773,8 +798,9 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 			}
 		}
 
-		public void updatePassing(edu.cmu.cs.stage3.alice.core.Transformable leg, double portion) {
-			if (leg == null) {} else if (portion <= 1.0) {
+		public void updatePassing(final edu.cmu.cs.stage3.alice.core.Transformable leg, final double portion) {
+			if (leg == null) {
+			} else if (portion <= 1.0) {
 				if (leg.equals(rightUpper)) {
 					setQuaternion(rightUpper, rightUpperCurrentOrient, frontUpperPassingOrient, portion);
 					setQuaternion(rightLower, rightLowerCurrentOrient, frontLowerPassingOrient, portion);
@@ -795,8 +821,10 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 			}
 		}
 
-		public void updateHighPoint(edu.cmu.cs.stage3.alice.core.Transformable leg, double portion, boolean lastStep) {
-			if (leg == null) {} else if (portion <= 1.0) {
+		public void updateHighPoint(final edu.cmu.cs.stage3.alice.core.Transformable leg, final double portion,
+				final boolean lastStep) {
+			if (leg == null) {
+			} else if (portion <= 1.0) {
 				if (lastStep) {
 					if (leg.equals(rightUpper)) {
 						setQuaternion(rightUpper, rightUpperCurrentOrient, defaultOrient, portion);
@@ -835,7 +863,8 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 			}
 		}
 
-		public void updateArms(edu.cmu.cs.stage3.alice.core.Transformable leg, double portion, boolean lastStep) {
+		public void updateArms(final edu.cmu.cs.stage3.alice.core.Transformable leg, final double portion,
+				final boolean lastStep) {
 			if (lastStep && leg != null) {
 				setQuaternion(leftUpperArm, leftUpperArmCurrentOrient, defaultOrient, portion);
 				setQuaternion(leftLowerArm, leftLowerArmCurrentOrient, defaultOrient, portion);
@@ -843,7 +872,8 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 				setQuaternion(rightUpperArm, rightUpperArmCurrentOrient, defaultOrient, portion);
 				setQuaternion(rightLowerArm, rightLowerArmCurrentOrient, defaultOrient, portion);
 			} else {
-				if (leg == null) {} else if (leg.equals(leftUpper)) {
+				if (leg == null) {
+				} else if (leg.equals(leftUpper)) {
 					setQuaternion(rightUpperArm, rightUpperArmCurrentOrient, frontUpperArmOrient, portion);
 					setQuaternion(rightLowerArm, rightLowerArmCurrentOrient, frontLowerArmOrient, portion);
 
@@ -860,7 +890,7 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 		}
 
 		@Override
-		public void epilogue(double t) {
+		public void epilogue(final double t) {
 
 			super.epilogue(t);
 
@@ -886,9 +916,12 @@ public class AbstractWalkAnimation extends Animation implements PropertyListener
 
 		}
 
-		private void setQuaternion(edu.cmu.cs.stage3.alice.core.Transformable part, edu.cmu.cs.stage3.math.Matrix33 initialOrient, edu.cmu.cs.stage3.math.Matrix33 finalOrient, double portion) {
-			double positionPortion = m_style.getPortion(portion, 1);
-			edu.cmu.cs.stage3.math.Matrix33 currentOrient = edu.cmu.cs.stage3.math.Matrix33.interpolate(initialOrient, finalOrient, positionPortion);
+		private void setQuaternion(final edu.cmu.cs.stage3.alice.core.Transformable part,
+				final edu.cmu.cs.stage3.math.Matrix33 initialOrient, final edu.cmu.cs.stage3.math.Matrix33 finalOrient,
+				final double portion) {
+			final double positionPortion = m_style.getPortion(portion, 1);
+			final edu.cmu.cs.stage3.math.Matrix33 currentOrient = edu.cmu.cs.stage3.math.Matrix33
+					.interpolate(initialOrient, finalOrient, positionPortion);
 
 			if (part != null) {
 				// System.out.println("set orient: " +

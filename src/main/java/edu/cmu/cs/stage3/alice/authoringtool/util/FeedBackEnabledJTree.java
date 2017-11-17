@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -27,6 +27,10 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 public class FeedBackEnabledJTree extends javax.swing.JTree {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -23285781740547242L;
 	protected java.awt.Point cursorLocation;
 	protected boolean dropLinesActive;
 	protected boolean showDropLines = false;
@@ -42,39 +46,39 @@ public class FeedBackEnabledJTree extends javax.swing.JTree {
 		init();
 	}
 
-	public FeedBackEnabledJTree(Hashtable value) {
+	public FeedBackEnabledJTree(final Hashtable value) {
 		super(value);
 		init();
 	}
 
-	public FeedBackEnabledJTree(Object[] value) {
+	public FeedBackEnabledJTree(final Object[] value) {
 		super(value);
 		init();
 	}
 
-	public FeedBackEnabledJTree(javax.swing.tree.TreeModel newModel) {
+	public FeedBackEnabledJTree(final javax.swing.tree.TreeModel newModel) {
 		super(newModel);
 		init();
 	}
 
-	public FeedBackEnabledJTree(javax.swing.tree.TreeNode root) {
+	public FeedBackEnabledJTree(final javax.swing.tree.TreeNode root) {
 		super(root);
 		init();
 	}
 
-	public FeedBackEnabledJTree(javax.swing.tree.TreeNode root, boolean asksAllowsChildren) {
+	public FeedBackEnabledJTree(final javax.swing.tree.TreeNode root, final boolean asksAllowsChildren) {
 		super(root, asksAllowsChildren);
 		init();
 	}
 
-	public FeedBackEnabledJTree(Vector value) {
+	public FeedBackEnabledJTree(final Vector value) {
 		super(value);
 		init();
 	}
 
 	private void init() {
 		cursorLocation = new java.awt.Point(0, 0);
-		javax.swing.plaf.basic.BasicTreeUI ui = (javax.swing.plaf.basic.BasicTreeUI) getUI();
+		final javax.swing.plaf.basic.BasicTreeUI ui = (javax.swing.plaf.basic.BasicTreeUI) getUI();
 		totalChildIndent = ui.getLeftChildIndent() + ui.getRightChildIndent();
 		insets = getInsets();
 		updateVars();
@@ -83,18 +87,19 @@ public class FeedBackEnabledJTree extends javax.swing.JTree {
 		dropLinesActive = false;
 	}
 
-	protected void paintLines(java.awt.Graphics g, java.awt.Rectangle clipBounds, java.awt.Insets insets, javax.swing.tree.TreePath from, javax.swing.tree.TreePath to) {
-		int lineX = (from.getPathCount() - 1 + depthOffset) * totalChildIndent + 8 + insets.left;
+	protected void paintLines(final java.awt.Graphics g, final java.awt.Rectangle clipBounds,
+			final java.awt.Insets insets, final javax.swing.tree.TreePath from, final javax.swing.tree.TreePath to) {
+		final int lineX = (from.getPathCount() - 1 + depthOffset) * totalChildIndent + 8 + insets.left;
 
 		// Swing component bounds don't seem to be well-defined
-		int clipLeft = 0;
-		int clipRight = clipBounds.width - 1;
+		final int clipLeft = 0;
+		final int clipRight = clipBounds.width - 1;
 
 		if (lineX > clipLeft && lineX < clipRight) {
-			int clipTop = 0;
-			int clipBottom = clipBounds.height - 1;
-			java.awt.Rectangle fromBounds = getPathBounds(from);
-			java.awt.Rectangle toBounds = getPathBounds(to);
+			final int clipTop = 0;
+			final int clipBottom = clipBounds.height - 1;
+			final java.awt.Rectangle fromBounds = getPathBounds(from);
+			final java.awt.Rectangle toBounds = getPathBounds(to);
 
 			int top;
 			int bottom;
@@ -114,7 +119,7 @@ public class FeedBackEnabledJTree extends javax.swing.JTree {
 		}
 	}
 
-	public void setCursorLocation(java.awt.Point p) {
+	public void setCursorLocation(final java.awt.Point p) {
 		cursorLocation = p;
 		if (needChange()) {
 			repaint();
@@ -144,7 +149,7 @@ public class FeedBackEnabledJTree extends javax.swing.JTree {
 			}
 
 			// DEBUG System.out.println( "lastRow: " + lastRow );
-			java.awt.Rectangle lastBounds = getRowBounds(lastRow);
+			final java.awt.Rectangle lastBounds = getRowBounds(lastRow);
 			// DEBUG System.out.println( "lastBounds: " + lastRow );
 			int bottomy = 0;
 			if (lastBounds != null) {
@@ -159,7 +164,7 @@ public class FeedBackEnabledJTree extends javax.swing.JTree {
 				pathToDrawTo = getPathForRow(lastRow);
 				pathToDrawFrom = new javax.swing.tree.TreePath(getModel().getRoot());
 			} else {
-				int cursorLocationRow = getClosestRowForLocation(cursorLocation.x, cursorLocation.y);
+				final int cursorLocationRow = getClosestRowForLocation(cursorLocation.x, cursorLocation.y);
 				// DEBUG System.out.println( "cursorLocation.y: " +
 				// cursorLocation.y );
 				pathToDrawTo = getPathForRow(cursorLocationRow); // always add
@@ -169,7 +174,7 @@ public class FeedBackEnabledJTree extends javax.swing.JTree {
 																	// over
 				// DEBUG System.out.println( "pathToDrawTo: " + pathToDrawTo );
 
-				Object toNode = pathToDrawTo.getLastPathComponent();
+				final Object toNode = pathToDrawTo.getLastPathComponent();
 				if (getModel().getChildCount(toNode) != 0 && isExpanded(pathToDrawTo)) { // if
 																							// the
 																							// node
@@ -190,7 +195,7 @@ public class FeedBackEnabledJTree extends javax.swing.JTree {
 				} else { // if it doesn't have children, then we can pick a
 							// higher level parent
 					pathToDrawFrom = pathToDrawTo; // start at the current depth
-					java.awt.Rectangle bounds = getRowBounds(cursorLocationRow);
+					final java.awt.Rectangle bounds = getRowBounds(cursorLocationRow);
 					// DEBUG System.out.println( "boundsToDrawTo: " + bounds );
 					if (bounds.y + bounds.height - cursorLocation.y < legBuffer) { // if
 																					// we're
@@ -209,19 +214,20 @@ public class FeedBackEnabledJTree extends javax.swing.JTree {
 																					// cursor's
 																					// horizontal
 																					// location
-						int cursorLevel = (int) ((cursorLocation.x - insets.left - 8 + totalChildIndent / 2.0) / totalChildIndent);
-						int maxLevel = pathToDrawTo.getPathCount() - 1; // don't
-																		// go
-																		// deeper
-																		// than
-																		// we
-																		// already
-																		// are
+						int cursorLevel = (int) ((cursorLocation.x - insets.left - 8 + totalChildIndent / 2.0)
+								/ totalChildIndent);
+						final int maxLevel = pathToDrawTo.getPathCount() - 1; // don't
+						// go
+						// deeper
+						// than
+						// we
+						// already
+						// are
 						int minLevel;
 						if (cursorLocationRow == lastRow) {
 							minLevel = 1; // don't go shallower than the root
 						} else {
-							javax.swing.tree.TreePath next = getPathForRow(cursorLocationRow + 1);
+							final javax.swing.tree.TreePath next = getPathForRow(cursorLocationRow + 1);
 							minLevel = next.getPathCount() - 1; // don't go
 																// shallower
 																// than the next
@@ -250,7 +256,7 @@ public class FeedBackEnabledJTree extends javax.swing.JTree {
 		return dropLinesActive;
 	}
 
-	public void setDropLinesActive(boolean a) {
+	public void setDropLinesActive(final boolean a) {
 		if (dropLinesActive != a) {
 			dropLinesActive = a;
 			if (a) {
@@ -264,7 +270,7 @@ public class FeedBackEnabledJTree extends javax.swing.JTree {
 		return showDropLines;
 	}
 
-	public void setShowDropLines(boolean b) {
+	public void setShowDropLines(final boolean b) {
 		showDropLines = b;
 		repaint();
 	}
@@ -299,10 +305,10 @@ public class FeedBackEnabledJTree extends javax.swing.JTree {
 	// overrides JComponent.paintComponent
 
 	@Override
-	public void paintComponent(java.awt.Graphics g) {
+	public void paintComponent(final java.awt.Graphics g) {
 		try {
 			super.paintComponent(g);
-		} catch (NullPointerException e) {
+		} catch (final NullPointerException e) {
 			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Error painting tree.", e);
 		}
 		if (dropLinesActive && showDropLines) {
@@ -311,9 +317,9 @@ public class FeedBackEnabledJTree extends javax.swing.JTree {
 	}
 
 	synchronized public void autoscrollIfNecessary() {
-		java.awt.Container parent = getParent();
+		final java.awt.Container parent = getParent();
 		if (parent instanceof javax.swing.JViewport) {
-			java.awt.Rectangle viewRect = ((javax.swing.JViewport) parent).getViewRect();
+			final java.awt.Rectangle viewRect = ((javax.swing.JViewport) parent).getViewRect();
 			int desiredRow = -1;
 			if (cursorLocation.y < viewRect.y + 10) {
 				desiredRow = getClosestRowForLocation(cursorLocation.x, cursorLocation.y) - 1;
@@ -321,7 +327,7 @@ public class FeedBackEnabledJTree extends javax.swing.JTree {
 				desiredRow = getClosestRowForLocation(cursorLocation.x, cursorLocation.y) + 1;
 			}
 
-			int lastRow = getRowCount() - 1 - (isRootVisible() ? 0 : 1);
+			final int lastRow = getRowCount() - 1 - (isRootVisible() ? 0 : 1);
 			if (desiredRow > -1 && desiredRow <= lastRow) {
 				scrollRowToVisible(desiredRow);
 			}
@@ -333,17 +339,17 @@ public class FeedBackEnabledJTree extends javax.swing.JTree {
 	 * its implementation appears to be fundamentally flawed, as it does not
 	 * take into account Viewport coordinates when determining whether to
 	 * scroll.
-	 * 
+	 *
 	 * // java.awt.dnd.Autoscroll interface
-	 * 
+	 *
 	 * // there's probably a better way to implement this method synchronized
 	 * public void autoscroll( java.awt.Point cursorLoc ) { System.out.println(
 	 * "autoscroll" ); int desiredRow; if( cursorLoc.y <= 10 ) { desiredRow =
 	 * this.getRowForLocation( cursorLoc.x, cursorLoc.y ) - 1; } else {
 	 * desiredRow = this.getRowForLocation( cursorLoc.x, cursorLoc.y ) + 1; }
-	 * 
+	 *
 	 * this.scrollRowToVisible( desiredRow ); }
-	 * 
+	 *
 	 * public java.awt.Insets getAutoscrollInsets() { // only autoscroll top to
 	 * bottom. return new java.awt.Insets( 20, 0, 20, 0 ); }
 	 */

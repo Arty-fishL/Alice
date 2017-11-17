@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -32,17 +32,21 @@ import java.awt.GridBagConstraints;
 import javax.swing.SwingConstants;
 
 class CustomCheckBox extends javax.swing.JCheckBox implements java.awt.image.ImageObserver {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 8159237289542332665L;
 	private int index = 0;
 	/* private */java.awt.Image image;
 	/* private */javax.swing.JComponent gui;
 	/* private */Object object;
 
-	public void setIndex(int index) {
+	public void setIndex(final int index) {
 		this.index = index;
 	}
 
 	@Override
-	public void paint(java.awt.Graphics g) {
+	public void paint(final java.awt.Graphics g) {
 		super.paint(g);
 		if (image != null) {
 			g.drawImage(image, 14, 0, java.awt.Color.white, this);
@@ -54,8 +58,8 @@ class CustomCheckBox extends javax.swing.JCheckBox implements java.awt.image.Ima
 		if (image == null) {
 			return super.getPreferredSize();
 		} else {
-			int x = image.getWidth(this);
-			int y = image.getHeight(this);
+			final int x = image.getWidth(this);
+			final int y = image.getHeight(this);
 			return new java.awt.Dimension(x + 14, y);
 		}
 	}
@@ -65,8 +69,8 @@ class CustomCheckBox extends javax.swing.JCheckBox implements java.awt.image.Ima
 		if (image == null) {
 			return super.getMinimumSize();
 		} else {
-			int x = image.getWidth(this);
-			int y = image.getHeight(this);
+			final int x = image.getWidth(this);
+			final int y = image.getHeight(this);
 			return new java.awt.Dimension(x + 14, y);
 		}
 	}
@@ -76,20 +80,25 @@ class CustomCheckBox extends javax.swing.JCheckBox implements java.awt.image.Ima
 		if (image == null) {
 			return super.getMaximumSize();
 		} else {
-			int x = image.getWidth(this);
-			int y = image.getHeight(this);
+			final int x = image.getWidth(this);
+			final int y = image.getHeight(this);
 			return new java.awt.Dimension(x + 14, y);
 		}
 	}
 
 	@Override
-	public boolean imageUpdate(java.awt.Image img, int infoflags, int x, int y, int width, int height) {
+	public boolean imageUpdate(final java.awt.Image img, final int infoflags, final int x, final int y, final int width,
+			final int height) {
 		return true;
 	}
 }
 
 class CustomListButton extends javax.swing.JButton implements java.awt.event.ActionListener {
-	private java.util.Vector checkBoxes = new java.util.Vector();
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -6791947644115470260L;
+	private final java.util.Vector checkBoxes = new java.util.Vector();
 
 	public CustomListButton() {
 		addActionListener(this);
@@ -97,15 +106,15 @@ class CustomListButton extends javax.swing.JButton implements java.awt.event.Act
 		// this.setBorder(null);
 	}
 
-	public void addCheckBox(CustomCheckBox c) {
+	public void addCheckBox(final CustomCheckBox c) {
 		checkBoxes.add(c);
 	}
 
 	@Override
-	public void actionPerformed(java.awt.event.ActionEvent e) {
+	public void actionPerformed(final java.awt.event.ActionEvent e) {
 		boolean areAllSelected = true;
 		for (int i = 0; i < checkBoxes.size(); i++) {
-			CustomCheckBox currentCheckBox = (CustomCheckBox) checkBoxes.get(i);
+			final CustomCheckBox currentCheckBox = (CustomCheckBox) checkBoxes.get(i);
 			if (!currentCheckBox.isSelected()) {
 				areAllSelected = false;
 				break;
@@ -113,12 +122,12 @@ class CustomListButton extends javax.swing.JButton implements java.awt.event.Act
 		}
 		if (areAllSelected) {
 			for (int i = 0; i < checkBoxes.size(); i++) {
-				CustomCheckBox currentCheckBox = (CustomCheckBox) checkBoxes.get(i);
+				final CustomCheckBox currentCheckBox = (CustomCheckBox) checkBoxes.get(i);
 				currentCheckBox.setSelected(false);
 			}
 		} else {
 			for (int i = 0; i < checkBoxes.size(); i++) {
-				CustomCheckBox currentCheckBox = (CustomCheckBox) checkBoxes.get(i);
+				final CustomCheckBox currentCheckBox = (CustomCheckBox) checkBoxes.get(i);
 				currentCheckBox.setSelected(true);
 			}
 		}
@@ -126,36 +135,43 @@ class CustomListButton extends javax.swing.JButton implements java.awt.event.Act
 }
 
 public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
-	private edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool m_authoringTool;
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 7624340118756537381L;
 
-	private javax.swing.JFileChooser m_pathFileChooser = new javax.swing.JFileChooser();
+	private final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool m_authoringTool;
 
-	private javax.swing.JTextField m_authorNameTextField = new javax.swing.JTextField();
-	private javax.swing.JTextField m_pathTextField = new javax.swing.JTextField();
-	private javax.swing.JPanel m_elementsToBeExportedPanel = new javax.swing.JPanel();
+	private final javax.swing.JFileChooser m_pathFileChooser = new javax.swing.JFileChooser();
 
-	private java.util.Vector m_okActionListeners = new java.util.Vector();
-	private javax.swing.JButton m_exportButton = new javax.swing.JButton("Export Code");
-	private javax.swing.JButton m_cancelButton = new javax.swing.JButton("Cancel");
+	private final javax.swing.JTextField m_authorNameTextField = new javax.swing.JTextField();
+	private final javax.swing.JTextField m_pathTextField = new javax.swing.JTextField();
+	private final javax.swing.JPanel m_elementsToBeExportedPanel = new javax.swing.JPanel();
 
-	public ExportCodeForPrintingContentPane(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
+	private final java.util.Vector m_okActionListeners = new java.util.Vector();
+	private final javax.swing.JButton m_exportButton = new javax.swing.JButton("Export Code");
+	private final javax.swing.JButton m_cancelButton = new javax.swing.JButton("Cancel");
+
+	public ExportCodeForPrintingContentPane(final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
 		m_authoringTool = authoringTool;
 
-		java.util.ArrayList extensions = new java.util.ArrayList();
+		final java.util.ArrayList extensions = new java.util.ArrayList();
 		extensions.add(new edu.cmu.cs.stage3.alice.authoringtool.util.ExtensionFileFilter("htm", "*.htm"));
 		extensions.add(new edu.cmu.cs.stage3.alice.authoringtool.util.ExtensionFileFilter("html", "*.html"));
-		m_pathFileChooser.setFileFilter(new edu.cmu.cs.stage3.alice.authoringtool.util.ExtensionGroupFileFilter(extensions, "Web pages"));
+		m_pathFileChooser.setFileFilter(
+				new edu.cmu.cs.stage3.alice.authoringtool.util.ExtensionGroupFileFilter(extensions, "Web pages"));
 
-		edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringToolConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration.getLocalConfiguration(edu.cmu.cs.stage3.alice.authoringtool.JAlice.class.getPackage());
-		String path = authoringToolConfig.getValue("directories.worldsDirectory");
+		final edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringToolConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration
+				.getLocalConfiguration(edu.cmu.cs.stage3.alice.authoringtool.JAlice.class.getPackage());
+		final String path = authoringToolConfig.getValue("directories.worldsDirectory");
 		if (path != null) {
-			java.io.File dir = new java.io.File(path);
+			final java.io.File dir = new java.io.File(path);
 			if (dir != null && dir.exists() && dir.isDirectory()) {
 				try {
 					m_pathFileChooser.setCurrentDirectory(dir);
-				} catch (ArrayIndexOutOfBoundsException aioobe) {
+				} catch (final ArrayIndexOutOfBoundsException aioobe) {
 					// for some reason this can potentially fail in jdk1.4.2_04
-				} catch (java.lang.IndexOutOfBoundsException e) {
+				} catch (final java.lang.IndexOutOfBoundsException e) {
 					// and on JDK 1.6 it's this one (added by Michael Vorburger)
 					// - just sometimes
 				}
@@ -166,52 +182,52 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 		m_pathFileChooser.setFileSelectionMode(javax.swing.JFileChooser.FILES_ONLY);
 		m_pathFileChooser.setApproveButtonText("Set File");
 
-		javax.swing.JButton selectAllButton = new javax.swing.JButton("Select All");
+		final javax.swing.JButton selectAllButton = new javax.swing.JButton("Select All");
 		selectAllButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				ExportCodeForPrintingContentPane.this.setAllSelected(true);
 			}
 		});
 
-		javax.swing.JButton deselectAllButton = new javax.swing.JButton("Deselect All");
+		final javax.swing.JButton deselectAllButton = new javax.swing.JButton("Deselect All");
 		deselectAllButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				ExportCodeForPrintingContentPane.this.setAllSelected(false);
 			}
 		});
 
 		m_authorNameTextField.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				m_exportButton.doClick();
 			}
 		});
 
 		m_pathTextField.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				m_exportButton.doClick();
 			}
 		});
 
-		javax.swing.JButton browseButton = new javax.swing.JButton("Browse...");
+		final javax.swing.JButton browseButton = new javax.swing.JButton("Browse...");
 		browseButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				ExportCodeForPrintingContentPane.this.handleBrowseButton();
 			}
 		});
 
 		m_exportButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				ExportCodeForPrintingContentPane.this.handleExportButton();
 			}
 		});
 
-		javax.swing.JScrollPane whatToPrintScrollPane = new javax.swing.JScrollPane(m_elementsToBeExportedPanel);
+		final javax.swing.JScrollPane whatToPrintScrollPane = new javax.swing.JScrollPane(m_elementsToBeExportedPanel);
 		m_elementsToBeExportedPanel.setLayout(new java.awt.GridBagLayout());
 		m_elementsToBeExportedPanel.setBackground(java.awt.Color.white);
 		// int height = 200;
@@ -220,9 +236,9 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 		// m_elementsToBeExportedPanel.setPreferredSize( new java.awt.Dimension(
 		// width, height ) );
 
-		javax.swing.JPanel selectPanel = new javax.swing.JPanel();
+		final javax.swing.JPanel selectPanel = new javax.swing.JPanel();
 		selectPanel.setLayout(new java.awt.GridBagLayout());
-		GridBagConstraints gbcSelect = new GridBagConstraints();
+		final GridBagConstraints gbcSelect = new GridBagConstraints();
 		gbcSelect.anchor = GridBagConstraints.NORTHWEST;
 		gbcSelect.fill = GridBagConstraints.BOTH;
 		gbcSelect.gridwidth = GridBagConstraints.REMAINDER;
@@ -231,9 +247,9 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 		gbcSelect.weighty = 1.0;
 		selectPanel.add(new javax.swing.JLabel(), gbcSelect);
 
-		javax.swing.JPanel pathPanel = new javax.swing.JPanel();
+		final javax.swing.JPanel pathPanel = new javax.swing.JPanel();
 		pathPanel.setLayout(new java.awt.GridBagLayout());
-		GridBagConstraints gbcPath = new GridBagConstraints();
+		final GridBagConstraints gbcPath = new GridBagConstraints();
 		gbcPath.anchor = GridBagConstraints.NORTHWEST;
 		gbcPath.fill = GridBagConstraints.BOTH;
 		gbcPath.gridwidth = GridBagConstraints.RELATIVE;
@@ -243,9 +259,9 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 		pathPanel.add(m_pathTextField, gbcPath);
 		gbcPath.weightx = 0.0;
 
-		javax.swing.JPanel authorPanel = new javax.swing.JPanel();
+		final javax.swing.JPanel authorPanel = new javax.swing.JPanel();
 		authorPanel.setLayout(new java.awt.GridBagLayout());
-		GridBagConstraints gbcAuthor = new GridBagConstraints();
+		final GridBagConstraints gbcAuthor = new GridBagConstraints();
 		gbcAuthor.anchor = GridBagConstraints.NORTHWEST;
 		gbcAuthor.fill = GridBagConstraints.BOTH;
 		gbcAuthor.gridwidth = GridBagConstraints.RELATIVE;
@@ -255,15 +271,15 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 		authorPanel.add(m_authorNameTextField, gbcAuthor);
 		gbcAuthor.weightx = 0.0;
 
-		javax.swing.JPanel okCancelPanel = new javax.swing.JPanel();
+		final javax.swing.JPanel okCancelPanel = new javax.swing.JPanel();
 		okCancelPanel.setLayout(new java.awt.GridBagLayout());
-		GridBagConstraints gbcOKCancel = new GridBagConstraints();
+		final GridBagConstraints gbcOKCancel = new GridBagConstraints();
 		gbcOKCancel.insets.left = 8;
 		okCancelPanel.add(m_exportButton, gbcOKCancel);
 		okCancelPanel.add(m_cancelButton, gbcOKCancel);
 
 		setLayout(new java.awt.GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints();
+		final GridBagConstraints gbc = new GridBagConstraints();
 		gbc.anchor = GridBagConstraints.NORTHWEST;
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.insets.left = 8;
@@ -301,19 +317,19 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		add(okCancelPanel, gbc);
 
-		int height = 400;
-		int width = edu.cmu.cs.stage3.math.GoldenRatio.getLongerSideLength(height);
+		final int height = 400;
+		final int width = edu.cmu.cs.stage3.math.GoldenRatio.getLongerSideLength(height);
 		setPreferredSize(new java.awt.Dimension(width, height));
 	}
 
 	@Override
-	public void preDialogShow(javax.swing.JDialog dialog) {
+	public void preDialogShow(final javax.swing.JDialog dialog) {
 		super.preDialogShow(dialog);
 		initialize("");
 	}
 
 	@Override
-	public void postDialogShow(javax.swing.JDialog dialog) {
+	public void postDialogShow(final javax.swing.JDialog dialog) {
 		super.postDialogShow(dialog);
 	}
 
@@ -321,44 +337,47 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 	public String getTitle() {
 		return "Export to HTML...";
 	}
+
 	private void fireOKActionListeners() {
-		java.awt.event.ActionEvent e = new java.awt.event.ActionEvent(this, java.awt.event.ActionEvent.ACTION_PERFORMED, "OK");
+		final java.awt.event.ActionEvent e = new java.awt.event.ActionEvent(this,
+				java.awt.event.ActionEvent.ACTION_PERFORMED, "OK");
 		for (int i = 0; i < m_okActionListeners.size(); i++) {
-			java.awt.event.ActionListener l = (java.awt.event.ActionListener) m_okActionListeners.elementAt(i);
+			final java.awt.event.ActionListener l = (java.awt.event.ActionListener) m_okActionListeners.elementAt(i);
 			l.actionPerformed(e);
 		}
 	}
 
 	@Override
-	public void addOKActionListener(java.awt.event.ActionListener l) {
+	public void addOKActionListener(final java.awt.event.ActionListener l) {
 		m_okActionListeners.addElement(l);
 	}
 
 	@Override
-	public void removeOKActionListener(java.awt.event.ActionListener l) {
+	public void removeOKActionListener(final java.awt.event.ActionListener l) {
 		m_okActionListeners.removeElement(l);
 	}
 
 	@Override
-	public void addCancelActionListener(java.awt.event.ActionListener l) {
+	public void addCancelActionListener(final java.awt.event.ActionListener l) {
 		m_cancelButton.addActionListener(l);
 	}
 
 	@Override
-	public void removeCancelActionListener(java.awt.event.ActionListener l) {
+	public void removeCancelActionListener(final java.awt.event.ActionListener l) {
 		m_cancelButton.removeActionListener(l);
 	}
 
-	public void initialize(String authorName) {
+	public void initialize(final String authorName) {
 		setAllSelected(true);
 		m_authorNameTextField.setText(authorName);
 		m_authorNameTextField.setName(authorName);
 
-		java.io.File file = new java.io.File(m_pathFileChooser.getCurrentDirectory(), getWorldName(m_authoringTool.getCurrentWorldLocation()) + ".html");
+		final java.io.File file = new java.io.File(m_pathFileChooser.getCurrentDirectory(),
+				getWorldName(m_authoringTool.getCurrentWorldLocation()) + ".html");
 		m_pathTextField.setText(file.getAbsolutePath());
 
-		edu.cmu.cs.stage3.alice.core.World world = m_authoringTool.getWorld();
-		java.util.Vector objectsToEdit = new java.util.Vector();
+		final edu.cmu.cs.stage3.alice.core.World world = m_authoringTool.getWorld();
+		final java.util.Vector objectsToEdit = new java.util.Vector();
 		addObjectsToEdit(world, objectsToEdit);
 		if (world != null) {
 			for (int i = 0; i < world.sandboxes.size(); i++) {
@@ -369,20 +388,22 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 	}
 
 	public java.io.File getFileToExportTo() {
-		String path = m_pathTextField.getText();
+		final String path = m_pathTextField.getText();
 		return new java.io.File(path);
 	}
-	private void setAllSelected(boolean isSelected) {
+
+	private void setAllSelected(final boolean isSelected) {
 		for (int i = 0; i < m_elementsToBeExportedPanel.getComponentCount(); i++) {
-			java.awt.Component componentI = m_elementsToBeExportedPanel.getComponent(i);
+			final java.awt.Component componentI = m_elementsToBeExportedPanel.getComponent(i);
 			if (componentI instanceof CustomCheckBox) {
 				((CustomCheckBox) componentI).setSelected(isSelected);
 			}
 		}
 	}
 
-	private void addObjectsToEdit(edu.cmu.cs.stage3.alice.core.Sandbox sandbox, java.util.Vector toAddTo) {
-		if (sandbox != null && (sandbox.behaviors.size() != 0 || sandbox.responses.size() != 0 || sandbox.questions.size() != 0)) {
+	private void addObjectsToEdit(final edu.cmu.cs.stage3.alice.core.Sandbox sandbox, final java.util.Vector toAddTo) {
+		if (sandbox != null
+				&& (sandbox.behaviors.size() != 0 || sandbox.responses.size() != 0 || sandbox.questions.size() != 0)) {
 			toAddTo.add(sandbox.name.getStringValue());
 			for (int i = sandbox.behaviors.size() - 1; i >= 0; i--) {
 				toAddTo.add(sandbox.behaviors.get(i));
@@ -396,13 +417,13 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 		}
 	}
 
-	protected void buildWhatToPrintPanel(java.util.Vector objectsToPrint) {
+	protected void buildWhatToPrintPanel(final java.util.Vector objectsToPrint) {
 		m_elementsToBeExportedPanel.removeAll();
 		CustomListButton currentButton = null;
 		int count = 0;
 		boolean isWorld = false;
 		for (int i = 0; i < objectsToPrint.size(); i++) {
-			Object currentObject = objectsToPrint.elementAt(i);
+			final Object currentObject = objectsToPrint.elementAt(i);
 			javax.swing.JComponent toAdd = null;
 			int leftIndent = 0;
 			if (currentObject instanceof String) {
@@ -416,27 +437,32 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 					isWorld = false;
 				}
 			} else {
-				String checkBoxText = "";
+				final String checkBoxText = "";
 				toAdd = new CustomCheckBox();
 				if (currentButton != null) {
 					currentButton.addCheckBox((CustomCheckBox) toAdd);
 				}
 				if (currentObject instanceof edu.cmu.cs.stage3.alice.core.Behavior) {
-					javax.swing.JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getGUI(currentObject);
+					final javax.swing.JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
+							.getGUI(currentObject);
 					((CustomCheckBox) toAdd).image = m_authoringTool.getJAliceFrame().getImageForComponent(gui);
 					((CustomCheckBox) toAdd).gui = gui;
 					((CustomCheckBox) toAdd).object = currentObject;
 					toAdd.setOpaque(false);
 				} else if (currentObject instanceof edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse) {
-					edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedResponsePrototype callToUserDefinedResponsePrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedResponsePrototype((edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse) currentObject);
-					javax.swing.JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getGUI(callToUserDefinedResponsePrototype);
+					final edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedResponsePrototype callToUserDefinedResponsePrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedResponsePrototype(
+							(edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse) currentObject);
+					final javax.swing.JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
+							.getGUI(callToUserDefinedResponsePrototype);
 					((CustomCheckBox) toAdd).image = m_authoringTool.getJAliceFrame().getImageForComponent(gui);
 					((CustomCheckBox) toAdd).gui = gui;
 					((CustomCheckBox) toAdd).object = currentObject;
 					toAdd.setOpaque(false);
 				} else if (currentObject instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion) {
-					edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedQuestionPrototype callToUserDefinedQuestionPrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedQuestionPrototype((edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion) currentObject);
-					javax.swing.JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getGUI(callToUserDefinedQuestionPrototype);
+					final edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedQuestionPrototype callToUserDefinedQuestionPrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedQuestionPrototype(
+							(edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion) currentObject);
+					final javax.swing.JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
+							.getGUI(callToUserDefinedQuestionPrototype);
 					((CustomCheckBox) toAdd).image = m_authoringTool.getJAliceFrame().getImageForComponent(gui);
 					((CustomCheckBox) toAdd).gui = gui;
 					((CustomCheckBox) toAdd).object = currentObject;
@@ -451,19 +477,23 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 			}
 			java.awt.Color bgColor = java.awt.Color.white;
 			if (currentObject instanceof edu.cmu.cs.stage3.alice.core.Response) {
-				bgColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("userDefinedResponseEditor");
+				bgColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+						.getColor("userDefinedResponseEditor");
 			} else if (currentObject instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion) {
-				bgColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("userDefinedQuestionEditor");
+				bgColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+						.getColor("userDefinedQuestionEditor");
 			} else if (currentObject instanceof edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor.BasicBehaviorPanel) {
 				bgColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("behavior");
 			}
 			// toAdd.setBorder(javax.swing.BorderFactory.createLineBorder(bgColor,
 			// 2));
 			toAdd.setBackground(bgColor);
-			m_elementsToBeExportedPanel.add(toAdd, new GridBagConstraints(0, i, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new java.awt.Insets(0, leftIndent, 0, 0), 0, 0));
+			m_elementsToBeExportedPanel.add(toAdd, new GridBagConstraints(0, i, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
+					GridBagConstraints.HORIZONTAL, new java.awt.Insets(0, leftIndent, 0, 0), 0, 0));
 			count++;
 		}
-		m_elementsToBeExportedPanel.add(javax.swing.Box.createVerticalGlue(), new GridBagConstraints(0, count, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+		m_elementsToBeExportedPanel.add(javax.swing.Box.createVerticalGlue(), new GridBagConstraints(0, count, 1, 1,
+				1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new java.awt.Insets(0, 0, 0, 0), 0, 0));
 		m_elementsToBeExportedPanel.revalidate();
 		m_elementsToBeExportedPanel.repaint();
 	}
@@ -471,9 +501,9 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 	private void handleBrowseButton() {
 		// todo extract directory from text editor and
 		// m_pathFileChooser.setCurrentDirectory
-		int result = edu.cmu.cs.stage3.swing.DialogManager.showDialog(m_pathFileChooser, null);
+		final int result = edu.cmu.cs.stage3.swing.DialogManager.showDialog(m_pathFileChooser, null);
 		if (result == javax.swing.JFileChooser.APPROVE_OPTION) {
-			java.io.File file = m_pathFileChooser.getSelectedFile();
+			final java.io.File file = m_pathFileChooser.getSelectedFile();
 			if (file != null) {
 				String path = file.getAbsolutePath();
 				if (path.endsWith(".html") || path.endsWith(".htm")) {
@@ -485,16 +515,23 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 			}
 		}
 	}
-	private void handleWriteProblem(java.io.File file) {
-		edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("Cannot write to: \"" + file.getAbsolutePath() + "\"", "Cannot write", javax.swing.JOptionPane.ERROR_MESSAGE);
+
+	private void handleWriteProblem(final java.io.File file) {
+		edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("Cannot write to: \"" + file.getAbsolutePath() + "\"",
+				"Cannot write", javax.swing.JOptionPane.ERROR_MESSAGE);
 	}
+
 	private void handleExportButton() {
 		if (m_authorNameTextField.getText().length() == 0) {
-			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("You must enter the author's name before proceeding.", "You have not entered the author's name", javax.swing.JOptionPane.ERROR_MESSAGE);
+			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog(
+					"You must enter the author's name before proceeding.", "You have not entered the author's name",
+					javax.swing.JOptionPane.ERROR_MESSAGE);
 		} else {
-			java.io.File file = getFileToExportTo();
+			final java.io.File file = getFileToExportTo();
 			if (file.exists()) {
-				int result = edu.cmu.cs.stage3.swing.DialogManager.showConfirmDialog("You are about to save over an existing file. Are you sure you want to?", "Save Over Warning", javax.swing.JOptionPane.YES_NO_OPTION);
+				final int result = edu.cmu.cs.stage3.swing.DialogManager.showConfirmDialog(
+						"You are about to save over an existing file. Are you sure you want to?", "Save Over Warning",
+						javax.swing.JOptionPane.YES_NO_OPTION);
 				if (result == javax.swing.JOptionPane.YES_OPTION) {
 					// pass
 				} else {
@@ -503,7 +540,7 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 			} else {
 				try {
 					file.createNewFile();
-				} catch (Throwable t) {
+				} catch (final Throwable t) {
 					handleWriteProblem(file);
 					return;
 				}
@@ -516,7 +553,7 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 		}
 	}
 
-	private static String getWorldName(java.io.File worldFile) {
+	private static String getWorldName(final java.io.File worldFile) {
 		if (worldFile != null) {
 			return edu.cmu.cs.stage3.io.FileUtilities.getBaseName(worldFile);
 		} else {
@@ -524,9 +561,9 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 		}
 	}
 
-	private javax.swing.JComponent getComponentForObject(Object toFind) {
+	private javax.swing.JComponent getComponentForObject(final Object toFind) {
 		for (int i = 0; i < m_elementsToBeExportedPanel.getComponentCount(); i++) {
-			java.awt.Component c = m_elementsToBeExportedPanel.getComponent(i);
+			final java.awt.Component c = m_elementsToBeExportedPanel.getComponent(i);
 			if (c instanceof CustomCheckBox) {
 				if (((CustomCheckBox) c).object == toFind) {
 					return ((CustomCheckBox) c).gui;
@@ -536,12 +573,14 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 		return null;
 	}
 
-	public void getHTML(StringBuffer buffer, java.io.File worldFile, boolean addHeaderAndFooter, boolean addAuthor, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws edu.cmu.cs.stage3.progress.ProgressCancelException {
+	public void getHTML(final StringBuffer buffer, final java.io.File worldFile, final boolean addHeaderAndFooter,
+			final boolean addAuthor, final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver)
+			throws edu.cmu.cs.stage3.progress.ProgressCancelException {
 		if (progressObserver != null) {
 			progressObserver.progressBegin(m_elementsToBeExportedPanel.getComponentCount());
 		}
 
-		String worldName = getWorldName(worldFile);
+		final String worldName = getWorldName(worldFile);
 		if (addHeaderAndFooter) {
 			buffer.append("<html>\n<head>\n<title>" + worldName + "'s Code</title>\n</head>\n<body>\n");
 		}
@@ -557,21 +596,22 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 		boolean anyItemsYet = false;
 		for (int i = 0; i < m_elementsToBeExportedPanel.getComponentCount(); i++) {
 			if (m_elementsToBeExportedPanel.getComponent(i) instanceof CustomListButton) {
-				String name = ((CustomListButton) m_elementsToBeExportedPanel.getComponent(i)).getText();
+				final String name = ((CustomListButton) m_elementsToBeExportedPanel.getComponent(i)).getText();
 				currentTitle = "<h2>" + name + "</h2>\n";
 				anyItemsYet = false;
 				notOnBehaviorsYet = true;
 				notOnResponsesYet = true;
 				notOnQuestionsYet = true;
 			} else if (m_elementsToBeExportedPanel.getComponent(i) instanceof CustomCheckBox) {
-				CustomCheckBox currentBox = (CustomCheckBox) m_elementsToBeExportedPanel.getComponent(i);
+				final CustomCheckBox currentBox = (CustomCheckBox) m_elementsToBeExportedPanel.getComponent(i);
 				if (currentBox.isSelected()) {
 					if (!anyItemsYet) {
 						buffer.append(currentTitle);
 						anyItemsYet = true;
 					}
 					if (!(currentBox.object instanceof edu.cmu.cs.stage3.alice.core.Behavior)) {
-						java.awt.Component currentEditor = m_authoringTool.getEditorForElement((edu.cmu.cs.stage3.alice.core.Element) currentBox.object);
+						final java.awt.Component currentEditor = m_authoringTool
+								.getEditorForElement((edu.cmu.cs.stage3.alice.core.Element) currentBox.object);
 						if (currentEditor instanceof edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeElementEditor) {
 							if (currentEditor instanceof edu.cmu.cs.stage3.alice.authoringtool.editors.responseeditor.ResponseEditor) {
 								if (notOnResponsesYet) {
@@ -580,13 +620,17 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 								}
 							} else {
 								if (notOnQuestionsYet) {
-									String cappedQuestionString = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.QUESTION_STRING.substring(0, 1).toUpperCase() + edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.QUESTION_STRING.substring(1);
+									final String cappedQuestionString = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.QUESTION_STRING
+											.substring(0, 1).toUpperCase()
+											+ edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.QUESTION_STRING
+													.substring(1);
 									buffer.append("<h3>" + cappedQuestionString + "s</h3>\n");
 									notOnQuestionsYet = false;
 								}
 							}
 							buffer.append("<table cellpadding=\"2\" cellspacing=\"0\" width=\"100%\">\n");
-							((edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeElementEditor) currentEditor).getHTML(buffer, true);
+							((edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeElementEditor) currentEditor)
+									.getHTML(buffer, true);
 							buffer.append("\n</table>\n<br>\n<br>\n");
 						}
 					} else {
@@ -594,10 +638,11 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 							buffer.append("<h3>Events</h3>\n");
 							notOnBehaviorsYet = false;
 						}
-						javax.swing.JComponent component = getComponentForObject(currentBox.object);
+						final javax.swing.JComponent component = getComponentForObject(currentBox.object);
 						if (component instanceof edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor.BasicBehaviorPanel) {
-							edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor.BasicBehaviorPanel behaviorPanel = (edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor.BasicBehaviorPanel) component;
-							buffer.append("<table  style=\"border-left: 1px solid #c0c0c0; border-top: 1px solid #c0c0c0; border-bottom: 1px solid #c0c0c0; border-right: 1px solid #c0c0c0\" cellpadding=\"2\" cellspacing=\"0\" width=\"100%\">\n");
+							final edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor.BasicBehaviorPanel behaviorPanel = (edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor.BasicBehaviorPanel) component;
+							buffer.append(
+									"<table  style=\"border-left: 1px solid #c0c0c0; border-top: 1px solid #c0c0c0; border-bottom: 1px solid #c0c0c0; border-right: 1px solid #c0c0c0\" cellpadding=\"2\" cellspacing=\"0\" width=\"100%\">\n");
 							behaviorPanel.getHTML(buffer, true);
 							buffer.append("\n</table>\n<br>\n<br>\n");
 						}

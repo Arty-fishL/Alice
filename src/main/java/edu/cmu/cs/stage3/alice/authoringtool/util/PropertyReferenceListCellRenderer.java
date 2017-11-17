@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -28,8 +28,14 @@ package edu.cmu.cs.stage3.alice.authoringtool.util;
  */
 public class PropertyReferenceListCellRenderer extends javax.swing.DefaultListCellRenderer {
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -4665030661748314663L;
+
 	@Override
-	public java.awt.Component getListCellRendererComponent(javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	public java.awt.Component getListCellRendererComponent(final javax.swing.JList list, final Object value,
+			final int index, final boolean isSelected, final boolean cellHasFocus) {
 		setComponentOrientation(list.getComponentOrientation());
 
 		if (isSelected) {
@@ -40,12 +46,18 @@ public class PropertyReferenceListCellRenderer extends javax.swing.DefaultListCe
 			setForeground(list.getForeground());
 		}
 		if (value instanceof edu.cmu.cs.stage3.alice.core.reference.PropertyReference) {
-			edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference = (edu.cmu.cs.stage3.alice.core.reference.PropertyReference) value;
+			final edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference = (edu.cmu.cs.stage3.alice.core.reference.PropertyReference) value;
 			String text = "";
 			if (reference.getProperty() instanceof edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty) {
-				text = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(reference.getProperty().getOwner(), true) + "." + reference.getProperty().getName() + "[" + index + "] -> " + edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(reference.getProperty().get(), true);
+				text = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(
+						reference.getProperty().getOwner(), true) + "." + reference.getProperty().getName() + "["
+						+ index + "] -> " + edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+								.getReprForValue(reference.getProperty().get(), true);
 			} else {
-				text = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(reference.getProperty().getOwner(), true) + "." + reference.getProperty().getName() + " -> " + edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(reference.getProperty().get(), true);
+				text = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(
+						reference.getProperty().getOwner(), true) + "." + reference.getProperty().getName() + " -> "
+						+ edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+								.getReprForValue(reference.getProperty().get(), true);
 			}
 			text = edu.cmu.cs.stage3.alice.authoringtool.dialog.DeleteContentPane.getDeleteString(reference);
 			// javax.swing.ImageIcon icon =

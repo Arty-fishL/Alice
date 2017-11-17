@@ -1,6 +1,7 @@
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.directx7renderer;
 
-class SymmetricPerspectiveCameraProxy extends edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.SymmetricPerspectiveCameraProxy {
+class SymmetricPerspectiveCameraProxy
+		extends edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.SymmetricPerspectiveCameraProxy {
 	// from ElementProxy
 
 	@Override
@@ -27,7 +28,8 @@ class SymmetricPerspectiveCameraProxy extends edu.cmu.cs.stage3.alice.scenegraph
 	protected native void onFarClippingPlaneDistanceChange(double value);
 
 	@Override
-	protected native void onBackgroundChange(edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.BackgroundProxy value);
+	protected native void onBackgroundChange(
+			edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.BackgroundProxy value);
 	// from SymmetricPerspectiveCameraProxy
 
 	@Override

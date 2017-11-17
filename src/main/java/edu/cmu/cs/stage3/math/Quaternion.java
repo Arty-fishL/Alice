@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -31,22 +31,27 @@ public class Quaternion implements Cloneable, Interpolable {
 
 	public Quaternion() {
 	}
-	public Quaternion(double x, double y, double z, double w) {
+
+	public Quaternion(final double x, final double y, final double z, final double w) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
 		this.w = w;
 	}
-	public Quaternion(double[] v) {
+
+	public Quaternion(final double[] v) {
 		this(v[0], v[1], v[2], v[3]);
 	}
-	public Quaternion(Matrix33 m) {
+
+	public Quaternion(final Matrix33 m) {
 		setMatrix33(m);
 	}
-	public Quaternion(AxisAngle aa) {
+
+	public Quaternion(final AxisAngle aa) {
 		setAxisAngle(aa);
 	}
-	public Quaternion(EulerAngles ea) {
+
+	public Quaternion(final EulerAngles ea) {
 		setEulerAngles(ea);
 	}
 
@@ -54,54 +59,61 @@ public class Quaternion implements Cloneable, Interpolable {
 	public synchronized Object clone() {
 		try {
 			return super.clone();
-		} catch (CloneNotSupportedException e) {
+		} catch (final CloneNotSupportedException e) {
 			throw new InternalError();
 		}
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (o == this) {
 			return true;
 		}
 		if (o != null && o instanceof Quaternion) {
-			Quaternion q = (Quaternion) o;
+			final Quaternion q = (Quaternion) o;
 			return x == q.x && y == q.y && z == q.z && w == q.w;
 		} else {
 			return false;
 		}
 	}
+
 	public double[] getArray() {
-		double[] a = {x, y, z, w};
+		final double[] a = { x, y, z, w };
 		return a;
 	}
-	public void setArray(double[] a) {
+
+	public void setArray(final double[] a) {
 		x = a[0];
 		y = a[1];
 		z = a[2];
 		w = a[3];
 	}
-	public boolean equals(Quaternion q) {
+
+	public boolean equals(final Quaternion q) {
 		return x == q.x && y == q.y && z == q.z && w == q.w;
 	}
+
 	public AxisAngle getAxisAngle() {
 		return new AxisAngle(this);
 	}
-	public void setAxisAngle(AxisAngle aa) {
-		double halfAngle = aa.getAngle() * 0.5;
-		double cosHalfAngle = Math.cos(halfAngle);
-		double sinHalfAngle = Math.sin(halfAngle);
-		javax.vecmath.Vector3d normalizedAxis = Vector3.normalizeV(aa.getAxis());
+
+	public void setAxisAngle(final AxisAngle aa) {
+		final double halfAngle = aa.getAngle() * 0.5;
+		final double cosHalfAngle = Math.cos(halfAngle);
+		final double sinHalfAngle = Math.sin(halfAngle);
+		final javax.vecmath.Vector3d normalizedAxis = Vector3.normalizeV(aa.getAxis());
 		w = cosHalfAngle;
 		x = sinHalfAngle * aa.m_axis.x;
 		y = sinHalfAngle * aa.m_axis.y;
 		z = sinHalfAngle * aa.m_axis.z;
 	}
+
 	public EulerAngles getEulerAngles() {
 		return new EulerAngles(this);
 	}
-	public void setEulerAngles(EulerAngles ea) {
-		Matrix33 m = new Matrix33();
+
+	public void setEulerAngles(final EulerAngles ea) {
+		final Matrix33 m = new Matrix33();
 		m.rotateX(ea.pitch);
 		m.rotateY(ea.yaw);
 		m.rotateZ(ea.roll);
@@ -111,21 +123,23 @@ public class Quaternion implements Cloneable, Interpolable {
 		 * double s1 = Math.sin( ea.pitch/2 ); double c2 = Math.cos( ea.yaw/2 );
 		 * double s2 = Math.sin( ea.yaw/2 ); double c3 = Math.cos( ea.roll/2 );
 		 * double s3 = Math.sin( ea.roll/2 );
-		 * 
+		 *
 		 * x = c2*s1*c3 - s2*c1*s3; y = c2*s1*s3 + s2*c1*c3; z = c2*c1*s3 -
 		 * s2*s1*c3; w = c2*c1*c3 + s2*s1*s3;
 		 */
 	}
+
 	public Matrix33 getMatrix33() {
-		Matrix33 m = new Matrix33();
+		final Matrix33 m = new Matrix33();
 		m.setQuaternion(this);
 		return m;
 	}
-	public void setMatrix33(Matrix33 m) {
+
+	public void setMatrix33(final Matrix33 m) {
 		// based on
 		// http://www.gamasutra.com/features/19980703/quaternions_01.htm
 		// the rows and columns have been reversed
-		double tr = m.m00 + m.m11 + m.m22;
+		final double tr = m.m00 + m.m11 + m.m22;
 		if (tr > 0.0) {
 			double s = Math.sqrt(tr + 1.0);
 			w = s * 0.5;
@@ -134,8 +148,8 @@ public class Quaternion implements Cloneable, Interpolable {
 			y = (m.m02 - m.m20) * s;
 			z = (m.m10 - m.m01) * s;
 		} else {
-			int[] nxt = {1, 2, 0};
-			double[][] a = m.getMatrix();
+			final int[] nxt = { 1, 2, 0 };
+			final double[][] a = m.getMatrix();
 			int i = 0;
 			if (a[1][1] > a[0][0]) {
 				i = 1;
@@ -143,12 +157,12 @@ public class Quaternion implements Cloneable, Interpolable {
 			if (a[2][2] > a[i][i]) {
 				i = 2;
 			}
-			int j = nxt[i];
-			int k = nxt[j];
+			final int j = nxt[i];
+			final int k = nxt[j];
 
 			double s = Math.sqrt(a[i][i] - (a[j][j] + a[k][k]) + 1.0);
 
-			double[] q = new double[4];
+			final double[] q = new double[4];
 			q[i] = s * 0.5;
 
 			if (s != 0.0) {
@@ -161,10 +175,11 @@ public class Quaternion implements Cloneable, Interpolable {
 			setArray(q);
 		}
 	}
+
 	public void normalize() {
-		double lengthSquared = x * x + y * y + z * z + w * w;
+		final double lengthSquared = x * x + y * y + z * z + w * w;
 		if (lengthSquared != 1) {
-			double length = Math.sqrt(lengthSquared);
+			final double length = Math.sqrt(lengthSquared);
 			x /= length;
 			y /= length;
 			z /= length;
@@ -172,24 +187,25 @@ public class Quaternion implements Cloneable, Interpolable {
 		}
 	}
 
-	public static Quaternion multiply(Quaternion a, Quaternion b) {
-		double A = (a.w + a.x) * (b.w + b.x);
-		double B = (a.z - a.y) * (b.y - b.z);
-		double C = (a.x - a.w) * (b.y - b.z);
-		double D = (a.y + a.z) * (b.x - b.w);
-		double E = (a.x + a.z) * (b.x + b.y);
-		double F = (a.x - a.z) * (b.x - b.y);
-		double G = (a.w + a.y) * (b.w - b.z);
-		double H = (a.w - a.y) * (b.w + b.z);
+	public static Quaternion multiply(final Quaternion a, final Quaternion b) {
+		final double A = (a.w + a.x) * (b.w + b.x);
+		final double B = (a.z - a.y) * (b.y - b.z);
+		final double C = (a.x - a.w) * (b.y - b.z);
+		final double D = (a.y + a.z) * (b.x - b.w);
+		final double E = (a.x + a.z) * (b.x + b.y);
+		final double F = (a.x - a.z) * (b.x - b.y);
+		final double G = (a.w + a.y) * (b.w - b.z);
+		final double H = (a.w - a.y) * (b.w + b.z);
 
-		Quaternion q = new Quaternion();
+		final Quaternion q = new Quaternion();
 		q.w = B + (-E - F + G + H) / 2;
 		q.x = A - (E + F + G + H) / 2;
 		q.y = -C + (E - F + G - H) / 2;
 		q.z = -D + (E - F - G + H) / 2;
 		return q;
 	}
-	public static Quaternion interpolate(Quaternion a, Quaternion b, double portion) {
+
+	public static Quaternion interpolate(final Quaternion a, final Quaternion b, final double portion) {
 		if (portion <= 0) {
 			return (Quaternion) a.clone();
 		}
@@ -214,8 +230,8 @@ public class Quaternion implements Cloneable, Interpolable {
 		// calculate coefficients
 		if (1.0 - cosom > Double.MIN_VALUE) {
 			// standard case (slerp)
-			double omega = Math.acos(cosom);
-			double sinom = Math.sin(omega);
+			final double omega = Math.acos(cosom);
+			final double sinom = Math.sin(omega);
 			scale0 = Math.sin((1.0 - portion) * omega) / sinom;
 			scale1 = Math.sin(portion * omega) / sinom;
 		} else {
@@ -225,15 +241,16 @@ public class Quaternion implements Cloneable, Interpolable {
 			scale1 = portion;
 		}
 		// calculate final values
-		Quaternion q = new Quaternion();
+		final Quaternion q = new Quaternion();
 		q.x = scale0 * a.x + scale1 * b1.x;
 		q.y = scale0 * a.y + scale1 * b1.y;
 		q.z = scale0 * a.z + scale1 * b1.z;
 		q.w = scale0 * a.w + scale1 * b1.w;
 		return q;
 	}
+
 	@Override
-	public Interpolable interpolate(Interpolable b, double portion) {
+	public Interpolable interpolate(final Interpolable b, final double portion) {
 		return interpolate(this, (Quaternion) b, portion);
 	}
 
@@ -241,12 +258,13 @@ public class Quaternion implements Cloneable, Interpolable {
 	public String toString() {
 		return "edu.cmu.cs.stage3.math.Quaternion[x=" + x + ",y=" + y + ",z=" + z + ",w=" + w + "]";
 	}
-	public static Quaternion valueOf(String s) {
-		String[] markers = {"edu.cmu.cs.stage3.math.Quaternion[x=", ",y=", ",z=", ",w=", "]"};
-		double[] values = new double[markers.length - 1];
+
+	public static Quaternion valueOf(final String s) {
+		final String[] markers = { "edu.cmu.cs.stage3.math.Quaternion[x=", ",y=", ",z=", ",w=", "]" };
+		final double[] values = new double[markers.length - 1];
 		for (int i = 0; i < values.length; i++) {
-			int begin = s.indexOf(markers[i]) + markers[i].length();
-			int end = s.indexOf(markers[i + 1]);
+			final int begin = s.indexOf(markers[i]) + markers[i].length();
+			final int end = s.indexOf(markers[i + 1]);
 			values[i] = Double.valueOf(s.substring(begin, end)).doubleValue();
 		}
 		return new Quaternion(values);

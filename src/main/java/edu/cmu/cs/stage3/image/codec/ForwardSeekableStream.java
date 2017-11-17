@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -50,7 +50,7 @@ import java.io.InputStream;
 /**
  * A subclass of <code>SeekableStream</code> that may be used to wrap a regular
  * <code>InputStream</code> efficiently. Seeking backwards is not supported.
- * 
+ *
  * <p>
  * <b> This class is not a committed part of the JAI API. It may be removed or
  * changed in future releases of JAI.</b>
@@ -58,7 +58,7 @@ import java.io.InputStream;
 public class ForwardSeekableStream extends SeekableStream {
 
 	/** The source <code>InputStream</code>. */
-	private InputStream src;
+	private final InputStream src;
 
 	/** The current position. */
 	long pointer = 0L;
@@ -70,7 +70,7 @@ public class ForwardSeekableStream extends SeekableStream {
 	 * Constructs a <code>InputStreamForwardSeekableStream</code> from a regular
 	 * <code>InputStream</code>.
 	 */
-	public ForwardSeekableStream(InputStream src) {
+	public ForwardSeekableStream(final InputStream src) {
 		this.src = src;
 	}
 
@@ -78,7 +78,7 @@ public class ForwardSeekableStream extends SeekableStream {
 
 	@Override
 	public final int read() throws IOException {
-		int result = src.read();
+		final int result = src.read();
 		if (result != -1) {
 			++pointer;
 		}
@@ -88,8 +88,8 @@ public class ForwardSeekableStream extends SeekableStream {
 	/** Forwards the request to the real <code>InputStream</code>. */
 
 	@Override
-	public final int read(byte[] b, int off, int len) throws IOException {
-		int result = src.read(b, off, len);
+	public final int read(final byte[] b, final int off, final int len) throws IOException {
+		final int result = src.read(b, off, len);
 		if (result != -1) {
 			pointer += result;
 		}
@@ -99,8 +99,8 @@ public class ForwardSeekableStream extends SeekableStream {
 	/** Forwards the request to the real <code>InputStream</code>. */
 
 	@Override
-	public final long skip(long n) throws IOException {
-		long skipped = src.skip(n);
+	public final long skip(final long n) throws IOException {
+		final long skipped = src.skip(n);
 		pointer += skipped;
 		return skipped;
 	}
@@ -122,7 +122,7 @@ public class ForwardSeekableStream extends SeekableStream {
 	/** Forwards the request to the real <code>InputStream</code>. */
 
 	@Override
-	public synchronized final void mark(int readLimit) {
+	public synchronized final void mark(final int readLimit) {
 		markPos = pointer;
 		src.mark(readLimit);
 	}
@@ -165,7 +165,7 @@ public class ForwardSeekableStream extends SeekableStream {
 	 */
 
 	@Override
-	public final void seek(long pos) throws IOException {
+	public final void seek(final long pos) throws IOException {
 		while (pos - pointer > 0) {
 			pointer += src.skip(pos - pointer);
 		}

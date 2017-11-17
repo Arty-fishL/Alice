@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -50,10 +50,10 @@ import java.util.Hashtable;
 
 class Property {
 
-	private int type;
-	private int offset;
+	private final int type;
+	private final int offset;
 
-	public Property(int type, int offset) {
+	public Property(final int type, final int offset) {
 		this.type = type;
 		this.offset = offset;
 	}
@@ -102,200 +102,200 @@ class PropertySet {
 	SeekableStream stream;
 	Hashtable properties = new Hashtable();
 
-	public PropertySet(SeekableStream stream) throws IOException {
+	public PropertySet(final SeekableStream stream) throws IOException {
 		this.stream = stream;
 
 		stream.seek(44);
-		int sectionOffset = stream.readIntLE();
+		final int sectionOffset = stream.readIntLE();
 
 		stream.seek(sectionOffset);
-		int sectionSize = stream.readIntLE();
-		int sectionCount = stream.readIntLE();
+		final int sectionSize = stream.readIntLE();
+		final int sectionCount = stream.readIntLE();
 
 		for (int i = 0; i < sectionCount; i++) {
 			stream.seek(sectionOffset + 8 * i + 8);
-			int pid = stream.readIntLE();
-			int offset = stream.readIntLE();
+			final int pid = stream.readIntLE();
+			final int offset = stream.readIntLE();
 
 			stream.seek(sectionOffset + offset);
-			int type = stream.readIntLE();
+			final int type = stream.readIntLE();
 
-			Property p = new Property(type, sectionOffset + offset + 4);
+			final Property p = new Property(type, sectionOffset + offset + 4);
 			properties.put(new Integer(pid), p);
 		}
 	}
 
-	public boolean hasProperty(int id) {
-		Property p = (Property) properties.get(new Integer(id));
+	public boolean hasProperty(final int id) {
+		final Property p = (Property) properties.get(new Integer(id));
 		return p != null;
 	}
 
-	public int getI4(int id) {
-		Property p = (Property) properties.get(new Integer(id));
+	public int getI4(final int id) {
+		final Property p = (Property) properties.get(new Integer(id));
 		try {
-			int offset = p.getOffset();
+			final int offset = p.getOffset();
 			stream.seek(offset);
 			return stream.readIntLE();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 
 		return -1;
 	}
 
-	public int getUI1(int id) {
-		Property p = (Property) properties.get(new Integer(id));
+	public int getUI1(final int id) {
+		final Property p = (Property) properties.get(new Integer(id));
 		try {
-			int offset = p.getOffset();
+			final int offset = p.getOffset();
 			stream.seek(offset);
 			return stream.readUnsignedByte();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 
 		return -1;
 	}
 
-	public int getUI2(int id) {
-		Property p = (Property) properties.get(new Integer(id));
+	public int getUI2(final int id) {
+		final Property p = (Property) properties.get(new Integer(id));
 		try {
-			int offset = p.getOffset();
+			final int offset = p.getOffset();
 			stream.seek(offset);
 			return stream.readUnsignedShortLE();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 
 		return -1;
 	}
 
-	public long getUI4(int id) {
-		Property p = (Property) properties.get(new Integer(id));
+	public long getUI4(final int id) {
+		final Property p = (Property) properties.get(new Integer(id));
 		try {
-			int offset = p.getOffset();
+			final int offset = p.getOffset();
 			stream.seek(offset);
 			return stream.readUnsignedIntLE();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 
 		return -1;
 	}
 
-	public long getUI4(int id, long defaultValue) {
-		Property p = (Property) properties.get(new Integer(id));
+	public long getUI4(final int id, final long defaultValue) {
+		final Property p = (Property) properties.get(new Integer(id));
 		if (p == null) {
 			return defaultValue;
 		}
 
 		try {
-			int offset = p.getOffset();
+			final int offset = p.getOffset();
 			stream.seek(offset);
 			return stream.readUnsignedIntLE();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 
 		return -1;
 	}
 
-	public String getLPSTR(int id) {
-		Property p = (Property) properties.get(new Integer(id));
+	public String getLPSTR(final int id) {
+		final Property p = (Property) properties.get(new Integer(id));
 		if (p == null) {
 			return null;
 		}
 
 		try {
-			int offset = p.getOffset();
+			final int offset = p.getOffset();
 
 			stream.seek(offset);
-			int length = stream.readIntLE();
-			StringBuffer sb = new StringBuffer(length);
+			final int length = stream.readIntLE();
+			final StringBuffer sb = new StringBuffer(length);
 			for (int i = 0; i < length; i++) {
 				sb.append((char) stream.read());
 			}
 
 			return sb.toString();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 
-	public String getLPWSTR(int id) {
-		Property p = (Property) properties.get(new Integer(id));
+	public String getLPWSTR(final int id) {
+		final Property p = (Property) properties.get(new Integer(id));
 		try {
-			int offset = p.getOffset();
+			final int offset = p.getOffset();
 
 			stream.seek(offset);
-			int length = stream.readIntLE();
-			StringBuffer sb = new StringBuffer(length);
+			final int length = stream.readIntLE();
+			final StringBuffer sb = new StringBuffer(length);
 			for (int i = 0; i < length; i++) {
 				sb.append(stream.readCharLE());
 			}
 
 			return sb.toString();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 
-	public float getR4(int id) {
-		Property p = (Property) properties.get(new Integer(id));
+	public float getR4(final int id) {
+		final Property p = (Property) properties.get(new Integer(id));
 		try {
-			int offset = p.getOffset();
+			final int offset = p.getOffset();
 			stream.seek(offset);
 			return stream.readFloatLE();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 			return -1.0F;
 		}
 	}
 
-	public Date getDate(int id) {
+	public Date getDate(final int id) {
 		throw new RuntimeException(JaiI18N.getString("PropertySet0"));
 	}
 
-	public Date getFiletime(int id) {
+	public Date getFiletime(final int id) {
 		throw new RuntimeException(JaiI18N.getString("PropertySet0"));
 	}
 
-	public byte[] getBlob(int id) {
-		Property p = (Property) properties.get(new Integer(id));
+	public byte[] getBlob(final int id) {
+		final Property p = (Property) properties.get(new Integer(id));
 		try {
-			int offset = p.getOffset();
+			final int offset = p.getOffset();
 			stream.seek(offset);
-			int length = stream.readIntLE();
+			final int length = stream.readIntLE();
 
-			byte[] buf = new byte[length];
+			final byte[] buf = new byte[length];
 			stream.seek(offset + 4);
 			stream.readFully(buf);
 
 			return buf;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 
-	public int[] getUI1Vector(int id) {
+	public int[] getUI1Vector(final int id) {
 		throw new RuntimeException(JaiI18N.getString("PropertySet0"));
 	}
 
-	public int[] getUI2Vector(int id) {
+	public int[] getUI2Vector(final int id) {
 		throw new RuntimeException(JaiI18N.getString("PropertySet0"));
 	}
 
-	public long[] getUI4Vector(int id) {
+	public long[] getUI4Vector(final int id) {
 		throw new RuntimeException(JaiI18N.getString("PropertySet0"));
 	}
 
-	public float[] getR4Vector(int id) {
+	public float[] getR4Vector(final int id) {
 		throw new RuntimeException(JaiI18N.getString("PropertySet0"));
 	}
 
-	public String[] getLPWSTRVector(int id) {
+	public String[] getLPWSTRVector(final int id) {
 		throw new RuntimeException(JaiI18N.getString("PropertySet0"));
 	}
 }

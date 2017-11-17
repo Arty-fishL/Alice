@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -53,20 +53,20 @@ import java.io.IOException;
  */
 class StreamSegmentMapperImpl implements StreamSegmentMapper {
 
-	private long[] segmentPositions;
+	private final long[] segmentPositions;
 
-	private int[] segmentLengths;
+	private final int[] segmentLengths;
 
-	public StreamSegmentMapperImpl(long[] segmentPositions, int[] segmentLengths) {
+	public StreamSegmentMapperImpl(final long[] segmentPositions, final int[] segmentLengths) {
 		this.segmentPositions = segmentPositions.clone();
 		this.segmentLengths = segmentLengths.clone();
 	}
 
 	@Override
-	public StreamSegment getStreamSegment(long position, int length) {
-		int numSegments = segmentLengths.length;
+	public StreamSegment getStreamSegment(long position, final int length) {
+		final int numSegments = segmentLengths.length;
 		for (int i = 0; i < numSegments; i++) {
-			int len = segmentLengths[i];
+			final int len = segmentLengths[i];
 			if (position < len) {
 				return new StreamSegment(segmentPositions[i] + position, Math.min(len - (int) position, length));
 			}
@@ -77,10 +77,10 @@ class StreamSegmentMapperImpl implements StreamSegmentMapper {
 	}
 
 	@Override
-	public void getStreamSegment(long position, int length, StreamSegment seg) {
-		int numSegments = segmentLengths.length;
+	public void getStreamSegment(long position, final int length, final StreamSegment seg) {
+		final int numSegments = segmentLengths.length;
 		for (int i = 0; i < numSegments; i++) {
-			int len = segmentLengths[i];
+			final int len = segmentLengths[i];
 			if (position < len) {
 				seg.setStartPos(segmentPositions[i] + position);
 				seg.setSegmentLength(Math.min(len - (int) position, length));
@@ -106,7 +106,7 @@ class SectorStreamSegmentMapper implements StreamSegmentMapper {
 	int totalLength;
 	int lastSegmentLength;
 
-	public SectorStreamSegmentMapper(long[] segmentPositions, int segmentLength, int totalLength) {
+	public SectorStreamSegmentMapper(final long[] segmentPositions, final int segmentLength, final int totalLength) {
 		this.segmentPositions = segmentPositions.clone();
 		this.segmentLength = segmentLength;
 		this.totalLength = totalLength;
@@ -114,8 +114,8 @@ class SectorStreamSegmentMapper implements StreamSegmentMapper {
 	}
 
 	@Override
-	public StreamSegment getStreamSegment(long position, int length) {
-		int index = (int) (position / segmentLength);
+	public StreamSegment getStreamSegment(long position, final int length) {
+		final int index = (int) (position / segmentLength);
 
 		// Compute segment length
 		int len = index == segmentPositions.length - 1 ? lastSegmentLength : segmentLength;
@@ -132,8 +132,8 @@ class SectorStreamSegmentMapper implements StreamSegmentMapper {
 	}
 
 	@Override
-	public void getStreamSegment(long position, int length, StreamSegment seg) {
-		int index = (int) (position / segmentLength);
+	public void getStreamSegment(long position, final int length, final StreamSegment seg) {
+		final int index = (int) (position / segmentLength);
 
 		// Compute segment length
 		int len = index == segmentPositions.length - 1 ? lastSegmentLength : segmentLength;
@@ -157,7 +157,7 @@ class SectorStreamSegmentMapper implements StreamSegmentMapper {
  * <code>SeekableStream</code> consiting of a series of segments with given
  * starting positions in the source stream and lengths. The resulting stream
  * behaves like an ordinary <code>SeekableStream</code>.
- * 
+ *
  * <p>
  * For example, given a <code>SeekableStream</code> containing data in a format
  * consisting of a number of sub-streams stored in non-contiguous sectors
@@ -169,7 +169,7 @@ class SectorStreamSegmentMapper implements StreamSegmentMapper {
  * users of the <code>SegmentedSeekableStream</code>, who see a separate
  * <code>SeekableStream</code> for each sub-stream and do not need to understand
  * the directory structure at all.
- * 
+ *
  * <p>
  * For further efficiency, a directory structure such as in the example
  * described above need not be fully parsed in order to build a
@@ -178,7 +178,7 @@ class SectorStreamSegmentMapper implements StreamSegmentMapper {
  * desired region of the output and an input segment to be provided dynamically.
  * This mapping might be computed by reading from a directory in piecemeal
  * fashion in order to avoid consuming memory resources.
- * 
+ *
  * <p>
  * It is the responsibility of the user of this class to determine whether
  * backwards seeking should be enabled. If the source stream supports only
@@ -188,17 +188,17 @@ class SectorStreamSegmentMapper implements StreamSegmentMapper {
  * the source stream supports backwards seeking, there are no restrictions on
  * the <code>StreamSegmentMapper</code> and backwards seeking may always be
  * enabled for the <code>SegmentedSeekableStream</code>.
- * 
+ *
  * <p>
  * <b> This class is not a committed part of the JAI API. It may be removed or
  * changed in future releases of JAI.</b>
  */
 public class SegmentedSeekableStream extends SeekableStream {
 
-	private SeekableStream stream;
-	private StreamSegmentMapper mapper;
+	private final SeekableStream stream;
+	private final StreamSegmentMapper mapper;
 	private long pointer = 0;
-	private boolean canSeekBackwards;
+	private final boolean canSeekBackwards;
 
 	/**
 	 * Constructs a <code>SegmentedSeekableStream</code> given a
@@ -207,7 +207,7 @@ public class SegmentedSeekableStream extends SeekableStream {
 	 * whether the output <code>SegmentedSeekableStream</code> should support
 	 * seeking backwards. If <code>canSeekBackwards</code> is <code>true</code>,
 	 * the source stream must itself support seeking backwards.
-	 * 
+	 *
 	 * @param stream
 	 *            A source <code>SeekableStream</code>
 	 * @param mapper
@@ -215,7 +215,8 @@ public class SegmentedSeekableStream extends SeekableStream {
 	 * @param canSeekBackwards
 	 *            <code>true</code> if the ability to seek backwards is desired.
 	 */
-	public SegmentedSeekableStream(SeekableStream stream, StreamSegmentMapper mapper, boolean canSeekBackwards) {
+	public SegmentedSeekableStream(final SeekableStream stream, final StreamSegmentMapper mapper,
+			final boolean canSeekBackwards) {
 		this.stream = stream;
 		this.mapper = mapper;
 		this.canSeekBackwards = canSeekBackwards;
@@ -233,7 +234,7 @@ public class SegmentedSeekableStream extends SeekableStream {
 	 * <code>SegmentedSeekableStream</code> should support seeking backwards. If
 	 * <code>canSeekBakckwards</code> is <code>true</code>, the source stream
 	 * must itself support seeking backwards.
-	 * 
+	 *
 	 * @param stream
 	 *            A source <code>SeekableStream</code>
 	 * @param segmentPositions
@@ -245,7 +246,8 @@ public class SegmentedSeekableStream extends SeekableStream {
 	 * @param canSeekBackwards
 	 *            <code>true</code> if the ability to seek backwards is desired.
 	 */
-	public SegmentedSeekableStream(SeekableStream stream, long[] segmentPositions, int[] segmentLengths, boolean canSeekBackwards) {
+	public SegmentedSeekableStream(final SeekableStream stream, final long[] segmentPositions,
+			final int[] segmentLengths, final boolean canSeekBackwards) {
 		this(stream, new StreamSegmentMapperImpl(segmentPositions, segmentLengths), canSeekBackwards);
 	}
 
@@ -257,12 +259,12 @@ public class SegmentedSeekableStream extends SeekableStream {
 	 * whether the output <code>SegmentedSeekableStream</code> should support
 	 * seeking backwards. If <code>canSeekBakckwards</code> is <code>true</code>
 	 * , the source stream must itself support seeking backwards.
-	 * 
+	 *
 	 * <p>
 	 * This constructor is useful for selecting substreams of sector-oriented
 	 * file formats in which each segment of the substream (except possibly the
 	 * final segment) occupies a fixed-length sector.
-	 * 
+	 *
 	 * @param stream
 	 *            A source <code>SeekableStream</code>
 	 * @param segmentPositions
@@ -275,13 +277,14 @@ public class SegmentedSeekableStream extends SeekableStream {
 	 * @param canSeekBackwards
 	 *            <code>true</code> if the ability to seek backwards is desired.
 	 */
-	public SegmentedSeekableStream(SeekableStream stream, long[] segmentPositions, int segmentLength, int totalLength, boolean canSeekBackwards) {
+	public SegmentedSeekableStream(final SeekableStream stream, final long[] segmentPositions, final int segmentLength,
+			final int totalLength, final boolean canSeekBackwards) {
 		this(stream, new SectorStreamSegmentMapper(segmentPositions, segmentLength, totalLength), canSeekBackwards);
 	}
 
 	/**
 	 * Returns the current offset in this stream.
-	 * 
+	 *
 	 * @return the offset from the beginning of the stream, in bytes, at which
 	 *         the next read occurs.
 	 */
@@ -305,12 +308,12 @@ public class SegmentedSeekableStream extends SeekableStream {
 	/**
 	 * Sets the offset, measured from the beginning of this stream, at which the
 	 * next read occurs.
-	 * 
+	 *
 	 * <p>
 	 * If <code>canSeekBackwards()</code> returns <code>false</code>, then
 	 * setting <code>pos</code> to an offset smaller than the current value of
 	 * <code>getFilePointer()</code> will have no effect.
-	 * 
+	 *
 	 * @param pos
 	 *            the offset position, measured in bytes from the beginning of
 	 *            the stream, at which to set the stream pointer.
@@ -320,14 +323,14 @@ public class SegmentedSeekableStream extends SeekableStream {
 	 */
 
 	@Override
-	public void seek(long pos) throws IOException {
+	public void seek(final long pos) throws IOException {
 		if (pos < 0) {
 			throw new IOException();
 		}
 		pointer = pos;
 	}
 
-	private StreamSegment streamSegment = new StreamSegment();
+	private final StreamSegment streamSegment = new StreamSegment();
 
 	/**
 	 * Reads the next byte of data from the input stream. The value byte is
@@ -336,7 +339,7 @@ public class SegmentedSeekableStream extends SeekableStream {
 	 * has been reached, the value <code>-1</code> is returned. This method
 	 * blocks until input data is available, the end of the stream is detected,
 	 * or an exception is thrown.
-	 * 
+	 *
 	 * @return the next byte of data, or <code>-1</code> if the end of the
 	 *         stream is reached.
 	 * @exception IOException
@@ -348,7 +351,7 @@ public class SegmentedSeekableStream extends SeekableStream {
 		mapper.getStreamSegment(pointer, 1, streamSegment);
 		stream.seek(streamSegment.getStartPos());
 
-		int val = stream.read();
+		final int val = stream.read();
 		++pointer;
 		return val;
 	}
@@ -358,27 +361,27 @@ public class SegmentedSeekableStream extends SeekableStream {
 	 * array of bytes. An attempt is made to read as many as <code>len</code>
 	 * bytes, but a smaller number may be read, possibly zero. The number of
 	 * bytes actually read is returned as an integer.
-	 * 
+	 *
 	 * <p>
 	 * This method blocks until input data is available, end of stream is
 	 * detected, or an exception is thrown.
-	 * 
+	 *
 	 * <p>
 	 * If <code>b</code> is <code>null</code>, a
 	 * <code>NullPointerException</code> is thrown.
-	 * 
+	 *
 	 * <p>
 	 * If <code>off</code> is negative, or <code>len</code> is negative, or
 	 * <code>off+len</code> is greater than the length of the array
 	 * <code>b</code>, then an <code>IndexOutOfBoundsException</code> is thrown.
-	 * 
+	 *
 	 * <p>
 	 * If <code>len</code> is zero, then no bytes are read and <code>0</code> is
 	 * returned; otherwise, there is an attempt to read at least one byte. If no
 	 * byte is available because the stream is at end of stream, the value
 	 * <code>-1</code> is returned; otherwise, at least one byte is read and
 	 * stored into <code>b</code>.
-	 * 
+	 *
 	 * <p>
 	 * The first byte read is stored into element <code>b[off]</code>, the next
 	 * one into <code>b[off+1]</code>, and so on. The number of bytes read is,
@@ -387,17 +390,17 @@ public class SegmentedSeekableStream extends SeekableStream {
 	 * through <code>b[off+</code><i>k</i><code>-1]</code>, leaving elements
 	 * <code>b[off+</code><i>k</i><code>]</code> through
 	 * <code>b[off+len-1]</code> unaffected.
-	 * 
+	 *
 	 * <p>
 	 * In every case, elements <code>b[0]</code> through <code>b[off]</code> and
 	 * elements <code>b[off+len]</code> through <code>b[b.length-1]</code> are
 	 * unaffected.
-	 * 
+	 *
 	 * <p>
 	 * If the first byte cannot be read for any reason other than end of stream,
 	 * then an <code>IOException</code> is thrown. In particular, an
 	 * <code>IOException</code> is thrown if the input stream has been closed.
-	 * 
+	 *
 	 * @param b
 	 *            the buffer into which the data is read.
 	 * @param off
@@ -413,7 +416,7 @@ public class SegmentedSeekableStream extends SeekableStream {
 	 */
 
 	@Override
-	public int read(byte[] b, int off, int len) throws IOException {
+	public int read(final byte[] b, final int off, final int len) throws IOException {
 		if (b == null) {
 			throw new NullPointerException();
 		}
@@ -427,7 +430,7 @@ public class SegmentedSeekableStream extends SeekableStream {
 		mapper.getStreamSegment(pointer, len, streamSegment);
 		stream.seek(streamSegment.getStartPos());
 
-		int nbytes = stream.read(b, off, streamSegment.getSegmentLength());
+		final int nbytes = stream.read(b, off, streamSegment.getSegmentLength());
 		pointer += nbytes;
 		return nbytes;
 	}

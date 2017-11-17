@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -31,20 +31,22 @@ import edu.cmu.cs.stage3.alice.core.property.ResponseProperty;
  * @deprecated please use edu.cmu.cs.stage3.alice.core.util.OneShot
  */
 @Deprecated
-public class SimpleBehavior extends edu.cmu.cs.stage3.alice.core.Behavior implements edu.cmu.cs.stage3.alice.core.event.ScheduleListener {
+public class SimpleBehavior extends edu.cmu.cs.stage3.alice.core.Behavior
+		implements edu.cmu.cs.stage3.alice.core.event.ScheduleListener {
 	public final ResponseProperty response = new ResponseProperty(this, "response", null);
 	private Response.RuntimeResponse m_runtimeResponse;
 	private Scheduler m_scheduler;
+
 	public Response.RuntimeResponse[] getAllRunningResponses() {
 		if (m_runtimeResponse != null) {
-			return new Response.RuntimeResponse[]{m_runtimeResponse};
+			return new Response.RuntimeResponse[] { m_runtimeResponse };
 		} else {
 			return null;
 		}
 	}
 
 	@Override
-	public void stopAllRuntimeResponses(double time) {
+	public void stopAllRuntimeResponses(final double time) {
 		if (m_runtimeResponse != null) {
 			m_runtimeResponse.stop(time);
 		}
@@ -52,11 +54,12 @@ public class SimpleBehavior extends edu.cmu.cs.stage3.alice.core.Behavior implem
 	}
 
 	@Override
-	protected void internalSchedule(double t, double dt) {
+	protected void internalSchedule(final double t, final double dt) {
 	}
+
 	@Override
-	public void scheduled(edu.cmu.cs.stage3.alice.core.event.ScheduleEvent scheduleEvent) {
-		double t = scheduleEvent.getTime();
+	public void scheduled(final edu.cmu.cs.stage3.alice.core.event.ScheduleEvent scheduleEvent) {
+		final double t = scheduleEvent.getTime();
 		Response responseValue = response.getResponseValue();
 		if (responseValue != null && responseValue.isCommentedOut.booleanValue()) {
 			responseValue = null;
@@ -67,7 +70,7 @@ public class SimpleBehavior extends edu.cmu.cs.stage3.alice.core.Behavior implem
 				m_runtimeResponse.prologue(t);
 			}
 			m_runtimeResponse.update(t);
-			double timeRemaining = m_runtimeResponse.getTimeRemaining(t);
+			final double timeRemaining = m_runtimeResponse.getTimeRemaining(t);
 			if (timeRemaining <= 0) {
 				m_runtimeResponse.epilogue(t);
 				if (m_scheduler != null) {
@@ -77,7 +80,8 @@ public class SimpleBehavior extends edu.cmu.cs.stage3.alice.core.Behavior implem
 			}
 		}
 	}
-	public void start(Scheduler scheduler) {
+
+	public void start(final Scheduler scheduler) {
 		m_scheduler = scheduler;
 		m_scheduler.addScheduleListener(this);
 	}
@@ -89,7 +93,7 @@ public class SimpleBehavior extends edu.cmu.cs.stage3.alice.core.Behavior implem
  * edu.cmu.cs.stage3.alice.core.Expression; import
  * edu.cmu.cs.stage3.alice.core.Sandbox; import
  * edu.cmu.cs.stage3.alice.core.property.ResponseProperty;
- * 
+ *
  * public class SimpleBehavior extends Behavior { private Response m_response =
  * null; private Expression[] m_requiredParameters = null; private Expression[]
  * m_keywordParameters = null; private Response.RuntimeResponse[]

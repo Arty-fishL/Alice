@@ -21,5 +21,6 @@ class SceneProxy extends edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerende
 	// from SceneProxy
 
 	@Override
-	protected native void onBackgroundChange(edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.BackgroundProxy value);
+	protected native void onBackgroundChange(
+			edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.BackgroundProxy value);
 }

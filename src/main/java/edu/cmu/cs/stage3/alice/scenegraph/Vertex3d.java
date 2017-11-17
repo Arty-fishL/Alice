@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -27,6 +27,10 @@ package edu.cmu.cs.stage3.alice.scenegraph;
  * @author Dennis Cosgrove
  */
 public class Vertex3d implements Cloneable, java.io.Serializable {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 565461906036102853L;
 	public static final int FORMAT_POSITION = 1;
 	public static final int FORMAT_NORMAL = 2;
 	public static final int FORMAT_DIFFUSE_COLOR = 4;
@@ -41,7 +45,8 @@ public class Vertex3d implements Cloneable, java.io.Serializable {
 
 	public Vertex3d() {
 	}
-	public Vertex3d(int format) {
+
+	public Vertex3d(final int format) {
 		if ((format & FORMAT_POSITION) != 0) {
 			position = new javax.vecmath.Point3d();
 		}
@@ -58,7 +63,9 @@ public class Vertex3d implements Cloneable, java.io.Serializable {
 			textureCoordinate0 = new javax.vecmath.TexCoord2f();
 		}
 	}
-	public Vertex3d(javax.vecmath.Point3d position, javax.vecmath.Vector3d normal, Color diffuseColor, Color specularHighlightColor, javax.vecmath.TexCoord2f textureCoordinate0) {
+
+	public Vertex3d(final javax.vecmath.Point3d position, final javax.vecmath.Vector3d normal, final Color diffuseColor,
+			final Color specularHighlightColor, final javax.vecmath.TexCoord2f textureCoordinate0) {
 		this.position = position;
 		this.normal = normal;
 		this.diffuseColor = diffuseColor;
@@ -66,8 +73,9 @@ public class Vertex3d implements Cloneable, java.io.Serializable {
 		this.textureCoordinate0 = textureCoordinate0;
 	}
 
-	public static Vertex3d createXYZIJKUV(double x, double y, double z, double i, double j, double k, float u, float v) {
-		Vertex3d vertex = new Vertex3d();
+	public static Vertex3d createXYZIJKUV(final double x, final double y, final double z, final double i,
+			final double j, final double k, final float u, final float v) {
+		final Vertex3d vertex = new Vertex3d();
 		vertex.position = new javax.vecmath.Point3d(x, y, z);
 		vertex.normal = new javax.vecmath.Vector3d(i, j, k);
 		vertex.textureCoordinate0 = new javax.vecmath.TexCoord2f(u, v);
@@ -80,15 +88,15 @@ public class Vertex3d implements Cloneable, java.io.Serializable {
 			// todo?
 			// do i need to make new clones of position, etc?
 			return super.clone();
-		} catch (CloneNotSupportedException e) {
+		} catch (final CloneNotSupportedException e) {
 			throw new InternalError();
 		}
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (o instanceof Vertex3d) {
-			Vertex3d v = (Vertex3d) o;
+			final Vertex3d v = (Vertex3d) o;
 			if (v.position == null) {
 				if (position != null) {
 					return false;
@@ -139,6 +147,7 @@ public class Vertex3d implements Cloneable, java.io.Serializable {
 			return false;
 		}
 	}
+
 	public int getFormat() {
 		int format = 0;
 		if (position != null) {
@@ -158,20 +167,24 @@ public class Vertex3d implements Cloneable, java.io.Serializable {
 		}
 		return format;
 	}
-	public void translate(double x, double y, double z) {
+
+	public void translate(final double x, final double y, final double z) {
 		position.x += x;
 		position.y += y;
 		position.z += z;
 	}
-	public void scale(double x, double y, double z) {
+
+	public void scale(final double x, final double y, final double z) {
 		position.x *= x;
 		position.y *= y;
 		position.z *= z;
 	}
-	public void transform(javax.vecmath.Matrix4d trans) {
+
+	public void transform(final javax.vecmath.Matrix4d trans) {
 		if (position != null) {
 			// trans.transform( position );
-			edu.cmu.cs.stage3.math.Vector4 xyz1 = new edu.cmu.cs.stage3.math.Vector4(position.x, position.y, position.z, 1);
+			final edu.cmu.cs.stage3.math.Vector4 xyz1 = new edu.cmu.cs.stage3.math.Vector4(position.x, position.y,
+					position.z, 1);
 			xyz1.transform(trans);
 			position.x = xyz1.x;
 			position.y = xyz1.y;
@@ -179,7 +192,8 @@ public class Vertex3d implements Cloneable, java.io.Serializable {
 		}
 		if (normal != null) {
 			// trans.transform( normal );
-			edu.cmu.cs.stage3.math.Vector4 ijk0 = new edu.cmu.cs.stage3.math.Vector4(normal.x, normal.y, normal.z, 0);
+			final edu.cmu.cs.stage3.math.Vector4 ijk0 = new edu.cmu.cs.stage3.math.Vector4(normal.x, normal.y, normal.z,
+					0);
 			ijk0.transform(trans);
 			normal.x = ijk0.x;
 			normal.y = ijk0.y;
@@ -189,7 +203,9 @@ public class Vertex3d implements Cloneable, java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[position=" + position + ",normal=" + normal + ",diffuseColor=" + diffuseColor + ",specularHighlightColor=" + specularHighlightColor + ",textureCoordinate0=" + textureCoordinate0 + "]";
+		return "edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[position=" + position + ",normal=" + normal
+				+ ",diffuseColor=" + diffuseColor + ",specularHighlightColor=" + specularHighlightColor
+				+ ",textureCoordinate0=" + textureCoordinate0 + "]";
 	}
 	// todo
 	// public static Vertex3d valueOf( String s ) {

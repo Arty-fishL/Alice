@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -34,7 +34,8 @@ abstract class CameraProxy extends ComponentProxy {
 	private boolean m_isLetterboxedAsOpposedToDistorted = true;
 
 	protected abstract java.awt.Rectangle getActualLetterboxedViewport(int width, int height);
-	public java.awt.Rectangle getActualViewport(int width, int height) {
+
+	public java.awt.Rectangle getActualViewport(final int width, final int height) {
 		if (m_viewport != null) {
 			return m_viewport;
 		} else {
@@ -45,33 +46,40 @@ abstract class CameraProxy extends ComponentProxy {
 			}
 		}
 	}
+
 	public java.awt.Rectangle getViewport() {
 		return m_viewport;
 	}
-	public void setViewport(java.awt.Rectangle viewport) {
+
+	public void setViewport(final java.awt.Rectangle viewport) {
 		m_viewport = new java.awt.Rectangle(viewport);
 	}
+
 	public boolean isLetterboxedAsOpposedToDistorted() {
 		return m_isLetterboxedAsOpposedToDistorted;
 	}
-	public void setIsLetterboxedAsOpposedToDistorted(boolean isLetterboxedAsOpposedToDistorted) {
+
+	public void setIsLetterboxedAsOpposedToDistorted(final boolean isLetterboxedAsOpposedToDistorted) {
 		m_isLetterboxedAsOpposedToDistorted = isLetterboxedAsOpposedToDistorted;
 	}
 
 	protected abstract double[] getActualNearPlane(double[] ret, int width, int height, double near);
-	public double[] getActualNearPlane(double[] ret, int width, int height) {
+
+	public double[] getActualNearPlane(final double[] ret, final int width, final int height) {
 		return getActualNearPlane(ret, width, height, m_near);
 	}
 
 	@Override
-	public void setup(RenderContext context) {
+	public void setup(final RenderContext context) {
 		// pass
 	}
+
 	protected abstract void projection(Context context, int width, int height, float near, float far);
-	public void performClearAndRenderOffscreen(RenderContext context) {
-		SceneProxy sceneProxy = getSceneProxy();
+
+	public void performClearAndRenderOffscreen(final RenderContext context) {
+		final SceneProxy sceneProxy = getSceneProxy();
 		if (sceneProxy != null) {
-			java.awt.Rectangle actualViewport = getActualViewport(context.getWidth(), context.getHeight());
+			final java.awt.Rectangle actualViewport = getActualViewport(context.getWidth(), context.getHeight());
 			BackgroundProxy backgroundProxy;
 			if (m_backgroundProxy != null) {
 				backgroundProxy = m_backgroundProxy;
@@ -104,11 +112,12 @@ abstract class CameraProxy extends ComponentProxy {
 
 		}
 	}
-	public void performPick(PickContext context, PickParameters pickParameters) {
-		SceneProxy sceneProxy = getSceneProxy();
+
+	public void performPick(final PickContext context, final PickParameters pickParameters) {
+		final SceneProxy sceneProxy = getSceneProxy();
 		if (sceneProxy != null) {
-			int width = context.getWidth();
-			int height = context.getHeight();
+			final int width = context.getWidth();
+			final int height = context.getHeight();
 			projection(context, width, height, m_near, m_far);
 			context.gl.glMatrixMode(GL.GL_MODELVIEW);
 			context.gl.glLoadIdentity();
@@ -118,15 +127,15 @@ abstract class CameraProxy extends ComponentProxy {
 	}
 
 	@Override
-	public void render(RenderContext context) {
+	public void render(final RenderContext context) {
 	}
 
 	@Override
-	public void pick(PickContext context, PickParameters pickParameters) {
+	public void pick(final PickContext context, final PickParameters pickParameters) {
 	}
 
 	@Override
-	protected void changed(edu.cmu.cs.stage3.alice.scenegraph.Property property, Object value) {
+	protected void changed(final edu.cmu.cs.stage3.alice.scenegraph.Property property, final Object value) {
 		if (property == edu.cmu.cs.stage3.alice.scenegraph.Camera.NEAR_CLIPPING_PLANE_DISTANCE_PROPERTY) {
 			m_near = ((Number) value).floatValue();
 		} else if (property == edu.cmu.cs.stage3.alice.scenegraph.Camera.FAR_CLIPPING_PLANE_DISTANCE_PROPERTY) {

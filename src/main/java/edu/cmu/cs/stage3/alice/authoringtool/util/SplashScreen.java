@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -27,18 +27,23 @@ package edu.cmu.cs.stage3.alice.authoringtool.util;
  * @author Jason Pratt
  */
 public class SplashScreen extends java.awt.Frame {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 5074978197408036348L;
 	protected java.awt.Image image;
 	protected java.awt.Dimension size;
 	protected java.awt.Window splashWindow;
 
-	public SplashScreen(java.awt.Image image) {
+	public SplashScreen(final java.awt.Image image) {
 		this.image = image;
 
-		java.awt.MediaTracker tracker = new java.awt.MediaTracker(this);
+		final java.awt.MediaTracker tracker = new java.awt.MediaTracker(this);
 		tracker.addImage(image, 0);
 		try {
 			tracker.waitForID(0);
-		} catch (InterruptedException e) {}
+		} catch (final InterruptedException e) {
+		}
 
 		size = new java.awt.Dimension(image.getWidth(this), image.getHeight(this));
 		if (size.width < 1 || size.height < 1) {
@@ -47,13 +52,18 @@ public class SplashScreen extends java.awt.Frame {
 
 		splashWindow = new java.awt.Window(this) {
 
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 8679053792520117620L;
+
 			@Override
-			public void paint(java.awt.Graphics g) {
+			public void paint(final java.awt.Graphics g) {
 				g.drawImage(SplashScreen.this.image, 0, 0, this);
 				// g.setColor( java.awt.Color.yellow );
 				g.setColor(java.awt.Color.white);
-				String versionString = "version: " + edu.cmu.cs.stage3.alice.authoringtool.JAlice.getVersion();
-				int stringWidth = g.getFontMetrics().stringWidth(versionString);
+				final String versionString = "version: " + edu.cmu.cs.stage3.alice.authoringtool.JAlice.getVersion();
+				final int stringWidth = g.getFontMetrics().stringWidth(versionString);
 				// g.drawString( versionString, 6, size.height - 6 ); //TODO:
 				// this makes the Splash Screen unnecessarily specialized. the
 				// functionality should be abstracted out.
@@ -72,7 +82,8 @@ public class SplashScreen extends java.awt.Frame {
 																							// abstracted
 																							// out.
 				if (hasNewVersion()) {
-					g.drawString("Loading...                      New Alice 2.2 update available ", 10, size.height - 6);
+					g.drawString("Loading...                      New Alice 2.2 update available ", 10,
+							size.height - 6);
 				} else {
 					g.drawString("Loading...", 10, size.height - 6);
 				}
@@ -86,17 +97,18 @@ public class SplashScreen extends java.awt.Frame {
 	public boolean hasNewVersion() {
 		if (System.getProperty("os.name") != null && System.getProperty("os.name").startsWith("Windows")) {
 			try {
-				StringBuffer sb = new StringBuffer("http://alicedownloads.org/alice.jar");
-				java.net.URL url = new java.net.URL(sb.toString());
-				java.net.URLConnection urlc = url.openConnection();
-				long i = urlc.getLastModified();
-				java.util.Date d = new java.util.Date(i);
-				java.util.regex.Pattern p = java.util.regex.Pattern.compile("\\D");
-				String oldVersion[] = p.split(edu.cmu.cs.stage3.alice.authoringtool.JAlice.getVersion());
-				if (Integer.valueOf(oldVersion[3]).compareTo(Integer.valueOf(d.getMonth() + 1)) < 0 && Integer.valueOf(oldVersion[5]).compareTo(Integer.valueOf(d.getYear() + 1900)) <= 0) {
+				final StringBuffer sb = new StringBuffer("http://alicedownloads.org/alice.jar");
+				final java.net.URL url = new java.net.URL(sb.toString());
+				final java.net.URLConnection urlc = url.openConnection();
+				final long i = urlc.getLastModified();
+				final java.util.Date d = new java.util.Date(i);
+				final java.util.regex.Pattern p = java.util.regex.Pattern.compile("\\D");
+				final String oldVersion[] = p.split(edu.cmu.cs.stage3.alice.authoringtool.JAlice.getVersion());
+				if (Integer.valueOf(oldVersion[3]).compareTo(Integer.valueOf(d.getMonth() + 1)) < 0
+						&& Integer.valueOf(oldVersion[5]).compareTo(Integer.valueOf(d.getYear() + 1900)) <= 0) {
 					return true;
 				}
-			} catch (Exception e) {
+			} catch (final Exception e) {
 
 			}
 		}
@@ -104,9 +116,9 @@ public class SplashScreen extends java.awt.Frame {
 	}
 
 	public void showSplash() {
-		java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-		int x = (screenSize.width - size.width) / 2;
-		int y = (screenSize.height - size.height) / 2;
+		final java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+		final int x = (screenSize.width - size.width) / 2;
+		final int y = (screenSize.height - size.height) / 2;
 		splashWindow.setLocation(x, y);
 		this.setLocation(x, y);
 		splashWindow.setVisible(true);

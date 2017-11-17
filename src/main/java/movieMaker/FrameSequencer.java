@@ -9,9 +9,9 @@ import java.util.Collections;
  * Class used to save frames in a movie to a directory and show frames from a
  * movie. This class tracks the directory, base file name, current frame number,
  * and whether this sequence is being shown.
- * 
+ *
  * Copyright Georgia Institute of Technology 2005
- * 
+ *
  * @author Barbara Ericson ericson@cc.gatech.edu
  */
 public class FrameSequencer {
@@ -33,20 +33,20 @@ public class FrameSequencer {
 	private MoviePlayer moviePlayer = null;
 
 	/** List of all the pictures so far */
-	private ArrayList pictureList = new ArrayList();
+	private final ArrayList pictureList = new ArrayList();
 
 	/** Use this to format the number for the frame */
-	private NumberFormat numberFormat = NumberFormat.getIntegerInstance();
+	private final NumberFormat numberFormat = NumberFormat.getIntegerInstance();
 
 	// ////////////////// Constructors /////////////////////////////
 
 	/**
 	 * Constructor that takes a directory name
-	 * 
+	 *
 	 * @param directory
 	 *            the directory to save the frames to
 	 */
-	public FrameSequencer(String directory) {
+	public FrameSequencer(final String directory) {
 		Collections.synchronizedList(pictureList);
 		this.directory = directory;
 		initFormatter();
@@ -55,13 +55,13 @@ public class FrameSequencer {
 
 	/**
 	 * Constructor that takes a directory name and a base file name
-	 * 
+	 *
 	 * @param directory
 	 *            the directory to save the frames to
 	 * @param baseName
 	 *            the base file name to use for the frames
 	 */
-	public FrameSequencer(String directory, String baseName) {
+	public FrameSequencer(final String directory, final String baseName) {
 		// use the other constructor to set the directory
 		this(directory);
 
@@ -73,7 +73,7 @@ public class FrameSequencer {
 
 	/**
 	 * Method to get the directory to write the frames to
-	 * 
+	 *
 	 * @return the directory to write the frames to
 	 */
 	public String getDirectory() {
@@ -82,11 +82,11 @@ public class FrameSequencer {
 
 	/**
 	 * Method to set the directory to write the frames to
-	 * 
+	 *
 	 * @param dir
 	 *            the directory to use
 	 */
-	public void setDirectory(String dir) {
+	public void setDirectory(final String dir) {
 		directory = dir;
 		initFormatter();
 		validateDirectory();
@@ -94,7 +94,7 @@ public class FrameSequencer {
 
 	/**
 	 * Method to get the base name
-	 * 
+	 *
 	 * @return the base file name for the movie frames
 	 */
 	public String getBaseName() {
@@ -103,17 +103,17 @@ public class FrameSequencer {
 
 	/**
 	 * Method to set the base name
-	 * 
+	 *
 	 * @param name
 	 *            the new base name to use
 	 */
-	public void setBaseName(String name) {
+	public void setBaseName(final String name) {
 		baseName = name;
 	}
 
 	/**
 	 * Method to get the frame number
-	 * 
+	 *
 	 * @return the next frame number for the next picture added
 	 */
 	public int getFrameNumber() {
@@ -122,7 +122,7 @@ public class FrameSequencer {
 
 	/**
 	 * Method to check if the frame sequence is being shown
-	 * 
+	 *
 	 * @return true if shown and false otherwise
 	 */
 	public boolean isShown() {
@@ -131,17 +131,17 @@ public class FrameSequencer {
 
 	/**
 	 * Method to set the shown flag
-	 * 
+	 *
 	 * @param value
 	 *            the value to use
 	 */
-	public void setShown(boolean value) {
+	public void setShown(final boolean value) {
 		shown = value;
 	}
 
 	/**
 	 * Method to get the number of frames in this sequence
-	 * 
+	 *
 	 * @return the number of frames
 	 */
 	public int getNumFrames() {
@@ -150,7 +150,7 @@ public class FrameSequencer {
 
 	/**
 	 * Method to get the movie player to use to show this sequence
-	 * 
+	 *
 	 * @return the movie player used to show this (may be null)
 	 */
 	public MoviePlayer getMoviePlayer() {
@@ -170,11 +170,11 @@ public class FrameSequencer {
 	 * character
 	 */
 	private void validateDirectory() {
-		char end = directory.charAt(directory.length() - 1);
+		final char end = directory.charAt(directory.length() - 1);
 		if (end != '/' && end != '\\') {
 			directory = directory + '/';
 		}
-		File directoryFile = new File(directory);
+		final File directoryFile = new File(directory);
 		if (!directoryFile.exists()) {
 			directoryFile.mkdirs();
 		}
@@ -182,11 +182,11 @@ public class FrameSequencer {
 
 	/**
 	 * Method to add a picture to the frame sequence
-	 * 
+	 *
 	 * @param picture
 	 *            the picture to add
 	 */
-	public void addFrame(Picture picture) {
+	public void addFrame(final Picture picture) {
 
 		// add this picture to the list
 		pictureList.add(picture);
@@ -197,7 +197,7 @@ public class FrameSequencer {
 
 	/**
 	 * Method to remove a picture to the frame sequence
-	 * 
+	 *
 	 * @param picture
 	 *            the picture to add
 	 */
@@ -216,8 +216,8 @@ public class FrameSequencer {
 	 */
 	public void deleteLastFrame() {
 		frameNumber--;
-		File f = new File(directory + baseName + numberFormat.format(frameNumber) + ".jpg");
-		boolean result = f.delete();
+		final File f = new File(directory + baseName + numberFormat.format(frameNumber) + ".jpg");
+		final boolean result = f.delete();
 		if (result != true) {
 			System.out.println("trouble removing last frame");
 		}
@@ -234,8 +234,8 @@ public class FrameSequencer {
 
 			// if there is a picture show the last one
 			if (pictureList.size() > 0) {
-				int lastIndex = pictureList.size() - 1;
-				Picture lastPicture = (Picture) pictureList.get(lastIndex);
+				final int lastIndex = pictureList.size() - 1;
+				final Picture lastPicture = (Picture) pictureList.get(lastIndex);
 				moviePlayer = new MoviePlayer(pictureList);
 				moviePlayer.setVisible(true);
 			} else {
@@ -246,11 +246,11 @@ public class FrameSequencer {
 
 	/**
 	 * Method to play the frames (pictures) added so far
-	 * 
+	 *
 	 * @param framesPerSecond
 	 *            the number of frames to show per second between frames
 	 */
-	public void play(int framesPerSecond) {
+	public void play(final int framesPerSecond) {
 		if (pictureList.size() > 0) {
 			shown = true;
 			if (moviePlayer == null) {
@@ -260,9 +260,9 @@ public class FrameSequencer {
 		}
 	}
 
-	public static void main(String[] args) {
-		String dir = "c:/intro-prog-java/movies/rectangle/";
-		FrameSequencer frameSequencer = new FrameSequencer(dir);
+	public static void main(final String[] args) {
+		final String dir = "c:/intro-prog-java/movies/rectangle/";
+		final FrameSequencer frameSequencer = new FrameSequencer(dir);
 		frameSequencer.play(1000 / 30);
 		// frameSequencer.play();
 	}

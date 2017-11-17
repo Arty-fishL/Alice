@@ -27,15 +27,21 @@ package edu.cmu.cs.stage3.alice.authoringtool.util;
  * @author Jason Pratt
  */
 public class TrashComponent extends javax.swing.JPanel implements java.awt.dnd.DropTargetListener {
-	protected javax.swing.ImageIcon trashOpenIcon = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getIconForValue("trashOpen");
-	protected javax.swing.ImageIcon trashClosedIcon = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getIconForValue("trashClosed");
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -1074735465799803238L;
+	protected javax.swing.ImageIcon trashOpenIcon = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+			.getIconForValue("trashOpen");
+	protected javax.swing.ImageIcon trashClosedIcon = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+			.getIconForValue("trashClosed");
 	protected javax.swing.JLabel trashLabel = new javax.swing.JLabel(trashClosedIcon);
 	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
 	protected boolean paintDropPotential = false;
 	protected DropPotentialFeedbackListener dropPotentialFeedbackListener = new DropPotentialFeedbackListener();
 	protected boolean beingDroppedOn = false;
 
-	public TrashComponent(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
+	public TrashComponent(final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
 		this.authoringTool = authoringTool;
 		setLayout(new java.awt.BorderLayout());
 		setOpaque(false);
@@ -44,12 +50,13 @@ public class TrashComponent extends javax.swing.JPanel implements java.awt.dnd.D
 		trashLabel.setDropTarget(new java.awt.dnd.DropTarget(trashLabel, this));
 		edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager.addListener(dropPotentialFeedbackListener);
 
-		setToolTipText("<html><font face=arial size=-1>Trash<p><p>Drag and drop tiles here to delete them.</font></html>");
+		setToolTipText(
+				"<html><font face=arial size=-1>Trash<p><p>Drag and drop tiles here to delete them.</font></html>");
 
 		addMouseListener(new edu.cmu.cs.stage3.alice.authoringtool.util.CustomMouseAdapter() {
 
 			@Override
-			public void singleClickResponse(java.awt.event.MouseEvent ev) {
+			public void singleClickResponse(final java.awt.event.MouseEvent ev) {
 				edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog(TrashComponent.this.getToolTipText());
 			}
 		});
@@ -61,10 +68,10 @@ public class TrashComponent extends javax.swing.JPanel implements java.awt.dnd.D
 	}
 
 	@Override
-	public void paintComponent(java.awt.Graphics g) {
+	public void paintComponent(final java.awt.Graphics g) {
 		if (paintDropPotential) {
 			// trashLabel.setEnabled( true );
-			java.awt.Dimension size = getSize();
+			final java.awt.Dimension size = getSize();
 			if (beingDroppedOn) {
 				g.setColor(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("dndHighlight2"));
 			} else {
@@ -83,22 +90,36 @@ public class TrashComponent extends javax.swing.JPanel implements java.awt.dnd.D
 	// //////////////////////////////////
 
 	// TODO: remove duplicated code
-	protected boolean checkTransferable(java.awt.datatransfer.Transferable transferable) {
+	protected boolean checkTransferable(final java.awt.datatransfer.Transferable transferable) {
 		if (DnDManager.getCurrentDragComponent() instanceof DnDClipboard) {
 			return true;
-		} else if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.elementReferenceFlavor) || edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ObjectArrayPropertyItemTransferable.objectArrayPropertyItemFlavor) || edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedResponsePrototypeReferenceTransferable.callToUserDefinedResponsePrototypeReferenceFlavor) || edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedQuestionPrototypeReferenceTransferable.callToUserDefinedQuestionPrototypeReferenceFlavor)) {
+		} else if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable,
+				edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.elementReferenceFlavor)
+				|| edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable,
+						edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ObjectArrayPropertyItemTransferable.objectArrayPropertyItemFlavor)
+				|| edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable,
+						edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedResponsePrototypeReferenceTransferable.callToUserDefinedResponsePrototypeReferenceFlavor)
+				|| edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable,
+						edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedQuestionPrototypeReferenceTransferable.callToUserDefinedQuestionPrototypeReferenceFlavor)) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	protected boolean checkDrag(java.awt.dnd.DropTargetDragEvent dtde) {
+	protected boolean checkDrag(final java.awt.dnd.DropTargetDragEvent dtde) {
 		if (DnDManager.getCurrentDragComponent() instanceof DnDClipboard) {
 			dtde.acceptDrag(java.awt.dnd.DnDConstants.ACTION_MOVE);
 			trashLabel.setIcon(trashOpenIcon);
 			return true;
-		} else if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.elementReferenceFlavor) || edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ObjectArrayPropertyItemTransferable.objectArrayPropertyItemFlavor) || edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedQuestionPrototypeReferenceTransferable.callToUserDefinedQuestionPrototypeReferenceFlavor) || edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedResponsePrototypeReferenceTransferable.callToUserDefinedResponsePrototypeReferenceFlavor)) {
+		} else if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde,
+				edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.elementReferenceFlavor)
+				|| edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde,
+						edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ObjectArrayPropertyItemTransferable.objectArrayPropertyItemFlavor)
+				|| edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde,
+						edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedQuestionPrototypeReferenceTransferable.callToUserDefinedQuestionPrototypeReferenceFlavor)
+				|| edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde,
+						edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedResponsePrototypeReferenceTransferable.callToUserDefinedResponsePrototypeReferenceFlavor)) {
 			dtde.acceptDrag(java.awt.dnd.DnDConstants.ACTION_MOVE);
 			trashLabel.setIcon(trashOpenIcon);
 			return true;
@@ -109,7 +130,7 @@ public class TrashComponent extends javax.swing.JPanel implements java.awt.dnd.D
 	}
 
 	@Override
-	public void dragEnter(java.awt.dnd.DropTargetDragEvent dtde) {
+	public void dragEnter(final java.awt.dnd.DropTargetDragEvent dtde) {
 		if (checkDrag(dtde)) {
 			beingDroppedOn = true;
 			repaint();
@@ -117,7 +138,7 @@ public class TrashComponent extends javax.swing.JPanel implements java.awt.dnd.D
 	}
 
 	@Override
-	public void dragExit(java.awt.dnd.DropTargetEvent dte) {
+	public void dragExit(final java.awt.dnd.DropTargetEvent dte) {
 		if (beingDroppedOn) {
 			beingDroppedOn = false;
 			repaint();
@@ -126,7 +147,7 @@ public class TrashComponent extends javax.swing.JPanel implements java.awt.dnd.D
 	}
 
 	@Override
-	public void dragOver(java.awt.dnd.DropTargetDragEvent dtde) {
+	public void dragOver(final java.awt.dnd.DropTargetDragEvent dtde) {
 		if (!checkDrag(dtde)) {
 			beingDroppedOn = false;
 			repaint();
@@ -134,54 +155,68 @@ public class TrashComponent extends javax.swing.JPanel implements java.awt.dnd.D
 	}
 
 	@Override
-	public void drop(java.awt.dnd.DropTargetDropEvent dtde) {
+	public void drop(final java.awt.dnd.DropTargetDropEvent dtde) {
 		try {
 			if (DnDManager.getCurrentDragComponent() instanceof DnDClipboard) {
 				dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_MOVE);
-				DnDClipboard clipboard = (DnDClipboard) DnDManager.getCurrentDragComponent();
+				final DnDClipboard clipboard = (DnDClipboard) DnDManager.getCurrentDragComponent();
 				clipboard.setTransferable(null);
 				dtde.dropComplete(true);
-			} else if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.elementReferenceFlavor)) {
+			} else if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde,
+					edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.elementReferenceFlavor)) {
 				dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_MOVE);
-				java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
-				edu.cmu.cs.stage3.alice.core.Element element = (edu.cmu.cs.stage3.alice.core.Element) transferable.getTransferData(edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.elementReferenceFlavor);
+				final java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
+				final edu.cmu.cs.stage3.alice.core.Element element = (edu.cmu.cs.stage3.alice.core.Element) transferable
+						.getTransferData(
+								edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.elementReferenceFlavor);
 				// HACK
-				edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.DeleteRunnable deleteRunnable = new edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.DeleteRunnable(element, authoringTool);
+				final edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.DeleteRunnable deleteRunnable = new edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.DeleteRunnable(
+						element, authoringTool);
 				deleteRunnable.run();
 				dtde.dropComplete(true);
-			} else if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedResponsePrototypeReferenceTransferable.callToUserDefinedResponsePrototypeReferenceFlavor)) {
+			} else if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde,
+					edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedResponsePrototypeReferenceTransferable.callToUserDefinedResponsePrototypeReferenceFlavor)) {
 				dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_MOVE);
-				java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
-				edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedResponsePrototype callToUserDefinedResponsePrototype = (edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedResponsePrototype) transferable.getTransferData(edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedResponsePrototypeReferenceTransferable.callToUserDefinedResponsePrototypeReferenceFlavor);
+				final java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
+				final edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedResponsePrototype callToUserDefinedResponsePrototype = (edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedResponsePrototype) transferable
+						.getTransferData(
+								edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedResponsePrototypeReferenceTransferable.callToUserDefinedResponsePrototypeReferenceFlavor);
 				// HACK
-				edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.DeleteRunnable deleteRunnable = new edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.DeleteRunnable(callToUserDefinedResponsePrototype.getActualResponse(), authoringTool);
+				final edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.DeleteRunnable deleteRunnable = new edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.DeleteRunnable(
+						callToUserDefinedResponsePrototype.getActualResponse(), authoringTool);
 				deleteRunnable.run();
 				dtde.dropComplete(true);
-			} else if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedQuestionPrototypeReferenceTransferable.callToUserDefinedQuestionPrototypeReferenceFlavor)) {
+			} else if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde,
+					edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedQuestionPrototypeReferenceTransferable.callToUserDefinedQuestionPrototypeReferenceFlavor)) {
 				dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_MOVE);
-				java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
-				edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedQuestionPrototype callToUserDefinedQuestionPrototype = (edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedQuestionPrototype) transferable.getTransferData(edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedQuestionPrototypeReferenceTransferable.callToUserDefinedQuestionPrototypeReferenceFlavor);
+				final java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
+				final edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedQuestionPrototype callToUserDefinedQuestionPrototype = (edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedQuestionPrototype) transferable
+						.getTransferData(
+								edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedQuestionPrototypeReferenceTransferable.callToUserDefinedQuestionPrototypeReferenceFlavor);
 				// HACK
-				edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.DeleteRunnable deleteRunnable = new edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.DeleteRunnable(callToUserDefinedQuestionPrototype.getActualQuestion(), authoringTool);
+				final edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.DeleteRunnable deleteRunnable = new edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.DeleteRunnable(
+						callToUserDefinedQuestionPrototype.getActualQuestion(), authoringTool);
 				deleteRunnable.run();
 				dtde.dropComplete(true);
-			} else if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ObjectArrayPropertyItemTransferable.objectArrayPropertyItemFlavor)) {
+			} else if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde,
+					edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ObjectArrayPropertyItemTransferable.objectArrayPropertyItemFlavor)) {
 				dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_MOVE);
-				java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
-				ObjectArrayPropertyItem item = (ObjectArrayPropertyItem) transferable.getTransferData(edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ObjectArrayPropertyItemTransferable.objectArrayPropertyItemFlavor);
+				final java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
+				final ObjectArrayPropertyItem item = (ObjectArrayPropertyItem) transferable.getTransferData(
+						edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ObjectArrayPropertyItemTransferable.objectArrayPropertyItemFlavor);
 				item.objectArrayProperty.remove(item.getIndex());
 				dtde.dropComplete(true);
 			} else {
 				dtde.rejectDrop();
 				dtde.dropComplete(false);
 			}
-		} catch (java.awt.datatransfer.UnsupportedFlavorException e) {
+		} catch (final java.awt.datatransfer.UnsupportedFlavorException e) {
 			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Drop didn't work: bad flavor", e);
 			dtde.dropComplete(false);
-		} catch (java.io.IOException e) {
+		} catch (final java.io.IOException e) {
 			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Drop didn't work: IOException", e);
 			dtde.dropComplete(false);
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Drop didn't work.", t);
 			dtde.dropComplete(false);
 		}
@@ -189,14 +224,16 @@ public class TrashComponent extends javax.swing.JPanel implements java.awt.dnd.D
 	}
 
 	@Override
-	public void dropActionChanged(java.awt.dnd.DropTargetDragEvent dtde) {
+	public void dropActionChanged(final java.awt.dnd.DropTargetDragEvent dtde) {
 		checkDrag(dtde);
 	}
 
-	protected class DropPotentialFeedbackListener implements edu.cmu.cs.stage3.alice.authoringtool.util.event.DnDManagerListener {
+	protected class DropPotentialFeedbackListener
+			implements edu.cmu.cs.stage3.alice.authoringtool.util.event.DnDManagerListener {
 		private void doCheck() {
-			java.awt.datatransfer.Transferable transferable = edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager.getCurrentTransferable();
-			boolean transferableHasPotential = checkTransferable(transferable);
+			final java.awt.datatransfer.Transferable transferable = edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager
+					.getCurrentTransferable();
+			final boolean transferableHasPotential = checkTransferable(transferable);
 			if (paintDropPotential != transferableHasPotential) {
 				paintDropPotential = transferableHasPotential;
 				TrashComponent.this.repaint();
@@ -204,7 +241,7 @@ public class TrashComponent extends javax.swing.JPanel implements java.awt.dnd.D
 		}
 
 		@Override
-		public void dragGestureRecognized(java.awt.dnd.DragGestureEvent dge) {
+		public void dragGestureRecognized(final java.awt.dnd.DragGestureEvent dge) {
 			// do nothing for the gesture, wait until dragStarted
 		}
 
@@ -215,27 +252,27 @@ public class TrashComponent extends javax.swing.JPanel implements java.awt.dnd.D
 		}
 
 		@Override
-		public void dragEnter(java.awt.dnd.DragSourceDragEvent dsde) {
+		public void dragEnter(final java.awt.dnd.DragSourceDragEvent dsde) {
 			doCheck();
 		}
 
 		@Override
-		public void dragExit(java.awt.dnd.DragSourceEvent dse) {
+		public void dragExit(final java.awt.dnd.DragSourceEvent dse) {
 			doCheck();
 		}
 
 		@Override
-		public void dragOver(java.awt.dnd.DragSourceDragEvent dsde) {
+		public void dragOver(final java.awt.dnd.DragSourceDragEvent dsde) {
 			// don't check here
 		}
 
 		@Override
-		public void dropActionChanged(java.awt.dnd.DragSourceDragEvent dsde) {
+		public void dropActionChanged(final java.awt.dnd.DragSourceDragEvent dsde) {
 			doCheck();
 		}
 
 		@Override
-		public void dragDropEnd(java.awt.dnd.DragSourceDropEvent dsde) {
+		public void dragDropEnd(final java.awt.dnd.DragSourceDropEvent dsde) {
 			paintDropPotential = false;
 			TrashComponent.this.repaint();
 		}

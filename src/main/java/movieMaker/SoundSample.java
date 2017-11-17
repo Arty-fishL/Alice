@@ -3,9 +3,9 @@ package movieMaker;
 /**
  * Class that represents a sample of a sound. It knows what sound object it
  * comes from and knows what frame number this sample is in the sound object.
- * 
+ *
  * Copyright Georgia Institute of Technology 2004
- * 
+ *
  * @author Barb Ericson ericson@cc.gatech.edu
  */
 public class SoundSample {
@@ -19,13 +19,13 @@ public class SoundSample {
 
 	/**
 	 * Constructor that takes a sound and valueArray
-	 * 
+	 *
 	 * @param sound
 	 *            the sound object this sample comes from
 	 * @param frameNumber
 	 *            the frameNumber of this sample in the sound
 	 */
-	public SoundSample(SimpleSound sound, int frameNumber) {
+	public SoundSample(final SimpleSound sound, final int frameNumber) {
 		this.sound = sound;
 		this.frameNumber = frameNumber;
 	}
@@ -35,32 +35,34 @@ public class SoundSample {
 	/**
 	 * Method to get the value of this sample as in int and handle the possible
 	 * sound exception
-	 * 
+	 *
 	 * @return the value of this sample as an int
 	 */
 	public int getValue() {
 		int value = 0;
 		try {
 			value = sound.getSampleValue(frameNumber);
-		} catch (SoundException ex) {}
+		} catch (final SoundException ex) {
+		}
 		return value;
 	}
 
 	/**
 	 * Method to set the value of this sample and handle the sound exception
-	 * 
+	 *
 	 * @param value
 	 *            the value to use
 	 */
-	public void setValue(int value) {
+	public void setValue(final int value) {
 		try {
 			sound.setSampleValue(frameNumber, value);
-		} catch (SoundException ex) {}
+		} catch (final SoundException ex) {
+		}
 	}
 
 	/**
 	 * Method to return a string with the information about this object
-	 * 
+	 *
 	 * @return a string with information about this object
 	 */
 

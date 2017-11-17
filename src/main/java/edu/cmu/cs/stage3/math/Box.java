@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -29,11 +29,14 @@ public class Box implements Cloneable {
 
 	public Box() {
 	}
-	public Box(javax.vecmath.Vector3d minimum, javax.vecmath.Vector3d maximum) {
+
+	public Box(final javax.vecmath.Vector3d minimum, final javax.vecmath.Vector3d maximum) {
 		setMinimum(minimum);
 		setMaximum(maximum);
 	}
-	public Box(double minimumX, double minimumY, double minimumZ, double maximumX, double maximumY, double maximumZ) {
+
+	public Box(final double minimumX, final double minimumY, final double minimumZ, final double maximumX,
+			final double maximumY, final double maximumZ) {
 		setMinimum(new javax.vecmath.Vector3d(minimumX, minimumY, minimumZ));
 		setMaximum(new javax.vecmath.Vector3d(maximumX, maximumY, maximumZ));
 	}
@@ -41,22 +44,22 @@ public class Box implements Cloneable {
 	@Override
 	public synchronized Object clone() {
 		try {
-			Box box = (Box) super.clone();
+			final Box box = (Box) super.clone();
 			box.setMinimum(m_minimum);
 			box.setMaximum(m_maximum);
 			return box;
-		} catch (CloneNotSupportedException e) {
+		} catch (final CloneNotSupportedException e) {
 			throw new InternalError();
 		}
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (o == this) {
 			return true;
 		}
 		if (o != null && o instanceof Box) {
-			Box box = (Box) o;
+			final Box box = (Box) o;
 			return m_minimum.equals(box.m_minimum) && m_maximum.equals(box.m_maximum);
 		} else {
 			return false;
@@ -64,7 +67,7 @@ public class Box implements Cloneable {
 	}
 
 	public javax.vecmath.Vector3d[] getCorners() {
-		javax.vecmath.Vector3d[] corners = new javax.vecmath.Vector3d[8];
+		final javax.vecmath.Vector3d[] corners = new javax.vecmath.Vector3d[8];
 		corners[0] = new javax.vecmath.Vector3d(m_minimum.x, m_minimum.y, m_minimum.z);
 		corners[1] = new javax.vecmath.Vector3d(m_minimum.x, m_minimum.y, m_maximum.z);
 		corners[2] = new javax.vecmath.Vector3d(m_minimum.x, m_maximum.y, m_minimum.z);
@@ -75,6 +78,7 @@ public class Box implements Cloneable {
 		corners[7] = new javax.vecmath.Vector3d(m_maximum.x, m_maximum.y, m_maximum.z);
 		return corners;
 	}
+
 	public javax.vecmath.Vector3d getMinimum() {
 		if (m_minimum != null) {
 			return new javax.vecmath.Vector3d(m_minimum);
@@ -82,13 +86,15 @@ public class Box implements Cloneable {
 			return null;
 		}
 	}
-	public void setMinimum(javax.vecmath.Vector3d minimum) {
+
+	public void setMinimum(final javax.vecmath.Vector3d minimum) {
 		if (minimum != null) {
 			m_minimum = new javax.vecmath.Vector3d(minimum);
 		} else {
 			m_minimum = null;
 		}
 	}
+
 	public javax.vecmath.Vector3d getMaximum() {
 		if (m_maximum != null) {
 			return new javax.vecmath.Vector3d(m_maximum);
@@ -96,7 +102,8 @@ public class Box implements Cloneable {
 			return null;
 		}
 	}
-	public void setMaximum(javax.vecmath.Vector3d maximum) {
+
+	public void setMaximum(final javax.vecmath.Vector3d maximum) {
 		if (maximum != null) {
 			m_maximum = new javax.vecmath.Vector3d(maximum);
 		} else {
@@ -106,7 +113,8 @@ public class Box implements Cloneable {
 
 	public javax.vecmath.Vector3d getCenter() {
 		if (m_minimum != null && m_maximum != null) {
-			return new javax.vecmath.Vector3d((m_minimum.x + m_maximum.x) / 2, (m_minimum.y + m_maximum.y) / 2, (m_minimum.z + m_maximum.z) / 2);
+			return new javax.vecmath.Vector3d((m_minimum.x + m_maximum.x) / 2, (m_minimum.y + m_maximum.y) / 2,
+					(m_minimum.z + m_maximum.z) / 2);
 		} else {
 			return null;
 		}
@@ -114,7 +122,8 @@ public class Box implements Cloneable {
 
 	public javax.vecmath.Vector3d getCenterOfFrontFace() {
 		if (m_minimum != null && m_maximum != null) {
-			return new javax.vecmath.Vector3d((m_minimum.x + m_maximum.x) / 2, (m_minimum.y + m_maximum.y) / 2, m_maximum.z);
+			return new javax.vecmath.Vector3d((m_minimum.x + m_maximum.x) / 2, (m_minimum.y + m_maximum.y) / 2,
+					m_maximum.z);
 		} else {
 			return null;
 		}
@@ -122,7 +131,8 @@ public class Box implements Cloneable {
 
 	public javax.vecmath.Vector3d getCenterOfBackFace() {
 		if (m_minimum != null && m_maximum != null) {
-			return new javax.vecmath.Vector3d((m_minimum.x + m_maximum.x) / 2, (m_minimum.y + m_maximum.y) / 2, m_minimum.z);
+			return new javax.vecmath.Vector3d((m_minimum.x + m_maximum.x) / 2, (m_minimum.y + m_maximum.y) / 2,
+					m_minimum.z);
 		} else {
 			return null;
 		}
@@ -130,7 +140,8 @@ public class Box implements Cloneable {
 
 	public javax.vecmath.Vector3d getCenterOfLeftFace() {
 		if (m_minimum != null && m_maximum != null) {
-			return new javax.vecmath.Vector3d(m_minimum.x, (m_minimum.y + m_maximum.y) / 2, (m_minimum.z + m_maximum.z) / 2);
+			return new javax.vecmath.Vector3d(m_minimum.x, (m_minimum.y + m_maximum.y) / 2,
+					(m_minimum.z + m_maximum.z) / 2);
 		} else {
 			return null;
 		}
@@ -138,7 +149,8 @@ public class Box implements Cloneable {
 
 	public javax.vecmath.Vector3d getCenterOfRightFace() {
 		if (m_minimum != null && m_maximum != null) {
-			return new javax.vecmath.Vector3d(m_maximum.x, (m_minimum.y + m_maximum.y) / 2, (m_minimum.z + m_maximum.z) / 2);
+			return new javax.vecmath.Vector3d(m_maximum.x, (m_minimum.y + m_maximum.y) / 2,
+					(m_minimum.z + m_maximum.z) / 2);
 		} else {
 			return null;
 		}
@@ -146,7 +158,8 @@ public class Box implements Cloneable {
 
 	public javax.vecmath.Vector3d getCenterOfTopFace() {
 		if (m_minimum != null && m_maximum != null) {
-			return new javax.vecmath.Vector3d((m_minimum.x + m_maximum.x) / 2, m_maximum.y, (m_minimum.z + m_maximum.z) / 2);
+			return new javax.vecmath.Vector3d((m_minimum.x + m_maximum.x) / 2, m_maximum.y,
+					(m_minimum.z + m_maximum.z) / 2);
 		} else {
 			return null;
 		}
@@ -154,7 +167,8 @@ public class Box implements Cloneable {
 
 	public javax.vecmath.Vector3d getCenterOfBottomFace() {
 		if (m_minimum != null && m_maximum != null) {
-			return new javax.vecmath.Vector3d((m_minimum.x + m_maximum.x) / 2, m_minimum.y, (m_minimum.z + m_maximum.z) / 2);
+			return new javax.vecmath.Vector3d((m_minimum.x + m_maximum.x) / 2, m_minimum.y,
+					(m_minimum.z + m_maximum.z) / 2);
 		} else {
 			return null;
 		}
@@ -167,6 +181,7 @@ public class Box implements Cloneable {
 			return 0;
 		}
 	}
+
 	public double getHeight() {
 		if (m_minimum != null && m_maximum != null) {
 			return m_maximum.y - m_minimum.y;
@@ -174,6 +189,7 @@ public class Box implements Cloneable {
 			return 0;
 		}
 	}
+
 	public double getDepth() {
 		if (m_minimum != null && m_maximum != null) {
 			return m_maximum.z - m_minimum.z;
@@ -181,7 +197,8 @@ public class Box implements Cloneable {
 			return 0;
 		}
 	}
-	public void union(Box b) {
+
+	public void union(final Box b) {
 		if (b != null) {
 			if (b.m_minimum != null) {
 				if (m_minimum != null) {
@@ -203,7 +220,8 @@ public class Box implements Cloneable {
 			}
 		}
 	}
-	public void transform(javax.vecmath.Matrix4d m) {
+
+	public void transform(final javax.vecmath.Matrix4d m) {
 		if (m_minimum != null && m_maximum != null) {
 			/*
 			 * double[] minimum = { m.rc30, m.rc31, m.rc32 }; double[] maximum =
@@ -218,7 +236,8 @@ public class Box implements Cloneable {
 			m_maximum = MathUtilities.createVector3d(MathUtilities.multiply(m_maximum, 1, m));
 		}
 	}
-	public void scale(javax.vecmath.Matrix3d s) {
+
+	public void scale(final javax.vecmath.Matrix3d s) {
 		if (s != null) {
 			if (m_minimum != null) {
 				s.transform(m_minimum);

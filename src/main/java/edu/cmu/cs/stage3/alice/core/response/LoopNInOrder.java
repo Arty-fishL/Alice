@@ -55,7 +55,7 @@ public class LoopNInOrder extends DoInOrder {
 			if (count.get() != null) {
 				end.set(count.get());
 			}
-			edu.cmu.cs.stage3.alice.core.Variable indexVariable = new edu.cmu.cs.stage3.alice.core.Variable();
+			final edu.cmu.cs.stage3.alice.core.Variable indexVariable = new edu.cmu.cs.stage3.alice.core.Variable();
 			indexVariable.valueClass.set(Number.class);
 			indexVariable.name.set("index");
 			indexVariable.setParent(this);
@@ -64,29 +64,32 @@ public class LoopNInOrder extends DoInOrder {
 	}
 
 	@Override
-	protected void internalFindAccessibleExpressions(Class cls, java.util.Vector v) {
+	protected void internalFindAccessibleExpressions(final Class cls, final java.util.Vector v) {
 		internalAddExpressionIfAssignableTo((edu.cmu.cs.stage3.alice.core.Expression) index.get(), cls, v);
 		super.internalFindAccessibleExpressions(cls, v);
 	}
+
 	public class RuntimeLoopNInOrder extends RuntimeDoInOrder {
 		private int m_endTest;
+
 		private double getIndexValue() {
-			edu.cmu.cs.stage3.alice.core.Variable indexVariable = index.getVariableValue();
-			Number number = (Number) indexVariable.value.getValue();
+			final edu.cmu.cs.stage3.alice.core.Variable indexVariable = index.getVariableValue();
+			final Number number = (Number) indexVariable.value.getValue();
 			return number.doubleValue();
 		}
-		private void setIndexValue(double value) {
-			edu.cmu.cs.stage3.alice.core.Variable indexVariable = index.getVariableValue();
+
+		private void setIndexValue(final double value) {
+			final edu.cmu.cs.stage3.alice.core.Variable indexVariable = index.getVariableValue();
 			indexVariable.value.set(new Double(value));
 		}
 
 		@Override
-		protected boolean preLoopTest(double t) {
+		protected boolean preLoopTest(final double t) {
 			return getIndexValue() < m_endTest;
 		}
 
 		@Override
-		protected boolean postLoopTest(double t) {
+		protected boolean postLoopTest(final double t) {
 			setIndexValue(getIndexValue() + increment.doubleValue(1));
 			return true;
 		}
@@ -97,11 +100,11 @@ public class LoopNInOrder extends DoInOrder {
 		}
 
 		@Override
-		public void prologue(double t) {
-			edu.cmu.cs.stage3.alice.core.Behavior currentBehavior = getCurrentBehavior();
+		public void prologue(final double t) {
+			final edu.cmu.cs.stage3.alice.core.Behavior currentBehavior = getCurrentBehavior();
 			if (currentBehavior != null) {
-				edu.cmu.cs.stage3.alice.core.Variable indexVariable = index.getVariableValue();
-				edu.cmu.cs.stage3.alice.core.Variable indexRuntimeVariable = new edu.cmu.cs.stage3.alice.core.Variable();
+				final edu.cmu.cs.stage3.alice.core.Variable indexVariable = index.getVariableValue();
+				final edu.cmu.cs.stage3.alice.core.Variable indexRuntimeVariable = new edu.cmu.cs.stage3.alice.core.Variable();
 				indexRuntimeVariable.valueClass.set(indexVariable.valueClass.get());
 				indexRuntimeVariable.value.set(start.getNumberValue());
 				currentBehavior.pushEach(indexVariable, indexRuntimeVariable);
@@ -111,9 +114,9 @@ public class LoopNInOrder extends DoInOrder {
 		}
 
 		@Override
-		public void epilogue(double t) {
+		public void epilogue(final double t) {
 			super.epilogue(t);
-			edu.cmu.cs.stage3.alice.core.Behavior currentBehavior = getCurrentBehavior();
+			final edu.cmu.cs.stage3.alice.core.Behavior currentBehavior = getCurrentBehavior();
 			if (currentBehavior != null) {
 				currentBehavior.popStack();
 			}

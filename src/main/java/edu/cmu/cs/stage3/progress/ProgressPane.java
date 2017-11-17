@@ -1,15 +1,20 @@
 package edu.cmu.cs.stage3.progress;
 
-public abstract class ProgressPane extends edu.cmu.cs.stage3.swing.ContentPane implements edu.cmu.cs.stage3.progress.ProgressObserver {
-	private javax.swing.JLabel m_descriptionLabel;
-	private javax.swing.JProgressBar m_progressBar;
-	private javax.swing.JButton m_cancelButton;
+public abstract class ProgressPane extends edu.cmu.cs.stage3.swing.ContentPane
+		implements edu.cmu.cs.stage3.progress.ProgressObserver {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 2589725328539629433L;
+	private final javax.swing.JLabel m_descriptionLabel;
+	private final javax.swing.JProgressBar m_progressBar;
+	private final javax.swing.JButton m_cancelButton;
 
-	private String m_title;
-	private String m_preDescription;
+	private final String m_title;
+	private final String m_preDescription;
 
-	private java.util.Vector m_okActionListeners = new java.util.Vector();
-	private java.util.Vector m_cancelActionListeners = new java.util.Vector();
+	private final java.util.Vector m_okActionListeners = new java.util.Vector();
+	private final java.util.Vector m_cancelActionListeners = new java.util.Vector();
 
 	private final int UNKNOWN_TOTAL_MAX = 100;
 	private int m_total;
@@ -17,7 +22,7 @@ public abstract class ProgressPane extends edu.cmu.cs.stage3.swing.ContentPane i
 	private boolean m_isCanceled = false;
 	private boolean m_isFinished = false;
 
-	public ProgressPane(String title, String preDescription) {
+	public ProgressPane(final String title, final String preDescription) {
 		m_title = title;
 		m_preDescription = preDescription;
 
@@ -29,14 +34,14 @@ public abstract class ProgressPane extends edu.cmu.cs.stage3.swing.ContentPane i
 		m_cancelButton = new javax.swing.JButton("Cancel");
 		m_cancelButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				onCancel();
 			}
 		});
 
 		setLayout(new java.awt.GridBagLayout());
 
-		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+		final java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 
 		gbc.anchor = java.awt.GridBagConstraints.NORTHWEST;
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
@@ -78,7 +83,7 @@ public abstract class ProgressPane extends edu.cmu.cs.stage3.swing.ContentPane i
 	protected abstract void construct() throws ProgressCancelException;
 
 	@Override
-	public void preDialogShow(javax.swing.JDialog dialog) {
+	public void preDialogShow(final javax.swing.JDialog dialog) {
 		super.preDialogShow(dialog);
 		new Thread(new Runnable() {
 			@Override
@@ -86,7 +91,7 @@ public abstract class ProgressPane extends edu.cmu.cs.stage3.swing.ContentPane i
 				try {
 					construct();
 					fireOKActionListeners();
-				} catch (ProgressCancelException pce) {
+				} catch (final ProgressCancelException pce) {
 					fireCancelActionListeners();
 				}
 			}
@@ -96,12 +101,13 @@ public abstract class ProgressPane extends edu.cmu.cs.stage3.swing.ContentPane i
 	public boolean isCancelEnabled() {
 		return m_cancelButton.isEnabled();
 	}
-	public void setIsCancelEnabled(boolean isCancelEnabled) {
+
+	public void setIsCancelEnabled(final boolean isCancelEnabled) {
 		m_cancelButton.setEnabled(isCancelEnabled);
 	}
 
 	@Override
-	public boolean isReadyToDispose(int option) {
+	public boolean isReadyToDispose(final int option) {
 		if (m_isFinished) {
 			return true;
 		} else {
@@ -123,33 +129,35 @@ public abstract class ProgressPane extends edu.cmu.cs.stage3.swing.ContentPane i
 	}
 
 	@Override
-	public void addOKActionListener(java.awt.event.ActionListener l) {
+	public void addOKActionListener(final java.awt.event.ActionListener l) {
 		m_okActionListeners.addElement(l);
 	}
 
 	@Override
-	public void removeOKActionListener(java.awt.event.ActionListener l) {
+	public void removeOKActionListener(final java.awt.event.ActionListener l) {
 		m_okActionListeners.removeElement(l);
 	}
 
 	@Override
-	public void addCancelActionListener(java.awt.event.ActionListener l) {
+	public void addCancelActionListener(final java.awt.event.ActionListener l) {
 		m_cancelActionListeners.addElement(l);
 	}
 
 	@Override
-	public void removeCancelActionListener(java.awt.event.ActionListener l) {
+	public void removeCancelActionListener(final java.awt.event.ActionListener l) {
 		m_cancelActionListeners.removeElement(l);
 	}
+
 	@Override
-	public void progressBegin(int total) {
+	public void progressBegin(final int total) {
 		m_descriptionLabel.setText(m_preDescription);
 		progressUpdateTotal(total);
 		m_isCanceled = false;
 		m_isFinished = false;
 	}
+
 	@Override
-	public void progressUpdateTotal(int total) {
+	public void progressUpdateTotal(final int total) {
 		m_total = total;
 		if (m_total == edu.cmu.cs.stage3.progress.ProgressObserver.UNKNOWN_TOTAL) {
 			m_progressBar.setMaximum(UNKNOWN_TOTAL_MAX);
@@ -198,16 +206,21 @@ public abstract class ProgressPane extends edu.cmu.cs.stage3.swing.ContentPane i
 			@Override
 			public void run() {
 				for (int i = 0; i < actionListeners.size(); i++) {
-					java.awt.event.ActionListener l = (java.awt.event.ActionListener) actionListeners.elementAt(i);
+					final java.awt.event.ActionListener l = (java.awt.event.ActionListener) actionListeners
+							.elementAt(i);
 					l.actionPerformed(e);
 				}
 			}
 		});
 	}
+
 	protected void fireOKActionListeners() {
-		fireActionListeners(m_okActionListeners, new java.awt.event.ActionEvent(this, java.awt.event.ActionEvent.ACTION_PERFORMED, "OK"));
+		fireActionListeners(m_okActionListeners,
+				new java.awt.event.ActionEvent(this, java.awt.event.ActionEvent.ACTION_PERFORMED, "OK"));
 	}
+
 	protected void fireCancelActionListeners() {
-		fireActionListeners(m_cancelActionListeners, new java.awt.event.ActionEvent(this, java.awt.event.ActionEvent.ACTION_PERFORMED, "Cancel"));
+		fireActionListeners(m_cancelActionListeners,
+				new java.awt.event.ActionEvent(this, java.awt.event.ActionEvent.ACTION_PERFORMED, "Cancel"));
 	}
 }

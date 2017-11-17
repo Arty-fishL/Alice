@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -69,11 +69,16 @@ import javax.swing.plaf.PopupMenuUI;
 /**
  * adapted from javax.swing.JMenu to improve on popup menu behavior. proper
  * subclassing was prevented by private data and methods.
- * 
+ *
  * @author Jason Pratt
  */
 
 public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElement {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -512404255479833434L;
+
 	/**
 	 * @see #getUIClassID
 	 * @see #readObject
@@ -130,46 +135,50 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	public AliceMenu() {
 		this("");
 	}
+
 	/**
 	 * Constructs a new <code>AliceMenu</code> with the supplied string as its
 	 * text.
-	 * 
+	 *
 	 * @param s
 	 *            the text for the menu label
 	 */
-	public AliceMenu(String s) {
+	public AliceMenu(final String s) {
 		super(s);
 	}
+
 	/**
 	 * Constructs a menu whose properties are taken from the <code>Action</code>
 	 * supplied.
-	 * 
+	 *
 	 * @param a
 	 *            an <code>Action</code>
-	 * 
+	 *
 	 * @since 1.3
 	 */
-	public AliceMenu(Action a) {
+	public AliceMenu(final Action a) {
 		this();
 		setAction(a);
 	}
+
 	/**
 	 * Constructs a new <code>AliceMenu</code> with the supplied string as its
 	 * text and specified as a tear-off menu or not.
-	 * 
+	 *
 	 * @param s
 	 *            the text for the menu label
 	 * @param b
 	 *            can the menu be torn off (not yet implemented)
 	 */
-	public AliceMenu(String s, boolean b) {
+	public AliceMenu(final String s, final boolean b) {
 		this(s);
 	}
+
 	/**
 	 * Notification from the <code>UIFactory</code> that the L&F has changed.
 	 * Called to replace the UI with the latest version from the
 	 * <code>UIFactory</code>.
-	 * 
+	 *
 	 * @see JComponent#updateUI
 	 */
 
@@ -181,9 +190,10 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 			popupMenu.setUI((PopupMenuUI) UIManager.getUI(popupMenu));
 		}
 	}
+
 	/**
 	 * Returns the name of the L&F class that renders this component.
-	 * 
+	 *
 	 * @return the string "MenuUI"
 	 * @see JComponent#getUIClassID
 	 * @see UIDefaults#getUI
@@ -193,6 +203,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	public String getUIClassID() {
 		return uiClassID;
 	}
+
 	// public void repaint(long tm, int x, int y, int width, int height) {
 	// Thread.currentThread().dumpStack();
 	// super.repaint(tm,x,y,width,height);
@@ -200,7 +211,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	/**
 	 * Sets the data model for the "menu button" -- the label that the user
 	 * clicks to open or close the menu.
-	 * 
+	 *
 	 * @param newModel
 	 *            the <code>ButtonModel</code>
 	 * @see #getModel
@@ -209,8 +220,8 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 */
 
 	@Override
-	public void setModel(ButtonModel newModel) {
-		ButtonModel oldModel = getModel();
+	public void setModel(final ButtonModel newModel) {
+		final ButtonModel oldModel = getModel();
 		super.setModel(newModel);
 
 		if (oldModel != null && menuChangeListener != null) {
@@ -225,9 +236,10 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 			newModel.addChangeListener(menuChangeListener);
 		}
 	}
+
 	/**
 	 * Returns true if the menu is currently selected (highlighted).
-	 * 
+	 *
 	 * @return true if the menu is selected, else false
 	 */
 
@@ -235,9 +247,10 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	public boolean isSelected() {
 		return getModel().isSelected();
 	}
+
 	/**
 	 * Sets the selection status of the menu.
-	 * 
+	 *
 	 * @param b
 	 *            true to select (highlight) the menu; false to de-select the
 	 *            menu
@@ -246,24 +259,27 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 */
 
 	@Override
-	public void setSelected(boolean b) {
-		ButtonModel model = getModel();
-		boolean oldValue = model.isSelected();
+	public void setSelected(final boolean b) {
+		final ButtonModel model = getModel();
+		final boolean oldValue = model.isSelected();
 
 		if (accessibleContext != null && oldValue != b) {
 			if (b) {
-				accessibleContext.firePropertyChange(AccessibleContext.ACCESSIBLE_STATE_PROPERTY, null, AccessibleState.SELECTED);
+				accessibleContext.firePropertyChange(AccessibleContext.ACCESSIBLE_STATE_PROPERTY, null,
+						AccessibleState.SELECTED);
 			} else {
-				accessibleContext.firePropertyChange(AccessibleContext.ACCESSIBLE_STATE_PROPERTY, AccessibleState.SELECTED, null);
+				accessibleContext.firePropertyChange(AccessibleContext.ACCESSIBLE_STATE_PROPERTY,
+						AccessibleState.SELECTED, null);
 			}
 		}
 		if (b != model.isSelected()) {
 			getModel().setSelected(b);
 		}
 	}
+
 	/**
 	 * Returns true if the menu's popup window is visible.
-	 * 
+	 *
 	 * @return true if the menu is visible, else false
 	 */
 
@@ -273,10 +289,11 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 		return popupMenu.isVisible();
 	}
+
 	/**
 	 * Sets the visibility of the menu's popup. If the menu is not enabled, this
 	 * method will have no effect.
-	 * 
+	 *
 	 * @param b
 	 *            a boolean value -- true to make the menu visible, false to
 	 *            hide it
@@ -285,7 +302,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 */
 
 	@Override
-	public void setPopupMenuVisible(boolean b) {
+	public void setPopupMenuVisible(final boolean b) {
 		if (!isEnabled()) {
 			return;
 		}
@@ -295,7 +312,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 			// Thread.dumpStack();
 		}
 
-		boolean isVisible = isPopupMenuVisible();
+		final boolean isVisible = isPopupMenuVisible();
 
 		if (b != isVisible) {
 			ensurePopupMenuCreated();
@@ -303,16 +320,17 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 			// Set location of popupMenu (pulldown or pullright)
 			// Perhaps this should be dictated by L&F
 			if (b == true && isShowing()) {
-				Point p = getPopupMenuOrigin();
+				final Point p = getPopupMenuOrigin();
 				getPopupMenu().show(this, p.x, p.y);
 			} else {
 				getPopupMenu().setVisible(false);
 			}
 		}
 	}
+
 	/**
 	 * Computes the origin for the <code>AliceMenu</code>'s popup menu.
-	 * 
+	 *
 	 * @return a <code>Point</code> in the coordinate space of the menu which
 	 *         should be used as the origin of the <code>AliceMenu</code>'s
 	 *         popup menu
@@ -322,12 +340,12 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	protected Point getPopupMenuOrigin() {
 		int x = 0;
 		int y = 0;
-		JPopupMenu pm = getPopupMenu();
+		final JPopupMenu pm = getPopupMenu();
 
 		// Figure out the sizes needed to caclulate the menu position
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		screenSize.height -= 28; // HACK to avoid standard Windows Task Bar -JFP
-		Dimension s = getSize();
+		final Dimension s = getSize();
 		Dimension pmSize = pm.getSize();
 
 		// For the first time the menu is popped up,
@@ -336,8 +354,8 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 			pmSize = pm.getPreferredSize();
 		}
 
-		Point position = getLocationOnScreen();
-		Container parent = getParent();
+		final Point position = getLocationOnScreen();
+		final Container parent = getParent();
 
 		if (parent instanceof JPopupMenu) {
 
@@ -395,6 +413,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 		return new Point(x, y);
 	}
+
 	/**
 	 * Returns the suggested delay, in milliseconds, before submenus are popped
 	 * up or down. Each look and feel (L&F) may determine its own policy for
@@ -403,8 +422,8 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 * <code>delay</code> is 0. This method is a property of the look and feel
 	 * code and is used to manage the idiosyncracies of the various UI
 	 * implementations.
-	 * 
-	 * 
+	 *
+	 *
 	 * @return the <code>delay</code> property
 	 */
 
@@ -412,6 +431,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	public int getDelay() {
 		return delay;
 	}
+
 	/**
 	 * Sets the suggested delay before the menu's <code>PopupMenu</code> is
 	 * popped up or down. Each look and feel (L&F) may determine it's own policy
@@ -419,7 +439,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 * observed for top level menus or while dragging. This method is a property
 	 * of the look and feel code and is used to manage the idiosyncracies of the
 	 * various UI implementations.
-	 * 
+	 *
 	 * @param d
 	 *            the number of milliseconds to delay
 	 * @exception IllegalArgumentException
@@ -429,7 +449,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 */
 
 	@Override
-	public void setDelay(int d) {
+	public void setDelay(final int d) {
 		if (d < 0) {
 			throw new IllegalArgumentException("Delay must be a positive integer");
 		}
@@ -439,7 +459,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 	/**
 	 * The window-closing listener for the popup.
-	 * 
+	 *
 	 * @see WinListener
 	 */
 	protected WinListener popupListener;
@@ -452,23 +472,24 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 			popupListener = createWinListener(popupMenu);
 			popupMenu.addPopupMenuListener(new PopupMenuListener() {
 				@Override
-				public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+				public void popupMenuWillBecomeVisible(final PopupMenuEvent e) {
 				}
 
 				@Override
-				public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+				public void popupMenuWillBecomeInvisible(final PopupMenuEvent e) {
 				}
 
 				@Override
-				public void popupMenuCanceled(PopupMenuEvent e) {
+				public void popupMenuCanceled(final PopupMenuEvent e) {
 					fireMenuCanceled();
 				}
 			});
 		}
 	}
+
 	/**
 	 * Sets the location of the popup component.
-	 * 
+	 *
 	 * @param x
 	 *            the x coordinate of the popup's new position
 	 * @param y
@@ -476,39 +497,41 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 */
 
 	@Override
-	public void setMenuLocation(int x, int y) {
+	public void setMenuLocation(final int x, final int y) {
 		if (popupMenu != null) {
 			popupMenu.setLocation(x, y);
 		}
 	}
+
 	/**
 	 * Appends a menu item to the end of this menu. Returns the menu item added.
-	 * 
+	 *
 	 * @param menuItem
 	 *            the <code>JMenuitem</code> to be added
 	 * @return the <code>JMenuItem</code> added
 	 */
 
 	@Override
-	public JMenuItem add(JMenuItem menuItem) {
-		AccessibleContext ac = menuItem.getAccessibleContext();
+	public JMenuItem add(final JMenuItem menuItem) {
+		final AccessibleContext ac = menuItem.getAccessibleContext();
 		ac.setAccessibleParent(this);
 		ensurePopupMenuCreated();
 
 		return popupMenu.add(menuItem);
 	}
+
 	/**
 	 * Appends a component to the end of this menu. Returns the component added.
-	 * 
+	 *
 	 * @param c
 	 *            the <code>Component</code> to add
 	 * @return the <code>Component</code> added
 	 */
 
 	@Override
-	public Component add(Component c) {
+	public Component add(final Component c) {
 		if (c instanceof JComponent) {
-			AccessibleContext ac = ((JComponent) c).getAccessibleContext();
+			final AccessibleContext ac = ((JComponent) c).getAccessibleContext();
 
 			if (ac != null) {
 				ac.setAccessibleParent(this);
@@ -520,10 +543,11 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 		return c;
 	}
+
 	/**
 	 * Adds the specified component to this container at the given position. If
 	 * <code>index</code> equals -1, the component will be appended to the end.
-	 * 
+	 *
 	 * @param c
 	 *            the <code>Component</code> to add
 	 * @param index
@@ -534,9 +558,9 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 */
 
 	@Override
-	public Component add(Component c, int index) {
+	public Component add(final Component c, final int index) {
 		if (c instanceof JComponent) {
-			AccessibleContext ac = ((JComponent) c).getAccessibleContext();
+			final AccessibleContext ac = ((JComponent) c).getAccessibleContext();
 
 			if (ac != null) {
 				ac.setAccessibleParent(this);
@@ -548,18 +572,20 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 		return c;
 	}
+
 	/**
 	 * Creates a new menu item with the specified text and appends it to the end
 	 * of this menu.
-	 * 
+	 *
 	 * @param s
 	 *            the string for the menu item to be added
 	 */
 
 	@Override
-	public JMenuItem add(String s) {
+	public JMenuItem add(final String s) {
 		return add(new JMenuItem(s));
 	}
+
 	/**
 	 * Creates a new menu item attached to the specified <code>Action</code>
 	 * object and appends it to the end of this menu. As of JDK 1.3, this is no
@@ -567,27 +593,28 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 * container. Instead it is recommended to configure a control with an
 	 * action using <code>setAction</code>, and then add that control directly
 	 * to the <code>Container</code>.
-	 * 
+	 *
 	 * @param a
 	 *            the <code>Action</code> for the menu item to be added
 	 * @see Action
 	 */
 
 	@Override
-	public JMenuItem add(Action a) {
-		JMenuItem mi = createActionComponent(a);
+	public JMenuItem add(final Action a) {
+		final JMenuItem mi = createActionComponent(a);
 		mi.setAction(a);
 		add(mi);
 
 		return mi;
 	}
+
 	/**
 	 * Factory method which creates the <code>JMenuItem</code> for
 	 * <code>Action</code>s added to the <code>AliceMenu</code>. As of JDK 1.3,
 	 * this is no longer the preferred method. Instead it is recommended to
 	 * configure a control with an action using <code>setAction</code>, and then
 	 * adding that control directly to the <code>Container</code>.
-	 * 
+	 *
 	 * @param a
 	 *            the <code>Action</code> for the menu item to be added
 	 * @return the new menu item
@@ -595,11 +622,16 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 */
 
 	@Override
-	protected JMenuItem createActionComponent(Action a) {
-		JMenuItem mi = new JMenuItem((String) a.getValue(Action.NAME), (Icon) a.getValue(Action.SMALL_ICON)) {
+	protected JMenuItem createActionComponent(final Action a) {
+		final JMenuItem mi = new JMenuItem((String) a.getValue(Action.NAME), (Icon) a.getValue(Action.SMALL_ICON)) {
+
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -425810644973904563L;
 
 			@Override
-			protected PropertyChangeListener createActionPropertyChangeListener(Action a) {
+			protected PropertyChangeListener createActionPropertyChangeListener(final Action a) {
 				PropertyChangeListener pcl = createActionChangeListener(this);
 
 				if (pcl == null) {
@@ -616,6 +648,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 		return mi;
 	}
+
 	/**
 	 * Returns a properly configured <code>PropertyChangeListener</code> which
 	 * updates the control as changes to the <code>Action</code> occur. As of
@@ -627,37 +660,37 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 */
 
 	@Override
-	protected PropertyChangeListener createActionChangeListener(JMenuItem b) {
+	protected PropertyChangeListener createActionChangeListener(final JMenuItem b) {
 		return new ActionChangedListener(b);
 	}
 
 	private class ActionChangedListener implements PropertyChangeListener {
 		JMenuItem menuItem;
 
-		ActionChangedListener(JMenuItem mi) {
+		ActionChangedListener(final JMenuItem mi) {
 			super();
 			setTarget(mi);
 		}
 
 		@Override
-		public void propertyChange(PropertyChangeEvent e) {
-			String propertyName = e.getPropertyName();
+		public void propertyChange(final PropertyChangeEvent e) {
+			final String propertyName = e.getPropertyName();
 
 			if (e.getPropertyName().equals(Action.NAME)) {
-				String text = (String) e.getNewValue();
+				final String text = (String) e.getNewValue();
 				menuItem.setText(text);
 			} else if (propertyName.equals("enabled")) {
-				Boolean enabledState = (Boolean) e.getNewValue();
+				final Boolean enabledState = (Boolean) e.getNewValue();
 				menuItem.setEnabled(enabledState.booleanValue());
 			} else if (e.getPropertyName().equals(Action.SMALL_ICON)) {
-				Icon icon = (Icon) e.getNewValue();
+				final Icon icon = (Icon) e.getNewValue();
 				menuItem.setIcon(icon);
 				menuItem.invalidate();
 				menuItem.repaint();
 			}
 		}
 
-		public void setTarget(JMenuItem b) {
+		public void setTarget(final JMenuItem b) {
 			menuItem = b;
 		}
 	}
@@ -671,9 +704,10 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 		ensurePopupMenuCreated();
 		popupMenu.addSeparator();
 	}
+
 	/**
 	 * Inserts a new menu item with the specified text at a given position.
-	 * 
+	 *
 	 * @param s
 	 *            the text for the menu item to add
 	 * @param pos
@@ -684,7 +718,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 */
 
 	@Override
-	public void insert(String s, int pos) {
+	public void insert(final String s, final int pos) {
 		if (pos < 0) {
 			throw new IllegalArgumentException("index less than zero.");
 		}
@@ -692,9 +726,10 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 		ensurePopupMenuCreated();
 		popupMenu.insert(new JMenuItem(s), pos);
 	}
+
 	/**
 	 * Inserts the specified <code>JMenuitem</code> at a given position.
-	 * 
+	 *
 	 * @param mi
 	 *            the <code>JMenuitem</code> to add
 	 * @param pos
@@ -706,22 +741,23 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 */
 
 	@Override
-	public JMenuItem insert(JMenuItem mi, int pos) {
+	public JMenuItem insert(final JMenuItem mi, final int pos) {
 		if (pos < 0) {
 			throw new IllegalArgumentException("index less than zero.");
 		}
 
-		AccessibleContext ac = mi.getAccessibleContext();
+		final AccessibleContext ac = mi.getAccessibleContext();
 		ac.setAccessibleParent(this);
 		ensurePopupMenuCreated();
 		popupMenu.insert(mi, pos);
 
 		return mi;
 	}
+
 	/**
 	 * Inserts a new menu item attached to the specified <code>Action</code>
 	 * object at a given position.
-	 * 
+	 *
 	 * @param a
 	 *            the <code>Action</code> object for the menu item to add
 	 * @param pos
@@ -732,14 +768,14 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 */
 
 	@Override
-	public JMenuItem insert(Action a, int pos) {
+	public JMenuItem insert(final Action a, final int pos) {
 		if (pos < 0) {
 			throw new IllegalArgumentException("index less than zero.");
 		}
 
 		ensurePopupMenuCreated();
 
-		JMenuItem mi = new JMenuItem((String) a.getValue(Action.NAME), (Icon) a.getValue(Action.SMALL_ICON));
+		final JMenuItem mi = new JMenuItem((String) a.getValue(Action.NAME), (Icon) a.getValue(Action.SMALL_ICON));
 		mi.setHorizontalTextPosition(SwingConstants.RIGHT);
 		mi.setVerticalTextPosition(SwingConstants.CENTER);
 		mi.setEnabled(a.isEnabled());
@@ -748,9 +784,10 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 		return mi;
 	}
+
 	/**
 	 * Inserts a separator at the specified position.
-	 * 
+	 *
 	 * @param index
 	 *            an integer specifying the position at which to insert the menu
 	 *            separator
@@ -759,7 +796,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 */
 
 	@Override
-	public void insertSeparator(int index) {
+	public void insertSeparator(final int index) {
 		if (index < 0) {
 			throw new IllegalArgumentException("index less than zero.");
 		}
@@ -767,11 +804,12 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 		ensurePopupMenuCreated();
 		popupMenu.insert(new JPopupMenu.Separator(), index);
 	}
+
 	/**
 	 * Returns the <code>JMenuItem</code> at the specified position. If the
 	 * component at <code>pos</code> is not a menu item, <code>null</code> is
 	 * returned. This method is included for AWT compatibility.
-	 * 
+	 *
 	 * @param pos
 	 *            an integer specifying the position
 	 * @exception IllegalArgumentException
@@ -781,15 +819,15 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 */
 
 	@Override
-	public JMenuItem getItem(int pos) {
+	public JMenuItem getItem(final int pos) {
 		if (pos < 0) {
 			throw new IllegalArgumentException("index less than zero.");
 		}
 
-		Component c = getMenuComponent(pos);
+		final Component c = getMenuComponent(pos);
 
 		if (c instanceof JMenuItem) {
-			JMenuItem mi = (JMenuItem) c;
+			final JMenuItem mi = (JMenuItem) c;
 
 			return mi;
 		}
@@ -797,10 +835,11 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 		// 4173633
 		return null;
 	}
+
 	/**
 	 * Returns the number of items on the menu, including separators. This
 	 * method is included for AWT compatibility.
-	 * 
+	 *
 	 * @return an integer equal to the number of items on the menu
 	 * @see #getMenuComponentCount
 	 */
@@ -809,10 +848,11 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	public int getItemCount() {
 		return getMenuComponentCount();
 	}
+
 	/**
 	 * Returns true if the menu can be torn off. This method is not yet
 	 * implemented.
-	 * 
+	 *
 	 * @return true if the menu can be torn off, else false
 	 * @exception Error
 	 *                if invoked -- this method is not yet implemented
@@ -822,23 +862,25 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	public boolean isTearOff() {
 		throw new Error("boolean isTearOff() {} not yet implemented");
 	}
+
 	/**
 	 * Removes the specified menu item from this menu. If there is no popup
 	 * menu, this method will have no effect.
-	 * 
+	 *
 	 * @param item
 	 *            the <code>JMenuItem</code> to be removed from the menu
 	 */
 
 	@Override
-	public void remove(JMenuItem item) {
+	public void remove(final JMenuItem item) {
 		if (popupMenu != null) {
 			popupMenu.remove(item);
 		}
 	}
+
 	/**
 	 * Removes the menu item at the specified index from this menu.
-	 * 
+	 *
 	 * @param pos
 	 *            the position of the item to be removed
 	 * @exception IllegalArgumentException
@@ -847,7 +889,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 */
 
 	@Override
-	public void remove(int pos) {
+	public void remove(final int pos) {
 		if (pos < 0) {
 			throw new IllegalArgumentException("index less than zero.");
 		}
@@ -858,19 +900,21 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 			popupMenu.remove(pos);
 		}
 	}
+
 	/**
 	 * Removes the component <code>c</code> from this menu.
-	 * 
+	 *
 	 * @param c
 	 *            the component to be removed
 	 */
 
 	@Override
-	public void remove(Component c) {
+	public void remove(final Component c) {
 		if (popupMenu != null) {
 			popupMenu.remove(c);
 		}
 	}
+
 	/**
 	 * Removes all menu items from this menu.
 	 */
@@ -881,9 +925,10 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 			popupMenu.removeAll();
 		}
 	}
+
 	/**
 	 * Returns the number of components on the menu.
-	 * 
+	 *
 	 * @return an integer containing the number of components on the menu
 	 */
 
@@ -897,29 +942,31 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 		return componentCount;
 	}
+
 	/**
 	 * Returns the component at position <code>n</code>.
-	 * 
+	 *
 	 * @param n
 	 *            the position of the component to be returned
 	 * @return the component requested, or <code>null</code> if there is no
 	 *         popup menu
-	 * 
+	 *
 	 */
 
 	@Override
-	public Component getMenuComponent(int n) {
+	public Component getMenuComponent(final int n) {
 		if (popupMenu != null) {
 			return popupMenu.getComponent(n);
 		}
 
 		return null;
 	}
+
 	/**
 	 * Returns an array of <code>Component</code>s of the menu's subcomponents.
 	 * Note that this returns all <code>Component</code>s in the popup menu,
 	 * including separators.
-	 * 
+	 *
 	 * @return an array of <code>Component</code>s or an empty array if there is
 	 *         no popup menu
 	 */
@@ -932,10 +979,11 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 		return new Component[0];
 	}
+
 	/**
 	 * Returns true if the menu is a 'top-level menu', that is, if it is the
 	 * direct child of a menubar.
-	 * 
+	 *
 	 * @return true if the menu is activated from the menu bar; false if the
 	 *         menu is activated from a menu item on another menu
 	 */
@@ -948,16 +996,17 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 		return false;
 	}
+
 	/**
 	 * Returns true if the specified component exists in the submenu hierarchy.
-	 * 
+	 *
 	 * @param c
 	 *            the <code>Component</code> to be tested
 	 * @return true if the <code>Component</code> exists, false otherwise
 	 */
 
 	@Override
-	public boolean isMenuComponent(Component c) {
+	public boolean isMenuComponent(final Component c) {
 
 		// Are we in the MenuItem part of the menu
 		if (c == this) {
@@ -965,7 +1014,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 		}
 		// Are we in the PopupMenu?
 		if (c instanceof JPopupMenu) {
-			JPopupMenu comp = (JPopupMenu) c;
+			final JPopupMenu comp = (JPopupMenu) c;
 
 			if (comp == getPopupMenu()) {
 				return true;
@@ -973,11 +1022,11 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 		}
 
 		// Are we in a Component on the PopupMenu
-		int ncomponents = getMenuComponentCount();
-		Component[] component = getMenuComponents();
+		final int ncomponents = getMenuComponentCount();
+		final Component[] component = getMenuComponents();
 
 		for (int i = 0; i < ncomponents; i++) {
-			Component comp = component[i];
+			final Component comp = component[i];
 
 			// Are we in the current component?
 			if (comp == c) {
@@ -986,7 +1035,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 			// Hmmm, what about Non-menu containers?
 			// Recursive call for the Menu case
 			if (comp instanceof AliceMenu) {
-				AliceMenu subMenu = (AliceMenu) comp;
+				final AliceMenu subMenu = (AliceMenu) comp;
 
 				if (subMenu.isMenuComponent(c)) {
 					return true;
@@ -996,28 +1045,30 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 		return false;
 	}
+
 	/*
 	 * Returns a point in the coordinate space of this menu's popupmenu which
 	 * corresponds to the point <code>p</code> in the menu's coordinate space.
-	 * 
+	 *
 	 * @param p the point to be translated
-	 * 
+	 *
 	 * @return the point in the coordinate space of this menu's popupmenu
 	 */
-	private Point translateToPopupMenu(Point p) {
+	private Point translateToPopupMenu(final Point p) {
 		return translateToPopupMenu(p.x, p.y);
 	}
+
 	/*
 	 * Returns a point in the coordinate space of this menu's popupmenu which
 	 * corresponds to the point (x,y) in the menu's coordinate space.
-	 * 
+	 *
 	 * @param x the x coordinate of the point to be translated
-	 * 
+	 *
 	 * @param y the y coordinate of the point to be translated
-	 * 
+	 *
 	 * @return the point in the coordinate space of this menu's popupmenu
 	 */
-	private Point translateToPopupMenu(int x, int y) {
+	private Point translateToPopupMenu(final int x, final int y) {
 		int newX;
 		int newY;
 
@@ -1031,6 +1082,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 		return new Point(newX, newY);
 	}
+
 	/**
 	 * Returns the popupmenu associated with this menu. If there is no
 	 * popupmenu, it will create one.
@@ -1042,33 +1094,36 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 		return popupMenu;
 	}
+
 	/**
 	 * Adds a listener for menu events.
-	 * 
+	 *
 	 * @param l
 	 *            the listener to be added
 	 */
 
 	@Override
-	public void addMenuListener(MenuListener l) {
+	public void addMenuListener(final MenuListener l) {
 		listenerList.add(MenuListener.class, l);
 	}
+
 	/**
 	 * Removes a listener for menu events.
-	 * 
+	 *
 	 * @param l
 	 *            the listener to be removed
 	 */
 
 	@Override
-	public void removeMenuListener(MenuListener l) {
+	public void removeMenuListener(final MenuListener l) {
 		listenerList.remove(MenuListener.class, l);
 	}
+
 	/**
 	 * Notifies all listeners that have registered interest for notification on
 	 * this event type. The event instance is lazily created using the
 	 * parameters passed into the fire method.
-	 * 
+	 *
 	 * @exception Error
 	 *                if there is a <code>null</code> listener
 	 * @see EventListenerList
@@ -1081,7 +1136,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 		}
 
 		// Guaranteed to return a non-null array
-		Object[] listeners = listenerList.getListenerList();
+		final Object[] listeners = listenerList.getListenerList();
 
 		// Process the listeners last to first, notifying
 		// those that are interested in this event
@@ -1101,11 +1156,12 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 			}
 		}
 	}
+
 	/**
 	 * Notifies all listeners that have registered interest for notification on
 	 * this event type. The event instance is lazily created using the
 	 * parameters passed into the fire method.
-	 * 
+	 *
 	 * @exception Error
 	 *                if there is a <code>null</code> listener
 	 * @see EventListenerList
@@ -1118,7 +1174,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 		}
 
 		// Guaranteed to return a non-null array
-		Object[] listeners = listenerList.getListenerList();
+		final Object[] listeners = listenerList.getListenerList();
 
 		// Process the listeners last to first, notifying
 		// those that are interested in this event
@@ -1138,11 +1194,12 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 			}
 		}
 	}
+
 	/**
 	 * Notifies all listeners that have registered interest for notification on
 	 * this event type. The event instance is lazily created using the
 	 * parameters passed into the fire method.
-	 * 
+	 *
 	 * @exception Error
 	 *                if there is a <code>null</code> listener
 	 * @see EventListenerList
@@ -1155,7 +1212,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 		}
 
 		// Guaranteed to return a non-null array
-		Object[] listeners = listenerList.getListenerList();
+		final Object[] listeners = listenerList.getListenerList();
 
 		// Process the listeners last to first, notifying
 		// those that are interested in this event
@@ -1177,12 +1234,16 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	}
 
 	class MenuChangeListener implements ChangeListener, Serializable {
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = -8761202508720628470L;
 		boolean isSelected = false;
 
 		@Override
-		public void stateChanged(ChangeEvent e) {
-			ButtonModel model = (ButtonModel) e.getSource();
-			boolean modelSelected = model.isSelected();
+		public void stateChanged(final ChangeEvent e) {
+			final ButtonModel model = (ButtonModel) e.getSource();
+			final boolean modelSelected = model.isSelected();
 
 			if (modelSelected != isSelected) {
 				if (modelSelected == true) {
@@ -1199,18 +1260,19 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	private ChangeListener createMenuChangeListener() {
 		return new MenuChangeListener();
 	}
+
 	/**
 	 * Creates a window-closing listener for the popup.
-	 * 
+	 *
 	 * @param p
 	 *            the <code>JPopupMenu</code>
 	 * @return the new window-closing listener
-	 * 
+	 *
 	 * @see WinListener
 	 */
 
 	@Override
-	protected WinListener createWinListener(JPopupMenu p) {
+	protected WinListener createWinListener(final JPopupMenu p) {
 		return new WinListener(p);
 	}
 	/**
@@ -1244,19 +1306,20 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	/**
 	 * Messaged when the menubar selection changes to activate or deactivate
 	 * this menu. Overrides <code>JMenuItem.menuSelectionChanged</code>.
-	 * 
+	 *
 	 * @param isIncluded
 	 *            true if this menu is active, false if it is not
 	 */
 
 	@Override
-	public void menuSelectionChanged(boolean isIncluded) {
+	public void menuSelectionChanged(final boolean isIncluded) {
 		if (DEBUG) {
 			System.out.println("In AliceMenu.menuSelectionChanged to " + isIncluded);
 		}
 
 		setSelected(isIncluded);
 	}
+
 	/**
 	 * Returns an array of <code>MenuElement</code>s containing the submenu for
 	 * this menu component. If popup menu is <code>null</code> returns an empty
@@ -1264,7 +1327,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 * interface. Note that since <code>JSeparator</code>s do not conform to the
 	 * <code>MenuElement</code> interface, this array will only contain
 	 * <code>JMenuItem</code>s.
-	 * 
+	 *
 	 * @return an array of <code>MenuElement</code> objects
 	 */
 
@@ -1273,12 +1336,13 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 		if (popupMenu == null) {
 			return new MenuElement[0];
 		} else {
-			MenuElement[] result = new MenuElement[1];
+			final MenuElement[] result = new MenuElement[1];
 			result[0] = popupMenu;
 
 			return result;
 		}
 	}
+
 	// implements javax.swing.MenuElement
 	/**
 	 * Returns the <code>java.awt.Component</code> used to paint this
@@ -1290,10 +1354,11 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	public Component getComponent() {
 		return this;
 	}
+
 	/**
 	 * <code>setAccelerator</code> is not defined for <code>AliceMenu</code>.
 	 * Use <code>setMnemonic</code> instead.
-	 * 
+	 *
 	 * @param keyStroke
 	 *            the keystroke combination which will invoke the
 	 *            <code>JMenuItem</code>'s actionlisteners without navigating
@@ -1301,50 +1366,53 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 * @exception Error
 	 *                if invoked -- this method is not defined for AliceMenu.
 	 *                Use <code>setMnemonic</code> instead
-	 * 
+	 *
 	 * @beaninfo description: The keystroke combination which will invoke the
 	 *           JMenuItem's actionlisteners without navigating the menu
 	 *           hierarchy hidden: true
 	 */
 
 	@Override
-	public void setAccelerator(KeyStroke keyStroke) {
+	public void setAccelerator(final KeyStroke keyStroke) {
 		throw new Error("setAccelerator() is not defined for AliceMenu.  Use setMnemonic() instead.");
 	}
+
 	/**
 	 * Processes any focus events, such as <code>FocusEvent.FOCUS_GAINED</code>
 	 * or <code>FocusEvent.FOCUS_LOST</code>.
-	 * 
+	 *
 	 * @param e
 	 *            the <code>FocusEvent</code>
 	 * @see FocusEvent
 	 */
 
 	@Override
-	protected void processFocusEvent(FocusEvent e) {
+	protected void processFocusEvent(final FocusEvent e) {
 		switch (e.getID()) {
-			case FocusEvent.FOCUS_LOST :
-				receivedKeyPressed = false;
-				break;
+		case FocusEvent.FOCUS_LOST:
+			receivedKeyPressed = false;
+			break;
 
-			default :
-				break;
+		default:
+			break;
 		}
 
 		super.processFocusEvent(e);
 	}
+
 	/**
 	 * Processes key stroke events for this menu, such as mnemonics and
 	 * accelerators.
-	 * 
+	 *
 	 * @param e
 	 *            the key event to be processed
 	 */
 
 	@Override
-	protected void processKeyEvent(KeyEvent e) {
+	protected void processKeyEvent(final KeyEvent e) {
 		if (DEBUG) {
-			System.out.println("in AliceMenu.processKeyEvent for " + getText() + "  " + KeyStroke.getKeyStrokeForEvent(e));
+			System.out.println(
+					"in AliceMenu.processKeyEvent for " + getText() + "  " + KeyStroke.getKeyStrokeForEvent(e));
 			System.out.println("Event consumption = " + e.isConsumed());
 			Thread.dumpStack();
 		}
@@ -1352,26 +1420,26 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 		boolean createMenuEvent = false;
 
 		switch (e.getID()) {
-			case KeyEvent.KEY_PRESSED :
-				if (isSelected()) {
-					createMenuEvent = receivedKeyPressed = true;
-				} else {
-					receivedKeyPressed = false;
-				}
+		case KeyEvent.KEY_PRESSED:
+			if (isSelected()) {
+				createMenuEvent = receivedKeyPressed = true;
+			} else {
+				receivedKeyPressed = false;
+			}
 
-				break;
+			break;
 
-			case KeyEvent.KEY_RELEASED :
-				if (receivedKeyPressed) {
-					receivedKeyPressed = false;
-					createMenuEvent = true;
-				}
+		case KeyEvent.KEY_RELEASED:
+			if (receivedKeyPressed) {
+				receivedKeyPressed = false;
+				createMenuEvent = true;
+			}
 
-				break;
+			break;
 
-			default :
-				createMenuEvent = receivedKeyPressed;
-				break;
+		default:
+			createMenuEvent = receivedKeyPressed;
+			break;
 		}
 		if (createMenuEvent) {
 			MenuSelectionManager.defaultManager().processKeyEvent(e);
@@ -1407,30 +1475,32 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 		super.processKeyEvent(e);
 	}
+
 	/**
 	 * Programatically performs a "click". This overrides the method
 	 * <code>AbstractButton.doClick</code> in order to make the menu pop up.
-	 * 
+	 *
 	 * @param pressTime
 	 *            indicates the number of milliseconds the button was pressed
 	 *            for
 	 */
 
 	@Override
-	public void doClick(int pressTime) {
-		MenuElement[] me = buildMenuElementArray(this);
+	public void doClick(final int pressTime) {
+		final MenuElement[] me = buildMenuElementArray(this);
 		MenuSelectionManager.defaultManager().setSelectedPath(me);
 	}
+
 	/*
 	 * Build an array of menu elements - from <code>PopupMenu</code> to the root
 	 * <code>JMenuBar</code>.
-	 * 
+	 *
 	 * @param leaf the leaf node from which to start building up the array
-	 * 
+	 *
 	 * @return the array of menu items
 	 */
-	private MenuElement[] buildMenuElementArray(AliceMenu leaf) {
-		Vector elements = new Vector();
+	private MenuElement[] buildMenuElementArray(final AliceMenu leaf) {
+		final Vector elements = new Vector();
 		Component current = leaf.getPopupMenu();
 		JPopupMenu pop;
 		AliceMenu menu;
@@ -1449,32 +1519,34 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 				bar = (JMenuBar) current;
 				elements.insertElementAt(bar, 0);
 
-				MenuElement[] me = new MenuElement[elements.size()];
+				final MenuElement[] me = new MenuElement[elements.size()];
 				elements.copyInto(me);
 
 				return me;
 			}
 		}
 	}
+
 	/**
 	 * See <code>readObject</code> and <code>writeObject</code> in
 	 * <code>JComponent</code> for more information about serialization in
 	 * Swing.
 	 */
-	private void writeObject(ObjectOutputStream s) throws IOException {
+	private void writeObject(final ObjectOutputStream s) throws IOException {
 		s.defaultWriteObject();
 
 		if (ui != null && getUIClassID().equals(uiClassID)) {
 			ui.installUI(this);
 		}
 	}
+
 	/**
 	 * Returns a string representation of this <code>AliceMenu</code>. This
 	 * method is intended to be used only for debugging purposes, and the
 	 * content and format of the returned string may vary between
 	 * implementations. The returned string may be empty but may not be
 	 * <code>null</code>.
-	 * 
+	 *
 	 * @return a string representation of this AliceMenu.
 	 */
 
@@ -1482,6 +1554,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	protected String paramString() {
 		return super.paramString();
 	}
+
 	// ///////////////
 	// Accessibility support
 	// //////////////
@@ -1489,7 +1562,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 * Gets the AccessibleContext associated with this AliceMenu. For JMenus,
 	 * the AccessibleContext takes the form of an AccessibleJMenu. A new
 	 * AccessibleJMenu instance is created if necessary.
-	 * 
+	 *
 	 * @return an AccessibleJMenu that serves as the AccessibleContext of this
 	 *         AliceMenu
 	 */
@@ -1502,6 +1575,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 		return accessibleContext;
 	}
+
 	/**
 	 * This class implements accessibility support for the
 	 * <code>AliceMenu</code> class. It provides an implementation of the Java
@@ -1514,30 +1588,36 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 * for long term persistence.
 	 */
 	protected class AccessibleJMenu extends AccessibleAbstractButton implements ChangeListener, AccessibleSelection {
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = -5992918617195609177L;
+
 		public AccessibleJMenu() {
 			super();
 			addChangeListener(this);
 		}
 
 		@Override
-		public void stateChanged(ChangeEvent e) {
-			firePropertyChange(AccessibleContext.ACCESSIBLE_VISIBLE_DATA_PROPERTY, new Boolean(false), new Boolean(true));
+		public void stateChanged(final ChangeEvent e) {
+			firePropertyChange(AccessibleContext.ACCESSIBLE_VISIBLE_DATA_PROPERTY, new Boolean(false),
+					new Boolean(true));
 		}
 
 		/**
 		 * Returns the number of accessible children in the object. If all of
 		 * the children of this object implement Accessible, than this method
 		 * should return the number of children of this object.
-		 * 
+		 *
 		 * @return the number of accessible children in the object.
 		 */
 
 		@Override
 		public int getAccessibleChildrenCount() {
-			Component[] children = getMenuComponents();
+			final Component[] children = getMenuComponents();
 			int count = 0;
 
-			for (Component element : children) {
+			for (final Component element : children) {
 				if (element instanceof Accessible) {
 					count++;
 				}
@@ -1545,20 +1625,21 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 			return count;
 		}
+
 		/**
 		 * Returns the nth Accessible child of the object.
-		 * 
+		 *
 		 * @param i
 		 *            zero-based index of child
 		 * @return the nth Accessible child of the object
 		 */
 
 		@Override
-		public Accessible getAccessibleChild(int i) {
-			Component[] children = getMenuComponents();
+		public Accessible getAccessibleChild(final int i) {
+			final Component[] children = getMenuComponents();
 			int count = 0;
 
-			for (Component element : children) {
+			for (final Component element : children) {
 				if (element instanceof Accessible) {
 					if (count == i) {
 						if (element instanceof JComponent) {
@@ -1567,7 +1648,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 							// the component is added to the menu. I tried
 							// to do this in most cases, but the separators
 							// added by addSeparator are hard to get to.]]]
-							AccessibleContext ac = ((Accessible) element).getAccessibleContext();
+							final AccessibleContext ac = ((Accessible) element).getAccessibleContext();
 							ac.setAccessibleParent(AliceMenu.this);
 						}
 
@@ -1580,9 +1661,10 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 			return null;
 		}
+
 		/**
 		 * Get the role of this object.
-		 * 
+		 *
 		 * @return an instance of AccessibleRole describing the role of the
 		 *         object
 		 * @see AccessibleRole
@@ -1592,12 +1674,13 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 		public AccessibleRole getAccessibleRole() {
 			return AccessibleRole.MENU;
 		}
+
 		/**
 		 * Get the AccessibleSelection associated with this object. In the
 		 * implementation of the Java Accessibility API for this class, return
 		 * this object, which is responsible for implementing the
 		 * AccessibleSelection interface on behalf of itself.
-		 * 
+		 *
 		 * @return this object
 		 */
 
@@ -1605,14 +1688,15 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 		public AccessibleSelection getAccessibleSelection() {
 			return this;
 		}
+
 		/**
 		 * Returns 1 if a sub-menu is currently selected in this menu.
-		 * 
+		 *
 		 * @return 1 if a menu is currently selected, else 0
 		 */
 		@Override
 		public int getAccessibleSelectionCount() {
-			MenuElement[] me = MenuSelectionManager.defaultManager().getSelectedPath();
+			final MenuElement[] me = MenuSelectionManager.defaultManager().getSelectedPath();
 
 			if (me != null) {
 				for (int i = 0; i < me.length; i++) {
@@ -1626,20 +1710,21 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 			return 0;
 		}
+
 		/**
 		 * Returns the currently selected sub-menu if one is selected, otherwise
 		 * null (there can only be one selection, and it can only be a sub-menu,
 		 * as otherwise menu items don't remain selected).
 		 */
 		@Override
-		public Accessible getAccessibleSelection(int i) {
+		public Accessible getAccessibleSelection(final int i) {
 
 			// if i is a sub-menu & popped, return it
 			if (i < 0 || i >= getItemCount()) {
 				return null;
 			}
 
-			MenuElement[] me = MenuSelectionManager.defaultManager().getSelectedPath();
+			final MenuElement[] me = MenuSelectionManager.defaultManager().getSelectedPath();
 
 			if (me != null) {
 				for (int j = 0; j < me.length; j++) {
@@ -1658,25 +1743,26 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 			return null;
 		}
+
 		/**
 		 * Returns true if the current child of this object is selected (that
 		 * is, if this child is a popped-up submenu).
-		 * 
+		 *
 		 * @param i
 		 *            the zero-based index of the child in this Accessible
 		 *            object.
 		 * @see AccessibleContext#getAccessibleChild
 		 */
 		@Override
-		public boolean isAccessibleChildSelected(int i) {
+		public boolean isAccessibleChildSelected(final int i) {
 
 			// if i is a sub-menu and is pop-ed up, return true, else false
-			MenuElement[] me = MenuSelectionManager.defaultManager().getSelectedPath();
+			final MenuElement[] me = MenuSelectionManager.defaultManager().getSelectedPath();
 
 			if (me != null) {
-				JMenuItem mi = getItem(i);
+				final JMenuItem mi = getItem(i);
 
-				for (MenuElement element : me) {
+				for (final MenuElement element : me) {
 					if (element == mi) {
 						return true;
 					}
@@ -1685,27 +1771,28 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 			return false;
 		}
+
 		/**
 		 * Selects the <code>i</code>th menu in the menu. If that item is a
 		 * submenu, it will pop up in response. If a different item is already
 		 * popped up, this will force it to close. If this is a sub-menu that is
 		 * already popped up (selected), this method has no effect.
-		 * 
+		 *
 		 * @param i
 		 *            the index of the item to be selected
 		 * @see #getAccessibleStateSet
 		 */
 		@Override
-		public void addAccessibleSelection(int i) {
+		public void addAccessibleSelection(final int i) {
 			if (i < 0 || i >= getItemCount()) {
 				return;
 			}
 
-			JMenuItem mi = getItem(i);
+			final JMenuItem mi = getItem(i);
 
 			if (mi != null) {
 				if (mi instanceof AliceMenu) {
-					MenuElement[] me = buildMenuElementArray((AliceMenu) mi);
+					final MenuElement[] me = buildMenuElementArray((AliceMenu) mi);
 					MenuSelectionManager.defaultManager().setSelectedPath(me);
 				} else {
 					mi.doClick();
@@ -1713,26 +1800,27 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 				}
 			}
 		}
+
 		/**
 		 * Removes the nth item from the selection. In general, menus can only
 		 * have one item within them selected at a time (e.g. one sub-menu
 		 * popped open).
-		 * 
+		 *
 		 * @param i
 		 *            the zero-based index of the selected item
 		 */
 		@Override
-		public void removeAccessibleSelection(int i) {
+		public void removeAccessibleSelection(final int i) {
 			if (i < 0 || i >= getItemCount()) {
 				return;
 			}
 
-			JMenuItem mi = getItem(i);
+			final JMenuItem mi = getItem(i);
 
 			if (mi != null && mi instanceof AliceMenu) {
 				if (((AliceMenu) mi).isSelected()) {
-					MenuElement[] old = MenuSelectionManager.defaultManager().getSelectedPath();
-					MenuElement[] me = new MenuElement[old.length - 2];
+					final MenuElement[] old = MenuSelectionManager.defaultManager().getSelectedPath();
+					final MenuElement[] me = new MenuElement[old.length - 2];
 
 					for (int j = 0; j < old.length - 2; j++) {
 						me[j] = old[j];
@@ -1742,6 +1830,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 				}
 			}
 		}
+
 		/**
 		 * Clears the selection in the object, so that nothing in the object is
 		 * selected. This will close any open sub-menu.
@@ -1751,12 +1840,12 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 			// if this menu is selected, reset selection to only go
 			// to this menu; else do nothing
-			MenuElement[] old = MenuSelectionManager.defaultManager().getSelectedPath();
+			final MenuElement[] old = MenuSelectionManager.defaultManager().getSelectedPath();
 
 			if (old != null) {
 				for (int j = 0; j < old.length; j++) {
 					if (old[j] == AliceMenu.this) { // menu is in the selection!
-						MenuElement[] me = new MenuElement[j + 1];
+						final MenuElement[] me = new MenuElement[j + 1];
 						System.arraycopy(old, 0, me, 0, j);
 						me[j] = getPopupMenu();
 						MenuSelectionManager.defaultManager().setSelectedPath(me);
@@ -1764,6 +1853,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 				}
 			}
 		}
+
 		/**
 		 * Normally causes every selected item in the object to be selected if
 		 * the object supports multiple selections. This method makes no sense

@@ -27,18 +27,18 @@ import edu.cmu.cs.stage3.alice.core.RenderTarget;
 import edu.cmu.cs.stage3.alice.core.reference.PropertyReference;
 
 public abstract class AbstractPlayer {
-	private edu.cmu.cs.stage3.alice.scenegraph.renderer.DefaultRenderTargetFactory m_drtf;
-	private edu.cmu.cs.stage3.alice.core.Clock m_clock = newClock();
-	private long m_when0 = System.currentTimeMillis();
+	private final edu.cmu.cs.stage3.alice.scenegraph.renderer.DefaultRenderTargetFactory m_drtf;
+	private final edu.cmu.cs.stage3.alice.core.Clock m_clock = newClock();
+	private final long m_when0 = System.currentTimeMillis();
 	private edu.cmu.cs.stage3.alice.core.World m_world = null;
 	private boolean m_isGoodToSchedule = false;
 
-	public AbstractPlayer(Class<?> rendererClass) {
+	public AbstractPlayer(final Class<?> rendererClass) {
 		m_drtf = new edu.cmu.cs.stage3.alice.scenegraph.renderer.DefaultRenderTargetFactory(rendererClass);
-		edu.cmu.cs.stage3.scheduler.Scheduler scheduler = new edu.cmu.cs.stage3.scheduler.AbstractScheduler() {
+		final edu.cmu.cs.stage3.scheduler.Scheduler scheduler = new edu.cmu.cs.stage3.scheduler.AbstractScheduler() {
 
 			@Override
-			protected void handleCaughtThowable(Runnable source, Throwable t) {
+			protected void handleCaughtThowable(final Runnable source, final Throwable t) {
 				markEachFrameRunnableForRemoval(source);
 				t.printStackTrace();
 			}
@@ -49,11 +49,13 @@ public abstract class AbstractPlayer {
 				AbstractPlayer.this.schedule();
 			}
 		});
-		edu.cmu.cs.stage3.scheduler.SchedulerThread schedulerThread = new edu.cmu.cs.stage3.scheduler.SchedulerThread(scheduler);
+		final edu.cmu.cs.stage3.scheduler.SchedulerThread schedulerThread = new edu.cmu.cs.stage3.scheduler.SchedulerThread(
+				scheduler);
 		// schedulerThread.setSleepMillis( 1 );
 		// schedulerThread.setPriority( Thread.MAX_PRIORITY );
 		schedulerThread.start();
 	}
+
 	public AbstractPlayer() {
 		this(null);
 	}
@@ -63,24 +65,29 @@ public abstract class AbstractPlayer {
 	}
 
 	protected abstract void handleRenderTarget(edu.cmu.cs.stage3.alice.core.RenderTarget renderTarget);
+
 	protected abstract boolean isPreserveAndRestoreRequired();
 
-	public void loadWorld(edu.cmu.cs.stage3.io.DirectoryTreeLoader loader, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws java.io.IOException {
+	public void loadWorld(final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader,
+			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws java.io.IOException {
 		try {
-			m_world = (edu.cmu.cs.stage3.alice.core.World) edu.cmu.cs.stage3.alice.core.Element.load(loader, null, progressObserver);
+			m_world = (edu.cmu.cs.stage3.alice.core.World) edu.cmu.cs.stage3.alice.core.Element.load(loader, null,
+					progressObserver);
 			m_world.setRenderTargetFactory(m_drtf);
 			m_world.setClock(m_clock);
 			m_clock.setWorld(m_world);
-			edu.cmu.cs.stage3.alice.core.RenderTarget[] renderTargets = (edu.cmu.cs.stage3.alice.core.RenderTarget[]) m_world.getDescendants(edu.cmu.cs.stage3.alice.core.RenderTarget.class);
-			for (RenderTarget renderTarget : renderTargets) {
+			final edu.cmu.cs.stage3.alice.core.RenderTarget[] renderTargets = (edu.cmu.cs.stage3.alice.core.RenderTarget[]) m_world
+					.getDescendants(edu.cmu.cs.stage3.alice.core.RenderTarget.class);
+			for (final RenderTarget renderTarget : renderTargets) {
 				handleRenderTarget(renderTarget);
 			}
-		} catch (edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
+		} catch (final edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
 			throw new edu.cmu.cs.stage3.alice.core.ExceptionWrapper(pce, loader.toString());
-		} catch (edu.cmu.cs.stage3.alice.core.UnresolvablePropertyReferencesException upre) {
-			edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] propertyReferences = upre.getPropertyReferences();
+		} catch (final edu.cmu.cs.stage3.alice.core.UnresolvablePropertyReferencesException upre) {
+			final edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] propertyReferences = upre
+					.getPropertyReferences();
 			System.err.println("could not load: " + loader + ".  was unable to resolve the following references.");
-			for (PropertyReference propertyReference : propertyReferences) {
+			for (final PropertyReference propertyReference : propertyReferences) {
 				System.err.println("\t" + propertyReference);
 			}
 			// throw new edu.cmu.cs.stage3.alice.core.ExceptionWrapper( upre,
@@ -88,20 +95,23 @@ public abstract class AbstractPlayer {
 		}
 	}
 
-	public void loadWorld(java.io.InputStream ios, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws java.io.IOException {
-		edu.cmu.cs.stage3.io.DirectoryTreeLoader loader = new edu.cmu.cs.stage3.io.ZipTreeLoader();
+	public void loadWorld(final java.io.InputStream ios,
+			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws java.io.IOException {
+		final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader = new edu.cmu.cs.stage3.io.ZipTreeLoader();
 		loader.open(ios);
 		loadWorld(loader, progressObserver);
 	}
 
-	public void loadWorld(java.net.URL url, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws java.io.IOException {
-		edu.cmu.cs.stage3.io.DirectoryTreeLoader loader = new edu.cmu.cs.stage3.io.ZipTreeLoader();
+	public void loadWorld(final java.net.URL url, final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver)
+			throws java.io.IOException {
+		final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader = new edu.cmu.cs.stage3.io.ZipTreeLoader();
 		loader.open(url);
 		loadWorld(loader, progressObserver);
 	}
 
-	public void loadWorld(java.io.File file, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws java.io.IOException {
-		edu.cmu.cs.stage3.io.DirectoryTreeLoader loader = new edu.cmu.cs.stage3.io.ZipFileTreeLoader();
+	public void loadWorld(final java.io.File file, final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver)
+			throws java.io.IOException {
+		final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader = new edu.cmu.cs.stage3.io.ZipFileTreeLoader();
 		loader.open(file);
 		loadWorld(loader, progressObserver);
 	}
@@ -113,6 +123,7 @@ public abstract class AbstractPlayer {
 			m_world = null;
 		}
 	}
+
 	public void startWorld() {
 		if (isPreserveAndRestoreRequired()) {
 			m_world.preserve();
@@ -124,6 +135,7 @@ public abstract class AbstractPlayer {
 	public void pauseWorld() {
 		m_clock.pause();
 	}
+
 	public void resumeWorld() {
 		m_clock.resume();
 	}

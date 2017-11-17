@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -59,22 +59,27 @@ import edu.cmu.cs.stage3.alice.core.Sandbox;
  * <p>
  * Company: Stage3
  * </p>
- * 
+ *
  * @author Ben Buchwald
  * @version 1.0
  */
 
 public class MocapImporterOptionsDialog extends javax.swing.JDialog {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -2290635142067405972L;
+
 	class ElementOrNullWrapper {
 		public Element obj = null;
 		public String text = null;
 
-		public ElementOrNullWrapper(Element o, String t) {
+		public ElementOrNullWrapper(final Element o, final String t) {
 			obj = o;
 			text = t;
 		}
 
-		public ElementOrNullWrapper(Element o) {
+		public ElementOrNullWrapper(final Element o) {
 			obj = o;
 		}
 
@@ -114,20 +119,20 @@ public class MocapImporterOptionsDialog extends javax.swing.JDialog {
 			setContentPane(new JPanel());
 			jbInit();
 			guiInit();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	private void guiInit() {
-		DefaultListModel listOfStuff = new DefaultListModel();
+		final DefaultListModel listOfStuff = new DefaultListModel();
 		partsList.setModel(listOfStuff);
 
 		listOfStuff.addElement(new ElementOrNullWrapper(null, "Build Model from skeleton file"));
 
-		Sandbox[] possibilities = (Sandbox[]) AuthoringTool.getHack().getWorld().sandboxes.getArrayValue();
+		final Sandbox[] possibilities = (Sandbox[]) AuthoringTool.getHack().getWorld().sandboxes.getArrayValue();
 
-		for (Sandbox possibilitie : possibilities) {
+		for (final Sandbox possibilitie : possibilities) {
 			listOfStuff.addElement(new ElementOrNullWrapper(possibilitie));
 		}
 		partsList.setSelectedIndex(0);
@@ -152,7 +157,7 @@ public class MocapImporterOptionsDialog extends javax.swing.JDialog {
 		okButton.setText("OK");
 		okButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				okButton_actionPerformed(e);
 			}
 		});
@@ -162,7 +167,7 @@ public class MocapImporterOptionsDialog extends javax.swing.JDialog {
 		jFileBoxButton.setText("...");
 		jFileBoxButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				jFileBoxButton_actionPerformed(e);
 			}
 		});
@@ -171,25 +176,36 @@ public class MocapImporterOptionsDialog extends javax.swing.JDialog {
 		cancelButton.setText("Cancel");
 		cancelButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				cancelButton_actionPerformed(e);
 			}
 		});
-		getContentPane().add(promptLabel, new GridBagConstraints(0, 0, 3, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 0), 0, 0));
-		getContentPane().add(jScrollPane1, new GridBagConstraints(0, 1, 3, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 60));
-		getContentPane().add(jLabel1, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 5, 0, 5), 0, 0));
-		getContentPane().add(jLabel2, new GridBagConstraints(0, 4, 1, 2, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 5, 0, 5), 0, 0));
-		getContentPane().add(nativeFPSCombo, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 0), 0, 0));
-		getContentPane().add(aliceFPSCombo, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 0, 0), 0, 0));
-		getContentPane().add(jLabel3, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(0, 5, 0, 5), 0, 0));
-		getContentPane().add(jSkelFile, new GridBagConstraints(1, 2, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 0, 0), 0, 0));
+		getContentPane().add(promptLabel, new GridBagConstraints(0, 0, 3, 1, 0.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(5, 5, 0, 0), 0, 0));
+		getContentPane().add(jScrollPane1, new GridBagConstraints(0, 1, 3, 1, 1.0, 1.0, GridBagConstraints.CENTER,
+				GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 60));
+		getContentPane().add(jLabel1, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
+				GridBagConstraints.NONE, new Insets(0, 5, 0, 5), 0, 0));
+		getContentPane().add(jLabel2, new GridBagConstraints(0, 4, 1, 2, 0.0, 0.0, GridBagConstraints.EAST,
+				GridBagConstraints.NONE, new Insets(0, 5, 0, 5), 0, 0));
+		getContentPane().add(nativeFPSCombo, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(5, 5, 0, 0), 0, 0));
+		getContentPane().add(aliceFPSCombo, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(5, 5, 0, 0), 0, 0));
+		getContentPane().add(jLabel3, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
+				GridBagConstraints.NONE, new Insets(0, 5, 0, 5), 0, 0));
+		getContentPane().add(jSkelFile, new GridBagConstraints(1, 2, 1, 1, 1.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.HORIZONTAL, new Insets(5, 5, 0, 0), 0, 0));
 		jScrollPane1.getViewport().add(partsList, null);
-		getContentPane().add(jFileBoxButton, new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 1, 0, 5), -19, -8));
-		getContentPane().add(okButton, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 0, 5, 0), 0, 0));
-		getContentPane().add(cancelButton, new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		getContentPane().add(jFileBoxButton, new GridBagConstraints(2, 2, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(5, 1, 0, 5), -19, -8));
+		getContentPane().add(okButton, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.NONE, new Insets(5, 0, 5, 0), 0, 0));
+		getContentPane().add(cancelButton, new GridBagConstraints(1, 6, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 	}
 
-	void okButton_actionPerformed(ActionEvent e) {
+	void okButton_actionPerformed(final ActionEvent e) {
 		selectedPart = ((ElementOrNullWrapper) partsList.getSelectedValue()).obj;
 		asfFile = jSkelFile.getText();
 		fps = Double.parseDouble((String) aliceFPSCombo.getSelectedItem());
@@ -214,7 +230,7 @@ public class MocapImporterOptionsDialog extends javax.swing.JDialog {
 		return asfFile;
 	}
 
-	public void setNativeFPS(int nfps) {
+	public void setNativeFPS(final int nfps) {
 		nativeFPS = nfps;
 		if (nfps == 60) {
 			nativeFPSCombo.setSelectedIndex(0);
@@ -226,21 +242,21 @@ public class MocapImporterOptionsDialog extends javax.swing.JDialog {
 		}
 	}
 
-	public void setASFFile(String filename) {
+	public void setASFFile(final String filename) {
 		jSkelFile.setText(filename);
 	}
 
-	public void setASFPath(File path) {
+	public void setASFPath(final File path) {
 		ASFPath = path;
 	}
 
-	void jFileBoxButton_actionPerformed(ActionEvent e) {
-		JFileChooser chooser = new JFileChooser();
+	void jFileBoxButton_actionPerformed(final ActionEvent e) {
+		final JFileChooser chooser = new JFileChooser();
 
 		class ASFFileFilter extends FileFilter {
 
 			@Override
-			public boolean accept(File f) {
+			public boolean accept(final File f) {
 				if (f.isDirectory()) {
 					return true;
 				}
@@ -259,16 +275,16 @@ public class MocapImporterOptionsDialog extends javax.swing.JDialog {
 		chooser.setFileFilter(new ASFFileFilter());
 		try {
 			chooser.setCurrentDirectory(ASFPath);
-		} catch (ArrayIndexOutOfBoundsException aioobe) {
+		} catch (final ArrayIndexOutOfBoundsException aioobe) {
 			// for some reason this can potentially fail in jdk1.4.2_04
 		}
-		int returnVal = chooser.showOpenDialog(null);
+		final int returnVal = chooser.showOpenDialog(null);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			jSkelFile.setText(chooser.getSelectedFile().getPath());
 		}
 	}
 
-	void cancelButton_actionPerformed(ActionEvent e) {
+	void cancelButton_actionPerformed(final ActionEvent e) {
 		ok = false;
 		setVisible(false);
 	}

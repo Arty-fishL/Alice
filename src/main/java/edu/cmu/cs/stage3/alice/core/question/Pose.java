@@ -8,7 +8,7 @@ public class Pose extends SubjectQuestion {
 	}
 
 	@Override
-	protected Object getValue(edu.cmu.cs.stage3.alice.core.Transformable subjectValue) {
+	protected Object getValue(final edu.cmu.cs.stage3.alice.core.Transformable subjectValue) {
 		return edu.cmu.cs.stage3.alice.core.Pose.manufacturePose(subjectValue, subjectValue);
 	}
 }

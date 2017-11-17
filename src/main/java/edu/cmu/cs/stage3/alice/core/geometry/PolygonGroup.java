@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -48,33 +48,33 @@ public class PolygonGroup {
 	public PolygonGroup() {
 	}
 
-	protected void addPolygon(Polygon poly) {
+	protected void addPolygon(final Polygon poly) {
 		if (polygons == null) {
 			polygons = new Polygon[1];
 		} else {
-			Polygon[] temp = new Polygon[polygons.length + 1];
+			final Polygon[] temp = new Polygon[polygons.length + 1];
 			System.arraycopy(polygons, 0, temp, 0, polygons.length);
 			polygons = temp;
 		}
 		polygons[polygons.length - 1] = poly;
 	}
 
-	public void parsePathIterator(PathIterator pi, Point2d offset, int curvature) {
-		double[] coords = new double[6];
+	public void parsePathIterator(final PathIterator pi, final Point2d offset, final int curvature) {
+		final double[] coords = new double[6];
 		int type = -1;
 		boolean advance = true;
 
 		while (!pi.isDone()) {
 			type = pi.currentSegment(coords);
 			switch (type) {
-				case PathIterator.SEG_MOVETO :
-					Polygon p = new Polygon();
-					advance = p.parsePathIterator(pi, offset, curvature);
-					if (!p.isNull()) {
-						addPolygon(p);
-					}
-					break;
-				default :
+			case PathIterator.SEG_MOVETO:
+				final Polygon p = new Polygon();
+				advance = p.parsePathIterator(pi, offset, curvature);
+				if (!p.isNull()) {
+					addPolygon(p);
+				}
+				break;
+			default:
 			}
 			if (advance && !pi.isDone()) {
 				pi.next();
@@ -82,13 +82,13 @@ public class PolygonGroup {
 		}
 	}
 
-	public void triangulate(double extz) {
+	public void triangulate(final double extz) {
 		vertices = null;
 		indices = null;
 		if (polygons == null) {
 			return;
 		}
-		for (Polygon polygon : polygons) {
+		for (final Polygon polygon : polygons) {
 			polygon.triangulate(extz);
 		}
 
@@ -100,13 +100,13 @@ public class PolygonGroup {
 			return;
 		}
 
-		for (Polygon polygon : polygons) {
-			Vertex3d[] newVertices = new Vertex3d[vertices.length + polygon.getVertices().length];
+		for (final Polygon polygon : polygons) {
+			final Vertex3d[] newVertices = new Vertex3d[vertices.length + polygon.getVertices().length];
 			System.arraycopy(vertices, 0, newVertices, 0, vertices.length);
-			int offset = vertices.length;
+			final int offset = vertices.length;
 			System.arraycopy(polygon.getVertices(), 0, newVertices, vertices.length, polygon.getVertices().length);
 			vertices = newVertices;
-			int[] newIndices = new int[indices.length + polygon.getIndices().length];
+			final int[] newIndices = new int[indices.length + polygon.getIndices().length];
 			System.arraycopy(indices, 0, newIndices, 0, indices.length);
 			for (int j = 0; j < polygon.getIndices().length; j++) {
 				newIndices[indices.length + j] = polygon.getIndices()[j] + offset;
@@ -122,11 +122,12 @@ public class PolygonGroup {
 		}
 		for (int i = 0; i < vertices.length; i++) {
 			for (int j = i + 1; j < vertices.length; j++) {
-				if (vertices[i].position.equals(vertices[j].position) && vertices[i].normal.equals(vertices[j].normal)) {
+				if (vertices[i].position.equals(vertices[j].position)
+						&& vertices[i].normal.equals(vertices[j].normal)) {
 					for (int k = j + 1; k < vertices.length; k++) {
 						vertices[k - 1] = vertices[k];
 					}
-					Vertex3d[] newVertices = new Vertex3d[vertices.length - 1];
+					final Vertex3d[] newVertices = new Vertex3d[vertices.length - 1];
 					System.arraycopy(vertices, 0, newVertices, 0, newVertices.length);
 					vertices = newVertices;
 					for (int k = 0; k < indices.length; k++) {

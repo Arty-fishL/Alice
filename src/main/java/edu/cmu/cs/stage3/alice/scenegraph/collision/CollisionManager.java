@@ -6,19 +6,25 @@ import edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationListener;
 
 public class CollisionManager implements AbsoluteTransformationListener {
 	@Override
-	public void absoluteTransformationChanged(AbsoluteTransformationEvent absoluteTransformationEvent) {
+	public void absoluteTransformationChanged(final AbsoluteTransformationEvent absoluteTransformationEvent) {
 	}
-	public void activateObject(Visual a) {
+
+	public void activateObject(final Visual a) {
 	}
-	public void deactivateObject(Visual a) {
+
+	public void deactivateObject(final Visual a) {
 	}
-	public void activatePair(Visual a, Visual b) {
+
+	public void activatePair(final Visual a, final Visual b) {
 	}
-	public void deactivatePair(Visual a, Visual b) {
+
+	public void deactivatePair(final Visual a, final Visual b) {
 	}
-	public void deleteObject(Visual a) {
+
+	public void deleteObject(final Visual a) {
 	}
-	public Visual[][] update(int space) {
+
+	public Visual[][] update(final int space) {
 		return null;
 	}
 	/*
@@ -27,7 +33,7 @@ public class CollisionManager implements AbsoluteTransformationListener {
 	 * = new java.util.Hashtable(); private java.util.Dictionary m_mapIDToVisual
 	 * = new java.util.Hashtable(); private java.util.Vector m_pendingVisuals =
 	 * new java.util.Vector();
-	 * 
+	 *
 	 * public void absoluteTransformationChanged( AbsoluteTransformationEvent
 	 * absoluteTransformationEvent ) { Visual visual =
 	 * (Visual)absoluteTransformationEvent.getSource(); if(
@@ -44,7 +50,7 @@ public class CollisionManager implements AbsoluteTransformationListener {
 	 * vertices[ indices[ i+1 ] ].position.get( posB ); vertices[ indices[ i+2 ]
 	 * ].position.get( posC ); m_vcollide.addTri( posA, posB, posC, i/3 ); } }
 	 * else { System.err.println( "no geometry: " + visual );
-	 * 
+	 *
 	 * } m_vcollide.endObject(); visual.addAbsoluteTransformationListener( this
 	 * ); m_pendingVisuals.addElement( visual ); idValue = new Integer( id );
 	 * m_mapVisualToID.put( visual, idValue ); m_mapIDToVisual.put( idValue,

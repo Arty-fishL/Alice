@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -27,34 +27,40 @@ package edu.cmu.cs.stage3.alice.authoringtool.util;
  * @author Dennis Cosgrove
  */
 public class NameTextField extends javax.swing.JTextField {
-	private edu.cmu.cs.stage3.alice.authoringtool.util.CheckForValidityCallback okButtonCallback;
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -264718142181027415L;
+	private final edu.cmu.cs.stage3.alice.authoringtool.util.CheckForValidityCallback okButtonCallback;
 	private edu.cmu.cs.stage3.alice.core.Element m_parent;
 
-	public NameTextField(edu.cmu.cs.stage3.alice.authoringtool.util.CheckForValidityCallback okButtonCallback) {
+	public NameTextField(final edu.cmu.cs.stage3.alice.authoringtool.util.CheckForValidityCallback okButtonCallback) {
 		this.okButtonCallback = okButtonCallback;
 		getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
 			@Override
-			public void changedUpdate(javax.swing.event.DocumentEvent e) {
+			public void changedUpdate(final javax.swing.event.DocumentEvent e) {
 				NameTextField.this.refresh();
 			}
+
 			@Override
-			public void insertUpdate(javax.swing.event.DocumentEvent e) {
+			public void insertUpdate(final javax.swing.event.DocumentEvent e) {
 				NameTextField.this.refresh();
 			}
+
 			@Override
-			public void removeUpdate(javax.swing.event.DocumentEvent e) {
+			public void removeUpdate(final javax.swing.event.DocumentEvent e) {
 				NameTextField.this.refresh();
 			}
 		});
 		addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				textFieldAction();
 			}
 		});
 	}
 
-	public void setParent(edu.cmu.cs.stage3.alice.core.Element parent) {
+	public void setParent(final edu.cmu.cs.stage3.alice.core.Element parent) {
 		m_parent = parent;
 		refresh();
 	}
@@ -65,7 +71,7 @@ public class NameTextField extends javax.swing.JTextField {
 
 	private boolean isNameValid() {
 		if (m_parent != null) {
-			String name = getText();
+			final String name = getText();
 			if (edu.cmu.cs.stage3.alice.core.Element.isPotentialNameValid(name)) {
 				if (m_parent.getChildNamedIgnoreCase(name) == null) {
 					return true;
@@ -74,6 +80,7 @@ public class NameTextField extends javax.swing.JTextField {
 		}
 		return false;
 	}
+
 	private void refresh() {
 		if (isNameValid()) {
 			okButtonCallback.setValidity(this, true);

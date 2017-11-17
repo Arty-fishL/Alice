@@ -33,7 +33,7 @@ public class TurnAwayFromAnimation extends AbstractPointAtAnimation {
 
 		@Override
 		protected edu.cmu.cs.stage3.math.Matrix33 getTargetMatrix33() {
-			edu.cmu.cs.stage3.math.Matrix33 m = super.getTargetMatrix33();
+			final edu.cmu.cs.stage3.math.Matrix33 m = super.getTargetMatrix33();
 			m.rotateY(Math.PI);
 			return m;
 		}

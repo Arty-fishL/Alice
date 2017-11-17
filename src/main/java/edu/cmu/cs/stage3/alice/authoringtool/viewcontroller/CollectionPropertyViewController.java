@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -26,15 +26,21 @@ package edu.cmu.cs.stage3.alice.authoringtool.viewcontroller;
 /**
  * @author Jason Pratt
  */
-public class CollectionPropertyViewController extends javax.swing.JButton implements edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement, edu.cmu.cs.stage3.alice.authoringtool.util.Releasable {
+public class CollectionPropertyViewController extends javax.swing.JButton implements
+		edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement, edu.cmu.cs.stage3.alice.authoringtool.util.Releasable {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 5699570523024011099L;
 	protected edu.cmu.cs.stage3.alice.core.Property property;
 	protected boolean omitPropertyName;
 	protected edu.cmu.cs.stage3.alice.core.event.PropertyListener propertyListener = new edu.cmu.cs.stage3.alice.core.event.PropertyListener() {
 		@Override
-		public void propertyChanging(edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev) {
+		public void propertyChanging(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev) {
 		}
+
 		@Override
-		public void propertyChanged(edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev) {
+		public void propertyChanged(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev) {
 			refreshGUI();
 		}
 	};
@@ -42,21 +48,24 @@ public class CollectionPropertyViewController extends javax.swing.JButton implem
 	public CollectionPropertyViewController() {
 		addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				if (property != null) {
-					edu.cmu.cs.stage3.alice.authoringtool.util.CollectionEditorPanel collectionEditorPanel = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getCollectionEditorPanel();
+					final edu.cmu.cs.stage3.alice.authoringtool.util.CollectionEditorPanel collectionEditorPanel = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
+							.getCollectionEditorPanel();
 					collectionEditorPanel.setCollection((edu.cmu.cs.stage3.alice.core.Collection) property.getValue());
-					edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog(collectionEditorPanel, "Collection Editor", javax.swing.JOptionPane.PLAIN_MESSAGE);
+					edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog(collectionEditorPanel, "Collection Editor",
+							javax.swing.JOptionPane.PLAIN_MESSAGE);
 				}
 			}
 		});
 	}
 
-	public void set(edu.cmu.cs.stage3.alice.core.Property property, boolean omitPropertyName) {
+	public void set(final edu.cmu.cs.stage3.alice.core.Property property, final boolean omitPropertyName) {
 		clean();
 		this.property = property;
 		this.omitPropertyName = omitPropertyName;
-		setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("propertyViewControllerBackground"));
+		setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+				.getColor("propertyViewControllerBackground"));
 		setMargin(new java.awt.Insets(0, 4, 0, 4));
 		startListening();
 		refreshGUI();
@@ -95,7 +104,8 @@ public class CollectionPropertyViewController extends javax.swing.JButton implem
 		if (property != null) {
 			property.addPropertyListener(propertyListener);
 			if (property.getValue() != null) {
-				((edu.cmu.cs.stage3.alice.core.Collection) property.getValue()).values.addPropertyListener(propertyListener);
+				((edu.cmu.cs.stage3.alice.core.Collection) property.getValue()).values
+						.addPropertyListener(propertyListener);
 			}
 		}
 	}
@@ -104,25 +114,27 @@ public class CollectionPropertyViewController extends javax.swing.JButton implem
 		if (property != null) {
 			property.removePropertyListener(propertyListener);
 			if (property.getValue() != null) {
-				((edu.cmu.cs.stage3.alice.core.Collection) property.getValue()).values.removePropertyListener(propertyListener);
+				((edu.cmu.cs.stage3.alice.core.Collection) property.getValue()).values
+						.removePropertyListener(propertyListener);
 			}
 		}
 	}
 
 	protected void refreshGUI() {
-		Object value = property.get();
-		StringBuffer repr = new StringBuffer();
+		final Object value = property.get();
+		final StringBuffer repr = new StringBuffer();
 
 		if (!omitPropertyName) {
 			repr.append(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(property) + " = ");
 		}
 
 		if (value instanceof edu.cmu.cs.stage3.alice.core.Expression) {
-			repr.append(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getNameInContext((edu.cmu.cs.stage3.alice.core.Element) value, property.getOwner()));
+			repr.append(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+					.getNameInContext((edu.cmu.cs.stage3.alice.core.Element) value, property.getOwner()));
 		} else if (value == null) {
 			repr.append("<None>");
 		} else if (value instanceof edu.cmu.cs.stage3.alice.core.Collection) {
-			Object[] items = ((edu.cmu.cs.stage3.alice.core.Collection) value).values.getArrayValue();
+			final Object[] items = ((edu.cmu.cs.stage3.alice.core.Collection) value).values.getArrayValue();
 			if (items != null) {
 				for (int i = 0; i < items.length; i++) {
 					repr.append(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(items[i]));

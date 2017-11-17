@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -31,7 +31,7 @@ public class ChildChangeUndoableRedoable implements ContextAssignableUndoableRed
 	protected int newIndex;
 	protected Object context;
 
-	public ChildChangeUndoableRedoable(edu.cmu.cs.stage3.alice.core.event.ChildrenEvent childrenEvent) {
+	public ChildChangeUndoableRedoable(final edu.cmu.cs.stage3.alice.core.event.ChildrenEvent childrenEvent) {
 		parent = (edu.cmu.cs.stage3.alice.core.Element) childrenEvent.getSource();
 		child = childrenEvent.getChild();
 		changeType = childrenEvent.getChangeType();
@@ -43,7 +43,8 @@ public class ChildChangeUndoableRedoable implements ContextAssignableUndoableRed
 	 * @deprecated use other constructor
 	 */
 	@Deprecated
-	public ChildChangeUndoableRedoable(edu.cmu.cs.stage3.alice.core.event.ChildrenEvent childrenEvent, Object context) {
+	public ChildChangeUndoableRedoable(final edu.cmu.cs.stage3.alice.core.event.ChildrenEvent childrenEvent,
+			final Object context) {
 		parent = (edu.cmu.cs.stage3.alice.core.Element) childrenEvent.getSource();
 		child = childrenEvent.getChild();
 		changeType = childrenEvent.getChangeType();
@@ -52,7 +53,7 @@ public class ChildChangeUndoableRedoable implements ContextAssignableUndoableRed
 	}
 
 	@Override
-	public void setContext(Object context) {
+	public void setContext(final Object context) {
 		this.context = context;
 	}
 

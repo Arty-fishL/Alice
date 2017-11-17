@@ -4,12 +4,15 @@ import edu.cmu.cs.stage3.alice.core.Element;
 import edu.cmu.cs.stage3.alice.core.Visualization;
 
 public class VisualizationProperty extends ModelProperty {
-	protected VisualizationProperty(Element owner, String name, Visualization defaultValue, Class valueClass) {
+	protected VisualizationProperty(final Element owner, final String name, final Visualization defaultValue,
+			final Class valueClass) {
 		super(owner, name, defaultValue, valueClass);
 	}
-	public VisualizationProperty(Element owner, String name, Visualization defaultValue) {
+
+	public VisualizationProperty(final Element owner, final String name, final Visualization defaultValue) {
 		this(owner, name, defaultValue, Visualization.class);
 	}
+
 	public Visualization getVisualizationValue() {
 		return (Visualization) getModelValue();
 	}

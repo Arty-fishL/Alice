@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -52,12 +52,12 @@ public class ASFImporter extends AbstractImporter {
 
 	@Override
 	public Map getExtensionMap() {
-		java.util.HashMap map = new java.util.HashMap();
+		final java.util.HashMap map = new java.util.HashMap();
 		map.put("ASF", "Acclaim Skeleton File");
 		return map;
 	}
 
-	private Model parseASF(InputStream is) throws java.io.IOException {
+	private Model parseASF(final InputStream is) throws java.io.IOException {
 
 		EStreamTokenizer tokenizer;
 
@@ -68,8 +68,9 @@ public class ASFImporter extends AbstractImporter {
 		ASFBone bone;
 
 		// load a skeleton
-		edu.cmu.cs.stage3.alice.authoringtool.util.BackslashConverterFilterInputStream bcfis = new edu.cmu.cs.stage3.alice.authoringtool.util.BackslashConverterFilterInputStream(is);
-		java.io.BufferedReader br = new java.io.BufferedReader(new java.io.InputStreamReader(bcfis));
+		final edu.cmu.cs.stage3.alice.authoringtool.util.BackslashConverterFilterInputStream bcfis = new edu.cmu.cs.stage3.alice.authoringtool.util.BackslashConverterFilterInputStream(
+				is);
+		final java.io.BufferedReader br = new java.io.BufferedReader(new java.io.InputStreamReader(bcfis));
 		tokenizer = new EStreamTokenizer(br);
 
 		tokenizer.commentChar('#');
@@ -81,7 +82,8 @@ public class ASFImporter extends AbstractImporter {
 
 		// find the units section or root section if there is no unit section
 		// (assume default units)
-		while (tokenizer.ttype != StreamTokenizer.TT_WORD || !(tokenizer.sval.equals(":units") || tokenizer.sval.equals(":root"))) {
+		while (tokenizer.ttype != StreamTokenizer.TT_WORD
+				|| !(tokenizer.sval.equals(":units") || tokenizer.sval.equals(":root"))) {
 			tokenizer.nextToken();
 		}
 
@@ -179,7 +181,8 @@ public class ASFImporter extends AbstractImporter {
 
 		while (tokenizer.ttype != StreamTokenizer.TT_WORD || tokenizer.sval.charAt(0) != ':') {
 			// find a bone
-			while (tokenizer.ttype != StreamTokenizer.TT_WORD || tokenizer.sval.charAt(0) != ':' && !tokenizer.sval.equals("begin")) {
+			while (tokenizer.ttype != StreamTokenizer.TT_WORD
+					|| tokenizer.sval.charAt(0) != ':' && !tokenizer.sval.equals("begin")) {
 				tokenizer.nextToken();
 			}
 
@@ -279,11 +282,11 @@ public class ASFImporter extends AbstractImporter {
 	}
 
 	@Override
-	protected Element load(InputStream is, String ext) throws java.io.IOException {
+	protected Element load(final InputStream is, final String ext) throws java.io.IOException {
 		return parseASF(is);
 	}
 
-	public ASFSkeleton loadSkeleton(InputStream is) throws java.io.IOException {
+	public ASFSkeleton loadSkeleton(final InputStream is) throws java.io.IOException {
 		parseASF(is);
 		return skel;
 	}

@@ -4,7 +4,7 @@ public class Enqueue extends QueueVisualizationWithItemAnimation {
 	public class RuntimeEnqueue extends RuntimeQueueVisualizationWithItemAnimation {
 
 		@Override
-		public void epilogue(double t) {
+		public void epilogue(final double t) {
 			super.epilogue(t);
 			getCollection().values.addValue(getItem());
 		}

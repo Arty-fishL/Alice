@@ -6,31 +6,36 @@ public class Manager {
 		try {
 			Class.forName("javax.media.Manager");
 			s_isJMFAvailable = true;
-		} catch (ClassNotFoundException cnfe) {
+		} catch (final ClassNotFoundException cnfe) {
 			s_isJMFAvailable = false;
 		}
 	}
-	public static edu.cmu.cs.stage3.media.DataSource createDataSource(byte[] data, String extension) {
+
+	public static edu.cmu.cs.stage3.media.DataSource createDataSource(final byte[] data, final String extension) {
 		if (s_isJMFAvailable) {
 			return new edu.cmu.cs.stage3.media.jmfmedia.DataSource(data, extension);
 		} else {
 			return new edu.cmu.cs.stage3.media.nullmedia.DataSource(data, extension);
 		}
 	}
-	public static edu.cmu.cs.stage3.media.DataSource createDataSource(java.io.InputStream is, String extension) throws java.io.IOException {
+
+	public static edu.cmu.cs.stage3.media.DataSource createDataSource(final java.io.InputStream is,
+			final String extension) throws java.io.IOException {
 		java.io.BufferedInputStream bis;
 		if (is instanceof java.io.BufferedInputStream) {
 			bis = (java.io.BufferedInputStream) is;
 		} else {
 			bis = new java.io.BufferedInputStream(is);
 		}
-		int byteCount = bis.available();
-		byte[] data = new byte[byteCount];
+		final int byteCount = bis.available();
+		final byte[] data = new byte[byteCount];
 		bis.read(data);
 		return createDataSource(data, extension);
 	}
-	public static edu.cmu.cs.stage3.media.DataSource createDataSource(java.io.File file) throws java.io.IOException {
-		java.io.FileInputStream fis = new java.io.FileInputStream(file);
+
+	public static edu.cmu.cs.stage3.media.DataSource createDataSource(final java.io.File file)
+			throws java.io.IOException {
+		final java.io.FileInputStream fis = new java.io.FileInputStream(file);
 		return createDataSource(fis, edu.cmu.cs.stage3.io.FileUtilities.getExtension(file));
 	}
 	// public static void main( String[] args ) {

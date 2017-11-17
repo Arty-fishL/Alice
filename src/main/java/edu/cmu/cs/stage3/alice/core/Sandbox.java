@@ -32,16 +32,17 @@ public abstract class Sandbox extends Element {
 	public final ElementArrayProperty behaviors = new ElementArrayProperty(this, "behaviors", null, Behavior[].class);
 	public final ElementArrayProperty variables = new ElementArrayProperty(this, "variables", null, Variable[].class);
 	public final ElementArrayProperty questions = new ElementArrayProperty(this, "questions", null, Question[].class);
-	public final ElementArrayProperty textureMaps = new ElementArrayProperty(this, "textureMaps", null, TextureMap[].class);
+	public final ElementArrayProperty textureMaps = new ElementArrayProperty(this, "textureMaps", null,
+			TextureMap[].class);
 	public final ElementArrayProperty sounds = new ElementArrayProperty(this, "sounds", null, Sound[].class);
 	public final ElementArrayProperty geometries = new ElementArrayProperty(this, "geometries", null, Geometry[].class);
 	public final ElementArrayProperty misc = new ElementArrayProperty(this, "misc", null, Element[].class);
 
 	private Behavior m_currentBehavior = null;
 
-	public Expression lookup(String key) {
+	public Expression lookup(final String key) {
 		if (m_currentBehavior != null) {
-			Expression expression = m_currentBehavior.stackLookup(key);
+			final Expression expression = m_currentBehavior.stackLookup(key);
 			if (expression != null) {
 				return expression;
 			} else {
@@ -56,9 +57,9 @@ public abstract class Sandbox extends Element {
 		return m_currentBehavior;
 	}
 
-	protected void scheduleBehaviors(double t) {
+	protected void scheduleBehaviors(final double t) {
 		for (int i = 0; i < behaviors.size(); i++) {
-			Behavior behaviorI = (Behavior) behaviors.get(i);
+			final Behavior behaviorI = (Behavior) behaviors.get(i);
 			// m_currentBehavior = null;
 			// behaviorI.preSchedule( t );
 			// m_currentBehavior = behaviorI;
@@ -74,7 +75,7 @@ public abstract class Sandbox extends Element {
 	}
 
 	@Override
-	protected void internalFindAccessibleExpressions(Class cls, java.util.Vector v) {
+	protected void internalFindAccessibleExpressions(final Class cls, final java.util.Vector v) {
 		for (int i = 0; i < variables.size(); i++) {
 			internalAddExpressionIfAssignableTo((Expression) variables.get(i), cls, v);
 		}

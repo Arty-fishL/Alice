@@ -29,20 +29,22 @@ import edu.cmu.cs.stage3.alice.core.property.ElementArrayProperty;
 import edu.cmu.cs.stage3.alice.core.property.IntegerProperty;
 
 public class KeyClickBehavior extends TriggerBehavior implements java.awt.event.KeyListener {
-	private static Class[] s_supportedCoercionClasses = {KeyIsPressedBehavior.class};
+	private static Class[] s_supportedCoercionClasses = { KeyIsPressedBehavior.class };
 
 	@Override
 	public Class[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
+
 	public final IntegerProperty keyCode = new IntegerProperty(this, "keyCode", null);
-	public final ElementArrayProperty renderTargets = new ElementArrayProperty(this, "renderTargets", null, edu.cmu.cs.stage3.alice.core.RenderTarget[].class);
+	public final ElementArrayProperty renderTargets = new ElementArrayProperty(this, "renderTargets", null,
+			edu.cmu.cs.stage3.alice.core.RenderTarget[].class);
 	private edu.cmu.cs.stage3.alice.core.RenderTarget[] m_renderTargets = null;
 
 	@Override
 	public void manufactureAnyNecessaryDetails() {
 		if (details.size() == 1) {
-			edu.cmu.cs.stage3.alice.core.Variable code = new edu.cmu.cs.stage3.alice.core.Variable();
+			final edu.cmu.cs.stage3.alice.core.Variable code = new edu.cmu.cs.stage3.alice.core.Variable();
 			code.name.set("code");
 			code.setParent(this);
 			code.valueClass.set(Integer.class);
@@ -53,22 +55,22 @@ public class KeyClickBehavior extends TriggerBehavior implements java.awt.event.
 	@Override
 	public void manufactureDetails() {
 		super.manufactureDetails();
-		edu.cmu.cs.stage3.alice.core.Variable keyChar = new edu.cmu.cs.stage3.alice.core.Variable();
+		final edu.cmu.cs.stage3.alice.core.Variable keyChar = new edu.cmu.cs.stage3.alice.core.Variable();
 		keyChar.name.set("keyChar");
 		keyChar.setParent(this);
 		keyChar.valueClass.set(Character.class);
 		details.add(keyChar);
 
-		edu.cmu.cs.stage3.alice.core.Variable code = new edu.cmu.cs.stage3.alice.core.Variable();
+		final edu.cmu.cs.stage3.alice.core.Variable code = new edu.cmu.cs.stage3.alice.core.Variable();
 		code.name.set("code");
 		code.setParent(this);
 		code.valueClass.set(Integer.class);
 		details.add(code);
 	}
 
-	private void updateDetails(java.awt.event.KeyEvent keyEvent) {
+	private void updateDetails(final java.awt.event.KeyEvent keyEvent) {
 		for (int i = 0; i < details.size(); i++) {
-			Variable detail = (Variable) details.get(i);
+			final Variable detail = (Variable) details.get(i);
 			if (detail.name.getStringValue().equals("keyChar")) {
 				detail.value.set(new Character(keyEvent.getKeyChar()));
 			} else if (detail.name.getStringValue().equals("code")) {
@@ -77,41 +79,45 @@ public class KeyClickBehavior extends TriggerBehavior implements java.awt.event.
 		}
 	}
 
-	private boolean checkKeyCode(java.awt.event.KeyEvent keyEvent) {
-		int actualValue = keyEvent.getKeyCode();
-		int requiredValue = keyCode.intValue(actualValue);
+	private boolean checkKeyCode(final java.awt.event.KeyEvent keyEvent) {
+		final int actualValue = keyEvent.getKeyCode();
+		final int requiredValue = keyCode.intValue(actualValue);
 		return actualValue == requiredValue;
 	}
+
 	@Override
-	public void keyPressed(java.awt.event.KeyEvent keyEvent) {
+	public void keyPressed(final java.awt.event.KeyEvent keyEvent) {
 	}
+
 	@Override
-	public void keyReleased(java.awt.event.KeyEvent keyEvent) {
+	public void keyReleased(final java.awt.event.KeyEvent keyEvent) {
 		updateDetails(keyEvent);
 		if (checkKeyCode(keyEvent)) {
 			trigger(keyEvent.getWhen() * 0.001);
 		}
 	}
+
 	@Override
-	public void keyTyped(java.awt.event.KeyEvent keyEvent) {
+	public void keyTyped(final java.awt.event.KeyEvent keyEvent) {
 	}
 
 	@Override
-	protected void started(edu.cmu.cs.stage3.alice.core.World world, double time) {
+	protected void started(final edu.cmu.cs.stage3.alice.core.World world, final double time) {
 		super.started(world, time);
 		m_renderTargets = (edu.cmu.cs.stage3.alice.core.RenderTarget[]) renderTargets.get();
 		if (m_renderTargets == null) {
-			m_renderTargets = (edu.cmu.cs.stage3.alice.core.RenderTarget[]) world.getDescendants(edu.cmu.cs.stage3.alice.core.RenderTarget.class);
+			m_renderTargets = (edu.cmu.cs.stage3.alice.core.RenderTarget[]) world
+					.getDescendants(edu.cmu.cs.stage3.alice.core.RenderTarget.class);
 		}
-		for (RenderTarget m_renderTarget : m_renderTargets) {
+		for (final RenderTarget m_renderTarget : m_renderTargets) {
 			m_renderTarget.addKeyListener(this);
 		}
 	}
 
 	@Override
-	protected void stopped(edu.cmu.cs.stage3.alice.core.World world, double time) {
+	protected void stopped(final edu.cmu.cs.stage3.alice.core.World world, final double time) {
 		super.stopped(world, time);
-		for (RenderTarget m_renderTarget : m_renderTargets) {
+		for (final RenderTarget m_renderTarget : m_renderTargets) {
 			m_renderTarget.removeKeyListener(this);
 		}
 		m_renderTargets = null;

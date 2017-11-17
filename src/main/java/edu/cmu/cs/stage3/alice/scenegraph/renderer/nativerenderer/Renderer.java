@@ -30,18 +30,23 @@ public abstract class Renderer extends edu.cmu.cs.stage3.alice.scenegraph.render
 		// f = null;
 		try {
 			System.loadLibrary("jawt");
-		} catch (UnsatisfiedLinkError ule) {
+		} catch (final UnsatisfiedLinkError ule) {
 			// pass
 		}
 	}
-	private int m_nativeInstance = 0;
+	private final int m_nativeInstance = 0;
 
 	protected abstract void createNativeInstance();
+
 	protected abstract void releaseNativeInstance();
 
-	protected abstract void pick(ComponentProxy componentProxy, double x, double y, double z, double planeMinX, double planeMinY, double planeMaxX, double planeMaxY, double nearClippingPlaneDistance, double farClippingPlaneDistance, boolean isSubElementRequired, boolean isOnlyFrontMostRequired, int[] atVisual, boolean[] atIsFrontFacing, int[] atSubElement, double[] atZ);
+	protected abstract void pick(ComponentProxy componentProxy, double x, double y, double z, double planeMinX,
+			double planeMinY, double planeMaxX, double planeMaxY, double nearClippingPlaneDistance,
+			double farClippingPlaneDistance, boolean isSubElementRequired, boolean isOnlyFrontMostRequired,
+			int[] atVisual, boolean[] atIsFrontFacing, int[] atSubElement, double[] atZ);
 
 	protected abstract RenderTargetAdapter createRenderTargetAdapter(RenderTarget renderTarget);
+
 	protected abstract RenderCanvas createRenderCanvas(OnscreenRenderTarget onscreenRenderTarget);
 
 	@Override
@@ -58,27 +63,33 @@ public abstract class Renderer extends edu.cmu.cs.stage3.alice.scenegraph.render
 	protected abstract void internalSetIsSoftwareEmulationForced(boolean isSoftwareEmulationForced);
 
 	@Override
-	public void setIsSoftwareEmulationForced(boolean isSoftwareEmulationForced) {
+	public void setIsSoftwareEmulationForced(final boolean isSoftwareEmulationForced) {
 		super.setIsSoftwareEmulationForced(isSoftwareEmulationForced);
 		internalSetIsSoftwareEmulationForced(isSoftwareEmulationForced);
 	}
 
 	@Override
-	public edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pick(edu.cmu.cs.stage3.alice.scenegraph.Component sgComponent, javax.vecmath.Vector3d v, double planeMinX, double planeMinY, double planeMaxX, double planeMaxY, double nearClippingPlaneDistance, double farClippingPlaneDistance, boolean isSubElementRequired, boolean isOnlyFrontMostRequired) {
+	public edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pick(
+			final edu.cmu.cs.stage3.alice.scenegraph.Component sgComponent, final javax.vecmath.Vector3d v,
+			final double planeMinX, final double planeMinY, final double planeMaxX, final double planeMaxY,
+			final double nearClippingPlaneDistance, final double farClippingPlaneDistance,
+			final boolean isSubElementRequired, final boolean isOnlyFrontMostRequired) {
 		commitAnyPendingChanges();
-		ComponentProxy componentProxy = (ComponentProxy) getProxyFor(sgComponent);
-		int[] atVisual = {0};
-		boolean[] atIsFrontFacing = {true};
-		int[] atSubElement = {-1};
-		double[] atZ = {Double.NaN};
+		final ComponentProxy componentProxy = (ComponentProxy) getProxyFor(sgComponent);
+		final int[] atVisual = { 0 };
+		final boolean[] atIsFrontFacing = { true };
+		final int[] atSubElement = { -1 };
+		final double[] atZ = { Double.NaN };
 
-		pick(componentProxy, v.x, v.y, v.z, planeMinX, planeMinY, planeMaxX, planeMaxY, nearClippingPlaneDistance, farClippingPlaneDistance, isSubElementRequired, isOnlyFrontMostRequired, atVisual, atIsFrontFacing, atSubElement, atZ);
+		pick(componentProxy, v.x, v.y, v.z, planeMinX, planeMinY, planeMaxX, planeMaxY, nearClippingPlaneDistance,
+				farClippingPlaneDistance, isSubElementRequired, isOnlyFrontMostRequired, atVisual, atIsFrontFacing,
+				atSubElement, atZ);
 
 		edu.cmu.cs.stage3.alice.scenegraph.Visual[] sgVisuals = null;
 		edu.cmu.cs.stage3.alice.scenegraph.Geometry[] sgGeometries = null;
 		int[] subElements = null;
 		boolean[] isFrontFacings = null;
-		VisualProxy visualProxy = VisualProxy.map(atVisual[0]);
+		final VisualProxy visualProxy = VisualProxy.map(atVisual[0]);
 		if (visualProxy != null) {
 			sgVisuals = new edu.cmu.cs.stage3.alice.scenegraph.Visual[1];
 			sgVisuals[0] = (edu.cmu.cs.stage3.alice.scenegraph.Visual) visualProxy.getSceneGraphElement();
@@ -94,53 +105,59 @@ public abstract class Renderer extends edu.cmu.cs.stage3.alice.scenegraph.render
 	}
 
 	@Override
-	protected void dispatchAbsoluteTransformationChange(edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent) {
-		edu.cmu.cs.stage3.alice.scenegraph.Component sgComponent = (edu.cmu.cs.stage3.alice.scenegraph.Component) absoluteTransformationEvent.getSource();
+	protected void dispatchAbsoluteTransformationChange(
+			final edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent) {
+		final edu.cmu.cs.stage3.alice.scenegraph.Component sgComponent = (edu.cmu.cs.stage3.alice.scenegraph.Component) absoluteTransformationEvent
+				.getSource();
 		if (sgComponent.isReleased()) {
 			// pass
 		} else {
-			ComponentProxy componentProxy = (ComponentProxy) getProxyFor(sgComponent);
+			final ComponentProxy componentProxy = (ComponentProxy) getProxyFor(sgComponent);
 			componentProxy.onAbsoluteTransformationChange();
 		}
 	}
 
 	@Override
-	protected void dispatchBoundChange(edu.cmu.cs.stage3.alice.scenegraph.event.BoundEvent boundEvent) {
+	protected void dispatchBoundChange(final edu.cmu.cs.stage3.alice.scenegraph.event.BoundEvent boundEvent) {
 	}
 
 	@Override
-	public void dispatchChildAdd(edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent childrenEvent) {
-		edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer = (edu.cmu.cs.stage3.alice.scenegraph.Container) childrenEvent.getSource();
-		edu.cmu.cs.stage3.alice.scenegraph.Component sgChild = childrenEvent.getChild();
+	public void dispatchChildAdd(final edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent childrenEvent) {
+		final edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer = (edu.cmu.cs.stage3.alice.scenegraph.Container) childrenEvent
+				.getSource();
+		final edu.cmu.cs.stage3.alice.scenegraph.Component sgChild = childrenEvent.getChild();
 		if (sgContainer.isReleased() || sgChild.isReleased()) {
 			// pass
 		} else {
-			ContainerProxy containerProxy = (ContainerProxy) getProxyFor(sgContainer);
-			ComponentProxy childProxy = (ComponentProxy) getProxyFor(sgChild);
+			final ContainerProxy containerProxy = (ContainerProxy) getProxyFor(sgContainer);
+			final ComponentProxy childProxy = (ComponentProxy) getProxyFor(sgChild);
 			containerProxy.onChildAdded(childProxy);
 		}
 	}
 
 	@Override
-	public void dispatchChildRemove(edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent childrenEvent) {
-		edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer = (edu.cmu.cs.stage3.alice.scenegraph.Container) childrenEvent.getSource();
-		edu.cmu.cs.stage3.alice.scenegraph.Component sgChild = childrenEvent.getChild();
+	public void dispatchChildRemove(final edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent childrenEvent) {
+		final edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer = (edu.cmu.cs.stage3.alice.scenegraph.Container) childrenEvent
+				.getSource();
+		final edu.cmu.cs.stage3.alice.scenegraph.Component sgChild = childrenEvent.getChild();
 		if (sgContainer.isReleased() || sgChild.isReleased()) {
 			// pass
 		} else {
-			ContainerProxy containerProxy = (ContainerProxy) getProxyFor(sgContainer);
-			ComponentProxy childProxy = (ComponentProxy) getProxyFor(sgChild);
+			final ContainerProxy containerProxy = (ContainerProxy) getProxyFor(sgContainer);
+			final ComponentProxy childProxy = (ComponentProxy) getProxyFor(sgChild);
 			containerProxy.onChildRemoved(childProxy);
 		}
 	}
 
 	@Override
-	protected void dispatchHierarchyChange(edu.cmu.cs.stage3.alice.scenegraph.event.HierarchyEvent hierarchyEvent) {
-		edu.cmu.cs.stage3.alice.scenegraph.Component sgComponent = (edu.cmu.cs.stage3.alice.scenegraph.Component) hierarchyEvent.getSource();
+	protected void dispatchHierarchyChange(
+			final edu.cmu.cs.stage3.alice.scenegraph.event.HierarchyEvent hierarchyEvent) {
+		final edu.cmu.cs.stage3.alice.scenegraph.Component sgComponent = (edu.cmu.cs.stage3.alice.scenegraph.Component) hierarchyEvent
+				.getSource();
 		if (sgComponent.isReleased()) {
 			// pass
 		} else {
-			ComponentProxy componentProxy = (ComponentProxy) getProxyFor(sgComponent);
+			final ComponentProxy componentProxy = (ComponentProxy) getProxyFor(sgComponent);
 			componentProxy.onHierarchyChange();
 		}
 	}
@@ -153,12 +170,14 @@ public abstract class Renderer extends edu.cmu.cs.stage3.alice.scenegraph.render
 	}
 
 	@Override
-	protected abstract edu.cmu.cs.stage3.alice.scenegraph.renderer.AbstractProxy createProxyFor(edu.cmu.cs.stage3.alice.scenegraph.Element sgElement);
+	protected abstract edu.cmu.cs.stage3.alice.scenegraph.renderer.AbstractProxy createProxyFor(
+			edu.cmu.cs.stage3.alice.scenegraph.Element sgElement);
 
 	@Override
 	public edu.cmu.cs.stage3.alice.scenegraph.renderer.OffscreenRenderTarget createOffscreenRenderTarget() {
 		return new OffscreenRenderTarget(this);
 	}
+
 	@Override
 	public edu.cmu.cs.stage3.alice.scenegraph.renderer.OnscreenRenderTarget createOnscreenRenderTarget() {
 		return new OnscreenRenderTarget(this);

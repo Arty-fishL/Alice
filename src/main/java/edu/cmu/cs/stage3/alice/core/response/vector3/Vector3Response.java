@@ -11,20 +11,22 @@ public class Vector3Response extends edu.cmu.cs.stage3.alice.core.Response {
 	protected Number getDefaultDuration() {
 		return new Double(0);
 	}
+
 	public abstract class RuntimeVector3Response extends RuntimeResponse {
 		private javax.vecmath.Vector3d m_vector3;
 		private double m_value;
+
 		protected abstract void set(javax.vecmath.Vector3d vector3d, double value);
 
 		@Override
-		public void prologue(double t) {
+		public void prologue(final double t) {
 			super.prologue(t);
 			m_vector3 = vector3.getVector3Value();
 			m_value = value.doubleValue();
 		}
 
 		@Override
-		public void epilogue(double t) {
+		public void epilogue(final double t) {
 			super.prologue(t);
 			set(m_vector3, m_value);
 		}

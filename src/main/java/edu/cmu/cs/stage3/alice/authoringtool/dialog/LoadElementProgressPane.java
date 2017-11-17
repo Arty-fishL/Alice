@@ -26,10 +26,15 @@ package edu.cmu.cs.stage3.alice.authoringtool.dialog;
 import edu.cmu.cs.stage3.alice.core.reference.PropertyReference;
 
 public class LoadElementProgressPane extends edu.cmu.cs.stage3.progress.ProgressPane {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 3459482568930183527L;
 	private edu.cmu.cs.stage3.io.DirectoryTreeLoader m_loader;
 	private edu.cmu.cs.stage3.alice.core.Element m_externalRoot;
 	private edu.cmu.cs.stage3.alice.core.Element m_loadedElement;
-	public LoadElementProgressPane(String title, String preDescription) {
+
+	public LoadElementProgressPane(final String title, final String preDescription) {
 		super(title, preDescription);
 	}
 
@@ -38,20 +43,21 @@ public class LoadElementProgressPane extends edu.cmu.cs.stage3.progress.Progress
 		m_loadedElement = null;
 		try {
 			m_loadedElement = edu.cmu.cs.stage3.alice.core.Element.load(m_loader, m_externalRoot, this);
-		} catch (edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
+		} catch (final edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
 			throw pce;
-		} catch (edu.cmu.cs.stage3.alice.core.UnresolvablePropertyReferencesException upre) {
+		} catch (final edu.cmu.cs.stage3.alice.core.UnresolvablePropertyReferencesException upre) {
 			// edu.cmu.cs.stage3.alice.authoringtool.dialog.UnresolvablePropertyReferencesPane
 			// unresolvablePropertyReferencesPane = new
 			// edu.cmu.cs.stage3.alice.authoringtool.dialog.UnresolvablePropertyReferencesPane(
 			// upre );
 			// edu.cmu.cs.stage3.swing.DialogManager.showDialog(
 			// unresolvablePropertyReferencesPane );
-			StringBuffer sb = new StringBuffer();
+			final StringBuffer sb = new StringBuffer();
 			sb.append("WARNING: unable to resolve references: \n");
-			edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] propertyReferences = upre.getPropertyReferences();
-			for (PropertyReference propertyReference : propertyReferences) {
-				edu.cmu.cs.stage3.alice.core.Property property = propertyReference.getProperty();
+			final edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] propertyReferences = upre
+					.getPropertyReferences();
+			for (final PropertyReference propertyReference : propertyReferences) {
+				final edu.cmu.cs.stage3.alice.core.Property property = propertyReference.getProperty();
 				sb.append("    ");
 				sb.append(property.getOwner().toString());
 				sb.append('[');
@@ -62,10 +68,11 @@ public class LoadElementProgressPane extends edu.cmu.cs.stage3.progress.Progress
 			}
 			sb.append('\n');
 			sb.append("Would you like to continue, setting all values to None?");
-			if (edu.cmu.cs.stage3.swing.DialogManager.showConfirmDialog(sb.toString(), "Unable to load world", javax.swing.JOptionPane.YES_NO_OPTION) == javax.swing.JOptionPane.YES_OPTION) {
+			if (edu.cmu.cs.stage3.swing.DialogManager.showConfirmDialog(sb.toString(), "Unable to load world",
+					javax.swing.JOptionPane.YES_NO_OPTION) == javax.swing.JOptionPane.YES_OPTION) {
 				m_loadedElement = upre.getElement();
 			}
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Unable to load world", t);
 		}
 		// } catch(
@@ -84,18 +91,21 @@ public class LoadElementProgressPane extends edu.cmu.cs.stage3.progress.Progress
 		// edu.cmu.cs.stage3.alice.core.reference.PropertyReference[]
 		// propertyReferences = e.getPropertyReferences();
 		// //System.err.println("Unable to load object: " + pathname +
-		// ".  Couldn't resolve the following references:");
+		// ". Couldn't resolve the following references:");
 		// for (int i = 0; i < propertyReferences.length; i++) {
 		// System.err.println("\t" + propertyReferences[i]);
 		// }
 		// }
 	}
-	public void setLoader(edu.cmu.cs.stage3.io.DirectoryTreeLoader loader) {
+
+	public void setLoader(final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader) {
 		m_loader = loader;
 	}
-	public void setExternalRoot(edu.cmu.cs.stage3.alice.core.Element externalRoot) {
+
+	public void setExternalRoot(final edu.cmu.cs.stage3.alice.core.Element externalRoot) {
 		m_externalRoot = externalRoot;
 	}
+
 	public edu.cmu.cs.stage3.alice.core.Element getLoadedElement() {
 		return m_loadedElement;
 	}

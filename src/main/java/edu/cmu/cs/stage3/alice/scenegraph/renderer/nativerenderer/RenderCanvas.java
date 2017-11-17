@@ -1,20 +1,28 @@
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer;
 
 public abstract class RenderCanvas extends java.awt.Canvas {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -6571403494219563648L;
 	private int m_nativeInstance;
-	private int m_nativeDrawingSurfaceInfo;
+	private final int m_nativeDrawingSurfaceInfo;
+
 	protected abstract void createNativeInstance(RenderTargetAdapter renderTargetAdapter);
+
 	protected abstract void releaseNativeInstance();
 
 	protected abstract boolean acquireDrawingSurface();
+
 	protected abstract void releaseDrawingSurface();
+
 	protected abstract void swapBuffers();
 
-	private OnscreenRenderTarget m_onscreenRenderTarget;
+	private final OnscreenRenderTarget m_onscreenRenderTarget;
 	private boolean m_giveUp = false;
 	private int count = 0;
 
-	protected RenderCanvas(OnscreenRenderTarget onscreenRenderTarget) {
+	protected RenderCanvas(final OnscreenRenderTarget onscreenRenderTarget) {
 		m_nativeDrawingSurfaceInfo = 0;
 		m_onscreenRenderTarget = onscreenRenderTarget;
 		createNativeInstance(m_onscreenRenderTarget.getAdapter());
@@ -34,9 +42,9 @@ public abstract class RenderCanvas extends java.awt.Canvas {
 	// pass event on to parent so swing will invoke menu shortcuts
 
 	@Override
-	protected void processKeyEvent(java.awt.event.KeyEvent e) {
+	protected void processKeyEvent(final java.awt.event.KeyEvent e) {
 		super.processKeyEvent(e);
-		java.awt.Container parent = getParent();
+		final java.awt.Container parent = getParent();
 		if (parent != null) {
 			parent.dispatchEvent(e);
 		}
@@ -48,27 +56,31 @@ public abstract class RenderCanvas extends java.awt.Canvas {
 	}
 
 	@Override
-	public void update(java.awt.Graphics graphics) {
+	public void update(final java.awt.Graphics graphics) {
 		paint(graphics);
 	}
 
 	@Override
-	public void paint(java.awt.Graphics graphics) {
+	public void paint(final java.awt.Graphics graphics) {
 		if (m_giveUp) {
 			// pass
 		} else {
-			int width = getWidth();
-			int height = getHeight();
+			final int width = getWidth();
+			final int height = getHeight();
 			if (width != 0 && height != 0) {
 				try {
 					m_onscreenRenderTarget.getAdapter().setDesiredSize(width, height);
 					m_onscreenRenderTarget.clearAndRenderOffscreen();
 					m_onscreenRenderTarget.update();
-				} catch (RuntimeException re) {
+				} catch (final RuntimeException re) {
 					if (count == 0) {
 						count++;
-						Object[] buttonLabels = {"Retry", "Give up"};
-						if (edu.cmu.cs.stage3.swing.DialogManager.showOptionDialog("A error has occured in attempting to draw the scene.  Simply retrying might fix the problem.", "Potential Problem", javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.WARNING_MESSAGE, null, buttonLabels, buttonLabels[0]) == javax.swing.JOptionPane.YES_OPTION) {
+						final Object[] buttonLabels = { "Retry", "Give up" };
+						if (edu.cmu.cs.stage3.swing.DialogManager.showOptionDialog(
+								"A error has occured in attempting to draw the scene.  Simply retrying might fix the problem.",
+								"Potential Problem", javax.swing.JOptionPane.YES_NO_OPTION,
+								javax.swing.JOptionPane.WARNING_MESSAGE, null, buttonLabels,
+								buttonLabels[0]) == javax.swing.JOptionPane.YES_OPTION) {
 							m_onscreenRenderTarget.getAdapter().reset();
 							repaint();
 							count = 0;

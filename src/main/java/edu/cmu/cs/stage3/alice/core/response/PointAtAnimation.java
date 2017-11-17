@@ -27,6 +27,7 @@ import edu.cmu.cs.stage3.alice.core.property.BooleanProperty;
 
 public class PointAtAnimation extends AbstractPointAtAnimation {
 	public final BooleanProperty onlyAffectYaw = new BooleanProperty(this, "onlyAffectYaw", Boolean.FALSE);
+
 	public class RuntimePointAtAnimation extends RuntimeAbstractPointAtAnimation {
 
 		@Override
@@ -35,10 +36,11 @@ public class PointAtAnimation extends AbstractPointAtAnimation {
 		}
 
 		@Override
-		public void prologue(double t) {
+		public void prologue(final double t) {
 			super.prologue(t);
 			if (onlyAffectYaw.getValue() == null) {
-				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException("only affect yaw value must not be null.", null, onlyAffectYaw);
+				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException(
+						"only affect yaw value must not be null.", null, onlyAffectYaw);
 			}
 		}
 	}

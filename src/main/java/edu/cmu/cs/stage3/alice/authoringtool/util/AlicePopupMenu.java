@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -30,10 +30,15 @@ import javax.swing.MenuElement;
 
 /**
  * designed to improve on popup menu behavior.
- * 
+ *
  * @author Jason Pratt
  */
 public class AlicePopupMenu extends JPopupMenu {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -9201046390718707981L;
+
 	protected int millisecondDelay = 400;
 
 	protected javax.swing.Timer setPopupVisibleTrueTimer;
@@ -47,7 +52,7 @@ public class AlicePopupMenu extends JPopupMenu {
 	// HACK for gray boxes bug; this can go away in 1.4
 
 	@Override
-	public void setVisible(boolean b) {
+	public void setVisible(final boolean b) {
 		super.setVisible(b);
 		java.awt.Container popup = null;
 		if (b) {
@@ -62,8 +67,8 @@ public class AlicePopupMenu extends JPopupMenu {
 				popup = popup.getParent();
 			}
 			if (popup instanceof java.awt.Window) {
-				java.awt.Window[] windows = ((java.awt.Window) popup).getOwnedWindows();
-				for (Window window : windows) {
+				final java.awt.Window[] windows = ((java.awt.Window) popup).getOwnedWindows();
+				for (final Window window : windows) {
 					window.setVisible(false);
 				}
 			}
@@ -71,11 +76,11 @@ public class AlicePopupMenu extends JPopupMenu {
 	}
 
 	@Override
-	public void menuSelectionChanged(boolean isIncluded) {
+	public void menuSelectionChanged(final boolean isIncluded) {
 		if (setPopupVisibleTrueTimer == null) {
 			setPopupVisibleTrueTimer = new javax.swing.Timer(millisecondDelay, new java.awt.event.ActionListener() {
 				@Override
-				public void actionPerformed(java.awt.event.ActionEvent ev) {
+				public void actionPerformed(final java.awt.event.ActionEvent ev) {
 					invokerMenu.setPopupMenuVisible(true);
 				}
 			});
@@ -84,7 +89,7 @@ public class AlicePopupMenu extends JPopupMenu {
 		if (setPopupVisibleFalseTimer == null) {
 			setPopupVisibleFalseTimer = new javax.swing.Timer(millisecondDelay, new java.awt.event.ActionListener() {
 				@Override
-				public void actionPerformed(java.awt.event.ActionEvent ev) {
+				public void actionPerformed(final java.awt.event.ActionEvent ev) {
 					invokerMenu.setPopupMenuVisible(false);
 				}
 			});
@@ -98,7 +103,7 @@ public class AlicePopupMenu extends JPopupMenu {
 		}
 
 		if (getInvoker() instanceof AliceMenu) {
-			boolean allGone = javax.swing.MenuSelectionManager.defaultManager().getSelectedPath().length == 0;
+			final boolean allGone = javax.swing.MenuSelectionManager.defaultManager().getSelectedPath().length == 0;
 			invokerMenu = (AliceMenu) getInvoker();
 
 			if (isIncluded) {
@@ -121,18 +126,18 @@ public class AlicePopupMenu extends JPopupMenu {
 	}
 
 	@Override
-	public void show(java.awt.Component invoker, int x, int y) {
+	public void show(final java.awt.Component invoker, final int x, final int y) {
 		super.show(invoker, x, y);
 		PopupMenuUtilities.ensurePopupIsOnScreen(this);
 	}
 
-	public void printPath(javax.swing.MenuElement[] path) {
+	public void printPath(final javax.swing.MenuElement[] path) {
 		System.out.print("path [");
-		for (MenuElement me : path) {
+		for (final MenuElement me : path) {
 			if (me instanceof javax.swing.JMenu) {
 				System.out.print(((javax.swing.JMenu) me).getText() + ", ");
 			} else if (me instanceof javax.swing.JPopupMenu) {
-				Object invoker = ((javax.swing.JPopupMenu) me).getInvoker();
+				final Object invoker = ((javax.swing.JPopupMenu) me).getInvoker();
 				if (invoker instanceof javax.swing.JMenu) {
 					System.out.print(((javax.swing.JMenu) invoker).getText() + ".popupMenu, ");
 				} else {

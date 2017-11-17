@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -23,7 +23,13 @@
 
 package edu.cmu.cs.stage3.caitlin.personbuilder;
 
-public class ColorSelector extends javax.swing.JPanel implements java.awt.event.ActionListener, javax.swing.event.ChangeListener {
+public class ColorSelector extends javax.swing.JPanel
+		implements java.awt.event.ActionListener, javax.swing.event.ChangeListener {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -3515420585281592306L;
+
 	protected javax.swing.JButton otherColorsButton = null;
 
 	protected javax.swing.ButtonGroup whichColorChooserGroup = null;
@@ -36,7 +42,7 @@ public class ColorSelector extends javax.swing.JPanel implements java.awt.event.
 
 	protected ModelWrapper modelWrapper = null;
 
-	public ColorSelector(ModelWrapper modelWrapper) {
+	public ColorSelector(final ModelWrapper modelWrapper) {
 		this.modelWrapper = modelWrapper;
 		setBackground(new java.awt.Color(155, 159, 206));
 
@@ -63,7 +69,7 @@ public class ColorSelector extends javax.swing.JPanel implements java.awt.event.
 		humanColorsRadio.addActionListener(this);
 		otherColorsRadio.addActionListener(this);
 
-		javax.swing.JPanel humanColorPanel = new javax.swing.JPanel();
+		final javax.swing.JPanel humanColorPanel = new javax.swing.JPanel();
 		humanColorPanel.setBackground(new java.awt.Color(155, 159, 206));
 		humanColorPanel.setLayout(new java.awt.FlowLayout());
 		colorSlider = new javax.swing.JSlider();
@@ -74,7 +80,7 @@ public class ColorSelector extends javax.swing.JPanel implements java.awt.event.
 		humanColorPanel.add(humanColorsRadio);
 		humanColorPanel.add(colorSlider);
 
-		javax.swing.JPanel otherColorPanel = new javax.swing.JPanel();
+		final javax.swing.JPanel otherColorPanel = new javax.swing.JPanel();
 		otherColorPanel.setBackground(new java.awt.Color(155, 159, 206));
 		otherColorPanel.setLayout(new java.awt.FlowLayout());
 
@@ -90,12 +96,13 @@ public class ColorSelector extends javax.swing.JPanel implements java.awt.event.
 	}
 
 	@Override
-	public void actionPerformed(java.awt.event.ActionEvent ae) {
+	public void actionPerformed(final java.awt.event.ActionEvent ae) {
 		if (ae.getSource() == otherColorsButton) {
 			if (colorChooser == null) {
 				colorChooser = new javax.swing.JColorChooser();
 			}
-			java.awt.Color selectedColor = edu.cmu.cs.stage3.swing.DialogManager.showDialog(colorChooser, "more colors...", skinColor);
+			final java.awt.Color selectedColor = edu.cmu.cs.stage3.swing.DialogManager.showDialog(colorChooser,
+					"more colors...", skinColor);
 			if (selectedColor != null) {
 				modelWrapper.setColor(selectedColor);
 			}
@@ -110,10 +117,10 @@ public class ColorSelector extends javax.swing.JPanel implements java.awt.event.
 	}
 
 	@Override
-	public void stateChanged(javax.swing.event.ChangeEvent ce) {
-		int position = colorSlider.getValue();
-		float s = .89f + -.56f * position / 100.0f;
-		float b = .33f + .67f * position / 100.0f;
+	public void stateChanged(final javax.swing.event.ChangeEvent ce) {
+		final int position = colorSlider.getValue();
+		final float s = .89f + -.56f * position / 100.0f;
+		final float b = .33f + .67f * position / 100.0f;
 		skinColor = java.awt.Color.getHSBColor(25.0f / 359.0f, s, b);
 		colorSlider.setBackground(skinColor);
 		if (!colorSlider.getValueIsAdjusting()) {

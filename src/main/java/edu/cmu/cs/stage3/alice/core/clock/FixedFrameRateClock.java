@@ -32,22 +32,26 @@ public class FixedFrameRateClock implements edu.cmu.cs.stage3.alice.core.Clock {
 	public FixedFrameRateClock() {
 		this(24);
 	}
-	public FixedFrameRateClock(int frameRate) {
+
+	public FixedFrameRateClock(final int frameRate) {
 		setFrameRate(frameRate);
 	}
+
 	@Override
 	public edu.cmu.cs.stage3.alice.core.World getWorld() {
 		return m_world;
 	}
+
 	@Override
-	public void setWorld(edu.cmu.cs.stage3.alice.core.World world) {
+	public void setWorld(final edu.cmu.cs.stage3.alice.core.World world) {
 		m_world = world;
 	}
 
 	public int getFrameRate() {
 		return m_frameRate;
 	}
-	public void setFrameRate(int frameRate) {
+
+	public void setFrameRate(final int frameRate) {
 		m_frameRate = frameRate;
 		m_dt = 1.0 / m_frameRate;
 	}
@@ -59,15 +63,18 @@ public class FixedFrameRateClock implements edu.cmu.cs.stage3.alice.core.Clock {
 			m_world.start();
 		}
 	}
+
 	@Override
 	public void stop() {
 		if (m_world != null) {
 			m_world.stop();
 		}
 	}
+
 	@Override
 	public void pause() {
 	}
+
 	@Override
 	public void resume() {
 	}
@@ -76,10 +83,12 @@ public class FixedFrameRateClock implements edu.cmu.cs.stage3.alice.core.Clock {
 	public double getTime() {
 		return m_time;
 	}
+
 	@Override
 	public double getTimeElapsed() {
 		return getTime();
 	}
+
 	@Override
 	public void schedule() {
 		if (m_world != null) {

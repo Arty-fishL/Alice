@@ -36,24 +36,28 @@ public abstract class AbstractPointAtAnimation extends OrientationAnimation {
 		protected javax.vecmath.Vector3d m_offset;
 		protected javax.vecmath.Vector3d m_upGuide;
 		protected boolean m_onlyAffectYaw;
+
 		protected abstract boolean onlyAffectYaw();
 
 		// added to allow overriding in subclasses
 		protected edu.cmu.cs.stage3.alice.core.ReferenceFrame getTarget() {
 			return target.getReferenceFrameValue();
 		}
+
 		protected edu.cmu.cs.stage3.alice.core.Transformable getSubject() {
 			return AbstractPointAtAnimation.this.subject.getTransformableValue();
 		}
+
 		protected javax.vecmath.Vector3d getOffset() {
 			return offset.getVector3Value();
 		}
+
 		protected javax.vecmath.Vector3d getUpguide() {
 			return upGuide.getVector3Value();
 		}
 
 		@Override
-		public void prologue(double t) {
+		public void prologue(final double t) {
 			super.prologue(t);
 			// setSubject(getSubject());
 			m_target = getTarget();
@@ -61,15 +65,20 @@ public abstract class AbstractPointAtAnimation extends OrientationAnimation {
 			m_upGuide = getUpguide();
 			m_onlyAffectYaw = onlyAffectYaw();
 			if (m_target == null) {
-				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException("target value must not be null.", null, target);
+				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException("target value must not be null.",
+						null, target);
 			}
 			if (m_target == m_subject) {
-				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException("target value must not be equal to the subject value.", getCurrentStack(), target);
+				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException(
+						"target value must not be equal to the subject value.", getCurrentStack(), target);
 			}
 			if (m_onlyAffectYaw && m_subject.isAncestorOf(m_target)) {
-				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException(m_subject.name.getStringValue() + " can't turn to face or turn away from a part of itself.", getCurrentStack(), target);
+				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException(
+						m_subject.name.getStringValue() + " can't turn to face or turn away from a part of itself.",
+						getCurrentStack(), target);
 			}
 		}
+
 		protected edu.cmu.cs.stage3.math.Matrix33 getTargetMatrix33() {
 			return m_subject.calculatePointAt(m_target, m_offset, m_upGuide, m_asSeenBy, m_onlyAffectYaw);
 		}
@@ -80,7 +89,7 @@ public abstract class AbstractPointAtAnimation extends OrientationAnimation {
 		}
 
 		@Override
-		public void update(double t) {
+		public void update(final double t) {
 			// for now we will need to calculate target quaternion every frame
 			markTargetQuaternionDirty();
 			super.update(t);

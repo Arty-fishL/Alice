@@ -12,9 +12,9 @@ import javax.sound.sampled.SourceDataLine;
  * for playback of a simple sound. The thread doesn't die until the sound is
  * finished playing, however it is not blocking either. It will simply play the
  * sound in the "background."
- * 
+ *
  * Copyright Georgia Institute of Technology 2004
- * 
+ *
  * @author unknown undergrad
  * @author Barb Ericson ericson@cc.gatech.edu
  */
@@ -23,7 +23,7 @@ public class Playback extends Thread {
 
 	/**
 	 * Constant that is the default buffer size.
-	 * 
+	 *
 	 * @see Sound#Sound()
 	 * @see Playback#run()
 	 */
@@ -42,24 +42,24 @@ public class Playback extends Thread {
 	/**
 	 * The sound being played
 	 */
-	private SimpleSound sound;
+	private final SimpleSound sound;
 
 	// //////////////// Constructors //////////////////////////////////////
 
 	/**
 	 * Constructor that takes the simple sound to be played
-	 * 
+	 *
 	 * @param sound
 	 *            the simple sound to play
 	 */
-	public Playback(SimpleSound sound) {
+	public Playback(final SimpleSound sound) {
 		this.sound = sound;
 	}
 
 	/**
 	 * Stop the playback
 	 */
-	private void shutDown(String message, Exception e) {
+	private void shutDown(final String message, final Exception e) {
 		if (message != null) {
 			System.err.println(message);
 			e.printStackTrace();
@@ -78,7 +78,7 @@ public class Playback extends Thread {
 	/**
 	 * Method to return true if this playback thread is playing and false
 	 * otherwise
-	 * 
+	 *
 	 * @return true if playing else false
 	 */
 	public boolean getPlaying() {
@@ -91,7 +91,7 @@ public class Playback extends Thread {
 	 * SourceDataLine, the soundExplorer is added as the LineListener. When the
 	 * thread finishes the run method, it removes itself from the list of
 	 * threads currently playing this sound.
-	 * 
+	 *
 	 * @throws JavaSoundException
 	 *             if there were problems playing the sound.
 	 */
@@ -99,11 +99,11 @@ public class Playback extends Thread {
 	@Override
 	public void run() {
 
-		AudioFileFormat audioFileFormat = sound.getAudioFileFormat();
-		SoundExplorer soundExplorer = sound.getSoundExplorer();
+		final AudioFileFormat audioFileFormat = sound.getAudioFileFormat();
+		final SoundExplorer soundExplorer = sound.getSoundExplorer();
 
 		// get something to play
-		AudioInputStream audioInputStream = sound.makeAIS();
+		final AudioInputStream audioInputStream = sound.makeAIS();
 		if (audioInputStream == null) {
 			shutDown("There is no input stream to play", null);
 			return;
@@ -112,7 +112,7 @@ public class Playback extends Thread {
 		// reset stream to the begining
 		try {
 			audioInputStream.reset();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			shutDown("Problems resetting the stream\n", e);
 			return;
 		}
@@ -121,7 +121,7 @@ public class Playback extends Thread {
 		 * define the required attributes for the line make sure a compatible
 		 * line is supported
 		 */
-		DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFileFormat.getFormat());
+		final DataLine.Info info = new DataLine.Info(SourceDataLine.class, audioFileFormat.getFormat());
 		if (!AudioSystem.isLineSupported(info)) {
 			shutDown("Line matching " + info + "not supported.", null);
 			return;
@@ -134,16 +134,16 @@ public class Playback extends Thread {
 				line.addLineListener(soundExplorer);
 			}
 			line.open(audioFileFormat.getFormat(), BUFFER_SIZE);
-		} catch (LineUnavailableException e) {
+		} catch (final LineUnavailableException e) {
 			shutDown("Unable to open the line: ", e);
 			return;
 		}
 
 		// play back the captured data
-		int frameSizeInBytes = audioFileFormat.getFormat().getFrameSize();
-		int bufferLengthInBytes = line.getBufferSize();
-		int bufferLengthInFrames = bufferLengthInBytes / frameSizeInBytes;
-		byte[] data = new byte[bufferLengthInBytes];
+		final int frameSizeInBytes = audioFileFormat.getFormat().getFrameSize();
+		final int bufferLengthInBytes = line.getBufferSize();
+		final int bufferLengthInFrames = bufferLengthInBytes / frameSizeInBytes;
+		final byte[] data = new byte[bufferLengthInBytes];
 		int numBytesRead = 0;
 
 		// start the source data line and begin playing
@@ -159,12 +159,12 @@ public class Playback extends Thread {
 				int numBytesRemaining = numBytesRead;
 				while (numBytesRemaining > 0) {
 					numBytesRemaining -= line.write(data, 0, numBytesRemaining);
-				}// while
-			} catch (Exception e) {
+				} // while
+			} catch (final Exception e) {
 				shutDown("Error during playback: ", e);
 				break;
-			}// catch
-		}// while
+			} // catch
+		} // while
 
 		/*
 		 * we reached the end of the stream or an error occurred. if we were

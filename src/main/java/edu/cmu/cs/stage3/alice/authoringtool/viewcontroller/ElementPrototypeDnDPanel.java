@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -30,13 +30,21 @@ import edu.cmu.cs.stage3.util.StringObjectPair;
 /**
  * @author Jason Pratt
  */
-public class ElementPrototypeDnDPanel extends edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel implements edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement, edu.cmu.cs.stage3.alice.authoringtool.util.Releasable {
+public class ElementPrototypeDnDPanel extends edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel implements
+		edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement, edu.cmu.cs.stage3.alice.authoringtool.util.Releasable {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -1060307814326495861L;
+
 	protected static TilePool tilePool = new TilePool();
 
 	protected edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype elementPrototype;
 	protected javax.swing.JPanel subPanel = new edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel();
 	protected String elementName;
-	protected java.awt.GridBagConstraints constraints = new java.awt.GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0);
+	protected java.awt.GridBagConstraints constraints = new java.awt.GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+			java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0,
+			0);
 
 	public ElementPrototypeDnDPanel() {
 		subPanel.setLayout(new java.awt.GridBagLayout());
@@ -46,25 +54,32 @@ public class ElementPrototypeDnDPanel extends edu.cmu.cs.stage3.alice.authoringt
 		addDragSourceComponent(subPanel); // hack for stencils
 	}
 
-	public void set(edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype elementPrototype) {
+	public void set(final edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype elementPrototype) {
 		this.elementPrototype = elementPrototype;
-		setTransferable(edu.cmu.cs.stage3.alice.authoringtool.datatransfer.TransferableFactory.createTransferable(elementPrototype));
+		setTransferable(edu.cmu.cs.stage3.alice.authoringtool.datatransfer.TransferableFactory
+				.createTransferable(elementPrototype));
 
-		if (edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse.class.isAssignableFrom(elementPrototype.getElementClass())) {
+		if (edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse.class
+				.isAssignableFrom(elementPrototype.getElementClass())) {
 			setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("userDefinedResponse"));
 		} else if (edu.cmu.cs.stage3.alice.core.Response.class.isAssignableFrom(elementPrototype.getElementClass())) {
 			setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("response"));
-		} else if (edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion.class.isAssignableFrom(elementPrototype.getElementClass())) {
+		} else if (edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion.class
+				.isAssignableFrom(elementPrototype.getElementClass())) {
 			setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("userDefinedQuestion"));
 		} else if (edu.cmu.cs.stage3.alice.core.Question.class.isAssignableFrom(elementPrototype.getElementClass())) {
 			setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("question"));
-		} else if (edu.cmu.cs.stage3.alice.core.question.userdefined.Component.class.isAssignableFrom(elementPrototype.getElementClass())) {
-			setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("userDefinedQuestionComponent"));
+		} else if (edu.cmu.cs.stage3.alice.core.question.userdefined.Component.class
+				.isAssignableFrom(elementPrototype.getElementClass())) {
+			setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+					.getColor("userDefinedQuestionComponent"));
 		} else {
-			setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("elementPrototypeDnDPanel"));
+			setBackground(
+					edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("elementPrototypeDnDPanel"));
 		}
 
-		elementName = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(elementPrototype.getElementClass());
+		elementName = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+				.getReprForValue(elementPrototype.getElementClass());
 
 		refreshGUI();
 	}
@@ -72,6 +87,7 @@ public class ElementPrototypeDnDPanel extends edu.cmu.cs.stage3.alice.authoringt
 	@Override
 	public void goToSleep() {
 	}
+
 	@Override
 	public void wakeUp() {
 	}
@@ -96,8 +112,8 @@ public class ElementPrototypeDnDPanel extends edu.cmu.cs.stage3.alice.authoringt
 	}
 
 	public void refreshGUI() {
-		java.awt.Component[] components = subPanel.getComponents();
-		for (Component component2 : components) {
+		final java.awt.Component[] components = subPanel.getComponents();
+		for (final Component component2 : components) {
 			if (component2 instanceof Tile) {
 				removeDragSourceComponent(component2);
 				tilePool.releaseTile(((Tile) component2).getText(), (Tile) component2);
@@ -107,27 +123,31 @@ public class ElementPrototypeDnDPanel extends edu.cmu.cs.stage3.alice.authoringt
 		subPanel.removeAll();
 
 		if (elementPrototype != null) {
-			edu.cmu.cs.stage3.util.StringObjectPair[] propertyValues = elementPrototype.getKnownPropertyValues();
-			java.util.Vector keys = new java.util.Vector();
-			java.util.HashMap propertyMap = new java.util.HashMap();
-			for (StringObjectPair propertyValue : propertyValues) {
+			final edu.cmu.cs.stage3.util.StringObjectPair[] propertyValues = elementPrototype.getKnownPropertyValues();
+			final java.util.Vector keys = new java.util.Vector();
+			final java.util.HashMap propertyMap = new java.util.HashMap();
+			for (final StringObjectPair propertyValue : propertyValues) {
 				keys.add(propertyValue.getString());
 				propertyMap.put(propertyValue.getString(), propertyValue.getObject());
 			}
 
 			constraints.gridx = 0;
-			String format = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getFormat(elementPrototype.getElementClass());
-			edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer tokenizer = new edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer(format);
+			final String format = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+					.getFormat(elementPrototype.getElementClass());
+			final edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer tokenizer = new edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer(
+					format);
 			while (tokenizer.hasMoreTokens()) {
 				String token = tokenizer.nextToken();
 				if (token.startsWith("<<<") && token.endsWith(">>>")) {
-					String propertyName = token.substring(token.lastIndexOf("<") + 1, token.indexOf(">"));
+					final String propertyName = token.substring(token.lastIndexOf("<") + 1, token.indexOf(">"));
 					if (keys.contains(propertyName)) {
-						addTile(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(propertyMap.get(propertyName), false), true);
+						addTile(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+								.getReprForValue(propertyMap.get(propertyName), false), true);
 						constraints.gridx++;
 						keys.remove(propertyName);
 					} else {
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("no value available for " + token, null);
+						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+								.showErrorDialog("no value available for " + token, null);
 						addTile(token, true);
 						constraints.gridx++;
 					}
@@ -139,7 +159,8 @@ public class ElementPrototypeDnDPanel extends edu.cmu.cs.stage3.alice.authoringt
 					constraints.gridx++;
 				} else {
 					while (token.indexOf("&lt;") > -1) {
-						token = new StringBuffer(token).replace(token.indexOf("&lt;"), token.indexOf("&lt;") + 4, "<").toString();
+						token = new StringBuffer(token).replace(token.indexOf("&lt;"), token.indexOf("&lt;") + 4, "<")
+								.toString();
 					}
 					addTile(token, false);
 					constraints.gridx++;
@@ -151,8 +172,8 @@ public class ElementPrototypeDnDPanel extends edu.cmu.cs.stage3.alice.authoringt
 		repaint();
 	}
 
-	public void addTile(String text, boolean opaque) {
-		Tile tile = tilePool.getTile(text);
+	public void addTile(final String text, final boolean opaque) {
+		final Tile tile = tilePool.getTile(text);
 		tile.setOpaque(opaque);
 		tile.setBorderEnabled(opaque);
 		subPanel.add(tile, constraints);
@@ -160,13 +181,17 @@ public class ElementPrototypeDnDPanel extends edu.cmu.cs.stage3.alice.authoringt
 	}
 
 	public static class Tile extends edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel {
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = 2160454128366840424L;
 		protected String text;
 
-		public Tile(String text) {
+		public Tile(final String text) {
 			this.text = text;
 			setLayout(new java.awt.BorderLayout());
 			setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("prototypeParameter"));
-			javax.swing.JLabel tileLabel = new javax.swing.JLabel(text);
+			final javax.swing.JLabel tileLabel = new javax.swing.JLabel(text);
 			tileLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 2, 0, 2));
 			add(tileLabel, java.awt.BorderLayout.CENTER);
 		}
@@ -175,7 +200,7 @@ public class ElementPrototypeDnDPanel extends edu.cmu.cs.stage3.alice.authoringt
 			return text;
 		}
 
-		public void setBorderEnabled(boolean enabled) {
+		public void setBorderEnabled(final boolean enabled) {
 			if (enabled) {
 				setBorder(border);
 			} else {
@@ -192,17 +217,17 @@ public class ElementPrototypeDnDPanel extends edu.cmu.cs.stage3.alice.authoringt
 	static class TilePool {
 		protected java.util.HashMap tileListMap = new java.util.HashMap();
 
-		public Tile getTile(String text) {
-			java.util.LinkedList tileList = (java.util.LinkedList) tileListMap.get(text);
+		public Tile getTile(final String text) {
+			final java.util.LinkedList tileList = (java.util.LinkedList) tileListMap.get(text);
 			if (tileList != null && !tileList.isEmpty()) {
 				return (Tile) tileList.removeFirst();
 			} else {
-				Tile tilePanel = new Tile(text);
+				final Tile tilePanel = new Tile(text);
 				return tilePanel;
 			}
 		}
 
-		public void releaseTile(String text, Tile tile) {
+		public void releaseTile(final String text, final Tile tile) {
 			java.util.LinkedList tileList = (java.util.LinkedList) tileListMap.get(text);
 			if (tileList == null) {
 				tileList = new java.util.LinkedList();

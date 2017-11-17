@@ -34,7 +34,12 @@ import edu.cmu.cs.stage3.alice.core.event.PropertyListener;
 /**
  * @author Jason Pratt, Dennis Cosgrove
  */
-public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane implements edu.cmu.cs.stage3.alice.core.event.PropertyListener, edu.cmu.cs.stage3.alice.core.event.ChildrenListener {
+public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane implements
+		edu.cmu.cs.stage3.alice.core.event.PropertyListener, edu.cmu.cs.stage3.alice.core.event.ChildrenListener {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -1218329362966652209L;
 	public final static int LESS_DETAIL_MODE = 0;
 	public final static int MORE_DETAIL_MODE = 1;
 
@@ -45,8 +50,10 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 	protected edu.cmu.cs.stage3.alice.authoringtool.util.HighlightingGlassPane glassPane;
 	protected edu.cmu.cs.stage3.alice.core.Element danglingElementToClear;
 
-	public static void showDeleteDialog(edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.DeleteRunnable deleteRunnable, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
-		DeleteContentPane dcp = new DeleteContentPane(authoringTool);
+	public static void showDeleteDialog(
+			final edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.DeleteRunnable deleteRunnable,
+			final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
+		final DeleteContentPane dcp = new DeleteContentPane(authoringTool);
 		dcp.setDeleteRunnable(deleteRunnable);
 		dcp.refresh();
 		if (edu.cmu.cs.stage3.swing.DialogManager.showDialog(dcp) == edu.cmu.cs.stage3.swing.ContentPane.OK_OPTION) {
@@ -69,10 +76,11 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 		// }
 	}
 
-	public DeleteContentPane(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
+	public DeleteContentPane(final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
 		DeleteContentPane.authoringTool = authoringTool;
 		jbInit();
-		java.net.URL errorImageResources = edu.cmu.cs.stage3.alice.authoringtool.JAlice.class.getResource("images/error.gif");
+		final java.net.URL errorImageResources = edu.cmu.cs.stage3.alice.authoringtool.JAlice.class
+				.getResource("images/error.gif");
 		errorIconPanel.setImage(java.awt.Toolkit.getDefaultToolkit().createImage(errorImageResources));
 		iconPanel.add(errorIconPanel, java.awt.BorderLayout.CENTER);
 
@@ -80,7 +88,8 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 		messageArea.setWrapStyleWord(true);
 		messageArea.setOpaque(false);
 
-		referencesList.setCellRenderer(new edu.cmu.cs.stage3.alice.authoringtool.util.PropertyReferenceListCellRenderer());
+		referencesList
+				.setCellRenderer(new edu.cmu.cs.stage3.alice.authoringtool.util.PropertyReferenceListCellRenderer());
 		referencesList.addListSelectionListener(new ReferencesSelectionListener());
 		glassPane = new edu.cmu.cs.stage3.alice.authoringtool.util.HighlightingGlassPane(authoringTool);
 
@@ -93,50 +102,53 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 	}
 
 	@Override
-	public void addOKActionListener(java.awt.event.ActionListener l) {
+	public void addOKActionListener(final java.awt.event.ActionListener l) {
 		okayButton.addActionListener(l);
 	}
 
 	@Override
-	public void removeOKActionListener(java.awt.event.ActionListener l) {
+	public void removeOKActionListener(final java.awt.event.ActionListener l) {
 		okayButton.removeActionListener(l);
 	}
 
 	@Override
-	public void addCancelActionListener(java.awt.event.ActionListener l) {
+	public void addCancelActionListener(final java.awt.event.ActionListener l) {
 		cancelButton.addActionListener(l);
 	}
 
 	@Override
-	public void removeCancelActionListener(java.awt.event.ActionListener l) {
+	public void removeCancelActionListener(final java.awt.event.ActionListener l) {
 		cancelButton.removeActionListener(l);
 	}
 
 	@Override
-	public void postDialogShow(javax.swing.JDialog dialog) {
+	public void postDialogShow(final javax.swing.JDialog dialog) {
 		glassPane.setHighlightingEnabled(false);
 		stopListening();
 		TEMP_checkForListening();
 		super.postDialogShow(dialog);
 	}
 
-	public void setDeleteRunnable(edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.DeleteRunnable deleteRunnable) {
+	public void setDeleteRunnable(
+			final edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.DeleteRunnable deleteRunnable) {
 		this.deleteRunnable = deleteRunnable;
 	}
 
 	public void TEMP_checkForListening() {
-		edu.cmu.cs.stage3.alice.core.Element[] elements = authoringTool.getWorld().getDescendants();
-		for (Element element : elements) {
-			edu.cmu.cs.stage3.alice.core.event.ChildrenListener[] childrenListeners = element.getChildrenListeners();
-			for (ChildrenListener childrenListener : childrenListeners) {
+		final edu.cmu.cs.stage3.alice.core.Element[] elements = authoringTool.getWorld().getDescendants();
+		for (final Element element : elements) {
+			final edu.cmu.cs.stage3.alice.core.event.ChildrenListener[] childrenListeners = element
+					.getChildrenListeners();
+			for (final ChildrenListener childrenListener : childrenListeners) {
 				if (childrenListener == this) {
 					System.out.println("############################  child listener: " + element);
 				}
 			}
-			edu.cmu.cs.stage3.alice.core.Property[] properties = element.getProperties();
-			for (Property propertie : properties) {
-				edu.cmu.cs.stage3.alice.core.event.PropertyListener[] propertyListeners = propertie.getPropertyListeners();
-				for (PropertyListener propertyListener : propertyListeners) {
+			final edu.cmu.cs.stage3.alice.core.Property[] properties = element.getProperties();
+			for (final Property propertie : properties) {
+				final edu.cmu.cs.stage3.alice.core.event.PropertyListener[] propertyListeners = propertie
+						.getPropertyListeners();
+				for (final PropertyListener propertyListener : propertyListeners) {
 					if (propertyListener == this) {
 						System.out.println("********************************   property listener: " + propertie);
 					}
@@ -146,22 +158,25 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 	}
 
 	public void startListening() {
-		javax.swing.ListModel list = referencesList.getModel();
+		final javax.swing.ListModel list = referencesList.getModel();
 		for (int i = 0; i < list.getSize(); i++) {
 			if (list.getElementAt(i) instanceof edu.cmu.cs.stage3.alice.core.reference.PropertyReference) {
-				edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference = (edu.cmu.cs.stage3.alice.core.reference.PropertyReference) list.getElementAt(i);
-				edu.cmu.cs.stage3.alice.core.Element source = reference.getProperty().getOwner();
+				final edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference = (edu.cmu.cs.stage3.alice.core.reference.PropertyReference) list
+						.getElementAt(i);
+				final edu.cmu.cs.stage3.alice.core.Element source = reference.getProperty().getOwner();
 				listenUpToRootElement(source);
 				if (source instanceof edu.cmu.cs.stage3.alice.core.question.PropertyValue) {
-					edu.cmu.cs.stage3.alice.core.Property[] properties = source.getParent().getProperties();
-					for (Property propertie : properties) {
+					final edu.cmu.cs.stage3.alice.core.Property[] properties = source.getParent().getProperties();
+					for (final Property propertie : properties) {
 						if (propertie.get() == source) {
 							propertie.addPropertyListener(this);
 						}
 					}
 				} else if (reference instanceof edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference) {
-					edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference oAPR = (edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference) reference;
-					edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] references = oAPR.getReference().getPropertyReferencesTo(deleteRunnable.getElement(), edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true, true);
+					final edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference oAPR = (edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference) reference;
+					final edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] references = oAPR.getReference()
+							.getPropertyReferencesTo(deleteRunnable.getElement(),
+									edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true, true);
 					if (references != null || references.length > 0) {
 						reference.getProperty().addPropertyListener(this);
 					}
@@ -176,24 +191,27 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 	}
 
 	public void stopListening() {
-		javax.swing.ListModel list = referencesList.getModel();
+		final javax.swing.ListModel list = referencesList.getModel();
 		for (int i = 0; i < list.getSize(); i++) {
 			if (list.getElementAt(i) instanceof edu.cmu.cs.stage3.alice.core.reference.PropertyReference) {
-				edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference = (edu.cmu.cs.stage3.alice.core.reference.PropertyReference) list.getElementAt(i);
-				edu.cmu.cs.stage3.alice.core.Element source = reference.getProperty().getOwner();
+				final edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference = (edu.cmu.cs.stage3.alice.core.reference.PropertyReference) list
+						.getElementAt(i);
+				final edu.cmu.cs.stage3.alice.core.Element source = reference.getProperty().getOwner();
 				stopListeningUpToRootElement(source);
 				if (source instanceof edu.cmu.cs.stage3.alice.core.question.PropertyValue) {
 					if (source.getParent() != null) {
-						edu.cmu.cs.stage3.alice.core.Property[] properties = source.getParent().getProperties();
-						for (Property propertie : properties) {
+						final edu.cmu.cs.stage3.alice.core.Property[] properties = source.getParent().getProperties();
+						for (final Property propertie : properties) {
 							if (propertie.get() == source) {
 								propertie.removePropertyListener(this);
 							}
 						}
 					}
 				} else if (reference instanceof edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference) {
-					edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference oAPR = (edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference) reference;
-					edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] references = reference.getProperty().getOwner().getPropertyReferencesTo(deleteRunnable.getElement(), edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true, true);
+					final edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference oAPR = (edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference) reference;
+					final edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] references = reference
+							.getProperty().getOwner().getPropertyReferencesTo(deleteRunnable.getElement(),
+									edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true, true);
 					if (references != null || references.length > 0) {
 						reference.getProperty().removePropertyListener(this);
 					}
@@ -206,33 +224,35 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 		}
 
 	}
+
 	@Override
-	public void propertyChanging(edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
+	public void propertyChanging(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
 	}
 
 	@Override
-	public void propertyChanged(edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
+	public void propertyChanged(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
 		// System.out.println("prop changed!: "+propertyEvent);
 		refresh();
 	}
 
 	@Override
-	public void childrenChanging(edu.cmu.cs.stage3.alice.core.event.ChildrenEvent childrenEvent) {
+	public void childrenChanging(final edu.cmu.cs.stage3.alice.core.event.ChildrenEvent childrenEvent) {
 		danglingElementToClear = childrenEvent.getParent();
 	}
 
 	@Override
-	public void childrenChanged(edu.cmu.cs.stage3.alice.core.event.ChildrenEvent childrenEvent) {
+	public void childrenChanged(final edu.cmu.cs.stage3.alice.core.event.ChildrenEvent childrenEvent) {
 		// System.out.println("whoa! child change!: "+childrenEvent);
 		stopListeningUpToRootElement(danglingElementToClear);
 		refresh();
 	}
 
-	protected void listenUpToRootElement(edu.cmu.cs.stage3.alice.core.Element current) {
+	protected void listenUpToRootElement(final edu.cmu.cs.stage3.alice.core.Element current) {
 		if (current != null) {
 			boolean alreadyChildrenListening = false;
-			edu.cmu.cs.stage3.alice.core.event.ChildrenListener[] childrenListeners = current.getChildrenListeners();
-			for (ChildrenListener childrenListener : childrenListeners) {
+			final edu.cmu.cs.stage3.alice.core.event.ChildrenListener[] childrenListeners = current
+					.getChildrenListeners();
+			for (final ChildrenListener childrenListener : childrenListeners) {
 				if (childrenListener == this) {
 					alreadyChildrenListening = true;
 				}
@@ -240,11 +260,12 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 			if (!alreadyChildrenListening) {
 				current.addChildrenListener(this);
 			}
-			edu.cmu.cs.stage3.alice.core.Property[] properties = current.getProperties();
-			for (Property propertie : properties) {
-				edu.cmu.cs.stage3.alice.core.event.PropertyListener[] propListeners = propertie.getPropertyListeners();
+			final edu.cmu.cs.stage3.alice.core.Property[] properties = current.getProperties();
+			for (final Property propertie : properties) {
+				final edu.cmu.cs.stage3.alice.core.event.PropertyListener[] propListeners = propertie
+						.getPropertyListeners();
 				boolean alreadyPropListening = false;
-				for (PropertyListener propListener : propListeners) {
+				for (final PropertyListener propListener : propListeners) {
 					if (propListener == this) {
 						alreadyPropListening = true;
 					}
@@ -257,11 +278,12 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 		}
 	}
 
-	protected void stopListeningUpToRootElement(edu.cmu.cs.stage3.alice.core.Element current) {
+	protected void stopListeningUpToRootElement(final edu.cmu.cs.stage3.alice.core.Element current) {
 		if (current != null) {
 			boolean alreadyChildrenListening = false;
-			edu.cmu.cs.stage3.alice.core.event.ChildrenListener[] childrenListeners = current.getChildrenListeners();
-			for (ChildrenListener childrenListener : childrenListeners) {
+			final edu.cmu.cs.stage3.alice.core.event.ChildrenListener[] childrenListeners = current
+					.getChildrenListeners();
+			for (final ChildrenListener childrenListener : childrenListeners) {
 				if (childrenListener == this) {
 					alreadyChildrenListening = true;
 				}
@@ -269,11 +291,12 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 			if (alreadyChildrenListening) {
 				current.removeChildrenListener(this);
 			}
-			edu.cmu.cs.stage3.alice.core.Property[] properties = current.getProperties();
-			for (Property propertie : properties) {
-				edu.cmu.cs.stage3.alice.core.event.PropertyListener[] propListeners = propertie.getPropertyListeners();
+			final edu.cmu.cs.stage3.alice.core.Property[] properties = current.getProperties();
+			for (final Property propertie : properties) {
+				final edu.cmu.cs.stage3.alice.core.event.PropertyListener[] propListeners = propertie
+						.getPropertyListeners();
 				boolean alreadyPropListening = false;
-				for (PropertyListener propListener : propListeners) {
+				for (final PropertyListener propListener : propListeners) {
 					if (propListener == this) {
 						alreadyPropListening = true;
 					}
@@ -288,14 +311,18 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 
 	public void refresh() {
 		if (deleteRunnable != null) {
-			edu.cmu.cs.stage3.alice.core.Element element = deleteRunnable.getElement();
-			String elementRepr = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(element);
+			final edu.cmu.cs.stage3.alice.core.Element element = deleteRunnable.getElement();
+			final String elementRepr = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+					.getReprForValue(element);
 
-			edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] references = element.getRoot().getPropertyReferencesTo(element, edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true, true);
+			edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] references = element.getRoot()
+					.getPropertyReferencesTo(element, edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true,
+							true);
 
 			if (references.length > 0) {
 				edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.garbageCollectIfPossible(references);
-				references = element.getRoot().getPropertyReferencesTo(element, edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true, true);
+				references = element.getRoot().getPropertyReferencesTo(element,
+						edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true, true);
 			}
 
 			stopListening();
@@ -306,7 +333,10 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 				okayButton.setEnabled(false);
 				removeReferenceButton.setEnabled(true);
 				removeAllReferenceButton.setEnabled(true);
-				messageArea.setText(elementRepr + " cannot be deleted because other parts of the World contain references to it. You will need to remove these references in order to delete " + elementRepr + ".\n\n" + "Select each reference below, and either remove the reference manually, or click the Remove Reference button to have the reference removed by the system.");
+				messageArea.setText(elementRepr
+						+ " cannot be deleted because other parts of the World contain references to it. You will need to remove these references in order to delete "
+						+ elementRepr + ".\n\n"
+						+ "Select each reference below, and either remove the reference manually, or click the Remove Reference button to have the reference removed by the system.");
 				referencesList.setSelectedIndex(0);
 			} else {
 				okayButton.setEnabled(true);
@@ -318,12 +348,12 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 		}
 	}
 
-	public static String getHighlightID(edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference) {
+	public static String getHighlightID(final edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference) {
 		String highlightID = null;
 		if (reference != null) {
 			// System.out.println("\nreference is: "+reference);
-			edu.cmu.cs.stage3.alice.core.Element source = reference.getProperty().getOwner();
-			edu.cmu.cs.stage3.alice.core.World world = authoringTool.getWorld();
+			final edu.cmu.cs.stage3.alice.core.Element source = reference.getProperty().getOwner();
+			final edu.cmu.cs.stage3.alice.core.World world = authoringTool.getWorld();
 			// System.out.println("source is: "+source);
 			if (source == world) {
 				highlightID = "details<>:viewController<>:property<" + reference.getProperty().getName() + ">";
@@ -331,33 +361,42 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 
 			if (highlightID == null) {
 				if (source instanceof edu.cmu.cs.stage3.alice.core.Model) {
-					highlightID = "details<" + source.getKey(world) + ">:viewController<>:property<" + reference.getProperty().getName() + ">";
+					highlightID = "details<" + source.getKey(world) + ">:viewController<>:property<"
+							+ reference.getProperty().getName() + ">";
 				}
 			}
 
 			if (highlightID == null) {
 				if (source instanceof edu.cmu.cs.stage3.alice.core.Variable) {
-					edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();
+					final edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();
 					// System.out.println("parent: "+sourceParent);
 					if (sourceParent == world) {
-						highlightID = "details<>:viewController<>:variable<" + reference.getProperty().getOwner().getKey(world) + ">";
+						highlightID = "details<>:viewController<>:variable<"
+								+ reference.getProperty().getOwner().getKey(world) + ">";
 					} else if (sourceParent instanceof edu.cmu.cs.stage3.alice.core.Model) {
-						highlightID = "details<" + sourceParent.getKey(world) + ">:viewController<>:variable<" + reference.getProperty().getOwner().getKey(sourceParent) + ">";
-					} else if (sourceParent instanceof edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse || sourceParent instanceof edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse) {
-						edu.cmu.cs.stage3.alice.core.Element[] userDefinedResponses = world.getDescendants(edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse.class);
-						for (Element userDefinedResponse : userDefinedResponses) {
+						highlightID = "details<" + sourceParent.getKey(world) + ">:viewController<>:variable<"
+								+ reference.getProperty().getOwner().getKey(sourceParent) + ">";
+					} else if (sourceParent instanceof edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse
+							|| sourceParent instanceof edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse) {
+						final edu.cmu.cs.stage3.alice.core.Element[] userDefinedResponses = world
+								.getDescendants(edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse.class);
+						for (final Element userDefinedResponse : userDefinedResponses) {
 							// System.out.println(userDefinedResponses[i]);
 							if (userDefinedResponse == sourceParent || userDefinedResponse.isAncestorOf(sourceParent)) {
-								highlightID = "editors:element<" + userDefinedResponse.getKey(world) + ">:elementTile<" + source.getKey(world) + ">:property<" + reference.getProperty().getName() + ">";
+								highlightID = "editors:element<" + userDefinedResponse.getKey(world) + ">:elementTile<"
+										+ source.getKey(world) + ">:property<" + reference.getProperty().getName()
+										+ ">";
 								break;
 							}
 						}
 						if (highlightID == null) {
-							edu.cmu.cs.stage3.alice.core.Element[] behaviors = world.getDescendants(edu.cmu.cs.stage3.alice.core.Behavior.class);
-							for (Element behavior : behaviors) {
+							final edu.cmu.cs.stage3.alice.core.Element[] behaviors = world
+									.getDescendants(edu.cmu.cs.stage3.alice.core.Behavior.class);
+							for (final Element behavior : behaviors) {
 								// System.out.println(behaviors[i]);
 								if (behavior.isAncestorOf(sourceParent)) {
-									highlightID = "behaviors:elementTile<" + source.getKey(world) + ">:property<" + reference.getProperty().getName() + ">";
+									highlightID = "behaviors:elementTile<" + source.getKey(world) + ">:property<"
+											+ reference.getProperty().getName() + ">";
 									break;
 								}
 							}
@@ -368,14 +407,15 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 			}
 			if (highlightID == null) {
 				if (source instanceof edu.cmu.cs.stage3.alice.core.Collection) {
-					edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();
+					final edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();
 					// System.out.println("parent: "+sourceParent);
 					if (sourceParent instanceof edu.cmu.cs.stage3.alice.core.Variable) {
-						edu.cmu.cs.stage3.alice.core.Element variableParent = sourceParent.getParent();
+						final edu.cmu.cs.stage3.alice.core.Element variableParent = sourceParent.getParent();
 						if (variableParent == world) {
 							highlightID = "details<>:viewController<>:variable<" + sourceParent.getKey(world) + ">";
 						} else if (variableParent instanceof edu.cmu.cs.stage3.alice.core.Model) {
-							highlightID = "details<" + variableParent.getKey(world) + ">:viewController<>:variable<" + sourceParent.getKey(variableParent) + ">";
+							highlightID = "details<" + variableParent.getKey(world) + ">:viewController<>:variable<"
+									+ sourceParent.getKey(variableParent) + ">";
 						}
 					}
 
@@ -383,46 +423,57 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 			}
 			if (highlightID == null) {
 				if (source instanceof edu.cmu.cs.stage3.alice.core.List) {
-					edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();
+					final edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();
 					// System.out.println("parent: "+sourceParent);
 					if (sourceParent == world) {
-						highlightID = "details<>:viewController<>:variable<" + reference.getProperty().getOwner().getKey(world) + ">";
+						highlightID = "details<>:viewController<>:variable<"
+								+ reference.getProperty().getOwner().getKey(world) + ">";
 					} else if (sourceParent instanceof edu.cmu.cs.stage3.alice.core.Model) {
-						highlightID = "details<" + sourceParent.getKey(world) + ">:viewController<>:variable<" + reference.getProperty().getOwner().getKey(sourceParent) + ">";
+						highlightID = "details<" + sourceParent.getKey(world) + ">:viewController<>:variable<"
+								+ reference.getProperty().getOwner().getKey(sourceParent) + ">";
 					}
 
 				}
 			}
 
 			if (highlightID == null) {
-				edu.cmu.cs.stage3.util.Criterion userDefinedResponsesCriterion = new edu.cmu.cs.stage3.util.criterion.InstanceOfCriterion(edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse.class);
-				edu.cmu.cs.stage3.util.Criterion userDefinedQuestionsCriterion = new edu.cmu.cs.stage3.util.criterion.InstanceOfCriterion(edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion.class);
-				edu.cmu.cs.stage3.util.Criterion[] searchCriterion = {userDefinedResponsesCriterion, userDefinedQuestionsCriterion};
-				edu.cmu.cs.stage3.alice.core.Element[] userDefinedResponsesAndQuestions = world.search(new edu.cmu.cs.stage3.util.criterion.MatchesAnyCriterion(searchCriterion));
-				edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();
-				for (Element userDefinedResponsesAndQuestion : userDefinedResponsesAndQuestions) {
+				final edu.cmu.cs.stage3.util.Criterion userDefinedResponsesCriterion = new edu.cmu.cs.stage3.util.criterion.InstanceOfCriterion(
+						edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse.class);
+				final edu.cmu.cs.stage3.util.Criterion userDefinedQuestionsCriterion = new edu.cmu.cs.stage3.util.criterion.InstanceOfCriterion(
+						edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion.class);
+				final edu.cmu.cs.stage3.util.Criterion[] searchCriterion = { userDefinedResponsesCriterion,
+						userDefinedQuestionsCriterion };
+				final edu.cmu.cs.stage3.alice.core.Element[] userDefinedResponsesAndQuestions = world
+						.search(new edu.cmu.cs.stage3.util.criterion.MatchesAnyCriterion(searchCriterion));
+				final edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();
+				for (final Element userDefinedResponsesAndQuestion : userDefinedResponsesAndQuestions) {
 					if (userDefinedResponsesAndQuestion.isAncestorOf(source)) {
 						highlightID = "editors:element<" + userDefinedResponsesAndQuestion.getKey(world) + ">";
 						break;
 					}
 				}
 				if (highlightID == null) {
-					edu.cmu.cs.stage3.alice.core.Element[] behaviors = world.getDescendants(edu.cmu.cs.stage3.alice.core.Behavior.class);
-					for (Element behavior : behaviors) {
+					final edu.cmu.cs.stage3.alice.core.Element[] behaviors = world
+							.getDescendants(edu.cmu.cs.stage3.alice.core.Behavior.class);
+					for (final Element behavior : behaviors) {
 						if (behavior.isAncestorOf(source)) {
 							highlightID = "behaviors";
 							break;
 						}
 					}
 				}
-				if (reference.getProperty() instanceof edu.cmu.cs.stage3.alice.core.property.UserDefinedResponseProperty || reference.getProperty() instanceof edu.cmu.cs.stage3.alice.core.property.UserDefinedQuestionProperty || source instanceof edu.cmu.cs.stage3.alice.core.question.PropertyValue) {
+				if (reference.getProperty() instanceof edu.cmu.cs.stage3.alice.core.property.UserDefinedResponseProperty
+						|| reference
+								.getProperty() instanceof edu.cmu.cs.stage3.alice.core.property.UserDefinedQuestionProperty
+						|| source instanceof edu.cmu.cs.stage3.alice.core.question.PropertyValue) {
 					// need to check to see if it's just a call, or it's part of
 					// a property...
-					edu.cmu.cs.stage3.alice.core.Property[] properties = sourceParent.getProperties();
+					final edu.cmu.cs.stage3.alice.core.Property[] properties = sourceParent.getProperties();
 					boolean setIt = false;
-					for (Property propertie : properties) {
+					for (final Property propertie : properties) {
 						if (propertie.get() == source) {
-							highlightID += ":elementTile<" + sourceParent.getKey(world) + ">:property<" + propertie.getName() + ">";
+							highlightID += ":elementTile<" + sourceParent.getKey(world) + ">:property<"
+									+ propertie.getName() + ">";
 							setIt = true;
 						}
 					}
@@ -430,7 +481,8 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 						highlightID += ":elementTile<" + source.getKey(world) + ">";
 					}
 				} else {
-					highlightID += ":elementTile<" + source.getKey(world) + ">:property<" + reference.getProperty().getName() + ">";
+					highlightID += ":elementTile<" + source.getKey(world) + ">:property<"
+							+ reference.getProperty().getName() + ">";
 				}
 
 			}
@@ -440,11 +492,12 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 		return highlightID;
 	}
 
-	public static javax.swing.ImageIcon getDeleteIcon(edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference) {
-		javax.swing.ImageIcon toReturn = new javax.swing.ImageIcon();
+	public static javax.swing.ImageIcon getDeleteIcon(
+			final edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference) {
+		final javax.swing.ImageIcon toReturn = new javax.swing.ImageIcon();
 		if (reference != null) {
-			String id = getHighlightID(reference);
-			java.awt.Image image = authoringTool.getImageForID(id);
+			final String id = getHighlightID(reference);
+			final java.awt.Image image = authoringTool.getImageForID(id);
 			if (image != null) {
 				toReturn.setImage(image);
 			}
@@ -452,12 +505,12 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 		return toReturn;
 	}
 
-	public static String getDeleteString(edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference) {
+	public static String getDeleteString(final edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference) {
 		String highlightID = null;
 		if (reference != null) {
-			edu.cmu.cs.stage3.alice.core.Element source = reference.getProperty().getOwner();
-			edu.cmu.cs.stage3.alice.core.World world = authoringTool.getWorld();
-			String ourName = reference.getReference().name.getStringValue();
+			final edu.cmu.cs.stage3.alice.core.Element source = reference.getProperty().getOwner();
+			final edu.cmu.cs.stage3.alice.core.World world = authoringTool.getWorld();
+			final String ourName = reference.getReference().name.getStringValue();
 
 			if (source == world) {
 				highlightID = "The World's " + reference.getProperty().getName() + " is set to " + ourName;
@@ -465,32 +518,40 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 
 			if (highlightID == null) {
 				if (source instanceof edu.cmu.cs.stage3.alice.core.Model) {
-					highlightID = "The " + source.name.getStringValue() + "'s " + reference.getProperty().getName() + " is set to " + ourName;
+					highlightID = "The " + source.name.getStringValue() + "'s " + reference.getProperty().getName()
+							+ " is set to " + ourName;
 				}
 			}
 
 			if (highlightID == null) {
 				if (source instanceof edu.cmu.cs.stage3.alice.core.Variable) {
-					edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();
+					final edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();
 					if (sourceParent == world) {
-						highlightID = "The World's variable \"" + reference.getProperty().getOwner().name.getStringValue() + "\" is set to " + ourName;
+						highlightID = "The World's variable \""
+								+ reference.getProperty().getOwner().name.getStringValue() + "\" is set to " + ourName;
 					} else if (sourceParent instanceof edu.cmu.cs.stage3.alice.core.Model) {
-						highlightID = "The " + sourceParent.name.getStringValue() + "'s variable \"" + reference.getProperty().getOwner().name.getStringValue() + "\" is set to " + ourName;
-					} else if (sourceParent instanceof edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse || sourceParent instanceof edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse) {
-						edu.cmu.cs.stage3.alice.core.Element[] userDefinedResponses = world.getDescendants(edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse.class);
-						for (Element userDefinedResponse : userDefinedResponses) {
+						highlightID = "The " + sourceParent.name.getStringValue() + "'s variable \""
+								+ reference.getProperty().getOwner().name.getStringValue() + "\" is set to " + ourName;
+					} else if (sourceParent instanceof edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse
+							|| sourceParent instanceof edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse) {
+						final edu.cmu.cs.stage3.alice.core.Element[] userDefinedResponses = world
+								.getDescendants(edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse.class);
+						for (final Element userDefinedResponse : userDefinedResponses) {
 							// System.out.println(userDefinedResponses[i]);
 							if (userDefinedResponse == sourceParent || userDefinedResponse.isAncestorOf(sourceParent)) {
-								highlightID = "The method \"" + userDefinedResponse.getKey() + "\" contains " + source.getRepr() + " which is set to " + ourName;
+								highlightID = "The method \"" + userDefinedResponse.getKey() + "\" contains "
+										+ source.getRepr() + " which is set to " + ourName;
 								break;
 							}
 						}
 						if (highlightID == null) {
-							edu.cmu.cs.stage3.alice.core.Element[] behaviors = world.getDescendants(edu.cmu.cs.stage3.alice.core.Behavior.class);
-							for (Element behavior : behaviors) {
+							final edu.cmu.cs.stage3.alice.core.Element[] behaviors = world
+									.getDescendants(edu.cmu.cs.stage3.alice.core.Behavior.class);
+							for (final Element behavior : behaviors) {
 								// System.out.println(behaviors[i]);
 								if (behavior.isAncestorOf(sourceParent)) {
-									highlightID = "The behavior " + source.getRepr() + ", property: " + reference.getProperty().getName();
+									highlightID = "The behavior " + source.getRepr() + ", property: "
+											+ reference.getProperty().getName();
 									break;
 								}
 							}
@@ -501,13 +562,20 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 			}
 			if (highlightID == null) {
 				if (source instanceof edu.cmu.cs.stage3.alice.core.Collection) {
-					edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();
+					final edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();
 					if (sourceParent instanceof edu.cmu.cs.stage3.alice.core.Variable) {
-						edu.cmu.cs.stage3.alice.core.Element variableParent = sourceParent.getParent();
+						final edu.cmu.cs.stage3.alice.core.Element variableParent = sourceParent.getParent();
 						if (variableParent == world) {
-							highlightID = "The World's variable \"" + sourceParent.name.getStringValue() + "\" element number " + ((edu.cmu.cs.stage3.alice.core.Collection) source).getIndexOfChild(reference.getReference()) + " is set to " + ourName;
+							highlightID = "The World's variable \"" + sourceParent.name.getStringValue()
+									+ "\" element number " + ((edu.cmu.cs.stage3.alice.core.Collection) source)
+											.getIndexOfChild(reference.getReference())
+									+ " is set to " + ourName;
 						} else if (variableParent instanceof edu.cmu.cs.stage3.alice.core.Model) {
-							highlightID = "The " + variableParent.name.getStringValue() + "'s variable \"" + sourceParent.name.getStringValue() + "\" element number " + ((edu.cmu.cs.stage3.alice.core.Collection) source).getIndexOfChild(reference.getReference()) + " is set to " + ourName;
+							highlightID = "The " + variableParent.name.getStringValue() + "'s variable \""
+									+ sourceParent.name.getStringValue() + "\" element number "
+									+ ((edu.cmu.cs.stage3.alice.core.Collection) source)
+											.getIndexOfChild(reference.getReference())
+									+ " is set to " + ourName;
 						}
 					}
 
@@ -515,34 +583,45 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 			}
 
 			if (highlightID == null) {
-				edu.cmu.cs.stage3.util.Criterion userDefinedResponsesCriterion = new edu.cmu.cs.stage3.util.criterion.InstanceOfCriterion(edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse.class);
-				edu.cmu.cs.stage3.util.Criterion userDefinedQuestionsCriterion = new edu.cmu.cs.stage3.util.criterion.InstanceOfCriterion(edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion.class);
-				edu.cmu.cs.stage3.util.Criterion[] searchCriterion = {userDefinedResponsesCriterion, userDefinedQuestionsCriterion};
-				edu.cmu.cs.stage3.alice.core.Element[] userDefinedResponsesAndQuestions = world.search(new edu.cmu.cs.stage3.util.criterion.MatchesAnyCriterion(searchCriterion));
-				edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();
-				for (Element userDefinedResponsesAndQuestion : userDefinedResponsesAndQuestions) {
+				final edu.cmu.cs.stage3.util.Criterion userDefinedResponsesCriterion = new edu.cmu.cs.stage3.util.criterion.InstanceOfCriterion(
+						edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse.class);
+				final edu.cmu.cs.stage3.util.Criterion userDefinedQuestionsCriterion = new edu.cmu.cs.stage3.util.criterion.InstanceOfCriterion(
+						edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion.class);
+				final edu.cmu.cs.stage3.util.Criterion[] searchCriterion = { userDefinedResponsesCriterion,
+						userDefinedQuestionsCriterion };
+				final edu.cmu.cs.stage3.alice.core.Element[] userDefinedResponsesAndQuestions = world
+						.search(new edu.cmu.cs.stage3.util.criterion.MatchesAnyCriterion(searchCriterion));
+				final edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();
+				for (final Element userDefinedResponsesAndQuestion : userDefinedResponsesAndQuestions) {
 					if (userDefinedResponsesAndQuestion.isAncestorOf(source)) {
 						highlightID = "The method \"" + userDefinedResponsesAndQuestion.getKey() + "\"";
 						break;
 					}
 				}
 				if (highlightID == null) {
-					edu.cmu.cs.stage3.alice.core.Element[] behaviors = world.getDescendants(edu.cmu.cs.stage3.alice.core.Behavior.class);
-					for (Element behavior : behaviors) {
+					final edu.cmu.cs.stage3.alice.core.Element[] behaviors = world
+							.getDescendants(edu.cmu.cs.stage3.alice.core.Behavior.class);
+					for (final Element behavior : behaviors) {
 						if (behavior.isAncestorOf(source)) {
 							highlightID = "The behavior";
 							break;
 						}
 					}
 				}
-				if (reference.getProperty() instanceof edu.cmu.cs.stage3.alice.core.property.UserDefinedResponseProperty || reference.getProperty() instanceof edu.cmu.cs.stage3.alice.core.property.UserDefinedQuestionProperty || source instanceof edu.cmu.cs.stage3.alice.core.question.PropertyValue) {
+				if (reference.getProperty() instanceof edu.cmu.cs.stage3.alice.core.property.UserDefinedResponseProperty
+						|| reference
+								.getProperty() instanceof edu.cmu.cs.stage3.alice.core.property.UserDefinedQuestionProperty
+						|| source instanceof edu.cmu.cs.stage3.alice.core.question.PropertyValue) {
 					// need to check to see if it's just a call, or it's part of
 					// a property...
-					edu.cmu.cs.stage3.alice.core.Property[] properties = sourceParent.getProperties();
+					final edu.cmu.cs.stage3.alice.core.Property[] properties = sourceParent.getProperties();
 					boolean setIt = false;
-					for (Property propertie : properties) {
+					for (final Property propertie : properties) {
 						if (propertie.get() == source) {
-							highlightID += " has a line of code " + edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(source.getClass()) + " who's " + propertie.getName() + " is set to " + ourName;
+							highlightID += " has a line of code "
+									+ edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+											.getReprForValue(source.getClass())
+									+ " who's " + propertie.getName() + " is set to " + ourName;
 							setIt = true;
 						}
 					}
@@ -550,7 +629,8 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 						highlightID += ":elementTile<" + source.getKey(world) + ">";
 					}
 				} else {
-					highlightID += ":elementTile<" + source.getKey(world) + ">:property<" + reference.getProperty().getName() + ">";
+					highlightID += ":elementTile<" + source.getKey(world) + ">:property<"
+							+ reference.getProperty().getName() + ">";
 				}
 				// System.out.println("made it: "+highlightID);
 
@@ -562,9 +642,10 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 
 	class ReferencesSelectionListener implements javax.swing.event.ListSelectionListener {
 		@Override
-		public void valueChanged(javax.swing.event.ListSelectionEvent ev) {
+		public void valueChanged(final javax.swing.event.ListSelectionEvent ev) {
 			String highlightID = null;
-			edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference = (edu.cmu.cs.stage3.alice.core.reference.PropertyReference) referencesList.getSelectedValue();
+			final edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference = (edu.cmu.cs.stage3.alice.core.reference.PropertyReference) referencesList
+					.getSelectedValue();
 			highlightID = getHighlightID(reference);
 			glassPane.setHighlightID(highlightID);
 			if (highlightID != null) {
@@ -573,37 +654,44 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 		}
 	}
 
-	void removeReferenceButton_actionPerformed(java.awt.event.ActionEvent e) {
-		edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference = (edu.cmu.cs.stage3.alice.core.reference.PropertyReference) referencesList.getSelectedValue();
-		edu.cmu.cs.stage3.alice.core.Element source = reference.getProperty().getOwner();
-		edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();
+	void removeReferenceButton_actionPerformed(final java.awt.event.ActionEvent e) {
+		final edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference = (edu.cmu.cs.stage3.alice.core.reference.PropertyReference) referencesList
+				.getSelectedValue();
+		final edu.cmu.cs.stage3.alice.core.Element source = reference.getProperty().getOwner();
+		final edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();
 		if (reference != null) {
-			if (source instanceof edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse || source instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion || source instanceof edu.cmu.cs.stage3.alice.core.question.PropertyValue) {
+			if (source instanceof edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse
+					|| source instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion
+					|| source instanceof edu.cmu.cs.stage3.alice.core.question.PropertyValue) {
 				// need to check to see if it's just a call, or it's part of a
 				// property...
 				if (sourceParent instanceof edu.cmu.cs.stage3.alice.core.response.CompositeResponse) {
 					source.removeFromParent();
 				} else {
-					edu.cmu.cs.stage3.alice.core.Property[] properties = sourceParent.getProperties();
-					for (Property propertie : properties) {
+					final edu.cmu.cs.stage3.alice.core.Property[] properties = sourceParent.getProperties();
+					for (final Property propertie : properties) {
 						if (propertie.get() == source) {
 							propertie.removePropertyListener(this);
-							propertie.set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getDefaultValueForClass(propertie.getValueClass()));
+							propertie.set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+									.getDefaultValueForClass(propertie.getValueClass()));
 						}
 					}
 
 				}
 			} else if (reference instanceof edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference) {
-				edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference oAPR = (edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference) reference;
+				final edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference oAPR = (edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference) reference;
 				oAPR.getObjectArrayProperty().set(oAPR.getIndex(), null);
-				edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] references = oAPR.getProperty().getOwner().getPropertyReferencesTo(deleteRunnable.getElement(), edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true, true);
+				final edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] references = oAPR.getProperty()
+						.getOwner().getPropertyReferencesTo(deleteRunnable.getElement(),
+								edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true, true);
 				if (references == null || references.length < 1) {
 					reference.getProperty().removePropertyListener(this);
 				}
 
 			} else {
 				reference.getProperty().removePropertyListener(this);
-				reference.getProperty().set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getDefaultValueForClass(reference.getProperty().getValueClass()));
+				reference.getProperty().set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+						.getDefaultValueForClass(reference.getProperty().getValueClass()));
 
 			}
 			// Delay code
@@ -625,38 +713,45 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 		}
 	}
 
-	void removeAllReferenceButton_actionPerformed(java.awt.event.ActionEvent e) {
+	void removeAllReferenceButton_actionPerformed(final java.awt.event.ActionEvent e) {
 		stopListening();
 		for (int i = 0; i < referencesList.getModel().getSize(); i++) {
-			edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference = (edu.cmu.cs.stage3.alice.core.reference.PropertyReference) referencesList.getModel().getElementAt(i);
-			edu.cmu.cs.stage3.alice.core.Element source = reference.getProperty().getOwner();
-			edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();
+			final edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference = (edu.cmu.cs.stage3.alice.core.reference.PropertyReference) referencesList
+					.getModel().getElementAt(i);
+			final edu.cmu.cs.stage3.alice.core.Element source = reference.getProperty().getOwner();
+			final edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();
 			if (reference != null) {
-				if (source instanceof edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse || source instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion || source instanceof edu.cmu.cs.stage3.alice.core.question.PropertyValue) {
+				if (source instanceof edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse
+						|| source instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion
+						|| source instanceof edu.cmu.cs.stage3.alice.core.question.PropertyValue) {
 					// need to check to see if it's just a call, or it's part of
 					// a property...
 					if (sourceParent instanceof edu.cmu.cs.stage3.alice.core.response.CompositeResponse) {
 						source.removeFromParent();
 					} else {
-						edu.cmu.cs.stage3.alice.core.Property[] properties = sourceParent.getProperties();
-						for (Property propertie : properties) {
+						final edu.cmu.cs.stage3.alice.core.Property[] properties = sourceParent.getProperties();
+						for (final Property propertie : properties) {
 							if (propertie.get() == source) {
 								propertie.removePropertyListener(this);
-								propertie.set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getDefaultValueForClass(propertie.getValueClass()));
+								propertie.set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+										.getDefaultValueForClass(propertie.getValueClass()));
 							}
 						}
 
 					}
 				} else if (reference instanceof edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference) {
-					edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference oAPR = (edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference) reference;
+					final edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference oAPR = (edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference) reference;
 					oAPR.getObjectArrayProperty().set(oAPR.getIndex(), null);
-					edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] otherReferences = oAPR.getProperty().getOwner().getPropertyReferencesTo(deleteRunnable.getElement(), edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true, true);
+					final edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] otherReferences = oAPR
+							.getProperty().getOwner().getPropertyReferencesTo(deleteRunnable.getElement(),
+									edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true, true);
 					if (otherReferences == null || otherReferences.length < 1) {
 						reference.getProperty().removePropertyListener(this);
 					}
 				} else {
 					reference.getProperty().removePropertyListener(this);
-					reference.getProperty().set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getDefaultValueForClass(reference.getProperty().getValueClass()));
+					reference.getProperty().set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+							.getDefaultValueForClass(reference.getProperty().getValueClass()));
 				}
 			}
 		}
@@ -696,7 +791,7 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 		removeReferenceButton.setText("Remove Reference");
 		removeReferenceButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				removeReferenceButton_actionPerformed(e);
 			}
 		});
@@ -704,7 +799,7 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 		removeAllReferenceButton.setText("Remove All References");
 		removeAllReferenceButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				removeAllReferenceButton_actionPerformed(e);
 			}
 		});
@@ -721,14 +816,21 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 		referencesList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 		add(buttonPanel, java.awt.BorderLayout.SOUTH);
 		add(mainPanel, java.awt.BorderLayout.CENTER);
-		buttonPanel.add(okayButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(8, 8, 8, 4), 0, 0));
-		buttonPanel.add(cancelButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(8, 0, 8, 0), 0, 0));
-		buttonPanel.add(removeReferenceButton, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(8, 0, 8, 8), 0, 0));
-		buttonPanel.add(removeAllReferenceButton, new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(8, 0, 8, 8), 0, 0));
-		mainPanel.add(iconPanel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST, GridBagConstraints.NONE, new Insets(10, 10, 10, 10), 0, 0));
-		mainPanel.add(messagePanel, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+		buttonPanel.add(okayButton, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
+				GridBagConstraints.NONE, new Insets(8, 8, 8, 4), 0, 0));
+		buttonPanel.add(cancelButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
+				GridBagConstraints.NONE, new Insets(8, 0, 8, 0), 0, 0));
+		buttonPanel.add(removeReferenceButton, new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(8, 0, 8, 8), 0, 0));
+		buttonPanel.add(removeAllReferenceButton, new GridBagConstraints(0, 1, 1, 1, 1.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(8, 0, 8, 8), 0, 0));
+		mainPanel.add(iconPanel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.NORTHWEST,
+				GridBagConstraints.NONE, new Insets(10, 10, 10, 10), 0, 0));
+		mainPanel.add(messagePanel, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		messagePanel.add(messageArea, java.awt.BorderLayout.CENTER);
-		mainPanel.add(referencesPanel, new GridBagConstraints(0, 1, 2, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(10, 0, 0, 0), 0, 0));
+		mainPanel.add(referencesPanel, new GridBagConstraints(0, 1, 2, 1, 1.0, 1.0, GridBagConstraints.CENTER,
+				GridBagConstraints.BOTH, new Insets(10, 0, 0, 0), 0, 0));
 		referencesPanel.add(referencesScrollPane, java.awt.BorderLayout.CENTER);
 		referencesScrollPane.getViewport().add(referencesList, null);
 	}

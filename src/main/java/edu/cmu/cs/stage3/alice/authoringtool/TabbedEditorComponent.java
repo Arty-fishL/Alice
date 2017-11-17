@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -38,6 +38,10 @@ import edu.cmu.cs.stage3.alice.core.Element;
  * @author Jason Pratt
  */
 public class TabbedEditorComponent extends javax.swing.JPanel {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 6214943633373393843L;
 	protected AuthoringTool authoringTool;
 	protected EditorManager editorManager;
 	protected EditorDropTargetListener editorDropTargetListener = new EditorDropTargetListener();
@@ -52,9 +56,10 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 		}
 	};
 	protected edu.cmu.cs.stage3.alice.core.World world;
-	private edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringToolConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration.getLocalConfiguration(AuthoringTool.class.getPackage());
+	private final edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringToolConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration
+			.getLocalConfiguration(AuthoringTool.class.getPackage());
 
-	public TabbedEditorComponent(AuthoringTool authoringTool) {
+	public TabbedEditorComponent(final AuthoringTool authoringTool) {
 		this.authoringTool = authoringTool;
 		editorManager = authoringTool.getEditorManager();
 		jbInit();
@@ -67,7 +72,7 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 		setDropTarget(new java.awt.dnd.DropTarget(this, editorDropTargetListener));
 		tabbedPane.setDropTarget(new java.awt.dnd.DropTarget(tabbedPane, editorDropTargetListener));
 		tabbedPane.addMouseListener(rightClickListener);
-		int fontSize = Integer.parseInt(authoringToolConfig.getValue("fontSize"));
+		final int fontSize = Integer.parseInt(authoringToolConfig.getValue("fontSize"));
 		tabbedPane.setFont(new java.awt.Font("SansSerif", java.awt.Font.PLAIN, (int) (16 * (fontSize / 12.0))));
 	}
 
@@ -86,11 +91,12 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 
 	// public int getComponentCount(){
 	// int toReturn = super.getComponentCount();
-	// System.out.println("count: "+toReturn+", tabbedPane Count: "+tabbedPane.getComponentCount());
+	// System.out.println("count: "+toReturn+", tabbedPane Count:
+	// "+tabbedPane.getComponentCount());
 	// return toReturn;
 	// }
 
-	public void setWorld(edu.cmu.cs.stage3.alice.core.World world) {
+	public void setWorld(final edu.cmu.cs.stage3.alice.core.World world) {
 		stopListeningToTree(world);
 		closeAllTabs();
 
@@ -100,29 +106,30 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 		}
 	}
 
-	public void editObject(Object object, Class editorClass, boolean switchToNewTab) {
+	public void editObject(final Object object, final Class editorClass, final boolean switchToNewTab) {
 		if (object == null || editorClass == null) { // TODO: this is a hack
 			closeAllTabs();
 		} else {
 			if (!isObjectBeingEdited(object)) { // TODO: allow editing of the
 												// same object with different
 												// editors
-				Editor editor = editorManager.getEditorInstance(editorClass);
+				final Editor editor = editorManager.getEditorInstance(editorClass);
 				if (editor != null) {
 					componentsToEditors.put(editor.getJComponent(), editor);
 					edu.cmu.cs.stage3.alice.authoringtool.util.EditorUtilities.editObject(editor, object);
-					String repr = AuthoringToolResources.getReprForValue(object, true);
+					final String repr = AuthoringToolResources.getReprForValue(object, true);
 					Object iconObject = object;
 					if (object instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion) {
-						edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion udq = (edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion) object;
+						final edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion udq = (edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion) object;
 						if (edu.cmu.cs.stage3.alice.core.List.class.isAssignableFrom(udq.getValueClass())) {
-							edu.cmu.cs.stage3.alice.core.List list = (edu.cmu.cs.stage3.alice.core.List) udq.getValue();
+							final edu.cmu.cs.stage3.alice.core.List list = (edu.cmu.cs.stage3.alice.core.List) udq
+									.getValue();
 							iconObject = "types/lists/" + list.valueClass.getClassValue().getName();
 						} else {
 							iconObject = "types/" + udq.getValueClass().getName();
 						}
 					}
-					javax.swing.ImageIcon icon = AuthoringToolResources.getIconForValue(iconObject);
+					final javax.swing.ImageIcon icon = AuthoringToolResources.getIconForValue(iconObject);
 					tabbedPane.addTab(repr, icon, editor.getJComponent());
 					if (switchToNewTab) {
 						tabbedPane.setSelectedComponent(editor.getJComponent());
@@ -147,9 +154,9 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 				}
 			} else if (switchToNewTab) {
 				for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-					java.awt.Component component = tabbedPane.getComponentAt(i);
+					final java.awt.Component component = tabbedPane.getComponentAt(i);
 					if (component != null) {
-						Editor editor = (Editor) componentsToEditors.get(component);
+						final Editor editor = (Editor) componentsToEditors.get(component);
 						if (editor != null) {
 							if (editor.getObject() == object) {
 								tabbedPane.setSelectedIndex(i);
@@ -168,9 +175,9 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 	}
 
 	public Object getObjectBeingEdited() {
-		java.awt.Component component = tabbedPane.getSelectedComponent();
+		final java.awt.Component component = tabbedPane.getSelectedComponent();
 		if (component != null) {
-			Editor editor = (Editor) componentsToEditors.get(component);
+			final Editor editor = (Editor) componentsToEditors.get(component);
 			if (editor != null) {
 				return editor.getObject();
 			}
@@ -178,10 +185,10 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 		return null;
 	}
 
-	public Object getObjectBeingEditedAt(int index) {
-		java.awt.Component component = tabbedPane.getComponentAt(index);
+	public Object getObjectBeingEditedAt(final int index) {
+		final java.awt.Component component = tabbedPane.getComponentAt(index);
 		if (component != null) {
-			Editor editor = (Editor) componentsToEditors.get(component);
+			final Editor editor = (Editor) componentsToEditors.get(component);
 			if (editor != null) {
 				return editor.getObject();
 			}
@@ -190,11 +197,11 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 	}
 
 	public Object[] getObjectsBeingEdited() {
-		java.awt.Component[] components = tabbedPane.getComponents();
+		final java.awt.Component[] components = tabbedPane.getComponents();
 		if (components != null) {
-			java.util.ArrayList objects = new java.util.ArrayList();
-			for (Component component2 : components) {
-				Editor editor = (Editor) componentsToEditors.get(component2);
+			final java.util.ArrayList objects = new java.util.ArrayList();
+			for (final Component component2 : components) {
+				final Editor editor = (Editor) componentsToEditors.get(component2);
 				if (editor != null) {
 					objects.add(editor.getObject());
 				}
@@ -204,11 +211,11 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 		return null;
 	}
 
-	public int getIndexOfObject(Object o) {
-		java.awt.Component[] components = tabbedPane.getComponents();
+	public int getIndexOfObject(final Object o) {
+		final java.awt.Component[] components = tabbedPane.getComponents();
 		if (components != null) {
 			for (int i = 0; i < components.length; i++) {
-				Editor editor = (Editor) componentsToEditors.get(components[i]);
+				final Editor editor = (Editor) componentsToEditors.get(components[i]);
 				if (editor != null) {
 					if (editor.getObject().equals(o)) {
 						return i;
@@ -220,15 +227,15 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 	}
 
 	public Editor getCurrentEditor() {
-		java.awt.Component component = tabbedPane.getSelectedComponent();
+		final java.awt.Component component = tabbedPane.getSelectedComponent();
 		if (component != null) {
 			return (Editor) componentsToEditors.get(component);
 		}
 		return null;
 	}
 
-	public Editor getEditorAt(int index) {
-		java.awt.Component component = tabbedPane.getComponentAt(index);
+	public Editor getEditorAt(final int index) {
+		final java.awt.Component component = tabbedPane.getComponentAt(index);
 		if (component != null) {
 			return (Editor) componentsToEditors.get(component);
 		}
@@ -236,11 +243,11 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 	}
 
 	public Editor[] getEditors() {
-		java.awt.Component[] components = tabbedPane.getComponents();
+		final java.awt.Component[] components = tabbedPane.getComponents();
 		if (components != null) {
-			java.util.ArrayList editors = new java.util.ArrayList();
-			for (Component component2 : components) {
-				Editor editor = (Editor) componentsToEditors.get(component2);
+			final java.util.ArrayList editors = new java.util.ArrayList();
+			for (final Component component2 : components) {
+				final Editor editor = (Editor) componentsToEditors.get(component2);
 				if (editor != null) {
 					editors.add(editor);
 				}
@@ -250,11 +257,11 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 		return null;
 	}
 
-	public int getIndexOfEditor(Editor editor) {
-		java.awt.Component[] components = tabbedPane.getComponents();
+	public int getIndexOfEditor(final Editor editor) {
+		final java.awt.Component[] components = tabbedPane.getComponents();
 		if (components != null) {
 			for (int i = 0; i < components.length; i++) {
-				Editor e = (Editor) componentsToEditors.get(components[i]);
+				final Editor e = (Editor) componentsToEditors.get(components[i]);
 				if (editor.equals(e)) {
 					return i;
 				}
@@ -263,12 +270,12 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 		return -1;
 	}
 
-	public void closeTab(int index) {
-		java.awt.Component component = tabbedPane.getComponentAt(index);
+	public void closeTab(final int index) {
+		final java.awt.Component component = tabbedPane.getComponentAt(index);
 		if (component != null) {
-			Editor editor = (Editor) componentsToEditors.get(component);
+			final Editor editor = (Editor) componentsToEditors.get(component);
 			if (editor != null) {
-				Object object = editor.getObject();
+				final Object object = editor.getObject();
 				tabbedPane.removeTabAt(index);
 				edu.cmu.cs.stage3.alice.authoringtool.util.EditorUtilities.editObject(editor, null);
 				editorManager.releaseEditorInstance(editor);
@@ -278,7 +285,8 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 					// if(
 					// ((edu.cmu.cs.stage3.alice.core.Element)object).getParent()
 					// != null ) {
-					// System.out.println("removed listener: "+((edu.cmu.cs.stage3.alice.core.Element)object).getParent());
+					// System.out.println("removed listener:
+					// "+((edu.cmu.cs.stage3.alice.core.Element)object).getParent());
 					// ((edu.cmu.cs.stage3.alice.core.Element)object).getParent().removeChildrenListener(
 					// deletionListener );
 					// }
@@ -296,11 +304,11 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 		}
 	}
 
-	public boolean isObjectBeingEdited(Object o) {
+	public boolean isObjectBeingEdited(final Object o) {
 		for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-			java.awt.Component component = tabbedPane.getComponentAt(i);
+			final java.awt.Component component = tabbedPane.getComponentAt(i);
 			if (component != null) {
-				Editor editor = (Editor) componentsToEditors.get(component);
+				final Editor editor = (Editor) componentsToEditors.get(component);
 				if (editor != null) {
 					if (editor.getObject() == o) {
 						return true;
@@ -313,9 +321,9 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 
 	public edu.cmu.cs.stage3.alice.authoringtool.editors.sceneeditor.SceneEditor getCurrentSceneEditor() {
 		for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-			java.awt.Component component = tabbedPane.getComponentAt(i);
+			final java.awt.Component component = tabbedPane.getComponentAt(i);
 			if (component != null) {
-				Editor editor = (Editor) componentsToEditors.get(component);
+				final Editor editor = (Editor) componentsToEditors.get(component);
 				if (editor instanceof edu.cmu.cs.stage3.alice.authoringtool.editors.sceneeditor.SceneEditor) {
 					return (edu.cmu.cs.stage3.alice.authoringtool.editors.sceneeditor.SceneEditor) editor;
 				}
@@ -330,40 +338,49 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 		public void popupResponse(final java.awt.event.MouseEvent ev) {
 			final int index = tabbedPane.getUI().tabForCoordinate(tabbedPane, ev.getX(), ev.getY());
 			if (index >= 0 && index < tabbedPane.getTabCount()) {
-				Runnable closeTabRunnable = new Runnable() {
+				final Runnable closeTabRunnable = new Runnable() {
 					@Override
 					public void run() {
 						closeTab(index);
 					}
 				};
-				java.util.Vector structure = new java.util.Vector();
-				structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Close " + tabbedPane.getTitleAt(index), closeTabRunnable));
+				final java.util.Vector structure = new java.util.Vector();
+				structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Close " + tabbedPane.getTitleAt(index),
+						closeTabRunnable));
 				structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Close All", closeAllTabsRunnable));
-				edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.createAndShowPopupMenu(structure, tabbedPane, ev.getX(), ev.getY());
+				edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.createAndShowPopupMenu(structure,
+						tabbedPane, ev.getX(), ev.getY());
 			}
 		}
 	}
 
 	protected class EditorDropTargetListener implements java.awt.dnd.DropTargetListener {
-		protected void checkDrag(java.awt.dnd.DropTargetDragEvent dtde) {
+		protected void checkDrag(final java.awt.dnd.DropTargetDragEvent dtde) {
 			// TODO: better feedback
-			if (AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedResponsePrototypeReferenceTransferable.callToUserDefinedResponsePrototypeReferenceFlavor)) {
+			if (AuthoringToolResources.safeIsDataFlavorSupported(dtde,
+					edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedResponsePrototypeReferenceTransferable.callToUserDefinedResponsePrototypeReferenceFlavor)) {
 				dtde.acceptDrag(java.awt.dnd.DnDConstants.ACTION_MOVE);
 				return;
-			} else if (AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedQuestionPrototypeReferenceTransferable.callToUserDefinedQuestionPrototypeReferenceFlavor)) {
+			} else if (AuthoringToolResources.safeIsDataFlavorSupported(dtde,
+					edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedQuestionPrototypeReferenceTransferable.callToUserDefinedQuestionPrototypeReferenceFlavor)) {
 				dtde.acceptDrag(java.awt.dnd.DnDConstants.ACTION_MOVE);
 				return;
-			} else if (AuthoringToolResources.safeIsDataFlavorSupported(dtde, AuthoringToolResources.getReferenceFlavorForClass(edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse.class))) {
+			} else if (AuthoringToolResources.safeIsDataFlavorSupported(dtde,
+					AuthoringToolResources.getReferenceFlavorForClass(
+							edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse.class))) {
 				dtde.acceptDrag(java.awt.dnd.DnDConstants.ACTION_MOVE);
 				return;
-			} else if (AuthoringToolResources.safeIsDataFlavorSupported(dtde, AuthoringToolResources.getReferenceFlavorForClass(edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion.class))) {
+			} else if (AuthoringToolResources.safeIsDataFlavorSupported(dtde,
+					AuthoringToolResources.getReferenceFlavorForClass(
+							edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion.class))) {
 				dtde.acceptDrag(java.awt.dnd.DnDConstants.ACTION_MOVE);
 				return;
 			} else {
-				java.awt.datatransfer.DataFlavor[] flavors = AuthoringToolResources.safeGetCurrentDataFlavors(dtde);
+				final java.awt.datatransfer.DataFlavor[] flavors = AuthoringToolResources
+						.safeGetCurrentDataFlavors(dtde);
 				if (flavors != null) {
-					for (DataFlavor flavor : flavors) {
-						Class c = flavor.getRepresentationClass();
+					for (final DataFlavor flavor : flavors) {
+						final Class c = flavor.getRepresentationClass();
 						if (edu.cmu.cs.stage3.alice.authoringtool.util.EditorUtilities.getBestEditor(c) != null) {
 							dtde.acceptDrag(java.awt.dnd.DnDConstants.ACTION_MOVE);
 							return;
@@ -375,62 +392,79 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 		}
 
 		@Override
-		public void dragEnter(java.awt.dnd.DropTargetDragEvent dtde) {
+		public void dragEnter(final java.awt.dnd.DropTargetDragEvent dtde) {
 			checkDrag(dtde);
 		}
 
 		@Override
-		public void dragOver(java.awt.dnd.DropTargetDragEvent dtde) {
+		public void dragOver(final java.awt.dnd.DropTargetDragEvent dtde) {
 			checkDrag(dtde);
 		}
 
 		@Override
-		public void dropActionChanged(java.awt.dnd.DropTargetDragEvent dtde) {
+		public void dropActionChanged(final java.awt.dnd.DropTargetDragEvent dtde) {
 			checkDrag(dtde);
 		}
 
 		@Override
-		public void dragExit(java.awt.dnd.DropTargetEvent dte) {
+		public void dragExit(final java.awt.dnd.DropTargetEvent dte) {
 			// TODO: feedback
 		}
 
 		@Override
-		public void drop(java.awt.dnd.DropTargetDropEvent dtde) {
+		public void drop(final java.awt.dnd.DropTargetDropEvent dtde) {
 			// DEBUG System.out.println( "drop" );
 			try {
 				Object o = null;
-				if (AuthoringToolResources.safeIsDataFlavorSupported(dtde, AuthoringToolResources.getReferenceFlavorForClass(edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse.class))) {
+				if (AuthoringToolResources.safeIsDataFlavorSupported(dtde,
+						AuthoringToolResources.getReferenceFlavorForClass(
+								edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse.class))) {
 					dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_MOVE);
-					java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
-					o = transferable.getTransferData(AuthoringToolResources.getReferenceFlavorForClass(edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse.class));
-					o = ((edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse) o).userDefinedResponse.getUserDefinedResponseValue();
-				} else if (AuthoringToolResources.safeIsDataFlavorSupported(dtde, AuthoringToolResources.getReferenceFlavorForClass(edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion.class))) {
+					final java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
+					o = transferable.getTransferData(AuthoringToolResources.getReferenceFlavorForClass(
+							edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse.class));
+					o = ((edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse) o).userDefinedResponse
+							.getUserDefinedResponseValue();
+				} else if (AuthoringToolResources.safeIsDataFlavorSupported(dtde,
+						AuthoringToolResources.getReferenceFlavorForClass(
+								edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion.class))) {
 					dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_MOVE);
-					java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
-					o = transferable.getTransferData(AuthoringToolResources.getReferenceFlavorForClass(edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion.class));
-					o = ((edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion) o).userDefinedQuestion.getUserDefinedQuestionValue();
-				} else if (AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.elementReferenceFlavor)) {
+					final java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
+					o = transferable.getTransferData(AuthoringToolResources.getReferenceFlavorForClass(
+							edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion.class));
+					o = ((edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion) o).userDefinedQuestion
+							.getUserDefinedQuestionValue();
+				} else if (AuthoringToolResources.safeIsDataFlavorSupported(dtde,
+						edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.elementReferenceFlavor)) {
 					dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_MOVE);
-					java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
-					o = transferable.getTransferData(edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.elementReferenceFlavor);
-				} else if (AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedResponsePrototypeReferenceTransferable.callToUserDefinedResponsePrototypeReferenceFlavor)) {
+					final java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
+					o = transferable.getTransferData(
+							edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.elementReferenceFlavor);
+				} else if (AuthoringToolResources.safeIsDataFlavorSupported(dtde,
+						edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedResponsePrototypeReferenceTransferable.callToUserDefinedResponsePrototypeReferenceFlavor)) {
 					dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_MOVE);
-					java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
-					edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedResponsePrototype callToUserDefinedResponsePrototype = (edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedResponsePrototype) transferable.getTransferData(edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedResponsePrototypeReferenceTransferable.callToUserDefinedResponsePrototypeReferenceFlavor);
+					final java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
+					final edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedResponsePrototype callToUserDefinedResponsePrototype = (edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedResponsePrototype) transferable
+							.getTransferData(
+									edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedResponsePrototypeReferenceTransferable.callToUserDefinedResponsePrototypeReferenceFlavor);
 					o = callToUserDefinedResponsePrototype.getActualResponse();
-				} else if (AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedQuestionPrototypeReferenceTransferable.callToUserDefinedQuestionPrototypeReferenceFlavor)) {
+				} else if (AuthoringToolResources.safeIsDataFlavorSupported(dtde,
+						edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedQuestionPrototypeReferenceTransferable.callToUserDefinedQuestionPrototypeReferenceFlavor)) {
 					dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_MOVE);
-					java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
-					edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedQuestionPrototype callToUserDefinedQuestionPrototype = (edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedQuestionPrototype) transferable.getTransferData(edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedQuestionPrototypeReferenceTransferable.callToUserDefinedQuestionPrototypeReferenceFlavor);
+					final java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
+					final edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedQuestionPrototype callToUserDefinedQuestionPrototype = (edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedQuestionPrototype) transferable
+							.getTransferData(
+									edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedQuestionPrototypeReferenceTransferable.callToUserDefinedQuestionPrototypeReferenceFlavor);
 					o = callToUserDefinedQuestionPrototype.getActualQuestion();
 				} else {
-					java.awt.datatransfer.DataFlavor[] flavors = AuthoringToolResources.safeGetCurrentDataFlavors(dtde);
+					final java.awt.datatransfer.DataFlavor[] flavors = AuthoringToolResources
+							.safeGetCurrentDataFlavors(dtde);
 					if (flavors != null) {
-						for (DataFlavor flavor : flavors) {
-							Class c = flavor.getDefaultRepresentationClass();
+						for (final DataFlavor flavor : flavors) {
+							final Class c = flavor.getDefaultRepresentationClass();
 							if (edu.cmu.cs.stage3.alice.authoringtool.util.EditorUtilities.getBestEditor(c) != null) {
 								dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_MOVE);
-								java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
+								final java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
 								o = transferable.getTransferData(flavor);
 								break;
 							}
@@ -439,7 +473,8 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 				}
 				if (o != null) {
 					// DEBUG System.out.println( "o: " + o );
-					Class editorClass = edu.cmu.cs.stage3.alice.authoringtool.util.EditorUtilities.getBestEditor(o.getClass());
+					final Class editorClass = edu.cmu.cs.stage3.alice.authoringtool.util.EditorUtilities
+							.getBestEditor(o.getClass());
 					// DEBUG System.out.println( "editorClass: " + editorClass
 					// );
 					if (editorClass != null) {
@@ -450,13 +485,13 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 					dtde.rejectDrop();
 					dtde.dropComplete(false);
 				}
-			} catch (java.awt.datatransfer.UnsupportedFlavorException e) {
+			} catch (final java.awt.datatransfer.UnsupportedFlavorException e) {
 				AuthoringTool.showErrorDialog("Drop didn't work: bad flavor", e);
 				dtde.dropComplete(false);
-			} catch (java.io.IOException e) {
+			} catch (final java.io.IOException e) {
 				AuthoringTool.showErrorDialog("Drop didn't work: IOException", e);
 				dtde.dropComplete(false);
-			} catch (Throwable t) {
+			} catch (final Throwable t) {
 				AuthoringTool.showErrorDialog("Drop didn't work.", t);
 				dtde.dropComplete(false);
 			}
@@ -521,12 +556,13 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 
 	protected class NameListener implements edu.cmu.cs.stage3.alice.core.event.PropertyListener {
 		@Override
-		public void propertyChanging(edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev) {
+		public void propertyChanging(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev) {
 		}
+
 		@Override
-		public void propertyChanged(edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev) {
+		public void propertyChanged(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev) {
 			for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-				Object object = getObjectBeingEditedAt(i);
+				final Object object = getObjectBeingEditedAt(i);
 				if (object == ev.getProperty().getOwner()) {
 					tabbedPane.setTitleAt(i, AuthoringToolResources.getReprForValue(ev.getProperty().getOwner(), true));
 				}
@@ -536,16 +572,17 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 
 	protected class DeletionListener implements edu.cmu.cs.stage3.alice.core.event.ChildrenListener {
 		@Override
-		public void childrenChanging(edu.cmu.cs.stage3.alice.core.event.ChildrenEvent ev) {
+		public void childrenChanging(final edu.cmu.cs.stage3.alice.core.event.ChildrenEvent ev) {
 		}
+
 		@Override
-		public void childrenChanged(edu.cmu.cs.stage3.alice.core.event.ChildrenEvent ev) {
+		public void childrenChanged(final edu.cmu.cs.stage3.alice.core.event.ChildrenEvent ev) {
 			if (ev.getChangeType() == edu.cmu.cs.stage3.alice.core.event.ChildrenEvent.CHILD_REMOVED) {
 				stopListeningToTree(ev.getChild());
 				for (int i = 0; i < tabbedPane.getTabCount(); i++) {
-					Object object = getObjectBeingEditedAt(i);
+					final Object object = getObjectBeingEditedAt(i);
 					if (object instanceof edu.cmu.cs.stage3.alice.core.Element) {
-						edu.cmu.cs.stage3.alice.core.Element element = (edu.cmu.cs.stage3.alice.core.Element) object;
+						final edu.cmu.cs.stage3.alice.core.Element element = (edu.cmu.cs.stage3.alice.core.Element) object;
 						if (element == ev.getChild() || ev.getChild().isAncestorOf(element)) {
 							closeTab(i);
 							i--;
@@ -558,19 +595,19 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 		}
 	}
 
-	protected void startListeningToTree(edu.cmu.cs.stage3.alice.core.Element element) {
+	protected void startListeningToTree(final edu.cmu.cs.stage3.alice.core.Element element) {
 		if (element != null) {
-			edu.cmu.cs.stage3.alice.core.Element[] descendants = element.getDescendants();
-			for (Element descendant : descendants) {
+			final edu.cmu.cs.stage3.alice.core.Element[] descendants = element.getDescendants();
+			for (final Element descendant : descendants) {
 				descendant.addChildrenListener(deletionListener);
 			}
 		}
 	}
 
-	protected void stopListeningToTree(edu.cmu.cs.stage3.alice.core.Element element) {
+	protected void stopListeningToTree(final edu.cmu.cs.stage3.alice.core.Element element) {
 		if (element != null) {
-			edu.cmu.cs.stage3.alice.core.Element[] descendants = element.getDescendants();
-			for (Element descendant : descendants) {
+			final edu.cmu.cs.stage3.alice.core.Element[] descendants = element.getDescendants();
+			for (final Element descendant : descendants) {
 				descendant.removeChildrenListener(deletionListener);
 			}
 		}

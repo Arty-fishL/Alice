@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -26,14 +26,17 @@ package edu.cmu.cs.stage3.math;
 public class Sphere implements Cloneable {
 	protected double m_radius;
 	protected javax.vecmath.Vector3d m_center;
+
 	public Sphere() {
 		this(null, Double.NaN);
 	}
-	public Sphere(javax.vecmath.Vector3d center, double radius) {
+
+	public Sphere(final javax.vecmath.Vector3d center, final double radius) {
 		setCenter(center);
 		setRadius(radius);
 	}
-	public Sphere(double x, double y, double z, double radius) {
+
+	public Sphere(final double x, final double y, final double z, final double radius) {
 		setCenter(new javax.vecmath.Vector3d(x, y, z));
 		setRadius(radius);
 	}
@@ -41,21 +44,21 @@ public class Sphere implements Cloneable {
 	@Override
 	public synchronized Object clone() {
 		try {
-			Sphere sphere = (Sphere) super.clone();
+			final Sphere sphere = (Sphere) super.clone();
 			sphere.setCenter(m_center);
 			return sphere;
-		} catch (CloneNotSupportedException e) {
+		} catch (final CloneNotSupportedException e) {
 			throw new InternalError();
 		}
 	}
 
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(final Object o) {
 		if (o == this) {
 			return true;
 		}
 		if (o != null && o instanceof Sphere) {
-			Sphere s = (Sphere) o;
+			final Sphere s = (Sphere) o;
 
 			// todo handle null
 			return m_center.equals(s.m_center) && m_radius == s.m_radius;
@@ -63,12 +66,15 @@ public class Sphere implements Cloneable {
 			return false;
 		}
 	}
+
 	public double getRadius() {
 		return m_radius;
 	}
-	public void setRadius(double radius) {
+
+	public void setRadius(final double radius) {
 		m_radius = radius;
 	}
+
 	public javax.vecmath.Vector3d getCenter() {
 		if (m_center != null) {
 			return new javax.vecmath.Vector3d(m_center);
@@ -76,7 +82,8 @@ public class Sphere implements Cloneable {
 			return null;
 		}
 	}
-	public void setCenter(javax.vecmath.Vector3d center) {
+
+	public void setCenter(final javax.vecmath.Vector3d center) {
 		if (center != null) {
 			m_center = new javax.vecmath.Vector3d(center);
 		} else {
@@ -84,13 +91,13 @@ public class Sphere implements Cloneable {
 		}
 	}
 
-	public void union(Sphere s) {
+	public void union(final Sphere s) {
 		if (s != null && s.m_center != null) {
 			if (m_center != null) {
-				javax.vecmath.Vector3d diagonal = new javax.vecmath.Vector3d(m_center);
+				final javax.vecmath.Vector3d diagonal = new javax.vecmath.Vector3d(m_center);
 				diagonal.sub(s.m_center);
 				diagonal.normalize();
-				javax.vecmath.Vector3d[] points = new javax.vecmath.Vector3d[4];
+				final javax.vecmath.Vector3d[] points = new javax.vecmath.Vector3d[4];
 				points[0] = MathUtilities.add(m_center, MathUtilities.multiply(diagonal, m_radius));
 				points[1] = MathUtilities.subtract(m_center, MathUtilities.multiply(diagonal, m_radius));
 				points[2] = MathUtilities.add(s.m_center, MathUtilities.multiply(diagonal, s.m_radius));
@@ -100,7 +107,7 @@ public class Sphere implements Cloneable {
 				int maxDistanceJ = 1;
 				for (int i = 0; i < 4; i++) {
 					for (int j = i + 1; j < 4; j++) {
-						double d2 = MathUtilities.subtract(points[i], points[j]).lengthSquared();
+						final double d2 = MathUtilities.subtract(points[i], points[j]).lengthSquared();
 						if (d2 > maxDistanceSquared) {
 							maxDistanceSquared = d2;
 							maxDistanceI = i;
@@ -116,14 +123,15 @@ public class Sphere implements Cloneable {
 			}
 		}
 	}
-	public void transform(javax.vecmath.Matrix4d m) {
+
+	public void transform(final javax.vecmath.Matrix4d m) {
 		if (m_center != null && !Double.isNaN(m_radius)) {
 			// todo... account for scale
 			m_center.add(new Vector3(m.m30, m.m31, m.m32));
 		}
 	}
 
-	public void scale(javax.vecmath.Matrix3d s) {
+	public void scale(final javax.vecmath.Matrix3d s) {
 		if (s != null) {
 			if (m_center != null) {
 				m_center = MathUtilities.multiply(s, m_center);

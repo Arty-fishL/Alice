@@ -40,16 +40,16 @@ import javax.swing.WindowConstants;
  * sound samples and play all or part of a sound. You can zoom in to see all the
  * samples in the sound or zoom out to see the entire sound. You can click on
  * the sound wave to see the value at that index.
- * 
+ *
  * Copyright Georgia Institute of Technology 2004
- * 
+ *
  * @author Keith McDermottt, gte047w@cc.gatech.edu
  * @author Barb Ericson ericson@cc.gatech.edu
  */
 public class SoundExplorer implements MouseMotionListener, ActionListener, MouseListener, LineListener {
 	private static final String zoomInHint = "Click to see all the samples (the number of samples between pixels is 1)";
 	/** set to true for debugging and false for normal */
-	private boolean DEBUG = false;
+	private final boolean DEBUG = false;
 
 	// ///// main parts of the gui /////////////////////////////
 
@@ -67,13 +67,13 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 
 	// //////// general information ////////////////////////////
 	/** the sound displayed in this window */
-	private SimpleSound sound;
+	private final SimpleSound sound;
 
 	/**
 	 * Whether to display the sound in stereo - NOT neccessarily whether or not
 	 * the sound is in stereo
 	 */
-	private boolean inStereo;
+	private final boolean inStereo;
 
 	// ///////////////// parts of the play panel ////////////////
 
@@ -126,7 +126,9 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 	private JTextField indexValue;
 	/** label for the left sample value */
 	private JLabel leftSampleLabel;
-	/** text field that shows the value for the left sample at the current index */
+	/**
+	 * text field that shows the value for the left sample at the current index
+	 */
 	private JTextField leftSampleValue;
 	/** label for the right sample value */
 	private JLabel rightSampleLabel;
@@ -149,20 +151,22 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 
 	// info related to the sound panel
 	/** width of the displayed sound in pixels when fully zoomed out */
-	private int zoomOutWidth;
+	private final int zoomOutWidth;
 	/**
 	 * width of the displayed sound in pixels when fully zoomed in
 	 * (framesPerPixel = 1)
 	 */
-	private int zoomInWidth;
+	private final int zoomInWidth;
 	/** current width of the sound in pixels */
 	private int sampleWidth;
 	/** current height of the sound in pixels */
-	private int sampleHeight;
+	private final int sampleHeight;
 	// private int labelHeight;
 	private int soundPanelHeight;
 
-	/** number of samples (frames) (amount to add to index to get to next pixel) */
+	/**
+	 * number of samples (frames) (amount to add to index to get to next pixel)
+	 */
 	private float framesPerPixel;
 	// private int cushion;
 	/** current position in pixels */
@@ -196,13 +200,13 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 
 	/**
 	 * Constructor that takes a sound and a boolean flag
-	 * 
+	 *
 	 * @param sound
 	 *            the sound to view
 	 * @param inStereo
 	 *            true if you want to show it in stereo
 	 */
-	public SoundExplorer(SimpleSound sound, boolean inStereo) {
+	public SoundExplorer(final SimpleSound sound, final boolean inStereo) {
 		this.sound = sound;
 		this.inStereo = inStereo;
 
@@ -245,21 +249,21 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 
 	/**
 	 * Method to print out exception information
-	 * 
+	 *
 	 * @param ex
 	 *            the exception object
 	 */
-	private void catchException(Exception ex) {
+	private void catchException(final Exception ex) {
 		System.err.println(ex.getMessage());
 	}
 
 	/**
 	 * Method to set the title on the main window
-	 * 
+	 *
 	 * @param s
 	 *            the string to use as the title
 	 */
-	public void setTitle(String s) {
+	public void setTitle(final String s) {
 		soundFrame.setTitle(s);
 	}
 
@@ -289,7 +293,7 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 		// sampleHeight+cushion+labelHeight+100));
 		// }
 		// get the sound frame content pane and save it
-		Container frameContainer = soundFrame.getContentPane();
+		final Container frameContainer = soundFrame.getContentPane();
 
 		frameContainer.setLayout(new BorderLayout());
 		soundFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -326,7 +330,7 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 
 	/**
 	 * Method to create the button and add it to the passed panel
-	 * 
+	 *
 	 * @param name
 	 *            the label for the button
 	 * @param enabled
@@ -334,8 +338,8 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 	 * @param panel
 	 *            the panel to add the button to
 	 */
-	private JButton makeButton(String name, boolean enabled, JPanel panel) {
-		JButton j = new JButton(name);
+	private JButton makeButton(final String name, final boolean enabled, final JPanel panel) {
+		final JButton j = new JButton(name);
 		j.addActionListener(this);
 		j.setEnabled(enabled);
 		panel.add(j);
@@ -367,14 +371,14 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 		playPanel.setLayout(new BorderLayout());
 
 		// create the selection panel items
-		JPanel selectionPanel = new JPanel();
+		final JPanel selectionPanel = new JPanel();
 		startIndexLabel = new JLabel(startIndexText + "N/A");
 		stopIndexLabel = new JLabel(stopIndexText + "N/A");
 		playSelectionButton = makeButton("Play Selection", false, selectionPanel);
 		clearSelectionButton = makeButton("Clear Selection", false, selectionPanel);
 		clearSelectionButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				clearSelection();
 			}
 		});
@@ -437,7 +441,7 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 		leftSampleWrapper.add(leftSamplePanel);
 		leftSampleWrapper.
 		// setPreferredSize(new Dimension(sampleWidth, sampleHeight+ cushion));
-		setPreferredSize(new Dimension(sampleWidth, sampleHeight));
+				setPreferredSize(new Dimension(sampleWidth, sampleHeight));
 
 		/*
 		 * put all the pieces into the left sound panel: the sample at the top,
@@ -485,7 +489,7 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 	 */
 	private void updateIndexValues() {
 		// calculate the current sample (frame) index
-		int curFrame = (int) (currentPixelPosition * framesPerPixel);
+		final int curFrame = (int) (currentPixelPosition * framesPerPixel);
 
 		// update the display of the current sample (frame) index
 		indexValue.setText(Integer.toString(curFrame + base));
@@ -501,7 +505,7 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 			if (inStereo) {
 				rightSampleValue.setText(Integer.toString(sound.getRightSample(curFrame)));
 			}
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			catchException(ex);
 		}
 	}
@@ -511,19 +515,19 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 	 * first index, previous index, the current index label, the current index
 	 * value or values (if in stereo), next index button, and a last index
 	 * button
-	 * 
+	 *
 	 * @param indexPanel
 	 *            the panel to set-up
 	 */
-	private void setUpIndexPanel(JPanel indexPanel) {
-		JPanel topPanel = new JPanel();
-		Box vertBox = Box.createVerticalBox();
+	private void setUpIndexPanel(final JPanel indexPanel) {
+		final JPanel topPanel = new JPanel();
+		final Box vertBox = Box.createVerticalBox();
 
 		// create the image icons for the buttons
-		Icon prevIcon = new ImageIcon(SoundExplorer.class.getResource("leftArrow.gif"), "previous index");
-		Icon nextIcon = new ImageIcon(SoundExplorer.class.getResource("rightArrow.gif"), "next index");
-		Icon firstIcon = new ImageIcon(SoundExplorer.class.getResource("endLeft.gif"), "first index");
-		Icon lastIcon = new ImageIcon(SoundExplorer.class.getResource("endRight.gif"), "last index");
+		final Icon prevIcon = new ImageIcon(SoundExplorer.class.getResource("leftArrow.gif"), "previous index");
+		final Icon nextIcon = new ImageIcon(SoundExplorer.class.getResource("rightArrow.gif"), "next index");
+		final Icon firstIcon = new ImageIcon(SoundExplorer.class.getResource("endLeft.gif"), "first index");
+		final Icon lastIcon = new ImageIcon(SoundExplorer.class.getResource("endRight.gif"), "last index");
 
 		// create the arrow buttons
 		prevButton = new JButton(prevIcon);
@@ -546,7 +550,7 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 		// handle previous button press
 		prevButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent evt) {
+			public void actionPerformed(final ActionEvent evt) {
 				currentPixelPosition--;
 				if (currentPixelPosition < 0) {
 					currentPixelPosition = 0;
@@ -560,7 +564,7 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 		// handle next button press
 		nextButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent evt) {
+			public void actionPerformed(final ActionEvent evt) {
 				currentPixelPosition++;
 				if (currentPixelPosition * framesPerPixel >= sound.getNumSamples()) {
 					currentPixelPosition = (int) ((sound.getNumSamples() - 1) / framesPerPixel);
@@ -574,7 +578,7 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 		// handle first button press
 		firstButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent evt) {
+			public void actionPerformed(final ActionEvent evt) {
 				currentPixelPosition = 0;
 				updateIndexValues();
 				checkScroll();
@@ -585,7 +589,7 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 		// handle last button press
 		lastButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent evt) {
+			public void actionPerformed(final ActionEvent evt) {
 				currentPixelPosition = (int) ((sound.getNumSamples() - 1) / framesPerPixel);
 				updateIndexValues();
 				checkScroll();
@@ -597,7 +601,7 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 		indexValue = new JTextField(Integer.toString(0), 8);
 		indexValue.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 
 				// zoom in around user entered value
 				handleZoomIn(Integer.parseInt(indexValue.getText()));
@@ -634,13 +638,13 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 		topPanel.add(lastButton);
 
 		// create bottom panel
-		JPanel bottomPanel = new JPanel();
+		final JPanel bottomPanel = new JPanel();
 		bottomPanel.add(new JLabel("The number of samples between pixels: "));
 		numSamplesPerPixelField = new JTextField(Integer.toString((int) framesPerPixel), 8);
 		numSamplesPerPixelField.setToolTipText("Click here to zoom in (decrease) or out (increase))");
 		numSamplesPerPixelField.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 
 				// zoom in around user entered value
 				handleFramesPerPixel(Integer.parseInt(numSamplesPerPixelField.getText()));
@@ -670,7 +674,7 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 		infoPanel.setLayout(new BorderLayout());
 
 		// create the index panel and set it up
-		JPanel indexPanel = new JPanel();
+		final JPanel indexPanel = new JPanel();
 		indexPanel.setLayout(new FlowLayout());
 		setUpIndexPanel(indexPanel);
 
@@ -686,12 +690,12 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 
 	/**
 	 * Handle a mouse click event
-	 * 
+	 *
 	 * @param e
 	 *            the mouse event
 	 */
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mouseClicked(final MouseEvent e) {
 		currentPixelPosition = e.getX();
 
 		if (currentPixelPosition == 0) {
@@ -715,23 +719,23 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 
 	/**
 	 * Method to handle a mouse press
-	 * 
+	 *
 	 * @param e
 	 *            the mouse event
 	 */
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void mousePressed(final MouseEvent e) {
 		mousePressedX = e.getX();
 	}
 
 	/**
 	 * Method to handle a mouse release
-	 * 
+	 *
 	 * @param e
 	 *            the mouse event
 	 */
 	@Override
-	public void mouseReleased(MouseEvent e) {
+	public void mouseReleased(final MouseEvent e) {
 		mouseReleasedX = e.getX();
 
 		if (mouseDragged) {
@@ -741,7 +745,7 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 
 			if (mousePressed > mouseReleased)// selected right to left
 			{
-				int temp = mousePressed;
+				final int temp = mousePressed;
 				mousePressed = mouseReleased;
 				mouseReleased = temp;
 			}
@@ -777,32 +781,32 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 
 	/**
 	 * Method to handle a mouse entered event
-	 * 
+	 *
 	 * @param e
 	 *            the mouse event
 	 */
 	@Override
-	public void mouseEntered(MouseEvent e) {
+	public void mouseEntered(final MouseEvent e) {
 	}
 
 	/**
 	 * Method to handle a mouse exited event
-	 * 
+	 *
 	 * @param e
 	 *            the mouse event
 	 */
 	@Override
-	public void mouseExited(MouseEvent e) {
+	public void mouseExited(final MouseEvent e) {
 	}
 
 	/**
 	 * Method to handle a mouse dragged event
-	 * 
+	 *
 	 * @param e
 	 *            the mouse event
 	 */
 	@Override
-	public void mouseDragged(MouseEvent e) {
+	public void mouseDragged(final MouseEvent e) {
 		mouseDragged = true;
 
 		// highlight the selection as we drag by pretending
@@ -812,22 +816,22 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 
 	/**
 	 * Method to handle a mouse move event
-	 * 
+	 *
 	 * @param e
 	 *            the mouse event
 	 */
 	@Override
-	public void mouseMoved(MouseEvent e) {
+	public void mouseMoved(final MouseEvent e) {
 	}
 
 	/**
 	 * Method to handle the line event update
-	 * 
+	 *
 	 * @param e
 	 *            the line event
 	 */
 	@Override
-	public void update(LineEvent e) {
+	public void update(final LineEvent e) {
 		if (e.getType().equals(LineEvent.Type.OPEN)) {
 			playEntireButton.setEnabled(false);
 			playBeforeButton.setEnabled(false);
@@ -858,22 +862,22 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 
 	/**
 	 * Method to handle an action event
-	 * 
+	 *
 	 * @param e
 	 *            the action event
 	 */
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(final ActionEvent e) {
 		if (e.getActionCommand() == "Play Entire Sound") {
 			try {
 				sound.play();
-			} catch (Exception ex) {
+			} catch (final Exception ex) {
 				catchException(ex);
 			}
 		} else if (e.getActionCommand() == "Play Selection") {
 			try {
 				sound.playAtRateInRange(1, startFrame, stopFrame);
-			} catch (Exception ex) {
+			} catch (final Exception ex) {
 				catchException(ex);
 			}
 		} else if (e.getActionCommand().equals("Stop")) {
@@ -888,13 +892,14 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 		} else if (e.getActionCommand().equals("Play Before")) {
 			try {
 				sound.playAtRateInRange(1, 0, (int) (currentPixelPosition * framesPerPixel));
-			} catch (Exception ex) {
+			} catch (final Exception ex) {
 				catchException(ex);
 			}
 		} else if (e.getActionCommand().equals("Play After")) {
 			try {
-				sound.playAtRateInRange(1, (int) (currentPixelPosition * framesPerPixel), sound.getLengthInFrames() - 1);
-			} catch (Exception ex) {
+				sound.playAtRateInRange(1, (int) (currentPixelPosition * framesPerPixel),
+						sound.getLengthInFrames() - 1);
+			} catch (final Exception ex) {
 				catchException(ex);
 			}
 		} else {
@@ -913,14 +918,14 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 		if (sampleWidth != zoomOutWidth) {
 
 			// get the rectangle that defines the current view
-			JViewport viewport = scrollSound.getViewport();
-			Rectangle rect = viewport.getViewRect();
-			int rectMinX = (int) rect.getX();
-			int rectWidth = (int) rect.getWidth();
-			int rectMaxX = rectMinX + rectWidth - 1;
+			final JViewport viewport = scrollSound.getViewport();
+			final Rectangle rect = viewport.getViewRect();
+			final int rectMinX = (int) rect.getX();
+			final int rectWidth = (int) rect.getWidth();
+			final int rectMaxX = rectMinX + rectWidth - 1;
 
 			// get the maximum possible index
-			int maxIndex = sound.getLength() - rectWidth - 1;
+			final int maxIndex = sound.getLength() - rectWidth - 1;
 
 			// check if current position is outside viewing area
 			if (currentPixelPosition < rectMinX || currentPixelPosition > rectMaxX) {
@@ -929,7 +934,7 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 				// of the viewing
 				// area
 				int barXPos = currentPixelPosition - rectWidth / 2;
-				int barYPos = (int) (sampleHeight - rect.getHeight()) / 2;
+				final int barYPos = (int) (sampleHeight - rect.getHeight()) / 2;
 
 				// check if the barPos is less than 0 or greater than max
 				if (barXPos < 0) {
@@ -947,7 +952,7 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 	/**
 	 * Method to handle a zoom in
 	 */
-	private void handleZoomIn(boolean checkScrollFlag) {
+	private void handleZoomIn(final boolean checkScrollFlag) {
 		// change the zoom button to zoom out information
 		zoomButton.setText("Zoom Out");
 		zoomButton.setToolTipText("Click to zoom out (see the whole sound)");
@@ -1018,11 +1023,11 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 
 	/**
 	 * Method to handle a zoom in to view all sample values
-	 * 
+	 *
 	 * @param index
 	 *            the index to use after the zoom in
 	 */
-	private void handleZoomIn(int index) {
+	private void handleZoomIn(final int index) {
 		if (index % framesPerPixel != 0) {
 			// do normal zoom in on current position
 			handleZoomIn(false);
@@ -1049,7 +1054,7 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 		sampleWidth = zoomOutWidth;
 		framesPerPixel = sound.getLengthInFrames() / sampleWidth;
 
-		int divisor = sound.getLengthInFrames() / sampleWidth;
+		final int divisor = sound.getLengthInFrames() / sampleWidth;
 		currentPixelPosition = currentPixelPosition / divisor;
 		selectionStart = selectionStart / divisor;
 		selectionStop = selectionStop / divisor;
@@ -1093,18 +1098,18 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 	/**
 	 * Method to handle an entry of the desired number of frames (samples) shown
 	 * per pixel
-	 * 
+	 *
 	 * @param numFrames
 	 *            (the number of samples shown in a pixel)
 	 */
-	private void handleFramesPerPixel(int numFrames) {
+	private void handleFramesPerPixel(final int numFrames) {
 
 		// get the current index from the pixel position and frames per pixel
-		int currIndex = (int) (currentPixelPosition * framesPerPixel);
+		final int currIndex = (int) (currentPixelPosition * framesPerPixel);
 		sampleWidth = sound.getLengthInFrames() / numFrames;
 		framesPerPixel = numFrames;
 
-		int divisor = sound.getLengthInFrames() / sampleWidth;
+		final int divisor = sound.getLengthInFrames() / sampleWidth;
 		currentPixelPosition = currIndex / divisor; // new curr pixel
 		selectionStart = selectionStart / divisor;
 		selectionStop = selectionStop / divisor;
@@ -1150,12 +1155,12 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 
 	/**
 	 * Method to set the base for the index. The default is a base of 0.
-	 * 
+	 *
 	 * @param base
 	 *            the new base to use (for example use setBase(1)) to use base 1
 	 *            instead of 0
 	 */
-	public void setBase(int base) {
+	public void setBase(final int base) {
 		this.base = base;
 	}
 
@@ -1164,27 +1169,33 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 	 */
 	private class SamplingPanel extends JPanel {
 
-		private boolean forLeftSample;
-		private Vector points;
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = -470544013804744161L;
+		private final boolean forLeftSample;
+		private final Vector points;
 
 		/**
 		 * Constructor that takes a flag to tell if for left or right sample
-		 * 
+		 *
 		 * @param inputForLeftSample
 		 *            if true = left if false = right
 		 */
-		public SamplingPanel(boolean inputForLeftSample) {
+		public SamplingPanel(final boolean inputForLeftSample) {
 			forLeftSample = inputForLeftSample;
 
 			if (DEBUG) {
-				System.out.println("creating new sampling panel: " + "\n\tfor left sample: " + forLeftSample + "\n\tsampleWidth: " + sampleWidth + "\n\tsampleHeight: " + sampleHeight);
+				System.out.println("creating new sampling panel: " + "\n\tfor left sample: " + forLeftSample
+						+ "\n\tsampleWidth: " + sampleWidth + "\n\tsampleHeight: " + sampleHeight);
 			}
 
 			setBackground(backgroundColor);
 			setPreferredSize(new Dimension(sampleWidth, sampleHeight));
 			setSize(getPreferredSize());
 			if (DEBUG) {
-				System.out.println("\tSample panel preferred size: " + getPreferredSize() + "\n\tSample panel size: " + getSize());
+				System.out.println(
+						"\tSample panel preferred size: " + getPreferredSize() + "\n\tSample panel size: " + getSize());
 			}
 
 			points = new Vector();
@@ -1193,14 +1204,14 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 
 		/**
 		 * Method to create the sound wave
-		 * 
+		 *
 		 * @param forLeftSample
 		 *            if true create the left form, if false the right
 		 */
-		public void createWaveForm(boolean forLeftSample) {
+		public void createWaveForm(final boolean forLeftSample) {
 
 			// get the max y value for a sound of this sample size
-			AudioFormat format = sound.getAudioFileFormat().getFormat();
+			final AudioFormat format = sound.getAudioFileFormat().getFormat();
 			float maxValue;
 
 			if (format.getSampleSizeInBits() == 8) {
@@ -1214,7 +1225,7 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 			} else {
 				try {
 					sound.printError("InvalidSampleSize");
-				} catch (Exception ex) {
+				} catch (final Exception ex) {
 					catchException(ex);
 				}
 				return;
@@ -1229,23 +1240,24 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 				if (forLeftSample) {
 					try {
 						sampleValue = sound.getLeftSample((int) (pixel * framesPerPixel));
-					} catch (Exception ex) {
+					} catch (final Exception ex) {
 						catchException(ex);
 						return;
 					}
 				} else {
 					try {
 						sampleValue = sound.getRightSample((int) (pixel * framesPerPixel));
-					} catch (Exception ex) {
+					} catch (final Exception ex) {
 						catchException(ex);
 						return;
 					}
 				}
 
-				y = (float) Math.floor(sampleHeight / 2) - sampleValue * ((float) Math.floor(sampleHeight / 2) / maxValue);
+				y = (float) Math.floor(sampleHeight / 2)
+						- sampleValue * ((float) Math.floor(sampleHeight / 2) / maxValue);
 
 				points.add(new Point2D.Float(pixel, y));
-			}// for - collecting points
+			} // for - collecting points
 
 			if (DEBUG) {
 				System.out.println("number of points: " + points.size());
@@ -1256,14 +1268,14 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 
 		/**
 		 * Method to draw the Sampling Panel
-		 * 
+		 *
 		 * @param g
 		 *            the graphics context
 		 */
 
 		@Override
-		public void paintComponent(Graphics g) {
-			Rectangle rectToPaint = g.getClipBounds();
+		public void paintComponent(final Graphics g) {
+			final Rectangle rectToPaint = g.getClipBounds();
 
 			if (DEBUG) {
 				System.out.println("Repainting: " + rectToPaint);
@@ -1275,9 +1287,10 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 			}
 
 			// clear out the image
-			Graphics2D g2 = (Graphics2D) g;
+			final Graphics2D g2 = (Graphics2D) g;
 			g2.setBackground(backgroundColor);
-			g2.clearRect((int) rectToPaint.getX(), (int) rectToPaint.getY(), (int) rectToPaint.getWidth(), (int) rectToPaint.getHeight());
+			g2.clearRect((int) rectToPaint.getX(), (int) rectToPaint.getY(), (int) rectToPaint.getWidth(),
+					(int) rectToPaint.getHeight());
 
 			// draw the selection if it exists
 			if (selectionStart != -1 && selectionStop != -1) {
@@ -1294,10 +1307,12 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 			// draw the center line
 			g2.setColor(barColor);
 			g2.setStroke(new BasicStroke(1));
-			g2.draw(new Line2D.Double(rectToPaint.getX(), Math.floor(sampleHeight / 2), rectToPaint.getX() + rectToPaint.getWidth() - 1, Math.floor(sampleHeight / 2)));
+			g2.draw(new Line2D.Double(rectToPaint.getX(), Math.floor(sampleHeight / 2),
+					rectToPaint.getX() + rectToPaint.getWidth() - 1, Math.floor(sampleHeight / 2)));
 
 			// draw the current position
-			if (rectToPaint.getX() < currentPixelPosition && currentPixelPosition < rectToPaint.getX() + rectToPaint.getWidth() - 1) {
+			if (rectToPaint.getX() < currentPixelPosition
+					&& currentPixelPosition < rectToPaint.getX() + rectToPaint.getWidth() - 1) {
 				g2.setColor(barColor);
 				g2.setStroke(new BasicStroke(1));
 				g2.draw(new Line2D.Double(currentPixelPosition, 0, currentPixelPosition, sampleHeight));
@@ -1319,22 +1334,22 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 	// SoundExplorer testmono = new SoundExplorer(s2, false);
 
 	/*
-	 * 
+	 *
 	 * Sound windowsSound = new Sound("/Users/ellie/Desktop/sound2.wav");
 	 * SoundExplorer testWin = new SoundExplorer(windowsSound, false);
-	 * 
+	 *
 	 * Sound shaggz = new Sound("/Users/ellie/Desktop/audio2/SOUND1.WAV");
 	 * System.out.println(shaggz.getAudioFileFormat().getFormat());
-	 * 
+	 *
 	 * shaggz.blockingPlay();
-	 * 
+	 *
 	 * SoundExplorer shaggzView = new SoundExplorer(shaggz, false);
-	 * 
+	 *
 	 * Sound shaggz2 = new Sound("/Users/ellie/Desktop/audio2/SOUND1.WAV");
 	 * for(int i = 0; i < shaggz2.getLengthInFrames(); i++) {
 	 * shaggz2.setSampleValue(i, shaggz2.getSampleValue(i)); } SoundExplorer
 	 * shaggzView2 = new SoundExplorer(shaggz2, false);
-	 * 
+	 *
 	 * /* Sound emptySound = new Sound(5); SoundExplorer testempty = new
 	 * SoundExplorer(emptySound, false);
 	 */
@@ -1344,7 +1359,7 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 	 */
 	/*
 	 * } catch(Exception ex) { System.out.println(ex.getMessage()); }
-	 * 
+	 *
 	 * }
 	 */
 }// end class SoundExplorer

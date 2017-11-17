@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -50,7 +50,7 @@ import java.io.IOException;
  * A subclass of <code>SeekableStream</code> that takes input from an array of
  * bytes. Seeking backwards is supported. The <code>mark()</code> and
  * <code>resest()</code> methods are supported.
- * 
+ *
  * <p>
  * <b> This class is not a committed part of the JAI API. It may be removed or
  * changed in future releases of JAI.</b>
@@ -58,13 +58,13 @@ import java.io.IOException;
 public class ByteArraySeekableStream extends SeekableStream {
 
 	/** Array holding the source data. */
-	private byte[] src;
+	private final byte[] src;
 
 	/** The starting offset within the array. */
-	private int offset;
+	private final int offset;
 
 	/** The length of the valid segment of the array. */
-	private int length;
+	private final int length;
 
 	/** The current output position. */
 	private int pointer;
@@ -73,7 +73,7 @@ public class ByteArraySeekableStream extends SeekableStream {
 	 * Constructs a <code>ByteArraySeekableStream</code> taking input from a
 	 * given segment of an input <code>byte</code> array.
 	 */
-	public ByteArraySeekableStream(byte[] src, int offset, int length) throws IOException {
+	public ByteArraySeekableStream(final byte[] src, final int offset, final int length) throws IOException {
 		this.src = src;
 		this.offset = offset;
 		this.length = length;
@@ -83,7 +83,7 @@ public class ByteArraySeekableStream extends SeekableStream {
 	 * Constructs a <code>ByteArraySeekableStream</code> taking input from an
 	 * entire input <code>byte</code> array.
 	 */
-	public ByteArraySeekableStream(byte[] src) throws IOException {
+	public ByteArraySeekableStream(final byte[] src) throws IOException {
 		this(src, 0, src.length);
 	}
 
@@ -98,7 +98,7 @@ public class ByteArraySeekableStream extends SeekableStream {
 
 	/**
 	 * Returns the current offset in this stream.
-	 * 
+	 *
 	 * @return the offset from the beginning of the stream, in bytes, at which
 	 *         the next read occurs.
 	 */
@@ -111,14 +111,14 @@ public class ByteArraySeekableStream extends SeekableStream {
 	/**
 	 * Sets the offset, measured from the beginning of this stream, at which the
 	 * next read occurs. Seeking backwards is allowed.
-	 * 
+	 *
 	 * @param pos
 	 *            the offset position, measured in bytes from the beginning of
 	 *            the stream, at which to set the stream pointer.
 	 */
 
 	@Override
-	public void seek(long pos) {
+	public void seek(final long pos) {
 		pointer = (int) pos;
 	}
 
@@ -143,23 +143,23 @@ public class ByteArraySeekableStream extends SeekableStream {
 	 * array of bytes. An attempt is made to copy as many as <code>len</code>
 	 * bytes, but a smaller number may be copied, possibly zero. The number of
 	 * bytes actually copied is returned as an integer.
-	 * 
+	 *
 	 * <p>
 	 * If <code>b</code> is <code>null</code>, a
 	 * <code>NullPointerException</code> is thrown.
-	 * 
+	 *
 	 * <p>
 	 * If <code>off</code> is negative, or <code>len</code> is negative, or
 	 * <code>off+len</code> is greater than the length of the array
 	 * <code>b</code>, then an <code>IndexOutOfBoundsException</code> is thrown.
-	 * 
+	 *
 	 * <p>
 	 * If <code>len</code> is zero, then no bytes are copied and <code>0</code>
 	 * is returned; otherwise, there is an attempt to copy at least one byte. If
 	 * no byte is available because the stream is at end of stream, the value
 	 * <code>-1</code> is returned; otherwise, at least one byte is copied into
 	 * <code>b</code>.
-	 * 
+	 *
 	 * <p>
 	 * The first byte copied is stored into element <code>b[off]</code>, the
 	 * next one into <code>b[off+1]</code>, and so on. The number of bytes
@@ -168,12 +168,12 @@ public class ByteArraySeekableStream extends SeekableStream {
 	 * <code>b[off]</code> through <code>b[off+</code><i>k</i><code>-1]</code>,
 	 * leaving elements <code>b[off+</code><i>k</i><code>]</code> through
 	 * <code>b[off+len-1]</code> unaffected.
-	 * 
+	 *
 	 * <p>
 	 * In every case, elements <code>b[0]</code> through <code>b[off]</code> and
 	 * elements <code>b[off+len]</code> through <code>b[b.length-1]</code> are
 	 * unaffected.
-	 * 
+	 *
 	 * @param b
 	 *            the buffer into which the data is copied.
 	 * @param off
@@ -187,7 +187,7 @@ public class ByteArraySeekableStream extends SeekableStream {
 	 */
 
 	@Override
-	public int read(byte[] b, int off, int len) {
+	public int read(final byte[] b, final int off, final int len) {
 		if (b == null) {
 			throw new NullPointerException();
 		}
@@ -198,7 +198,7 @@ public class ByteArraySeekableStream extends SeekableStream {
 			return 0;
 		}
 
-		int oldPointer = pointer;
+		final int oldPointer = pointer;
 		pointer = Math.min(pointer + len, length + offset);
 
 		if (pointer == oldPointer) {
@@ -213,22 +213,22 @@ public class ByteArraySeekableStream extends SeekableStream {
 	 * Attempts to skip over <code>n</code> bytes of input discarding the
 	 * skipped bytes.
 	 * <p>
-	 * 
+	 *
 	 * This method may skip over some smaller number of bytes, possibly zero.
 	 * This may result from any of a number of conditions; reaching end of
 	 * stream before <code>n</code> bytes have been skipped is only one
 	 * possibility. This method never throws an <code>EOFException</code>. The
 	 * actual number of bytes skipped is returned. If <code>n</code> is
 	 * negative, no bytes are skipped.
-	 * 
+	 *
 	 * @param n
 	 *            the number of bytes to be skipped.
 	 * @return the actual number of bytes skipped.
 	 */
 
 	@Override
-	public int skipBytes(int n) {
-		int oldPointer = pointer;
+	public int skipBytes(final int n) {
+		final int oldPointer = pointer;
 		pointer = Math.min(pointer + n, length + offset);
 		return pointer - oldPointer;
 	}

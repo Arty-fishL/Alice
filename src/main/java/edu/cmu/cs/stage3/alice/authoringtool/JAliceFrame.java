@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -50,6 +50,11 @@ import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
  */
 @SuppressWarnings("serial")
 public class JAliceFrame extends javax.swing.JFrame {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 6934100997593326883L;
+
 	protected AuthoringTool authoringTool;
 
 	// modes
@@ -69,7 +74,8 @@ public class JAliceFrame extends javax.swing.JFrame {
 	StatusBar statusBar;
 
 	// preferences
-	protected edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringToolConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration.getLocalConfiguration(getClass().getPackage());
+	protected edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringToolConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration
+			.getLocalConfiguration(getClass().getPackage());
 
 	// recent worlds
 	protected int recentWorldsPosition = -1;
@@ -80,7 +86,7 @@ public class JAliceFrame extends javax.swing.JFrame {
 	// //////////////
 	// Constructor
 	// //////////////
-	public JAliceFrame(AuthoringTool authoringTool) {
+	public JAliceFrame(final AuthoringTool authoringTool) {
 		this.authoringTool = authoringTool;
 		javax.swing.JPopupMenu.setDefaultLightWeightPopupEnabled(false);
 		jbInit();
@@ -92,12 +98,18 @@ public class JAliceFrame extends javax.swing.JFrame {
 	}
 
 	protected class ComponentImageFactory extends javax.swing.JPanel {
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = 3058186679515106275L;
+
 		public ComponentImageFactory() {
 			setPreferredSize(new java.awt.Dimension(0, 0));
 		}
-		public java.awt.image.BufferedImage manufactureImage(javax.swing.JComponent component) {
-			boolean isShowing = component.isShowing();
-			java.awt.Container parent = component.getParent();
+
+		public java.awt.image.BufferedImage manufactureImage(final javax.swing.JComponent component) {
+			final boolean isShowing = component.isShowing();
+			final java.awt.Container parent = component.getParent();
 			if (isShowing) {
 				// pass
 			} else {
@@ -107,9 +119,10 @@ public class JAliceFrame extends javax.swing.JFrame {
 				add(component);
 			}
 			doLayout();
-			java.awt.Dimension d = component.getPreferredSize();
-			java.awt.image.BufferedImage image = new java.awt.image.BufferedImage(d.width, d.height, java.awt.image.BufferedImage.TYPE_INT_ARGB);
-			java.awt.Graphics2D g = image.createGraphics();
+			final java.awt.Dimension d = component.getPreferredSize();
+			final java.awt.image.BufferedImage image = new java.awt.image.BufferedImage(d.width, d.height,
+					java.awt.image.BufferedImage.TYPE_INT_ARGB);
+			final java.awt.Graphics2D g = image.createGraphics();
 			component.paintAll(g);
 			if (isShowing) {
 				// pass
@@ -123,16 +136,18 @@ public class JAliceFrame extends javax.swing.JFrame {
 		}
 	}
 
-	public java.awt.Image getImageForComponent(javax.swing.JComponent c) {
-		java.awt.image.BufferedImage image = componentImageFactory.manufactureImage(c);
+	public java.awt.Image getImageForComponent(final javax.swing.JComponent c) {
+		final java.awt.image.BufferedImage image = componentImageFactory.manufactureImage(c);
 		return image;
 	}
 
 	public void HACK_goToRedAlert() {
 		getContentPane().setBackground(new java.awt.Color(192, 0, 0));
 	}
+
 	public void HACK_standDownFromRedAlert() {
-		getContentPane().setBackground(edu.cmu.cs.stage3.alice.scenegraph.Color.valueOf(authoringToolConfig.getValue("backgroundColor")).createAWTColor());
+		getContentPane().setBackground(edu.cmu.cs.stage3.alice.scenegraph.Color
+				.valueOf(authoringToolConfig.getValue("backgroundColor")).createAWTColor());
 	}
 
 	private void guiInit() {
@@ -142,26 +157,31 @@ public class JAliceFrame extends javax.swing.JFrame {
 			fileMenu.remove(JAliceFrame.this.openZippedWorldItem);
 		}
 
-		getContentPane().setBackground(edu.cmu.cs.stage3.alice.scenegraph.Color.valueOf(authoringToolConfig.getValue("backgroundColor")).createAWTColor());
-		Configuration.addConfigurationListener(new edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationListener() {
-			@Override
-			public void changing(edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent ev) {
-			}
-			@Override
-			public void changed(edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent ev) {
-				if (ev.getKeyName().equals("edu.cmu.cs.stage3.alice.authoringtool.backgroundColor")) {
-					JAliceFrame.this.getContentPane().setBackground(edu.cmu.cs.stage3.alice.scenegraph.Color.valueOf(authoringToolConfig.getValue("backgroundColor")).createAWTColor());
-				} else if (ev.getKeyName().equals("edu.cmu.cs.stage3.alice.authoringtool.useSingleFileLoadStore")) {
-					if (ev.getNewValue().equalsIgnoreCase("true")) {
-						fileMenu.remove(openZippedWorldItem);
-					} else {
-						if (!fileMenu.isMenuComponent(openZippedWorldItem)) {
-							fileMenu.add(openZippedWorldItem, 2);
+		getContentPane().setBackground(edu.cmu.cs.stage3.alice.scenegraph.Color
+				.valueOf(authoringToolConfig.getValue("backgroundColor")).createAWTColor());
+		Configuration
+				.addConfigurationListener(new edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationListener() {
+					@Override
+					public void changing(final edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent ev) {
+					}
+
+					@Override
+					public void changed(final edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent ev) {
+						if (ev.getKeyName().equals("edu.cmu.cs.stage3.alice.authoringtool.backgroundColor")) {
+							JAliceFrame.this.getContentPane().setBackground(edu.cmu.cs.stage3.alice.scenegraph.Color
+									.valueOf(authoringToolConfig.getValue("backgroundColor")).createAWTColor());
+						} else if (ev.getKeyName()
+								.equals("edu.cmu.cs.stage3.alice.authoringtool.useSingleFileLoadStore")) {
+							if (ev.getNewValue().equalsIgnoreCase("true")) {
+								fileMenu.remove(openZippedWorldItem);
+							} else {
+								if (!fileMenu.isMenuComponent(openZippedWorldItem)) {
+									fileMenu.add(openZippedWorldItem, 2);
+								}
+							}
 						}
 					}
-				}
-			}
-		});
+				});
 
 		// create custom components
 		worldTreeComponent = new WorldTreeComponent(authoringTool);
@@ -188,11 +208,11 @@ public class JAliceFrame extends javax.swing.JFrame {
 		}
 
 		// resize the window
-		int screenWidth = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-		int screenHeight = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+		final int screenWidth = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+		final int screenHeight = (int) java.awt.Toolkit.getDefaultToolkit().getScreenSize().getHeight();
 
-		String boundsString = authoringToolConfig.getValue("mainWindowBounds");
-		java.util.StringTokenizer st = new java.util.StringTokenizer(boundsString, " \t,");
+		final String boundsString = authoringToolConfig.getValue("mainWindowBounds");
+		final java.util.StringTokenizer st = new java.util.StringTokenizer(boundsString, " \t,");
 		// if size isn't set in config, fill the screen
 		int x = 0;
 		int y = 0;
@@ -204,7 +224,7 @@ public class JAliceFrame extends javax.swing.JFrame {
 				y = Integer.parseInt(st.nextToken());
 				width = Integer.parseInt(st.nextToken());
 				height = Integer.parseInt(st.nextToken());
-			} catch (NumberFormatException e) {
+			} catch (final NumberFormatException e) {
 				AuthoringTool.showErrorDialog("Parse error in config value: mainWindowBounds", null);
 			}
 		} else {
@@ -221,7 +241,8 @@ public class JAliceFrame extends javax.swing.JFrame {
 		worldTreeDragFromSplitPane.setResizeWeight(0.0);
 		editorBehaviorSplitPane.setDividerLocation((int) (.275 * height));
 		editorBehaviorSplitPane.setResizeWeight(0.0);
-		smallSceneBehaviorSplitPane.setDividerLocation((int) (4.0 / 3.0 * (editorBehaviorSplitPane.getDividerLocation() - 36)));
+		smallSceneBehaviorSplitPane
+				.setDividerLocation((int) (4.0 / 3.0 * (editorBehaviorSplitPane.getDividerLocation() - 36)));
 		smallSceneBehaviorSplitPane.setResizeWeight(0.0);
 
 		// make dividers invisible
@@ -291,7 +312,8 @@ public class JAliceFrame extends javax.swing.JFrame {
 		// on screen help
 		if (AuthoringToolResources.areExperimentalFeaturesEnabled()) {
 			helpMenu.add(onScreenHelpItem, 1);
-			buttonPanel.add(teachMeButton, new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 16, 0, 0), 0, 0));
+			buttonPanel.add(teachMeButton, new GridBagConstraints(4, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+					GridBagConstraints.NONE, new Insets(0, 16, 0, 0), 0, 0));
 		}
 		getContentPane().add(componentImageFactory, BorderLayout.WEST);
 	}
@@ -299,7 +321,7 @@ public class JAliceFrame extends javax.swing.JFrame {
 	private void recentWorldsInit() {
 		recentWorldsListener = new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				final javax.swing.JMenuItem item = (javax.swing.JMenuItem) ev.getSource();
 				if (authoringTool.loadWorld(item.getText(), true) == Constants.FAILED) {
 					recentWorlds.remove(item.getText());
@@ -308,12 +330,12 @@ public class JAliceFrame extends javax.swing.JFrame {
 			}
 		};
 
-		String[] recentWorldsStrings = authoringToolConfig.getValueList("recentWorlds.worlds");
-		for (String recentWorldsString : recentWorldsStrings) {
+		final String[] recentWorldsStrings = authoringToolConfig.getValueList("recentWorlds.worlds");
+		for (final String recentWorldsString : recentWorldsStrings) {
 			recentWorlds.add(recentWorldsString);
 		}
 
-		String max = authoringToolConfig.getValue("recentWorlds.maxWorlds");
+		final String max = authoringToolConfig.getValue("recentWorlds.maxWorlds");
 		maxRecentWorlds = Integer.parseInt(max);
 
 		recentWorldsPosition = fileMenu.getMenuComponentCount() - 2; // assumes
@@ -341,7 +363,7 @@ public class JAliceFrame extends javax.swing.JFrame {
 	 */
 	// }
 
-	public void actionInit(Actions actions) {
+	public void actionInit(final Actions actions) {
 		newWorldItem.setAction(actions.newWorldAction);
 		openWorldItem.setAction(actions.openWorldAction);
 		saveWorldItem.setAction(actions.saveWorldAction);
@@ -374,7 +396,7 @@ public class JAliceFrame extends javax.swing.JFrame {
 	// public methods
 	// /////////////////
 
-	public void setWorld(edu.cmu.cs.stage3.alice.core.World world) {
+	public void setWorld(final edu.cmu.cs.stage3.alice.core.World world) {
 		// System.out.println("set world: "+world);
 		worldTreeComponent.setWorld(world);
 		behaviorGroupsEditor.setObject(world);
@@ -382,10 +404,10 @@ public class JAliceFrame extends javax.swing.JFrame {
 		tabbedEditorComponent.setWorld(world);
 	}
 
-	public void setGuiMode(int guiMode) {
+	public void setGuiMode(final int guiMode) {
 		this.guiMode = guiMode;
-		int dividerLocation1 = leftRightSplitPane.getDividerLocation();
-		int dividerLocation2 = smallSceneBehaviorSplitPane.getDividerLocation();
+		final int dividerLocation1 = leftRightSplitPane.getDividerLocation();
+		final int dividerLocation2 = smallSceneBehaviorSplitPane.getDividerLocation();
 		rightPanel.removeAll();
 		scenePanel.removeAll();
 		if (guiMode == SCENE_EDITOR_SMALL_MODE) {
@@ -431,7 +453,7 @@ public class JAliceFrame extends javax.swing.JFrame {
 		return guiMode;
 	}
 
-	public void showStatusPanel(boolean b) {
+	public void showStatusPanel(final boolean b) {
 		if (b) {
 			getContentPane().add(statusBar, BorderLayout.SOUTH);
 		} else {
@@ -441,12 +463,13 @@ public class JAliceFrame extends javax.swing.JFrame {
 		getContentPane().repaint();
 	}
 
-	public void registerKeyboardAction(java.awt.event.ActionListener actionListener, String command, javax.swing.KeyStroke keyStroke, int condition) {
+	public void registerKeyboardAction(final java.awt.event.ActionListener actionListener, final String command,
+			final javax.swing.KeyStroke keyStroke, final int condition) {
 		mainPanel.registerKeyboardAction(actionListener, command, keyStroke, condition);
 	}
 
-	public void updateRecentWorlds(String pathname) {
-		int pos = recentWorlds.indexOf(pathname);
+	public void updateRecentWorlds(final String pathname) {
+		final int pos = recentWorlds.indexOf(pathname);
 		if (pos > -1) {
 			recentWorlds.remove(pos);
 		}
@@ -456,14 +479,14 @@ public class JAliceFrame extends javax.swing.JFrame {
 
 	public void updateRecentWorlds() {
 		// trim recentWorlds to max
-		int numExtra = recentWorlds.size() - maxRecentWorlds;
+		final int numExtra = recentWorlds.size() - maxRecentWorlds;
 		for (int i = 0; i < numExtra; i++) {
 			recentWorlds.remove(maxRecentWorlds);
 		}
 
 		// remove existing menu items
-		int recentWorldsEndPosition = fileMenu.getMenuComponentCount() - 2;
-		int numEntries = recentWorldsEndPosition - recentWorldsPosition;
+		final int recentWorldsEndPosition = fileMenu.getMenuComponentCount() - 2;
+		final int numEntries = recentWorldsEndPosition - recentWorldsPosition;
 		for (int i = 0; i < numEntries; i++) {
 			fileMenu.remove(recentWorldsPosition);
 		}
@@ -471,31 +494,31 @@ public class JAliceFrame extends javax.swing.JFrame {
 		// add everything back in
 		if (recentWorlds.size() > 0) {
 			int i = 0;
-			for (String pathName:recentWorlds) {
-				javax.swing.JMenuItem item = new javax.swing.JMenuItem(pathName);
+			for (final String pathName : recentWorlds) {
+				final javax.swing.JMenuItem item = new javax.swing.JMenuItem(pathName);
 				item.addActionListener(recentWorldsListener);
 				fileMenu.insert(item, recentWorldsPosition + i);
 				if (pathName.length() > 60) {
-					int fontSize = Integer.parseInt(authoringToolConfig.getValue("fontSize"));
+					final int fontSize = Integer.parseInt(authoringToolConfig.getValue("fontSize"));
 					item.setToolTipText(pathName);
 					item.setPreferredSize(new Dimension(500, fontSize + 10));
 				}
 				i++;
 			}
 		} else {
-			javax.swing.JMenuItem item = new javax.swing.JMenuItem("<No Recent Worlds>");
+			final javax.swing.JMenuItem item = new javax.swing.JMenuItem("<No Recent Worlds>");
 			item.setEnabled(false);
 			fileMenu.insert(item, recentWorldsPosition);
 		}
 
 		// keep the configuration updated
-		authoringToolConfig.setValueList("recentWorlds.worlds", (String[]) recentWorlds.toArray(new String[0]));
+		authoringToolConfig.setValueList("recentWorlds.worlds", recentWorlds.toArray(new String[0]));
 	}
 
 	public void updateClipboards() {
 		try {
-			int numClipboards = Integer.parseInt(authoringToolConfig.getValue("numberOfClipboards"));
-			int current = clipboardPanel.getComponentCount();
+			final int numClipboards = Integer.parseInt(authoringToolConfig.getValue("numberOfClipboards"));
+			final int current = clipboardPanel.getComponentCount();
 			if (numClipboards > current) {
 				for (int i = current; i < numClipboards; i++) {
 					clipboardPanel.add(new edu.cmu.cs.stage3.alice.authoringtool.util.DnDClipboard());
@@ -507,8 +530,9 @@ public class JAliceFrame extends javax.swing.JFrame {
 			}
 			clipboardPanel.revalidate();
 			clipboardPanel.repaint();
-		} catch (NumberFormatException e) {
-			AuthoringTool.showErrorDialog("illegal number of clipboards: " + authoringToolConfig.getValue("numberOfClipboards"), null);
+		} catch (final NumberFormatException e) {
+			AuthoringTool.showErrorDialog(
+					"illegal number of clipboards: " + authoringToolConfig.getValue("numberOfClipboards"), null);
 		}
 	}
 
@@ -728,10 +752,14 @@ public class JAliceFrame extends javax.swing.JFrame {
 		}
 		helpMenu.add(aboutItem);
 		getContentPane().add(toolBarPanel, BorderLayout.NORTH);
-		toolBarPanel.add(buttonPanel, new GridBagConstraints(0, 0, 1, 2, 0.0, 0.0, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		buttonPanel.add(playButton, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		buttonPanel.add(undoButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 16, 0, 0), 0, 0));
-		buttonPanel.add(redoButton, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 4, 0, 0), 0, 0));
+		toolBarPanel.add(buttonPanel, new GridBagConstraints(0, 0, 1, 2, 0.0, 0.0, GridBagConstraints.SOUTHWEST,
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		buttonPanel.add(playButton, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		buttonPanel.add(undoButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.NONE, new Insets(0, 16, 0, 0), 0, 0));
+		buttonPanel.add(redoButton, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.NONE, new Insets(0, 4, 0, 0), 0, 0));
 		// buttonPanel.add(addObjectButton, new GridBagConstraints(1, 0, 1, 1,
 		// 0.0, 0.0
 		// ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0,
@@ -740,9 +768,12 @@ public class JAliceFrame extends javax.swing.JFrame {
 		// 0.0, 0.0
 		// ,GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0,
 		// 16, 0, 0), 0, 0));
-		toolBarPanel.add(clipboardPanel, new GridBagConstraints(4, 0, 1, 2, 0.0, 0.0, GridBagConstraints.SOUTHEAST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		toolBarPanel.add(trashPanel, new GridBagConstraints(1, 0, 1, 2, 0.0, 0.0, GridBagConstraints.SOUTHWEST, GridBagConstraints.VERTICAL, new Insets(0, 14, 0, 0), 0, 0));
-		toolBarPanel.add(glue, new GridBagConstraints(2, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+		toolBarPanel.add(clipboardPanel, new GridBagConstraints(4, 0, 1, 2, 0.0, 0.0, GridBagConstraints.SOUTHEAST,
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		toolBarPanel.add(trashPanel, new GridBagConstraints(1, 0, 1, 2, 0.0, 0.0, GridBagConstraints.SOUTHWEST,
+				GridBagConstraints.VERTICAL, new Insets(0, 14, 0, 0), 0, 0));
+		toolBarPanel.add(glue, new GridBagConstraints(2, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		getContentPane().add(mainPanel, BorderLayout.CENTER);
 		mainPanel.add(authoringPanel, BorderLayout.CENTER);
 		// mainPanel.add(authoringOutputSplitPane, BorderLayout.CENTER);

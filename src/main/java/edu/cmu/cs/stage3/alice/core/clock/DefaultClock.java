@@ -34,15 +34,17 @@ public class DefaultClock implements edu.cmu.cs.stage3.alice.core.Clock {
 	public edu.cmu.cs.stage3.alice.core.World getWorld() {
 		return m_world;
 	}
+
 	@Override
-	public void setWorld(edu.cmu.cs.stage3.alice.core.World world) {
+	public void setWorld(final edu.cmu.cs.stage3.alice.core.World world) {
 		m_world = world;
 	}
 
 	public double getSpeed() {
 		return m_speed;
 	}
-	public void setSpeed(double speed) {
+
+	public void setSpeed(final double speed) {
 		m_speed = speed;
 	}
 
@@ -54,6 +56,7 @@ public class DefaultClock implements edu.cmu.cs.stage3.alice.core.Clock {
 			m_world.start();
 		}
 	}
+
 	@Override
 	public void stop() {
 		m_pauseCount = 0;
@@ -62,10 +65,12 @@ public class DefaultClock implements edu.cmu.cs.stage3.alice.core.Clock {
 			m_world.stop();
 		}
 	}
+
 	@Override
 	public void pause() {
 		m_pauseCount++;
 	}
+
 	@Override
 	public void resume() {
 		m_pauseCount--;
@@ -73,9 +78,10 @@ public class DefaultClock implements edu.cmu.cs.stage3.alice.core.Clock {
 			m_whenPrev = System.currentTimeMillis();
 		}
 	}
+
 	private void updateTime() {
-		long whenCurr = System.currentTimeMillis();
-		long whenDelta = whenCurr - m_whenPrev;
+		final long whenCurr = System.currentTimeMillis();
+		final long whenDelta = whenCurr - m_whenPrev;
 		if (whenDelta > 0) {
 			double dt = whenDelta * 0.001;
 			dt *= m_speed;
@@ -91,10 +97,12 @@ public class DefaultClock implements edu.cmu.cs.stage3.alice.core.Clock {
 	public double getTime() {
 		return m_time;
 	}
+
 	@Override
 	public double getTimeElapsed() {
 		return getTime();
 	}
+
 	public boolean isPaused() {
 		return m_pauseCount == 0 ? true : false;
 	}

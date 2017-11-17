@@ -25,19 +25,25 @@ package edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor;
 
 /**
  * Title: Description: Copyright: Copyright (c) 2001 Company:
- * 
+ *
  * @author
  * @version 1.0
  */
 
 public class InternalResponseBehaviorPanel extends BasicBehaviorPanel {
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 4821910567623061571L;
 	java.awt.Component automaticPanel;
 
 	public InternalResponseBehaviorPanel() {
 		super();
 	}
-	public void set(edu.cmu.cs.stage3.alice.core.behavior.InternalResponseBehavior behavior, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
+
+	public void set(final edu.cmu.cs.stage3.alice.core.behavior.InternalResponseBehavior behavior,
+			final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
 		super.set(behavior, authoringTool);
 	}
 
@@ -72,12 +78,15 @@ public class InternalResponseBehaviorPanel extends BasicBehaviorPanel {
 		addDragSourceComponent(labelPanel);
 		labelPanel.removeAll();
 		setBackground(COLOR);
-		int base = 0;
+		final int base = 0;
 		buildLabel(labelPanel);
-		java.awt.Component glue = javax.swing.Box.createHorizontalGlue();
+		final java.awt.Component glue = javax.swing.Box.createHorizontalGlue();
 		addDragSourceComponent(glue);
-		m_containingPanel.add(labelPanel, new java.awt.GridBagConstraints(0, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0, 0, 0, 0), 0, 0));
-		m_containingPanel.add(glue, new java.awt.GridBagConstraints(1, 0, 1, 1, 1, 0, java.awt.GridBagConstraints.EAST, java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+		m_containingPanel.add(labelPanel,
+				new java.awt.GridBagConstraints(0, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST,
+						java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+		m_containingPanel.add(glue, new java.awt.GridBagConstraints(1, 0, 1, 1, 1, 0, java.awt.GridBagConstraints.EAST,
+				java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0, 0, 0, 0), 0, 0));
 		this.add(m_containingPanel, java.awt.BorderLayout.CENTER);
 		this.repaint();
 		revalidate();

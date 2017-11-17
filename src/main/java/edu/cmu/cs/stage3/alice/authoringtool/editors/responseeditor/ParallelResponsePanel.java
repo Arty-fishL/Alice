@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -25,19 +25,26 @@ package edu.cmu.cs.stage3.alice.authoringtool.editors.responseeditor;
 
 /**
  * Title: Description: Copyright: Copyright (c) 2001 Company:
- * 
+ *
  * @author
  * @version 1.0
  */
 
 public class ParallelResponsePanel extends CompositeResponsePanel {
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -3269212879897032849L;
+
 	public ParallelResponsePanel() {
 		super();
-		headerText = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(edu.cmu.cs.stage3.alice.core.response.DoTogether.class);
+		headerText = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+				.getReprForValue(edu.cmu.cs.stage3.alice.core.response.DoTogether.class);
 	}
 
-	public void set(edu.cmu.cs.stage3.alice.core.response.DoTogether r, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringToolIn) {
+	public void set(final edu.cmu.cs.stage3.alice.core.response.DoTogether r,
+			final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringToolIn) {
 		super.set(r, authoringToolIn);
 	}
 
@@ -63,11 +70,13 @@ public class ParallelResponsePanel extends CompositeResponsePanel {
 	protected static java.awt.image.BufferedImage parallelBackgroundImage;
 	protected static java.awt.Dimension parallelBackgroundImageSize = new java.awt.Dimension(-1, -1);
 
-	protected void createBackgroundImage(int width, int height) {
+	protected void createBackgroundImage(final int width, final int height) {
 		parallelBackgroundImageSize.setSize(width, height);
-		parallelBackgroundImage = new java.awt.image.BufferedImage(width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB);
-		java.awt.Graphics2D g = (java.awt.Graphics2D) parallelBackgroundImage.getGraphics();
-		g.addRenderingHints(new java.awt.RenderingHints(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON));
+		parallelBackgroundImage = new java.awt.image.BufferedImage(width, height,
+				java.awt.image.BufferedImage.TYPE_INT_ARGB);
+		final java.awt.Graphics2D g = (java.awt.Graphics2D) parallelBackgroundImage.getGraphics();
+		g.addRenderingHints(new java.awt.RenderingHints(java.awt.RenderingHints.KEY_ANTIALIASING,
+				java.awt.RenderingHints.VALUE_ANTIALIAS_ON));
 		g.setColor(backgroundColor);
 		g.fillRect(0, 0, width, height);
 		/*
@@ -76,7 +85,7 @@ public class ParallelResponsePanel extends CompositeResponsePanel {
 		 */
 	}
 
-	protected void paintTextureEffect(java.awt.Graphics g, java.awt.Rectangle bounds) {
+	protected void paintTextureEffect(final java.awt.Graphics g, final java.awt.Rectangle bounds) {
 		if (bounds.width > parallelBackgroundImageSize.width || bounds.height > parallelBackgroundImageSize.height) {
 			createBackgroundImage(bounds.width, bounds.height);
 		}

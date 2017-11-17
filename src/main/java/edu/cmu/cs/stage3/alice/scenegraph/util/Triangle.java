@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -40,7 +40,7 @@ public class Triangle {
 
 	public Point2d[] vertices = new Point2d[3];
 
-	public Triangle(Point2d a, Point2d b, Point2d c) {
+	public Triangle(final Point2d a, final Point2d b, final Point2d c) {
 		vertices[0] = a;
 		vertices[1] = b;
 		vertices[2] = c;
@@ -49,7 +49,7 @@ public class Triangle {
 	// static calls to do some stuff, almost never on real triangles
 	private static Point2d[] sorted = new Point2d[3];
 
-	public static double signedArea(Point2d vertex0, Point2d vertex1, Point2d vertex2) {
+	public static double signedArea(final Point2d vertex0, final Point2d vertex1, final Point2d vertex2) {
 		Point2d temp;
 
 		sorted[0] = vertex0;
@@ -77,13 +77,14 @@ public class Triangle {
 			sorted[1] = temp;
 		}
 
-		return sign * ((sorted[0].x - sorted[1].x) * (sorted[1].y - sorted[2].y) + (sorted[1].y - sorted[0].y) * (sorted[1].x - sorted[2].x));
+		return sign * ((sorted[0].x - sorted[1].x) * (sorted[1].y - sorted[2].y)
+				+ (sorted[1].y - sorted[0].y) * (sorted[1].x - sorted[2].x));
 	}
 
-	public static int orientation(Point2d vertex0, Point2d vertex1, Point2d vertex2) {
+	public static int orientation(final Point2d vertex0, final Point2d vertex1, final Point2d vertex2) {
 		// 1 == CCW
 		// -1 == CW
-		double sa = signedArea(vertex0, vertex1, vertex2);
+		final double sa = signedArea(vertex0, vertex1, vertex2);
 
 		if (sa < 0) {
 			return -1;
@@ -95,13 +96,13 @@ public class Triangle {
 
 	private static Vector2d[] sides = new Vector2d[2];
 
-	public static int convex(Point2d vertex0, Point2d vertex1, Point2d vertex2) {
+	public static int convex(final Point2d vertex0, final Point2d vertex1, final Point2d vertex2) {
 		if (Triangulator.pointCompare(vertex0, vertex1) == 0) {
 			return 1;
 		} else if (Triangulator.pointCompare(vertex1, vertex2) == 0) {
 			return -1;
 		} else {
-			int o = orientation(vertex0, vertex1, vertex2);
+			final int o = orientation(vertex0, vertex1, vertex2);
 			if (o != 0) {
 				return o;
 			} else {
@@ -120,7 +121,8 @@ public class Triangle {
 		}
 	}
 
-	public static boolean inCone(Point2d vertex0, Point2d vertex1, Point2d vertex2, Point2d check) {
+	public static boolean inCone(final Point2d vertex0, final Point2d vertex1, final Point2d vertex2,
+			final Point2d check) {
 		int tri;
 
 		if (convex(vertex0, vertex1, vertex2) > 0) {
@@ -130,11 +132,13 @@ public class Triangle {
 					return false;
 				} else if (tri == 0) {
 					if (Triangulator.pointCompare(vertex0, vertex1) < 0) {
-						if (Triangulator.pointCompare(check, vertex0) < 0 || Triangulator.pointCompare(check, vertex1) > 0) {
+						if (Triangulator.pointCompare(check, vertex0) < 0
+								|| Triangulator.pointCompare(check, vertex1) > 0) {
 							return false;
 						}
 					} else {
-						if (Triangulator.pointCompare(check, vertex1) < 0 || Triangulator.pointCompare(check, vertex0) > 0) {
+						if (Triangulator.pointCompare(check, vertex1) < 0
+								|| Triangulator.pointCompare(check, vertex0) > 0) {
 							return false;
 						}
 					}
@@ -146,11 +150,13 @@ public class Triangle {
 					return false;
 				} else if (tri == 0) {
 					if (Triangulator.pointCompare(vertex1, vertex2) < 0) {
-						if (Triangulator.pointCompare(check, vertex1) < 0 || Triangulator.pointCompare(check, vertex2) > 0) {
+						if (Triangulator.pointCompare(check, vertex1) < 0
+								|| Triangulator.pointCompare(check, vertex2) > 0) {
 							return false;
 						}
 					} else {
-						if (Triangulator.pointCompare(check, vertex2) < 0 || Triangulator.pointCompare(check, vertex1) > 0) {
+						if (Triangulator.pointCompare(check, vertex2) < 0
+								|| Triangulator.pointCompare(check, vertex1) > 0) {
 							return false;
 						}
 					}

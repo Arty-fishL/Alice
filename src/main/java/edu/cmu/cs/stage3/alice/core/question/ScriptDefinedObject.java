@@ -31,7 +31,7 @@ public class ScriptDefinedObject extends AbstractScriptDefinedObject {
 	@Override
 	public Class getValueClass() {
 		// todo?
-		Class cls = (Class) valueClass.get();
+		final Class cls = (Class) valueClass.get();
 		if (cls != null) {
 			return cls;
 		} else {

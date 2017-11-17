@@ -1,12 +1,12 @@
 package edu.cmu.cs.stage3.alice.gallery.modeleditor;
 
 class ElementTreeCellEditor extends javax.swing.tree.DefaultTreeCellEditor {
-	public ElementTreeCellEditor(javax.swing.JTree tree, ElementTreeCellRenderer renderer) {
+	public ElementTreeCellEditor(final javax.swing.JTree tree, final ElementTreeCellRenderer renderer) {
 		super(tree, renderer);
 	}
 
 	@Override
-	public boolean isCellEditable(java.util.EventObject e) {
+	public boolean isCellEditable(final java.util.EventObject e) {
 		if (e == null) {
 			return true;
 		} else {
@@ -15,9 +15,9 @@ class ElementTreeCellEditor extends javax.swing.tree.DefaultTreeCellEditor {
 	}
 
 	@Override
-	protected boolean canEditImmediately(java.util.EventObject event) {
+	protected boolean canEditImmediately(final java.util.EventObject event) {
 		if (event instanceof java.awt.event.MouseEvent) {
-			java.awt.event.MouseEvent me = (java.awt.event.MouseEvent) event;
+			final java.awt.event.MouseEvent me = (java.awt.event.MouseEvent) event;
 			if ((me.getModifiers() & java.awt.event.InputEvent.BUTTON1_MASK) != 0) {
 				return me.getClickCount() > 0;
 			} else {
@@ -37,8 +37,9 @@ class ElementTreeCellEditor extends javax.swing.tree.DefaultTreeCellEditor {
 	}
 
 	@Override
-	public java.awt.Component getTreeCellEditorComponent(javax.swing.JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row) {
-		java.awt.Component editor = super.getTreeCellEditorComponent(tree, value, selected, expanded, leaf, row);
+	public java.awt.Component getTreeCellEditorComponent(final javax.swing.JTree tree, final Object value,
+			final boolean selected, final boolean expanded, final boolean leaf, final int row) {
+		final java.awt.Component editor = super.getTreeCellEditorComponent(tree, value, selected, expanded, leaf, row);
 		editingIcon = IconManager.lookupIcon(value);
 		return editor;
 	}

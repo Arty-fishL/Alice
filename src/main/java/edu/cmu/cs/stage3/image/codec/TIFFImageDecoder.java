@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -89,7 +89,7 @@ public class TIFFImageDecoder extends ImageDecoderImpl {
 	public static final int TIFF_S_MIN_SAMPLE_VALUE = 340;
 	public static final int TIFF_S_MAX_SAMPLE_VALUE = 341;
 
-	public TIFFImageDecoder(SeekableStream input, ImageDecodeParam param) {
+	public TIFFImageDecoder(final SeekableStream input, final ImageDecodeParam param) {
 		super(input, param);
 	}
 
@@ -99,7 +99,7 @@ public class TIFFImageDecoder extends ImageDecoderImpl {
 	}
 
 	@Override
-	public RenderedImage decodeAsRenderedImage(int page) throws IOException {
+	public RenderedImage decodeAsRenderedImage(final int page) throws IOException {
 		if (page < 0 || page >= getNumPages()) {
 			throw new IOException(JaiI18N.getString("TIFFImageDecoder9"));
 		}

@@ -15,6 +15,8 @@ import java.util.EventListener;
 
 public interface KeyEventListener extends EventListener {
 	public boolean keyTyped(KeyEvent e);
+
 	public boolean keyPressed(KeyEvent e);
+
 	public boolean keyReleased(KeyEvent e);
 }

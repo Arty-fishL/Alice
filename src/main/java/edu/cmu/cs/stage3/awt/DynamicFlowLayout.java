@@ -25,24 +25,29 @@ package edu.cmu.cs.stage3.awt;
 
 /**
  * @author culyba
- * 
+ *
  *         To change the template for this generated type comment go to
  *         Window>Preferences>Java>Code Generation>Code and Comments
  */
 
 public class DynamicFlowLayout extends java.awt.FlowLayout {
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -7368331511313439427L;
 	private java.awt.Dimension lastPreferredSize;
 	private java.awt.Component anchorComponent;
 	private java.awt.Component ownerComponent;
 	private int anchorConstant = 0;
-	private Class anchorClass;
+	private final Class anchorClass;
 
-	public DynamicFlowLayout(int align, java.awt.Component anchor, Class anchorClass) {
+	public DynamicFlowLayout(final int align, final java.awt.Component anchor, final Class anchorClass) {
 		this(align, anchor, anchorClass, 0);
 	}
 
-	public DynamicFlowLayout(int align, java.awt.Component anchor, Class anchorClass, int anchorConstant) {
+	public DynamicFlowLayout(final int align, final java.awt.Component anchor, final Class anchorClass,
+			final int anchorConstant) {
 		super(align);
 		anchorComponent = anchor;
 		this.anchorClass = anchorClass;
@@ -50,25 +55,25 @@ public class DynamicFlowLayout extends java.awt.FlowLayout {
 	}
 
 	@Override
-	public void layoutContainer(java.awt.Container target) {
+	public void layoutContainer(final java.awt.Container target) {
 		synchronized (target.getTreeLock()) {
-			java.awt.Insets insets = target.getInsets();
-			int hgap = getHgap();
-			int vgap = getVgap();
+			final java.awt.Insets insets = target.getInsets();
+			final int hgap = getHgap();
+			final int vgap = getVgap();
 			if (lastPreferredSize == null) {
 				lastPreferredSize = preferredLayoutSize(target);
 			}
-			int maxwidth = lastPreferredSize.width;
-			int nmembers = target.getComponentCount();
+			final int maxwidth = lastPreferredSize.width;
+			final int nmembers = target.getComponentCount();
 			int x = 0, y = insets.top + vgap;
 			int rowh = 0, start = 0;
 
-			boolean ltr = target.getComponentOrientation().isLeftToRight();
+			final boolean ltr = target.getComponentOrientation().isLeftToRight();
 
 			for (int i = 0; i < nmembers; i++) {
-				java.awt.Component m = target.getComponent(i);
+				final java.awt.Component m = target.getComponent(i);
 				if (m.isVisible()) {
-					java.awt.Dimension d = m.getPreferredSize();
+					final java.awt.Dimension d = m.getPreferredSize();
 					m.setSize(d.width, d.height);
 					if (x == 0 || x + d.width <= maxwidth) {
 						if (x > 0) {
@@ -89,26 +94,27 @@ public class DynamicFlowLayout extends java.awt.FlowLayout {
 		}
 	}
 
-	private void moveComponents(java.awt.Container target, int x, int y, int width, int height, int rowStart, int rowEnd, boolean ltr) {
+	private void moveComponents(final java.awt.Container target, int x, final int y, final int width, final int height,
+			final int rowStart, final int rowEnd, final boolean ltr) {
 		synchronized (target.getTreeLock()) {
 			switch (getAlignment()) {
-				case LEFT :
-					x += ltr ? 0 : width;
-					break;
-				case CENTER :
-					x += width / 2;
-					break;
-				case RIGHT :
-					x += ltr ? width : 0;
-					break;
-				case LEADING :
-					break;
-				case TRAILING :
-					x += width;
-					break;
+			case LEFT:
+				x += ltr ? 0 : width;
+				break;
+			case CENTER:
+				x += width / 2;
+				break;
+			case RIGHT:
+				x += ltr ? width : 0;
+				break;
+			case LEADING:
+				break;
+			case TRAILING:
+				x += width;
+				break;
 			}
 			for (int i = rowStart; i < rowEnd; i++) {
-				java.awt.Component m = target.getComponent(i);
+				final java.awt.Component m = target.getComponent(i);
 				if (target.isVisible()) {
 					if (ltr) {
 						m.setLocation(x, y + (height - m.getHeight()) / 2);
@@ -122,10 +128,10 @@ public class DynamicFlowLayout extends java.awt.FlowLayout {
 	}
 
 	@Override
-	public java.awt.Dimension preferredLayoutSize(java.awt.Container target) {
-		java.awt.Insets insets = target.getInsets();
-		int hgap = getHgap();
-		int vgap = getVgap();
+	public java.awt.Dimension preferredLayoutSize(final java.awt.Container target) {
+		final java.awt.Insets insets = target.getInsets();
+		final int hgap = getHgap();
+		final int vgap = getVgap();
 		if (anchorComponent == null) {
 			anchorComponent = getAnchor(target);
 		}
@@ -140,16 +146,16 @@ public class DynamicFlowLayout extends java.awt.FlowLayout {
 		// System.out.println(ownerComponent+", "+target);
 		// System.out.println(target.getWidth()+", "+maxwidth);
 		// ownerComponent.setBackground(java.awt.Color.red);
-		int nmembers = target.getComponentCount();
+		final int nmembers = target.getComponentCount();
 		int x = 0, y = insets.top + vgap;
 		int rowh = 0;
 
 		if (maxwidth < 0) {
 			maxwidth = 0;
 			for (int i = 0; i < nmembers; i++) {
-				java.awt.Component m = target.getComponent(i);
+				final java.awt.Component m = target.getComponent(i);
 				if (m.isVisible()) {
-					java.awt.Dimension d = m.getPreferredSize();
+					final java.awt.Dimension d = m.getPreferredSize();
 					y = Math.max(y, d.height);
 					if (d.width > 0 && d.height > 0) {
 						if (maxwidth > 0) {
@@ -160,11 +166,11 @@ public class DynamicFlowLayout extends java.awt.FlowLayout {
 				}
 			}
 		} else {
-			boolean ltr = target.getComponentOrientation().isLeftToRight();
+			final boolean ltr = target.getComponentOrientation().isLeftToRight();
 			for (int i = 0; i < nmembers; i++) {
-				java.awt.Component m = target.getComponent(i);
+				final java.awt.Component m = target.getComponent(i);
 				if (m.isVisible()) {
-					java.awt.Dimension d = m.getPreferredSize();
+					final java.awt.Dimension d = m.getPreferredSize();
 					// System.out.println("on "+m+"\n dimensions: "+d);
 					// System.out.println("x is currently "+x);
 					// // if (d.width > 0 && d.height > 0){
@@ -183,7 +189,8 @@ public class DynamicFlowLayout extends java.awt.FlowLayout {
 						x = d.width;
 						y += vgap + rowh;
 						rowh = d.height;
-						// System.out.println("rowh is now "+rowh+", y is now "+y);
+						// System.out.println("rowh is now "+rowh+", y is now
+						// "+y);
 					}
 					// }
 					// System.out.println("x is now: "+x);
@@ -198,11 +205,11 @@ public class DynamicFlowLayout extends java.awt.FlowLayout {
 	}
 
 	@Override
-	public java.awt.Dimension minimumLayoutSize(java.awt.Container target) {
+	public java.awt.Dimension minimumLayoutSize(final java.awt.Container target) {
 		return preferredLayoutSize(target);
 	}
 
-	private java.awt.Component getAnchor(java.awt.Component current) {
+	private java.awt.Component getAnchor(final java.awt.Component current) {
 		if (current == null || anchorClass.isAssignableFrom(current.getClass())) {
 			return current;
 		} else {

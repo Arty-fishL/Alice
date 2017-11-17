@@ -29,11 +29,11 @@ import javax.vecmath.Matrix4d;
 
 public class PlayerApplet extends java.applet.Applet {
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private AbstractPlayer m_player = new AbstractPlayer() {
+	private final AbstractPlayer m_player = new AbstractPlayer() {
 
 		@Override
 		protected boolean isPreserveAndRestoreRequired() {
@@ -41,17 +41,17 @@ public class PlayerApplet extends java.applet.Applet {
 		}
 
 		@Override
-		protected void handleRenderTarget(edu.cmu.cs.stage3.alice.core.RenderTarget renderTarget) {
+		protected void handleRenderTarget(final edu.cmu.cs.stage3.alice.core.RenderTarget renderTarget) {
 			PlayerApplet.this.handleRenderTarget(renderTarget);
 		}
 	};
 
-	private javax.swing.JButton m_pauseButton = new javax.swing.JButton("pause");
-	private javax.swing.JButton m_resumeButton = new javax.swing.JButton("resume");
-	private javax.swing.JButton m_startButton = new javax.swing.JButton("restart");
-	private javax.swing.JButton m_stopButton = new javax.swing.JButton("stop");
+	private final javax.swing.JButton m_pauseButton = new javax.swing.JButton("pause");
+	private final javax.swing.JButton m_resumeButton = new javax.swing.JButton("resume");
+	private final javax.swing.JButton m_startButton = new javax.swing.JButton("restart");
+	private final javax.swing.JButton m_stopButton = new javax.swing.JButton("stop");
 
-	private java.awt.Color decodeColorParam(String name, java.awt.Color valueIfNull) {
+	private java.awt.Color decodeColorParam(final String name, final java.awt.Color valueIfNull) {
 		// String value = getParameter( name );
 		// if( value != null ) {
 		// return java.awt.Color.decode( value );
@@ -62,23 +62,23 @@ public class PlayerApplet extends java.applet.Applet {
 
 	private class ProgressPanel extends java.awt.Panel {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
-		private String m_worldName = getParameter("world");
+		private final String m_worldName = getParameter("world");
 
-		private javax.swing.JProgressBar m_downloadProgressBar;
-		private javax.swing.JProgressBar m_extractProgressBar;
+		private final javax.swing.JProgressBar m_downloadProgressBar;
+		private final javax.swing.JProgressBar m_extractProgressBar;
 
 		public ProgressPanel() {
 			setLayout(null);
 			setBackground(decodeColorParam("boxfgcolor", java.awt.Color.black));
 			setBackground(decodeColorParam("boxbgcolor", java.awt.Color.white));
 			@SuppressWarnings("unused")
-			Color progressColor = decodeColorParam("progresscolor", java.awt.Color.blue);
+			final Color progressColor = decodeColorParam("progresscolor", java.awt.Color.blue);
 
-			String s = getParameter("WIDTH");
+			final String s = getParameter("WIDTH");
 			int width;
 			if (s != null) {
 				width = Integer.parseInt(s);
@@ -101,26 +101,29 @@ public class PlayerApplet extends java.applet.Applet {
 			add(m_extractProgressBar);
 		}
 
-		public void setDownloadCurrent(int downloadCurrent) {
+		public void setDownloadCurrent(final int downloadCurrent) {
 			m_downloadProgressBar.setValue(downloadCurrent);
 		}
-		public void setDownloadTotal(int downloadTotal) {
+
+		public void setDownloadTotal(final int downloadTotal) {
 			m_downloadProgressBar.setMaximum(downloadTotal);
 		}
 
-		public void setExtractCurrent(int extractCurrent) {
+		public void setExtractCurrent(final int extractCurrent) {
 			m_extractProgressBar.setValue(extractCurrent);
 		}
-		public void setExtractTotal(int extractTotal) {
+
+		public void setExtractTotal(final int extractTotal) {
 			m_extractProgressBar.setMaximum(extractTotal);
 		}
 
 		@Override
-		public void paint(java.awt.Graphics g) {
+		public void paint(final java.awt.Graphics g) {
 			super.paint(g);
 			g.drawString("Alice world: " + m_worldName, 20, 40);
 		}
 	}
+
 	private ProgressPanel m_progressPanel;
 
 	private void startWorld() {
@@ -131,6 +134,7 @@ public class PlayerApplet extends java.applet.Applet {
 		m_resumeButton.setEnabled(false);
 		m_player.startWorld();
 	}
+
 	private void stopWorld() {
 		m_startButton.setText("start");
 		m_pauseButton.setEnabled(false);
@@ -138,11 +142,13 @@ public class PlayerApplet extends java.applet.Applet {
 		m_resumeButton.setEnabled(false);
 		m_player.stopWorld();
 	}
+
 	private void pauseWorld() {
 		m_pauseButton.setEnabled(false);
 		m_resumeButton.setEnabled(true);
 		m_player.pauseWorld();
 	}
+
 	private void resumeWorld() {
 		m_pauseButton.setEnabled(true);
 		m_resumeButton.setEnabled(false);
@@ -154,7 +160,7 @@ public class PlayerApplet extends java.applet.Applet {
 		super.init();
 		setLayout(new java.awt.BorderLayout());
 
-		javax.swing.JPanel panel = new javax.swing.JPanel();
+		final javax.swing.JPanel panel = new javax.swing.JPanel();
 		panel.setLayout(new java.awt.GridLayout(1, 4));
 
 		m_pauseButton.setEnabled(false);
@@ -174,57 +180,57 @@ public class PlayerApplet extends java.applet.Applet {
 
 		m_pauseButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				pauseWorld();
 			}
 		});
 
 		m_resumeButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				resumeWorld();
 			}
 		});
 
 		m_stopButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				stopWorld();
 			}
 		});
 
 		m_startButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				startWorld();
 			}
 		});
 
 	}
 
-	private Runnable m_loadRunnable = new Runnable() {
+	private final Runnable m_loadRunnable = new Runnable() {
 		@Override
 		public void run() {
 			try {
 				@SuppressWarnings("unused")
-				Class<Matrix4d> c = Matrix4d.class;
-			} catch (Throwable t) {
+				final Class<Matrix4d> c = Matrix4d.class;
+			} catch (final Throwable t) {
 				remove(m_progressPanel);
 				String initErrorMessage = getParameter("initializationErrorMessage");
 				initErrorMessage = null;
 				if (initErrorMessage == null) {
 					initErrorMessage = "Alice is unable to initialize.\n\nPlease click the link below.";
 				}
-				javax.swing.JTextArea errorTextArea = new javax.swing.JTextArea();
+				final javax.swing.JTextArea errorTextArea = new javax.swing.JTextArea();
 				errorTextArea.setText(initErrorMessage);
 				add(errorTextArea);
 				return;
 			}
 			try {
-				java.net.URL url = new java.net.URL(getCodeBase(), getParameter("world"));
+				final java.net.URL url = new java.net.URL(getCodeBase(), getParameter("world"));
 				java.net.URLConnection urlConnection = url.openConnection();
-				java.io.InputStream is = urlConnection.getInputStream();
-				int contentLength = urlConnection.getContentLength();
+				final java.io.InputStream is = urlConnection.getInputStream();
+				final int contentLength = urlConnection.getContentLength();
 				m_progressPanel.setDownloadTotal(contentLength);
 				final int bufferLength = 2048;
 				byte[] content;
@@ -232,15 +238,15 @@ public class PlayerApplet extends java.applet.Applet {
 					int offset = 0;
 					content = new byte[contentLength];
 					while (offset < contentLength) {
-						int actual = is.read(content, offset, Math.min(bufferLength, contentLength - offset));
+						final int actual = is.read(content, offset, Math.min(bufferLength, contentLength - offset));
 						offset += actual;
 						m_progressPanel.setDownloadCurrent(offset);
 					}
 				} else {
-					byte[] buffer = new byte[bufferLength];
-					java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream(bufferLength);
+					final byte[] buffer = new byte[bufferLength];
+					final java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream(bufferLength);
 					while (true) {
-						int actual = is.read(buffer, 0, bufferLength);
+						final int actual = is.read(buffer, 0, bufferLength);
 						if (actual != -1) {
 							baos.write(buffer, 0, actual);
 						} else {
@@ -252,21 +258,25 @@ public class PlayerApplet extends java.applet.Applet {
 				is.close();
 				urlConnection = null;
 
-				java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(content);
+				final java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(content);
 
 				m_player.loadWorld(bais, new edu.cmu.cs.stage3.progress.ProgressObserver() {
 					@Override
-					public void progressBegin(int total) {
+					public void progressBegin(final int total) {
 						progressUpdateTotal(total);
 					}
+
 					@Override
-					public void progressUpdateTotal(int total) {
+					public void progressUpdateTotal(final int total) {
 						m_progressPanel.setExtractTotal(total);
 					}
+
 					@Override
-					public void progressUpdate(int current, String description) throws edu.cmu.cs.stage3.progress.ProgressCancelException {
+					public void progressUpdate(final int current, final String description)
+							throws edu.cmu.cs.stage3.progress.ProgressCancelException {
 						m_progressPanel.setExtractCurrent(current);
 					}
+
 					@Override
 					public void progressEnd() {
 					}
@@ -274,9 +284,9 @@ public class PlayerApplet extends java.applet.Applet {
 
 				m_startButton.setEnabled(true);
 				startWorld();
-			} catch (java.net.MalformedURLException murle) {
+			} catch (final java.net.MalformedURLException murle) {
 				murle.printStackTrace();
-			} catch (java.io.IOException ioe) {
+			} catch (final java.io.IOException ioe) {
 				ioe.printStackTrace();
 			}
 		}
@@ -295,7 +305,7 @@ public class PlayerApplet extends java.applet.Applet {
 		super.stop();
 	}
 
-	protected void handleRenderTarget(edu.cmu.cs.stage3.alice.core.RenderTarget renderTarget) {
+	protected void handleRenderTarget(final edu.cmu.cs.stage3.alice.core.RenderTarget renderTarget) {
 		remove(m_progressPanel);
 		add(renderTarget.getInternal().getAWTComponent(), java.awt.BorderLayout.CENTER);
 		doLayout();

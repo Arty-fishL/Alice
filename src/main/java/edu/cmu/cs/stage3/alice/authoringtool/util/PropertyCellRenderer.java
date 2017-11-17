@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -26,13 +26,18 @@ package edu.cmu.cs.stage3.alice.authoringtool.util;
 import javax.swing.JTable;
 
 public class PropertyCellRenderer extends javax.swing.table.DefaultTableCellRenderer {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 8405350733515972352L;
 	protected ColorRenderer colorRenderer = new ColorRenderer();
 
 	public PropertyCellRenderer() {
 	}
 
 	@Override
-	public java.awt.Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+	public java.awt.Component getTableCellRendererComponent(final JTable table, final Object value,
+			final boolean isSelected, final boolean hasFocus, final int row, final int column) {
 		super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
 		String toolTipText = null;
@@ -59,17 +64,17 @@ public class PropertyCellRenderer extends javax.swing.table.DefaultTableCellRend
 			return colorRenderer.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 		} else if (value != null && value.getClass().isArray()) {
 			String text = "";
-			java.text.NumberFormat nf = java.text.NumberFormat.getInstance();
+			final java.text.NumberFormat nf = java.text.NumberFormat.getInstance();
 			nf.setMaximumFractionDigits(3);
 			text = "{ ";
-			int m = java.lang.reflect.Array.getLength(value);
+			final int m = java.lang.reflect.Array.getLength(value);
 			for (int i = 0; i < m; i++) {
-				Object o = java.lang.reflect.Array.get(value, i);
+				final Object o = java.lang.reflect.Array.get(value, i);
 				if (o.getClass().isArray()) {
 					text += "{ ";
-					int n = java.lang.reflect.Array.getLength(o);
+					final int n = java.lang.reflect.Array.getLength(o);
 					for (int j = 0; j < n; j++) {
-						Object p = java.lang.reflect.Array.get(o, j);
+						final Object p = java.lang.reflect.Array.get(o, j);
 						if (p instanceof Number) {
 							text += nf.format(p);
 						} else {
@@ -113,15 +118,20 @@ public class PropertyCellRenderer extends javax.swing.table.DefaultTableCellRend
 	}
 
 	class ColorRenderer extends javax.swing.table.DefaultTableCellRenderer {
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = 2278473570775139789L;
 		java.util.Hashtable colorsToIcons = new java.util.Hashtable();
 
 		public ColorRenderer() {
 		}
 
 		@Override
-		public java.awt.Component getTableCellRendererComponent(JTable table, Object color, boolean isSelected, boolean hasFocus, int row, int column) {
+		public java.awt.Component getTableCellRendererComponent(final JTable table, Object color,
+				final boolean isSelected, final boolean hasFocus, final int row, final int column) {
 			if (color instanceof edu.cmu.cs.stage3.alice.scenegraph.Color) {
-				edu.cmu.cs.stage3.alice.scenegraph.Color c = (edu.cmu.cs.stage3.alice.scenegraph.Color) color;
+				final edu.cmu.cs.stage3.alice.scenegraph.Color c = (edu.cmu.cs.stage3.alice.scenegraph.Color) color;
 				color = new java.awt.Color(c.getRed(), c.getGreen(), c.getBlue(), c.getAlpha());
 			}
 
@@ -129,10 +139,11 @@ public class PropertyCellRenderer extends javax.swing.table.DefaultTableCellRend
 
 			javax.swing.Icon icon = (javax.swing.Icon) colorsToIcons.get(color);
 			if (icon == null) {
-				int height = table.getRowHeight() - 4;
-				int width = height * 2;
-				java.awt.image.BufferedImage colorImage = new java.awt.image.BufferedImage(width, height, java.awt.image.BufferedImage.TYPE_INT_RGB);
-				java.awt.Graphics2D g = colorImage.createGraphics();
+				final int height = table.getRowHeight() - 4;
+				final int width = height * 2;
+				final java.awt.image.BufferedImage colorImage = new java.awt.image.BufferedImage(width, height,
+						java.awt.image.BufferedImage.TYPE_INT_RGB);
+				final java.awt.Graphics2D g = colorImage.createGraphics();
 				g.setColor((java.awt.Color) color);
 				g.fill3DRect(0, 0, width, height, true);
 				icon = new javax.swing.ImageIcon(colorImage);
@@ -146,7 +157,7 @@ public class PropertyCellRenderer extends javax.swing.table.DefaultTableCellRend
 			return this;
 		}
 
-		public String getTextFromColor(java.awt.Color color) {
+		public String getTextFromColor(final java.awt.Color color) {
 			String text = "";
 			if (color.equals(java.awt.Color.black)) {
 				text = "black";
@@ -175,9 +186,10 @@ public class PropertyCellRenderer extends javax.swing.table.DefaultTableCellRend
 			} else if (color.equals(java.awt.Color.yellow)) {
 				text = "yellow";
 			} else {
-				float[] rgba = new float[4];
+				final float[] rgba = new float[4];
 				color.getComponents(rgba);
-				text = "<red = " + rgba[0] + ", green = " + rgba[1] + ", blue = " + rgba[2] + ", alpha = " + rgba[3] + ">";
+				text = "<red = " + rgba[0] + ", green = " + rgba[1] + ", blue = " + rgba[2] + ", alpha = " + rgba[3]
+						+ ">";
 			}
 
 			return text;

@@ -1,6 +1,7 @@
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.directx7renderer;
 
-class ExponentialSquaredFogProxy extends edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.ExponentialSquaredFogProxy {
+class ExponentialSquaredFogProxy
+		extends edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.ExponentialSquaredFogProxy {
 	// from ElementProxy
 
 	@Override

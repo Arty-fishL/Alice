@@ -17,16 +17,19 @@ import edu.cmu.cs.stage3.util.HowMuch;
 
 /**
  * @author caitlink
- * 
+ *
  *         TODO To change the template for this generated type comment go to
  *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class TouchAnimation extends AbstractBodyPositionAnimation {
-	public final edu.cmu.cs.stage3.alice.core.property.TransformableProperty target = new edu.cmu.cs.stage3.alice.core.property.TransformableProperty(this, "target", null);
+	public final edu.cmu.cs.stage3.alice.core.property.TransformableProperty target = new edu.cmu.cs.stage3.alice.core.property.TransformableProperty(
+			this, "target", null);
 	public final LimbProperty limb = new LimbProperty(this, "limb", Limb.rightArm);
-	public final edu.cmu.cs.stage3.alice.core.property.DirectionProperty sideToTouch = new edu.cmu.cs.stage3.alice.core.property.DirectionProperty(this, "side", edu.cmu.cs.stage3.alice.core.Direction.FORWARD);
+	public final edu.cmu.cs.stage3.alice.core.property.DirectionProperty sideToTouch = new edu.cmu.cs.stage3.alice.core.property.DirectionProperty(
+			this, "side", edu.cmu.cs.stage3.alice.core.Direction.FORWARD);
 	public final NumberProperty offset = new NumberProperty(this, "offset", new Double(0.1));
-	public final edu.cmu.cs.stage3.alice.core.property.DirectionProperty offsetDirection = new edu.cmu.cs.stage3.alice.core.property.DirectionProperty(this, "offsetDirection", null);
+	public final edu.cmu.cs.stage3.alice.core.property.DirectionProperty offsetDirection = new edu.cmu.cs.stage3.alice.core.property.DirectionProperty(
+			this, "offsetDirection", null);
 
 	public class RuntimeTouchAnimation extends RuntimeAbstractBodyPositionAnimation {
 		edu.cmu.cs.stage3.alice.core.Transformable m_target;
@@ -47,7 +50,7 @@ public class TouchAnimation extends AbstractBodyPositionAnimation {
 		Vector3 targetVector = null;
 
 		@Override
-		public void prologue(double t) {
+		public void prologue(final double t) {
 			super.prologue(t);
 
 			if (limb.getLimbValue().equals(Limb.leftArm) || limb.getLimbValue().equals(Limb.rightArm)) {
@@ -74,10 +77,12 @@ public class TouchAnimation extends AbstractBodyPositionAnimation {
 			m_asSeenBy = asSeenBy.getReferenceFrameValue();
 			// System.out.println("as seen by: " + m_asSeenBy);
 
-			initialQuat = upperLimb.getOrientationAsQuaternion((edu.cmu.cs.stage3.alice.core.ReferenceFrame) upperLimb.getParent());
+			initialQuat = upperLimb
+					.getOrientationAsQuaternion((edu.cmu.cs.stage3.alice.core.ReferenceFrame) upperLimb.getParent());
 			initialLowerQuat = null;
 			if (lowerLimb != null) {
-				initialLowerQuat = lowerLimb.getOrientationAsQuaternion((edu.cmu.cs.stage3.alice.core.ReferenceFrame) lowerLimb.getParent());
+				initialLowerQuat = lowerLimb.getOrientationAsQuaternion(
+						(edu.cmu.cs.stage3.alice.core.ReferenceFrame) lowerLimb.getParent());
 			}
 			upperTargetQuat = null;
 			lowerTargetQuat = null;
@@ -92,7 +97,7 @@ public class TouchAnimation extends AbstractBodyPositionAnimation {
 		}
 
 		@Override
-		public void update(double t) {
+		public void update(final double t) {
 			if (getPortion(t) <= 1.0) {
 				if (lowerTargetQuat == null) {
 					lowerTargetQuat = getLowerTargetQuaternion();
@@ -101,16 +106,20 @@ public class TouchAnimation extends AbstractBodyPositionAnimation {
 					upperTargetQuat = getTargetQuaternion();
 				}
 
-				edu.cmu.cs.stage3.math.Quaternion q = edu.cmu.cs.stage3.math.Quaternion.interpolate(initialQuat, upperTargetQuat, getPortion(t));
+				final edu.cmu.cs.stage3.math.Quaternion q = edu.cmu.cs.stage3.math.Quaternion.interpolate(initialQuat,
+						upperTargetQuat, getPortion(t));
 				q.normalize();
 				// System.out.println("upper quat: " + q);
-				upperLimb.setOrientationRightNow(q, (edu.cmu.cs.stage3.alice.core.ReferenceFrame) upperLimb.getParent());
+				upperLimb.setOrientationRightNow(q,
+						(edu.cmu.cs.stage3.alice.core.ReferenceFrame) upperLimb.getParent());
 
 				if (lowerLimb != null) {
-					edu.cmu.cs.stage3.math.Quaternion r = edu.cmu.cs.stage3.math.Quaternion.interpolate(initialLowerQuat, lowerTargetQuat, getPortion(t));
+					final edu.cmu.cs.stage3.math.Quaternion r = edu.cmu.cs.stage3.math.Quaternion
+							.interpolate(initialLowerQuat, lowerTargetQuat, getPortion(t));
 					r.normalize();
 					// System.out.println("lower quat: " + r);
-					lowerLimb.setOrientationRightNow(r, (edu.cmu.cs.stage3.alice.core.ReferenceFrame) lowerLimb.getParent());
+					lowerLimb.setOrientationRightNow(r,
+							(edu.cmu.cs.stage3.alice.core.ReferenceFrame) lowerLimb.getParent());
 				}
 			}
 		}
@@ -119,41 +128,44 @@ public class TouchAnimation extends AbstractBodyPositionAnimation {
 		 * public void epilogue( double t ) { super.epilogue( t );
 		 * javax.vecmath.Vector3d tmp =
 		 * lowerLimb.getBoundingBox(lowerLimb).getCenterOfBottomFace();
-		 * 
-		 * 
+		 *
+		 *
 		 * tmp = lowerLimb.getPosition(tmp, m_target);
-		 * 
+		 *
 		 * System.out.println("goal vector: " + tmp);
 		 * System.out.println("m target vector: " + m_target.getPosition(tmp,
 		 * upperLimb));
-		 * 
+		 *
 		 * tmp = m_target.getPosition(tmp, upperLimb);
 		 * System.out.println("targetPos: " + tmp); }
 		 */
 
-		double getLength(Vector3 vec) {
+		double getLength(final Vector3 vec) {
 			return Math.sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
 		}
 
-		double getAngle(Vector3 a, Vector3 b) {
+		double getAngle(final Vector3 a, final Vector3 b) {
 			// calculate angle
-			Vector3 c = Vector3.subtract(a, b);
-			double cLength = getLength(c);
-			double aLength = getLength(a);
-			double bLength = getLength(b);
-			double cosC = (cLength * cLength - aLength * aLength - bLength * bLength) / (-2.0 * aLength * bLength);
+			final Vector3 c = Vector3.subtract(a, b);
+			final double cLength = getLength(c);
+			final double aLength = getLength(a);
+			final double bLength = getLength(b);
+			final double cosC = (cLength * cLength - aLength * aLength - bLength * bLength)
+					/ (-2.0 * aLength * bLength);
 
 			return java.lang.Math.acos(cosC);
 		}
 
 		protected void setArmLengths() {
 			if (upperLimb != null && lowerLimb != null) {
-				edu.cmu.cs.stage3.math.Vector3 tmp = edu.cmu.cs.stage3.math.Vector3.subtract(lowerLimb.getPosition(lowerLimb), lowerLimb.getBoundingBox(lowerLimb).getCenterOfBottomFace());
+				final edu.cmu.cs.stage3.math.Vector3 tmp = edu.cmu.cs.stage3.math.Vector3.subtract(
+						lowerLimb.getPosition(lowerLimb), lowerLimb.getBoundingBox(lowerLimb).getCenterOfBottomFace());
 				lowerLimbLength = tmp.getLength();
 
 				upperLimbLength = upperLimb.getPosition(upperLimb).y - lowerLimb.getPosition(upperLimb).y;
 			} else {
-				upperLimbLength = upperLimb.getPosition(upperLimb).y - upperLimb.getBoundingBox(upperLimb).getCenterOfBottomFace().y;
+				upperLimbLength = upperLimb.getPosition(upperLimb).y
+						- upperLimb.getBoundingBox(upperLimb).getCenterOfBottomFace().y;
 				lowerLimbLength = 0.0;
 			}
 		}
@@ -206,7 +218,8 @@ public class TouchAnimation extends AbstractBodyPositionAnimation {
 				targPos.add(offsetDir);
 			}
 
-			edu.cmu.cs.stage3.math.Vector3 targPos2 = new edu.cmu.cs.stage3.math.Vector3(targPos.x, targPos.y, targPos.z);
+			final edu.cmu.cs.stage3.math.Vector3 targPos2 = new edu.cmu.cs.stage3.math.Vector3(targPos.x, targPos.y,
+					targPos.z);
 
 			// System.out.println("touch targPos: " + targPos2);
 			targPos.normalize();
@@ -220,8 +233,8 @@ public class TouchAnimation extends AbstractBodyPositionAnimation {
 		 */
 
 		protected void setVectors() {
-			Vector3 rightUpperPos = upperLimb.getPosition(upperLimb);
-			Vector3 targetPos = getTargetPosition(); // m_target.getPosition(upperLimb);
+			final Vector3 rightUpperPos = upperLimb.getPosition(upperLimb);
+			final Vector3 targetPos = getTargetPosition(); // m_target.getPosition(upperLimb);
 			targetVector = Vector3.subtract(targetPos, rightUpperPos);
 			// targetVector.normalize();
 
@@ -241,23 +254,27 @@ public class TouchAnimation extends AbstractBodyPositionAnimation {
 			// save upper and lower current transformations
 			edu.cmu.cs.stage3.math.Matrix44 initialTrans = null;
 			if (lowerLimb != null) {
-				initialTrans = lowerLimb.getTransformation((edu.cmu.cs.stage3.alice.core.ReferenceFrame) lowerLimb.getParent());
+				initialTrans = lowerLimb
+						.getTransformation((edu.cmu.cs.stage3.alice.core.ReferenceFrame) lowerLimb.getParent());
 			}
-			edu.cmu.cs.stage3.math.Matrix44 initialUpperTrans = upperLimb.getTransformation((edu.cmu.cs.stage3.alice.core.ReferenceFrame) upperLimb.getParent());
+			final edu.cmu.cs.stage3.math.Matrix44 initialUpperTrans = upperLimb
+					.getTransformation((edu.cmu.cs.stage3.alice.core.ReferenceFrame) upperLimb.getParent());
 
 			// set upper and lower limbs to their default orientations as a
 			// starting point.
 			if (lowerLimb != null) {
-				lowerLimb.setOrientationRightNow(new edu.cmu.cs.stage3.math.Matrix33(), (edu.cmu.cs.stage3.alice.core.ReferenceFrame) lowerLimb.getParent());
+				lowerLimb.setOrientationRightNow(new edu.cmu.cs.stage3.math.Matrix33(),
+						(edu.cmu.cs.stage3.alice.core.ReferenceFrame) lowerLimb.getParent());
 			}
-			upperLimb.setOrientationRightNow(new edu.cmu.cs.stage3.math.Matrix33(), (edu.cmu.cs.stage3.alice.core.ReferenceFrame) upperLimb.getParent());
+			upperLimb.setOrientationRightNow(new edu.cmu.cs.stage3.math.Matrix33(),
+					(edu.cmu.cs.stage3.alice.core.ReferenceFrame) upperLimb.getParent());
 
 			// set initial data
 			setArmLengths();
 			setVectors();
 
 			// calculate rotation of lower limb
-			double targetDistance = targetVector.length();
+			final double targetDistance = targetVector.length();
 			limbAngle = 0;
 
 			// if it's target too far to reach, make the lowerLimb not bend
@@ -265,7 +282,8 @@ public class TouchAnimation extends AbstractBodyPositionAnimation {
 			if (targetDistance < upperLimbLength + lowerLimbLength) {
 
 				// calculate appropriate turn angle
-				double cosAngle = (targetDistance * targetDistance - upperLimbLength * upperLimbLength - lowerLimbLength * lowerLimbLength) / (-2.0 * upperLimbLength * lowerLimbLength);
+				double cosAngle = (targetDistance * targetDistance - upperLimbLength * upperLimbLength
+						- lowerLimbLength * lowerLimbLength) / (-2.0 * upperLimbLength * lowerLimbLength);
 				// System.out.println("cosAngle: " + cosAngle);
 				if (cosAngle > 1.0) {
 					cosAngle = 1.0;
@@ -292,11 +310,12 @@ public class TouchAnimation extends AbstractBodyPositionAnimation {
 
 			// calculate rotation and rotate
 
-			double angle = getAngle(initialVector, targetVector);
+			final double angle = getAngle(initialVector, targetVector);
 			// System.out.println("angle: " + angle);
-			edu.cmu.cs.stage3.math.Vector3 cross = Vector3.crossProduct(initialVector, targetVector);
+			final edu.cmu.cs.stage3.math.Vector3 cross = Vector3.crossProduct(initialVector, targetVector);
 			cross.normalize();
-			upperLimb.rotateRightNow(cross, angle / (2.0 * java.lang.Math.PI), (edu.cmu.cs.stage3.alice.core.ReferenceFrame) upperLimb.getParent());
+			upperLimb.rotateRightNow(cross, angle / (2.0 * java.lang.Math.PI),
+					(edu.cmu.cs.stage3.alice.core.ReferenceFrame) upperLimb.getParent());
 
 			// nudge rotations to make arms look a tab more reasonable
 			targetVector.normalize();
@@ -310,7 +329,8 @@ public class TouchAnimation extends AbstractBodyPositionAnimation {
 					turnAmt += 1 * (.3 - targetVector.z);
 				}
 				if (turnAmt > 0) {
-					upperLimb.rotateRightNow(targetVector, turnAmt, (edu.cmu.cs.stage3.alice.core.ReferenceFrame) upperLimb.getParent());
+					upperLimb.rotateRightNow(targetVector, turnAmt,
+							(edu.cmu.cs.stage3.alice.core.ReferenceFrame) upperLimb.getParent());
 				}
 			} else if (limb.getLimbValue().equals(Limb.leftArm)) {
 				if (targetVector.x > 0) {
@@ -320,22 +340,27 @@ public class TouchAnimation extends AbstractBodyPositionAnimation {
 					turnAmt += 1 * (.3 - targetVector.z);
 				}
 				if (Math.abs(turnAmt) > 0) {
-					upperLimb.rotateRightNow(targetVector, -1.0 * turnAmt, (edu.cmu.cs.stage3.alice.core.ReferenceFrame) upperLimb.getParent());
+					upperLimb.rotateRightNow(targetVector, -1.0 * turnAmt,
+							(edu.cmu.cs.stage3.alice.core.ReferenceFrame) upperLimb.getParent());
 				}
 			}
 
 			// save target quaternions
 			lowerTargetQuat = null;
 			if (lowerLimb != null) {
-				lowerTargetQuat = lowerLimb.getOrientationAsQuaternion((edu.cmu.cs.stage3.alice.core.ReferenceFrame) lowerLimb.getParent());
+				lowerTargetQuat = lowerLimb.getOrientationAsQuaternion(
+						(edu.cmu.cs.stage3.alice.core.ReferenceFrame) lowerLimb.getParent());
 			}
-			upperTargetQuat = upperLimb.getOrientationAsQuaternion((edu.cmu.cs.stage3.alice.core.ReferenceFrame) upperLimb.getParent());
+			upperTargetQuat = upperLimb
+					.getOrientationAsQuaternion((edu.cmu.cs.stage3.alice.core.ReferenceFrame) upperLimb.getParent());
 
 			// set limbs back to initial transformations
 			if (lowerLimb != null) {
-				lowerLimb.setTransformationRightNow(initialTrans, (edu.cmu.cs.stage3.alice.core.ReferenceFrame) lowerLimb.getParent());
+				lowerLimb.setTransformationRightNow(initialTrans,
+						(edu.cmu.cs.stage3.alice.core.ReferenceFrame) lowerLimb.getParent());
 			}
-			upperLimb.setTransformationRightNow(initialUpperTrans, (edu.cmu.cs.stage3.alice.core.ReferenceFrame) upperLimb.getParent());
+			upperLimb.setTransformationRightNow(initialUpperTrans,
+					(edu.cmu.cs.stage3.alice.core.ReferenceFrame) upperLimb.getParent());
 
 		}
 

@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -29,25 +29,30 @@ package edu.cmu.cs.stage3.alice.scenegraph;
 /** @deprecated */
 @Deprecated
 public class Vertex extends Vertex3d {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 2825507244276770788L;
 	public static final int POSITION_XYZ = FORMAT_POSITION;
 	public static final int NORMAL_IJK = FORMAT_NORMAL;
 	public static final int DIFFUSE_RGBA = FORMAT_DIFFUSE_COLOR;
 	public static final int SPECULAR_RGBA = FORMAT_SPECULAR_HIGHLIGHT_COLOR;
 	public static final int TEXTURE_COORDINATE_UV0 = FORMAT_TEXTURE_COORDINATE_0;
 
-	public Vertex(int format) {
+	public Vertex(final int format) {
 		super(format);
 	}
 
-	public static Vertex createXYZVertex(double x, double y, double z) {
-		Vertex vertex = new Vertex(POSITION_XYZ);
+	public static Vertex createXYZVertex(final double x, final double y, final double z) {
+		final Vertex vertex = new Vertex(POSITION_XYZ);
 		vertex.setX(x);
 		vertex.setY(y);
 		vertex.setZ(z);
 		return vertex;
 	}
-	public static Vertex createXYZDiffuseVertex(double x, double y, double z, Color color) {
-		Vertex vertex = new Vertex(POSITION_XYZ | DIFFUSE_RGBA);
+
+	public static Vertex createXYZDiffuseVertex(final double x, final double y, final double z, final Color color) {
+		final Vertex vertex = new Vertex(POSITION_XYZ | DIFFUSE_RGBA);
 		vertex.setX(x);
 		vertex.setY(y);
 		vertex.setZ(z);
@@ -57,8 +62,10 @@ public class Vertex extends Vertex3d {
 		vertex.setA(color.getAlpha());
 		return vertex;
 	}
-	public static Vertex createXYZIJKUVVertex(double x, double y, double z, double i, double j, double k, double u, double v) {
-		Vertex vertex = new Vertex(POSITION_XYZ | NORMAL_IJK | TEXTURE_COORDINATE_UV0);
+
+	public static Vertex createXYZIJKUVVertex(final double x, final double y, final double z, final double i,
+			final double j, final double k, final double u, final double v) {
+		final Vertex vertex = new Vertex(POSITION_XYZ | NORMAL_IJK | TEXTURE_COORDINATE_UV0);
 		vertex.setX(x);
 		vertex.setY(y);
 		vertex.setZ(z);
@@ -69,13 +76,14 @@ public class Vertex extends Vertex3d {
 		vertex.setV(v);
 		return vertex;
 	}
+
 	public double[] getArray() {
 		byte xyzOffset = Byte.MIN_VALUE;
 		byte ijkOffset = Byte.MIN_VALUE;
 		byte uvOffset = Byte.MIN_VALUE;
 		byte rgbaOffset = Byte.MIN_VALUE;
 		byte size = 0;
-		int format = getFormat();
+		final int format = getFormat();
 		if ((format & POSITION_XYZ) != 0) {
 			xyzOffset = size;
 			size += 3;
@@ -96,7 +104,7 @@ public class Vertex extends Vertex3d {
 			uvOffset = size;
 			size += 2;
 		}
-		double[] array = new double[size];
+		final double[] array = new double[size];
 		if ((format & POSITION_XYZ) != 0) {
 			array[xyzOffset] = position.x;
 			array[xyzOffset + 1] = position.y;
@@ -125,22 +133,27 @@ public class Vertex extends Vertex3d {
 		}
 		return array;
 	}
+
 	public edu.cmu.cs.stage3.math.Vector3 getXYZ() {
 		return new edu.cmu.cs.stage3.math.Vector3(getX(), getY(), getZ());
 	}
-	public void setXYZ(edu.cmu.cs.stage3.math.Vector3 v) {
+
+	public void setXYZ(final edu.cmu.cs.stage3.math.Vector3 v) {
 		setX(v.x);
 		setY(v.y);
 		setZ(v.z);
 	}
+
 	public edu.cmu.cs.stage3.math.Vector3 getIJK() {
 		return new edu.cmu.cs.stage3.math.Vector3(getI(), getJ(), getK());
 	}
-	public void setIJK(edu.cmu.cs.stage3.math.Vector3 v) {
+
+	public void setIJK(final edu.cmu.cs.stage3.math.Vector3 v) {
 		setI(v.x);
 		setJ(v.y);
 		setK(v.z);
 	}
+
 	public double getX() {
 		if ((getFormat() & POSITION_XYZ) != 0) {
 			return position.x;
@@ -148,6 +161,7 @@ public class Vertex extends Vertex3d {
 			return Double.NaN;
 		}
 	}
+
 	public double getY() {
 		if ((getFormat() & POSITION_XYZ) != 0) {
 			return position.y;
@@ -155,6 +169,7 @@ public class Vertex extends Vertex3d {
 			return Double.NaN;
 		}
 	}
+
 	public double getZ() {
 		if ((getFormat() & POSITION_XYZ) != 0) {
 			return position.z;
@@ -162,6 +177,7 @@ public class Vertex extends Vertex3d {
 			return Double.NaN;
 		}
 	}
+
 	public double getI() {
 		if ((getFormat() & NORMAL_IJK) != 0) {
 			return normal.x;
@@ -169,6 +185,7 @@ public class Vertex extends Vertex3d {
 			return Double.NaN;
 		}
 	}
+
 	public double getJ() {
 		if ((getFormat() & NORMAL_IJK) != 0) {
 			return normal.y;
@@ -176,6 +193,7 @@ public class Vertex extends Vertex3d {
 			return Double.NaN;
 		}
 	}
+
 	public double getK() {
 		if ((getFormat() & NORMAL_IJK) != 0) {
 			return normal.z;
@@ -183,6 +201,7 @@ public class Vertex extends Vertex3d {
 			return Double.NaN;
 		}
 	}
+
 	public double getU() {
 		if ((getFormat() & TEXTURE_COORDINATE_UV0) != 0) {
 			return textureCoordinate0.x;
@@ -190,6 +209,7 @@ public class Vertex extends Vertex3d {
 			return Double.NaN;
 		}
 	}
+
 	public double getV() {
 		if ((getFormat() & TEXTURE_COORDINATE_UV0) != 0) {
 			return textureCoordinate0.y;
@@ -197,6 +217,7 @@ public class Vertex extends Vertex3d {
 			return Double.NaN;
 		}
 	}
+
 	public double getR() {
 		if ((getFormat() & DIFFUSE_RGBA) != 0) {
 			return diffuseColor.red;
@@ -204,6 +225,7 @@ public class Vertex extends Vertex3d {
 			return Double.NaN;
 		}
 	}
+
 	public double getG() {
 		if ((getFormat() & DIFFUSE_RGBA) != 0) {
 			return diffuseColor.green;
@@ -211,6 +233,7 @@ public class Vertex extends Vertex3d {
 			return Double.NaN;
 		}
 	}
+
 	public double getB() {
 		if ((getFormat() & DIFFUSE_RGBA) != 0) {
 			return diffuseColor.blue;
@@ -218,6 +241,7 @@ public class Vertex extends Vertex3d {
 			return Double.NaN;
 		}
 	}
+
 	public double getA() {
 		if ((getFormat() & DIFFUSE_RGBA) != 0) {
 			return diffuseColor.alpha;
@@ -225,7 +249,8 @@ public class Vertex extends Vertex3d {
 			return Double.NaN;
 		}
 	}
-	public void setX(double x) {
+
+	public void setX(final double x) {
 		if ((getFormat() & POSITION_XYZ) != 0) {
 			position.x = x;
 		} else {
@@ -234,7 +259,8 @@ public class Vertex extends Vertex3d {
 			}
 		}
 	}
-	public void setY(double y) {
+
+	public void setY(final double y) {
 		if ((getFormat() & POSITION_XYZ) != 0) {
 			position.y = y;
 		} else {
@@ -243,7 +269,8 @@ public class Vertex extends Vertex3d {
 			}
 		}
 	}
-	public void setZ(double z) {
+
+	public void setZ(final double z) {
 		if ((getFormat() & POSITION_XYZ) != 0) {
 			position.z = z;
 		} else {
@@ -252,7 +279,8 @@ public class Vertex extends Vertex3d {
 			}
 		}
 	}
-	public void setI(double i) {
+
+	public void setI(final double i) {
 		if ((getFormat() & NORMAL_IJK) != 0) {
 			normal.x = i;
 		} else {
@@ -261,7 +289,8 @@ public class Vertex extends Vertex3d {
 			}
 		}
 	}
-	public void setJ(double j) {
+
+	public void setJ(final double j) {
 		if ((getFormat() & NORMAL_IJK) != 0) {
 			normal.y = j;
 		} else {
@@ -270,7 +299,8 @@ public class Vertex extends Vertex3d {
 			}
 		}
 	}
-	public void setK(double k) {
+
+	public void setK(final double k) {
 		if ((getFormat() & NORMAL_IJK) != 0) {
 			normal.z = k;
 		} else {
@@ -279,7 +309,8 @@ public class Vertex extends Vertex3d {
 			}
 		}
 	}
-	public void setU(double u) {
+
+	public void setU(final double u) {
 		if ((getFormat() & TEXTURE_COORDINATE_UV0) != 0) {
 			textureCoordinate0.x = (float) u;
 		} else {
@@ -288,7 +319,8 @@ public class Vertex extends Vertex3d {
 			}
 		}
 	}
-	public void setV(double v) {
+
+	public void setV(final double v) {
 		if ((getFormat() & TEXTURE_COORDINATE_UV0) != 0) {
 			textureCoordinate0.y = (float) v;
 		} else {
@@ -297,7 +329,8 @@ public class Vertex extends Vertex3d {
 			}
 		}
 	}
-	public void setR(double r) {
+
+	public void setR(final double r) {
 		if ((getFormat() & DIFFUSE_RGBA) != 0) {
 			diffuseColor.red = (float) r;
 		} else {
@@ -306,7 +339,8 @@ public class Vertex extends Vertex3d {
 			}
 		}
 	}
-	public void setG(double g) {
+
+	public void setG(final double g) {
 		if ((getFormat() & DIFFUSE_RGBA) != 0) {
 			diffuseColor.green = (float) g;
 		} else {
@@ -315,7 +349,8 @@ public class Vertex extends Vertex3d {
 			}
 		}
 	}
-	public void setB(double b) {
+
+	public void setB(final double b) {
 		if ((getFormat() & DIFFUSE_RGBA) != 0) {
 			diffuseColor.blue = (float) b;
 		} else {
@@ -324,7 +359,8 @@ public class Vertex extends Vertex3d {
 			}
 		}
 	}
-	public void setA(double a) {
+
+	public void setA(final double a) {
 		if ((getFormat() & DIFFUSE_RGBA) != 0) {
 			diffuseColor.alpha = (float) a;
 		} else {
@@ -336,17 +372,21 @@ public class Vertex extends Vertex3d {
 
 	@Override
 	public String toString() {
-		return "edu.cmu.cs.stage3.alice.scenegraph.Vertex[format=" + getFormat() + ",x=" + getX() + ",y=" + getY() + ",z=" + getZ() + ",i=" + getI() + ",j=" + getJ() + ",k=" + getK() + ",u=" + getU() + ",v=" + getV() + ",r=" + getR() + ",g=" + getG() + ",b=" + getB() + ",a=" + getA() + "]";
+		return "edu.cmu.cs.stage3.alice.scenegraph.Vertex[format=" + getFormat() + ",x=" + getX() + ",y=" + getY()
+				+ ",z=" + getZ() + ",i=" + getI() + ",j=" + getJ() + ",k=" + getK() + ",u=" + getU() + ",v=" + getV()
+				+ ",r=" + getR() + ",g=" + getG() + ",b=" + getB() + ",a=" + getA() + "]";
 	}
-	public static Vertex valueOf(String s) {
-		String[] markers = {"edu.cmu.cs.stage3.alice.scenegraph.Vertex[format=", ",x=", ",y=", ",z=", ",z=", ",i=", ",j=", ",k=", ",u=", ",v=", ",r=", ",g=", ",b=", ",a=", "]"};
-		double[] values = new double[markers.length - 1];
+
+	public static Vertex valueOf(final String s) {
+		final String[] markers = { "edu.cmu.cs.stage3.alice.scenegraph.Vertex[format=", ",x=", ",y=", ",z=", ",z=",
+				",i=", ",j=", ",k=", ",u=", ",v=", ",r=", ",g=", ",b=", ",a=", "]" };
+		final double[] values = new double[markers.length - 1];
 		for (int i = 0; i < values.length; i++) {
-			int begin = s.indexOf(markers[i]) + markers[i].length();
-			int end = s.indexOf(markers[i + 1]);
+			final int begin = s.indexOf(markers[i]) + markers[i].length();
+			final int end = s.indexOf(markers[i + 1]);
 			values[i] = Double.valueOf(s.substring(begin, end)).doubleValue();
 		}
-		Vertex v = new Vertex((int) values[0]);
+		final Vertex v = new Vertex((int) values[0]);
 		v.setX(values[1]);
 		v.setY(values[2]);
 		v.setZ(values[3]);

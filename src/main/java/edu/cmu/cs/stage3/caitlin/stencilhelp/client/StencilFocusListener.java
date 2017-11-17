@@ -5,5 +5,6 @@ import java.util.EventListener;
 public interface StencilFocusListener extends EventListener {
 
 	public void focusGained();
+
 	public void focusLost();
 }

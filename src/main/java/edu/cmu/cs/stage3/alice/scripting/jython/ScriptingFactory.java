@@ -27,32 +27,33 @@ package edu.cmu.cs.stage3.alice.scripting.jython;
  * @author Dennis Cosgrove
  */
 public class ScriptingFactory implements edu.cmu.cs.stage3.alice.scripting.ScriptingFactory {
-	private java.util.Vector m_interpreters = new java.util.Vector();
+	private final java.util.Vector m_interpreters = new java.util.Vector();
 	private Interpreter[] m_interpreterArray = null;
 
 	public ScriptingFactory() {
 		java.util.Properties preProperties;
 		try {
 			preProperties = System.getProperties();
-		} catch (java.security.AccessControlException ace) {
+		} catch (final java.security.AccessControlException ace) {
 			preProperties = new java.util.Properties();
 			preProperties.setProperty("python.home", System.getProperty("python.home"));
 		}
-		java.util.Properties postProperties = null;
-		String[] argv = {""};
+		final java.util.Properties postProperties = null;
+		final String[] argv = { "" };
 		org.python.core.PySystemState.initialize(preProperties, postProperties, argv, null);
 
 		// todo: remove
-		org.python.core.PySystemState systemState = org.python.core.Py.getSystemState();
-		String pythonHome = preProperties.getProperty("python.home");
-		String pathname = pythonHome + "/lib/alice/__init__.py";
+		final org.python.core.PySystemState systemState = org.python.core.Py.getSystemState();
+		final String pythonHome = preProperties.getProperty("python.home");
+		final String pathname = pythonHome + "/lib/alice/__init__.py";
 		try {
-			java.io.File f = new java.io.File(pathname);
-			java.io.InputStream is = new java.io.FileInputStream(f.getAbsoluteFile());
-			java.io.BufferedReader br = new java.io.BufferedReader(new java.io.InputStreamReader(new java.io.BufferedInputStream(is)));
-			StringBuffer sb = new StringBuffer();
+			final java.io.File f = new java.io.File(pathname);
+			final java.io.InputStream is = new java.io.FileInputStream(f.getAbsoluteFile());
+			final java.io.BufferedReader br = new java.io.BufferedReader(
+					new java.io.InputStreamReader(new java.io.BufferedInputStream(is)));
+			final StringBuffer sb = new StringBuffer();
 			while (true) {
-				String s = br.readLine();
+				final String s = br.readLine();
 				if (s != null) {
 					sb.append(s);
 					sb.append('\n');
@@ -61,25 +62,30 @@ public class ScriptingFactory implements edu.cmu.cs.stage3.alice.scripting.Scrip
 				}
 			}
 			if (sb.length() > 0) {
-				String script = sb.substring(0, sb.length() - 1);
-				org.python.core.PyCode code = org.python.core.__builtin__.compile(script, "<jython-2.1/lib/alice/__init__.py>", "exec");
+				final String script = sb.substring(0, sb.length() - 1);
+				final org.python.core.PyCode code = org.python.core.__builtin__.compile(script,
+						"<jython-2.1/lib/alice/__init__.py>", "exec");
 				org.python.core.Py.exec(code, systemState.builtins, systemState.builtins);
 			}
-		} catch (java.io.IOException ioe) {
+		} catch (final java.io.IOException ioe) {
 			throw new edu.cmu.cs.stage3.alice.core.ExceptionWrapper(ioe, "IOException attempting to load " + pathname);
 		}
 	}
+
 	@Override
 	public synchronized edu.cmu.cs.stage3.alice.scripting.Interpreter manufactureInterpreter() {
-		Interpreter interpreter = new Interpreter(this);
+		final Interpreter interpreter = new Interpreter(this);
 		m_interpreters.addElement(interpreter);
 		m_interpreterArray = null;
 		return interpreter;
 	}
-	/* package protected */synchronized void releaseInterpreter(edu.cmu.cs.stage3.alice.scripting.Interpreter interpreter) {
+
+	/* package protected */synchronized void releaseInterpreter(
+			final edu.cmu.cs.stage3.alice.scripting.Interpreter interpreter) {
 		m_interpreterArray = null;
 		m_interpreters.removeElement(interpreter);
 	}
+
 	@Override
 	public synchronized edu.cmu.cs.stage3.alice.scripting.Interpreter[] getInterpreters() {
 		if (m_interpreterArray == null) {
@@ -91,21 +97,25 @@ public class ScriptingFactory implements edu.cmu.cs.stage3.alice.scripting.Scrip
 
 	private java.io.OutputStream m_stdout = null;
 	private java.io.OutputStream m_stderr = null;
+
 	@Override
 	public java.io.OutputStream getStdOut() {
 		return m_stdout;
 	}
+
 	@Override
-	public void setStdOut(java.io.OutputStream stdout) {
+	public void setStdOut(final java.io.OutputStream stdout) {
 		m_stdout = stdout;
 		org.python.core.Py.getSystemState().stdout = new org.python.core.PyFile(stdout);
 	}
+
 	@Override
 	public java.io.OutputStream getStdErr() {
 		return m_stderr;
 	}
+
 	@Override
-	public void setStdErr(java.io.OutputStream stderr) {
+	public void setStdErr(final java.io.OutputStream stderr) {
 		m_stderr = stderr;
 		org.python.core.Py.getSystemState().stderr = new org.python.core.PyFile(stderr);
 	}

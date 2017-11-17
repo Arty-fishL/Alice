@@ -39,12 +39,13 @@ public class Variable extends Expression {
 	public Class getValueClass() {
 		return (Class) valueClass.getValue();
 	}
+
 	// todo
-	protected void valueClassValueChanging(Class clsToBe) {
+	protected void valueClassValueChanging(final Class clsToBe) {
 		if (clsToBe != null) {
-			Object o = value.getValue();
+			final Object o = value.getValue();
 			if (o instanceof Expression) {
-				Expression expression = (Expression) o;
+				final Expression expression = (Expression) o;
 				if (clsToBe.isAssignableFrom(expression.getValueClass())) {
 					value.setOverrideValueClass(clsToBe);
 				} else {
@@ -69,8 +70,9 @@ public class Variable extends Expression {
 			value.setOverrideValueClass(null);
 		}
 	}
+
 	// todo
-	protected void valueValueChanging(Object o) {
+	protected void valueValueChanging(final Object o) {
 		if (Element.s_isLoading) {
 			// pass
 		} else {
@@ -78,41 +80,44 @@ public class Variable extends Expression {
 				// pass
 			} else {
 				if (o instanceof Expression) {
-					Expression expression = (Expression) o;
-					Class cls = expression.getValueClass();
-					Class valueCls = (Class) valueClass.getValue();
+					final Expression expression = (Expression) o;
+					final Class cls = expression.getValueClass();
+					final Class valueCls = (Class) valueClass.getValue();
 					if (valueCls == null) {
 						// pass
 					} else {
 						if (valueCls.isAssignableFrom(cls)) {
 							// pass
 						} else {
-							throw new RuntimeException(o + " is not an instance of " + valueClass + ".  it is an instance of " + cls);
+							throw new RuntimeException(
+									o + " is not an instance of " + valueClass + ".  it is an instance of " + cls);
 						}
 					}
 
 				} else {
-					Class cls = o.getClass();
-					Class valueCls = (Class) valueClass.getValue();
+					final Class cls = o.getClass();
+					final Class valueCls = (Class) valueClass.getValue();
 					if (valueCls == null) {
 						// pass
 					} else {
 						if (valueCls.isAssignableFrom(cls)) {
 							// pass
 						} else {
-							throw new RuntimeException(o + " is not an instance of " + valueClass + ".  it is an instance of " + cls);
+							throw new RuntimeException(
+									o + " is not an instance of " + valueClass + ".  it is an instance of " + cls);
 						}
 					}
 				}
 			}
 		}
 	}
-	protected void valueValueChanged(Object o) {
+
+	protected void valueValueChanged(final Object o) {
 		onExpressionChange();
 	}
 
 	@Override
-	protected void propertyChanging(Property property, Object o) {
+	protected void propertyChanging(final Property property, final Object o) {
 		if (property == value) {
 			valueValueChanging(o);
 		} else if (property == valueClass) {
@@ -123,7 +128,7 @@ public class Variable extends Expression {
 	}
 
 	@Override
-	protected void propertyChanged(Property property, Object o) {
+	protected void propertyChanged(final Property property, final Object o) {
 		if (property == value) {
 			valueValueChanged(o);
 		} else if (property == valueClass) {

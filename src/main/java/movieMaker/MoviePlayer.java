@@ -12,15 +12,15 @@ import javax.swing.JPanel;
 /**
  * Class that can play movies from multiple frames Copyright Georgia Institute
  * of Technology 2007
- * 
+ *
  * @author Barb Ericson ericson@cc.gatech.edu
  */
 public class MoviePlayer {
 
 	// /////////////// fields ///////////////////////////
 
-	private JFrame frame = new JFrame("Movie Player");
-	private JLabel frameLabel = new JLabel("No images yet!");
+	private final JFrame frame = new JFrame("Movie Player");
+	private final JLabel frameLabel = new JLabel("No images yet!");
 	private AnimationPanel animationPanel = null;
 	private String dir = null;
 
@@ -28,26 +28,26 @@ public class MoviePlayer {
 
 	/**
 	 * Constructor that takes a list of pictures
-	 * 
+	 *
 	 * @param pictureList
 	 *            the list of pictures to show
 	 */
-	public MoviePlayer(List pictureList) {
+	public MoviePlayer(final List pictureList) {
 		animationPanel = new AnimationPanel(pictureList);
-		Picture p = (Picture) pictureList.get(0);
-		String fileName = p.getFileName();
-		File f = new File(fileName);
+		final Picture p = (Picture) pictureList.get(0);
+		final String fileName = p.getFileName();
+		final File f = new File(fileName);
 		dir = f.getParent() + "/";
 		init();
 	}
 
 	/**
 	 * Constructor that takes a directory and shows a movie from it
-	 * 
+	 *
 	 * @param directory
 	 *            the directory with the frames
 	 */
-	public MoviePlayer(String directory) {
+	public MoviePlayer(final String directory) {
 		animationPanel = new AnimationPanel(directory);
 		dir = directory;
 		init();
@@ -59,7 +59,7 @@ public class MoviePlayer {
 	 */
 	public MoviePlayer() {
 		SimpleOutput.showInformation("Please pick a " + "directory that contains the JPEG frames");
-		String directory = FileChooser.pickADirectory();
+		final String directory = FileChooser.pickADirectory();
 		dir = directory;
 		animationPanel = new AnimationPanel(directory);
 		init();
@@ -98,16 +98,16 @@ public class MoviePlayer {
 
 	/**
 	 * Method to play the movie from the beginning
-	 * 
+	 *
 	 * @param framesPerSecond
 	 *            the number of frames to show per second
 	 */
-	public void playMovie(int framesPerSecond) {
+	public void playMovie(final int framesPerSecond) {
 		animationPanel.setFramesPerSec(framesPerSecond);
 		playMovie();
 	}
 
-	public void setFrameRate(int rate) {
+	public void setFrameRate(final int rate) {
 		animationPanel.setFramesPerSec(rate);
 	}
 
@@ -130,7 +130,7 @@ public class MoviePlayer {
 	 */
 	public void writeQuicktime() {
 
-		MovieWriter writer = new MovieWriter(animationPanel.getFramesPerSec(), dir);
+		final MovieWriter writer = new MovieWriter(animationPanel.getFramesPerSec(), dir);
 		writer.writeQuicktime();
 	}
 
@@ -138,17 +138,17 @@ public class MoviePlayer {
 	 * Method to write out the movie frames as a Quicktime movie
 	 */
 	public void writeAVI() {
-		MovieWriter writer = new MovieWriter(animationPanel.getFramesPerSec(), dir);
+		final MovieWriter writer = new MovieWriter(animationPanel.getFramesPerSec(), dir);
 		writer.writeAVI();
 	}
 
 	/**
 	 * Method to add a picture to the movie
-	 * 
+	 *
 	 * @param picture
 	 *            the picture to add
 	 */
-	public void addPicture(Picture picture) {
+	public void addPicture(final Picture picture) {
 		animationPanel.add(picture);
 		showNext();
 	}
@@ -159,15 +159,15 @@ public class MoviePlayer {
 	private void init() {
 		// frame.setAlwaysOnTop(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Container container = frame.getContentPane();
+		final Container container = frame.getContentPane();
 		container.setLayout(new BorderLayout());
-		JPanel buttonPanel = new JPanel();
+		final JPanel buttonPanel = new JPanel();
 
 		// add the animation panel
 		container.add(animationPanel, BorderLayout.CENTER);
 
 		// add the frame label to the north
-		JPanel labelPanel = new JPanel();
+		final JPanel labelPanel = new JPanel();
 		labelPanel.add(frameLabel);
 		container.add(labelPanel, BorderLayout.NORTH);
 
@@ -183,16 +183,16 @@ public class MoviePlayer {
 
 	/**
 	 * Method to set the visibility of the frame
-	 * 
+	 *
 	 * @param flag
 	 *            the visibility of the frame
 	 */
-	public void setVisible(boolean flag) {
+	public void setVisible(final boolean flag) {
 		frame.setVisible(flag);
 	}
 
-	public static void main(String[] args) {
-		MoviePlayer moviePlayer = new MoviePlayer();
+	public static void main(final String[] args) {
+		final MoviePlayer moviePlayer = new MoviePlayer();
 		// new MoviePlayer("c:/temp/movie4/");
 		moviePlayer.playMovie(16);
 	}

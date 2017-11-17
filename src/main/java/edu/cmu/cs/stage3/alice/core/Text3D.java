@@ -43,7 +43,7 @@ public class Text3D extends Model {
 	public final NumberProperty curvature = new NumberProperty(this, "curvature", new Integer(2));
 
 	public void create3DTextGeometry() {
-		edu.cmu.cs.stage3.alice.core.geometry.Text3D geom = new edu.cmu.cs.stage3.alice.core.geometry.Text3D();
+		final edu.cmu.cs.stage3.alice.core.geometry.Text3D geom = new edu.cmu.cs.stage3.alice.core.geometry.Text3D();
 		geom.curvature.set(curvature.get());
 		geom.font.set(font.get());
 		geom.text.set(text.get());
@@ -52,8 +52,9 @@ public class Text3D extends Model {
 	}
 
 	@Override
-	protected void propertyChanged(edu.cmu.cs.stage3.alice.core.Property property, Object value) {
-		if (geometry.getGeometryValue() != null && geometry.getGeometryValue() instanceof edu.cmu.cs.stage3.alice.core.geometry.Text3D) {
+	protected void propertyChanged(final edu.cmu.cs.stage3.alice.core.Property property, final Object value) {
+		if (geometry.getGeometryValue() != null
+				&& geometry.getGeometryValue() instanceof edu.cmu.cs.stage3.alice.core.geometry.Text3D) {
 			if (property == text) {
 				((edu.cmu.cs.stage3.alice.core.geometry.Text3D) geometry.getGeometryValue()).text.set(value);
 			} else if (property == font) {
@@ -71,7 +72,7 @@ public class Text3D extends Model {
 	}
 
 	@Override
-	protected void propertyChanging(edu.cmu.cs.stage3.alice.core.Property property, Object value) {
+	protected void propertyChanging(final edu.cmu.cs.stage3.alice.core.Property property, final Object value) {
 		if (property == geometry && value != null && !(value instanceof edu.cmu.cs.stage3.alice.core.geometry.Text3D)) {
 			throw new java.lang.ClassCastException("A 3D text model's geometry must be a 3D text geometry");
 		} else {

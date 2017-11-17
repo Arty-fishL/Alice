@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -39,12 +39,16 @@ import javax.swing.JTextArea;
 
 /**
  * @author Jason Pratt, David Culyba
- * 
+ *
  *         To change the template for this generated type comment go to
  *         Window>Preferences>Java>Code Generation>Code and Comments
  */
 public abstract class AliceAlertContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 370925053551342588L;
 	public final static int LESS_DETAIL_MODE = 0;
 	public final static int MORE_DETAIL_MODE = 1;
 
@@ -64,12 +68,12 @@ public abstract class AliceAlertContentPane extends edu.cmu.cs.stage3.swing.Cont
 	}
 
 	@Override
-	public void preDialogShow(javax.swing.JDialog dialog) {
+	public void preDialogShow(final javax.swing.JDialog dialog) {
 		super.preDialogShow(dialog);
 	}
 
 	@Override
-	public void postDialogShow(javax.swing.JDialog dialog) {
+	public void postDialogShow(final javax.swing.JDialog dialog) {
 		super.postDialogShow(dialog);
 	}
 
@@ -79,7 +83,7 @@ public abstract class AliceAlertContentPane extends edu.cmu.cs.stage3.swing.Cont
 	}
 
 	@Override
-	public void addOKActionListener(java.awt.event.ActionListener l) {
+	public void addOKActionListener(final java.awt.event.ActionListener l) {
 		cancelButton.addActionListener(l);
 	}
 
@@ -91,7 +95,7 @@ public abstract class AliceAlertContentPane extends edu.cmu.cs.stage3.swing.Cont
 		addComponentListener(new java.awt.event.ComponentAdapter() {
 
 			@Override
-			public void componentResized(java.awt.event.ComponentEvent e) {
+			public void componentResized(final java.awt.event.ComponentEvent e) {
 				if (mode == LESS_DETAIL_MODE) {
 					smallSize = AliceAlertContentPane.this.getSize();
 				} else if (mode == MORE_DETAIL_MODE) {
@@ -110,13 +114,13 @@ public abstract class AliceAlertContentPane extends edu.cmu.cs.stage3.swing.Cont
 	 * ) ); } else { buttonPanel.remove( submitBugButton ); } } }
 	 */
 
-	public void setMessage(String message) {
+	public void setMessage(final String message) {
 		messageLabel.setText(message);
 	}
 
 	@Override
 	public java.awt.Dimension getPreferredSize() {
-		java.awt.Dimension preferredSize = super.getPreferredSize();
+		final java.awt.Dimension preferredSize = super.getPreferredSize();
 		// if( mode == LESS_DETAIL_MODE) {
 		// return smallSize;
 		// } else if ( mode == MORE_DETAIL_MODE){
@@ -142,6 +146,7 @@ public abstract class AliceAlertContentPane extends edu.cmu.cs.stage3.swing.Cont
 		buttonConstraints.gridx++;
 		buttonPanel.add(detailButton, buttonConstraints);
 	}
+
 	protected void setMoreDetail() {
 		detailButton.setText("Less Detail <<");
 		this.remove(detailPanel);
@@ -161,7 +166,7 @@ public abstract class AliceAlertContentPane extends edu.cmu.cs.stage3.swing.Cont
 		buttonPanel.add(detailButton, buttonConstraints);
 	}
 
-	protected void handleModeSwitch(int mode) {
+	protected void handleModeSwitch(final int mode) {
 		if (mode == LESS_DETAIL_MODE) {
 			setLessDetail();
 		} else if (mode == MORE_DETAIL_MODE) {
@@ -171,7 +176,7 @@ public abstract class AliceAlertContentPane extends edu.cmu.cs.stage3.swing.Cont
 		}
 	}
 
-	public void setMode(int mode) {
+	public void setMode(final int mode) {
 		if (this.mode != mode) {
 			this.mode = mode;
 			handleModeSwitch(mode);
@@ -206,7 +211,7 @@ public abstract class AliceAlertContentPane extends edu.cmu.cs.stage3.swing.Cont
 	/*
 	 * protected void submitBug() { String stacktraceID = postStacktrace();
 	 * String urlString = "http://alice.org/bugreport/submit.php";
-	 * 
+	 *
 	 * try { // String version = java.net.URLEncoder.encode(
 	 * edu.cmu.cs.stage3.alice.authoringtool.JAlice.getVersion(), "UTF-8" );
 	 * String version = java.net.URLEncoder.encode(
@@ -226,8 +231,8 @@ public abstract class AliceAlertContentPane extends edu.cmu.cs.stage3.swing.Cont
 
 	protected String postStacktrace() {
 		try {
-			java.net.URL url = new java.net.URL("http://www.alice.org/bugreport/stacktrace.php");
-			java.net.URLConnection connection = url.openConnection();
+			final java.net.URL url = new java.net.URL("http://www.alice.org/bugreport/stacktrace.php");
+			final java.net.URLConnection connection = url.openConnection();
 			connection.setDoInput(true);
 			connection.setDoOutput(true);
 			connection.setUseCaches(false);
@@ -236,37 +241,42 @@ public abstract class AliceAlertContentPane extends edu.cmu.cs.stage3.swing.Cont
 			String stacktrace = java.net.URLEncoder.encode(detailTextPane.getText());
 			while (stacktrace.indexOf("%0D") > -1) { // delete the carriage
 														// returns
-				int i = stacktrace.indexOf("%0D");
+				final int i = stacktrace.indexOf("%0D");
 				stacktrace = stacktrace.substring(0, i) + stacktrace.substring(i + 3);
 			}
-			String content = "stacktrace=" + stacktrace;
-			java.io.DataOutputStream output = new java.io.DataOutputStream(new java.io.BufferedOutputStream(connection.getOutputStream()));
+			final String content = "stacktrace=" + stacktrace;
+			final java.io.DataOutputStream output = new java.io.DataOutputStream(
+					new java.io.BufferedOutputStream(connection.getOutputStream()));
 			output.writeBytes(content);
 			output.flush();
 			output.close();
 
 			// must open input stream after output stream is closed in order for
 			// the data to be posted
-			java.io.BufferedReader input = new java.io.BufferedReader(new java.io.InputStreamReader(connection.getInputStream()));
-			String stacktraceIDString = input.readLine();
+			final java.io.BufferedReader input = new java.io.BufferedReader(
+					new java.io.InputStreamReader(connection.getInputStream()));
+			final String stacktraceIDString = input.readLine();
 			input.close();
 			return stacktraceIDString;
-		} catch (Throwable t) {
-			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Error posting stacktrace to bug database.", t);
+		} catch (final Throwable t) {
+			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+					.showErrorDialog("Error posting stacktrace to bug database.", t);
 			return "0";
 		}
 	}
 
 	protected void copyDetailText() {
-		String detailText = detailTextPane.getText();
-		java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().setContents(new java.awt.datatransfer.StringSelection(detailText), edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack());
+		final String detailText = detailTextPane.getText();
+		java.awt.Toolkit.getDefaultToolkit().getSystemClipboard().setContents(
+				new java.awt.datatransfer.StringSelection(detailText),
+				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack());
 	}
 
 	// /////////////
 	// Callbacks
 	// /////////////
 
-	void detailButton_actionPerformed(ActionEvent e) {
+	void detailButton_actionPerformed(final ActionEvent e) {
 		toggleMode();
 	}
 
@@ -274,7 +284,7 @@ public abstract class AliceAlertContentPane extends edu.cmu.cs.stage3.swing.Cont
 	 * void submitBugButton_actionPerformed(ActionEvent e) { submitBug(); }
 	 */
 
-	void copyButton_actionPerformed(ActionEvent e) {
+	void copyButton_actionPerformed(final ActionEvent e) {
 		copyDetailText();
 	}
 
@@ -293,8 +303,10 @@ public abstract class AliceAlertContentPane extends edu.cmu.cs.stage3.swing.Cont
 	protected JButton cancelButton = new JButton();
 	protected JButton detailButton = new JButton();
 
-	protected GridBagConstraints buttonConstraints = new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0);
-	protected GridBagConstraints glueConstraints = new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0);
+	protected GridBagConstraints buttonConstraints = new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+			GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0);
+	protected GridBagConstraints glueConstraints = new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0,
+			GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0);
 	protected Component buttonGlue;
 
 	private void jbInit() {
@@ -316,7 +328,7 @@ public abstract class AliceAlertContentPane extends edu.cmu.cs.stage3.swing.Cont
 		detailButton.setText("More Detail >>");
 		detailButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				detailButton_actionPerformed(e);
 			}
 		});
@@ -329,7 +341,7 @@ public abstract class AliceAlertContentPane extends edu.cmu.cs.stage3.swing.Cont
 		copyButton.setText("Copy Error to Clipboard");
 		copyButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				copyButton_actionPerformed(e);
 			}
 		});
@@ -342,7 +354,8 @@ public abstract class AliceAlertContentPane extends edu.cmu.cs.stage3.swing.Cont
 		buttonPanel.setBorder(BorderFactory.createEmptyBorder(6, 0, 0, 0));
 		buttonPanel.setLayout(new GridBagLayout());
 
-		java.net.URL errorImageResources = edu.cmu.cs.stage3.alice.authoringtool.JAlice.class.getResource("images/errorDialogueIcon.png");
+		final java.net.URL errorImageResources = edu.cmu.cs.stage3.alice.authoringtool.JAlice.class
+				.getResource("images/errorDialogueIcon.png");
 		errorIconPanel.setImage(java.awt.Toolkit.getDefaultToolkit().createImage(errorImageResources));
 		messagePanel.add(errorIconPanel, java.awt.BorderLayout.WEST);
 		messagePanel.add(messageLabel, BorderLayout.CENTER);

@@ -34,40 +34,47 @@ public class BoxDecorator extends edu.cmu.cs.stage3.alice.core.Decorator {
 	public edu.cmu.cs.stage3.alice.core.ReferenceFrame getReferenceFrame() {
 		return m_referenceFrame;
 	}
-	public void setReferenceFrame(edu.cmu.cs.stage3.alice.core.ReferenceFrame referenceFrame) {
+
+	public void setReferenceFrame(final edu.cmu.cs.stage3.alice.core.ReferenceFrame referenceFrame) {
 		m_referenceFrame = referenceFrame;
 	}
+
 	public double getWidth() {
 		return m_width;
 	}
-	public void setWidth(double width) {
+
+	public void setWidth(final double width) {
 		m_width = width;
 		markDirty();
 	}
+
 	public double getHeight() {
 		return m_height;
 	}
-	public void setHeight(double height) {
+
+	public void setHeight(final double height) {
 		m_height = height;
 		markDirty();
 	}
+
 	public double getDepth() {
 		return m_depth;
 	}
-	public void setDepth(double depth) {
+
+	public void setDepth(final double depth) {
 		m_depth = depth;
 		markDirty();
 	}
 
 	@Override
-	public void internalRelease(int pass) {
+	public void internalRelease(final int pass) {
 		switch (pass) {
-			case 2 :
-				if (m_sgLineArray != null) {
-					m_sgLineArray.release();
-					m_sgLineArray = null;
-				}
-				break;
+		case 2:
+			if (m_sgLineArray != null) {
+				m_sgLineArray.release();
+				m_sgLineArray = null;
+			}
+			break;
 		}
 		super.internalRelease(pass);
 	}
@@ -83,19 +90,27 @@ public class BoxDecorator extends edu.cmu.cs.stage3.alice.core.Decorator {
 			requiresVerticesToBeUpdated = true;
 		}
 		if (requiresVerticesToBeUpdated) {
-			edu.cmu.cs.stage3.alice.scenegraph.Color color = edu.cmu.cs.stage3.alice.scenegraph.Color.YELLOW;
-			edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[] vertices = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[24];
-			javax.vecmath.Vector3d min = new javax.vecmath.Vector3d(-m_width / 2, 0, -m_depth / 2);
-			javax.vecmath.Vector3d max = new javax.vecmath.Vector3d(m_width / 2, m_height, m_depth / 2);
-			edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[] vs = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[8];
-			vs[0] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(min.x, min.y, min.z), null, color, null, null);
-			vs[1] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(min.x, min.y, max.z), null, color, null, null);
-			vs[2] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(max.x, min.y, max.z), null, color, null, null);
-			vs[3] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(max.x, min.y, min.z), null, color, null, null);
-			vs[4] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(min.x, max.y, min.z), null, color, null, null);
-			vs[5] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(min.x, max.y, max.z), null, color, null, null);
-			vs[6] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(max.x, max.y, max.z), null, color, null, null);
-			vs[7] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(max.x, max.y, min.z), null, color, null, null);
+			final edu.cmu.cs.stage3.alice.scenegraph.Color color = edu.cmu.cs.stage3.alice.scenegraph.Color.YELLOW;
+			final edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[] vertices = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[24];
+			final javax.vecmath.Vector3d min = new javax.vecmath.Vector3d(-m_width / 2, 0, -m_depth / 2);
+			final javax.vecmath.Vector3d max = new javax.vecmath.Vector3d(m_width / 2, m_height, m_depth / 2);
+			final edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[] vs = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[8];
+			vs[0] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(min.x, min.y, min.z),
+					null, color, null, null);
+			vs[1] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(min.x, min.y, max.z),
+					null, color, null, null);
+			vs[2] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(max.x, min.y, max.z),
+					null, color, null, null);
+			vs[3] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(max.x, min.y, min.z),
+					null, color, null, null);
+			vs[4] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(min.x, max.y, min.z),
+					null, color, null, null);
+			vs[5] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(min.x, max.y, max.z),
+					null, color, null, null);
+			vs[6] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(max.x, max.y, max.z),
+					null, color, null, null);
+			vs[7] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(max.x, max.y, min.z),
+					null, color, null, null);
 
 			int bottom = 0;
 			int top = 8;

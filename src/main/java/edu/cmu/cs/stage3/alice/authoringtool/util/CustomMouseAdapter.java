@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -39,7 +39,7 @@ public class CustomMouseAdapter extends java.awt.event.MouseAdapter {
 		return clickDistMargin;
 	}
 
-	public void setClickDistanceMargin(double dist) {
+	public void setClickDistanceMargin(final double dist) {
 		clickDistMargin = dist;
 	}
 
@@ -47,7 +47,7 @@ public class CustomMouseAdapter extends java.awt.event.MouseAdapter {
 		return clickTimeMargin;
 	}
 
-	public void setClickTimeMargin(long time) {
+	public void setClickTimeMargin(final long time) {
 		clickTimeMargin = time;
 	}
 
@@ -55,13 +55,13 @@ public class CustomMouseAdapter extends java.awt.event.MouseAdapter {
 		return multipleClickTimeMargin;
 	}
 
-	public void setMultipleClickTimeMargin(long time) {
+	public void setMultipleClickTimeMargin(final long time) {
 		multipleClickTimeMargin = time;
 	}
 
 	@Override
-	public void mousePressed(java.awt.event.MouseEvent ev) {
-		long dt = System.currentTimeMillis() - pressTime;
+	public void mousePressed(final java.awt.event.MouseEvent ev) {
+		final long dt = System.currentTimeMillis() - pressTime;
 		if (dt > multipleClickTimeMargin) {
 			clickCount = 0;
 		}
@@ -76,15 +76,15 @@ public class CustomMouseAdapter extends java.awt.event.MouseAdapter {
 	}
 
 	@Override
-	public void mouseReleased(java.awt.event.MouseEvent ev) {
+	public void mouseReleased(final java.awt.event.MouseEvent ev) {
 		if (ev.isPopupTrigger()) {
 			popupResponse(ev);
 		} else {
 			mouseUpResponse(ev);
 		}
 
-		double dist = pressPoint.distance(ev.getPoint());
-		long dt = System.currentTimeMillis() - pressTime;
+		final double dist = pressPoint.distance(ev.getPoint());
+		final long dt = System.currentTimeMillis() - pressTime;
 		if (dist < clickDistMargin && dt < clickTimeMargin) {
 			clickCount++;
 			if (clickCount == 1) {
@@ -97,16 +97,21 @@ public class CustomMouseAdapter extends java.awt.event.MouseAdapter {
 		}
 	}
 
-	protected void singleClickResponse(java.awt.event.MouseEvent ev) {
+	protected void singleClickResponse(final java.awt.event.MouseEvent ev) {
 	}
-	protected void doubleClickResponse(java.awt.event.MouseEvent ev) {
+
+	protected void doubleClickResponse(final java.awt.event.MouseEvent ev) {
 	}
-	protected void tripleClickResponse(java.awt.event.MouseEvent ev) {
+
+	protected void tripleClickResponse(final java.awt.event.MouseEvent ev) {
 	}
-	protected void mouseUpResponse(java.awt.event.MouseEvent ev) {
+
+	protected void mouseUpResponse(final java.awt.event.MouseEvent ev) {
 	}
-	protected void mouseDownResponse(java.awt.event.MouseEvent ev) {
+
+	protected void mouseDownResponse(final java.awt.event.MouseEvent ev) {
 	}
-	protected void popupResponse(java.awt.event.MouseEvent ev) {
+
+	protected void popupResponse(final java.awt.event.MouseEvent ev) {
 	}
 }

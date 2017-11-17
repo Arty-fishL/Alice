@@ -10,15 +10,18 @@ import edu.cmu.cs.stage3.math.Matrix33;
 
 /**
  * @author caitlin
- * 
+ *
  *         To change the template for this generated type comment go to
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class WalkToAnimation extends AbstractWalkAnimation {
 
-	public final edu.cmu.cs.stage3.alice.core.property.SpatialRelationProperty spatialRelation = new edu.cmu.cs.stage3.alice.core.property.SpatialRelationProperty(this, "spatialRelation", edu.cmu.cs.stage3.alice.core.SpatialRelation.IN_FRONT_OF);
-	public final edu.cmu.cs.stage3.alice.core.property.NumberProperty amount = new edu.cmu.cs.stage3.alice.core.property.NumberProperty(this, "amount", new Double(1));
-	public final edu.cmu.cs.stage3.alice.core.property.ReferenceFrameProperty asSeenBy = new edu.cmu.cs.stage3.alice.core.property.ReferenceFrameProperty(this, "target", null);
+	public final edu.cmu.cs.stage3.alice.core.property.SpatialRelationProperty spatialRelation = new edu.cmu.cs.stage3.alice.core.property.SpatialRelationProperty(
+			this, "spatialRelation", edu.cmu.cs.stage3.alice.core.SpatialRelation.IN_FRONT_OF);
+	public final edu.cmu.cs.stage3.alice.core.property.NumberProperty amount = new edu.cmu.cs.stage3.alice.core.property.NumberProperty(
+			this, "amount", new Double(1));
+	public final edu.cmu.cs.stage3.alice.core.property.ReferenceFrameProperty asSeenBy = new edu.cmu.cs.stage3.alice.core.property.ReferenceFrameProperty(
+			this, "target", null);
 
 	public class RuntimeWalkToAnimation extends RuntimeAbstractWalkAnimation {
 
@@ -49,31 +52,34 @@ public class WalkToAnimation extends AbstractWalkAnimation {
 				m_subjectBoundingBox = subject.getBoundingBox();
 
 				if (m_subjectBoundingBox.getMaximum() == null) {
-					m_subjectBoundingBox = new edu.cmu.cs.stage3.math.Box(subject.getPosition(subject), subject.getPosition(subject));
+					m_subjectBoundingBox = new edu.cmu.cs.stage3.math.Box(subject.getPosition(subject),
+							subject.getPosition(subject));
 				}
 			}
 			if (m_asSeenByBoundingBox == null) {
 				m_asSeenByBoundingBox = m_asSeenBy.getBoundingBox();
 
 				if (m_asSeenByBoundingBox.getMaximum() == null) {
-					m_asSeenByBoundingBox = new edu.cmu.cs.stage3.math.Box(m_asSeenBy.getPosition(m_asSeenBy), m_asSeenBy.getPosition(m_asSeenBy));
+					m_asSeenByBoundingBox = new edu.cmu.cs.stage3.math.Box(m_asSeenBy.getPosition(m_asSeenBy),
+							m_asSeenBy.getPosition(m_asSeenBy));
 				}
 			}
-			edu.cmu.cs.stage3.alice.core.SpatialRelation sv = spatialRelation.getSpatialRelationValue();
-			javax.vecmath.Vector3d v = sv.getPlaceVector(amount.doubleValue(), m_subjectBoundingBox, m_asSeenByBoundingBox);
+			final edu.cmu.cs.stage3.alice.core.SpatialRelation sv = spatialRelation.getSpatialRelationValue();
+			final javax.vecmath.Vector3d v = sv.getPlaceVector(amount.doubleValue(), m_subjectBoundingBox,
+					m_asSeenByBoundingBox);
 			return v;
 		}
 
-		protected double getValueAtTime(double t) {
-			double ft = m_xHermite.evaluateDerivative(t);
-			double ht = m_zHermite.evaluateDerivative(t);
+		protected double getValueAtTime(final double t) {
+			final double ft = m_xHermite.evaluateDerivative(t);
+			final double ht = m_zHermite.evaluateDerivative(t);
 
 			return java.lang.Math.sqrt(ft * ft + ht * ht);
 		}
 
 		protected double getActualStepLength() {
 
-			double distanceToMove = getPathLength();
+			final double distanceToMove = getPathLength();
 
 			if (stepLength == -1) {
 				stepLength = getStepLength();
@@ -91,7 +97,7 @@ public class WalkToAnimation extends AbstractWalkAnimation {
 		}
 
 		@Override
-		public double getTimeRemaining(double t) {
+		public double getTimeRemaining(final double t) {
 			double walkTime = duration.doubleValue();
 			if (Double.isNaN(walkTime)) {
 				walkTime = numberOfSteps / WalkToAnimation.this.stepSpeed.doubleValue();
@@ -100,9 +106,9 @@ public class WalkToAnimation extends AbstractWalkAnimation {
 		}
 
 		protected double getPathLength() {
-			double x1s = getValueAtTime(0.0) + getValueAtTime(1.0);
+			final double x1s = getValueAtTime(0.0) + getValueAtTime(1.0);
 
-			double h = 0.1;
+			final double h = 0.1;
 
 			double startT = h;
 			double x4s = 0.0;
@@ -130,7 +136,7 @@ public class WalkToAnimation extends AbstractWalkAnimation {
 		}
 
 		@Override
-		public void prologue(double t) {
+		public void prologue(final double t) {
 
 			beginEqualsEnd = false;
 			done = false;
@@ -138,64 +144,73 @@ public class WalkToAnimation extends AbstractWalkAnimation {
 			subject = WalkToAnimation.this.subject.getTransformableValue();
 			m_asSeenBy = asSeenBy.getReferenceFrameValue();
 
-			edu.cmu.cs.stage3.math.Matrix44 asSeenByTrans = m_asSeenBy.getTransformation(subject.getWorld());
+			final edu.cmu.cs.stage3.math.Matrix44 asSeenByTrans = m_asSeenBy.getTransformation(subject.getWorld());
 			((edu.cmu.cs.stage3.alice.core.Transformable) m_asSeenBy).standUpRightNow(subject.getWorld());
 
 			m_transformationBegin = subject.getTransformation(m_asSeenBy);
 
 			if (m_asSeenBy == null) {
-				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException(subject.name.getStringValue() + " needs something or someone to walk to.", null, asSeenBy);
+				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException(
+						subject.name.getStringValue() + " needs something or someone to walk to.", null, asSeenBy);
 			}
 			if (subject == m_asSeenBy) {
-				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException(subject.name.getStringValue() + " can't walk to " + subject.name.getStringValue() + ".", getCurrentStack(), asSeenBy);
+				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException(
+						subject.name.getStringValue() + " can't walk to " + subject.name.getStringValue() + ".",
+						getCurrentStack(), asSeenBy);
 			}
 
 			if (subject.isAncestorOf(m_asSeenBy)) {
-				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException(subject.name.getStringValue() + " can't walk to a part of itself", getCurrentStack(), asSeenBy);
+				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException(
+						subject.name.getStringValue() + " can't walk to a part of itself", getCurrentStack(), asSeenBy);
 			}
 
 			// find end transformation
-			javax.vecmath.Vector3d posAbs = getPositionEnd();
-			javax.vecmath.Vector3d curPos = subject.getPosition();
+			final javax.vecmath.Vector3d posAbs = getPositionEnd();
+			final javax.vecmath.Vector3d curPos = subject.getPosition();
 			subject.setPositionRightNow(posAbs, m_asSeenBy);
 
 			// javax.vecmath.Matrix3d paMatrix =
 			// subject.calculatePointAt(m_asSeenBy, null, new
 			// javax.vecmath.Vector3d(0,1,0), null, true);
-			javax.vecmath.Matrix3d paMatrix = subject.calculatePointAt(m_asSeenBy, null, new javax.vecmath.Vector3d(0, 1, 0), m_asSeenBy, true);
+			final javax.vecmath.Matrix3d paMatrix = subject.calculatePointAt(m_asSeenBy, null,
+					new javax.vecmath.Vector3d(0, 1, 0), m_asSeenBy, true);
 			subject.setPositionRightNow(curPos);
 
-			javax.vecmath.Matrix4d pov = asSeenBy.getReferenceFrameValue().getPointOfView();
+			final javax.vecmath.Matrix4d pov = asSeenBy.getReferenceFrameValue().getPointOfView();
 			pov.set(paMatrix);
 			pov.setRow(3, posAbs.x, posAbs.y, posAbs.z, 1.0);
 
 			m_transformationEnd = new edu.cmu.cs.stage3.math.Matrix44(pov);
 
-			double dx = m_transformationBegin.m30 - m_transformationEnd.m30;
-			double dy = m_transformationBegin.m31 - m_transformationEnd.m31;
-			double dz = m_transformationBegin.m32 - m_transformationEnd.m32;
-			double distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
-			double s = distance;
+			final double dx = m_transformationBegin.m30 - m_transformationEnd.m30;
+			final double dy = m_transformationBegin.m31 - m_transformationEnd.m31;
+			final double dz = m_transformationBegin.m32 - m_transformationEnd.m32;
+			final double distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+			final double s = distance;
 
-			m_xHermite = new edu.cmu.cs.stage3.math.HermiteCubic(m_transformationBegin.m30, m_transformationEnd.m30, m_transformationBegin.m20 * s, m_transformationEnd.m20 * s);
-			m_yHermite = new edu.cmu.cs.stage3.math.HermiteCubic(m_transformationBegin.m31, m_transformationEnd.m31, m_transformationBegin.m21 * s, m_transformationEnd.m21 * s);
-			m_zHermite = new edu.cmu.cs.stage3.math.HermiteCubic(m_transformationBegin.m32, m_transformationEnd.m32, m_transformationBegin.m22 * s, m_transformationEnd.m22 * s);
+			m_xHermite = new edu.cmu.cs.stage3.math.HermiteCubic(m_transformationBegin.m30, m_transformationEnd.m30,
+					m_transformationBegin.m20 * s, m_transformationEnd.m20 * s);
+			m_yHermite = new edu.cmu.cs.stage3.math.HermiteCubic(m_transformationBegin.m31, m_transformationEnd.m31,
+					m_transformationBegin.m21 * s, m_transformationEnd.m21 * s);
+			m_zHermite = new edu.cmu.cs.stage3.math.HermiteCubic(m_transformationBegin.m32, m_transformationEnd.m32,
+					m_transformationBegin.m22 * s, m_transformationEnd.m22 * s);
 
 			super.prologue(t);
 			getActualStepLength();
 
-			((edu.cmu.cs.stage3.alice.core.Transformable) m_asSeenBy).setTransformationRightNow(asSeenByTrans, subject.getWorld());
+			((edu.cmu.cs.stage3.alice.core.Transformable) m_asSeenBy).setTransformationRightNow(asSeenByTrans,
+					subject.getWorld());
 
 		}
 
 		@Override
-		public void update(double t) {
+		public void update(final double t) {
 			if (getTimeRemaining(t) > 0) {
 
-				edu.cmu.cs.stage3.math.Matrix44 asSeenByTrans = m_asSeenBy.getTransformation(subject.getWorld());
+				final edu.cmu.cs.stage3.math.Matrix44 asSeenByTrans = m_asSeenBy.getTransformation(subject.getWorld());
 				((edu.cmu.cs.stage3.alice.core.Transformable) m_asSeenBy).standUpRightNow(subject.getWorld());
 
-				double portion = getTimeElapsed(t) / (getTimeElapsed(t) + getTimeRemaining(t));
+				final double portion = getTimeElapsed(t) / (getTimeElapsed(t) + getTimeRemaining(t));
 
 				if (portion <= 1.0) {
 					double x;
@@ -219,8 +234,9 @@ public class WalkToAnimation extends AbstractWalkAnimation {
 					dz = m_zHermite.evaluateDerivative(portion);
 
 					if (!(dx == 0 && dy == 0 && dz == 0)) {
-						Matrix33 orient = new Matrix33();
-						orient.setForwardUpGuide(new javax.vecmath.Vector3d(dx, dy, dz), new javax.vecmath.Vector3d(0, 1, 0));
+						final Matrix33 orient = new Matrix33();
+						orient.setForwardUpGuide(new javax.vecmath.Vector3d(dx, dy, dz),
+								new javax.vecmath.Vector3d(0, 1, 0));
 						// System.out.println(m_asSeenBy);
 						subject.setOrientationRightNow(orient, m_asSeenBy);
 						// subject.s
@@ -264,7 +280,8 @@ public class WalkToAnimation extends AbstractWalkAnimation {
 
 					super.update(t);
 				}
-				((edu.cmu.cs.stage3.alice.core.Transformable) m_asSeenBy).setTransformationRightNow(asSeenByTrans, subject.getWorld());
+				((edu.cmu.cs.stage3.alice.core.Transformable) m_asSeenBy).setTransformationRightNow(asSeenByTrans,
+						subject.getWorld());
 			}
 		}
 

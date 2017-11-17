@@ -1,22 +1,26 @@
 package edu.cmu.cs.stage3.media.jmfmedia;
 
-class ByteArraySeekablePullSourceStream implements javax.media.protocol.PullSourceStream, javax.media.protocol.Seekable {
-	private static final javax.media.protocol.ContentDescriptor RAW_CONTENT_DISCRIPTOR = new javax.media.protocol.ContentDescriptor(javax.media.protocol.ContentDescriptor.RAW);
-	private byte[] m_data;
+class ByteArraySeekablePullSourceStream
+		implements javax.media.protocol.PullSourceStream, javax.media.protocol.Seekable {
+	private static final javax.media.protocol.ContentDescriptor RAW_CONTENT_DISCRIPTOR = new javax.media.protocol.ContentDescriptor(
+			javax.media.protocol.ContentDescriptor.RAW);
+	private final byte[] m_data;
 	private long m_location;
-	private long m_size;
-	public ByteArraySeekablePullSourceStream(byte[] data) {
+	private final long m_size;
+
+	public ByteArraySeekablePullSourceStream(final byte[] data) {
 		m_data = data;
 		m_location = 0;
 		m_size = data.length;
 	}
+
 	@Override
-	public int read(byte[] buffer, int offset, int length) throws java.io.IOException {
-		long bytesLeft = m_size - m_location;
+	public int read(final byte[] buffer, final int offset, final int length) throws java.io.IOException {
+		final long bytesLeft = m_size - m_location;
 		if (bytesLeft == 0) {
 			return -1;
 		}
-		int intBytesLeft = (int) bytesLeft;
+		final int intBytesLeft = (int) bytesLeft;
 		int toRead = length;
 		if (intBytesLeft < length) {
 			toRead = intBytesLeft;
@@ -25,36 +29,44 @@ class ByteArraySeekablePullSourceStream implements javax.media.protocol.PullSour
 		m_location = m_location + toRead;
 		return toRead;
 	}
+
 	@Override
-	public Object getControl(String controlType) {
+	public Object getControl(final String controlType) {
 		return null;
 	}
+
 	@Override
 	public Object[] getControls() {
 		return null;
 	}
+
 	@Override
 	public javax.media.protocol.ContentDescriptor getContentDescriptor() {
 		return RAW_CONTENT_DISCRIPTOR;
 	}
+
 	@Override
 	public boolean endOfStream() {
 		return m_location == m_size;
 	}
+
 	@Override
 	public long getContentLength() {
 		return m_size;
 	}
+
 	@Override
 	public boolean willReadBlock() {
 		return endOfStream();
 	}
+
 	@Override
 	public boolean isRandomAccess() {
 		return true;
 	}
+
 	@Override
-	public long seek(long where) {
+	public long seek(final long where) {
 		if (where > m_size) {
 			m_location = m_size;
 		} else {
@@ -62,6 +74,7 @@ class ByteArraySeekablePullSourceStream implements javax.media.protocol.PullSour
 		}
 		return m_location;
 	}
+
 	@Override
 	public long tell() {
 		return m_location;
@@ -70,12 +83,14 @@ class ByteArraySeekablePullSourceStream implements javax.media.protocol.PullSour
 
 class ByteArrayDataSource extends javax.media.protocol.PullDataSource {
 	private static java.util.Dictionary s_extensionToContentTypeMap;
-	private byte[] m_data;
-	private String m_contentType;
-	public ByteArrayDataSource(byte[] data, String contentType) {
+	private final byte[] m_data;
+	private final String m_contentType;
+
+	public ByteArrayDataSource(final byte[] data, final String contentType) {
 		m_data = data;
 		m_contentType = contentType;
 	}
+
 	public byte[] getData() {
 		return m_data;
 	}
@@ -103,13 +118,13 @@ class ByteArrayDataSource extends javax.media.protocol.PullDataSource {
 	}
 
 	@Override
-	public Object getControl(String parm1) {
+	public Object getControl(final String parm1) {
 		return null;
 	}
 
 	@Override
 	public javax.media.protocol.PullSourceStream[] getStreams() {
-		return new javax.media.protocol.PullSourceStream[]{new ByteArraySeekablePullSourceStream(m_data)};
+		return new javax.media.protocol.PullSourceStream[] { new ByteArraySeekablePullSourceStream(m_data) };
 	}
 
 	@Override
@@ -131,19 +146,22 @@ public class DataSource extends edu.cmu.cs.stage3.media.AbstractDataSource {
 	}
 
 	private ByteArrayDataSource m_jmfDataSource;
-	public DataSource(byte[] data, String extension) {
+
+	public DataSource(final byte[] data, final String extension) {
 		super(extension);
-		String contentType = (String) s_extensionToContentTypeMap.get(extension.toLowerCase());
+		final String contentType = (String) s_extensionToContentTypeMap.get(extension.toLowerCase());
 		try {
 			m_jmfDataSource = new ByteArrayDataSource(data, contentType);
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			t.printStackTrace();
 		}
 	}
+
 	@Override
 	public byte[] getData() {
 		return m_jmfDataSource.getData();
 	}
+
 	public javax.media.protocol.DataSource getJMFDataSource() {
 		return m_jmfDataSource;
 	}

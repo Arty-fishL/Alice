@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -55,10 +55,10 @@ import java.io.RandomAccessFile;
  * cache. In circumstances that do not allow the creation of a temporary file
  * (for example, due to security consideration or the absence of local disk),
  * the <code>MemoryCacheSeekableStream</code> class may be used instead.
- * 
+ *
  * <p>
  * The <code>mark()</code> and <code>reset()</code> methods are supported.
- * 
+ *
  * <p>
  * <b> This class is not a committed part of the JAI API. It may be removed or
  * changed in future releases of JAI.</b>
@@ -66,19 +66,19 @@ import java.io.RandomAccessFile;
 public final class FileCacheSeekableStream extends SeekableStream {
 
 	/** The source stream. */
-	private InputStream stream;
+	private final InputStream stream;
 
 	/** The cache File. */
-	private File cacheFile;
+	private final File cacheFile;
 
 	/** The cache as a RandomAcessFile. */
-	private RandomAccessFile cache;
+	private final RandomAccessFile cache;
 
 	/** The length of the read buffer. */
-	private int bufLen = 1024;
+	private final int bufLen = 1024;
 
 	/** The read buffer. */
-	private byte[] buf = new byte[bufLen];
+	private final byte[] buf = new byte[bufLen];
 
 	/** Number of bytes in the cache. */
 	private long length = 0;
@@ -93,12 +93,12 @@ public final class FileCacheSeekableStream extends SeekableStream {
 	 * Constructs a <code>MemoryCacheSeekableStream</code> that takes its source
 	 * data from a regular <code>InputStream</code>. Seeking backwards is
 	 * supported by means of an file cache.
-	 * 
+	 *
 	 * <p>
 	 * An <code>IOException</code> will be thrown if the attempt to create the
 	 * cache file fails for any reason.
 	 */
-	public FileCacheSeekableStream(InputStream stream) throws IOException {
+	public FileCacheSeekableStream(final InputStream stream) throws IOException {
 		this.stream = stream;
 		cacheFile = File.createTempFile("jai-FCSS-", ".tmp");
 		cacheFile.deleteOnExit();
@@ -110,7 +110,7 @@ public final class FileCacheSeekableStream extends SeekableStream {
 	 * the source is reached. The return value is equal to the smaller of
 	 * <code>pos</code> and the length of the source file.
 	 */
-	private long readUntil(long pos) throws IOException {
+	private long readUntil(final long pos) throws IOException {
 		// We've already got enough data cached
 		if (pos < length) {
 			return pos;
@@ -125,7 +125,7 @@ public final class FileCacheSeekableStream extends SeekableStream {
 		while (len > 0) {
 			// Copy a buffer's worth of data from the source to the cache
 			// bufLen will always fit into an int so this is safe
-			int nbytes = stream.read(buf, 0, (int) Math.min(len, bufLen));
+			final int nbytes = stream.read(buf, 0, (int) Math.min(len, bufLen));
 			if (nbytes == -1) {
 				foundEOF = true;
 				return length;
@@ -152,7 +152,7 @@ public final class FileCacheSeekableStream extends SeekableStream {
 
 	/**
 	 * Returns the current offset in this file.
-	 * 
+	 *
 	 * @return the offset from the beginning of the file, in bytes, at which the
 	 *         next read occurs.
 	 */
@@ -165,7 +165,7 @@ public final class FileCacheSeekableStream extends SeekableStream {
 	/**
 	 * Sets the file-pointer offset, measured from the beginning of this file,
 	 * at which the next read occurs.
-	 * 
+	 *
 	 * @param pos
 	 *            the offset position, measured in bytes from the beginning of
 	 *            the file, at which to set the file pointer.
@@ -175,7 +175,7 @@ public final class FileCacheSeekableStream extends SeekableStream {
 	 */
 
 	@Override
-	public void seek(long pos) throws IOException {
+	public void seek(final long pos) throws IOException {
 		if (pos < 0) {
 			throw new IOException(JaiI18N.getString("FileCacheSeekableStream0"));
 		}
@@ -189,7 +189,7 @@ public final class FileCacheSeekableStream extends SeekableStream {
 	 * has been reached, the value <code>-1</code> is returned. This method
 	 * blocks until input data is available, the end of the stream is detected,
 	 * or an exception is thrown.
-	 * 
+	 *
 	 * @return the next byte of data, or <code>-1</code> if the end of the
 	 *         stream is reached.
 	 * @exception IOException
@@ -198,8 +198,8 @@ public final class FileCacheSeekableStream extends SeekableStream {
 
 	@Override
 	public int read() throws IOException {
-		long next = pointer + 1;
-		long pos = readUntil(next);
+		final long next = pointer + 1;
+		final long pos = readUntil(next);
 		if (pos >= next) {
 			cache.seek(pointer++);
 			return cache.read();
@@ -213,27 +213,27 @@ public final class FileCacheSeekableStream extends SeekableStream {
 	 * array of bytes. An attempt is made to read as many as <code>len</code>
 	 * bytes, but a smaller number may be read, possibly zero. The number of
 	 * bytes actually read is returned as an integer.
-	 * 
+	 *
 	 * <p>
 	 * This method blocks until input data is available, end of file is
 	 * detected, or an exception is thrown.
-	 * 
+	 *
 	 * <p>
 	 * If <code>b</code> is <code>null</code>, a
 	 * <code>NullPointerException</code> is thrown.
-	 * 
+	 *
 	 * <p>
 	 * If <code>off</code> is negative, or <code>len</code> is negative, or
 	 * <code>off+len</code> is greater than the length of the array
 	 * <code>b</code>, then an <code>IndexOutOfBoundsException</code> is thrown.
-	 * 
+	 *
 	 * <p>
 	 * If <code>len</code> is zero, then no bytes are read and <code>0</code> is
 	 * returned; otherwise, there is an attempt to read at least one byte. If no
 	 * byte is available because the stream is at end of file, the value
 	 * <code>-1</code> is returned; otherwise, at least one byte is read and
 	 * stored into <code>b</code>.
-	 * 
+	 *
 	 * <p>
 	 * The first byte read is stored into element <code>b[off]</code>, the next
 	 * one into <code>b[off+1]</code>, and so on. The number of bytes read is,
@@ -242,17 +242,17 @@ public final class FileCacheSeekableStream extends SeekableStream {
 	 * through <code>b[off+</code><i>k</i><code>-1]</code>, leaving elements
 	 * <code>b[off+</code><i>k</i><code>]</code> through
 	 * <code>b[off+len-1]</code> unaffected.
-	 * 
+	 *
 	 * <p>
 	 * In every case, elements <code>b[0]</code> through <code>b[off]</code> and
 	 * elements <code>b[off+len]</code> through <code>b[b.length-1]</code> are
 	 * unaffected.
-	 * 
+	 *
 	 * <p>
 	 * If the first byte cannot be read for any reason other than end of file,
 	 * then an <code>IOException</code> is thrown. In particular, an
 	 * <code>IOException</code> is thrown if the input stream has been closed.
-	 * 
+	 *
 	 * @param b
 	 *            the buffer into which the data is read.
 	 * @param off
@@ -268,7 +268,7 @@ public final class FileCacheSeekableStream extends SeekableStream {
 	 */
 
 	@Override
-	public int read(byte[] b, int off, int len) throws IOException {
+	public int read(final byte[] b, final int off, int len) throws IOException {
 		if (b == null) {
 			throw new NullPointerException();
 		}
@@ -279,7 +279,7 @@ public final class FileCacheSeekableStream extends SeekableStream {
 			return 0;
 		}
 
-		long pos = readUntil(pointer + len);
+		final long pos = readUntil(pointer + len);
 
 		// len will always fit into an int so this is safe
 		len = (int) Math.min(len, pos - pointer);
@@ -296,7 +296,7 @@ public final class FileCacheSeekableStream extends SeekableStream {
 	/**
 	 * Closes this stream and releases any system resources associated with the
 	 * stream.
-	 * 
+	 *
 	 * @throws IOException
 	 *             if an I/O error occurs.
 	 */

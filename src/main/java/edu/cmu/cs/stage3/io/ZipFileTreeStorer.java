@@ -64,12 +64,12 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 	private int centralDirectoryLocation;
 	private String currentFile = null;
 	private java.io.File rootFile;
-	private int currentHeader = 0;
+	private final int currentHeader = 0;
 	private byte[] currentLocalFileData;
-	private java.util.zip.CRC32 crc = new java.util.zip.CRC32();
+	private final java.util.zip.CRC32 crc = new java.util.zip.CRC32();
 
 	private java.util.Vector holes;
-	private java.util.Vector toWrite = new java.util.Vector();
+	private final java.util.Vector toWrite = new java.util.Vector();
 	private java.io.ByteArrayOutputStream m_currentlyOpenStream = null;
 	private boolean outputStreamOpen = false;
 	private java.io.RandomAccessFile m_randomAccessFile = null;
@@ -115,7 +115,8 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		public CentralDirectoryHeader() {
 		}
 
-		public CentralDirectoryHeader(int offset, int pos, byte[] buf) throws java.lang.IllegalArgumentException {
+		public CentralDirectoryHeader(final int offset, final int pos, final byte[] buf)
+				throws java.lang.IllegalArgumentException {
 			position = pos + offset;
 			if (buf != null && buf.length > 42 + offset) {
 				sig = (int) getValue(buf, offset, 4);
@@ -153,7 +154,7 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 			}
 		}
 
-		public void setCompression(boolean compressBool) {
+		public void setCompression(final boolean compressBool) {
 			shouldCompress = compressBool;
 			if (shouldCompress) {
 				bitFlag = compressionBitFlag;
@@ -186,68 +187,68 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 			return 46 + fileNameLength + extraFieldLength + fileCommentLength;
 		}
 
-		public void writeData(int toWrite) throws java.io.IOException {
+		public void writeData(final int toWrite) throws java.io.IOException {
 			switch (toWrite) {
-				case SIG :
-					writeInt(position + 0, sig, 4);
-					break;
-				case MADEBY :
-					writeInt(position + 4, versionMadeBy, 2);
-					break;
-				case VERNEEDED :
-					writeInt(position + 6, versionNeededToExtract, 2);
-					break;
-				case BITFLAG :
-					writeInt(position + 8, bitFlag, 2);
-					break;
-				case COMPMETH :
-					writeInt(position + 10, compressionMethod, 2);
-					break;
-				case MODTIME :
-					writeInt(position + 12, lastModTime, 4);
-					break;
-				// case MODDATE : writeInt(position+14,lastModDate,2); break;
-				case CRC32 :
-					writeInt(position + 16, crc32, 4);
-					break;
-				case COMPSIZE :
-					writeInt(position + 20, compressedSize, 4);
-					break;
-				case UNCOMPSIZE :
-					writeInt(position + 24, uncompressedSize, 4);
-					break;
-				case NAMELENGTH :
-					writeInt(position + 28, fileNameLength, 2);
-					break;
-				case EXTRALENGTH :
-					writeInt(position + 30, extraFieldLength, 2);
-					break;
-				case COMLENGTH :
-					writeInt(position + 32, fileCommentLength, 2);
-					break;
-				case DISKSTART :
-					writeInt(position + 34, diskNumberStart, 2);
-					break;
-				case INTATTRIB :
-					writeInt(position + 36, internalFileAttributes, 2);
-					break;
-				case EXTATTRIB :
-					writeInt(position + 38, externalFileAttributes, 4);
-					break;
-				case OFFSET :
-					writeInt(position + 42, relativeOffset, 4);
-					break;
-				case FILENAME :
-					writeString(position + 46, fileName);
-					break;
-				case EXTRAFIELD :
-					writeString(position + 46 + fileName.length(), extraField);
-					break;
-				case COMMENT :
-					writeString(position + 46 + fileName.length() + extraField.length(), comment);
-					break;
-				default :
-					break;
+			case SIG:
+				writeInt(position + 0, sig, 4);
+				break;
+			case MADEBY:
+				writeInt(position + 4, versionMadeBy, 2);
+				break;
+			case VERNEEDED:
+				writeInt(position + 6, versionNeededToExtract, 2);
+				break;
+			case BITFLAG:
+				writeInt(position + 8, bitFlag, 2);
+				break;
+			case COMPMETH:
+				writeInt(position + 10, compressionMethod, 2);
+				break;
+			case MODTIME:
+				writeInt(position + 12, lastModTime, 4);
+				break;
+			// case MODDATE : writeInt(position+14,lastModDate,2); break;
+			case CRC32:
+				writeInt(position + 16, crc32, 4);
+				break;
+			case COMPSIZE:
+				writeInt(position + 20, compressedSize, 4);
+				break;
+			case UNCOMPSIZE:
+				writeInt(position + 24, uncompressedSize, 4);
+				break;
+			case NAMELENGTH:
+				writeInt(position + 28, fileNameLength, 2);
+				break;
+			case EXTRALENGTH:
+				writeInt(position + 30, extraFieldLength, 2);
+				break;
+			case COMLENGTH:
+				writeInt(position + 32, fileCommentLength, 2);
+				break;
+			case DISKSTART:
+				writeInt(position + 34, diskNumberStart, 2);
+				break;
+			case INTATTRIB:
+				writeInt(position + 36, internalFileAttributes, 2);
+				break;
+			case EXTATTRIB:
+				writeInt(position + 38, externalFileAttributes, 4);
+				break;
+			case OFFSET:
+				writeInt(position + 42, relativeOffset, 4);
+				break;
+			case FILENAME:
+				writeString(position + 46, fileName);
+				break;
+			case EXTRAFIELD:
+				writeString(position + 46 + fileName.length(), extraField);
+				break;
+			case COMMENT:
+				writeString(position + 46 + fileName.length() + extraField.length(), comment);
+				break;
+			default:
+				break;
 			}
 		}
 
@@ -257,12 +258,13 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 			}
 		}
 
-		public void setShouldDelete(boolean toSetTo) {
+		public void setShouldDelete(final boolean toSetTo) {
 			shouldDelete = toSetTo;
-			// System.out.println("set "+fileName+" shouldDelete to "+shouldDelete);
+			// System.out.println("set "+fileName+" shouldDelete to
+			// "+shouldDelete);
 		}
 
-		public void setFileName(String name) {
+		public void setFileName(final String name) {
 			fileName = new String(name);
 			fileNameLength = fileName.length();
 			if (localHeaderReference != null) {
@@ -289,11 +291,13 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 			toReturn += "file name length: " + String.valueOf(fileNameLength) + "\n";
 			toReturn += "extra field length: " + String.valueOf(extraFieldLength) + "\n";
 			toReturn += "comment length: " + String.valueOf(fileCommentLength) + "\n";
-			toReturn += "disk number start: " + String.valueOf(diskNumberStart) + "\n";;
+			toReturn += "disk number start: " + String.valueOf(diskNumberStart) + "\n";
+			;
 			toReturn += "internal attrib: " + String.valueOf(internalFileAttributes) + "\n";
 			toReturn += "external attrib: " + String.valueOf(externalFileAttributes) + "\n";
 			toReturn += "relative offset for local header: " + String.valueOf(relativeOffset) + "\n";
-			toReturn += "file name: " + fileName + ", spans from " + String.valueOf(position) + " to " + String.valueOf(position + getThisHeaderSpace()) + "\n";
+			toReturn += "file name: " + fileName + ", spans from " + String.valueOf(position) + " to "
+					+ String.valueOf(position + getThisHeaderSpace()) + "\n";
 			toReturn += "extra field: " + extraField + "\n";
 			toReturn += "comment: " + comment;
 
@@ -326,13 +330,15 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		public LocalHeader() {
 		}
 
-		public LocalHeader(int pos, CentralDirectoryHeader cd, byte[] buf) throws java.lang.IllegalArgumentException {
+		public LocalHeader(final int pos, final CentralDirectoryHeader cd, final byte[] buf)
+				throws java.lang.IllegalArgumentException {
 			centralDirectoryReference = cd;
 			position = pos;
 			if (buf != null && buf.length > 30) {
 				sig = (int) getValue(buf, 0, 4);
 				if (sig != LOCHEADSIG) {
-					// System.out.println("SIG is wrong in "+cd.fileName+" \n"+Integer.toBinaryString(sig)+"\n"+Integer.toBinaryString(LOCHEADSIG));
+					// System.out.println("SIG is wrong in "+cd.fileName+"
+					// \n"+Integer.toBinaryString(sig)+"\n"+Integer.toBinaryString(LOCHEADSIG));
 					throw new java.lang.IllegalArgumentException();
 				}
 				versionNeededToExtract = (int) getValue(buf, 4, 2);
@@ -369,47 +375,47 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 			return (bitFlag & 8) > 0;
 		}
 
-		public void writeData(int toWrite) throws java.io.IOException {
+		public void writeData(final int toWrite) throws java.io.IOException {
 			switch (toWrite) {
-				case SIG :
-					writeInt(position + 0, sig, 4);
-					break;
-				case VERNEEDED :
-					writeInt(position + 4, versionNeededToExtract, 2);
-					break;
-				case BITFLAG :
-					writeInt(position + 6, bitFlag, 2);
-					break;
-				case COMPMETH :
-					writeInt(position + 8, compressionMethod, 2);
-					break;
-				case MODTIME :
-					writeInt(position + 10, lastModTime, 4);
-					break;
-				// case MODDATE : writeInt(position+12,lastModDate,2); break;
-				case CRC32 :
-					writeInt(position + 14, crc32, 4);
-					break;
-				case COMPSIZE :
-					writeInt(position + 18, compressedSize, 4);
-					break;
-				case UNCOMPSIZE :
-					writeInt(position + 22, uncompressedSize, 4);
-					break;
-				case NAMELENGTH :
-					writeInt(position + 26, fileNameLength, 2);
-					break;
-				case EXTRALENGTH :
-					writeInt(position + 28, extraFieldLength, 2);
-					break;
-				case FILENAME :
-					writeString(position + 30, fileName);
-					break;
-				case EXTRAFIELD :
-					writeString(position + 30 + fileName.length(), extraField);
-					break;
-				default :
-					break;
+			case SIG:
+				writeInt(position + 0, sig, 4);
+				break;
+			case VERNEEDED:
+				writeInt(position + 4, versionNeededToExtract, 2);
+				break;
+			case BITFLAG:
+				writeInt(position + 6, bitFlag, 2);
+				break;
+			case COMPMETH:
+				writeInt(position + 8, compressionMethod, 2);
+				break;
+			case MODTIME:
+				writeInt(position + 10, lastModTime, 4);
+				break;
+			// case MODDATE : writeInt(position+12,lastModDate,2); break;
+			case CRC32:
+				writeInt(position + 14, crc32, 4);
+				break;
+			case COMPSIZE:
+				writeInt(position + 18, compressedSize, 4);
+				break;
+			case UNCOMPSIZE:
+				writeInt(position + 22, uncompressedSize, 4);
+				break;
+			case NAMELENGTH:
+				writeInt(position + 26, fileNameLength, 2);
+				break;
+			case EXTRALENGTH:
+				writeInt(position + 28, extraFieldLength, 2);
+				break;
+			case FILENAME:
+				writeString(position + 30, fileName);
+				break;
+			case EXTRAFIELD:
+				writeString(position + 30 + fileName.length(), extraField);
+				break;
+			default:
+				break;
 			}
 		}
 
@@ -420,8 +426,9 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		}
 
 		public void writeDataDescriptor() throws java.io.IOException {
-			int startPosition = position + getThisHeaderSpace() + compressedSize;
-			// System.out.println("writing data descriptor at "+startPosition+" for: \n"+this);
+			final int startPosition = position + getThisHeaderSpace() + compressedSize;
+			// System.out.println("writing data descriptor at "+startPosition+"
+			// for: \n"+this);
 			writeInt(startPosition, DATADESCSIG, 4);
 			writeInt(startPosition + 4, crc32, 4);
 			writeInt(startPosition + 8, compressedSize, 4);
@@ -444,7 +451,8 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 			toReturn += "uncompressed size: " + String.valueOf(uncompressedSize) + "\n";
 			toReturn += "file name length: " + String.valueOf(fileNameLength) + "\n";
 			toReturn += "extra field length: " + String.valueOf(extraFieldLength) + "\n";
-			toReturn += "local header file name: " + fileName + " spans from " + String.valueOf(position) + " to " + String.valueOf(position + getThisHeaderSpace() + compressedSize) + "\n";
+			toReturn += "local header file name: " + fileName + " spans from " + String.valueOf(position) + " to "
+					+ String.valueOf(position + getThisHeaderSpace() + compressedSize) + "\n";
 			toReturn += "extra field: " + extraField + "\n";
 			if (hasDataDescriptor) {
 				toReturn += "There IS a data descriptor\n";
@@ -460,7 +468,7 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		public int pos;
 		public int size;
 
-		public LocalizedVacuity(int newpos, int newsize) {
+		public LocalizedVacuity(final int newpos, final int newsize) {
 			pos = newpos;
 			size = newsize;
 		}
@@ -473,64 +481,66 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 
 	private class HoleComparator implements java.util.Comparator {
 		@Override
-		public int compare(Object a, Object b) {
-			LocalizedVacuity holeA = (LocalizedVacuity) a;
-			LocalizedVacuity holeB = (LocalizedVacuity) b;
+		public int compare(final Object a, final Object b) {
+			final LocalizedVacuity holeA = (LocalizedVacuity) a;
+			final LocalizedVacuity holeB = (LocalizedVacuity) b;
 			return holeA.size - holeB.size;
 		}
 	}
 
 	private class HeaderSizeComparator implements java.util.Comparator {
 		@Override
-		public int compare(Object a, Object b) {
-			CentralDirectoryHeader headerA = (CentralDirectoryHeader) a;
-			CentralDirectoryHeader headerB = (CentralDirectoryHeader) b;
-			int headerASize = headerA.getLocalHeaderSpace();
-			int headerBSize = headerB.getLocalHeaderSpace();
+		public int compare(final Object a, final Object b) {
+			final CentralDirectoryHeader headerA = (CentralDirectoryHeader) a;
+			final CentralDirectoryHeader headerB = (CentralDirectoryHeader) b;
+			final int headerASize = headerA.getLocalHeaderSpace();
+			final int headerBSize = headerB.getLocalHeaderSpace();
 			return headerASize - headerBSize;
 		}
 	}
 
 	private class HeaderLocationComparator implements java.util.Comparator {
 		@Override
-		public int compare(Object a, Object b) {
-			CentralDirectoryHeader headerA = (CentralDirectoryHeader) a;
-			CentralDirectoryHeader headerB = (CentralDirectoryHeader) b;
+		public int compare(final Object a, final Object b) {
+			final CentralDirectoryHeader headerA = (CentralDirectoryHeader) a;
+			final CentralDirectoryHeader headerB = (CentralDirectoryHeader) b;
 			return headerA.relativeOffset - headerB.relativeOffset;
 		}
 	}
 
-	private HoleComparator holeComparator = new HoleComparator();
-	private HeaderSizeComparator headerSizeComparator = new HeaderSizeComparator();
-	private HeaderLocationComparator headerLocationComparator = new HeaderLocationComparator();
+	private final HoleComparator holeComparator = new HoleComparator();
+	private final HeaderSizeComparator headerSizeComparator = new HeaderSizeComparator();
+	private final HeaderLocationComparator headerLocationComparator = new HeaderLocationComparator();
 
 	private static long getCurrentDosTime() {
-		java.util.Calendar d = java.util.Calendar.getInstance();
-		int year = d.get(java.util.Calendar.YEAR);
+		final java.util.Calendar d = java.util.Calendar.getInstance();
+		final int year = d.get(java.util.Calendar.YEAR);
 		if (year < 1980) {
 			return 1 << 21 | 1 << 16;
 		}
-		return year - 1980 << 25 | d.get(java.util.Calendar.MONTH) + 1 << 21 | d.get(java.util.Calendar.DAY_OF_MONTH) << 16 | d.get(java.util.Calendar.HOUR_OF_DAY) << 11 | d.get(java.util.Calendar.MINUTE) << 5 | d.get(java.util.Calendar.SECOND) >> 1;
+		return year - 1980 << 25 | d.get(java.util.Calendar.MONTH) + 1 << 21
+				| d.get(java.util.Calendar.DAY_OF_MONTH) << 16 | d.get(java.util.Calendar.HOUR_OF_DAY) << 11
+				| d.get(java.util.Calendar.MINUTE) << 5 | d.get(java.util.Calendar.SECOND) >> 1;
 	}
 
-	private void writeInt(int pos, int value, int size) throws java.io.IOException {
-		int mask = 0xFF;
+	private void writeInt(final int pos, int value, final int size) throws java.io.IOException {
+		final int mask = 0xFF;
 		try {
 			m_randomAccessFile.seek(pos);
 			for (int i = 0; i < size; i++) {
 				m_randomAccessFile.writeByte(mask & value);
 				value >>= 8;
 			}
-		} catch (java.io.IOException e) {
+		} catch (final java.io.IOException e) {
 			throw e;
 		}
 	}
 
-	private void writeString(int pos, String toWrite) throws java.io.IOException {
+	private void writeString(final int pos, final String toWrite) throws java.io.IOException {
 		try {
 			m_randomAccessFile.seek(pos);
 			m_randomAccessFile.write(toWrite.getBytes());
-		} catch (java.io.IOException e) {
+		} catch (final java.io.IOException e) {
 			throw e;
 		}
 	}
@@ -593,13 +603,13 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 
 	/**
 	 * Opens the zip file and marks all current files to be kept
-	 * 
+	 *
 	 * @param pathname
 	 * @throws IllegalArgumentException
 	 * @throws java.io.IOException
 	 */
 
-	public void openForUpdate(Object pathname) throws IllegalArgumentException, java.io.IOException {
+	public void openForUpdate(final Object pathname) throws IllegalArgumentException, java.io.IOException {
 		open(pathname);
 		for (int i = 0; i < centralDirectory.size(); i++) {
 			((CentralDirectoryHeader) centralDirectory.get(i)).shouldDelete = false;
@@ -607,7 +617,7 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 	}
 
 	@Override
-	public void open(Object pathname) throws IllegalArgumentException, java.io.IOException {
+	public void open(final Object pathname) throws IllegalArgumentException, java.io.IOException {
 		if (allOpen) {
 			close();
 		}
@@ -632,7 +642,7 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		if (!newZip) {
 			try {
 				setAtEndSig();
-			} catch (java.io.IOException e) {
+			} catch (final java.io.IOException e) {
 				newZip = true;
 			}
 		}
@@ -653,21 +663,22 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		if (centralDirectory != null) {
 			holes = new java.util.Vector();
 			for (int i = 0; i < centralDirectory.size() - 1; i++) {
-				CentralDirectoryHeader current = (CentralDirectoryHeader) centralDirectory.get(i);
-				CentralDirectoryHeader next = (CentralDirectoryHeader) centralDirectory.get(i + 1);
-				int currentSize = 30 + current.fileNameLength + current.extraFieldLength + current.compressedSize;
-				int currentEnd = current.relativeOffset + currentSize;
+				final CentralDirectoryHeader current = (CentralDirectoryHeader) centralDirectory.get(i);
+				final CentralDirectoryHeader next = (CentralDirectoryHeader) centralDirectory.get(i + 1);
+				final int currentSize = 30 + current.fileNameLength + current.extraFieldLength + current.compressedSize;
+				final int currentEnd = current.relativeOffset + currentSize;
 				if (currentEnd < next.relativeOffset) {
-					LocalizedVacuity hole = new LocalizedVacuity(currentEnd, next.relativeOffset - currentEnd);
+					final LocalizedVacuity hole = new LocalizedVacuity(currentEnd, next.relativeOffset - currentEnd);
 					holes.add(hole);
 				}
 			}
 			if (centralDirectory.size() == 0) {
 				lastEntry = 0;
 			} else {
-				CentralDirectoryHeader last = (CentralDirectoryHeader) centralDirectory.get(centralDirectory.size() - 1);
-				int lastSize = 30 + last.fileNameLength + last.extraFieldLength + last.compressedSize;
-				int currentEnd = last.relativeOffset + lastSize;
+				final CentralDirectoryHeader last = (CentralDirectoryHeader) centralDirectory
+						.get(centralDirectory.size() - 1);
+				final int lastSize = 30 + last.fileNameLength + last.extraFieldLength + last.compressedSize;
+				final int currentEnd = last.relativeOffset + lastSize;
 				lastEntry = currentEnd;
 				java.util.Collections.sort(holes, holeComparator);
 			}
@@ -677,11 +688,11 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 	private void fillHoles() {
 		findHoles();
 		for (int i = 0; i < holes.size(); i++) {
-			LocalizedVacuity currentHole = (LocalizedVacuity) holes.get(i);
-			byte[] bufOfZeroes = new byte[currentHole.size];
+			final LocalizedVacuity currentHole = (LocalizedVacuity) holes.get(i);
+			final byte[] bufOfZeroes = new byte[currentHole.size];
 			try {
 				writeValue(bufOfZeroes, 0, currentHole.size, currentHole.pos);
-			} catch (Exception e) { // TODO: handle filling holes
+			} catch (final Exception e) { // TODO: handle filling holes
 			}
 		}
 	}
@@ -689,23 +700,24 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 	private void setEnd() {
 		lastEntry = 0;
 		if (centralDirectory != null && centralDirectory.size() > 0) {
-			CentralDirectoryHeader last = (CentralDirectoryHeader) centralDirectory.get(centralDirectory.size() - 1);
-			int lastSize = last.getLocalHeaderSpace();
-			int currentEnd = last.relativeOffset + lastSize;
+			final CentralDirectoryHeader last = (CentralDirectoryHeader) centralDirectory
+					.get(centralDirectory.size() - 1);
+			final int lastSize = last.getLocalHeaderSpace();
+			final int currentEnd = last.relativeOffset + lastSize;
 			lastEntry = currentEnd;
 		}
 	}
 
-	private void investigateHole(LocalizedVacuity h) throws java.io.IOException {
+	private void investigateHole(final LocalizedVacuity h) throws java.io.IOException {
 		// System.out.println("hole: "+h);
 		try {
 			m_randomAccessFile.seek(h.pos);
-			byte[] buf = new byte[h.size];
+			final byte[] buf = new byte[h.size];
 			m_randomAccessFile.readFully(buf);
-			for (byte element : buf) {
+			for (final byte element : buf) {
 				System.out.print((char) element);
 			}
-		} catch (java.io.IOException e) {
+		} catch (final java.io.IOException e) {
 			throw e;
 		}
 	}
@@ -717,10 +729,11 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 	 * Then the <code>header</code> is placed in <code>toWrite</code> to be
 	 * sorted out later and removed from the <code>centralDirectory</code>.
 	 */
-	private void updateHeader(CentralDirectoryHeader header, byte[] data, boolean writeImmediately) throws java.io.IOException {
+	private void updateHeader(final CentralDirectoryHeader header, byte[] data, final boolean writeImmediately)
+			throws java.io.IOException {
 		try {
 			int newSize = 0;
-			int oldSize = header.compressedSize;
+			final int oldSize = header.compressedSize;
 			int inflatedSize = 0;
 			if (data != null) {
 				inflatedSize = data.length;
@@ -740,7 +753,8 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 				header.localHeaderReference.uncompressedSize = inflatedSize;
 			}
 			if (newSize > oldSize && !writeImmediately) {
-				// System.out.println("It's too big and we can delay the writing");
+				// System.out.println("It's too big and we can delay the
+				// writing");
 				header.setShouldDelete(true);
 				header.data = data;
 				toWrite.add(header);
@@ -748,35 +762,41 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 			} else {
 				header.data = null;
 				if (writeImmediately) {
-					// System.out.println("writing local header "+header.fileName+" from "+header.relativeOffset+" to "+(header.relativeOffset
+					// System.out.println("writing local header
+					// "+header.fileName+" from "+header.relativeOffset+" to
+					// "+(header.relativeOffset
 					// +header.getLocalHeaderSpace()));
 					header.localHeaderReference.writeAll();
 				} else {
-					// System.out.println("I'm modifying "+header.fileName+" in place at "+header.relativeOffset+", old size: "+oldSize+", newSize: "+newSize);
+					// System.out.println("I'm modifying "+header.fileName+" in
+					// place at "+header.relativeOffset+", old size:
+					// "+oldSize+", newSize: "+newSize);
 					header.localHeaderReference.writeData(CRC32);
 					header.localHeaderReference.writeData(COMPSIZE);
 					header.localHeaderReference.writeData(UNCOMPSIZE);
 					header.localHeaderReference.writeData(MODTIME);
 				}
 				writeValue(data, 0, newSize, header.relativeOffset + header.localHeaderReference.getThisHeaderSpace());
-				if (header.localHeaderReference.needsDataDescriptor() && header.localHeaderReference.hasDataDescriptor) {
+				if (header.localHeaderReference.needsDataDescriptor()
+						&& header.localHeaderReference.hasDataDescriptor) {
 					header.localHeaderReference.writeDataDescriptor();
 				}
 			}
 
-		} catch (java.io.IOException e) {
+		} catch (final java.io.IOException e) {
 			throw e;
 		}
 	}
 
-	private byte[] compressData(byte[] data) {
-		java.util.zip.Deflater deflater = new java.util.zip.Deflater(java.util.zip.Deflater.DEFAULT_COMPRESSION, true);
+	private byte[] compressData(final byte[] data) {
+		final java.util.zip.Deflater deflater = new java.util.zip.Deflater(java.util.zip.Deflater.DEFAULT_COMPRESSION,
+				true);
 		deflater.setInput(data);
 		int totalCompressed = 0;
-		java.io.ByteArrayOutputStream compressedData = new java.io.ByteArrayOutputStream();
-		byte[] buf = new byte[512];
+		final java.io.ByteArrayOutputStream compressedData = new java.io.ByteArrayOutputStream();
+		final byte[] buf = new byte[512];
 		while (!deflater.needsInput()) {
-			int justCompressed = deflater.deflate(buf, 0, buf.length);
+			final int justCompressed = deflater.deflate(buf, 0, buf.length);
 			if (justCompressed > 0) {
 				compressedData.write(buf, 0, justCompressed);
 			}
@@ -784,7 +804,7 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		}
 		deflater.finish();
 		while (!deflater.finished()) {
-			int justCompressed = deflater.deflate(buf, 0, buf.length);
+			final int justCompressed = deflater.deflate(buf, 0, buf.length);
 			if (justCompressed > 0) {
 				compressedData.write(buf, 0, justCompressed);
 			}
@@ -793,17 +813,17 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		return compressedData.toByteArray();
 	}
 
-	private int getUnsigned(byte toConvert) {
+	private int getUnsigned(final byte toConvert) {
 		if (toConvert < 0) {
 			return toConvert + 256;
 		}
 		return toConvert;
 	}
 
-	private long getValue(byte[] buf, int offset, int size) {
+	private long getValue(final byte[] buf, final int offset, final int size) {
 		long toReturn = 0;
 		for (int i = size - 1; i >= 0; i--) {
-			int toAdd = getUnsigned(buf[offset + i]);
+			final int toAdd = getUnsigned(buf[offset + i]);
 			toReturn += toAdd;
 			if (i != 0) {
 				toReturn <<= 8;
@@ -812,8 +832,8 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		return toReturn;
 	}
 
-	private void setValue(byte[] buf, int offset, int size, long value) {
-		long mask = 0xFF;
+	private void setValue(final byte[] buf, final int offset, final int size, final long value) {
+		final long mask = 0xFF;
 		long temp = value;
 		for (int i = 0; i < size; i++) {
 			buf[offset + i] = (byte) (mask & temp);
@@ -821,18 +841,20 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		}
 	}
 
-	private void writeValue(byte[] buf, int offset, int size, int pos) throws java.io.IOException {
+	private void writeValue(final byte[] buf, final int offset, final int size, final int pos)
+			throws java.io.IOException {
 		if (buf != null) {
 			try {
 				m_randomAccessFile.seek(pos);
 				m_randomAccessFile.write(buf, offset, size);
-			} catch (java.lang.Exception e) {
-				throw new java.io.IOException("An error occurred while writing to the zip file. The file may not have been saved properly.");
+			} catch (final java.lang.Exception e) {
+				throw new java.io.IOException(
+						"An error occurred while writing to the zip file. The file may not have been saved properly.");
 			}
 		}
 	}
 
-	private String getString(byte[] buf, int offset, int size) {
+	private String getString(final byte[] buf, final int offset, final int size) {
 		// this seems a tad too wasteful. dennisc
 		// for (int i=0; i<size; i++){
 		// char toAdd = (char)getUnsigned(buf[offset+i]);
@@ -844,7 +866,7 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		// return new String( buf, offset, size );
 
 		// this seems just right. dennisc
-		StringBuffer sb = new StringBuffer(size);
+		final StringBuffer sb = new StringBuffer(size);
 		for (int i = 0; i < size; i++) {
 			sb.append((char) getUnsigned(buf[offset + i]));
 		}
@@ -866,7 +888,7 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		System.out.println("total entries: " + getValue(endHeader, 10, 2));
 		System.out.println("size of cd: " + getValue(endHeader, 12, 4));
 		System.out.println("offset of start of cd: " + getValue(endHeader, 16, 4));
-		long commentLength = getValue(endHeader, 20, 2);
+		final long commentLength = getValue(endHeader, 20, 2);
 		System.out.println("comment length: " + commentLength);
 	}
 
@@ -876,20 +898,20 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		if (newZip) {
 			return;
 		}
-		int size = (int) getValue(endHeader, 12, 4);
-		long offset = getValue(endHeader, 16, 4);
+		final int size = (int) getValue(endHeader, 12, 4);
+		final long offset = getValue(endHeader, 16, 4);
 		int currentHeaderOffset = 0;
 		centralDirectoryLocation = (int) offset;
-		byte[] centralArray = new byte[size];
+		final byte[] centralArray = new byte[size];
 		try {
 			m_randomAccessFile.seek(offset);
 			m_randomAccessFile.readFully(centralArray, 0, size);
-		} catch (java.io.IOException e) {
+		} catch (final java.io.IOException e) {
 			newZip = true;
 			return;
 		}
 		currentHeaderOffset = 0;
-		int currentSize = 46;
+		final int currentSize = 46;
 		while (currentHeaderOffset < centralArray.length) {
 			if (currentHeaderOffset + 46 >= centralArray.length) {
 				currentHeaderOffset = centralArray.length;
@@ -898,7 +920,7 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 			CentralDirectoryHeader header = null;
 			try {
 				header = new CentralDirectoryHeader(currentHeaderOffset, centralDirectoryLocation, centralArray);
-			} catch (java.lang.IllegalArgumentException e) {
+			} catch (final java.lang.IllegalArgumentException e) {
 				centralDirectory = new java.util.Vector();
 				filenameToHeaderMap = new java.util.HashMap();
 				newZip = true;
@@ -909,9 +931,10 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 			centralDirectory.add(header);
 			filenameToHeaderMap.put(header.fileName, header);
 			try {
-				// System.out.println("trying to init local header from: \n"+header+"\n");
+				// System.out.println("trying to init local header from:
+				// \n"+header+"\n");
 				header.localHeaderReference = initLocalHeader(header);
-			} catch (java.io.IOException e) {
+			} catch (final java.io.IOException e) {
 				centralDirectory = new java.util.Vector();
 				filenameToHeaderMap = new java.util.HashMap();
 				newZip = true;
@@ -923,7 +946,8 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 			}
 			if (getValue(centralArray, currentHeaderOffset, 4) != HEADSIG) {
 				currentHeaderOffset -= currentSize + 1;
-				while (currentHeaderOffset + 3 < centralArray.length && getValue(centralArray, currentHeaderOffset, 4) != HEADSIG) {
+				while (currentHeaderOffset + 3 < centralArray.length
+						&& getValue(centralArray, currentHeaderOffset, 4) != HEADSIG) {
 					currentHeaderOffset++;
 				}
 			}
@@ -947,10 +971,10 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		}
 	}
 
-	private LocalHeader initLocalHeader(CentralDirectoryHeader headerReference) throws java.io.IOException {
-		int pos = headerReference.relativeOffset;
-		int headerSize = headerReference.fileNameLength + headerReference.extraFieldLength + 30;
-		byte[] currentLocalHeaderBytes = new byte[headerSize];
+	private LocalHeader initLocalHeader(final CentralDirectoryHeader headerReference) throws java.io.IOException {
+		final int pos = headerReference.relativeOffset;
+		final int headerSize = headerReference.fileNameLength + headerReference.extraFieldLength + 30;
+		final byte[] currentLocalHeaderBytes = new byte[headerSize];
 		LocalHeader headerToReturn = null;
 
 		try {
@@ -958,74 +982,75 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 			m_randomAccessFile.readFully(currentLocalHeaderBytes, 0, headerSize);
 			headerToReturn = new LocalHeader(pos, headerReference, currentLocalHeaderBytes);
 			m_randomAccessFile.seek(headerToReturn.getThisHeaderSpace() + headerToReturn.compressedSize);
-			byte[] dataDescriptor = new byte[4];
+			final byte[] dataDescriptor = new byte[4];
 			m_randomAccessFile.readFully(dataDescriptor, 0, 4);
 			if (getValue(dataDescriptor, 0, 4) == DATADESCSIG) {
 				headerToReturn.hasDataDescriptor = true;
 			}
-		} catch (java.io.IOException e) {
+		} catch (final java.io.IOException e) {
 			throw e;
 		}
 		return headerToReturn;
 
 	}
 
-	private void printHex(byte[] buf, int offset, int length) {
+	private void printHex(final byte[] buf, final int offset, final int length) {
 		for (int i = offset; i < length + offset; i++) {
-			byte myByte = buf[i];
+			final byte myByte = buf[i];
 			for (int j = 0; j < 2; j++) {
 				byte current = (byte) (myByte >> 4 * (1 - j));
 				current = (byte) (current & 15);
 				switch (current) {
-					case 0 :
-						System.out.print("0");
-						break;
-					case 1 :
-						System.out.print("1");
-						break;
-					case 2 :
-						System.out.print("2");
-						break;
-					case 3 :
-						System.out.print("3");
-						break;
-					case 4 :
-						System.out.print("4");
-						break;
-					case 5 :
-						System.out.print("5");
-						break;
-					case 6 :
-						System.out.print("6");
-						break;
-					case 7 :
-						System.out.print("7");
-						break;
-					case 8 :
-						System.out.print("8");
-						break;
-					case 9 :
-						System.out.print("9");
-						break;
-					case 10 :
-						System.out.print("a");
-						break;
-					case 11 :
-						System.out.print("b");
-						break;
-					case 12 :
-						System.out.print("c");
-						break;
-					case 13 :
-						System.out.print("d");
-						break;
-					case 14 :
-						System.out.print("e");
-						break;
-					case 15 :
-						System.out.print("f");
-						break;
-				};
+				case 0:
+					System.out.print("0");
+					break;
+				case 1:
+					System.out.print("1");
+					break;
+				case 2:
+					System.out.print("2");
+					break;
+				case 3:
+					System.out.print("3");
+					break;
+				case 4:
+					System.out.print("4");
+					break;
+				case 5:
+					System.out.print("5");
+					break;
+				case 6:
+					System.out.print("6");
+					break;
+				case 7:
+					System.out.print("7");
+					break;
+				case 8:
+					System.out.print("8");
+					break;
+				case 9:
+					System.out.print("9");
+					break;
+				case 10:
+					System.out.print("a");
+					break;
+				case 11:
+					System.out.print("b");
+					break;
+				case 12:
+					System.out.print("c");
+					break;
+				case 13:
+					System.out.print("d");
+					break;
+				case 14:
+					System.out.print("e");
+					break;
+				case 15:
+					System.out.print("f");
+					break;
+				}
+				;
 			}
 			System.out.print(" ");
 		}
@@ -1037,8 +1062,8 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 			long len;
 			long pos;
 			len = pos = m_randomAccessFile.length();
-			int endHeaderLength = 22;
-			int maxSize = 0xFFFF;
+			final int endHeaderLength = 22;
+			final int maxSize = 0xFFFF;
 			byte buf[];
 			buf = new byte[endHeaderLength * 2];
 			java.util.Arrays.fill(buf, (byte) 0);
@@ -1051,8 +1076,8 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 				m_randomAccessFile.readFully(buf, 0, endHeaderLength);
 				for (int i = 0; i < endHeaderLength * 2 - 3; i++) {
 					if (getValue(buf, i, 4) == ENDSIG) {
-						long endpos = pos + i;
-						int commentLength = (int) getValue(buf, i + 20, 2);
+						final long endpos = pos + i;
+						final int commentLength = (int) getValue(buf, i + 20, 2);
 						if (endpos + commentLength + endHeaderLength == len) {
 							endHeader = new byte[commentLength + endHeaderLength];
 							m_randomAccessFile.seek(endpos);
@@ -1063,13 +1088,13 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 				}
 			}
 			throw new java.io.IOException("End header not found");
-		} catch (java.io.IOException e) {
+		} catch (final java.io.IOException e) {
 			throw e;
 		}
 
 	}
 
-	private CentralDirectoryHeader getHeader(String filename) {
+	private CentralDirectoryHeader getHeader(final String filename) {
 		if (newZip) {
 			return null;
 		}
@@ -1084,28 +1109,31 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		return (CentralDirectoryHeader) filenameToHeaderMap.get(filename);
 	}
 
-	private void writeHeader(CentralDirectoryHeader header, int pos) throws java.io.IOException {
+	private void writeHeader(final CentralDirectoryHeader header, final int pos) throws java.io.IOException {
 		header.relativeOffset = pos;
 		header.localHeaderReference.position = pos;
-		// System.out.println("writing local header "+header.fileName+" from "+pos+" to "+(pos+header.getLocalHeaderSpace()));
+		// System.out.println("writing local header "+header.fileName+" from
+		// "+pos+" to "+(pos+header.getLocalHeaderSpace()));
 		if (header.data != null) {
 			crc.reset();
 			crc.update(header.data);
 		}
 		header.localHeaderReference.writeAll();
 		if (header.data != null) {
-			writeValue(header.data, 0, header.data.length, header.localHeaderReference.position + header.localHeaderReference.getThisHeaderSpace());
+			writeValue(header.data, 0, header.data.length,
+					header.localHeaderReference.position + header.localHeaderReference.getThisHeaderSpace());
 		}
 		if (header.localHeaderReference.needsDataDescriptor()) {
 			header.localHeaderReference.writeDataDescriptor();
 		}
 	}
 
-	private boolean placeHeader(CentralDirectoryHeader header) throws java.io.IOException {
+	private boolean placeHeader(final CentralDirectoryHeader header) throws java.io.IOException {
 		for (int i = 0; i < holes.size(); i++) {
-			LocalizedVacuity currentHole = (LocalizedVacuity) holes.get(i);
+			final LocalizedVacuity currentHole = (LocalizedVacuity) holes.get(i);
 			if (currentHole.size >= header.getLocalHeaderSpace()) {
-				// System.out.println("found hole that fits at "+currentHole.pos);
+				// System.out.println("found hole that fits at
+				// "+currentHole.pos);
 				writeHeader(header, currentHole.pos);
 				holes.remove(currentHole);
 				return true;
@@ -1126,14 +1154,15 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		// }
 		boolean stillPlacing = true;
 		for (int i = 0; i < toWrite.size(); i++) {
-			CentralDirectoryHeader currentHeader = (CentralDirectoryHeader) toWrite.get(i);
+			final CentralDirectoryHeader currentHeader = (CentralDirectoryHeader) toWrite.get(i);
 			// System.out.println("need to place: \n"+currentHeader+"\n");
 			if (stillPlacing) {
 				stillPlacing = placeHeader(currentHeader);
 			}
 			if (!stillPlacing) {
-				int amountWritten = currentHeader.getLocalHeaderSpace();
-				// System.out.println("writing it at the end at "+lastEntry+" wrote "+currentHeader.getLocalHeaderSpace());
+				final int amountWritten = currentHeader.getLocalHeaderSpace();
+				// System.out.println("writing it at the end at "+lastEntry+"
+				// wrote "+currentHeader.getLocalHeaderSpace());
 				writeHeader(currentHeader, lastEntry);
 				lastEntry += amountWritten;
 				// System.out.println("last entry is now at: "+lastEntry);
@@ -1141,7 +1170,8 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 			if (!centralDirectory.contains(currentHeader)) {
 				centralDirectory.add(currentHeader);
 			} else {
-				// System.out.println("I didn't put this back in: "+currentHeader);
+				// System.out.println("I didn't put this back in:
+				// "+currentHeader);
 			}
 			// System.out.println();
 		}
@@ -1155,15 +1185,17 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		newZip = false;
 		setEnd();
 		// System.out.println("CD is at: "+lastEntry);
-		int startLocation = lastEntry;
+		final int startLocation = lastEntry;
 		int pos = startLocation;
 		int size = 0;
-		int totalEntries = centralDirectory.size();
-		// System.out.println("\nwriting out "+totalEntries+" central directory records at "+startLocation);
+		final int totalEntries = centralDirectory.size();
+		// System.out.println("\nwriting out "+totalEntries+" central directory
+		// records at "+startLocation);
 		for (int i = 0; i < totalEntries; i++) {
-			CentralDirectoryHeader currentHeader = (CentralDirectoryHeader) centralDirectory.get(i);
+			final CentralDirectoryHeader currentHeader = (CentralDirectoryHeader) centralDirectory.get(i);
 			currentHeader.position = pos;
-			// System.out.println("writing "+currentHeader.fileName+" from "+pos+" to "+(pos+currentHeader.getThisHeaderSpace()));
+			// System.out.println("writing "+currentHeader.fileName+" from
+			// "+pos+" to "+(pos+currentHeader.getThisHeaderSpace()));
 			currentHeader.writeAll();
 			pos += currentHeader.getThisHeaderSpace();
 			size += currentHeader.getThisHeaderSpace();
@@ -1178,16 +1210,16 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		writeInt(pos + 20, 0, 2);
 		try {
 			m_randomAccessFile.setLength(pos + 22);
-		} catch (java.io.IOException e) {
+		} catch (final java.io.IOException e) {
 			throw e;
 		}
 		// System.out.println("end position :"+ (pos+22));
 	}
 
 	private void deleteDirectories() {
-		java.util.Iterator i = centralDirectory.iterator();
+		final java.util.Iterator i = centralDirectory.iterator();
 		while (i.hasNext()) {
-			CentralDirectoryHeader currentHeader = (CentralDirectoryHeader) i.next();
+			final CentralDirectoryHeader currentHeader = (CentralDirectoryHeader) i.next();
 			if (currentHeader.shouldDelete) {
 				// System.out.println("deleting "+currentHeader.fileName);
 				i.remove();
@@ -1195,7 +1227,7 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		}
 	}
 
-	private void printLocalAndCDHeaders(java.util.Vector v) {
+	private void printLocalAndCDHeaders(final java.util.Vector v) {
 		System.out.println("*********************************LOCAL HEADERS:");
 		for (int i = 0; i < v.size(); i++) {
 			System.out.println(((CentralDirectoryHeader) v.get(i)).localHeaderReference);
@@ -1232,7 +1264,8 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		// printEndHeader();
 		// initCentralDirectory();
 		//
-		// System.out.println("\nOpening the file again. There are "+centralDirectory.size()+"entries:");
+		// System.out.println("\nOpening the file again. There are
+		// "+centralDirectory.size()+"entries:");
 		// printLocalAndCDHeaders(centralDirectory);
 
 		allOpen = false;
@@ -1242,12 +1275,13 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		currentLocalFileData = null;
 	}
 
-	public java.io.OutputStream createFile(String filename) throws IllegalArgumentException, java.io.IOException {
+	public java.io.OutputStream createFile(final String filename) throws IllegalArgumentException, java.io.IOException {
 		return createFile(filename, true);
 	}
 
 	@Override
-	public java.io.OutputStream createFile(String filename, boolean compressItIfYouGotIt) throws IllegalArgumentException, java.io.IOException {
+	public java.io.OutputStream createFile(final String filename, final boolean compressItIfYouGotIt)
+			throws IllegalArgumentException, java.io.IOException {
 		shouldCompressCurrent = compressItIfYouGotIt;
 		if (m_randomAccessFile != null) {
 			if (outputStreamOpen) {
@@ -1264,12 +1298,12 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 	}
 
 	@Override
-	public void keepFile(String filename) throws edu.cmu.cs.stage3.io.KeepFileNotSupportedException {
+	public void keepFile(final String filename) throws edu.cmu.cs.stage3.io.KeepFileNotSupportedException {
 		if (newZip) {
 			throw new edu.cmu.cs.stage3.io.KeepFileNotSupportedException();
 		}
-		String fullName = currentDirectory + filename;
-		CentralDirectoryHeader toKeep = getHeader(fullName);
+		final String fullName = currentDirectory + filename;
+		final CentralDirectoryHeader toKeep = getHeader(fullName);
 		// System.out.print("trying to keep "+fullName+"...");
 		if (toKeep != null) {
 			// System.out.println("kept");
@@ -1285,7 +1319,7 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 	}
 
 	@Override
-	public void createDirectory(String pathname) throws IllegalArgumentException, java.io.IOException {
+	public void createDirectory(final String pathname) throws IllegalArgumentException, java.io.IOException {
 		if (pathname.indexOf('/') != -1 || pathname.indexOf('\\') != -1) {
 			throw new IllegalArgumentException("pathname cannot contain path separators");
 		}
@@ -1295,14 +1329,15 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 		// currentDirectory = currentDirectory+pathname+"/";
 	}
 
-	public void checkAndUpdateHeader(String filename, byte[] data) throws java.io.IOException {
+	public void checkAndUpdateHeader(final String filename, final byte[] data) throws java.io.IOException {
 		CentralDirectoryHeader header = getHeader(filename);
 		if (header != null) {
 			header.setShouldDelete(false);
 			if (data != null) {
 				header.lastModTime = timeStamp;
 				header.localHeaderReference.lastModTime = timeStamp;
-				// System.out.println("found "+header.fileName+" in file already at "+header.relativeOffset);
+				// System.out.println("found "+header.fileName+" in file already
+				// at "+header.relativeOffset);
 				updateHeader(header, data, false);
 			}
 		} else {
@@ -1322,7 +1357,7 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 				lastEntry += header.getLocalHeaderSpace();
 			} else { // since the size of the header is 0, this will add the
 						// header to the toWrite vector to be positioned later
-			// System.out.println("gonna process this later");
+				// System.out.println("gonna process this later");
 				updateHeader(header, data, false);
 			}
 		}
@@ -1330,16 +1365,16 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 
 	@Override
 	public void closeCurrentFile() throws java.io.IOException {
-		String filename = currentDirectory + currentFile;
+		final String filename = currentDirectory + currentFile;
 		// System.out.println("closed: "+filename);
 		outputStreamOpen = false;
 		checkAndUpdateHeader(filename, m_currentlyOpenStream.toByteArray());
 		m_currentlyOpenStream.close();
 	}
 
-	private boolean doesFileExist(String filename) {
+	private boolean doesFileExist(final String filename) {
 		for (int i = 0; i < centralDirectory.size(); i++) {
-			CentralDirectoryHeader cdh = (CentralDirectoryHeader) centralDirectory.get(i);
+			final CentralDirectoryHeader cdh = (CentralDirectoryHeader) centralDirectory.get(i);
 			if (cdh.fileName.equals(currentDirectory + filename)) {
 				return true;
 			}
@@ -1348,12 +1383,14 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 	}
 
 	@Override
-	public Object getKeepKey(String filename) {
+	public Object getKeepKey(final String filename) {
 		if (newZip || !doesFileExist(filename)) {
 			// if (!newZip){
-			// System.out.println("Can't find "+currentDirectory+filename+" so returning returning NULL");
+			// System.out.println("Can't find "+currentDirectory+filename+" so
+			// returning returning NULL");
 			// } else{
-			// System.out.println("new zip on "+filename+" so returning returning NULL");
+			// System.out.println("new zip on "+filename+" so returning
+			// returning NULL");
 			// }
 			return null;
 		}
@@ -1364,7 +1401,7 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 	 * findHoles();
 	 * System.out.println("\n**************************************HOLES\n");
 	 * for (int i=0; i<holes.size(); i++){ System.out.println(holes.get(i)); } }
-	 * 
+	 *
 	 * public static void main(String[] args){ ZipFileTreeStorer storer = new
 	 * ZipFileTreeStorer(); String filename = "C:\\test.a2w"; java.util.Vector
 	 * fileVector = new java.util.Vector();
@@ -1374,7 +1411,7 @@ public class ZipFileTreeStorer implements edu.cmu.cs.stage3.io.DirectoryTreeStor
 	 * o.write(toWrite.getBytes()); // storer.closeCurrentFile(); //
 	 * //storer.createDirectory("yahtzee"); //
 	 * System.out.println("\n\n\nMy Storer\n"); // // // storer.close();
-	 * 
+	 *
 	 * // storer = new ZipFileTreeStorer(); // java.io.OutputStream out = new
 	 * java.io.FileOutputStream( "C:\\ziptest3.zip" ); //
 	 * java.util.zip.ZipOutputStream zipOut = new java.util.zip.ZipOutputStream(

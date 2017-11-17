@@ -29,15 +29,18 @@ import edu.cmu.cs.stage3.alice.core.property.NumberProperty;
 
 public class Media extends Element {
 	public final DataSourceProperty dataSource = new DataSourceProperty(this, "dataSource", null);
-	public final NumberProperty mediaLockCacheCountHint = new NumberProperty(this, "mediaLockCacheCountHint", new Integer(1));
-	public final ElementArrayProperty markers = new ElementArrayProperty(this, "markers", null, edu.cmu.cs.stage3.alice.core.media.SoundMarker[].class);
+	public final NumberProperty mediaLockCacheCountHint = new NumberProperty(this, "mediaLockCacheCountHint",
+			new Integer(1));
+	public final ElementArrayProperty markers = new ElementArrayProperty(this, "markers", null,
+			edu.cmu.cs.stage3.alice.core.media.SoundMarker[].class);
 
 	@Override
-	protected void started(World world, double time) {
+	protected void started(final World world, final double time) {
 		super.started(world, time);
-		edu.cmu.cs.stage3.media.DataSource dataSourceValue = dataSource.getDataSourceValue();
+		final edu.cmu.cs.stage3.media.DataSource dataSourceValue = dataSource.getDataSourceValue();
 		// todo? wait for realized players
-		int realizedPlayerCount = dataSourceValue.waitForRealizedPlayerCount(mediaLockCacheCountHint.intValue(), 0);
+		final int realizedPlayerCount = dataSourceValue.waitForRealizedPlayerCount(mediaLockCacheCountHint.intValue(),
+				0);
 	}
 }
 
@@ -247,7 +250,9 @@ public class Media extends Element {
 // parentComponent = renderTargets[ 0 ].getAWTComponent();
 // }
 // }
-// edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("Your world has sound, but you do not seem to have a sound card therefore the sound will not play.","No Sound Card",javax.swing.JOptionPane.WARNING_MESSAGE);
+// edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("Your world has
+// sound, but you do not seem to have a sound card therefore the sound will not
+// play.","No Sound Card",javax.swing.JOptionPane.WARNING_MESSAGE);
 // }
 // noSoundCard = true;
 // }

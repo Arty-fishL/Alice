@@ -4,7 +4,7 @@ public class InsertItemAtBeginning extends ListVisualizationWithItemAnimation {
 	public class RuntimeInsertItemAtBeginning extends RuntimeListVisualizationWithItemAnimation {
 
 		@Override
-		public void epilogue(double t) {
+		public void epilogue(final double t) {
 			super.epilogue(t);
 			getCollection().values.addValue(0, getItem());
 		}

@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -36,6 +36,10 @@ import org.w3c.dom.Node;
 //TODO: disable the next and previous buttons for first/last step
 
 public class NavigationPanel extends JPanel implements java.awt.event.ActionListener {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1009088692302173720L;
 	protected Vector stepButtons = new Vector();
 	protected Vector stepImages = new Vector();
 	protected Vector selStepImages = new Vector();
@@ -49,7 +53,7 @@ public class NavigationPanel extends JPanel implements java.awt.event.ActionList
 	protected int stepIndex = 0;
 	protected AllStepsPanel allStepsPanel;
 
-	public NavigationPanel(Node root, AllStepsPanel allStepsPanel) {
+	public NavigationPanel(final Node root, final AllStepsPanel allStepsPanel) {
 		createGuiElements(root);
 		this.allStepsPanel = allStepsPanel;
 		addGuiElements();
@@ -57,16 +61,17 @@ public class NavigationPanel extends JPanel implements java.awt.event.ActionList
 	}
 
 	public void setFirstStep() {
-		int index = allStepsPanel.getSelected();
+		final int index = allStepsPanel.getSelected();
 		allStepsPanel.setSelected(0);
 		setSelectedStep(0, index - 1);
 	}
 
 	@Override
-	public void actionPerformed(java.awt.event.ActionEvent ae) {
-		Object actionObj = ae.getSource();
+	public void actionPerformed(final java.awt.event.ActionEvent ae) {
+		final Object actionObj = ae.getSource();
 		int index = stepButtons.indexOf(actionObj);
-		if (index > 0 && index < stepButtons.size() - 1) {} else if (index == 0) {
+		if (index > 0 && index < stepButtons.size() - 1) {
+		} else if (index == 0) {
 			index = allStepsPanel.getSelected();
 			index--;
 		} else if (index == stepButtons.size() - 1) {
@@ -75,23 +80,23 @@ public class NavigationPanel extends JPanel implements java.awt.event.ActionList
 		}
 
 		// make this set the appropriate step image.
-		int prevStep = allStepsPanel.getSelected() - 1;
+		final int prevStep = allStepsPanel.getSelected() - 1;
 		allStepsPanel.setSelected(index);
-		int curStep = allStepsPanel.getSelected() - 1;
+		final int curStep = allStepsPanel.getSelected() - 1;
 
 		setSelectedStep(curStep, prevStep);
 	}
 
-	protected void setSelectedStep(int curStep, int prevStep) {
+	protected void setSelectedStep(final int curStep, final int prevStep) {
 		if (prevStep >= 0 && curStep != prevStep) {
-			JButton curButton = (JButton) stepButtons.elementAt(prevStep + 1);
-			ImageIcon curImage = (ImageIcon) stepImages.elementAt(prevStep);
+			final JButton curButton = (JButton) stepButtons.elementAt(prevStep + 1);
+			final ImageIcon curImage = (ImageIcon) stepImages.elementAt(prevStep);
 			curButton.setIcon(curImage);
 		}
 
 		if (prevStep < selStepImages.size() && curStep != prevStep) {
-			JButton newButton = (JButton) stepButtons.elementAt(curStep + 1);
-			ImageIcon newImage = (ImageIcon) selStepImages.elementAt(curStep);
+			final JButton newButton = (JButton) stepButtons.elementAt(curStep + 1);
+			final ImageIcon newImage = (ImageIcon) selStepImages.elementAt(curStep);
 			newButton.setIcon(newImage);
 		}
 
@@ -116,16 +121,16 @@ public class NavigationPanel extends JPanel implements java.awt.event.ActionList
 		for (int i = 0; i < stepButtons.size(); i++) {
 			this.add((JButton) stepButtons.elementAt(i));
 			if (i != stepButtons.size() - 1) {
-				JLabel spLabel = new JLabel(spacerIcon);
+				final JLabel spLabel = new JLabel(spacerIcon);
 				this.add(spLabel);
 			}
 		}
 	}
 
-	private void createGuiElements(Node root) {
-		Vector imageURLs = XMLDirectoryUtilities.getImageURLs(root);
+	private void createGuiElements(final Node root) {
+		final Vector imageURLs = XMLDirectoryUtilities.getImageURLs(root);
 		for (int i = 0; i < imageURLs.size(); i++) {
-			java.net.URL url = (java.net.URL) imageURLs.elementAt(i);
+			final java.net.URL url = (java.net.URL) imageURLs.elementAt(i);
 			if (url.toString().indexOf("nextBtn.jpg") != -1) {
 				nextImage = new ImageIcon(url);
 				nextButton = new JButton(nextImage);
@@ -148,16 +153,16 @@ public class NavigationPanel extends JPanel implements java.awt.event.ActionList
 			}
 		}
 
-		Vector stepNodes = XMLDirectoryUtilities.getDirectories(root);
+		final Vector stepNodes = XMLDirectoryUtilities.getDirectories(root);
 		for (int i = 0; i < stepNodes.size(); i++) {
-			Node currentStepNode = (Node) stepNodes.elementAt(i);
-			Vector currentStepImages = XMLDirectoryUtilities.getImageURLs(currentStepNode);
+			final Node currentStepNode = (Node) stepNodes.elementAt(i);
+			final Vector currentStepImages = XMLDirectoryUtilities.getImageURLs(currentStepNode);
 			if (currentStepImages != null && currentStepImages.size() > 1) {
-				ImageIcon icon = new ImageIcon((java.net.URL) currentStepImages.elementAt(0));
-				ImageIcon selIcon = new ImageIcon((java.net.URL) currentStepImages.elementAt(1));
+				final ImageIcon icon = new ImageIcon((java.net.URL) currentStepImages.elementAt(0));
+				final ImageIcon selIcon = new ImageIcon((java.net.URL) currentStepImages.elementAt(1));
 				stepImages.addElement(icon);
 				selStepImages.addElement(selIcon);
-				JButton stepBtn = new JButton(icon);
+				final JButton stepBtn = new JButton(icon);
 				stepBtn.setBorderPainted(false);
 				stepBtn.addActionListener(this);
 				stepBtn.setBorder(null);

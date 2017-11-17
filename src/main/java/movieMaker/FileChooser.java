@@ -12,9 +12,9 @@ import javax.swing.JFrame;
 /**
  * A class to make working with a file chooser easier for students. It uses a
  * JFileChooser to let the user pick a file and returns the choosen file name.
- * 
+ *
  * Copyright Georgia Institute of Technology 2004
- * 
+ *
  * @author Barb Ericson ericson@cc.gatech.edu
  */
 public class FileChooser {
@@ -39,23 +39,23 @@ public class FileChooser {
 
 	/**
 	 * Method to pick an item using the file chooser
-	 * 
+	 *
 	 * @param fileChooser
 	 *            the file Chooser to use
 	 * @return the path name
 	 */
-	public static String pickPath(JFileChooser fileChooser) {
+	public static String pickPath(final JFileChooser fileChooser) {
 		String path = null;
 
 		/*
 		 * create a JFrame to be the parent of the file chooser open dialog if
 		 * you don't do this then you may not see the dialog.
 		 */
-		JFrame frame = new JFrame();
+		final JFrame frame = new JFrame();
 		// frame.setAlwaysOnTop(true);
 
 		// get the return value from choosing a file
-		int returnVal = fileChooser.showOpenDialog(frame);
+		final int returnVal = fileChooser.showOpenDialog(frame);
 
 		// if the return value says the user picked a file
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -67,7 +67,7 @@ public class FileChooser {
 	/**
 	 * Method to let the user pick a file and return the full file name as a
 	 * string. If the user didn't pick a file then the file name will be null.
-	 * 
+	 *
 	 * @return the full file name of the picked file or null
 	 */
 	public static String pickAFile() {
@@ -77,18 +77,19 @@ public class FileChooser {
 		String fileName = null;
 
 		// get the current media directory
-		String mediaDir = getMediaDirectory();
+		final String mediaDir = getMediaDirectory();
 
 		/*
 		 * create a file for this and check that the directory exists and if it
 		 * does set the file chooser to use it
 		 */
 		try {
-			File file = new File(mediaDir);
+			final File file = new File(mediaDir);
 			if (file.exists()) {
 				fileChooser = new JFileChooser(file);
 			}
-		} catch (Exception ex) {}
+		} catch (final Exception ex) {
+		}
 
 		// if no file chooser yet create one
 		if (fileChooser == null) {
@@ -104,7 +105,7 @@ public class FileChooser {
 	/**
 	 * Method to let the user pick a directory and return the full path name as
 	 * a string.
-	 * 
+	 *
 	 * @return the full directory path
 	 */
 	public static String pickADirectory() {
@@ -112,7 +113,7 @@ public class FileChooser {
 		String dirName = null;
 
 		// get the current media directory
-		String mediaDir = getMediaDirectory();
+		final String mediaDir = getMediaDirectory();
 
 		// if no file chooser yet create one
 		if (mediaDir != null) {
@@ -132,18 +133,23 @@ public class FileChooser {
 
 	/**
 	 * Method to get the full path for the passed file name
-	 * 
+	 *
 	 * @param fileName
 	 *            the name of a file
 	 * @return the full path for the file
 	 */
-	public static String getMediaPath(String fileName) {
+	public static String getMediaPath(final String fileName) {
 		String path = null;
 		String directory = getMediaDirectory();
 
 		// if the directory is null ask the user for it
 		if (directory == null) {
-			SimpleOutput.showError("The media path (directory)" + " has not been set yet!  " + "Please pick the directory " + "that contains your media " + "(usually called mediasources) " + "with the following FileChooser.  " + "The directory name will be stored " + "in a file and remain unchanged unless you use " + "FileChooser.pickMediaPath() or " + "FileChooser.setMediaPath(\"full path name\") " + "(ex: FileChooser.setMediaPath(\"c:/intro-prog-java/mediasources/\")) " + " to change it.");
+			SimpleOutput.showError("The media path (directory)" + " has not been set yet!  "
+					+ "Please pick the directory " + "that contains your media " + "(usually called mediasources) "
+					+ "with the following FileChooser.  " + "The directory name will be stored "
+					+ "in a file and remain unchanged unless you use " + "FileChooser.pickMediaPath() or "
+					+ "FileChooser.setMediaPath(\"full path name\") "
+					+ "(ex: FileChooser.setMediaPath(\"c:/intro-prog-java/mediasources/\")) " + " to change it.");
 			pickMediaPath();
 			directory = getMediaDirectory();
 		}
@@ -156,7 +162,7 @@ public class FileChooser {
 
 	/**
 	 * Method to get the directory for the media
-	 * 
+	 *
 	 * @return the media directory
 	 */
 	public static String getMediaDirectory() {
@@ -169,13 +175,13 @@ public class FileChooser {
 			// load the properties from a file
 			try {
 				// get the URL for where we loaded this class
-				Class currClass = Class.forName("FileChooser");
-				URL classURL = currClass.getResource("FileChooser.class");
-				URL fileURL = new URL(classURL, PROPERTY_FILE_NAME);
-				FileInputStream in = new FileInputStream(fileURL.getPath());
+				final Class currClass = Class.forName("FileChooser");
+				final URL classURL = currClass.getResource("FileChooser.class");
+				final URL fileURL = new URL(classURL, PROPERTY_FILE_NAME);
+				final FileInputStream in = new FileInputStream(fileURL.getPath());
 				appProperties.load(in);
 				in.close();
-			} catch (Exception ex) {
+			} catch (final Exception ex) {
 				directory = null;
 			}
 		}
@@ -190,14 +196,14 @@ public class FileChooser {
 
 	/**
 	 * Method to set the media path by setting the directory to use
-	 * 
+	 *
 	 * @param directory
 	 *            the directory to use for the media path
 	 */
-	public static void setMediaPath(String directory) {
+	public static void setMediaPath(final String directory) {
 
 		// check if the directory exists
-		File file = new File(directory);
+		final File file = new File(directory);
 		if (!file.exists()) {
 			System.out.println("Sorry but " + directory + " doesn't exist, try a different directory.");
 			FileChooser.pickMediaPath();
@@ -220,15 +226,15 @@ public class FileChooser {
 			try {
 
 				// get the URL for where we loaded this class
-				Class currClass = Class.forName("FileChooser");
-				URL classURL = currClass.getResource("FileChooser.class");
-				URL fileURL = new URL(classURL, PROPERTY_FILE_NAME);
-				FileOutputStream out = new FileOutputStream(fileURL.getPath());
+				final Class currClass = Class.forName("FileChooser");
+				final URL classURL = currClass.getResource("FileChooser.class");
+				final URL fileURL = new URL(classURL, PROPERTY_FILE_NAME);
+				final FileOutputStream out = new FileOutputStream(fileURL.getPath());
 				appProperties.store(out, "Properties for the Simple Picture class");
 				out.close();
 				// System.out.println("The media directory is now " +
 				// directory);
-			} catch (Exception ex) {
+			} catch (final Exception ex) {
 				System.err.println("Couldn't save media path to a file");
 			}
 		}
@@ -238,7 +244,7 @@ public class FileChooser {
 	 * Method to pick a media path using the file chooser and set it
 	 */
 	public static void pickMediaPath() {
-		String dir = pickADirectory();
+		final String dir = pickADirectory();
 		setMediaPath(dir);
 	}
 

@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  * yes
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -30,6 +30,11 @@ import java.awt.BorderLayout;
  */
 
 public class StdErrOutContentPane extends edu.cmu.cs.stage3.alice.authoringtool.dialog.AliceAlertContentPane {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 5595413497448648128L;
+
 	public final static int HISTORY_MODE = 2;
 
 	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
@@ -51,19 +56,26 @@ public class StdErrOutContentPane extends edu.cmu.cs.stage3.alice.authoringtool.
 			try {
 				lastError = ev.getDocument().getText(ev.getOffset(), ev.getLength());
 				if (lastError.startsWith("  Unable to handle format") == true) {
-					lastError = "\n\nYour sound file cannot be played in Alice.\n" + "Please find an audio editor to convert the file to one with a PCM encoding.\n" + "See the tutorial on converting sound files at our Alice website.\n" + "Right click to clear the messages here.\n\n" + lastError;
+					lastError = "\n\nYour sound file cannot be played in Alice.\n"
+							+ "Please find an audio editor to convert the file to one with a PCM encoding.\n"
+							+ "See the tutorial on converting sound files at our Alice website.\n"
+							+ "Right click to clear the messages here.\n\n" + lastError;
 				}
-				detailTextPane.getDocument().insertString(detailTextPane.getDocument().getLength(), lastError, detailTextPane.stdErrStyle);
-			} catch (Exception e) {}
+				detailTextPane.getDocument().insertString(detailTextPane.getDocument().getLength(), lastError,
+						detailTextPane.stdErrStyle);
+			} catch (final Exception e) {
+			}
 			errorContentAdded = true;
 			update();
 		}
+
 		@Override
-		public void removeUpdate(javax.swing.event.DocumentEvent ev) {
+		public void removeUpdate(final javax.swing.event.DocumentEvent ev) {
 			update();
 		}
+
 		@Override
-		public void changedUpdate(javax.swing.event.DocumentEvent ev) {
+		public void changedUpdate(final javax.swing.event.DocumentEvent ev) {
 			update();
 		}
 
@@ -74,7 +86,8 @@ public class StdErrOutContentPane extends edu.cmu.cs.stage3.alice.authoringtool.
 					public void run() {
 						if (!isShowing) {
 							isShowing = true;
-							int result = edu.cmu.cs.stage3.swing.DialogManager.showDialog(StdErrOutContentPane.this);
+							final int result = edu.cmu.cs.stage3.swing.DialogManager
+									.showDialog(StdErrOutContentPane.this);
 						}
 					}
 				});
@@ -88,17 +101,21 @@ public class StdErrOutContentPane extends edu.cmu.cs.stage3.alice.authoringtool.
 		public void insertUpdate(final javax.swing.event.DocumentEvent ev) {
 			try {
 				lastError = ev.getDocument().getText(ev.getOffset(), ev.getLength());
-				detailTextPane.getDocument().insertString(detailTextPane.getDocument().getLength(), lastError, detailTextPane.stdOutStyle);
-			} catch (Exception e) {}
+				detailTextPane.getDocument().insertString(detailTextPane.getDocument().getLength(), lastError,
+						detailTextPane.stdOutStyle);
+			} catch (final Exception e) {
+			}
 			textContentAdded = true;
 			update();
 		}
+
 		@Override
-		public void removeUpdate(javax.swing.event.DocumentEvent ev) {
+		public void removeUpdate(final javax.swing.event.DocumentEvent ev) {
 			update();
 		}
+
 		@Override
-		public void changedUpdate(javax.swing.event.DocumentEvent ev) {
+		public void changedUpdate(final javax.swing.event.DocumentEvent ev) {
 			update();
 		}
 
@@ -109,7 +126,8 @@ public class StdErrOutContentPane extends edu.cmu.cs.stage3.alice.authoringtool.
 					public void run() {
 						if (!isShowing) {
 							isShowing = true;
-							int result = edu.cmu.cs.stage3.swing.DialogManager.showDialog(StdErrOutContentPane.this);
+							final int result = edu.cmu.cs.stage3.swing.DialogManager
+									.showDialog(StdErrOutContentPane.this);
 						}
 					}
 				});
@@ -118,7 +136,7 @@ public class StdErrOutContentPane extends edu.cmu.cs.stage3.alice.authoringtool.
 		}
 	}
 
-	public StdErrOutContentPane(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
+	public StdErrOutContentPane(final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
 		super();
 		titleString = "Alice - Error Console";
 		this.authoringTool = authoringTool;
@@ -142,7 +160,7 @@ public class StdErrOutContentPane extends edu.cmu.cs.stage3.alice.authoringtool.
 	}
 
 	@Override
-	public void preDialogShow(javax.swing.JDialog parentDialog) {
+	public void preDialogShow(final javax.swing.JDialog parentDialog) {
 		super.preDialogShow(parentDialog);
 	}
 
@@ -167,7 +185,7 @@ public class StdErrOutContentPane extends edu.cmu.cs.stage3.alice.authoringtool.
 	}
 
 	@Override
-	public void postDialogShow(javax.swing.JDialog parentDialog) {
+	public void postDialogShow(final javax.swing.JDialog parentDialog) {
 		isShowing = false;
 		setMode(LESS_DETAIL_MODE);
 		super.postDialogShow(parentDialog);
@@ -225,7 +243,7 @@ public class StdErrOutContentPane extends edu.cmu.cs.stage3.alice.authoringtool.
 	}
 
 	@Override
-	protected void handleModeSwitch(int mode) {
+	protected void handleModeSwitch(final int mode) {
 		if (mode == LESS_DETAIL_MODE) {
 			setLessDetail();
 		} else if (mode == MORE_DETAIL_MODE) {

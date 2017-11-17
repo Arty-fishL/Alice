@@ -22,30 +22,33 @@ public class ScreenShape {
 	public ScreenShape() {
 	}
 
-	public ScreenShape(Color color, Shape shape, boolean isFilled, int index) {
+	public ScreenShape(final Color color, final Shape shape, final boolean isFilled, final int index) {
 		this.color = color;
 		this.shape = shape;
 		this.isFilled = isFilled;
 		this.index = index;
 	}
 
-	public void setColor(Color color) {
+	public void setColor(final Color color) {
 		this.color = color;
 	}
+
 	public Color getColor() {
 		return color;
 	}
 
-	public void setShape(Shape shape) {
+	public void setShape(final Shape shape) {
 		this.shape = shape;
 	}
+
 	public Shape getShape() {
 		return shape;
 	}
 
-	public void setIsFilled(boolean isFilled) {
+	public void setIsFilled(final boolean isFilled) {
 		this.isFilled = isFilled;
 	}
+
 	public boolean getIsFilled() {
 		return isFilled;
 	}

@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -26,40 +26,45 @@ package edu.cmu.cs.stage3.alice.gallery;
 import edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray;
 
 public class ModelFixer {
-	private static javax.vecmath.Vector3d getDirection(edu.cmu.cs.stage3.alice.scenegraph.Vertex3d vertexA, edu.cmu.cs.stage3.alice.scenegraph.Vertex3d vertexB, edu.cmu.cs.stage3.alice.scenegraph.Vertex3d vertexC) {
-		javax.vecmath.Vector3d ba = new javax.vecmath.Vector3d();
-		javax.vecmath.Vector3d bc = new javax.vecmath.Vector3d();
+	private static javax.vecmath.Vector3d getDirection(final edu.cmu.cs.stage3.alice.scenegraph.Vertex3d vertexA,
+			final edu.cmu.cs.stage3.alice.scenegraph.Vertex3d vertexB,
+			final edu.cmu.cs.stage3.alice.scenegraph.Vertex3d vertexC) {
+		final javax.vecmath.Vector3d ba = new javax.vecmath.Vector3d();
+		final javax.vecmath.Vector3d bc = new javax.vecmath.Vector3d();
 		ba.sub(vertexA.position, vertexB.position);
 		bc.sub(vertexC.position, vertexB.position);
 		ba.normalize();
 		bc.normalize();
-		javax.vecmath.Vector3d result = new javax.vecmath.Vector3d();
+		final javax.vecmath.Vector3d result = new javax.vecmath.Vector3d();
 		result.cross(bc, ba);
 		return result;
 	}
 
-	private static javax.vecmath.Vector3d[] getCalculatedNormals(edu.cmu.cs.stage3.alice.scenegraph.IndexedTriangleArray indexedTriangleArray, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws edu.cmu.cs.stage3.progress.ProgressCancelException {
+	private static javax.vecmath.Vector3d[] getCalculatedNormals(
+			final edu.cmu.cs.stage3.alice.scenegraph.IndexedTriangleArray indexedTriangleArray,
+			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver)
+			throws edu.cmu.cs.stage3.progress.ProgressCancelException {
 		javax.vecmath.Vector3d[] result = null;
-		int triangleCount = indexedTriangleArray.getTriangleCount();
+		final int triangleCount = indexedTriangleArray.getTriangleCount();
 		if (triangleCount > 0) {
-			edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[] vertices = indexedTriangleArray.getVertices();
+			final edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[] vertices = indexedTriangleArray.getVertices();
 			result = new javax.vecmath.Vector3d[vertices.length];
-			int[] counts = new int[vertices.length];
+			final int[] counts = new int[vertices.length];
 			for (int i = 0; i < counts.length; i++) {
 				counts[i] = 0;
 				result[i] = new javax.vecmath.Vector3d();
 			}
-			int[] indices = indexedTriangleArray.getIndices();
+			final int[] indices = indexedTriangleArray.getIndices();
 			if (progressObserver != null) {
 				progressObserver.progressBegin(triangleCount);
 			}
 			int index = 0;
 			for (int t = 0; t < triangleCount; t++) {
-				int a = indices[index++];
-				int b = indices[index++];
-				int c = indices[index++];
+				final int a = indices[index++];
+				final int b = indices[index++];
+				final int c = indices[index++];
 
-				javax.vecmath.Vector3d normal = getDirection(vertices[a], vertices[b], vertices[c]);
+				final javax.vecmath.Vector3d normal = getDirection(vertices[a], vertices[b], vertices[c]);
 				normal.normalize();
 
 				result[a].add(normal);
@@ -79,19 +84,27 @@ public class ModelFixer {
 		return result;
 	}
 
-	public static void calculateNormals(edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray ita, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws edu.cmu.cs.stage3.progress.ProgressCancelException {
+	public static void calculateNormals(final edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray ita,
+			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver)
+			throws edu.cmu.cs.stage3.progress.ProgressCancelException {
 		ita.setNormals(getCalculatedNormals(ita.getSceneGraphIndexedTriangleArray(), progressObserver));
 	}
 
-	public static void calculateNormals(edu.cmu.cs.stage3.alice.core.Element element, edu.cmu.cs.stage3.util.HowMuch howMuch, edu.cmu.cs.stage3.progress.ProgressObserver macroProgressObserver, edu.cmu.cs.stage3.progress.ProgressObserver microProgressObserver) throws edu.cmu.cs.stage3.progress.ProgressCancelException {
-		edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray[] itas = (edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray[]) element.getDescendants(edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray.class, howMuch);
+	public static void calculateNormals(final edu.cmu.cs.stage3.alice.core.Element element,
+			final edu.cmu.cs.stage3.util.HowMuch howMuch,
+			final edu.cmu.cs.stage3.progress.ProgressObserver macroProgressObserver,
+			final edu.cmu.cs.stage3.progress.ProgressObserver microProgressObserver)
+			throws edu.cmu.cs.stage3.progress.ProgressCancelException {
+		final edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray[] itas = (edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray[]) element
+				.getDescendants(edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray.class, howMuch);
 		if (itas != null && itas.length > 0) {
 			if (macroProgressObserver != null) {
 				macroProgressObserver.progressBegin(itas.length);
-				javax.vecmath.Vector3d[][] normalsArray = new javax.vecmath.Vector3d[itas.length][];
+				final javax.vecmath.Vector3d[][] normalsArray = new javax.vecmath.Vector3d[itas.length][];
 				try {
 					for (int i = 0; i < itas.length; i++) {
-						normalsArray[i] = getCalculatedNormals(itas[i].getSceneGraphIndexedTriangleArray(), microProgressObserver);
+						normalsArray[i] = getCalculatedNormals(itas[i].getSceneGraphIndexedTriangleArray(),
+								microProgressObserver);
 					}
 				} finally {
 					macroProgressObserver.progressEnd();
@@ -101,23 +114,26 @@ public class ModelFixer {
 					itas[i].setNormals(normalsArray[i]);
 				}
 			} else {
-				for (IndexedTriangleArray ita : itas) {
+				for (final IndexedTriangleArray ita : itas) {
 					calculateNormals(ita, microProgressObserver);
 				}
 			}
 		}
 	}
-	public static void calculateNormals(edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray ita) {
+
+	public static void calculateNormals(final edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray ita) {
 		try {
 			calculateNormals(ita, (edu.cmu.cs.stage3.progress.ProgressObserver) null);
-		} catch (edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
+		} catch (final edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
 			throw new Error();
 		}
 	}
-	public static void calculateNormals(edu.cmu.cs.stage3.alice.core.Element element, edu.cmu.cs.stage3.util.HowMuch howMuch) {
+
+	public static void calculateNormals(final edu.cmu.cs.stage3.alice.core.Element element,
+			final edu.cmu.cs.stage3.util.HowMuch howMuch) {
 		try {
 			calculateNormals(element, howMuch, null, null);
-		} catch (edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
+		} catch (final edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
 			throw new Error();
 		}
 	}

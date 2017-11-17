@@ -3,11 +3,11 @@ package edu.cmu.cs.stage3.alice.gallery.batch;
 public class BatchLoad extends Batch {
 
 	@Override
-	protected void initialize(edu.cmu.cs.stage3.alice.core.World world) {
-		edu.cmu.cs.stage3.alice.core.Camera camera = new edu.cmu.cs.stage3.alice.core.camera.SymmetricPerspectiveCamera();
+	protected void initialize(final edu.cmu.cs.stage3.alice.core.World world) {
+		final edu.cmu.cs.stage3.alice.core.Camera camera = new edu.cmu.cs.stage3.alice.core.camera.SymmetricPerspectiveCamera();
 		camera.name.set("Camera");
 		world.addChild(camera);
-		edu.cmu.cs.stage3.alice.core.Model model = new edu.cmu.cs.stage3.alice.core.camera.SymmetricPerspectiveCamera();
+		final edu.cmu.cs.stage3.alice.core.Model model = new edu.cmu.cs.stage3.alice.core.camera.SymmetricPerspectiveCamera();
 		model.name.set("Ground");
 		world.addChild(model);
 	}

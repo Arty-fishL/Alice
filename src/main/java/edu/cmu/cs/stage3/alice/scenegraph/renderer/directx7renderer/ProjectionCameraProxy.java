@@ -27,7 +27,8 @@ class ProjectionCameraProxy extends edu.cmu.cs.stage3.alice.scenegraph.renderer.
 	protected native void onFarClippingPlaneDistanceChange(double value);
 
 	@Override
-	protected native void onBackgroundChange(edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.BackgroundProxy value);
+	protected native void onBackgroundChange(
+			edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.BackgroundProxy value);
 	// from ProjectionCameraProxy
 
 	@Override

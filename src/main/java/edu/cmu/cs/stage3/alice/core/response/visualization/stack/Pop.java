@@ -4,7 +4,7 @@ public class Pop extends StackVisualizationAnimation {
 	public class RuntimePop extends RuntimeStackVisualizationAnimation {
 
 		@Override
-		public void epilogue(double t) {
+		public void epilogue(final double t) {
 			super.epilogue(t);
 			getCollection().values.remove(getCollection().values.size() - 1);
 		}

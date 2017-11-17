@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -40,12 +40,17 @@ import javax.swing.border.TitledBorder;
 
 /**
  * Title: Description: Copyright: Copyright (c) 2001 Company: Stage3
- * 
+ *
  * @author
  * @version 1.0
  */
 
 public class KeyMappingEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3.alice.authoringtool.Editor {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1332803216303304817L;
+
 	public static String viewerName = "KeyMapping Editor";
 
 	private edu.cmu.cs.stage3.alice.core.navigation.KeyMapping keyMap;
@@ -56,18 +61,20 @@ public class KeyMappingEditor extends javax.swing.JPanel implements edu.cmu.cs.s
 	}
 
 	@Override
-	public void setAuthoringTool(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool at) {
+	public void setAuthoringTool(final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool at) {
 	}
 
-	public void setObject(edu.cmu.cs.stage3.alice.core.navigation.KeyMapping element) {
+	public void setObject(final edu.cmu.cs.stage3.alice.core.navigation.KeyMapping element) {
 		// always remember to clean up before editing a new Element
 
 		reverseKeyMap = new int[18];
-		if (keyMap != null) {}
+		if (keyMap != null) {
+		}
 
 		keyMap = element;
 
-		if (element == null) {} else {
+		if (element == null) {
+		} else {
 			loadKeyMap();
 		}
 		updateFields();
@@ -86,7 +93,8 @@ public class KeyMappingEditor extends javax.swing.JPanel implements edu.cmu.cs.s
 	private void loadKeyMap() {
 		for (int i = 0; i < keyMap.keyFunction.size(); i++) {
 			if (keyMap.keyFunction.getIntArrayValue()[i] != 0) {
-				if (keyMap.keyFunction.getIntArrayValue()[i] == edu.cmu.cs.stage3.alice.core.navigation.KeyMapping.NAV_STRAFE_MODIFIER) {
+				if (keyMap.keyFunction
+						.getIntArrayValue()[i] == edu.cmu.cs.stage3.alice.core.navigation.KeyMapping.NAV_STRAFE_MODIFIER) {
 					reverseKeyMap[17] = i;
 				} else {
 					reverseKeyMap[(int) (Math.log(keyMap.keyFunction.getIntArrayValue()[i]) / Math.log(2))] = i;
@@ -107,7 +115,8 @@ public class KeyMappingEditor extends javax.swing.JPanel implements edu.cmu.cs.s
 			}
 		}
 		if (reverseKeyMap[17] != 0) {
-			keyMap.setFunction(reverseKeyMap[17], edu.cmu.cs.stage3.alice.core.navigation.KeyMapping.NAV_STRAFE_MODIFIER);
+			keyMap.setFunction(reverseKeyMap[17],
+					edu.cmu.cs.stage3.alice.core.navigation.KeyMapping.NAV_STRAFE_MODIFIER);
 		}
 	}
 
@@ -185,7 +194,7 @@ public class KeyMappingEditor extends javax.swing.JPanel implements edu.cmu.cs.s
 
 	}
 
-	private void setKey(int action, int key) {
+	private void setKey(final int action, final int key) {
 		for (int i = 0; i < 18; i++) {
 			if (reverseKeyMap[i] == key) {
 				reverseKeyMap[i] = 0;
@@ -204,46 +213,59 @@ public class KeyMappingEditor extends javax.swing.JPanel implements edu.cmu.cs.s
 	// events
 
 	@Override
-	public void stateChanging(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void stateChanging(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldLoading(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldLoading(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldUnLoading(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldUnLoading(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldStarting(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldStarting(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldStopping(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldStopping(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldPausing(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldPausing(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldSaving(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldSaving(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void stateChanged(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void stateChanged(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldLoaded(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldLoaded(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldUnLoaded(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldUnLoaded(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldStarted(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldStarted(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldStopped(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldStopped(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldPaused(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldPaused(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldSaved(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldSaved(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
 
 	// autogenerated by JBuilder
@@ -281,6 +303,7 @@ public class KeyMappingEditor extends javax.swing.JPanel implements edu.cmu.cs.s
 	JButton HU_key = new JButton();
 	JLabel SM_label = new JLabel();
 	JButton SM_key = new JButton();
+
 	private void jbInit() {
 		titledBorder1 = new TitledBorder("");
 		jLabel1.setBorder(BorderFactory.createEtchedBorder());
@@ -302,7 +325,7 @@ public class KeyMappingEditor extends javax.swing.JPanel implements edu.cmu.cs.s
 		MF_key.addMouseListener(new java.awt.event.MouseAdapter() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(final MouseEvent e) {
 				key_mouseClicked(e, 0);
 			}
 		});
@@ -314,84 +337,84 @@ public class KeyMappingEditor extends javax.swing.JPanel implements edu.cmu.cs.s
 		MB_key.addMouseListener(new java.awt.event.MouseAdapter() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(final MouseEvent e) {
 				key_mouseClicked(e, 1);
 			}
 		});
 		ML_key.addMouseListener(new java.awt.event.MouseAdapter() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(final MouseEvent e) {
 				key_mouseClicked(e, 2);
 			}
 		});
 		MR_key.addMouseListener(new java.awt.event.MouseAdapter() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(final MouseEvent e) {
 				key_mouseClicked(e, 3);
 			}
 		});
 		MU_key.addMouseListener(new java.awt.event.MouseAdapter() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(final MouseEvent e) {
 				key_mouseClicked(e, 4);
 			}
 		});
 		MD_key.addMouseListener(new java.awt.event.MouseAdapter() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(final MouseEvent e) {
 				key_mouseClicked(e, 5);
 			}
 		});
 		TL_key.addMouseListener(new java.awt.event.MouseAdapter() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(final MouseEvent e) {
 				key_mouseClicked(e, 6);
 			}
 		});
 		TR_key.addMouseListener(new java.awt.event.MouseAdapter() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(final MouseEvent e) {
 				key_mouseClicked(e, 7);
 			}
 		});
 		TU_key.addMouseListener(new java.awt.event.MouseAdapter() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(final MouseEvent e) {
 				key_mouseClicked(e, 8);
 			}
 		});
 		TD_key.addMouseListener(new java.awt.event.MouseAdapter() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(final MouseEvent e) {
 				key_mouseClicked(e, 9);
 			}
 		});
 		RL_key.addMouseListener(new java.awt.event.MouseAdapter() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(final MouseEvent e) {
 				key_mouseClicked(e, 10);
 			}
 		});
 		RR_key.addMouseListener(new java.awt.event.MouseAdapter() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(final MouseEvent e) {
 				key_mouseClicked(e, 11);
 			}
 		});
 		HU_key.addMouseListener(new java.awt.event.MouseAdapter() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(final MouseEvent e) {
 				key_mouseClicked(e, 16);
 			}
 		});
@@ -473,7 +496,7 @@ public class KeyMappingEditor extends javax.swing.JPanel implements edu.cmu.cs.s
 		SM_key.addMouseListener(new java.awt.event.MouseAdapter() {
 
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mouseClicked(final MouseEvent e) {
 				key_mouseClicked(e, 17);
 			}
 		});
@@ -515,7 +538,7 @@ public class KeyMappingEditor extends javax.swing.JPanel implements edu.cmu.cs.s
 		((JButton) e.getSource()).addKeyListener(new java.awt.event.KeyAdapter() {
 
 			@Override
-			public void keyPressed(KeyEvent ke) {
+			public void keyPressed(final KeyEvent ke) {
 				if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
 					setKey(action, 0);
 				} else {
@@ -528,26 +551,31 @@ public class KeyMappingEditor extends javax.swing.JPanel implements edu.cmu.cs.s
 		((JButton) e.getSource()).addFocusListener(new java.awt.event.FocusAdapter() {
 
 			@Override
-			public void focusLost(FocusEvent fe) {
+			public void focusLost(final FocusEvent fe) {
 				updateFields();
 				((JButton) e.getSource()).removeFocusListener(this);
 			}
 		});
 
 	}
-	void SM_key_mouseClicked(MouseEvent e) {
+
+	void SM_key_mouseClicked(final MouseEvent e) {
 
 	}
-	void SM_key_mousePressed(MouseEvent e) {
+
+	void SM_key_mousePressed(final MouseEvent e) {
 
 	}
-	void SM_key_mouseReleased(MouseEvent e) {
+
+	void SM_key_mouseReleased(final MouseEvent e) {
 
 	}
-	void SM_key_mouseEntered(MouseEvent e) {
+
+	void SM_key_mouseEntered(final MouseEvent e) {
 
 	}
-	void SM_key_mouseExited(MouseEvent e) {
+
+	void SM_key_mouseExited(final MouseEvent e) {
 
 	}
 }

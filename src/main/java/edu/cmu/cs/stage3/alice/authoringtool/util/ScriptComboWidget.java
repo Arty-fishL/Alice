@@ -27,12 +27,21 @@ package edu.cmu.cs.stage3.alice.authoringtool.util;
  * @author Jason Pratt
  */
 public class ScriptComboWidget extends javax.swing.JPanel {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 2949579337308141466L;
 	protected edu.cmu.cs.stage3.alice.core.Sandbox sandbox;
 	protected edu.cmu.cs.stage3.alice.authoringtool.util.OneShotScheduler oneShotScheduler = new edu.cmu.cs.stage3.alice.authoringtool.util.OneShotScheduler();
 
 	public final javax.swing.AbstractAction runAction = new javax.swing.AbstractAction() {
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = -8243712063569911508L;
+
 		@Override
-		public void actionPerformed(java.awt.event.ActionEvent ev) {
+		public void actionPerformed(final java.awt.event.ActionEvent ev) {
 			ScriptComboWidget.this.runScript();
 		}
 	};
@@ -54,17 +63,18 @@ public class ScriptComboWidget extends javax.swing.JPanel {
 		// runAction.putValue( javax.swing.Action.SMALL_ICON, newWorldIcon );
 	}
 
-	public void setSandbox(edu.cmu.cs.stage3.alice.core.Sandbox sandbox) {
+	public void setSandbox(final edu.cmu.cs.stage3.alice.core.Sandbox sandbox) {
 		this.sandbox = sandbox;
 	}
 
 	public void runScript() {
-		Object item = comboBox.getEditor().getItem();
+		final Object item = comboBox.getEditor().getItem();
 		if (item instanceof String) {
-			String script = ((String) item).trim();
+			final String script = ((String) item).trim();
 			if (script.length() != 0) {
 				try {
-					edu.cmu.cs.stage3.alice.scripting.Code code = sandbox.compile(script, "<Run Line>", edu.cmu.cs.stage3.alice.scripting.CompileType.EXEC_SINGLE);
+					final edu.cmu.cs.stage3.alice.scripting.Code code = sandbox.compile(script, "<Run Line>",
+							edu.cmu.cs.stage3.alice.scripting.CompileType.EXEC_SINGLE);
 					sandbox.exec(code);
 
 					for (int i = 0; i < comboBox.getItemCount(); i++) { // this
@@ -79,10 +89,12 @@ public class ScriptComboWidget extends javax.swing.JPanel {
 					}
 					comboBox.insertItemAt(script, 0);
 					comboBox.setSelectedItem(script);
-				} catch (org.python.core.PyException e) {
-					org.python.core.Py.printException(e, null, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getPyStdErr());
-				} catch (Throwable t) {
-					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Error running jython code.", t);
+				} catch (final org.python.core.PyException e) {
+					org.python.core.Py.printException(e, null,
+							edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getPyStdErr());
+				} catch (final Throwable t) {
+					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Error running jython code.",
+							t);
 				}
 			}
 		} else {
@@ -94,8 +106,8 @@ public class ScriptComboWidget extends javax.swing.JPanel {
 	// GUI
 	// ///////////////
 
-	private javax.swing.JComboBox comboBox = new javax.swing.JComboBox();
-	private javax.swing.JButton runButton = new javax.swing.JButton(runAction);
+	private final javax.swing.JComboBox comboBox = new javax.swing.JComboBox();
+	private final javax.swing.JButton runButton = new javax.swing.JButton(runAction);
 
 	private void guiInit() {
 		setLayout(new java.awt.BorderLayout());

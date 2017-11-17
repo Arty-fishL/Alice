@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -52,7 +52,7 @@ import java.io.InputStream;
 /**
  * A partial implementation of the <code>ImageDecoder</code> interface useful
  * for subclassing.
- * 
+ *
  * <p>
  * <b> This class is not a committed part of the JAI API. It may be removed or
  * changed in future releases of JAI.</b>
@@ -75,7 +75,7 @@ public abstract class ImageDecoderImpl implements ImageDecoder {
 	 * Constructs an <code>ImageDecoderImpl</code> with a given
 	 * <code>SeekableStream</code> and <code>ImageDecodeParam</code> instance.
 	 */
-	public ImageDecoderImpl(SeekableStream input, ImageDecodeParam param) {
+	public ImageDecoderImpl(final SeekableStream input, final ImageDecodeParam param) {
 		this.input = input;
 		this.param = param;
 	}
@@ -88,7 +88,7 @@ public abstract class ImageDecoderImpl implements ImageDecoder {
 	 * required, the caller should construct an instance of
 	 * <code>SeekableStream</code> and make use of the other contructor.
 	 */
-	public ImageDecoderImpl(InputStream input, ImageDecodeParam param) {
+	public ImageDecoderImpl(final InputStream input, final ImageDecodeParam param) {
 		this.input = new ForwardSeekableStream(input);
 		this.param = param;
 	}
@@ -116,7 +116,7 @@ public abstract class ImageDecoderImpl implements ImageDecoder {
 	 * <code>JPEGDecodeParam</code>.
 	 */
 	@Override
-	public void setParam(ImageDecodeParam param) {
+	public void setParam(final ImageDecodeParam param) {
 		this.param = param;
 	}
 
@@ -156,13 +156,13 @@ public abstract class ImageDecoderImpl implements ImageDecoder {
 	 * <code>ImageDecoder</code>. The given page of a multi-page image is
 	 * decoded. If the page does not exist, an IOException will be thrown. Page
 	 * numbering begins at zero.
-	 * 
+	 *
 	 * @param page
 	 *            The page to be decoded.
 	 */
 	@Override
-	public Raster decodeAsRaster(int page) throws IOException {
-		RenderedImage im = decodeAsRenderedImage(page);
+	public Raster decodeAsRaster(final int page) throws IOException {
+		final RenderedImage im = decodeAsRenderedImage(page);
 		return im.getData();
 	}
 
@@ -183,7 +183,7 @@ public abstract class ImageDecoderImpl implements ImageDecoder {
 	 * <code>ImageDecoder</code>. The given page of a multi-page image is
 	 * decoded. If the page does not exist, an IOException will be thrown. Page
 	 * numbering begins at zero.
-	 * 
+	 *
 	 * @param page
 	 *            The page to be decoded.
 	 */

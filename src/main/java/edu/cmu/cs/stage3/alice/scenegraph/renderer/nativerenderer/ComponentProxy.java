@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -25,25 +25,30 @@ package edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer;
 
 public abstract class ComponentProxy extends ElementProxy {
 	protected abstract void onAbsoluteTransformationChange(javax.vecmath.Matrix4d m);
+
 	protected abstract void addToScene(SceneProxy scene);
+
 	protected abstract void removeFromScene(SceneProxy scene);
 
 	private SceneProxy m_sceneProxy = null;
 
 	private static java.util.Vector s_changed = new java.util.Vector(); // todo?
 																		// initialCapacity
+
 	protected boolean listenToHierarchyAndAbsoluteTransformationChanges() {
 		return ((Renderer) getRenderer()).requiresHierarchyAndAbsoluteTransformationListening();
 	}
+
 	static void updateAbsoluteTransformationChanges() {
 		synchronized (s_changed) {
 			if (s_changed.size() > 0) {
-				java.util.Enumeration enum0 = s_changed.elements();
+				final java.util.Enumeration enum0 = s_changed.elements();
 				while (enum0.hasMoreElements()) {
-					ComponentProxy componentProxy = (ComponentProxy) enum0.nextElement();
-					edu.cmu.cs.stage3.alice.scenegraph.Component sgComponent = componentProxy.getSceneGraphComponent();
+					final ComponentProxy componentProxy = (ComponentProxy) enum0.nextElement();
+					final edu.cmu.cs.stage3.alice.scenegraph.Component sgComponent = componentProxy
+							.getSceneGraphComponent();
 					if (sgComponent != null) {
-						javax.vecmath.Matrix4d m = sgComponent.getAbsoluteTransformation();
+						final javax.vecmath.Matrix4d m = sgComponent.getAbsoluteTransformation();
 						componentProxy.onAbsoluteTransformationChange(m);
 					}
 				}
@@ -57,13 +62,15 @@ public abstract class ComponentProxy extends ElementProxy {
 	}
 
 	@Override
-	public void initialize(edu.cmu.cs.stage3.alice.scenegraph.Element sgElement, edu.cmu.cs.stage3.alice.scenegraph.renderer.AbstractProxyRenderer renderer) {
+	public void initialize(final edu.cmu.cs.stage3.alice.scenegraph.Element sgElement,
+			final edu.cmu.cs.stage3.alice.scenegraph.renderer.AbstractProxyRenderer renderer) {
 		super.initialize(sgElement, renderer);
 		if (listenToHierarchyAndAbsoluteTransformationChanges()) {
 			onAbsoluteTransformationChange();
 			onHierarchyChange();
 		}
 	}
+
 	public void onAbsoluteTransformationChange() {
 		synchronized (s_changed) {
 			if (s_changed.contains(this)) {
@@ -73,8 +80,9 @@ public abstract class ComponentProxy extends ElementProxy {
 			}
 		}
 	}
+
 	public void onHierarchyChange() {
-		ContainerProxy rootProxy = (ContainerProxy) getProxyFor(getSceneGraphComponent().getRoot());
+		final ContainerProxy rootProxy = (ContainerProxy) getProxyFor(getSceneGraphComponent().getRoot());
 		if (rootProxy != m_sceneProxy) {
 			if (m_sceneProxy != null) {
 				removeFromScene(m_sceneProxy);
@@ -91,7 +99,7 @@ public abstract class ComponentProxy extends ElementProxy {
 	}
 
 	@Override
-	protected void changed(edu.cmu.cs.stage3.alice.scenegraph.Property property, Object value) {
+	protected void changed(final edu.cmu.cs.stage3.alice.scenegraph.Property property, final Object value) {
 		if (property == edu.cmu.cs.stage3.alice.scenegraph.Component.PARENT_PROPERTY) {
 			// pass
 		} else {

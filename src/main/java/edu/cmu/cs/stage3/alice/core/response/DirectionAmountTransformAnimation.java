@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -30,11 +30,13 @@ import edu.cmu.cs.stage3.alice.core.property.NumberProperty;
 public abstract class DirectionAmountTransformAnimation extends TransformAnimation {
 	public final DirectionProperty direction = new DirectionProperty(this, "direction", getDefaultDirection());
 	public final NumberProperty amount = new NumberProperty(this, "amount", new Double(1));
+
 	protected abstract Direction getDefaultDirection();
+
 	protected abstract boolean acceptsDirection(Direction direction);
 
 	@Override
-	protected void propertyChanging(edu.cmu.cs.stage3.alice.core.Property property, Object value) {
+	protected void propertyChanging(final edu.cmu.cs.stage3.alice.core.Property property, final Object value) {
 		if (property == direction) {
 			if (value instanceof Direction) {
 				if (acceptsDirection((Direction) value)) {
@@ -51,10 +53,11 @@ public abstract class DirectionAmountTransformAnimation extends TransformAnimati
 	public class RuntimeDirectionAmountTransformAnimation extends RuntimeTransformAnimation {
 
 		@Override
-		public void prologue(double t) {
+		public void prologue(final double t) {
 			super.prologue(t);
 			if (direction.getDirectionValue() == null) {
-				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException("direction value must not be null.", null, direction);
+				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException("direction value must not be null.",
+						null, direction);
 			}
 			// if( DirectionAmountTransformAnimation.this.amount.getValue() ==
 			// null ) {

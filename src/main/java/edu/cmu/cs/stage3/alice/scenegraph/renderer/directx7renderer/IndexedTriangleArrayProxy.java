@@ -1,6 +1,7 @@
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.directx7renderer;
 
-class IndexedTriangleArrayProxy extends edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.IndexedTriangleArrayProxy {
+class IndexedTriangleArrayProxy
+		extends edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.IndexedTriangleArrayProxy {
 	// from ElementProxy
 
 	@Override

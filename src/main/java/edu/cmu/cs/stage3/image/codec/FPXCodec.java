@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -70,17 +70,17 @@ public final class FPXCodec extends ImageCodec {
 	}
 
 	@Override
-	public boolean canEncodeImage(RenderedImage im, ImageEncodeParam param) {
+	public boolean canEncodeImage(final RenderedImage im, final ImageEncodeParam param) {
 		return false;
 	}
 
 	@Override
-	protected ImageEncoder createImageEncoder(OutputStream dst, ImageEncodeParam param) {
+	protected ImageEncoder createImageEncoder(final OutputStream dst, final ImageEncodeParam param) {
 		throw new RuntimeException(JaiI18N.getString("FPXCodec0"));
 	}
 
 	@Override
-	protected ImageDecoder createImageDecoder(SeekableStream src, ImageDecodeParam param) {
+	protected ImageDecoder createImageDecoder(final SeekableStream src, final ImageDecodeParam param) {
 		return new FPXImageDecoder(src, param);
 	}
 
@@ -90,8 +90,10 @@ public final class FPXCodec extends ImageCodec {
 	}
 
 	@Override
-	public boolean isFormatRecognized(byte[] header) {
-		return header[0] == (byte) 0xd0 && header[1] == (byte) 0xcf && header[2] == (byte) 0x11 && header[3] == (byte) 0xe0 && header[4] == (byte) 0xa1 && header[5] == (byte) 0xb1 && header[6] == (byte) 0x1a && header[7] == (byte) 0xe1;
+	public boolean isFormatRecognized(final byte[] header) {
+		return header[0] == (byte) 0xd0 && header[1] == (byte) 0xcf && header[2] == (byte) 0x11
+				&& header[3] == (byte) 0xe0 && header[4] == (byte) 0xa1 && header[5] == (byte) 0xb1
+				&& header[6] == (byte) 0x1a && header[7] == (byte) 0xe1;
 	}
 
 }

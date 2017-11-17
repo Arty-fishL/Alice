@@ -21,12 +21,12 @@ public class Link implements StencilObject, MouseEventListener {
 	protected RoundRectangle2D.Double underLink;
 	protected RoundRectangle2D.Double bgLink;
 	protected Shape messageShape = null;
-	private Font font = new Font("Arial", 1, 16);
+	private final Font font = new Font("Arial", 1, 16);
 	protected boolean isModified = true;
 
 	protected Vector shapes = null;
 
-	public Link(StencilManager stencilManager, ObjectPositionManager posManager, boolean next) {
+	public Link(final StencilManager stencilManager, final ObjectPositionManager posManager, final boolean next) {
 		this.stencilManager = stencilManager;
 		this.posManager = posManager;
 		this.next = next;
@@ -43,11 +43,11 @@ public class Link implements StencilObject, MouseEventListener {
 	}
 
 	protected void createShapes() {
-		TextLayout wordLayout = new TextLayout(message, font, new FontRenderContext(null, false, false));
-		AffineTransform textAt = new AffineTransform();
+		final TextLayout wordLayout = new TextLayout(message, font, new FontRenderContext(null, false, false));
+		final AffineTransform textAt = new AffineTransform();
 		int xStart = 10;
 		int yStart = 10;
-		int width = (int) wordLayout.getBounds().getWidth();
+		final int width = (int) wordLayout.getBounds().getWidth();
 		if (next) {
 			xStart = (int) posManager.getScreenWidth() - width - 50;
 			yStart = (int) posManager.getScreenHeight() - 80;
@@ -65,19 +65,23 @@ public class Link implements StencilObject, MouseEventListener {
 		shape = new ScreenShape(new Color(0, 0, 180), messageShape, true, 0);
 		shapes.addElement(shape);
 	}
+
 	@Override
 	public Vector getShapes() {
 		return shapes;
 
 	}
+
 	@Override
 	public Rectangle getRectangle() {
 		return bgLink.getBounds();
 	}
+
 	@Override
 	public Rectangle getPreviousRectangle() {
 		return bgLink.getBounds();
 	}
+
 	@Override
 	public boolean isModified() {
 		if (isModified) {
@@ -86,18 +90,22 @@ public class Link implements StencilObject, MouseEventListener {
 		}
 		return false;
 	}
+
 	@Override
-	public boolean intersectsRectangle(Rectangle rect) {
+	public boolean intersectsRectangle(final Rectangle rect) {
 		return bgLink.getBounds().intersects(rect);
 	}
+
 	@Override
-	public void addStencilObjectPositionListener(StencilObjectPositionListener posListener) {
+	public void addStencilObjectPositionListener(final StencilObjectPositionListener posListener) {
 
 	}
+
 	@Override
-	public void removeStencilObjectPositionListener(StencilObjectPositionListener posListener) {
+	public void removeStencilObjectPositionListener(final StencilObjectPositionListener posListener) {
 
 	}
+
 	@Override
 	public String getComponentID() {
 		return null;
@@ -105,20 +113,22 @@ public class Link implements StencilObject, MouseEventListener {
 
 	/* mouse listener stuff */
 	@Override
-	public boolean contains(Point point) {
+	public boolean contains(final Point point) {
 		return bgLink.contains(point.getX(), point.getY());
 	}
 
 	@Override
-	public boolean mousePressed(MouseEvent e) {
+	public boolean mousePressed(final MouseEvent e) {
 		return false;
 	}
+
 	@Override
-	public boolean mouseReleased(MouseEvent e) {
+	public boolean mouseReleased(final MouseEvent e) {
 		return false;
 	}
+
 	@Override
-	public boolean mouseClicked(MouseEvent e) {
+	public boolean mouseClicked(final MouseEvent e) {
 		if (next) {
 			stencilManager.showNextStack();
 		} else {
@@ -126,22 +136,25 @@ public class Link implements StencilObject, MouseEventListener {
 		}
 		return false;
 	}
+
 	@Override
-	public boolean mouseEntered(MouseEvent e) {
+	public boolean mouseEntered(final MouseEvent e) {
 		return false;
 	}
+
 	@Override
-	public boolean mouseExited(MouseEvent e) {
+	public boolean mouseExited(final MouseEvent e) {
 		return false;
 	}
 
 	// Mouse Motion Events
 	@Override
-	public boolean mouseMoved(MouseEvent e) {
+	public boolean mouseMoved(final MouseEvent e) {
 		return false;
 	}
+
 	@Override
-	public boolean mouseDragged(MouseEvent e) {
+	public boolean mouseDragged(final MouseEvent e) {
 		return false;
 	}
 }

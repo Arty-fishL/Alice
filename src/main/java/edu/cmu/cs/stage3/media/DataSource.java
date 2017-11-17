@@ -5,11 +5,13 @@ public interface DataSource {
 	public final boolean DO_NOT_USE_HINT = false;
 
 	public byte[] getData();
+
 	public String getExtension();
 
 	public double getDuration(boolean useHintIfNecessary);
 
 	public double getDurationHint();
+
 	public void setDurationHint(double durationHint);
 
 	public Player acquirePlayer();
@@ -19,6 +21,8 @@ public interface DataSource {
 	public boolean isCompressionWorthwhile();
 
 	public void addDataSourceListener(edu.cmu.cs.stage3.media.event.DataSourceListener l);
+
 	public void removeDataSourceListener(edu.cmu.cs.stage3.media.event.DataSourceListener l);
+
 	public edu.cmu.cs.stage3.media.event.DataSourceListener[] getDataSourceListeners();
 }

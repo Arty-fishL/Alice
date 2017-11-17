@@ -73,6 +73,10 @@ import javax.media.format.AudioFormat;
 import javax.media.protocol.DataSource;
 import javax.media.protocol.FileTypeDescriptor;
 
+import com.sun.media.ui.TabControl;
+import com.sun.media.util.JMFI18N;
+
+import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
 import jmapps.ui.ImageArea;
 import jmapps.ui.JMDialog;
 import jmapps.ui.JMPanel;
@@ -80,11 +84,6 @@ import jmapps.ui.MessageDialog;
 import jmapps.ui.ProgressDialog;
 import jmapps.ui.ProgressThread;
 import jmapps.util.JMAppsCfg;
-
-import com.sun.media.ui.TabControl;
-import com.sun.media.util.JMFI18N;
-
-import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
 
 /**
  * This class is used to create modeless SaveAs dialog. Instanciating the class
@@ -97,7 +96,11 @@ import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
  */
 public class SaveAsDialog extends JMDialog implements ControllerListener, DataSinkListener, ItemListener {
 
-	private JMAppsCfg cfgJMApps;
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 910804789398458753L;
+	private final JMAppsCfg cfgJMApps;
 	private String inputURL;
 	private DataSource dataSource = null;
 	private Processor processor = null;
@@ -112,7 +115,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 	// private Format captureFormat = null;
 
 	private TabControl tabControl;
-	private Hashtable hashtablePanelsAudio = new Hashtable();
+	private final Hashtable hashtablePanelsAudio = new Hashtable();
 	private Choice comboContentType;
 
 	private Image imageAudioEn = null;
@@ -125,7 +128,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 	 * This constructor creates object SaveAsDialog, fills it with controls does
 	 * the layout, displays it on the screen, and returns. The dialog stays on
 	 * the screen untill user presses button "OK" or "Cancel".
-	 * 
+	 *
 	 * @param frame
 	 *            parent frame
 	 * @param inputURL
@@ -133,7 +136,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 	 * @param format
 	 *            possible capture format
 	 */
-	public SaveAsDialog(Frame frame, String inputURL, Format format, JMAppsCfg cfgJMApps) {
+	public SaveAsDialog(final Frame frame, final String inputURL, final Format format, final JMAppsCfg cfgJMApps) {
 		super(frame, JMFI18N.getResource("jmstudio.saveas.title"), false);
 
 		this.cfgJMApps = cfgJMApps;
@@ -142,7 +145,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 
 		try {
 			init();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 
@@ -152,7 +155,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 	 * This constructor creates object SaveAsDialog, fills it with controls does
 	 * the layout, displays it on the screen, and returns. The dialog stays on
 	 * the screen untill user presses button "OK" or "Cancel".
-	 * 
+	 *
 	 * @param frame
 	 *            parent frame
 	 * @param inputURL
@@ -160,7 +163,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 	 * @param format
 	 *            possible capture format
 	 */
-	public SaveAsDialog(Frame frame, DataSource dataSource, JMAppsCfg cfgJMApps) {
+	public SaveAsDialog(final Frame frame, final DataSource dataSource, final JMAppsCfg cfgJMApps) {
 		super(frame, JMFI18N.getResource("jmstudio.saveas.title"), false);
 
 		this.cfgJMApps = cfgJMApps;
@@ -169,7 +172,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 
 		try {
 			init();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 
@@ -179,7 +182,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 	 * This method is called from the constructor. It performs all required
 	 * initialization, creates all controls, does the layout and puts the dialog
 	 * on the screen.
-	 * 
+	 *
 	 * @exception Exception
 	 */
 	private void init() throws Exception {
@@ -200,7 +203,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 			try {
 				mediaSource = new MediaLocator(inputURL);
 				dataSource = Manager.createDataSource(mediaSource);
-			} catch (Exception exception) {
+			} catch (final Exception exception) {
 				AuthoringTool.showErrorDialog("Alice has encountered an error", exception);
 				frameOwner.setCursor(Cursor.getDefaultCursor());
 				throw exception;
@@ -210,7 +213,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 		strContentType = dataSource.getContentType();
 		try {
 			processor = Manager.createProcessor(dataSource);
-		} catch (NoPlayerException exception) {
+		} catch (final NoPlayerException exception) {
 			AuthoringTool.showErrorDialog("Alice has encountered an error", exception);
 			frameOwner.setCursor(Cursor.getDefaultCursor());
 			throw exception;
@@ -264,7 +267,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 	 * This method is used by method init() to create the panel that contains
 	 * TabControl and its pages TrackPanelAudio or TrackPanelVideo for each
 	 * track.
-	 * 
+	 *
 	 * @return created panel
 	 * @exception Exception
 	 */
@@ -274,7 +277,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 
 		TrackPanelAudio panelAudio;
 		Format format;
-		String strAudio = "Audio";
+		final String strAudio = "Audio";
 
 		JMAppsCfg.TrackData dataTrack;
 
@@ -304,7 +307,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 	/**
 	 * This method is used by method init() to create the panel that contains
 	 * the choice of the media type for output.
-	 * 
+	 *
 	 * @return created panel
 	 * @exception Exception
 	 */
@@ -334,23 +337,23 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 	 * thread to monitor the progress and update the Progress dialog.
 	 */
 	private void doSave() {
-		int i;
+		final int i;
 		MediaLocator mediaDest;
 		DataSource dataSource;
-		Object arrControls[];
+		final Object arrControls[];
 		MonitorControl monitorControl;
 		boolean boolResult;
-		String strFileContentType = null;
-		AudioFormat formatAudio;
-		FileDialog dlgFile;
-		String strDirName = null;
-		String strFileName = null;
+		final String strFileContentType = null;
+		final AudioFormat formatAudio;
+		final FileDialog dlgFile;
+		final String strDirName = null;
+		final String strFileName = null;
 		Enumeration enumKeys;
 		String strPanel;
 		TrackPanelAudio panelAudio;
 		int nMediaDuration;
 		Component monitor = null;
-		String strValue;
+		final String strValue;
 		TrackControl trackControl;
 		JMAppsCfg.TrackData dataTrack;
 
@@ -394,30 +397,33 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 				monitor = monitorControl.getControlComponent();
 			}
 
-			Time duration = processor.getDuration();
+			final Time duration = processor.getDuration();
 			nMediaDuration = (int) duration.getSeconds();
 
 			dataSink.addDataSinkListener(this);
 			try {
 				dataSink.open();
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				processor.close();
 				throw e;
 			}
 			dataSink.start();
 			processor.start();
 
-			if (nMediaDuration > 0 && duration != Duration.DURATION_UNBOUNDED && duration != Duration.DURATION_UNKNOWN) {
-				dlgProgress = new ProgressDialog(frameOwner, JMFI18N.getResource("jmstudio.saveprogress.title"), 0, nMediaDuration, this);
+			if (nMediaDuration > 0 && duration != Duration.DURATION_UNBOUNDED
+					&& duration != Duration.DURATION_UNKNOWN) {
+				dlgProgress = new ProgressDialog(frameOwner, JMFI18N.getResource("jmstudio.saveprogress.title"), 0,
+						nMediaDuration, this);
 			} else {
-				dlgProgress = new ProgressDialog(frameOwner, JMFI18N.getResource("jmstudio.saveprogress.title"), JMFI18N.getResource("jmstudio.saveprogress.label"), monitor, this);
+				dlgProgress = new ProgressDialog(frameOwner, JMFI18N.getResource("jmstudio.saveprogress.title"),
+						JMFI18N.getResource("jmstudio.saveprogress.label"), monitor, this);
 			}
 			// dlgProgress.setVisible ( true );
 
 			threadProgress = new ProgressThread(processor, dlgProgress);
 			threadProgress.start();
 
-		} catch (Exception exception) {
+		} catch (final Exception exception) {
 			boolSaving = false;
 			AuthoringTool.showErrorDialog("Alice has encountered an error. ", exception);
 		}
@@ -429,13 +435,13 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 	/**
 	 * This method overwrites the ActionListener method to process events from
 	 * buttons, track pages, and Progress dialog.
-	 * 
+	 *
 	 * @param event
 	 *            action event
 	 */
 
 	@Override
-	public void actionPerformed(ActionEvent event) {
+	public void actionPerformed(final ActionEvent event) {
 		String strCmd;
 		Object objectSource;
 
@@ -445,7 +451,8 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 			dispose();
 		} else if (strCmd.equals(ACTION_SAVE)) {
 			doSave();
-		} else if ((strCmd.equals(ProgressDialog.ACTION_ABORT) || strCmd.equals(ProgressDialog.ACTION_STOP)) && boolSaving == true) {
+		} else if ((strCmd.equals(ProgressDialog.ACTION_ABORT) || strCmd.equals(ProgressDialog.ACTION_STOP))
+				&& boolSaving == true) {
 			stopSaving();
 		} else if (strCmd.equals(ProgressDialog.ACTION_PAUSE) && boolSaving == true) {
 			processor.stop();
@@ -471,12 +478,12 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 	/**
 	 * This method overwrites the ItemListener method to monitor the users
 	 * choice of the media type, and notify track pages about the change.
-	 * 
+	 *
 	 * @param event
 	 *            item state changed event
 	 */
 	@Override
-	public void itemStateChanged(ItemEvent event) {
+	public void itemStateChanged(final ItemEvent event) {
 		Object objectSource;
 
 		objectSource = event.getSource();
@@ -487,13 +494,13 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 
 	/**
 	 * If the user closes dialog using system menu, it does the cleanup.
-	 * 
+	 *
 	 * @param event
 	 *            window event
 	 */
 
 	@Override
-	public void windowClosing(WindowEvent event) {
+	public void windowClosing(final WindowEvent event) {
 		stopSaving();
 		dispose();
 	}
@@ -501,20 +508,23 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 	/**
 	 * This method looks for ControllerErrorEvent, and displays the Error
 	 * dialog.
-	 * 
+	 *
 	 * @param event
 	 *            controller event
 	 */
 	@Override
-	public void controllerUpdate(ControllerEvent event) {
+	public void controllerUpdate(final ControllerEvent event) {
 		if (event instanceof ControllerErrorEvent) {
 			strFailMessage = ((ControllerErrorEvent) event).getMessage();
 
 			if (boolSaving == true) {
 				stopSaving();
-				MessageDialog.createErrorDialogModeless(frameOwner, JMFI18N.getResource("jmstudio.error.processor.savefile") + "\n" + JMFI18N.getResource("jmstudio.error.controller") + "\n" + strFailMessage);
+				MessageDialog.createErrorDialogModeless(frameOwner,
+						JMFI18N.getResource("jmstudio.error.processor.savefile") + "\n"
+								+ JMFI18N.getResource("jmstudio.error.controller") + "\n" + strFailMessage);
 			} else {
-				MessageDialog.createErrorDialogModeless(frameOwner, JMFI18N.getResource("jmstudio.error.controller") + "\n" + strFailMessage);
+				MessageDialog.createErrorDialogModeless(frameOwner,
+						JMFI18N.getResource("jmstudio.error.controller") + "\n" + strFailMessage);
 			}
 		} else if (event instanceof EndOfMediaEvent) {
 			if (boolSaving == true) {
@@ -526,17 +536,18 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 	/**
 	 * This method monitors the process of saving file for end of file, and
 	 * possible errors. It also does a cleanup, when one of those events occurs.
-	 * 
+	 *
 	 * @param event
 	 *            file write event
 	 */
 	@Override
-	public void dataSinkUpdate(DataSinkEvent event) {
+	public void dataSinkUpdate(final DataSinkEvent event) {
 		if (event instanceof EndOfStreamEvent) {
 			closeDataSink();
 		} else if (event instanceof DataSinkErrorEvent) {
 			stopSaving();
-			MessageDialog.createErrorDialogModeless(frameOwner, JMFI18N.getResource("jmstudio.error.processor.writefile"));
+			MessageDialog.createErrorDialogModeless(frameOwner,
+					JMFI18N.getResource("jmstudio.error.processor.writefile"));
 		}
 	}
 
@@ -572,7 +583,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 	/**
 	 * This method waits untill the processor enter the specified state, or some
 	 * failure occurs.
-	 * 
+	 *
 	 * @param nState
 	 *            the state of processor (see Processor and Player constants)
 	 * @return true if the state was reached, false otherwise
@@ -581,7 +592,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 	Object stateLock = new Object();
 	boolean stateFailed = false;
 
-	private synchronized boolean waitForState(Processor p, int state) {
+	private synchronized boolean waitForState(final Processor p, final int state) {
 		p.addControllerListener(new StateListener());
 		stateFailed = false;
 
@@ -595,7 +606,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 			synchronized (stateLock) {
 				try {
 					stateLock.wait();
-				} catch (InterruptedException ie) {
+				} catch (final InterruptedException ie) {
 					return false;
 				}
 			}
@@ -630,7 +641,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 	class StateListener implements ControllerListener {
 
 		@Override
-		public void controllerUpdate(ControllerEvent ce) {
+		public void controllerUpdate(final ControllerEvent ce) {
 			if (ce instanceof ControllerClosedEvent) {
 				stateFailed = true;
 			}

@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -31,9 +31,11 @@ import edu.cmu.cs.stage3.alice.core.reference.PropertyReference;
 
 public abstract class Property {
 	private static boolean HACK_s_isListeningEnabled = true;
+
 	public static void HACK_enableListening() {
 		HACK_s_isListeningEnabled = true;
 	}
+
 	public static void HACK_disableListening() {
 		HACK_s_isListeningEnabled = false;
 	}
@@ -43,24 +45,25 @@ public abstract class Property {
 	public boolean isAcceptingOfHowMuch() {
 		return m_isAcceptingOfHowMuch;
 	}
-	public void setIsAcceptingOfHowMuch(boolean isAcceptingOfHowMuch) {
+
+	public void setIsAcceptingOfHowMuch(final boolean isAcceptingOfHowMuch) {
 		m_isAcceptingOfHowMuch = isAcceptingOfHowMuch;
 	}
 
-	private Element m_owner;
-	private String m_name;
-	private Object m_defaultValue;
+	private final Element m_owner;
+	private final String m_name;
+	private final Object m_defaultValue;
 	private Class m_valueClass;
 	private Object m_value;
 
-	private java.util.Vector m_propertyListeners = new java.util.Vector();
+	private final java.util.Vector m_propertyListeners = new java.util.Vector();
 	private edu.cmu.cs.stage3.alice.core.event.PropertyListener[] m_propertyListenerArray = null;
 
 	private boolean m_isDeprecated = false;
 
 	protected Object m_associatedFileKey = null;
 
-	protected Property(Element owner, String name, Object defaultValue, Class valueClass) {
+	protected Property(final Element owner, final String name, final Object defaultValue, final Class valueClass) {
 		m_owner = owner;
 		m_name = name;
 		m_defaultValue = defaultValue;
@@ -71,7 +74,8 @@ public abstract class Property {
 	}
 
 	private static java.util.Dictionary s_ownerClassMap = new java.util.Hashtable();
-	public static String[] getPropertyNames(Class ownerClass, Class valueClass) {
+
+	public static String[] getPropertyNames(final Class ownerClass, final Class valueClass) {
 		java.util.Dictionary valueClassMap = (java.util.Dictionary) s_ownerClassMap.get(ownerClass);
 		if (valueClassMap == null) {
 			valueClassMap = new java.util.Hashtable();
@@ -79,12 +83,12 @@ public abstract class Property {
 		}
 		String[] propertyNameArray = (String[]) valueClassMap.get(valueClass);
 		if (propertyNameArray == null) {
-			java.util.Vector propertyNames = new java.util.Vector();
-			java.lang.reflect.Field[] fields = ownerClass.getFields();
-			for (Field field : fields) {
+			final java.util.Vector propertyNames = new java.util.Vector();
+			final java.lang.reflect.Field[] fields = ownerClass.getFields();
+			for (final Field field : fields) {
 				if (Property.class.isAssignableFrom(field.getType())) {
-					String propertyName = field.getName();
-					Class cls = Element.getValueClassForPropertyNamed(ownerClass, propertyName);
+					final String propertyName = field.getName();
+					final Class cls = Element.getValueClassForPropertyNamed(ownerClass, propertyName);
 					if (cls != null) {
 						if (valueClass.isAssignableFrom(cls)) {
 							propertyNames.addElement(propertyName);
@@ -101,16 +105,19 @@ public abstract class Property {
 		return propertyNameArray;
 	}
 
-	public static String[] getPropertyNames(Class ownerClass) {
+	public static String[] getPropertyNames(final Class ownerClass) {
 		return getPropertyNames(ownerClass, Object.class);
 	}
-	public boolean isAlsoKnownAs(Class cls, String name) {
+
+	public boolean isAlsoKnownAs(final Class cls, final String name) {
 		if (cls.isAssignableFrom(m_owner.getClass())) {
 			try {
-				java.lang.reflect.Field field = cls.getField(name);
-				Object o = field.get(m_owner);
+				final java.lang.reflect.Field field = cls.getField(name);
+				final Object o = field.get(m_owner);
 				return o == this;
-			} catch (NoSuchFieldException nsfe) {} catch (IllegalAccessException nsfe) {}
+			} catch (final NoSuchFieldException nsfe) {
+			} catch (final IllegalAccessException nsfe) {
+			}
 		}
 		return false;
 	}
@@ -118,42 +125,49 @@ public abstract class Property {
 	public Element getOwner() {
 		return m_owner;
 	}
+
 	/** @deprecated */
 	@Deprecated
 	public Element getElement() {
 		return getOwner();
 	}
+
 	public Class getValueClass() {
 		return m_valueClass;
 	}
 
-	protected void setValueClass(Class valueClass) {
+	protected void setValueClass(final Class valueClass) {
 		m_valueClass = valueClass;
 	}
+
 	public Object getDefaultValue() {
 		return m_defaultValue;
 	}
+
 	public String getName() {
 		return m_name;
 	}
 
-	public void addPropertyListener(edu.cmu.cs.stage3.alice.core.event.PropertyListener propertyListener) {
+	public void addPropertyListener(final edu.cmu.cs.stage3.alice.core.event.PropertyListener propertyListener) {
 		if (m_propertyListeners.contains(propertyListener)) {
 			// edu.cmu.cs.stage3.alice.core.Element.warnln( "WARNING: " + this +
 			// " already has propertyListener " + propertyListener +
-			// "(class="+propertyListener.getClass()+").  NOT added again." );
+			// "(class="+propertyListener.getClass()+"). NOT added again." );
 		} else {
 			m_propertyListeners.addElement(propertyListener);
 			m_propertyListenerArray = null;
 		}
 	}
-	public void removePropertyListener(edu.cmu.cs.stage3.alice.core.event.PropertyListener propertyListener) {
+
+	public void removePropertyListener(final edu.cmu.cs.stage3.alice.core.event.PropertyListener propertyListener) {
 		m_propertyListeners.removeElement(propertyListener);
 		m_propertyListenerArray = null;
 	}
+
 	public edu.cmu.cs.stage3.alice.core.event.PropertyListener[] getPropertyListeners() {
 		if (m_propertyListenerArray == null) {
-			m_propertyListenerArray = new edu.cmu.cs.stage3.alice.core.event.PropertyListener[m_propertyListeners.size()];
+			m_propertyListenerArray = new edu.cmu.cs.stage3.alice.core.event.PropertyListener[m_propertyListeners
+					.size()];
 			m_propertyListeners.copyInto(m_propertyListenerArray);
 		}
 		return m_propertyListenerArray;
@@ -164,15 +178,15 @@ public abstract class Property {
 			Class cls = m_owner.getClass();
 			while (cls != null) {
 				try {
-					java.lang.reflect.Field field = cls.getDeclaredField(m_name);
+					final java.lang.reflect.Field field = cls.getDeclaredField(m_name);
 					if (field.get(m_owner) == this) {
 						return cls;
 					} else {
 						throw new RuntimeException(m_owner + " has field named " + m_name + " that is not " + this);
 					}
-				} catch (NoSuchFieldException nsfe) {
+				} catch (final NoSuchFieldException nsfe) {
 					cls = cls.getSuperclass();
-				} catch (IllegalAccessException iae) {
+				} catch (final IllegalAccessException iae) {
 					throw new ExceptionWrapper(iae, null);
 				}
 			}
@@ -189,23 +203,23 @@ public abstract class Property {
 				return m_value;
 			} else {
 				try {
-					Class[] parameterTypes = {};
-					Object[] parameterValues = {};
-					java.lang.reflect.Method method = m_value.getClass().getMethod("clone", parameterTypes);
+					final Class[] parameterTypes = {};
+					final Object[] parameterValues = {};
+					final java.lang.reflect.Method method = m_value.getClass().getMethod("clone", parameterTypes);
 					if (method.isAccessible()) {
 						return method.invoke(m_value, parameterValues);
 					} else {
 						return m_value;
 					}
-				} catch (NoSuchMethodException nsme) {
+				} catch (final NoSuchMethodException nsme) {
 					Element.warnln("property get failure to clone: " + this + " " + nsme);
 					// nsme.printStackTrace();
 					return m_value;
-				} catch (IllegalAccessException iae) {
+				} catch (final IllegalAccessException iae) {
 					Element.warnln("property get failure to clone: " + this + " " + iae);
 					// iae.printStackTrace();
 					return m_value;
-				} catch (java.lang.reflect.InvocationTargetException ite) {
+				} catch (final java.lang.reflect.InvocationTargetException ite) {
 					Element.warnln("property get failure to clone: " + this + " " + ite);
 					// ite.getTargetException().printStackTrace();
 					return m_value;
@@ -216,37 +230,39 @@ public abstract class Property {
 		}
 	}
 
-	private boolean isValueInADifferentWorld(Object value) {
-		World world = getElement().getWorld();
+	private boolean isValueInADifferentWorld(final Object value) {
+		final World world = getElement().getWorld();
 		if (world != null) {
 			if (value instanceof Element) {
-				Element element = (Element) value;
+				final Element element = (Element) value;
 				return world != getElement().getWorld();
 			}
 		}
 		return false;
 	}
 
-	public void checkForBadReferences(Object value) {
+	public void checkForBadReferences(final Object value) {
 		if (value instanceof Object[]) {
-			Object[] array = (Object[]) value;
+			final Object[] array = (Object[]) value;
 			for (int i = 0; i < array.length; i++) {
 				if (isValueInADifferentWorld(array[i])) {
-					throw new edu.cmu.cs.stage3.alice.core.IllegalArrayPropertyValueException(this, i, value, "value must be in world");
+					throw new edu.cmu.cs.stage3.alice.core.IllegalArrayPropertyValueException(this, i, value,
+							"value must be in world");
 				}
 			}
 		} else {
 			if (isValueInADifferentWorld(value)) {
-				throw new edu.cmu.cs.stage3.alice.core.IllegalPropertyValueException(this, value, "value must be in world");
+				throw new edu.cmu.cs.stage3.alice.core.IllegalPropertyValueException(this, value,
+						"value must be in world");
 			}
 		}
 	}
 
-	protected void checkValueType(Object value) {
+	protected void checkValueType(final Object value) {
 		if (value != null) {
-			Class valueClass = getValueClass();
+			final Class valueClass = getValueClass();
 			if (value instanceof Expression) {
-				Expression expression = (Expression) value;
+				final Expression expression = (Expression) value;
 				// todo: there must be a better way
 				if (valueClass.isAssignableFrom(Expression.class)) {
 					// pass
@@ -263,7 +279,9 @@ public abstract class Property {
 							// pass
 						} else {
 							// Element.debugln( this + " " + value );
-							throw new IllegalPropertyValueException(this, value, "Cannot set property " + getName() + " on " + getOwner() + ".  " + valueClass + " is not assignable from " + expression.getValueClass());
+							throw new IllegalPropertyValueException(this, value,
+									"Cannot set property " + getName() + " on " + getOwner() + ".  " + valueClass
+											+ " is not assignable from " + expression.getValueClass());
 						}
 					}
 				}
@@ -271,13 +289,15 @@ public abstract class Property {
 				if (valueClass.isAssignableFrom(value.getClass())) {
 					// pass
 				} else {
-					throw new IllegalPropertyValueException(this, value, "Cannot set property " + getName() + " on " + getOwner() + ".  " + valueClass + " is not assignable from " + value.getClass());
+					throw new IllegalPropertyValueException(this, value, "Cannot set property " + getName() + " on "
+							+ getOwner() + ".  " + valueClass + " is not assignable from " + value.getClass());
 				}
 			}
 		} else {
 			// todo
 		}
 	}
+
 	/*
 	 * protected void valueCheck( Object value ) { if( value != null ) { Class
 	 * valueClass = getValueClass(); if( value instanceof Expression ) {
@@ -303,7 +323,7 @@ public abstract class Property {
 	 */
 	// todo: this should not be necessary
 	protected boolean getValueOfExpression() {
-		Class valueClass = getValueClass();
+		final Class valueClass = getValueClass();
 		if (valueClass.isAssignableFrom(Expression.class)) {
 			return false;
 		} else if (valueClass.isAssignableFrom(Variable.class)) {
@@ -314,9 +334,10 @@ public abstract class Property {
 			return true;
 		}
 	}
+
 	private static Behavior m_currentBehavior = null;
 
-	protected Object evaluateIfNecessary(Object o) {
+	protected Object evaluateIfNecessary(final Object o) {
 		if (o instanceof Expression) {
 			Expression expression = (Expression) o;
 			if (m_currentBehavior == null) {
@@ -324,15 +345,16 @@ public abstract class Property {
 					// pass
 				} else {
 					if (expression instanceof Variable) {
-						Element owner = getOwner();
+						final Element owner = getOwner();
 						if (owner != null) {
-							World world = owner.getWorld();
+							final World world = owner.getWorld();
 							if (world != null) {
-								Sandbox sandbox = world.getCurrentSandbox();
+								final Sandbox sandbox = world.getCurrentSandbox();
 								if (sandbox != null) {
 									m_currentBehavior = sandbox.getCurrentBehavior();
 									if (m_currentBehavior != null) {
-										Variable runtimeVariable = m_currentBehavior.stackLookup((Variable) expression);
+										final Variable runtimeVariable = m_currentBehavior
+												.stackLookup((Variable) expression);
 										if (runtimeVariable != null) {
 											expression = runtimeVariable;
 										}
@@ -371,42 +393,47 @@ public abstract class Property {
 			return o;
 		}
 	}
+
 	public Object getValue() {
 		return evaluateIfNecessary(m_value);
 	}
-	private void onChanging(PropertyEvent propertyEvent) {
+
+	private void onChanging(final PropertyEvent propertyEvent) {
 		m_owner.propertyChanging(propertyEvent);
 		if (HACK_s_isListeningEnabled) {
-			PropertyListener[] propertyListeners = getPropertyListeners();
-			for (PropertyListener propertyListener : propertyListeners) {
+			final PropertyListener[] propertyListeners = getPropertyListeners();
+			for (final PropertyListener propertyListener : propertyListeners) {
 				propertyListener.propertyChanging(propertyEvent);
 			}
 		} else {
 			// pass
 		}
 	}
-	private void onChanged(PropertyEvent propertyEvent) {
+
+	private void onChanged(final PropertyEvent propertyEvent) {
 		// todo
 		getElement().markKeepKeyDirty();
 		m_owner.propertyChanged(propertyEvent);
 		if (HACK_s_isListeningEnabled) {
-			PropertyListener[] propertyListeners = getPropertyListeners();
-			for (PropertyListener propertyListener : propertyListeners) {
+			final PropertyListener[] propertyListeners = getPropertyListeners();
+			for (final PropertyListener propertyListener : propertyListeners) {
 				propertyListener.propertyChanged(propertyEvent);
 			}
 		} else {
 			// pass
 		}
 	}
-	protected void onSet(Object value) {
-		Class valueClass = getValueClass();
-		PropertyEvent propertyEvent = new PropertyEvent(this, value);
+
+	protected void onSet(final Object value) {
+		final Class valueClass = getValueClass();
+		final PropertyEvent propertyEvent = new PropertyEvent(this, value);
 		onChanging(propertyEvent);
 		m_value = value;
 		onChanged(propertyEvent);
 		m_associatedFileKey = null;
 	}
-	public void set(Object value) throws IllegalArgumentException {
+
+	public void set(final Object value) throws IllegalArgumentException {
 		if (m_value == null) {
 			if (value == null) {
 				return;
@@ -422,14 +449,16 @@ public abstract class Property {
 		}
 		onSet(value);
 	}
-	private static void setHowMuch(Element owner, String propertyName, Object value, edu.cmu.cs.stage3.util.HowMuch howMuch) {
-		Property property = owner.getPropertyNamed(propertyName);
+
+	private static void setHowMuch(final Element owner, final String propertyName, final Object value,
+			final edu.cmu.cs.stage3.util.HowMuch howMuch) {
+		final Property property = owner.getPropertyNamed(propertyName);
 		if (property != null) {
 			property.set(value);
 		}
 		if (howMuch.getDescend()) {
 			for (int i = 0; i < owner.getChildCount(); i++) {
-				Element child = owner.getChildAt(i);
+				final Element child = owner.getChildAt(i);
 				if (child.isFirstClass.booleanValue() && howMuch.getRespectDescendant()) {
 					// respect descendant
 				} else {
@@ -438,7 +467,8 @@ public abstract class Property {
 			}
 		}
 	}
-	public void set(Object value, edu.cmu.cs.stage3.util.HowMuch howMuch) throws IllegalArgumentException {
+
+	public void set(final Object value, final edu.cmu.cs.stage3.util.HowMuch howMuch) throws IllegalArgumentException {
 		// todo
 		if (m_owner instanceof Element) {
 			setHowMuch(m_owner, m_name, value, howMuch);
@@ -519,7 +549,7 @@ public abstract class Property {
 	// }
 	// }
 	// }
-	protected Object getValueOf(Class type, String text) {
+	protected Object getValueOf(final Class type, final String text) {
 		if (type.equals(Double.class)) {
 			if (text.equals("Infinity")) {
 				return new Double(Double.POSITIVE_INFINITY);
@@ -532,32 +562,32 @@ public abstract class Property {
 			return text;
 		} else {
 			try {
-				Class[] parameterTypes = {String.class};
-				java.lang.reflect.Method valueOfMethod = type.getMethod("valueOf", parameterTypes);
-				int modifiers = valueOfMethod.getModifiers();
+				final Class[] parameterTypes = { String.class };
+				final java.lang.reflect.Method valueOfMethod = type.getMethod("valueOf", parameterTypes);
+				final int modifiers = valueOfMethod.getModifiers();
 				if (java.lang.reflect.Modifier.isPublic(modifiers) && java.lang.reflect.Modifier.isStatic(modifiers)) {
-					Object[] parameters = {text};
+					final Object[] parameters = { text };
 					return valueOfMethod.invoke(null, parameters);
 				} else {
 					throw new RuntimeException("valueOf method not public static.");
 				}
-			} catch (NoSuchMethodException nsme) {
+			} catch (final NoSuchMethodException nsme) {
 				throw new RuntimeException("NoSuchMethodException:" + type);
-			} catch (IllegalAccessException iae) {
+			} catch (final IllegalAccessException iae) {
 				throw new RuntimeException("IllegalAccessException: " + type);
-			} catch (java.lang.reflect.InvocationTargetException ite) {
+			} catch (final java.lang.reflect.InvocationTargetException ite) {
 				throw new RuntimeException("java.lang.reflect.InvocationTargetException: " + type + " " + text);
 			}
 		}
 	}
 
-	protected String getNodeText(org.w3c.dom.Node node) {
+	protected String getNodeText(final org.w3c.dom.Node node) {
 		return edu.cmu.cs.stage3.xml.NodeUtilities.getNodeText(node);
 	}
 
-	protected org.w3c.dom.Node createNodeForString(org.w3c.dom.Document document, String s) {
-		char[] cdataCharacters = {' ', '\t', '\n', '"', '\'', '>', '<', '&'};
-		for (char cdataCharacter : cdataCharacters) {
+	protected org.w3c.dom.Node createNodeForString(final org.w3c.dom.Document document, final String s) {
+		final char[] cdataCharacters = { ' ', '\t', '\n', '"', '\'', '>', '<', '&' };
+		for (final char cdataCharacter : cdataCharacters) {
 			if (s.indexOf(cdataCharacter) != -1) {
 				return document.createCDATASection(s);
 			}
@@ -565,15 +595,17 @@ public abstract class Property {
 		return document.createTextNode(s);
 	}
 
-	protected String getFilename(String text) {
-		String[] markers = {"java.io.File[", "]"};
-		int begin = text.indexOf(markers[0]) + markers[0].length();
-		int end = text.lastIndexOf(markers[1]);
+	protected String getFilename(final String text) {
+		final String[] markers = { "java.io.File[", "]" };
+		final int begin = text.indexOf(markers[0]) + markers[0].length();
+		final int end = text.lastIndexOf(markers[1]);
 		return text.substring(begin, end);
 	}
-	protected void decodeReference(org.w3c.dom.Element node, java.util.Vector referencesToBeResolved, double version, String typeName) {
+
+	protected void decodeReference(final org.w3c.dom.Element node, final java.util.Vector referencesToBeResolved,
+			final double version, final String typeName) {
 		try {
-			Class type = Class.forName(typeName);
+			final Class type = Class.forName(typeName);
 			String text = getNodeText(node);
 			// todo?
 			if (text.equals(".")) {
@@ -582,7 +614,8 @@ public abstract class Property {
 			edu.cmu.cs.stage3.util.Criterion criterion;
 			if (type.isAssignableFrom(edu.cmu.cs.stage3.alice.core.criterion.InternalReferenceKeyedCriterion.class)) {
 				criterion = new edu.cmu.cs.stage3.alice.core.criterion.InternalReferenceKeyedCriterion(text);
-			} else if (type.isAssignableFrom(edu.cmu.cs.stage3.alice.core.criterion.ExternalReferenceKeyedCriterion.class)) {
+			} else if (type
+					.isAssignableFrom(edu.cmu.cs.stage3.alice.core.criterion.ExternalReferenceKeyedCriterion.class)) {
 				criterion = new edu.cmu.cs.stage3.alice.core.criterion.ExternalReferenceKeyedCriterion(text);
 			} else {
 				criterion = (edu.cmu.cs.stage3.util.Criterion) getValueOf(type, text);
@@ -598,19 +631,20 @@ public abstract class Property {
 			// criterion ) );
 			// }
 			referencesToBeResolved.addElement(new PropertyReference(this, criterion));
-		} catch (ClassNotFoundException cnfe) {
+		} catch (final ClassNotFoundException cnfe) {
 			throw new RuntimeException(typeName);
 		}
 	}
 
-	protected void decodeObject(org.w3c.dom.Element node, edu.cmu.cs.stage3.io.DirectoryTreeLoader loader, java.util.Vector referencesToBeResolved, double version) throws java.io.IOException {
-		String typeName = node.getAttribute("class");
+	protected void decodeObject(final org.w3c.dom.Element node, final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader,
+			final java.util.Vector referencesToBeResolved, final double version) throws java.io.IOException {
+		final String typeName = node.getAttribute("class");
 		if (typeName.length() > 0) {
-			String text = getNodeText(node);
+			final String text = getNodeText(node);
 			try {
-				Class type = Class.forName(typeName);
+				final Class type = Class.forName(typeName);
 				set(getValueOf(type, text));
-			} catch (ClassNotFoundException cnfe) {
+			} catch (final ClassNotFoundException cnfe) {
 				throw new RuntimeException(typeName);
 			}
 		} else {
@@ -618,9 +652,11 @@ public abstract class Property {
 			throw new RuntimeException();
 		}
 	}
-	public final void decode(org.w3c.dom.Element node, edu.cmu.cs.stage3.io.DirectoryTreeLoader loader, java.util.Vector referencesToBeResolved, double version) throws java.io.IOException {
+
+	public final void decode(final org.w3c.dom.Element node, final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader,
+			final java.util.Vector referencesToBeResolved, final double version) throws java.io.IOException {
 		if (node.hasChildNodes()) {
-			String criterionClassname = node.getAttribute("criterionClass");
+			final String criterionClassname = node.getAttribute("criterionClass");
 			if (criterionClassname.length() > 0) {
 				decodeReference(node, referencesToBeResolved, version, criterionClassname);
 			} else {
@@ -631,10 +667,11 @@ public abstract class Property {
 		}
 	}
 
-	protected void encodeReference(org.w3c.dom.Document document, org.w3c.dom.Element node, ReferenceGenerator referenceGenerator, Element owner) {
+	protected void encodeReference(final org.w3c.dom.Document document, final org.w3c.dom.Element node,
+			final ReferenceGenerator referenceGenerator, final Element owner) {
 		// todo:
 		// try {
-		edu.cmu.cs.stage3.util.Criterion criterion = referenceGenerator.generateReference(owner);
+		final edu.cmu.cs.stage3.util.Criterion criterion = referenceGenerator.generateReference(owner);
 		if (criterion != null) {
 			node.setAttribute("criterionClass", criterion.getClass().getName());
 			String s;
@@ -655,13 +692,19 @@ public abstract class Property {
 		// System.err.println( "cannot generate reference for\n\t" + this );
 		// }
 	}
-	protected void encodeObject(org.w3c.dom.Document document, org.w3c.dom.Element node, edu.cmu.cs.stage3.io.DirectoryTreeStorer storer, ReferenceGenerator referenceGenerator) throws java.io.IOException {
-		Object o = get();
+
+	protected void encodeObject(final org.w3c.dom.Document document, final org.w3c.dom.Element node,
+			final edu.cmu.cs.stage3.io.DirectoryTreeStorer storer, final ReferenceGenerator referenceGenerator)
+			throws java.io.IOException {
+		final Object o = get();
 		node.setAttribute("class", o.getClass().getName());
 		node.appendChild(createNodeForString(document, o.toString()));
 	}
-	public final void encode(org.w3c.dom.Document document, org.w3c.dom.Element node, edu.cmu.cs.stage3.io.DirectoryTreeStorer storer, ReferenceGenerator referenceGenerator) throws java.io.IOException {
-		Object o = get();
+
+	public final void encode(final org.w3c.dom.Document document, final org.w3c.dom.Element node,
+			final edu.cmu.cs.stage3.io.DirectoryTreeStorer storer, final ReferenceGenerator referenceGenerator)
+			throws java.io.IOException {
+		final Object o = get();
 		if (o != null) {
 			if (o instanceof Element) {
 				encodeReference(document, node, referenceGenerator, (Element) o);
@@ -671,12 +714,15 @@ public abstract class Property {
 		}
 	}
 
-	public void keepAnyAssociatedFiles(edu.cmu.cs.stage3.io.DirectoryTreeStorer storer) throws edu.cmu.cs.stage3.io.KeepFileNotSupportedException, edu.cmu.cs.stage3.io.KeepFileDoesNotExistException {
+	public void keepAnyAssociatedFiles(final edu.cmu.cs.stage3.io.DirectoryTreeStorer storer)
+			throws edu.cmu.cs.stage3.io.KeepFileNotSupportedException,
+			edu.cmu.cs.stage3.io.KeepFileDoesNotExistException {
 	}
 
 	public boolean isDeprecated() {
 		return m_isDeprecated;
 	}
+
 	public void deprecate() {
 		m_isDeprecated = true;
 	}

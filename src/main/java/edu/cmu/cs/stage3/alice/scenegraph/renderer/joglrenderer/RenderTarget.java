@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -28,20 +28,22 @@ import javax.media.opengl.GL;
 import edu.cmu.cs.stage3.alice.scenegraph.Camera;
 
 public abstract class RenderTarget extends edu.cmu.cs.stage3.alice.scenegraph.renderer.AbstractProxyRenderTarget {
-	protected RenderTarget(Renderer renderer) {
+	protected RenderTarget(final Renderer renderer) {
 		super(renderer);
 	}
+
 	private RenderContext m_renderContextForGetOffscreenGraphics = null;
-	protected void performClearAndRenderOffscreen(RenderContext context) {
+
+	protected void performClearAndRenderOffscreen(final RenderContext context) {
 		commitAnyPendingChanges();
 
 		// todo:
 		// note: clear hasn't really happened
 		onClear();
 
-		edu.cmu.cs.stage3.alice.scenegraph.Camera[] cameras = getCameras();
-		for (Camera camera : cameras) {
-			CameraProxy cameraProxyI = (CameraProxy) getProxyFor(camera);
+		final edu.cmu.cs.stage3.alice.scenegraph.Camera[] cameras = getCameras();
+		for (final Camera camera : cameras) {
+			final CameraProxy cameraProxyI = (CameraProxy) getProxyFor(camera);
 			cameraProxyI.performClearAndRenderOffscreen(context);
 		}
 		try {
@@ -56,16 +58,17 @@ public abstract class RenderTarget extends edu.cmu.cs.stage3.alice.scenegraph.re
 	private java.nio.IntBuffer m_pickBuffer;
 	private java.nio.IntBuffer m_viewportBuffer;
 
-	public PickInfo performPick(PickContext context, PickParameters pickParameters) {
-		int x = pickParameters.getX();
-		int y = pickParameters.getY();
-		edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera = getCameraAtPixel(x, y);
+	public PickInfo performPick(final PickContext context, final PickParameters pickParameters) {
+		final int x = pickParameters.getX();
+		final int y = pickParameters.getY();
+		final edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera = getCameraAtPixel(x, y);
 		// System.err.println( sgCamera );
 		if (sgCamera != null) {
 
 			final int CAPACITY = 256;
 			if (m_pickBuffer == null) {
-				m_pickBuffer = java.nio.ByteBuffer.allocateDirect(CAPACITY * 4).order(java.nio.ByteOrder.nativeOrder()).asIntBuffer();
+				m_pickBuffer = java.nio.ByteBuffer.allocateDirect(CAPACITY * 4).order(java.nio.ByteOrder.nativeOrder())
+						.asIntBuffer();
 			} else {
 				m_pickBuffer.rewind();
 			}
@@ -74,12 +77,12 @@ public abstract class RenderTarget extends edu.cmu.cs.stage3.alice.scenegraph.re
 			context.gl.glRenderMode(GL.GL_SELECT);
 			context.gl.glInitNames();
 
-			int width = context.getWidth();
-			int height = context.getHeight();
+			final int width = context.getWidth();
+			final int height = context.getHeight();
 			// todo: use actual viewport
-			CameraProxy cameraProxy = (CameraProxy) getProxyFor(sgCamera);
-			java.awt.Rectangle viewport = cameraProxy.getActualViewport(width, height);
-			int[] vp = {viewport.x, viewport.y, viewport.width, viewport.height};
+			final CameraProxy cameraProxy = (CameraProxy) getProxyFor(sgCamera);
+			final java.awt.Rectangle viewport = cameraProxy.getActualViewport(width, height);
+			final int[] vp = { viewport.x, viewport.y, viewport.width, viewport.height };
 			context.gl.glViewport(viewport.x, viewport.y, viewport.width, viewport.height);
 
 			context.gl.glMatrixMode(GL.GL_PROJECTION);
@@ -111,69 +114,89 @@ public abstract class RenderTarget extends edu.cmu.cs.stage3.alice.scenegraph.re
 	}
 
 	@Override
-	public javax.vecmath.Matrix4d getProjectionMatrix(edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera) {
+	public javax.vecmath.Matrix4d getProjectionMatrix(final edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera) {
 		// todo
 		return sgCamera.getProjection();
 	}
+
 	@Override
-	public double[] getActualPlane(edu.cmu.cs.stage3.alice.scenegraph.OrthographicCamera sgOrthographicCamera) {
+	public double[] getActualPlane(final edu.cmu.cs.stage3.alice.scenegraph.OrthographicCamera sgOrthographicCamera) {
 		// todo
 		return sgOrthographicCamera.getPlane();
 	}
+
 	@Override
-	public double[] getActualPlane(edu.cmu.cs.stage3.alice.scenegraph.PerspectiveCamera sgPerspectiveCamera) {
+	public double[] getActualPlane(final edu.cmu.cs.stage3.alice.scenegraph.PerspectiveCamera sgPerspectiveCamera) {
 		// todo
 		return sgPerspectiveCamera.getPlane();
 	}
+
 	@Override
-	public double getActualHorizontalViewingAngle(edu.cmu.cs.stage3.alice.scenegraph.SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera) {
-		java.awt.Dimension size = getSize();
-		SymmetricPerspectiveCameraProxy symmetricPerspectiveCameraProxy = (SymmetricPerspectiveCameraProxy) getProxyFor(sgSymmetricPerspectiveCamera);
+	public double getActualHorizontalViewingAngle(
+			final edu.cmu.cs.stage3.alice.scenegraph.SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera) {
+		final java.awt.Dimension size = getSize();
+		final SymmetricPerspectiveCameraProxy symmetricPerspectiveCameraProxy = (SymmetricPerspectiveCameraProxy) getProxyFor(
+				sgSymmetricPerspectiveCamera);
 		return symmetricPerspectiveCameraProxy.getActualHorizontalViewingAngle(size.width, size.height);
 	}
+
 	@Override
-	public double getActualVerticalViewingAngle(edu.cmu.cs.stage3.alice.scenegraph.SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera) {
-		java.awt.Dimension size = getSize();
-		SymmetricPerspectiveCameraProxy symmetricPerspectiveCameraProxy = (SymmetricPerspectiveCameraProxy) getProxyFor(sgSymmetricPerspectiveCamera);
+	public double getActualVerticalViewingAngle(
+			final edu.cmu.cs.stage3.alice.scenegraph.SymmetricPerspectiveCamera sgSymmetricPerspectiveCamera) {
+		final java.awt.Dimension size = getSize();
+		final SymmetricPerspectiveCameraProxy symmetricPerspectiveCameraProxy = (SymmetricPerspectiveCameraProxy) getProxyFor(
+				sgSymmetricPerspectiveCamera);
 		return symmetricPerspectiveCameraProxy.getActualVerticalViewingAngle(size.width, size.height);
 	}
+
 	@Override
-	public java.awt.Rectangle getActualViewport(edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera) {
-		java.awt.Dimension size = getSize();
-		CameraProxy cameraProxy = (CameraProxy) getProxyFor(sgCamera);
+	public java.awt.Rectangle getActualViewport(final edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera) {
+		final java.awt.Dimension size = getSize();
+		final CameraProxy cameraProxy = (CameraProxy) getProxyFor(sgCamera);
 		return cameraProxy.getActualViewport(size.width, size.height);
 	}
+
 	@Override
-	public java.awt.Rectangle getViewport(edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera) {
-		CameraProxy cameraProxy = (CameraProxy) getProxyFor(sgCamera);
+	public java.awt.Rectangle getViewport(final edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera) {
+		final CameraProxy cameraProxy = (CameraProxy) getProxyFor(sgCamera);
 		return cameraProxy.getViewport();
 	}
+
 	@Override
-	public void setViewport(edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera, java.awt.Rectangle viewport) {
-		CameraProxy cameraProxy = (CameraProxy) getProxyFor(sgCamera);
+	public void setViewport(final edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera,
+			final java.awt.Rectangle viewport) {
+		final CameraProxy cameraProxy = (CameraProxy) getProxyFor(sgCamera);
 		cameraProxy.setViewport(viewport);
 	}
+
 	@Override
-	public boolean isLetterboxedAsOpposedToDistorted(edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera) {
-		CameraProxy cameraProxy = (CameraProxy) getProxyFor(sgCamera);
+	public boolean isLetterboxedAsOpposedToDistorted(final edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera) {
+		final CameraProxy cameraProxy = (CameraProxy) getProxyFor(sgCamera);
 		return cameraProxy.isLetterboxedAsOpposedToDistorted();
 	}
+
 	@Override
-	public void setIsLetterboxedAsOpposedToDistorted(edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera, boolean isLetterboxedAsOpposedToDistorted) {
-		CameraProxy cameraProxy = (CameraProxy) getProxyFor(sgCamera);
+	public void setIsLetterboxedAsOpposedToDistorted(final edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera,
+			final boolean isLetterboxedAsOpposedToDistorted) {
+		final CameraProxy cameraProxy = (CameraProxy) getProxyFor(sgCamera);
 		cameraProxy.setIsLetterboxedAsOpposedToDistorted(isLetterboxedAsOpposedToDistorted);
 	}
 
 	@Override
 	public void clearAndRenderOffscreen() {
 	}
+
 	@Override
-	public boolean rendersOnEdgeTrianglesAsLines(edu.cmu.cs.stage3.alice.scenegraph.OrthographicCamera orthographicCamera) {
+	public boolean rendersOnEdgeTrianglesAsLines(
+			final edu.cmu.cs.stage3.alice.scenegraph.OrthographicCamera orthographicCamera) {
 		// todo
 		return false;
 	}
+
 	@Override
-	public void setRendersOnEdgeTrianglesAsLines(edu.cmu.cs.stage3.alice.scenegraph.OrthographicCamera orthographicCamera, boolean rendersOnEdgeTrianglesAsLines) {
+	public void setRendersOnEdgeTrianglesAsLines(
+			final edu.cmu.cs.stage3.alice.scenegraph.OrthographicCamera orthographicCamera,
+			final boolean rendersOnEdgeTrianglesAsLines) {
 		// todo
 		// if( rendersOnEdgeTrianglesAsLines ) {
 		// throw new RuntimeException( "not supported" );
@@ -184,54 +207,62 @@ public abstract class RenderTarget extends edu.cmu.cs.stage3.alice.scenegraph.re
 	public java.awt.Image getOffscreenImage() {
 		return null;
 	}
+
 	@Override
 	public java.awt.Graphics getOffscreenGraphics() {
 		return new Graphics(m_renderContextForGetOffscreenGraphics);
 	}
+
 	@Override
-	public java.awt.Graphics getGraphics(edu.cmu.cs.stage3.alice.scenegraph.TextureMap textureMap) {
+	public java.awt.Graphics getGraphics(final edu.cmu.cs.stage3.alice.scenegraph.TextureMap textureMap) {
 		return null;
 	}
+
 	@Override
 	public java.awt.Image getZBufferImage() {
 		return null;
 	}
+
 	@Override
-	public java.awt.Image getImage(edu.cmu.cs.stage3.alice.scenegraph.TextureMap textureMap) {
+	public java.awt.Image getImage(final edu.cmu.cs.stage3.alice.scenegraph.TextureMap textureMap) {
 		return null;
 	}
 
 	@Override
-	public void copyOffscreenImageToTextureMap(edu.cmu.cs.stage3.alice.scenegraph.TextureMap textureMap) {
+	public void copyOffscreenImageToTextureMap(final edu.cmu.cs.stage3.alice.scenegraph.TextureMap textureMap) {
 		// todo
 	}
 
-	public void setSilhouetteThickness(double silhouetteThickness) {
+	public void setSilhouetteThickness(final double silhouetteThickness) {
 		// todo
 	}
+
 	public double getSilhouetteThickness() {
 		// todo
 		return 0;
 	}
 
-	private double[] getActualNearPlane(edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera, int width, int height) {
-		CameraProxy cameraProxy = (CameraProxy) getProxyFor(sgCamera);
-		double[] ret = new double[4];
+	private double[] getActualNearPlane(final edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera, final int width,
+			final int height) {
+		final CameraProxy cameraProxy = (CameraProxy) getProxyFor(sgCamera);
+		final double[] ret = new double[4];
 		return cameraProxy.getActualNearPlane(ret, width, height);
 	}
-	private edu.cmu.cs.stage3.alice.scenegraph.Camera getCameraAtPixel(int x, int y) {
-		edu.cmu.cs.stage3.alice.scenegraph.Camera[] sgCameras = getCameras();
+
+	private edu.cmu.cs.stage3.alice.scenegraph.Camera getCameraAtPixel(final int x, final int y) {
+		final edu.cmu.cs.stage3.alice.scenegraph.Camera[] sgCameras = getCameras();
 		for (int i = sgCameras.length - 1; i >= 0; i--) {
-			edu.cmu.cs.stage3.alice.scenegraph.Camera sgCameraI = sgCameras[i];
-			java.awt.Rectangle viewportI = getActualViewport(sgCameraI);
+			final edu.cmu.cs.stage3.alice.scenegraph.Camera sgCameraI = sgCameras[i];
+			final java.awt.Rectangle viewportI = getActualViewport(sgCameraI);
 			if (viewportI.contains(x, y)) {
 				return sgCameraI;
 			}
 		}
 		return null;
 	}
-	private static boolean isNaN(double[] array) {
-		for (double element : array) {
+
+	private static boolean isNaN(final double[] array) {
+		for (final double element : array) {
 			if (Double.isNaN(element)) {
 				return true;
 			}

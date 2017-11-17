@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -59,12 +59,12 @@ import com.sun.image.codec.jpeg.ImageFormatException;
  */
 public class JPEGImageDecoder extends ImageDecoderImpl {
 
-	public JPEGImageDecoder(InputStream input, ImageDecodeParam param) {
+	public JPEGImageDecoder(final InputStream input, final ImageDecodeParam param) {
 		super(input, param);
 	}
 
 	@Override
-	public RenderedImage decodeAsRenderedImage(int page) throws IOException {
+	public RenderedImage decodeAsRenderedImage(final int page) throws IOException {
 		if (page != 0) {
 			throw new IOException(JaiI18N.getString("JPEGImageDecoder0"));
 		}
@@ -78,18 +78,19 @@ class JPEGImage extends SimpleRenderedImage {
 
 	/**
 	 * Construct a JPEGmage.
-	 * 
+	 *
 	 * @param stream
 	 *            The JPEG InputStream.
 	 */
-	public JPEGImage(InputStream stream) {
-		com.sun.image.codec.jpeg.JPEGImageDecoder decoder = com.sun.image.codec.jpeg.JPEGCodec.createJPEGDecoder(stream);
+	public JPEGImage(final InputStream stream) {
+		final com.sun.image.codec.jpeg.JPEGImageDecoder decoder = com.sun.image.codec.jpeg.JPEGCodec
+				.createJPEGDecoder(stream);
 		try {
 			// decodeAsBufferedImage performs default color conversions
 			image = decoder.decodeAsBufferedImage();
-		} catch (ImageFormatException e) {
+		} catch (final ImageFormatException e) {
 			throw new RuntimeException(JaiI18N.getString("JPEGImageDecoder1"));
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new RuntimeException(JaiI18N.getString("JPEGImageDecoder2"));
 		}
 
@@ -102,7 +103,7 @@ class JPEGImage extends SimpleRenderedImage {
 		// since SinglePixelPackedSampleModels are not working
 		if (!(image.getSampleModel() instanceof ComponentSampleModel)) {
 			int type = -1;
-			int numBands = image.getSampleModel().getNumBands();
+			final int numBands = image.getSampleModel().getNumBands();
 			if (numBands == 1) {
 				type = BufferedImage.TYPE_BYTE_GRAY;
 			} else if (numBands == 3) {
@@ -113,8 +114,8 @@ class JPEGImage extends SimpleRenderedImage {
 				throw new RuntimeException(JaiI18N.getString("JPEGImageDecoder3"));
 			}
 
-			BufferedImage bi = new BufferedImage(width, height, type);
-			Graphics2D g = bi.createGraphics();
+			final BufferedImage bi = new BufferedImage(width, height, type);
+			final Graphics2D g = bi.createGraphics();
 			g.drawRenderedImage(image, new AffineTransform());
 			image = bi;
 		}
@@ -124,7 +125,7 @@ class JPEGImage extends SimpleRenderedImage {
 	}
 
 	@Override
-	public synchronized Raster getTile(int tileX, int tileY) {
+	public synchronized Raster getTile(final int tileX, final int tileY) {
 		if (tileX != 0 || tileY != 0) {
 			throw new IllegalArgumentException(JaiI18N.getString("JPEGImageDecoder4"));
 		}

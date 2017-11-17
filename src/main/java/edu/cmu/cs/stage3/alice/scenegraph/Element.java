@@ -36,20 +36,23 @@ public abstract class Element {
 	static {
 		try {
 			s_printWarnings = Boolean.getBoolean("alice.printWarnings");
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			s_printWarnings = false;
 		}
 	}
-	public static void warn(Object o) {
+
+	public static void warn(final Object o) {
 		if (s_printWarnings) {
 			System.err.print(o);
 		}
 	}
-	public static void warnln(Object o) {
+
+	public static void warnln(final Object o) {
 		if (s_printWarnings) {
 			System.err.println(o);
 		}
 	}
+
 	public static void warnln() {
 		if (s_printWarnings) {
 			System.err.println();
@@ -75,17 +78,20 @@ public abstract class Element {
 		release();
 		super.finalize();
 	}
+
 	protected void releasePass1() {
 	}
+
 	protected void releasePass2() {
 		m_bonus = null;
 		m_name = null;
 	}
+
 	protected void releasePass3() {
 		java.util.Enumeration enum0;
 		enum0 = m_propertyListeners.elements();
 		while (enum0.hasMoreElements()) {
-			PropertyListener propertyListener = (PropertyListener) enum0.nextElement();
+			final PropertyListener propertyListener = (PropertyListener) enum0.nextElement();
 			warnln("WARNING: released element " + this + " still has propertyListener " + propertyListener + ".");
 		}
 		m_propertyListeners = null;
@@ -93,54 +99,62 @@ public abstract class Element {
 
 		enum0 = m_releaseListeners.elements();
 		while (enum0.hasMoreElements()) {
-			ReleaseListener releaseListener = (ReleaseListener) enum0.nextElement();
+			final ReleaseListener releaseListener = (ReleaseListener) enum0.nextElement();
 			warnln("WARNING: released element " + this + " still has releaseListener " + releaseListener + ".");
 		}
 		m_releaseListeners = null;
 		m_releaseListenerArray = null;
 	}
+
 	public synchronized void release() {
 		if (!m_isReleased) {
-			ReleaseEvent releaseEvent = new ReleaseEvent(this);
-			ReleaseListener[] releaseListenersArray = getReleaseListeners();
-			for (ReleaseListener element : releaseListenersArray) {
+			final ReleaseEvent releaseEvent = new ReleaseEvent(this);
+			final ReleaseListener[] releaseListenersArray = getReleaseListeners();
+			for (final ReleaseListener element : releaseListenersArray) {
 				element.releasing(releaseEvent);
 			}
 			releasePass1();
 			releasePass2();
-			for (ReleaseListener element : releaseListenersArray) {
+			for (final ReleaseListener element : releaseListenersArray) {
 				element.released(releaseEvent);
 			}
 			releasePass3();
 			m_isReleased = true;
 		}
 	}
+
 	public Object getBonus() {
 		return m_bonus;
 	}
-	public void setBonus(Object bonus) {
+
+	public void setBonus(final Object bonus) {
 		if (m_bonus != bonus) {
 			m_bonus = bonus;
 			onPropertyChange(BONUS_PROPERTY);
 		}
 	}
+
 	public String getName() {
 		return m_name;
 	}
-	public void setName(String name) {
+
+	public void setName(final String name) {
 		if (notequal(m_name, name)) {
 			m_name = name;
 			onPropertyChange(NAME_PROPERTY);
 		}
 	}
-	public void addPropertyListener(PropertyListener propertyListener) {
+
+	public void addPropertyListener(final PropertyListener propertyListener) {
 		m_propertyListeners.addElement(propertyListener);
 		m_propertyListenerArray = null;
 	}
-	public void removePropertyListener(PropertyListener propertyListener) {
+
+	public void removePropertyListener(final PropertyListener propertyListener) {
 		m_propertyListeners.removeElement(propertyListener);
 		m_propertyListenerArray = null;
 	}
+
 	public PropertyListener[] getPropertyListeners() {
 		if (m_propertyListenerArray == null) {
 			m_propertyListenerArray = new PropertyListener[m_propertyListeners.size()];
@@ -148,14 +162,16 @@ public abstract class Element {
 		}
 		return m_propertyListenerArray;
 	}
-	protected void onPropertyChange(PropertyEvent propertyEvent) {
-		java.util.Enumeration enum0 = m_propertyListeners.elements();
+
+	protected void onPropertyChange(final PropertyEvent propertyEvent) {
+		final java.util.Enumeration enum0 = m_propertyListeners.elements();
 		while (enum0.hasMoreElements()) {
-			PropertyListener propertyListener = (PropertyListener) enum0.nextElement();
+			final PropertyListener propertyListener = (PropertyListener) enum0.nextElement();
 			propertyListener.changed(propertyEvent);
 		}
 	}
-	protected void onPropertyChange(Property property) {
+
+	protected void onPropertyChange(final Property property) {
 		if (isReleased()) {
 			warnln("WARNING: scenegraph property change " + property + " on already released " + this + ".");
 		} else {
@@ -163,14 +179,16 @@ public abstract class Element {
 		}
 	}
 
-	public void addReleaseListener(ReleaseListener releaseListener) {
+	public void addReleaseListener(final ReleaseListener releaseListener) {
 		m_releaseListeners.addElement(releaseListener);
 		m_releaseListenerArray = null;
 	}
-	public void removeReleaseListener(ReleaseListener releaseListener) {
+
+	public void removeReleaseListener(final ReleaseListener releaseListener) {
 		m_releaseListeners.removeElement(releaseListener);
 		m_releaseListenerArray = null;
 	}
+
 	public ReleaseListener[] getReleaseListeners() {
 		if (m_releaseListenerArray == null) {
 			m_releaseListenerArray = new ReleaseListener[m_releaseListeners.size()];
@@ -179,7 +197,7 @@ public abstract class Element {
 		return m_releaseListenerArray;
 	}
 
-	protected static boolean notequal(Object a, Object b) {
+	protected static boolean notequal(final Object a, final Object b) {
 		if (a == null) {
 			return b != null;
 		} else {

@@ -15,17 +15,22 @@ import javax.swing.JFrame;
 /**
  * Class to show a frame-based animation Copyright Georgia Institute of
  * Technology 2007
- * 
+ *
  * @author Barb Ericson ericson@cc.gatech.edu
  */
 public class AnimationPanel extends JComponent {
 	// ///////////// fields /////////////////////
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 8337458010142757232L;
+
 	/** list of image objects */
-	private List imageList = new ArrayList();
+	private final List imageList = new ArrayList();
 
 	/** List of the file names */
-	private List nameList = new ArrayList();
+	private final List nameList = new ArrayList();
 
 	/** index of currently displayed image */
 	private int currIndex = 0;
@@ -44,11 +49,11 @@ public class AnimationPanel extends JComponent {
 
 	/**
 	 * Constructor that takes a list of pictures
-	 * 
+	 *
 	 * @param pictList
 	 *            the list of pictures
 	 */
-	public AnimationPanel(List pictList) {
+	public AnimationPanel(final List pictList) {
 		Image image = null;
 		Picture picture = null;
 		for (int i = 0; i < pictList.size(); i++) {
@@ -58,9 +63,9 @@ public class AnimationPanel extends JComponent {
 			imageList.add(image);
 		}
 
-		BufferedImage bi = (BufferedImage) image;
-		int width = bi.getWidth();
-		int height = bi.getHeight();
+		final BufferedImage bi = (BufferedImage) image;
+		final int width = bi.getWidth();
+		final int height = bi.getHeight();
 		this.setSize(new Dimension(width, height));
 		setMinimumSize(new Dimension(width, height));
 		setPreferredSize(new Dimension(width, height));
@@ -68,20 +73,20 @@ public class AnimationPanel extends JComponent {
 
 	/**
 	 * Constructor that takes the directory to read the frames from
-	 * 
+	 *
 	 * @param directory
 	 *            the directory to read from
 	 */
-	public AnimationPanel(String directory) {
+	public AnimationPanel(final String directory) {
 
 		// get the list of files in the directory
-		File dirObj = new File(directory);
-		String[] fileArray = dirObj.list();
+		final File dirObj = new File(directory);
+		final String[] fileArray = dirObj.list();
 		ImageIcon imageIcon = null;
 		Image image = null;
 
 		// loop through the files
-		for (String element : fileArray) {
+		for (final String element : fileArray) {
 			if (element.indexOf(".jpg") >= 0) {
 
 				imageIcon = new ImageIcon(directory + element);
@@ -93,8 +98,8 @@ public class AnimationPanel extends JComponent {
 		// set size of this panel
 		if (imageIcon != null) {
 			image = (Image) imageList.get(0);
-			int width = image.getWidth(null);
-			int height = image.getHeight(null);
+			final int width = image.getWidth(null);
+			final int height = image.getHeight(null);
 			this.setSize(new Dimension(width, height));
 			setMinimumSize(new Dimension(width, height));
 			setPreferredSize(new Dimension(width, height));
@@ -104,13 +109,13 @@ public class AnimationPanel extends JComponent {
 	/**
 	 * Constructor that takes the directory to read from and the number of
 	 * frames per second
-	 * 
+	 *
 	 * @param directory
 	 *            the frame direcotry
 	 * @param theFramesPerSec
 	 *            the number of frames per second
 	 */
-	public AnimationPanel(String directory, int theFramesPerSec) {
+	public AnimationPanel(final String directory, final int theFramesPerSec) {
 		this(directory);
 		framesPerSec = theFramesPerSec;
 	}
@@ -119,7 +124,7 @@ public class AnimationPanel extends JComponent {
 
 	/**
 	 * Method to get the current index
-	 * 
+	 *
 	 * @return the current index
 	 */
 	public int getCurrIndex() {
@@ -128,17 +133,17 @@ public class AnimationPanel extends JComponent {
 
 	/**
 	 * Method to set the frames per second to show the movie
-	 * 
+	 *
 	 * @param numFramesPerSec
 	 *            the number of frames to show per second
 	 */
-	public void setFramesPerSec(int numFramesPerSec) {
+	public void setFramesPerSec(final int numFramesPerSec) {
 		framesPerSec = numFramesPerSec;
 	}
 
 	/**
 	 * Method to get the frames per second
-	 * 
+	 *
 	 * @return the number of frames per second
 	 */
 	public int getFramesPerSec() {
@@ -147,12 +152,12 @@ public class AnimationPanel extends JComponent {
 
 	/**
 	 * Method to add a picture
-	 * 
+	 *
 	 * @param picture
 	 *            the picture to add
 	 */
-	public void add(Picture picture) {
-		Image image = picture.getImage();
+	public void add(final Picture picture) {
+		final Image image = picture.getImage();
 		imageList.add(image);
 		nameList.add(picture.getFileName());
 	}
@@ -186,7 +191,7 @@ public class AnimationPanel extends JComponent {
 		Graphics g = null;
 		long startTime = 0;
 		long endTime = 0;
-		int timeToSleep = 1000 / framesPerSec;
+		final int timeToSleep = 1000 / framesPerSec;
 		for (int i = 0; i < imageList.size(); i++) {
 			startTime = System.currentTimeMillis();
 			currIndex = i;
@@ -200,7 +205,8 @@ public class AnimationPanel extends JComponent {
 				if (endTime - startTime < timeToSleep) {
 					Thread.sleep(timeToSleep - (endTime - startTime));
 				}
-			} catch (InterruptedException ex) {}
+			} catch (final InterruptedException ex) {
+			}
 			// reset curr index
 			currIndex = imageList.size() - 1;
 		}
@@ -211,7 +217,7 @@ public class AnimationPanel extends JComponent {
 	 */
 	public void showAllFromCurrent() {
 		Graphics g = null;
-		int timeToSleep = 1000 / framesPerSec;
+		final int timeToSleep = 1000 / framesPerSec;
 		for (; currIndex < imageList.size(); currIndex++) {
 			// draw current image
 			g = getGraphics();
@@ -221,7 +227,8 @@ public class AnimationPanel extends JComponent {
 			// sleep
 			try {
 				Thread.sleep(timeToSleep);
-			} catch (InterruptedException ex) {}
+			} catch (final InterruptedException ex) {
+			}
 		}
 		// reset curr index
 		currIndex = imageList.size() - 1;
@@ -247,7 +254,7 @@ public class AnimationPanel extends JComponent {
 	 * Method to remove all after the current index
 	 */
 	public void removeAllAfter() {
-		int i = currIndex + 1;
+		final int i = currIndex + 1;
 		int index = i;
 		File f = null;
 		boolean result = false;
@@ -263,12 +270,12 @@ public class AnimationPanel extends JComponent {
 
 	/**
 	 * Method to paint the frames
-	 * 
+	 *
 	 * @param g
 	 *            the graphics context to draw to
 	 */
-	public void draw(Graphics g) {
-		Image image = (Image) imageList.get(currIndex);
+	public void draw(final Graphics g) {
+		final Image image = (Image) imageList.get(currIndex);
 		g.drawImage(image, 0, 0, this);
 	}
 
@@ -277,7 +284,7 @@ public class AnimationPanel extends JComponent {
 	 */
 
 	@Override
-	public void paintComponent(Graphics g) {
+	public void paintComponent(final Graphics g) {
 		if (imageList.size() == 0) {
 			g.drawString("No images yet!", 20, 20);
 		} else {
@@ -288,9 +295,9 @@ public class AnimationPanel extends JComponent {
 	/**
 	 * Method to test
 	 */
-	public static void main(String[] args) {
-		JFrame frame = new JFrame();
-		AnimationPanel panel = new AnimationPanel("c:/intro-prog-java/mediasources/fish/");
+	public static void main(final String[] args) {
+		final JFrame frame = new JFrame();
+		final AnimationPanel panel = new AnimationPanel("c:/intro-prog-java/mediasources/fish/");
 		frame.getContentPane().add(panel);
 		frame.pack();
 		frame.setVisible(true);

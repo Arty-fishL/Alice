@@ -33,6 +33,7 @@ public class ForEachTogether extends ForEach {
 	public Class[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
+
 	public class RuntimeForEachTogether extends RuntimeForEach {
 		private RuntimeResponse[][] m_runtimeResponsesArray = null;
 		private int m_listIndex;
@@ -42,7 +43,8 @@ public class ForEachTogether extends ForEach {
 			if (m_listIndex >= 0 && m_listIndex < m_runtimeResponsesArray.length) {
 				return m_runtimeResponsesArray[m_listIndex];
 			} else {
-				throw new ArrayIndexOutOfBoundsException(m_listIndex + " is out of bounds [0," + m_runtimeResponsesArray.length + ").");
+				throw new ArrayIndexOutOfBoundsException(
+						m_listIndex + " is out of bounds [0," + m_runtimeResponsesArray.length + ").");
 			}
 		}
 
@@ -56,16 +58,17 @@ public class ForEachTogether extends ForEach {
 		}
 
 		@Override
-		protected double getChildTimeRemaining(int index, double t) {
+		protected double getChildTimeRemaining(final int index, final double t) {
 			double timeRemaining = 0;
 			for (m_listIndex = 0; m_listIndex < m_runtimeResponsesArray.length; m_listIndex++) {
-				timeRemaining = Math.max(timeRemaining, m_runtimeResponsesArray[m_listIndex][index].getTimeRemaining(t));
+				timeRemaining = Math.max(timeRemaining,
+						m_runtimeResponsesArray[m_listIndex][index].getTimeRemaining(t));
 			}
 			return timeRemaining;
 		}
 
 		@Override
-		protected void childPrologueIfNecessary(int index, double t) {
+		protected void childPrologueIfNecessary(final int index, final double t) {
 			for (m_listIndex = 0; m_listIndex < m_runtimeResponsesArray.length; m_listIndex++) {
 				setForkIndex(m_listIndex);
 				super.childPrologueIfNecessary(index, t);
@@ -74,7 +77,7 @@ public class ForEachTogether extends ForEach {
 		}
 
 		@Override
-		protected void childUpdate(int index, double t) {
+		protected void childUpdate(final int index, final double t) {
 			for (m_listIndex = 0; m_listIndex < m_runtimeResponsesArray.length; m_listIndex++) {
 				setForkIndex(m_listIndex);
 				super.childUpdate(index, t);
@@ -83,7 +86,7 @@ public class ForEachTogether extends ForEach {
 		}
 
 		@Override
-		protected void childEpilogue(int index, double t) {
+		protected void childEpilogue(final int index, final double t) {
 			for (m_listIndex = 0; m_listIndex < m_runtimeResponsesArray.length; m_listIndex++) {
 				setForkIndex(m_listIndex);
 				super.childEpilogue(index, t);
@@ -92,7 +95,7 @@ public class ForEachTogether extends ForEach {
 		}
 
 		@Override
-		protected void childrenEpiloguesIfNecessary(double t) {
+		protected void childrenEpiloguesIfNecessary(final double t) {
 			for (m_listIndex = 0; m_listIndex < m_runtimeResponsesArray.length; m_listIndex++) {
 				super.childrenEpiloguesIfNecessary(t);
 			}
@@ -108,7 +111,7 @@ public class ForEachTogether extends ForEach {
 		// }
 
 		@Override
-		public void prologue(double t) {
+		public void prologue(final double t) {
 			super.prologue(t);
 			m_runtimeResponsesArray = new RuntimeResponse[m_listSize][];
 			for (m_listIndex = 0; m_listIndex < m_runtimeResponsesArray.length; m_listIndex++) {

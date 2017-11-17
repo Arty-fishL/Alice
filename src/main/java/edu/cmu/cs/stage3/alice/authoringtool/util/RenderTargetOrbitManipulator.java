@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -41,9 +41,12 @@ public class RenderTargetOrbitManipulator extends RenderTargetPickManipulator {
 	protected UndoRedoStack undoRedoStack;
 	protected edu.cmu.cs.stage3.alice.core.Scheduler scheduler;
 
-	private Configuration orbitConfig = Configuration.getLocalConfiguration(RenderTargetOrbitManipulator.class.getPackage());
+	private final Configuration orbitConfig = Configuration
+			.getLocalConfiguration(RenderTargetOrbitManipulator.class.getPackage());
 
-	public RenderTargetOrbitManipulator(edu.cmu.cs.stage3.alice.scenegraph.renderer.OnscreenRenderTarget renderTarget, UndoRedoStack undoRedoStack, edu.cmu.cs.stage3.alice.core.Scheduler scheduler) {
+	public RenderTargetOrbitManipulator(
+			final edu.cmu.cs.stage3.alice.scenegraph.renderer.OnscreenRenderTarget renderTarget,
+			final UndoRedoStack undoRedoStack, final edu.cmu.cs.stage3.alice.core.Scheduler scheduler) {
 		super(renderTarget);
 		this.undoRedoStack = undoRedoStack;
 		this.scheduler = scheduler;
@@ -51,7 +54,7 @@ public class RenderTargetOrbitManipulator extends RenderTargetPickManipulator {
 		configInit();
 	}
 
-	public void setClippingPlaneAdjustmentEnabled(boolean enabled) {
+	public void setClippingPlaneAdjustmentEnabled(final boolean enabled) {
 		clippingPlaneAdjustmentEnabled = enabled;
 	}
 
@@ -65,12 +68,13 @@ public class RenderTargetOrbitManipulator extends RenderTargetPickManipulator {
 	}
 
 	@Override
-	public void mousePressed(java.awt.event.MouseEvent ev) {
+	public void mousePressed(final java.awt.event.MouseEvent ev) {
 		// DEBUG System.out.println( "mousePressed" );
 		if (enabled) {
 			super.mousePressed(ev);
 
-			orbitRotationFactor = Double.parseDouble(orbitConfig.getValue("renderTargetOrbitManipulator.orbitRotationFactor"));
+			orbitRotationFactor = Double
+					.parseDouble(orbitConfig.getValue("renderTargetOrbitManipulator.orbitRotationFactor"));
 			orbitZoomFactor = Double.parseDouble(orbitConfig.getValue("renderTargetOrbitManipulator.orbitZoomFactor"));
 
 			if (sgPickedTransformable == null && objectsOfInterest.size() == 1) {
@@ -97,11 +101,13 @@ public class RenderTargetOrbitManipulator extends RenderTargetPickManipulator {
 	}
 
 	@Override
-	public void mouseReleased(java.awt.event.MouseEvent ev) {
+	public void mouseReleased(final java.awt.event.MouseEvent ev) {
 		// DEBUG System.out.println( "mouseReleased" );
 		if (mouseIsDown) {
 			if (eCameraTransformable != null) {
-				undoRedoStack.push(new PointOfViewUndoableRedoable(eCameraTransformable, oldTransformation, new edu.cmu.cs.stage3.math.Matrix44(sgCameraTransformable.getLocalTransformation()), scheduler));
+				undoRedoStack.push(new PointOfViewUndoableRedoable(eCameraTransformable, oldTransformation,
+						new edu.cmu.cs.stage3.math.Matrix44(sgCameraTransformable.getLocalTransformation()),
+						scheduler));
 			}
 		}
 
@@ -109,7 +115,7 @@ public class RenderTargetOrbitManipulator extends RenderTargetPickManipulator {
 	}
 
 	@Override
-	public void mouseDragged(java.awt.event.MouseEvent ev) {
+	public void mouseDragged(final java.awt.event.MouseEvent ev) {
 		// DEBUG System.out.println( "mouseDragged" );
 		if (enabled) {
 			super.mouseDragged(ev);
@@ -121,17 +127,17 @@ public class RenderTargetOrbitManipulator extends RenderTargetPickManipulator {
 					// sgPickedTransformable );
 
 					if (clippingPlaneAdjustmentEnabled) {
-						double objectRadius = ePickedTransformable.getBoundingSphere().getRadius();
-						double objectDist = sgPickedTransformable.getPosition(sgCameraTransformable).getLength();
-						double farDist = Math.max(objectDist * 3, objectDist + objectRadius);
-						double nearDist = Math.max((objectDist - objectRadius) * .01, .0001);
+						final double objectRadius = ePickedTransformable.getBoundingSphere().getRadius();
+						final double objectDist = sgPickedTransformable.getPosition(sgCameraTransformable).getLength();
+						final double farDist = Math.max(objectDist * 3, objectDist + objectRadius);
+						final double nearDist = Math.max((objectDist - objectRadius) * .01, .0001);
 						// System.out.println( "farDist: " + farDist +
-						// ",  nearDist: " + nearDist );
+						// ", nearDist: " + nearDist );
 						sgCamera.setFarClippingPlaneDistance(farDist);
 					}
 
-					boolean controlDown = ev.isControlDown();
-					boolean shiftDown = ev.isShiftDown();
+					final boolean controlDown = ev.isControlDown();
+					final boolean shiftDown = ev.isShiftDown();
 
 					tempVec.x = 0.0;
 					tempVec.y = 0.0;
@@ -153,11 +159,16 @@ public class RenderTargetOrbitManipulator extends RenderTargetPickManipulator {
 
 					// TODO: avoid singularities
 					if (shiftDown) {
-						sgCameraTransformable.rotate(edu.cmu.cs.stage3.math.MathUtilities.getYAxis(), dx * orbitRotationFactor, helper);
-						sgCameraTransformable.rotate(edu.cmu.cs.stage3.math.MathUtilities.getXAxis(), -dy * orbitRotationFactor, helper);
+						sgCameraTransformable.rotate(edu.cmu.cs.stage3.math.MathUtilities.getYAxis(),
+								dx * orbitRotationFactor, helper);
+						sgCameraTransformable.rotate(edu.cmu.cs.stage3.math.MathUtilities.getXAxis(),
+								-dy * orbitRotationFactor, helper);
 					} else {
-						sgCameraTransformable.translate(edu.cmu.cs.stage3.math.MathUtilities.multiply(edu.cmu.cs.stage3.math.MathUtilities.getZAxis(), dy * orbitZoomFactor * sizeFactor), sgCameraTransformable);
-						sgCameraTransformable.rotate(edu.cmu.cs.stage3.math.MathUtilities.getYAxis(), dx * orbitRotationFactor, helper);
+						sgCameraTransformable.translate(edu.cmu.cs.stage3.math.MathUtilities.multiply(
+								edu.cmu.cs.stage3.math.MathUtilities.getZAxis(), dy * orbitZoomFactor * sizeFactor),
+								sgCameraTransformable);
+						sgCameraTransformable.rotate(edu.cmu.cs.stage3.math.MathUtilities.getYAxis(),
+								dx * orbitRotationFactor, helper);
 					}
 
 					if (eCameraTransformable != null) {

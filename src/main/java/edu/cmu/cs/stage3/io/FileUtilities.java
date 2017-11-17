@@ -13,16 +13,22 @@ public class FileUtilities {
 			System.loadLibrary("jni_fileutilities");
 			s_successfullyLoadedLibrary = true;
 			// } catch( UnsatisfiedLinkError ule ) {
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			s_successfullyLoadedLibrary = false;
 		}
 	}
+
 	public static boolean isFileCopySupported() {
 		return s_successfullyLoadedLibrary;
 	}
 
-	private static native boolean copy(String srcPath, String dstPath, boolean overwriteIfNecessary, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws edu.cmu.cs.stage3.progress.ProgressCancelException;
-	public static boolean copy(java.io.File src, java.io.File dst, boolean overwriteIfNecessary, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws edu.cmu.cs.stage3.progress.ProgressCancelException {
+	private static native boolean copy(String srcPath, String dstPath, boolean overwriteIfNecessary,
+			edu.cmu.cs.stage3.progress.ProgressObserver progressObserver)
+			throws edu.cmu.cs.stage3.progress.ProgressCancelException;
+
+	public static boolean copy(final java.io.File src, final java.io.File dst, final boolean overwriteIfNecessary,
+			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver)
+			throws edu.cmu.cs.stage3.progress.ProgressCancelException {
 		if (isFileCopySupported()) {
 			dst.getParentFile().mkdirs();
 			if (progressObserver != null) {
@@ -39,25 +45,27 @@ public class FileUtilities {
 			throw new RuntimeException("file copy not supported");
 		}
 	}
-	public static void copy(java.io.File src, java.io.File dst, boolean overwriteIfNecessary) {
+
+	public static void copy(final java.io.File src, final java.io.File dst, final boolean overwriteIfNecessary) {
 		try {
 			copy(src, dst, overwriteIfNecessary, null);
-		} catch (edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
+		} catch (final edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
 			throw new Error("caught ProgressCancelException without ProgressObserver");
 		}
 	}
 
-	public static String getExtension(String filename) {
+	public static String getExtension(final String filename) {
 		String extension = null;
 		if (filename != null) {
-			int index = filename.lastIndexOf('.');
+			final int index = filename.lastIndexOf('.');
 			if (index != -1) {
 				extension = filename.substring(index + 1);
 			}
 		}
 		return extension;
 	}
-	public static String getExtension(java.io.File file) {
+
+	public static String getExtension(final java.io.File file) {
 		if (file != null) {
 			return getExtension(file.getName());
 		} else {
@@ -65,10 +73,10 @@ public class FileUtilities {
 		}
 	}
 
-	public static String getBaseName(String filename) {
+	public static String getBaseName(final String filename) {
 		String basename = null;
 		if (filename != null) {
-			int index = filename.lastIndexOf('.');
+			final int index = filename.lastIndexOf('.');
 			if (index != -1) {
 				basename = filename.substring(0, index);
 			} else {
@@ -77,7 +85,8 @@ public class FileUtilities {
 		}
 		return basename;
 	}
-	public static String getBaseName(java.io.File file) {
+
+	public static String getBaseName(final java.io.File file) {
 		if (file != null) {
 			return getBaseName(file.getName());
 		} else {
@@ -85,19 +94,19 @@ public class FileUtilities {
 		}
 	}
 
-	public static int isWritableDirectory(java.io.File directory) {
+	public static int isWritableDirectory(final java.io.File directory) {
 		if (directory == null || !directory.isDirectory()) {
 			return BAD_DIRECTORY_INPUT;
 		}
-		java.io.File testFile = new java.io.File(directory, "test.test");
+		final java.io.File testFile = new java.io.File(directory, "test.test");
 		boolean writable;
 		if (testFile.exists()) {
 			writable = testFile.canWrite();
 		} else {
 			try {
-				boolean success = testFile.createNewFile();
+				final boolean success = testFile.createNewFile();
 				writable = success;
-			} catch (Throwable t) {
+			} catch (final Throwable t) {
 				writable = false;
 			} finally {
 				testFile.delete();
@@ -128,7 +137,7 @@ public class FileUtilities {
 	 * { copy( src, dst, true, progressObserver ); } catch(
 	 * edu.cmu.cs.stage3.progress.ProgressCancelException pce ) {
 	 * pce.printStackTrace(); }
-	 * 
+	 *
 	 * final java.io.File src = new java.io.File(
 	 * "E:\\estrian\\Desktop\\wizard1.mp2" ); StringBuffer sb = new
 	 * StringBuffer( new java.util.Date().toLocaleString() ); for( int i=0;
@@ -136,7 +145,7 @@ public class FileUtilities {
 	 * { //pass } else { sb.setCharAt( i, '_' ); } } final java.io.File dst =
 	 * new java.io.File( "E:\\estrian\\Desktop\\Backup\\" + sb.toString() +
 	 * "_wizard1.mp2" );
-	 * 
+	 *
 	 * java.awt.Frame frame = new java.awt.Frame();
 	 * edu.cmu.cs.stage3.swing.DialogManager.initialize( frame );
 	 * edu.cmu.cs.stage3.progress.ProgressPane progressPane = new
@@ -145,7 +154,7 @@ public class FileUtilities {
 	 * edu.cmu.cs.stage3.progress.ProgressCancelException { copy( src, dst,
 	 * true, this ); } }; edu.cmu.cs.stage3.swing.DialogManager.showDialog(
 	 * progressPane ); frame.dispose();
-	 * 
+	 *
 	 * StringBuffer sb = new StringBuffer(); java.util.Calendar calendar =
 	 * java.util.Calendar.getInstance(); sb.append( " on " ); switch(
 	 * calendar.get( java.util.Calendar.MONTH ) ) { case

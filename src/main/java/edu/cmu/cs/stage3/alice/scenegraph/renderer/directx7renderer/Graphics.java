@@ -1,18 +1,23 @@
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.directx7renderer;
 
 class Graphics extends edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.Graphics {
-	public Graphics(edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.RenderTarget renderTarget) {
+	public Graphics(final edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.RenderTarget renderTarget) {
 		super(renderTarget);
 	}
-	public Graphics(edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.RenderTarget renderTarget, edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.TextureMapProxy textureMapProxy) {
+
+	public Graphics(final edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.RenderTarget renderTarget,
+			final edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.TextureMapProxy textureMapProxy) {
 		super(renderTarget, textureMapProxy);
 	}
 
 	@Override
-	protected native void createNativeInstance(edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.RenderTargetAdapter renderTargetAdapter);
+	protected native void createNativeInstance(
+			edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.RenderTargetAdapter renderTargetAdapter);
 
 	@Override
-	protected native void createNativeInstance(edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.RenderTargetAdapter renderTargetAdapter, edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.TextureMapProxy textureMapProxy);
+	protected native void createNativeInstance(
+			edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.RenderTargetAdapter renderTargetAdapter,
+			edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.TextureMapProxy textureMapProxy);
 
 	@Override
 	protected native void releaseNativeInstance();

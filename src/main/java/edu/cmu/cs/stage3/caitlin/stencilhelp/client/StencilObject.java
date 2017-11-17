@@ -16,11 +16,18 @@ import java.util.Vector;
 
 public interface StencilObject {
 	public Vector getShapes();
+
 	public Rectangle getRectangle();
+
 	public Rectangle getPreviousRectangle();
+
 	public boolean isModified();
+
 	public boolean intersectsRectangle(Rectangle rect);
+
 	public void addStencilObjectPositionListener(StencilObjectPositionListener posListener);
+
 	public void removeStencilObjectPositionListener(StencilObjectPositionListener posListener);
+
 	public String getComponentID();
 }

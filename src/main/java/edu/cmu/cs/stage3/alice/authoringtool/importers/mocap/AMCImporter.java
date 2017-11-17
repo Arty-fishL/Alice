@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -65,13 +65,13 @@ public class AMCImporter extends AbstractImporter {
 
 	@Override
 	public Map getExtensionMap() {
-		java.util.HashMap map = new java.util.HashMap();
+		final java.util.HashMap map = new java.util.HashMap();
 		map.put("AMC", "Acclaim Motion Capture");
 		return map;
 	}
 
 	@Override
-	public Element load(String filename) throws java.io.IOException {
+	public Element load(final String filename) throws java.io.IOException {
 		animationName = new File(filename).getName();
 		animationName = animationName.substring(0, animationName.lastIndexOf('.'));
 		if (animationName.lastIndexOf('.') != -1) {
@@ -84,7 +84,7 @@ public class AMCImporter extends AbstractImporter {
 	}
 
 	@Override
-	public Element load(File file) throws java.io.IOException {
+	public Element load(final File file) throws java.io.IOException {
 		animationName = file.getName();
 		animationName = animationName.substring(0, animationName.lastIndexOf('.'));
 		if (animationName.lastIndexOf('.') != -1) {
@@ -97,9 +97,9 @@ public class AMCImporter extends AbstractImporter {
 	}
 
 	@Override
-	public Element load(java.net.URL url) throws java.io.IOException {
-		String externalForm = url.toExternalForm();
-		String fullName = externalForm.substring(externalForm.lastIndexOf('/') + 1);
+	public Element load(final java.net.URL url) throws java.io.IOException {
+		final String externalForm = url.toExternalForm();
+		final String fullName = externalForm.substring(externalForm.lastIndexOf('/') + 1);
 		animationName = fullName.substring(0, fullName.lastIndexOf('.'));
 		if (animationName.lastIndexOf('.') != -1) {
 			animationName = animationName.substring(animationName.lastIndexOf('.') + 1);
@@ -109,10 +109,11 @@ public class AMCImporter extends AbstractImporter {
 	}
 
 	@Override
-	protected Element load(InputStream is, String ext) throws java.io.IOException {
+	protected Element load(final InputStream is, final String ext) throws java.io.IOException {
 		EStreamTokenizer tokenizer;
-		edu.cmu.cs.stage3.alice.authoringtool.util.BackslashConverterFilterInputStream bcfis = new edu.cmu.cs.stage3.alice.authoringtool.util.BackslashConverterFilterInputStream(is);
-		java.io.BufferedReader br = new java.io.BufferedReader(new java.io.InputStreamReader(bcfis));
+		final edu.cmu.cs.stage3.alice.authoringtool.util.BackslashConverterFilterInputStream bcfis = new edu.cmu.cs.stage3.alice.authoringtool.util.BackslashConverterFilterInputStream(
+				is);
+		final java.io.BufferedReader br = new java.io.BufferedReader(new java.io.InputStreamReader(bcfis));
 		tokenizer = new EStreamTokenizer(br);
 
 		tokenizer.commentChar('#');
@@ -182,7 +183,7 @@ public class AMCImporter extends AbstractImporter {
 
 		}
 
-		MocapImporterOptionsDialog optionsDialog = new MocapImporterOptionsDialog();
+		final MocapImporterOptionsDialog optionsDialog = new MocapImporterOptionsDialog();
 
 		if (ASFfile.isFile()) {
 			optionsDialog.setASFFile(ASFfile.getPath());
@@ -208,7 +209,7 @@ public class AMCImporter extends AbstractImporter {
 			return null;
 		}
 
-		InputStream ASFis = new FileInputStream(ASFfile);
+		final InputStream ASFis = new FileInputStream(ASFfile);
 		skel = new ASFImporter().loadSkeleton(ASFis);
 		ASFis.close();
 
@@ -237,7 +238,7 @@ public class AMCImporter extends AbstractImporter {
 				ListIterator li2;
 				li2 = bone.dof.listIterator();
 				while (li2.hasNext()) {
-					Integer d = (Integer) li2.next();
+					final Integer d = (Integer) li2.next();
 					if (d.equals(ASFBone.DOF_L)) {
 						// bone.lengthSpline.addKey(new
 						// DoubleSimpleKey((samplenumber-1)*dt,tokenizer.nval*skel.lengthscale));
@@ -265,8 +266,8 @@ public class AMCImporter extends AbstractImporter {
 			skel.addFrames();
 		}
 
-		Response anim = skel.buildAnim();
-		Pose[] poses = skel.buildPoses();
+		final Response anim = skel.buildAnim();
+		final Pose[] poses = skel.buildPoses();
 
 		anim.name.set(AuthoringToolResources.getNameForNewChild(animationName, applyTo));
 		poses[0].name.set(AuthoringToolResources.getNameForNewChild(animationName + "_startPose", applyTo));

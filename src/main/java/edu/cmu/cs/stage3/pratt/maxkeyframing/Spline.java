@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -29,13 +29,13 @@ import java.lang.reflect.Method;
  * @author Jason Pratt
  */
 public abstract class Spline {
-	private java.util.TreeSet keys;
-	private java.util.Comparator keyComparator = new java.util.Comparator() {
+	private final java.util.TreeSet keys;
+	private final java.util.Comparator keyComparator = new java.util.Comparator() {
 		@Override
-		public int compare(Object o1, Object o2) {
+		public int compare(final Object o1, final Object o2) {
 			if (o1 instanceof Key && o2 instanceof Key) {
-				Key key1 = (Key) o1;
-				Key key2 = (Key) o2;
+				final Key key1 = (Key) o1;
+				final Key key2 = (Key) o2;
 				if (key1.getTime() < key2.getTime()) {
 					return -1;
 				} else if (key1.getTime() > key2.getTime()) {
@@ -54,11 +54,11 @@ public abstract class Spline {
 		keys = new java.util.TreeSet(keyComparator);
 	}
 
-	protected boolean addKey(Key key) {
+	protected boolean addKey(final Key key) {
 		return keys.add(key);
 	}
 
-	protected boolean removeKey(Key key) {
+	protected boolean removeKey(final Key key) {
 		return keys.remove(key);
 	}
 
@@ -66,12 +66,13 @@ public abstract class Spline {
 		keys.clear();
 	}
 
-	public Key[] getKeyArray(Key[] keyArray) {
+	public Key[] getKeyArray(final Key[] keyArray) {
 		return (Key[]) keys.toArray(keyArray);
 	}
 
-	private Key[] boundingKeys = new Key[2];
-	public Key[] getBoundingKeys(double time) {
+	private final Key[] boundingKeys = new Key[2];
+
+	public Key[] getBoundingKeys(final double time) {
 		Key prevKey = null;
 		Key nextKey = null;
 
@@ -84,7 +85,7 @@ public abstract class Spline {
 
 		// first try our cached position
 		if (recentKey != null) {
-			java.util.Iterator iter = keys.tailSet(recentKey).iterator();
+			final java.util.Iterator iter = keys.tailSet(recentKey).iterator();
 			if (iter.hasNext()) {
 				nextKey = (Key) iter.next();
 				while (iter.hasNext()) {
@@ -101,7 +102,7 @@ public abstract class Spline {
 		}
 
 		// next, try from the beginning
-		java.util.Iterator iter = keys.iterator();
+		final java.util.Iterator iter = keys.iterator();
 		if (iter.hasNext()) {
 			nextKey = (Key) iter.next();
 			while (iter.hasNext()) {
@@ -147,10 +148,10 @@ public abstract class Spline {
 		}
 	}
 
-	public void scaleKeyValueComponents(double scaleFactor) {
-		for (java.util.Iterator iter = keys.iterator(); iter.hasNext();) {
-			Key key = (Key) iter.next();
-			double[] valueComponents = key.getValueComponents();
+	public void scaleKeyValueComponents(final double scaleFactor) {
+		for (final java.util.Iterator iter = keys.iterator(); iter.hasNext();) {
+			final Key key = (Key) iter.next();
+			final double[] valueComponents = key.getValueComponents();
 			for (int i = 0; i < valueComponents.length; i++) {
 				valueComponents[i] *= scaleFactor;
 			}
@@ -167,7 +168,7 @@ public abstract class Spline {
 
 	@Override
 	public String toString() {
-		StringBuffer repr = new StringBuffer();
+		final StringBuffer repr = new StringBuffer();
 
 		repr.append("{spline}");
 		repr.append("{splineType}");
@@ -175,8 +176,8 @@ public abstract class Spline {
 		repr.append("{/splineType}");
 
 		repr.append("{keys}");
-		for (java.util.Iterator iter = keys.iterator(); iter.hasNext();) {
-			Key key = (Key) iter.next();
+		for (final java.util.Iterator iter = keys.iterator(); iter.hasNext();) {
+			final Key key = (Key) iter.next();
 			repr.append("{key}");
 			repr.append("{type}");
 			repr.append(key.getClass().getName());
@@ -197,29 +198,31 @@ public abstract class Spline {
 		s = s.replace('{', '<');
 		s = s.replace('}', '>');
 
-		edu.cmu.cs.stage3.io.TokenBlock splineBlock = edu.cmu.cs.stage3.io.TokenBlock.getTokenBlock(0, s);
-		edu.cmu.cs.stage3.io.TokenBlock splineTypeBlock = edu.cmu.cs.stage3.io.TokenBlock.getTokenBlock(0, splineBlock.tokenContents);
-		edu.cmu.cs.stage3.io.TokenBlock keysBlock = edu.cmu.cs.stage3.io.TokenBlock.getTokenBlock(splineTypeBlock.tokenEndIndex, splineBlock.tokenContents);
+		final edu.cmu.cs.stage3.io.TokenBlock splineBlock = edu.cmu.cs.stage3.io.TokenBlock.getTokenBlock(0, s);
+		final edu.cmu.cs.stage3.io.TokenBlock splineTypeBlock = edu.cmu.cs.stage3.io.TokenBlock.getTokenBlock(0,
+				splineBlock.tokenContents);
+		final edu.cmu.cs.stage3.io.TokenBlock keysBlock = edu.cmu.cs.stage3.io.TokenBlock
+				.getTokenBlock(splineTypeBlock.tokenEndIndex, splineBlock.tokenContents);
 
 		Spline spline = null;
 		java.lang.reflect.Method addKeyMethod = null;
 		try {
-			Class splineClass = Class.forName(splineTypeBlock.tokenContents);
+			final Class splineClass = Class.forName(splineTypeBlock.tokenContents);
 			spline = (Spline) splineClass.newInstance();
 			addKeyMethod = null;
-			java.lang.reflect.Method[] methods = splineClass.getMethods();
-			for (Method method : methods) {
+			final java.lang.reflect.Method[] methods = splineClass.getMethods();
+			for (final Method method : methods) {
 				if (method.getName().equals("addKey")) {
 					addKeyMethod = method;
 				}
 			}
-		} catch (ClassNotFoundException e) {
+		} catch (final ClassNotFoundException e) {
 			e.printStackTrace();
 			return null;
-		} catch (IllegalAccessException e) {
+		} catch (final IllegalAccessException e) {
 			e.printStackTrace();
 			return null;
-		} catch (InstantiationException e) {
+		} catch (final InstantiationException e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -230,23 +233,27 @@ public abstract class Spline {
 		}
 
 		int beginIndex = 0;
-		edu.cmu.cs.stage3.io.TokenBlock keyBlock = edu.cmu.cs.stage3.io.TokenBlock.getTokenBlock(beginIndex, keysBlock.tokenContents);
+		edu.cmu.cs.stage3.io.TokenBlock keyBlock = edu.cmu.cs.stage3.io.TokenBlock.getTokenBlock(beginIndex,
+				keysBlock.tokenContents);
 		while (keyBlock.tokenContents != null) {
-			edu.cmu.cs.stage3.io.TokenBlock typeBlock = edu.cmu.cs.stage3.io.TokenBlock.getTokenBlock(0, keyBlock.tokenContents);
-			edu.cmu.cs.stage3.io.TokenBlock dataBlock = edu.cmu.cs.stage3.io.TokenBlock.getTokenBlock(typeBlock.tokenEndIndex, keyBlock.tokenContents);
+			final edu.cmu.cs.stage3.io.TokenBlock typeBlock = edu.cmu.cs.stage3.io.TokenBlock.getTokenBlock(0,
+					keyBlock.tokenContents);
+			final edu.cmu.cs.stage3.io.TokenBlock dataBlock = edu.cmu.cs.stage3.io.TokenBlock
+					.getTokenBlock(typeBlock.tokenEndIndex, keyBlock.tokenContents);
 
 			try {
-				Class keyClass = Class.forName(typeBlock.tokenContents);
-				java.lang.reflect.Method valueOfMethod = keyClass.getMethod("valueOf", new Class[]{String.class});
-				Object key = valueOfMethod.invoke(null, new Object[]{dataBlock.tokenContents});
-				addKeyMethod.invoke(spline, new Object[]{key});
-			} catch (ClassNotFoundException e) {
+				final Class keyClass = Class.forName(typeBlock.tokenContents);
+				final java.lang.reflect.Method valueOfMethod = keyClass.getMethod("valueOf",
+						new Class[] { String.class });
+				final Object key = valueOfMethod.invoke(null, new Object[] { dataBlock.tokenContents });
+				addKeyMethod.invoke(spline, new Object[] { key });
+			} catch (final ClassNotFoundException e) {
 				e.printStackTrace();
-			} catch (NoSuchMethodException e) {
+			} catch (final NoSuchMethodException e) {
 				e.printStackTrace();
-			} catch (IllegalAccessException e) {
+			} catch (final IllegalAccessException e) {
 				e.printStackTrace();
-			} catch (java.lang.reflect.InvocationTargetException e) {
+			} catch (final java.lang.reflect.InvocationTargetException e) {
 				e.printStackTrace();
 			}
 

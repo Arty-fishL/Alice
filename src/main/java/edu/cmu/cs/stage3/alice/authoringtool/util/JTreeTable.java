@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -53,17 +53,21 @@ import javax.swing.tree.TreeModel;
  * This example shows how to create a simple JTreeTable component, by using a
  * JTree as a renderer (and editor) for the cells in a particular column in the
  * JTable.
- * 
+ *
  * @version %I% %G%
- * 
+ *
  * @author Philip Milne
  * @author Scott Violet
  */
 
 public class JTreeTable extends JTable {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 3996998526162231201L;
 	protected TreeTableCellRenderer tree;
 
-	public JTreeTable(TreeTableModel treeTableModel) {
+	public JTreeTable(final TreeTableModel treeTableModel) {
 		super();
 
 		// Create the tree. It will be used as a renderer and editor.
@@ -74,8 +78,13 @@ public class JTreeTable extends JTable {
 
 		// Force the JTable and JTree to share their row selection models.
 		tree.setSelectionModel(new DefaultTreeSelectionModel() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -2197943305431235910L;
+
 			// Extend the implementation of the constructor, as if:
-			/* public this() */{
+			/* public this() */ {
 				setSelectionModel(listSelectionModel);
 			}
 		});
@@ -94,7 +103,7 @@ public class JTreeTable extends JTable {
 		return tree;
 	}
 
-	public Object getNodeAtPoint(java.awt.Point point) {
+	public Object getNodeAtPoint(final java.awt.Point point) {
 		return ((TreeTableModelAdapter) getModel()).nodeForRow(rowAtPoint(point));
 	}
 
@@ -114,7 +123,8 @@ public class JTreeTable extends JTable {
 	// prevent keystrokes from starting an edit -JFP
 
 	@Override
-	protected boolean processKeyBinding(javax.swing.KeyStroke ks, java.awt.event.KeyEvent e, int condition, boolean pressed) {
+	protected boolean processKeyBinding(final javax.swing.KeyStroke ks, final java.awt.event.KeyEvent e,
+			final int condition, final boolean pressed) {
 		return false;
 	}
 
@@ -122,25 +132,30 @@ public class JTreeTable extends JTable {
 	// The renderer used to display the tree nodes, a JTree.
 	//
 	public class TreeTableCellRenderer extends JTree implements TableCellRenderer {
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = 7470108158970736848L;
 		protected int visibleRow;
 
-		public TreeTableCellRenderer(TreeModel model) {
+		public TreeTableCellRenderer(final TreeModel model) {
 			super(model);
 		}
 
 		@Override
-		public void setBounds(int x, int y, int w, int h) {
+		public void setBounds(final int x, final int y, final int w, final int h) {
 			super.setBounds(x, 0, w, JTreeTable.this.getHeight());
 		}
 
 		@Override
-		public void paint(Graphics g) {
+		public void paint(final Graphics g) {
 			g.translate(0, -visibleRow * getRowHeight());
 			super.paint(g);
 		}
 
 		@Override
-		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+		public Component getTableCellRendererComponent(final JTable table, final Object value, final boolean isSelected,
+				final boolean hasFocus, final int row, final int column) {
 			if (isSelected) {
 				setBackground(table.getSelectionBackground());
 			} else {
@@ -153,8 +168,14 @@ public class JTreeTable extends JTable {
 	}
 
 	public class TreeTableCellEditor extends AbstractCellEditor implements TableCellEditor {
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = -4237489566959192822L;
+
 		@Override
-		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int r, int c) {
+		public Component getTableCellEditorComponent(final JTable table, final Object value, final boolean isSelected,
+				final int r, final int c) {
 			return tree;
 		}
 
@@ -165,7 +186,7 @@ public class JTreeTable extends JTable {
 	}
 
 	@Override
-	public void editingCanceled(javax.swing.event.ChangeEvent ev) {
+	public void editingCanceled(final javax.swing.event.ChangeEvent ev) {
 		super.editingCanceled(ev);
 	}
 

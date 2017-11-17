@@ -12,7 +12,7 @@ import edu.cmu.cs.stage3.alice.core.criterion.ElementNameContainsCriterion;
 
 /**
  * @author caitlin
- * 
+ *
  *         To change the template for this generated type comment go to
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
@@ -72,17 +72,21 @@ public class AbstractBodyPositionAnimation extends OrientationAnimation {
 			if (m_subject != null) {
 				distanceAboveGround = m_subject.getBoundingBox(m_subject.getWorld()).getCenterOfBottomFace().y;
 
-				double roundHeight = java.lang.Math.round(m_subject.getBoundingBox(m_subject.getWorld()).getCenterOfBottomFace().y);
-				int level = (int) java.lang.Math.round(roundHeight / 256);
-				m_subject.moveRightNow(edu.cmu.cs.stage3.alice.core.Direction.DOWN, distanceAboveGround - 256.0 * level, m_subject.getWorld());
+				final double roundHeight = java.lang.Math
+						.round(m_subject.getBoundingBox(m_subject.getWorld()).getCenterOfBottomFace().y);
+				final int level = (int) java.lang.Math.round(roundHeight / 256);
+				m_subject.moveRightNow(edu.cmu.cs.stage3.alice.core.Direction.DOWN, distanceAboveGround - 256.0 * level,
+						m_subject.getWorld());
 			}
 		}
 
-		public edu.cmu.cs.stage3.alice.core.Transformable getTransformableChild(edu.cmu.cs.stage3.alice.core.Transformable parent) {
+		public edu.cmu.cs.stage3.alice.core.Transformable getTransformableChild(
+				final edu.cmu.cs.stage3.alice.core.Transformable parent) {
 			if (parent == null) {
 				return null;
 			}
-			edu.cmu.cs.stage3.alice.core.Element[] legBits = parent.getChildren(edu.cmu.cs.stage3.alice.core.Transformable.class);
+			final edu.cmu.cs.stage3.alice.core.Element[] legBits = parent
+					.getChildren(edu.cmu.cs.stage3.alice.core.Transformable.class);
 
 			// if this leg has more than one part, we've got a problem
 			if (legBits.length == 1) {
@@ -92,11 +96,15 @@ public class AbstractBodyPositionAnimation extends OrientationAnimation {
 			}
 		}
 
-		protected void setOrientation(edu.cmu.cs.stage3.alice.core.Transformable part, edu.cmu.cs.stage3.math.Matrix33 initialOrient, edu.cmu.cs.stage3.math.Matrix33 finalOrient, double portion) {
+		protected void setOrientation(final edu.cmu.cs.stage3.alice.core.Transformable part,
+				final edu.cmu.cs.stage3.math.Matrix33 initialOrient, final edu.cmu.cs.stage3.math.Matrix33 finalOrient,
+				final double portion) {
 			if (part != null) {
-				edu.cmu.cs.stage3.math.Matrix33 currentOrient = edu.cmu.cs.stage3.math.Matrix33.interpolate(initialOrient, finalOrient, portion);
+				final edu.cmu.cs.stage3.math.Matrix33 currentOrient = edu.cmu.cs.stage3.math.Matrix33
+						.interpolate(initialOrient, finalOrient, portion);
 
-				part.setOrientationRightNow(currentOrient, (edu.cmu.cs.stage3.alice.core.ReferenceFrame) part.getParent());
+				part.setOrientationRightNow(currentOrient,
+						(edu.cmu.cs.stage3.alice.core.ReferenceFrame) part.getParent());
 			}
 		}
 
@@ -123,32 +131,38 @@ public class AbstractBodyPositionAnimation extends OrientationAnimation {
 			}
 
 			if (rightUpperArm != null) {
-				rightUpperArmInitialOrient = rightUpperArm.getOrientationAsAxes((ReferenceFrame) rightUpperArm.getParent());
+				rightUpperArmInitialOrient = rightUpperArm
+						.getOrientationAsAxes((ReferenceFrame) rightUpperArm.getParent());
 			}
 			// System.out.println(rightUpperArmInitialOrient);
 			if (rightLowerArm != null) {
-				rightLowerArmInitialOrient = rightLowerArm.getOrientationAsAxes((ReferenceFrame) rightLowerArm.getParent());
+				rightLowerArmInitialOrient = rightLowerArm
+						.getOrientationAsAxes((ReferenceFrame) rightLowerArm.getParent());
 			}
 
 			if (leftUpperArm != null) {
-				leftUpperArmInitialOrient = leftUpperArm.getOrientationAsAxes((ReferenceFrame) leftUpperArm.getParent());
+				leftUpperArmInitialOrient = leftUpperArm
+						.getOrientationAsAxes((ReferenceFrame) leftUpperArm.getParent());
 			}
 			if (leftLowerArm != null) {
-				leftLowerArmInitialOrient = leftLowerArm.getOrientationAsAxes((ReferenceFrame) leftLowerArm.getParent());
+				leftLowerArmInitialOrient = leftLowerArm
+						.getOrientationAsAxes((ReferenceFrame) leftLowerArm.getParent());
 			}
 
 		}
 
 		public void findArms() {
-			edu.cmu.cs.stage3.alice.core.Element[] arms = m_subject.search(new ElementNameContainsCriterion("Arm"));
-			for (Element arm : arms) {
+			final edu.cmu.cs.stage3.alice.core.Element[] arms = m_subject
+					.search(new ElementNameContainsCriterion("Arm"));
+			for (final Element arm : arms) {
 				if (arm.getKey().indexOf("left") != -1 && arm instanceof edu.cmu.cs.stage3.alice.core.Transformable) {
 					leftUpperArm = (edu.cmu.cs.stage3.alice.core.Transformable) arm;
 					leftLowerArm = getTransformableChild(leftUpperArm);
 					if (leftLowerArm != null && leftLowerArm.name.getStringValue().indexOf("Hand") != -1) {
 						leftLowerArm = null;
 					}
-				} else if (arm.getKey().indexOf("right") != -1 && arm instanceof edu.cmu.cs.stage3.alice.core.Transformable) {
+				} else if (arm.getKey().indexOf("right") != -1
+						&& arm instanceof edu.cmu.cs.stage3.alice.core.Transformable) {
 					rightUpperArm = (edu.cmu.cs.stage3.alice.core.Transformable) arm;
 					rightLowerArm = getTransformableChild(rightUpperArm);
 					if (rightLowerArm != null && rightLowerArm.name.getStringValue().indexOf("Hand") != -1) {
@@ -160,8 +174,9 @@ public class AbstractBodyPositionAnimation extends OrientationAnimation {
 
 		// search model to find the legs
 		public void findLegs() {
-			edu.cmu.cs.stage3.alice.core.Element[] legs = m_subject.search(new edu.cmu.cs.stage3.alice.core.criterion.ElementNameContainsCriterion("UpperLeg"));
-			for (Element leg : legs) {
+			final edu.cmu.cs.stage3.alice.core.Element[] legs = m_subject
+					.search(new edu.cmu.cs.stage3.alice.core.criterion.ElementNameContainsCriterion("UpperLeg"));
+			for (final Element leg : legs) {
 				if (leg.getKey().indexOf("left") != -1 && leg instanceof edu.cmu.cs.stage3.alice.core.Transformable) {
 					leftUpper = (edu.cmu.cs.stage3.alice.core.Transformable) leg;
 					leftLower = getTransformableChild(leftUpper);
@@ -174,7 +189,8 @@ public class AbstractBodyPositionAnimation extends OrientationAnimation {
 					} else {
 						leftFoot = getTransformableChild(leftUpper);
 					}
-				} else if (leg.getKey().indexOf("right") != -1 && leg instanceof edu.cmu.cs.stage3.alice.core.Transformable) {
+				} else if (leg.getKey().indexOf("right") != -1
+						&& leg instanceof edu.cmu.cs.stage3.alice.core.Transformable) {
 					rightUpper = (edu.cmu.cs.stage3.alice.core.Transformable) leg;
 					// System.out.println("right upper " + rightUpper);
 					rightLower = getTransformableChild(rightUpper);

@@ -14,7 +14,8 @@ class BackgroundProxy extends edu.cmu.cs.stage3.alice.scenegraph.renderer.native
 	protected native void onColorChange(double r, double g, double b, double a);
 
 	@Override
-	protected native void onTextureMapChange(edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.TextureMapProxy value);
+	protected native void onTextureMapChange(
+			edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.TextureMapProxy value);
 
 	@Override
 	protected native void onTextureMapSourceRectangleChange(int x, int y, int width, int height);

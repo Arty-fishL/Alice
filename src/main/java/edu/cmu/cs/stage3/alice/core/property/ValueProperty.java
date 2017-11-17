@@ -27,10 +27,12 @@ import edu.cmu.cs.stage3.alice.core.Element;
 
 public class ValueProperty extends ObjectProperty {
 	private Class m_overrideValueClass = null;
-	public ValueProperty(Element owner, String name, Object defaultValue) {
+
+	public ValueProperty(final Element owner, final String name, final Object defaultValue) {
 		super(owner, name, defaultValue, Object.class);
 	}
-	public void setOverrideValueClass(Class overrideValueClass) {
+
+	public void setOverrideValueClass(final Class overrideValueClass) {
 		m_overrideValueClass = overrideValueClass;
 	}
 

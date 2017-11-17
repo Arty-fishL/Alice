@@ -4,12 +4,15 @@ import edu.cmu.cs.stage3.alice.core.Collection;
 import edu.cmu.cs.stage3.alice.core.Element;
 
 public class CollectionProperty extends ElementProperty {
-	protected CollectionProperty(Element owner, String name, Collection defaultValue, Class cls) {
+	protected CollectionProperty(final Element owner, final String name, final Collection defaultValue,
+			final Class cls) {
 		super(owner, name, defaultValue, cls);
 	}
-	public CollectionProperty(Element owner, String name, Collection defaultValue) {
+
+	public CollectionProperty(final Element owner, final String name, final Collection defaultValue) {
 		super(owner, name, defaultValue, Collection.class);
 	}
+
 	public Collection getCollectionValue() {
 		return (Collection) getElementValue();
 	}

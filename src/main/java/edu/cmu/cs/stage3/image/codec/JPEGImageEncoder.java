@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -59,18 +59,18 @@ import com.sun.image.codec.jpeg.JPEGQTable;
 
 /**
  * An ImageEncoder for the JPEG (JFIF) file format.
- * 
+ *
  * The common cases of single band grayscale and three or four band RGB images
  * are handled so as to minimize the amount of information required of the
  * programmer. See the comments pertaining to the constructor and the
  * <code>writeToStream()</code> method for more detailed information.
- * 
+ *
  */
 public class JPEGImageEncoder extends ImageEncoderImpl {
 
 	private JPEGEncodeParam jaiEP = null;
 
-	public JPEGImageEncoder(OutputStream output, ImageEncodeParam param) {
+	public JPEGImageEncoder(final OutputStream output, final ImageEncodeParam param) {
 		super(output, param);
 		if (param != null) {
 			jaiEP = (JPEGEncodeParam) param;
@@ -82,7 +82,8 @@ public class JPEGImageEncoder extends ImageEncoderImpl {
 	// if any of them have been set. If so, transfer then to the
 	// com.sun.image.codec.jpeg.JPEGEncodeParam object.
 	//
-	private void modifyEncodeParam(JPEGEncodeParam jaiEP, com.sun.image.codec.jpeg.JPEGEncodeParam j2dEP, int nbands) {
+	private void modifyEncodeParam(final JPEGEncodeParam jaiEP, final com.sun.image.codec.jpeg.JPEGEncodeParam j2dEP,
+			final int nbands) {
 
 		int val;
 		int[] qTab;
@@ -109,7 +110,7 @@ public class JPEGImageEncoder extends ImageEncoderImpl {
 
 		// Apply new quality, if set
 		if (jaiEP.isQualitySet()) {
-			float fval = jaiEP.getQuality();
+			final float fval = jaiEP.getQuality();
 			j2dEP.setQuality(fval, true);
 		}
 
@@ -142,23 +143,23 @@ public class JPEGImageEncoder extends ImageEncoderImpl {
 	 */
 
 	@Override
-	public void encode(RenderedImage im) throws IOException {
+	public void encode(final RenderedImage im) throws IOException {
 		//
 		// Check data type and band count compatibility.
 		// This implementation handles only 1 and 3 band source images.
 		//
-		SampleModel sampleModel = im.getSampleModel();
-		ColorModel colorModel = im.getColorModel();
+		final SampleModel sampleModel = im.getSampleModel();
+		final ColorModel colorModel = im.getColorModel();
 
 		// Must be a 1 or 3 component BYTE image
-		int numBands = colorModel.getNumColorComponents();
-		int transType = sampleModel.getTransferType();
+		final int numBands = colorModel.getNumColorComponents();
+		final int transType = sampleModel.getTransferType();
 		if (transType != DataBuffer.TYPE_BYTE || numBands != 1 && numBands != 3) {
 			throw new RuntimeException(JaiI18N.getString("JPEGImageEncoder0"));
 		}
 
 		// Must be GRAY or RGB
-		int cspaceType = colorModel.getColorSpace().getType();
+		final int cspaceType = colorModel.getColorSpace().getType();
 		if (cspaceType != ColorSpace.TYPE_GRAY && cspaceType != ColorSpace.TYPE_RGB) {
 			throw new Error(JaiI18N.getString("JPEGImageEncoder1"));
 		}
@@ -189,7 +190,7 @@ public class JPEGImageEncoder extends ImageEncoderImpl {
 			// Need to expand the indexed data to components.
 			// The convertToIntDiscrete method is used to perform this.
 			//
-			IndexColorModel icm = (IndexColorModel) colorModel;
+			final IndexColorModel icm = (IndexColorModel) colorModel;
 			bi = icm.convertToIntDiscrete(wRas, false);
 			j2dEP = com.sun.image.codec.jpeg.JPEGCodec.getDefaultJPEGEncodeParam(bi);
 		} else {
@@ -210,7 +211,7 @@ public class JPEGImageEncoder extends ImageEncoderImpl {
 		try {
 			// Write the image data.
 			encoder.encode(bi);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			throw new RuntimeException(e.getMessage());
 		}
 

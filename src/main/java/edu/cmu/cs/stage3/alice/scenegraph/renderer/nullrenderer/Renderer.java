@@ -36,42 +36,51 @@ public class Renderer extends edu.cmu.cs.stage3.alice.scenegraph.renderer.Abstra
 	}
 
 	@Override
-	protected void dispatchPropertyChange(edu.cmu.cs.stage3.alice.scenegraph.event.PropertyEvent propertyEvent) {
+	protected void dispatchPropertyChange(final edu.cmu.cs.stage3.alice.scenegraph.event.PropertyEvent propertyEvent) {
 	}
 
 	@Override
-	protected void dispatchRelease(edu.cmu.cs.stage3.alice.scenegraph.event.ReleaseEvent releaseEvent) {
+	protected void dispatchRelease(final edu.cmu.cs.stage3.alice.scenegraph.event.ReleaseEvent releaseEvent) {
 	}
 
 	@Override
-	protected void dispatchAbsoluteTransformationChange(edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent) {
+	protected void dispatchAbsoluteTransformationChange(
+			final edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent) {
 	}
 
 	@Override
-	protected void dispatchBoundChange(edu.cmu.cs.stage3.alice.scenegraph.event.BoundEvent boundEvent) {
+	protected void dispatchBoundChange(final edu.cmu.cs.stage3.alice.scenegraph.event.BoundEvent boundEvent) {
 	}
 
 	@Override
-	public void dispatchChildAdd(edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent childrenEvent) {
+	public void dispatchChildAdd(final edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent childrenEvent) {
 	}
 
 	@Override
-	public void dispatchChildRemove(edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent childrenEvent) {
+	public void dispatchChildRemove(final edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent childrenEvent) {
 	}
 
 	@Override
-	protected void dispatchHierarchyChange(edu.cmu.cs.stage3.alice.scenegraph.event.HierarchyEvent hierarchyEvent) {
+	protected void dispatchHierarchyChange(
+			final edu.cmu.cs.stage3.alice.scenegraph.event.HierarchyEvent hierarchyEvent) {
 	}
+
 	@Override
 	public edu.cmu.cs.stage3.alice.scenegraph.renderer.OffscreenRenderTarget createOffscreenRenderTarget() {
 		return new OffscreenRenderTarget(this);
 	}
+
 	@Override
 	public edu.cmu.cs.stage3.alice.scenegraph.renderer.OnscreenRenderTarget createOnscreenRenderTarget() {
 		return new OnscreenRenderTarget(this);
 	}
+
 	@Override
-	public edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pick(edu.cmu.cs.stage3.alice.scenegraph.Component sgComponent, javax.vecmath.Vector3d v, double planeMinX, double planeMinY, double planeMaxX, double planeMaxY, double nearClippingPlaneDistance, double farClippingPlaneDistance, boolean isSubElementRequired, boolean isOnlyFrontMostRequired) {
+	public edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pick(
+			final edu.cmu.cs.stage3.alice.scenegraph.Component sgComponent, final javax.vecmath.Vector3d v,
+			final double planeMinX, final double planeMinY, final double planeMaxX, final double planeMaxY,
+			final double nearClippingPlaneDistance, final double farClippingPlaneDistance,
+			final boolean isSubElementRequired, final boolean isOnlyFrontMostRequired) {
 		return null;
 	}
 }

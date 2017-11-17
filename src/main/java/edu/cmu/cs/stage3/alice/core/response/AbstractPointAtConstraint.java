@@ -36,29 +36,33 @@ public class AbstractPointAtConstraint extends TransformResponse {
 		private javax.vecmath.Vector3d m_offset;
 		private edu.cmu.cs.stage3.alice.core.ReferenceFrame m_target;
 		private boolean m_onlyAffectYaw;
+
 		protected abstract boolean onlyAffectYaw();
 
 		@Override
-		public void prologue(double t) {
+		public void prologue(final double t) {
 			super.prologue(t);
 			m_target = target.getReferenceFrameValue();
 			m_offset = offset.getVector3Value();
 			m_upGuide = upGuide.getVector3Value();
 			m_onlyAffectYaw = onlyAffectYaw();
 			if (m_target == null) {
-				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException("target value must not be null.", null, target);
+				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException("target value must not be null.",
+						null, target);
 			}
 			if (m_target == m_subject) {
-				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException("target value must not be equal to the subject value.", getCurrentStack(), target);
+				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException(
+						"target value must not be equal to the subject value.", getCurrentStack(), target);
 			}
 		}
+
 		// todo: rework this hack added from TurnAwayFromConstraint
 		protected boolean isTurnAroundNecessary() {
 			return false;
 		}
 
 		@Override
-		public void update(double t) {
+		public void update(final double t) {
 			super.update(t);
 			m_subject.pointAtRightNow(m_target, m_offset, m_upGuide, m_asSeenBy, m_onlyAffectYaw);
 			if (isTurnAroundNecessary()) {

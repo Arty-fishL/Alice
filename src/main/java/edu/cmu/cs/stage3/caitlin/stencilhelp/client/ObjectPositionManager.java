@@ -18,24 +18,29 @@ import edu.cmu.cs.stage3.caitlin.stencilhelp.application.StencilApplication;
 public class ObjectPositionManager {
 	StencilApplication stencilApp = null;
 
-	public ObjectPositionManager(StencilApplication stencilApp) {
+	public ObjectPositionManager(final StencilApplication stencilApp) {
 		this.stencilApp = stencilApp;
 	}
+
 	public double getScreenHeight() {
 		return stencilApp.getScreenSize().getHeight();
 	}
+
 	public double getScreenWidth() {
 		return stencilApp.getScreenSize().getWidth();
 	}
-	public Rectangle getInitialBox(String ID) {
+
+	public Rectangle getInitialBox(final String ID) {
 		try {
 			if (stencilApp.isIDVisible(ID)) {
 				return stencilApp.getBoxForID(ID);
 			}
-		} catch (IDDoesNotExistException idne) {}
+		} catch (final IDDoesNotExistException idne) {
+		}
 		return null;
 	}
-	public Rectangle getBoxForID(String ID) {
+
+	public Rectangle getBoxForID(final String ID) {
 		// System.out.println("getBox: " + ID);
 		try {
 			if (!stencilApp.isIDVisible(ID)) {
@@ -43,7 +48,7 @@ public class ObjectPositionManager {
 			}
 			// System.out.println("\treturning " + stencilApp.getBoxForID(ID));
 			return stencilApp.getBoxForID(ID);
-		} catch (IDDoesNotExistException idne) {
+		} catch (final IDDoesNotExistException idne) {
 			// System.out.println("Could not get id: " + ID);
 			// idne.printStackTrace();
 		}

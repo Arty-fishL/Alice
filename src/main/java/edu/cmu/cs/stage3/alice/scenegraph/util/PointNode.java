@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -39,11 +39,11 @@ public class PointNode implements Comparable {
 	public PointNode next = null;
 	public PointNode prev = null;
 
-	public PointNode(Point2d p) {
+	public PointNode(final Point2d p) {
 		data = p;
 	}
 
-	public void insertAfter(PointNode toAdd) {
+	public void insertAfter(final PointNode toAdd) {
 		toAdd.next = next;
 		toAdd.prev = this;
 		if (next != null) {
@@ -60,12 +60,12 @@ public class PointNode implements Comparable {
 		return Triangle.convex(prev.data, data, next.data);
 	}
 
-	public boolean inCone(Point2d check) {
+	public boolean inCone(final Point2d check) {
 		return Triangle.inCone(prev.data, data, next.data, check);
 	}
 
 	@Override
-	public int compareTo(Object o) throws ClassCastException {
+	public int compareTo(final Object o) throws ClassCastException {
 		if (o instanceof PointNode) {
 			return Triangulator.pointCompare(data, ((PointNode) o).data);
 		} else if (o instanceof Point2d) {

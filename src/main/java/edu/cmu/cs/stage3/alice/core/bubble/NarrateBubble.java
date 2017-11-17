@@ -11,13 +11,13 @@ import java.awt.Graphics;
 
 /**
  * @author caitlin
- * 
+ *
  *         To change the template for this generated type comment go to
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class NarrateBubble extends Bubble {
 
-	private boolean m_displayTopOfScreen = false;
+	private final boolean m_displayTopOfScreen = false;
 	private java.awt.Rectangle actualViewport = null;
 
 	public NarrateBubble() {
@@ -25,7 +25,7 @@ public class NarrateBubble extends Bubble {
 	}
 
 	@Override
-	public void calculateOrigin(edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget rt) {
+	public void calculateOrigin(final edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget rt) {
 
 	}
 
@@ -33,31 +33,31 @@ public class NarrateBubble extends Bubble {
 	// reasonable set of offsets
 
 	@Override
-	public void calculateBounds(edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget rt) {
+	public void calculateBounds(final edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget rt) {
 
-		edu.cmu.cs.stage3.alice.scenegraph.Camera[] sgCameras = rt.getCameras();
+		final edu.cmu.cs.stage3.alice.scenegraph.Camera[] sgCameras = rt.getCameras();
 		if (sgCameras.length > 0) {
-			edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera = sgCameras[0];
+			final edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera = sgCameras[0];
 			actualViewport = rt.getActualViewport(sgCamera);
 
-			java.awt.Font font = getFont();
-			FontMetrics fontMetrics = java.awt.Toolkit.getDefaultToolkit().getFontMetrics(font);
+			final java.awt.Font font = getFont();
+			final FontMetrics fontMetrics = java.awt.Toolkit.getDefaultToolkit().getFontMetrics(font);
 			// System.out.println(fontMetrics.charWidth('W'));
 
-			double charCnt = actualViewport.getWidth() / fontMetrics.charWidth('W');
+			final double charCnt = actualViewport.getWidth() / fontMetrics.charWidth('W');
 			// System.out.println("charCnt: " + charCnt + " " + font.getSize());
 			setCharactersPerLine((int) charCnt * 2);
 		}
 
 		super.calculateBounds(rt);
 
-		java.awt.geom.Rectangle2D totalBound = getTotalBound();
+		final java.awt.geom.Rectangle2D totalBound = getTotalBound();
 
 		if (sgCameras.length > 0) {
-			edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera = sgCameras[0];
+			final edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera = sgCameras[0];
 			actualViewport = rt.getActualViewport(sgCamera);
 
-			double x = actualViewport.getX() + actualViewport.getWidth() / 2.0 - totalBound.getWidth() / 2.0;
+			final double x = actualViewport.getX() + actualViewport.getWidth() / 2.0 - totalBound.getWidth() / 2.0;
 			double y = 0;
 			if (m_displayTopOfScreen) {
 				y = PAD_Y;
@@ -73,16 +73,16 @@ public class NarrateBubble extends Bubble {
 	}
 
 	@Override
-	protected void paintBackground(Graphics g) {
-		java.awt.geom.Rectangle2D totalBound = getTotalBound();
-		java.awt.Point origin = getOrigin();
-		java.awt.Point pixelOffset = getPixelOffset();
+	protected void paintBackground(final Graphics g) {
+		final java.awt.geom.Rectangle2D totalBound = getTotalBound();
+		final java.awt.Point origin = getOrigin();
+		final java.awt.Point pixelOffset = getPixelOffset();
 
-		int x = actualViewport.x;
-		int y = (int) (totalBound.getY() + pixelOffset.y - PAD_Y);
+		final int x = actualViewport.x;
+		final int y = (int) (totalBound.getY() + pixelOffset.y - PAD_Y);
 
-		int width = actualViewport.width;
-		int height = (int) totalBound.getHeight() + PAD_Y + PAD_Y;
+		final int width = actualViewport.width;
+		final int height = (int) totalBound.getHeight() + PAD_Y + PAD_Y;
 
 		g.setColor(getBackgroundColor());
 		g.fillRoundRect(x, y, width, height, 5, 5);

@@ -45,21 +45,25 @@ import jmapps.ui.TrackPanel;
 
 public class TrackPanelAudio extends TrackPanel implements ActionListener {
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -1778411436763794964L;
 	private AudioFormat formatOld;
 	private String strContentType = null;
 	private AudioFormatChooser chooserAudioFormat;
 
-	public TrackPanelAudio(TrackControl trackControl, ActionListener listenerEnableTrack) {
+	public TrackPanelAudio(final TrackControl trackControl, final ActionListener listenerEnableTrack) {
 		super(trackControl, listenerEnableTrack);
 
 		try {
 			init();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void setContentType(String strContentType) {
+	public void setContentType(final String strContentType) {
 		int i;
 		int nSize;
 		AudioFormat formatAudio;
@@ -95,7 +99,7 @@ public class TrackPanelAudio extends TrackPanel implements ActionListener {
 		return format;
 	}
 
-	public void setDefaults(boolean boolTrackEnable, Format format) {
+	public void setDefaults(final boolean boolTrackEnable, final Format format) {
 		chooserAudioFormat.setTrackEnabled(boolTrackEnable);
 		if (format instanceof AudioFormat) {
 			formatOld = (AudioFormat) format;
@@ -113,12 +117,12 @@ public class TrackPanelAudio extends TrackPanel implements ActionListener {
 	/**
 	 * This method overwrites the ActionListener method to process events from
 	 * buttons, track pages, and Progress dialog.
-	 * 
+	 *
 	 * @param event
 	 *            action event
 	 */
 	@Override
-	public void actionPerformed(ActionEvent event) {
+	public void actionPerformed(final ActionEvent event) {
 		String strCmd;
 		ActionEvent eventNew;
 

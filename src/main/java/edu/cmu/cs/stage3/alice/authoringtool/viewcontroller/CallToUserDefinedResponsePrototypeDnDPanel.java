@@ -28,10 +28,18 @@ import java.awt.Component;
 /**
  * @author Jason Pratt
  */
-public class CallToUserDefinedResponsePrototypeDnDPanel extends edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel implements edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement, edu.cmu.cs.stage3.alice.authoringtool.util.Releasable {
+public class CallToUserDefinedResponsePrototypeDnDPanel
+		extends edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel implements
+		edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement, edu.cmu.cs.stage3.alice.authoringtool.util.Releasable {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -2033635501427949258L;
 	protected edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedResponsePrototype callToUserDefinedResponsePrototype;
 	protected edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel subPanel = new edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel();
-	protected java.awt.GridBagConstraints constraints = new java.awt.GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0);
+	protected java.awt.GridBagConstraints constraints = new java.awt.GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+			java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0,
+			0);
 	protected RefreshListener refreshListener = new RefreshListener();
 	protected boolean nameEditorShouldBeInvoked = false;
 	protected MouseListener mouseListener = new MouseListener();
@@ -46,11 +54,13 @@ public class CallToUserDefinedResponsePrototypeDnDPanel extends edu.cmu.cs.stage
 		addDragSourceComponent(subPanel);
 	}
 
-	public void set(edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedResponsePrototype callToUserDefinedResponsePrototype) {
+	public void set(
+			final edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedResponsePrototype callToUserDefinedResponsePrototype) {
 		clean();
 
 		this.callToUserDefinedResponsePrototype = callToUserDefinedResponsePrototype;
-		setTransferable(edu.cmu.cs.stage3.alice.authoringtool.datatransfer.TransferableFactory.createTransferable(callToUserDefinedResponsePrototype));
+		setTransferable(edu.cmu.cs.stage3.alice.authoringtool.datatransfer.TransferableFactory
+				.createTransferable(callToUserDefinedResponsePrototype));
 		startListening();
 		refreshGUI();
 	}
@@ -58,16 +68,17 @@ public class CallToUserDefinedResponsePrototypeDnDPanel extends edu.cmu.cs.stage
 	protected void startListening() {
 		if (callToUserDefinedResponsePrototype != null) {
 			callToUserDefinedResponsePrototype.startListening();
-			edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse response = callToUserDefinedResponsePrototype.getActualResponse();
+			final edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse response = callToUserDefinedResponsePrototype
+					.getActualResponse();
 			if (response != null) {
 				response.requiredFormalParameters.addObjectArrayPropertyListener(refreshListener);
 				response.keywordFormalParameters.addObjectArrayPropertyListener(refreshListener);
 				Object[] variables = response.requiredFormalParameters.getArrayValue();
-				for (Object variable : variables) {
+				for (final Object variable : variables) {
 					((edu.cmu.cs.stage3.alice.core.Variable) variable).name.addPropertyListener(refreshListener);
 				}
 				variables = response.keywordFormalParameters.getArrayValue();
-				for (Object variable : variables) {
+				for (final Object variable : variables) {
 					((edu.cmu.cs.stage3.alice.core.Variable) variable).name.addPropertyListener(refreshListener);
 				}
 				response.name.addPropertyListener(refreshListener);
@@ -80,16 +91,17 @@ public class CallToUserDefinedResponsePrototypeDnDPanel extends edu.cmu.cs.stage
 	protected void stopListening() {
 		if (callToUserDefinedResponsePrototype != null) {
 			callToUserDefinedResponsePrototype.stopListening();
-			edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse response = callToUserDefinedResponsePrototype.getActualResponse();
+			final edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse response = callToUserDefinedResponsePrototype
+					.getActualResponse();
 			if (response != null) {
 				response.requiredFormalParameters.removeObjectArrayPropertyListener(refreshListener);
 				response.keywordFormalParameters.removeObjectArrayPropertyListener(refreshListener);
 				Object[] variables = response.requiredFormalParameters.getArrayValue();
-				for (Object variable : variables) {
+				for (final Object variable : variables) {
 					((edu.cmu.cs.stage3.alice.core.Variable) variable).name.removePropertyListener(refreshListener);
 				}
 				variables = response.keywordFormalParameters.getArrayValue();
-				for (Object variable : variables) {
+				for (final Object variable : variables) {
 					((edu.cmu.cs.stage3.alice.core.Variable) variable).name.removePropertyListener(refreshListener);
 				}
 				response.name.removePropertyListener(refreshListener);
@@ -135,8 +147,8 @@ public class CallToUserDefinedResponsePrototypeDnDPanel extends edu.cmu.cs.stage
 	}
 
 	public void refreshGUI() {
-		java.awt.Component[] components = subPanel.getComponents();
-		for (Component component2 : components) {
+		final java.awt.Component[] components = subPanel.getComponents();
+		for (final Component component2 : components) {
 			// components[i].removeMouseListener( mouseListener );
 			removeDragSourceComponent(component2);
 		}
@@ -147,11 +159,13 @@ public class CallToUserDefinedResponsePrototypeDnDPanel extends edu.cmu.cs.stage
 		subPanel.removeAll();
 
 		if (callToUserDefinedResponsePrototype != null) {
-			edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse response = callToUserDefinedResponsePrototype.getActualResponse();
+			final edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse response = callToUserDefinedResponsePrototype
+					.getActualResponse();
 			constraints.gridx = 0;
 			nameViewController = null;
 			if (response != null) {
-				nameViewController = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getElementNamePropertyViewController(response);
+				nameViewController = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
+						.getElementNamePropertyViewController(response);
 				nameViewController.setBorder(null);
 				nameViewController.setOpaque(false);
 				subPanel.add(nameViewController, constraints);
@@ -164,8 +178,9 @@ public class CallToUserDefinedResponsePrototypeDnDPanel extends edu.cmu.cs.stage
 			subPanel.add(javax.swing.Box.createHorizontalStrut(6), constraints);
 			constraints.gridx++;
 			if (response != null && response.requiredFormalParameters.size() > 0) {
-				Object[] variables = response.requiredFormalParameters.getArrayValue();
-				for (Object variable : variables) { // TODO: include type info?
+				final Object[] variables = response.requiredFormalParameters.getArrayValue();
+				for (final Object variable : variables) { // TODO: include type
+															// info?
 					addTile(((edu.cmu.cs.stage3.alice.core.Variable) variable).name.getStringValue());
 					constraints.gridx++;
 				}
@@ -184,11 +199,12 @@ public class CallToUserDefinedResponsePrototypeDnDPanel extends edu.cmu.cs.stage
 		repaint();
 	}
 
-	public void addTile(String text) {
-		edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel tilePanel = new edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel();
+	public void addTile(final String text) {
+		final edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel tilePanel = new edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel();
 		tilePanel.setLayout(new java.awt.BorderLayout());
-		tilePanel.setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("prototypeParameter"));
-		javax.swing.JLabel tileLabel = new javax.swing.JLabel(text);
+		tilePanel.setBackground(
+				edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("prototypeParameter"));
+		final javax.swing.JLabel tileLabel = new javax.swing.JLabel(text);
 		tileLabel.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 2, 0, 2));
 		tilePanel.add(tileLabel, java.awt.BorderLayout.CENTER);
 		subPanel.add(tilePanel, constraints);
@@ -199,29 +215,37 @@ public class CallToUserDefinedResponsePrototypeDnDPanel extends edu.cmu.cs.stage
 	class MouseListener extends edu.cmu.cs.stage3.alice.authoringtool.util.CustomMouseAdapter {
 
 		@Override
-		public void singleClickResponse(java.awt.event.MouseEvent ev) {
-			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().editObject(callToUserDefinedResponsePrototype.getActualResponse(), CallToUserDefinedResponsePrototypeDnDPanel.this);
+		public void singleClickResponse(final java.awt.event.MouseEvent ev) {
+			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().editObject(
+					callToUserDefinedResponsePrototype.getActualResponse(),
+					CallToUserDefinedResponsePrototypeDnDPanel.this);
 		}
 	}
 
-	class RefreshListener implements edu.cmu.cs.stage3.alice.core.event.PropertyListener, edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyListener {
+	class RefreshListener implements edu.cmu.cs.stage3.alice.core.event.PropertyListener,
+			edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyListener {
 		@Override
-		public void propertyChanging(edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev) {
+		public void propertyChanging(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev) {
 		}
+
 		@Override
-		public void propertyChanged(edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev) {
+		public void propertyChanged(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev) {
 			refreshGUI();
 		}
+
 		@Override
-		public void objectArrayPropertyChanging(edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent ev) {
+		public void objectArrayPropertyChanging(final edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent ev) {
 		}
+
 		@Override
-		public void objectArrayPropertyChanged(edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent ev) {
+		public void objectArrayPropertyChanged(final edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent ev) {
 			if (ev.getChangeType() == edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent.ITEM_INSERTED) {
-				edu.cmu.cs.stage3.alice.core.Variable variable = (edu.cmu.cs.stage3.alice.core.Variable) ev.getItem();
+				final edu.cmu.cs.stage3.alice.core.Variable variable = (edu.cmu.cs.stage3.alice.core.Variable) ev
+						.getItem();
 				variable.name.addPropertyListener(this);
 			} else if (ev.getChangeType() == edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent.ITEM_REMOVED) {
-				edu.cmu.cs.stage3.alice.core.Variable variable = (edu.cmu.cs.stage3.alice.core.Variable) ev.getItem();
+				final edu.cmu.cs.stage3.alice.core.Variable variable = (edu.cmu.cs.stage3.alice.core.Variable) ev
+						.getItem();
 				variable.name.removePropertyListener(this);
 			}
 			refreshGUI();

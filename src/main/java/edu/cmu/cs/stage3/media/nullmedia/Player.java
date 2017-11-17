@@ -3,17 +3,21 @@ package edu.cmu.cs.stage3.media.nullmedia;
 public class Player extends edu.cmu.cs.stage3.media.AbstractPlayer {
 	private double m_currentTime = 0;
 	private int m_state = STATE_REALIZED;
-	public Player(DataSource dataSource) {
+
+	public Player(final DataSource dataSource) {
 		super(dataSource);
 	}
-	public double waitForTimeRemaining(long timeout) {
+
+	public double waitForTimeRemaining(final long timeout) {
 		return m_currentTime - getActualEndTime();
 	}
+
 	@Override
 	public int getState() {
 		return m_state;
 	}
-	private void setState(int state) {
+
+	private void setState(final int state) {
 		if (m_state != state) {
 			m_state = state;
 			fireStateChanged();
@@ -24,8 +28,9 @@ public class Player extends edu.cmu.cs.stage3.media.AbstractPlayer {
 	public double getCurrentTime() {
 		return m_currentTime;
 	}
+
 	@Override
-	public void setCurrentTime(double currentTime) {
+	public void setCurrentTime(final double currentTime) {
 		m_currentTime = currentTime;
 	}
 
@@ -41,6 +46,7 @@ public class Player extends edu.cmu.cs.stage3.media.AbstractPlayer {
 		}
 		return endTime;
 	}
+
 	private void setCurrentTimeToEnd() {
 		setCurrentTime(getActualEndTime());
 		setState(STATE_REALIZED);
@@ -48,19 +54,24 @@ public class Player extends edu.cmu.cs.stage3.media.AbstractPlayer {
 	}
 
 	@Override
-	public void setVolumeLevel(float volumeLevel) {
+	public void setVolumeLevel(final float volumeLevel) {
 	}
+
 	@Override
-	public void setRate(float rate) {
+	public void setRate(final float rate) {
 	}
-	public void setPan(float pan) {
+
+	public void setPan(final float pan) {
 	}
+
 	@Override
 	public void prefetch() {
 	}
+
 	@Override
 	public void realize() {
 	}
+
 	@Override
 	public void start() {
 		setState(STATE_REALIZED);
@@ -75,7 +86,7 @@ public class Player extends edu.cmu.cs.stage3.media.AbstractPlayer {
 				public void run() {
 					try {
 						Thread.sleep((long) (timeRemaining * 1000));
-					} catch (InterruptedException ie) {
+					} catch (final InterruptedException ie) {
 						// pass
 					} finally {
 						setCurrentTimeToEnd();
@@ -84,6 +95,7 @@ public class Player extends edu.cmu.cs.stage3.media.AbstractPlayer {
 			}.start();
 		}
 	}
+
 	@Override
 	public void stop() {
 		setState(STATE_REALIZED);

@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -25,11 +25,16 @@ package edu.cmu.cs.stage3.alice.authoringtool.galleryviewer;
 
 /**
  * @author David Culyba
- * 
+ *
  */
 
-public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel implements edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement {
+public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel
+		implements edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement {
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -8525240494962978842L;
 	protected GalleryViewer.ObjectXmlData data;
 	protected javax.swing.JLabel nameLabel;
 	protected javax.swing.JLabel classLabel;
@@ -48,17 +53,17 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
 	protected class GalleryMouseAdapter extends edu.cmu.cs.stage3.alice.authoringtool.util.CustomMouseAdapter {
 
 		@Override
-		public void mouseExited(java.awt.event.MouseEvent m) {
+		public void mouseExited(final java.awt.event.MouseEvent m) {
 			galleryMouseExited();
 		}
 
 		@Override
-		public void mouseEntered(java.awt.event.MouseEvent m) {
+		public void mouseEntered(final java.awt.event.MouseEvent m) {
 			galleryMouseEntered();
 		}
 
 		@Override
-		protected void singleClickResponse(java.awt.event.MouseEvent ev) {
+		protected void singleClickResponse(final java.awt.event.MouseEvent ev) {
 			respondToMouse();
 		}
 	}
@@ -84,7 +89,7 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
 	}
 
 	@Override
-	public void setToolTipText(String text) {
+	public void setToolTipText(final String text) {
 		super.setToolTipText(text);
 		// nameLabel.setToolTipText(text);
 		// imageLabel.setToolTipText(text);
@@ -120,9 +125,9 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
 		if (data.type == GalleryViewer.LOCAL) {
 			root = GalleryViewer.localGalleryName;
 		}
-		int index = path.lastIndexOf(".xml");
+		final int index = path.lastIndexOf(".xml");
 		if (index > -1 && index < path.length()) {
-			int dirIndex = path.lastIndexOf(java.io.File.separator);
+			final int dirIndex = path.lastIndexOf(java.io.File.separator);
 			if (dirIndex > -1 && dirIndex < path.length()) {
 				path = path.substring(0, dirIndex);
 			} else {
@@ -132,11 +137,11 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
 		if (path != "") {
 			path = java.io.File.separator + path;
 		}
-		String toReturn = root + path;
+		final String toReturn = root + path;
 		return toReturn;
 	}
 
-	public void set(GalleryViewer.ObjectXmlData dataIn) throws java.lang.IllegalArgumentException {
+	public void set(final GalleryViewer.ObjectXmlData dataIn) throws java.lang.IllegalArgumentException {
 		if (dataIn != null) {
 			clean();
 			data = dataIn;
@@ -148,7 +153,8 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
 				rootPath = data.directoryData.rootNode.rootPath;
 			} else if (data.parentDirectory != null) {
 				rootPath = data.parentDirectory.rootNode.rootPath;
-			} else {}
+			} else {
+			}
 			displayName = GalleryViewer.cleanUpName(dataIn.name);
 			updateGUI();
 			wakeUp();
@@ -195,15 +201,15 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
 
 	public abstract void loadImage();
 
-	public static java.awt.Image retrieveImage(String root, String filename, long timestamp) {
+	public static java.awt.Image retrieveImage(final String root, final String filename, final long timestamp) {
 		return null;
 	}
 
-	protected void setGalleryViewer(GalleryViewer viewer) {
+	protected void setGalleryViewer(final GalleryViewer viewer) {
 		mainViewer = viewer;
 	}
 
-	public void setImage(javax.swing.ImageIcon imageIcon) {
+	public void setImage(final javax.swing.ImageIcon imageIcon) {
 		image = imageIcon;
 		imageLabel.setText(null);
 		imageLabel.setIcon(image);
@@ -215,27 +221,30 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
 		return "Class";
 	}
 
-	public static void storeThumbnail(String thumbFilename, java.awt.Image toStore, long timeStamp) {
+	public static void storeThumbnail(final String thumbFilename, final java.awt.Image toStore, final long timeStamp) {
 		if (toStore != null) {
-			String codec = "png";
-			java.io.File thumbFile = GalleryViewer.createFile(thumbFilename);
+			final String codec = "png";
+			final java.io.File thumbFile = GalleryViewer.createFile(thumbFilename);
 			if (thumbFile != null) {
 				try {
-					java.io.FileOutputStream fos = new java.io.FileOutputStream(thumbFile);
-					java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream(fos);
-					java.io.DataOutputStream dos = new java.io.DataOutputStream(bos);
+					final java.io.FileOutputStream fos = new java.io.FileOutputStream(thumbFile);
+					final java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream(fos);
+					final java.io.DataOutputStream dos = new java.io.DataOutputStream(bos);
 					edu.cmu.cs.stage3.image.ImageIO.store(codec, dos, toStore);
 					dos.flush();
 					fos.close();
 					thumbFile.setLastModified(timeStamp);
-				} catch (InterruptedException ie) {} catch (java.io.IOException ioe) {}
+				} catch (final InterruptedException ie) {
+				} catch (final java.io.IOException ioe) {
+				}
 			}
 		}
 	}
 
-	protected java.awt.Color interpolateColor(int point, int low, int high, java.awt.Color lowColor, java.awt.Color highColor) {
-		float dLow = (float) (point - low) / (high - low);
-		float dHigh = (float) (high - point) / (high - low);
+	protected java.awt.Color interpolateColor(final int point, final int low, final int high,
+			final java.awt.Color lowColor, final java.awt.Color highColor) {
+		final float dLow = (float) (point - low) / (high - low);
+		final float dHigh = (float) (high - point) / (high - low);
 		int newR = (int) (highColor.getRed() * dLow) + (int) (lowColor.getRed() * dHigh);
 		if (newR > 255) {
 			newR = 255;
@@ -251,14 +260,14 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
 		return new java.awt.Color(newR, newG, newB);
 	}
 
-	protected java.awt.Color getSizeColor(int toScale) {
+	protected java.awt.Color getSizeColor(final int toScale) {
 		if (toScale > SLOWEST_SIZE) {
 			return SLOWEST_COLOR;
 		}
 		if (toScale < FASTEST_SIZE) {
 			return FASTEST_COLOR;
 		}
-		int middle = (SLOWEST_SIZE - FASTEST_SIZE) / 2;
+		final int middle = (SLOWEST_SIZE - FASTEST_SIZE) / 2;
 		if (toScale <= middle) {
 			return interpolateColor(toScale, FASTEST_SIZE, middle, FASTEST_COLOR, MIDDLE_COLOR);
 		} else {
@@ -292,19 +301,26 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
 		setToolTipText(getToolTipString());
 	}
 
-	public static String getDisplayName(String toDisplay) {
+	public static String getDisplayName(final String toDisplay) {
 		String displayNameToReturn = new String(toDisplay);
 		if (Character.isLowerCase(displayNameToReturn.charAt(0))) {
-			displayNameToReturn = Character.toUpperCase(displayNameToReturn.charAt(0)) + displayNameToReturn.substring(1);
+			displayNameToReturn = Character.toUpperCase(displayNameToReturn.charAt(0))
+					+ displayNameToReturn.substring(1);
 		}
 		return displayNameToReturn;
 	}
 
 	protected void updateGUI() {
 		containingPanel.removeAll();
-		containingPanel.add(classLabel, new java.awt.GridBagConstraints(1, 0, 2, 1, 0, 0, java.awt.GridBagConstraints.NORTH, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
-		containingPanel.add(nameLabel, new java.awt.GridBagConstraints(1, 1, 2, 1, 0, 0, java.awt.GridBagConstraints.NORTH, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
-		containingPanel.add(imageLabel, new java.awt.GridBagConstraints(1, 2, 2, 1, 0, 0, java.awt.GridBagConstraints.NORTH, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+		containingPanel.add(classLabel,
+				new java.awt.GridBagConstraints(1, 0, 2, 1, 0, 0, java.awt.GridBagConstraints.NORTH,
+						java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+		containingPanel.add(nameLabel,
+				new java.awt.GridBagConstraints(1, 1, 2, 1, 0, 0, java.awt.GridBagConstraints.NORTH,
+						java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+		containingPanel.add(imageLabel,
+				new java.awt.GridBagConstraints(1, 2, 2, 1, 0, 0, java.awt.GridBagConstraints.NORTH,
+						java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
 		// this.add(grip, new
 		// java.awt.GridBagConstraints(0,0,1,3,0,0,java.awt.GridBagConstraints.NORTHWEST,java.awt.GridBagConstraints.NONE,
 		// new java.awt.Insets(0,0,0,0), 0,0 ));
@@ -318,9 +334,13 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
 		if (data.size > 0 && data.type == GalleryViewer.WEB) {
 			sizeLabel.setText(String.valueOf(data.size) + "kb");
 			sizeLabel.setForeground(sizeColor);
-			containingPanel.add(sizeLabel, new java.awt.GridBagConstraints(1, 3, 1, 1, 0, 0, java.awt.GridBagConstraints.NORTHWEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+			containingPanel.add(sizeLabel,
+					new java.awt.GridBagConstraints(1, 3, 1, 1, 0, 0, java.awt.GridBagConstraints.NORTHWEST,
+							java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
 		}
-		containingPanel.add(locationLabel, new java.awt.GridBagConstraints(2, 3, 1, 1, 0, 0, java.awt.GridBagConstraints.NORTHWEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+		containingPanel.add(locationLabel,
+				new java.awt.GridBagConstraints(2, 3, 1, 1, 0, 0, java.awt.GridBagConstraints.NORTHWEST,
+						java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
 		containingPanel.revalidate();
 		containingPanel.repaint();
 	}
@@ -352,21 +372,24 @@ public abstract class GalleryObject extends edu.cmu.cs.stage3.alice.authoringtoo
 	}
 
 	@Override
-	public void paintForeground(java.awt.Graphics g) {
+	public void paintForeground(final java.awt.Graphics g) {
 		super.paintForeground(g);
 		if (mouseOver) {
 			Object oldAntialiasing = null;
 			if (g instanceof java.awt.Graphics2D) {
 				oldAntialiasing = ((java.awt.Graphics2D) g).getRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING);
-				((java.awt.Graphics2D) g).addRenderingHints(new java.awt.RenderingHints(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON));
+				((java.awt.Graphics2D) g).addRenderingHints(new java.awt.RenderingHints(
+						java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON));
 			}
-			java.awt.Rectangle bounds = getBounds();
+			final java.awt.Rectangle bounds = getBounds();
 			for (int i = 1; i <= 2; i++) {
-				g.setColor(new java.awt.Color(HIGHLITE.getRed(), HIGHLITE.getGreen(), HIGHLITE.getBlue(), 255 - (i - 1) * 60));
+				g.setColor(new java.awt.Color(HIGHLITE.getRed(), HIGHLITE.getGreen(), HIGHLITE.getBlue(),
+						255 - (i - 1) * 60));
 				g.drawRoundRect(i, i, bounds.width - 2 * i, bounds.height - 2 * i, arcWidth, arcHeight);
 			}
 			if (g instanceof java.awt.Graphics2D) {
-				((java.awt.Graphics2D) g).addRenderingHints(new java.awt.RenderingHints(java.awt.RenderingHints.KEY_ANTIALIASING, oldAntialiasing));
+				((java.awt.Graphics2D) g).addRenderingHints(
+						new java.awt.RenderingHints(java.awt.RenderingHints.KEY_ANTIALIASING, oldAntialiasing));
 			}
 		}
 	}

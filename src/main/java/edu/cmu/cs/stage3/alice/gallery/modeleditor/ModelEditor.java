@@ -14,27 +14,31 @@ public class ModelEditor extends javax.swing.JFrame {
 	 * modelEditor.init( drtf ); if( args.length > 0 ) { modelEditor.onFileOpen(
 	 * new java.io.File( args[ 0 ] ) ); } else { modelEditor.onFileOpen(); }
 	 * modelEditor.setVisible( true );
-	 * 
+	 *
 	 * modelEditor.m_tree.requestFocus(); }
 	 */
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 5443336995138628030L;
 	private edu.cmu.cs.stage3.alice.core.World m_world;
 	private edu.cmu.cs.stage3.alice.core.camera.SymmetricPerspectiveCamera m_camera;
 	private edu.cmu.cs.stage3.alice.core.RenderTarget m_renderTarget;
 	private edu.cmu.cs.stage3.alice.core.decorator.PivotDecorator m_pivotDecorator;
 
-	private ElementTree m_tree;
-	private ElementTreeModel m_treeModel;
+	private final ElementTree m_tree;
+	private final ElementTreeModel m_treeModel;
 	private int m_treeMouseEventModifiers = 0;
 
-	private javax.swing.JButton m_prev;
-	private javax.swing.JButton m_next;
-	private javax.swing.JTextField m_modeledBy;
-	private javax.swing.JTextField m_paintedBy;
-	private javax.swing.JButton m_revert;
-	private javax.swing.JCheckBox m_forceWireframe;
+	private final javax.swing.JButton m_prev;
+	private final javax.swing.JButton m_next;
+	private final javax.swing.JTextField m_modeledBy;
+	private final javax.swing.JTextField m_paintedBy;
+	private final javax.swing.JButton m_revert;
+	private final javax.swing.JCheckBox m_forceWireframe;
 
-	private javax.swing.JFileChooser m_fileChooser;
+	private final javax.swing.JFileChooser m_fileChooser;
 	private java.io.File m_file;
 	private boolean m_isDirty;
 
@@ -42,30 +46,30 @@ public class ModelEditor extends javax.swing.JFrame {
 		addWindowListener(new java.awt.event.WindowAdapter() {
 
 			@Override
-			public void windowClosing(java.awt.event.WindowEvent e) {
+			public void windowClosing(final java.awt.event.WindowEvent e) {
 				onFileExit();
 			}
 		});
 
-		javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
+		final javax.swing.JMenuBar menuBar = new javax.swing.JMenuBar();
 
-		javax.swing.JMenu fileMenu = new javax.swing.JMenu("File");
+		final javax.swing.JMenu fileMenu = new javax.swing.JMenu("File");
 		fileMenu.setMnemonic(java.awt.event.KeyEvent.VK_F);
 
-		javax.swing.JMenuItem fileOpenMenuItem = new javax.swing.JMenuItem("Open...");
+		final javax.swing.JMenuItem fileOpenMenuItem = new javax.swing.JMenuItem("Open...");
 		fileOpenMenuItem.setMnemonic(java.awt.event.KeyEvent.VK_O);
 		fileOpenMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				onFileOpen();
 			}
 		});
 
-		javax.swing.JMenuItem fileSaveMenuItem = new javax.swing.JMenuItem("Save");
+		final javax.swing.JMenuItem fileSaveMenuItem = new javax.swing.JMenuItem("Save");
 		fileSaveMenuItem.setMnemonic(java.awt.event.KeyEvent.VK_S);
 		fileSaveMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				onFileSave();
 			}
 		});
@@ -80,38 +84,38 @@ public class ModelEditor extends javax.swing.JFrame {
 		// }
 		// });
 
-		javax.swing.JMenuItem fileExitMenuItem = new javax.swing.JMenuItem("Exit...");
+		final javax.swing.JMenuItem fileExitMenuItem = new javax.swing.JMenuItem("Exit...");
 		fileExitMenuItem.setMnemonic(java.awt.event.KeyEvent.VK_X);
 		fileExitMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				onFileExit();
 			}
 		});
 
-		javax.swing.JMenu actionMenu = new javax.swing.JMenu("Action");
+		final javax.swing.JMenu actionMenu = new javax.swing.JMenu("Action");
 		actionMenu.setMnemonic(java.awt.event.KeyEvent.VK_A);
 
-		javax.swing.JMenuItem actionNextMenuItem = new javax.swing.JMenuItem("Next");
+		final javax.swing.JMenuItem actionNextMenuItem = new javax.swing.JMenuItem("Next");
 		actionNextMenuItem.setMnemonic(java.awt.event.KeyEvent.VK_N);
 		// actionNextMenuItem.setAccelerator(
 		// javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_RIGHT,
 		// java.awt.event.ActionEvent.CTRL_MASK ) );
 		actionNextMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				onNext();
 			}
 		});
 
-		javax.swing.JMenuItem actionPrevMenuItem = new javax.swing.JMenuItem("Previous");
+		final javax.swing.JMenuItem actionPrevMenuItem = new javax.swing.JMenuItem("Previous");
 		actionPrevMenuItem.setMnemonic(java.awt.event.KeyEvent.VK_P);
 		// actionPrevMenuItem.setAccelerator(
 		// javax.swing.KeyStroke.getKeyStroke( java.awt.event.KeyEvent.VK_LEFT,
 		// java.awt.event.ActionEvent.CTRL_MASK ) );
 		actionPrevMenuItem.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				onPrev();
 			}
 		});
@@ -140,15 +144,16 @@ public class ModelEditor extends javax.swing.JFrame {
 		m_tree.setEditable(true);
 		m_tree.setScrollsOnExpand(true);
 
-		javax.swing.ToolTipManager toolTipManager = javax.swing.ToolTipManager.sharedInstance();
+		final javax.swing.ToolTipManager toolTipManager = javax.swing.ToolTipManager.sharedInstance();
 		toolTipManager.registerComponent(m_tree);
 		toolTipManager.setLightWeightPopupEnabled(false);
 
 		cellEditor.addCellEditorListener(new javax.swing.event.CellEditorListener() {
 			@Override
-			public void editingStopped(javax.swing.event.ChangeEvent e) {
-				edu.cmu.cs.stage3.alice.core.Element element = (edu.cmu.cs.stage3.alice.core.Element) m_tree.getLastSelectedPathComponent();
-				String nameValue = (String) cellEditor.getCellEditorValue();
+			public void editingStopped(final javax.swing.event.ChangeEvent e) {
+				final edu.cmu.cs.stage3.alice.core.Element element = (edu.cmu.cs.stage3.alice.core.Element) m_tree
+						.getLastSelectedPathComponent();
+				final String nameValue = (String) cellEditor.getCellEditorValue();
 				if (element.name.getStringValue().equals(nameValue)) {
 					// pass
 				} else {
@@ -156,15 +161,16 @@ public class ModelEditor extends javax.swing.JFrame {
 					setIsDirty(true);
 				}
 			}
+
 			@Override
-			public void editingCanceled(javax.swing.event.ChangeEvent e) {
+			public void editingCanceled(final javax.swing.event.ChangeEvent e) {
 			}
 		});
 
 		m_tree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
 			@Override
-			public void valueChanged(javax.swing.event.TreeSelectionEvent e) {
-				javax.swing.tree.TreePath treePath = e.getPath();
+			public void valueChanged(final javax.swing.event.TreeSelectionEvent e) {
+				final javax.swing.tree.TreePath treePath = e.getPath();
 				onSelect((edu.cmu.cs.stage3.alice.core.Element) m_tree.getLastSelectedPathComponent());
 			}
 		});
@@ -172,25 +178,29 @@ public class ModelEditor extends javax.swing.JFrame {
 		m_tree.addMouseListener(new java.awt.event.MouseAdapter() {
 			private javax.swing.JPopupMenu m_popupMenu;
 			private edu.cmu.cs.stage3.alice.core.Element m_element;
-			private void handlePopup(java.awt.event.MouseEvent e) {
+
+			private void handlePopup(final java.awt.event.MouseEvent e) {
 				if (m_popupMenu == null) {
 					m_popupMenu = new javax.swing.JPopupMenu();
-					javax.swing.JMenuItem menuItem = new javax.swing.JMenuItem("Delete");
+					final javax.swing.JMenuItem menuItem = new javax.swing.JMenuItem("Delete");
 					menuItem.addActionListener(new java.awt.event.ActionListener() {
 						@Override
-						public void actionPerformed(java.awt.event.ActionEvent e) {
-							edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] propertyReferences = m_world.getPropertyReferencesTo(m_element);
+						public void actionPerformed(final java.awt.event.ActionEvent e) {
+							final edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] propertyReferences = m_world
+									.getPropertyReferencesTo(m_element);
 							if (propertyReferences.length > 0) {
-								StringBuffer sb = new StringBuffer();
-								sb.append("Cannot delete " + m_element.getTrimmedKey() + ".  The following properties reference it:\n");
-								for (PropertyReference propertyReference : propertyReferences) {
-									edu.cmu.cs.stage3.alice.core.Property property = propertyReference.getProperty();
+								final StringBuffer sb = new StringBuffer();
+								sb.append("Cannot delete " + m_element.getTrimmedKey()
+										+ ".  The following properties reference it:\n");
+								for (final PropertyReference propertyReference : propertyReferences) {
+									final edu.cmu.cs.stage3.alice.core.Property property = propertyReference
+											.getProperty();
 									sb.append("    ");
 									sb.append(property.getOwner().getTrimmedKey());
 									sb.append('[');
 									sb.append(property.getName());
 									sb.append("] = ");
-									Object value = property.getValue();
+									final Object value = property.getValue();
 									if (value instanceof edu.cmu.cs.stage3.alice.core.Element) {
 										sb.append(((edu.cmu.cs.stage3.alice.core.Element) value).getTrimmedKey());
 									} else {
@@ -200,7 +210,8 @@ public class ModelEditor extends javax.swing.JFrame {
 								}
 								javax.swing.JOptionPane.showMessageDialog(ModelEditor.this, sb.toString());
 							} else {
-								int result = javax.swing.JOptionPane.showConfirmDialog(ModelEditor.this, "Would you like to delete: " + m_element.getTrimmedKey());
+								final int result = javax.swing.JOptionPane.showConfirmDialog(ModelEditor.this,
+										"Would you like to delete: " + m_element.getTrimmedKey());
 								if (result == javax.swing.JOptionPane.YES_OPTION) {
 									m_treeModel.removeDescendant(m_element);
 									setIsDirty(true);
@@ -211,7 +222,7 @@ public class ModelEditor extends javax.swing.JFrame {
 					});
 					m_popupMenu.add(menuItem);
 				}
-				javax.swing.tree.TreePath path = m_tree.getClosestPathForLocation(e.getX(), e.getY());
+				final javax.swing.tree.TreePath path = m_tree.getClosestPathForLocation(e.getX(), e.getY());
 				m_element = (edu.cmu.cs.stage3.alice.core.Element) path.getLastPathComponent();
 				if (m_element != null) {
 					m_popupMenu.show(e.getComponent(), e.getX(), e.getY());
@@ -219,14 +230,14 @@ public class ModelEditor extends javax.swing.JFrame {
 			}
 
 			@Override
-			public void mouseReleased(java.awt.event.MouseEvent e) {
+			public void mouseReleased(final java.awt.event.MouseEvent e) {
 				if (e.isPopupTrigger()) {
 					handlePopup(e);
 				}
 			}
 
 			@Override
-			public void mousePressed(java.awt.event.MouseEvent e) {
+			public void mousePressed(final java.awt.event.MouseEvent e) {
 				m_treeMouseEventModifiers = e.getModifiers();
 				if (e.isPopupTrigger()) {
 					handlePopup(e);
@@ -241,14 +252,14 @@ public class ModelEditor extends javax.swing.JFrame {
 		m_prev = new javax.swing.JButton();
 		m_prev.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				onPrev();
 			}
 		});
 		m_next = new javax.swing.JButton();
 		m_next.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				onNext();
 			}
 		});
@@ -256,30 +267,34 @@ public class ModelEditor extends javax.swing.JFrame {
 		m_modeledBy = new javax.swing.JTextField();
 		m_modeledBy.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
 			@Override
-			public void insertUpdate(javax.swing.event.DocumentEvent e) {
+			public void insertUpdate(final javax.swing.event.DocumentEvent e) {
 				onModeledByChange();
 			}
+
 			@Override
-			public void removeUpdate(javax.swing.event.DocumentEvent e) {
+			public void removeUpdate(final javax.swing.event.DocumentEvent e) {
 				onModeledByChange();
 			}
+
 			@Override
-			public void changedUpdate(javax.swing.event.DocumentEvent e) {
+			public void changedUpdate(final javax.swing.event.DocumentEvent e) {
 				onModeledByChange();
 			}
 		});
 		m_paintedBy = new javax.swing.JTextField();
 		m_paintedBy.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
 			@Override
-			public void insertUpdate(javax.swing.event.DocumentEvent e) {
+			public void insertUpdate(final javax.swing.event.DocumentEvent e) {
 				onPaintedByChange();
 			}
+
 			@Override
-			public void removeUpdate(javax.swing.event.DocumentEvent e) {
+			public void removeUpdate(final javax.swing.event.DocumentEvent e) {
 				onPaintedByChange();
 			}
+
 			@Override
-			public void changedUpdate(javax.swing.event.DocumentEvent e) {
+			public void changedUpdate(final javax.swing.event.DocumentEvent e) {
 				onPaintedByChange();
 			}
 		});
@@ -287,7 +302,7 @@ public class ModelEditor extends javax.swing.JFrame {
 		m_revert = new javax.swing.JButton("Revert");
 		m_revert.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				onRevert();
 			}
 		});
@@ -296,14 +311,15 @@ public class ModelEditor extends javax.swing.JFrame {
 		m_forceWireframe = new javax.swing.JCheckBox("Force Wireframe");
 		m_forceWireframe.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				onForceWireframe(m_forceWireframe.isSelected());
 			}
 		});
 
 		m_fileChooser = new javax.swing.JFileChooser();
 	}
-	public void init(edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTargetFactory renderTargetFactory) {
+
+	public void init(final edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTargetFactory renderTargetFactory) {
 		m_world = new edu.cmu.cs.stage3.alice.core.World();
 		m_world.atmosphereColor.set(new edu.cmu.cs.stage3.alice.scenegraph.Color(0.75, 0.75, 1));
 		m_world.ambientLightBrightness.set(new Double(0.2));
@@ -312,15 +328,17 @@ public class ModelEditor extends javax.swing.JFrame {
 		m_renderTarget.commit(renderTargetFactory);
 		class CameraOrbiter implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
 			private int m_prevX;
+
 			@Override
-			public void mouseClicked(java.awt.event.MouseEvent e) {
+			public void mouseClicked(final java.awt.event.MouseEvent e) {
 				final int x = e.getX();
 				final int y = e.getY();
 				new Thread() {
 
 					@Override
 					public void run() {
-						edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pickInfo = m_renderTarget.pick(x, y, false, true);
+						final edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pickInfo = m_renderTarget.pick(x, y,
+								false, true);
 						if (pickInfo.getCount() > 0) {
 							System.err.println(pickInfo.getVisualAt(0).getBonus());
 						} else {
@@ -330,34 +348,42 @@ public class ModelEditor extends javax.swing.JFrame {
 					// }.start();
 				}.run();
 			}
+
 			@Override
-			public void mousePressed(java.awt.event.MouseEvent e) {
+			public void mousePressed(final java.awt.event.MouseEvent e) {
 				m_prevX = e.getX();
 			}
+
 			@Override
-			public void mouseReleased(java.awt.event.MouseEvent e) {
+			public void mouseReleased(final java.awt.event.MouseEvent e) {
 			}
+
 			@Override
-			public void mouseEntered(java.awt.event.MouseEvent e) {
+			public void mouseEntered(final java.awt.event.MouseEvent e) {
 			}
+
 			@Override
-			public void mouseExited(java.awt.event.MouseEvent e) {
+			public void mouseExited(final java.awt.event.MouseEvent e) {
 			}
+
 			@Override
-			public void mouseMoved(java.awt.event.MouseEvent e) {
+			public void mouseMoved(final java.awt.event.MouseEvent e) {
 			}
+
 			@Override
-			public void mouseDragged(java.awt.event.MouseEvent e) {
-				int x = e.getX();
-				m_camera.rotateRightNow(edu.cmu.cs.stage3.math.MathUtilities.getYAxis(), 0.001 * (x - m_prevX), getModel());
+			public void mouseDragged(final java.awt.event.MouseEvent e) {
+				final int x = e.getX();
+				m_camera.rotateRightNow(edu.cmu.cs.stage3.math.MathUtilities.getYAxis(), 0.001 * (x - m_prevX),
+						getModel());
 				m_prevX = x;
 			}
-		};
-		CameraOrbiter cameraOrbiter = new CameraOrbiter();
+		}
+		;
+		final CameraOrbiter cameraOrbiter = new CameraOrbiter();
 		m_renderTarget.addMouseListener(cameraOrbiter);
 		m_renderTarget.addMouseMotionListener(cameraOrbiter);
 
-		edu.cmu.cs.stage3.alice.core.light.DirectionalLight sun = new edu.cmu.cs.stage3.alice.core.light.DirectionalLight();
+		final edu.cmu.cs.stage3.alice.core.light.DirectionalLight sun = new edu.cmu.cs.stage3.alice.core.light.DirectionalLight();
 		sun.vehicle.set(m_world);
 		m_world.addChild(sun);
 		sun.setOrientationRightNow(0, -1, 0, 0, 0, 1);
@@ -369,16 +395,16 @@ public class ModelEditor extends javax.swing.JFrame {
 		m_camera.name.set("Camera");
 		m_world.addChild(m_camera);
 
-		edu.cmu.cs.stage3.alice.core.Model ground = new edu.cmu.cs.stage3.alice.core.Model();
+		final edu.cmu.cs.stage3.alice.core.Model ground = new edu.cmu.cs.stage3.alice.core.Model();
 		ground.name.set("Ground");
 		m_world.addChild(ground);
 
 		m_pivotDecorator = new edu.cmu.cs.stage3.alice.core.decorator.PivotDecorator();
 
-		javax.swing.JPanel westPanel = new javax.swing.JPanel();
+		final javax.swing.JPanel westPanel = new javax.swing.JPanel();
 
 		westPanel.setLayout(new java.awt.GridBagLayout());
-		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
+		final java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints();
 
 		gbc.anchor = java.awt.GridBagConstraints.NORTHWEST;
 		gbc.fill = java.awt.GridBagConstraints.BOTH;
@@ -390,7 +416,9 @@ public class ModelEditor extends javax.swing.JFrame {
 		westPanel.add(m_next, gbc);
 
 		gbc.weighty = 1.0;
-		javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane(m_tree, javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		final javax.swing.JScrollPane scrollPane = new javax.swing.JScrollPane(m_tree,
+				javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+				javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		westPanel.add(scrollPane, gbc);
 
 		gbc.weighty = 0.0;
@@ -408,29 +436,33 @@ public class ModelEditor extends javax.swing.JFrame {
 		westPanel.add(m_revert, gbc);
 		westPanel.add(m_forceWireframe, gbc);
 
-		javax.swing.JSplitPane splitPane = new javax.swing.JSplitPane(javax.swing.JSplitPane.HORIZONTAL_SPLIT, westPanel, m_renderTarget.getAWTComponent());
+		final javax.swing.JSplitPane splitPane = new javax.swing.JSplitPane(javax.swing.JSplitPane.HORIZONTAL_SPLIT,
+				westPanel, m_renderTarget.getAWTComponent());
 		getContentPane().setLayout(new java.awt.GridLayout(1, 1));
 		getContentPane().add(splitPane);
 	}
 
-	public void setIsDirty(boolean isDirty) {
+	public void setIsDirty(final boolean isDirty) {
 		if (m_isDirty != isDirty) {
 			m_isDirty = isDirty;
 			m_revert.setEnabled(m_isDirty);
 			updateTitle();
 		}
 	}
+
 	public edu.cmu.cs.stage3.alice.core.Model getModel() {
 		return (edu.cmu.cs.stage3.alice.core.Model) m_treeModel.getRoot();
 	}
+
 	private void expandTree() {
 		for (int i = 0; i < m_tree.getRowCount(); i++) {
 			m_tree.expandRow(i);
 		}
 		m_tree.invalidate();
 	}
+
 	private void releasePreviousModel() {
-		edu.cmu.cs.stage3.alice.core.Model prevModel = getModel();
+		final edu.cmu.cs.stage3.alice.core.Model prevModel = getModel();
 		if (prevModel != null) {
 			// prevModel.release();
 			// System.err.println( prevModel.vehicle.get() );
@@ -439,7 +471,8 @@ public class ModelEditor extends javax.swing.JFrame {
 			prevModel.setParent(null);
 		}
 	}
-	public void setModel(edu.cmu.cs.stage3.alice.core.Model model) {
+
+	public void setModel(final edu.cmu.cs.stage3.alice.core.Model model) {
 		m_treeMouseEventModifiers = 0;
 		m_treeModel.setRoot(model);
 		expandTree();
@@ -456,18 +489,18 @@ public class ModelEditor extends javax.swing.JFrame {
 			// }
 			model.vehicle.set(m_world);
 			m_camera.getAGoodLookAtRightNow(model);
-			edu.cmu.cs.stage3.math.Sphere sphere = model.getBoundingSphere();
-			double radius = sphere.getRadius();
+			final edu.cmu.cs.stage3.math.Sphere sphere = model.getBoundingSphere();
+			final double radius = sphere.getRadius();
 			m_camera.nearClippingPlaneDistance.set(new Double(0.1));
 			m_camera.farClippingPlaneDistance.set(new Double(radius * 2 + m_camera.getDistanceTo(model)));
 			m_camera.moveRightNow(0, 0, -m_camera.nearClippingPlaneDistance.doubleValue());
-			String modeledBy = (String) model.data.get("modeled by");
+			final String modeledBy = (String) model.data.get("modeled by");
 			if (modeledBy != null) {
 				m_modeledBy.setText(modeledBy);
 			} else {
 				m_modeledBy.setText("");
 			}
-			String paintedBy = (String) model.data.get("painted by");
+			final String paintedBy = (String) model.data.get("painted by");
 			if (paintedBy != null) {
 				m_paintedBy.setText(paintedBy);
 			} else {
@@ -482,44 +515,49 @@ public class ModelEditor extends javax.swing.JFrame {
 
 	private boolean isContinueAppropriateAfterCheckingForSave() {
 		if (m_isDirty) {
-			int option = javax.swing.JOptionPane.showConfirmDialog(this, "Changes have been made.  Would you like to save before continuing?", "Check for save", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, javax.swing.JOptionPane.PLAIN_MESSAGE);
+			final int option = javax.swing.JOptionPane.showConfirmDialog(this,
+					"Changes have been made.  Would you like to save before continuing?", "Check for save",
+					javax.swing.JOptionPane.YES_NO_CANCEL_OPTION, javax.swing.JOptionPane.PLAIN_MESSAGE);
 			switch (option) {
-				case javax.swing.JOptionPane.YES_OPTION :
-					onFileSave();
-					return true;
-				case javax.swing.JOptionPane.NO_OPTION :
-					return true;
-				case javax.swing.JOptionPane.CANCEL_OPTION :
-				case javax.swing.JOptionPane.CLOSED_OPTION :
-					return false;
-				default :
-					throw new Error();
+			case javax.swing.JOptionPane.YES_OPTION:
+				onFileSave();
+				return true;
+			case javax.swing.JOptionPane.NO_OPTION:
+				return true;
+			case javax.swing.JOptionPane.CANCEL_OPTION:
+			case javax.swing.JOptionPane.CLOSED_OPTION:
+				return false;
+			default:
+				throw new Error();
 			}
 		}
 		return true;
 	}
+
 	private void updateTitle() {
-		StringBuffer sb = new StringBuffer("Model editor: ");
+		final StringBuffer sb = new StringBuffer("Model editor: ");
 		if (m_isDirty) {
 			sb.append("*");
 		}
 		sb.append(m_file.getPath());
 		setTitle(sb.toString());
 	}
+
 	private java.io.File[] getSiblingFiles() {
-		java.io.File directory = m_file.getParentFile();
+		final java.io.File directory = m_file.getParentFile();
 		return directory.listFiles(new java.io.FilenameFilter() {
 			@Override
-			public boolean accept(java.io.File dir, String name) {
+			public boolean accept(final java.io.File dir, final String name) {
 				return name.endsWith(".a2c");
 			}
 		});
 	}
-	private void setFile(java.io.File file) {
+
+	private void setFile(final java.io.File file) {
 		m_file = file;
 		updateTitle();
-		java.io.File[] siblingFiles = getSiblingFiles();
-		int n = siblingFiles.length;
+		final java.io.File[] siblingFiles = getSiblingFiles();
+		final int n = siblingFiles.length;
 		for (int i = 0; i < n; i++) {
 			if (siblingFiles[i].equals(m_file)) {
 				if (i == 0) {
@@ -541,16 +579,19 @@ public class ModelEditor extends javax.swing.JFrame {
 			}
 		}
 	}
+
 	private void onPrev() {
 		if (isContinueAppropriateAfterCheckingForSave()) {
 			open(new java.io.File(m_prev.getActionCommand()));
 		}
 	}
+
 	private void onNext() {
 		if (isContinueAppropriateAfterCheckingForSave()) {
 			open(new java.io.File(m_next.getActionCommand()));
 		}
 	}
+
 	private void onRevert() {
 		open(m_file);
 	}
@@ -559,13 +600,14 @@ public class ModelEditor extends javax.swing.JFrame {
 		getModel().data.put("modeled by", m_modeledBy.getText());
 		setIsDirty(true);
 	}
+
 	private void onPaintedByChange() {
 		getModel().data.put("painted by", m_paintedBy.getText());
 		setIsDirty(true);
 	}
 
-	private void negativeAppearance(edu.cmu.cs.stage3.alice.core.Model model) {
-		edu.cmu.cs.stage3.alice.scenegraph.Appearance sgAppearance = model.getSceneGraphAppearance();
+	private void negativeAppearance(final edu.cmu.cs.stage3.alice.core.Model model) {
+		final edu.cmu.cs.stage3.alice.scenegraph.Appearance sgAppearance = model.getSceneGraphAppearance();
 		// sgAppearance.setFillingStyle(
 		// edu.cmu.cs.stage3.alice.scenegraph.FillingStyle.WIREFRAME );
 		sgAppearance.setShadingStyle(edu.cmu.cs.stage3.alice.scenegraph.ShadingStyle.SMOOTH);
@@ -574,8 +616,9 @@ public class ModelEditor extends javax.swing.JFrame {
 			negativeAppearance((edu.cmu.cs.stage3.alice.core.Model) model.parts.get(i));
 		}
 	}
-	private void positiveAppearance(edu.cmu.cs.stage3.alice.core.Model model) {
-		edu.cmu.cs.stage3.alice.scenegraph.Appearance sgAppearance = model.getSceneGraphAppearance();
+
+	private void positiveAppearance(final edu.cmu.cs.stage3.alice.core.Model model) {
+		final edu.cmu.cs.stage3.alice.scenegraph.Appearance sgAppearance = model.getSceneGraphAppearance();
 		edu.cmu.cs.stage3.alice.scenegraph.TextureMap sgTextureMap = null;
 		if (model.diffuseColorMap.getTextureMapValue() != null) {
 			sgTextureMap = model.diffuseColorMap.getTextureMapValue().getSceneGraphTextureMap();
@@ -590,8 +633,9 @@ public class ModelEditor extends javax.swing.JFrame {
 		}
 	}
 
-	private void textureMapAppearance(edu.cmu.cs.stage3.alice.core.Model model, edu.cmu.cs.stage3.alice.core.TextureMap textureMap) {
-		edu.cmu.cs.stage3.alice.scenegraph.Appearance sgAppearance = model.getSceneGraphAppearance();
+	private void textureMapAppearance(final edu.cmu.cs.stage3.alice.core.Model model,
+			final edu.cmu.cs.stage3.alice.core.TextureMap textureMap) {
+		final edu.cmu.cs.stage3.alice.scenegraph.Appearance sgAppearance = model.getSceneGraphAppearance();
 		if ((m_treeMouseEventModifiers & java.awt.event.InputEvent.CTRL_MASK) != 0) {
 			sgAppearance.setDiffuseColorMap(textureMap.getSceneGraphTextureMap());
 		} else {
@@ -605,7 +649,8 @@ public class ModelEditor extends javax.swing.JFrame {
 			textureMapAppearance((edu.cmu.cs.stage3.alice.core.Model) model.parts.get(i), textureMap);
 		}
 	}
-	private void onSelect(edu.cmu.cs.stage3.alice.core.Element element) {
+
+	private void onSelect(final edu.cmu.cs.stage3.alice.core.Element element) {
 		positiveAppearance(getModel());
 		if (element instanceof edu.cmu.cs.stage3.alice.core.Model) {
 			if (getModel() != element) {
@@ -619,8 +664,8 @@ public class ModelEditor extends javax.swing.JFrame {
 		m_pivotDecorator.setIsShowing(element instanceof edu.cmu.cs.stage3.alice.core.Model);
 	}
 
-	private void onForceWireframe(edu.cmu.cs.stage3.alice.core.Model model, boolean forceWireframe) {
-		edu.cmu.cs.stage3.alice.scenegraph.Appearance sgAppearance = model.getSceneGraphAppearance();
+	private void onForceWireframe(final edu.cmu.cs.stage3.alice.core.Model model, final boolean forceWireframe) {
+		final edu.cmu.cs.stage3.alice.scenegraph.Appearance sgAppearance = model.getSceneGraphAppearance();
 		edu.cmu.cs.stage3.alice.scenegraph.FillingStyle fillingStyle;
 		if (forceWireframe) {
 			fillingStyle = edu.cmu.cs.stage3.alice.scenegraph.FillingStyle.WIREFRAME;
@@ -632,31 +677,36 @@ public class ModelEditor extends javax.swing.JFrame {
 			onForceWireframe((edu.cmu.cs.stage3.alice.core.Model) model.parts.get(i), forceWireframe);
 		}
 	}
-	private void onForceWireframe(boolean forceWireframe) {
+
+	private void onForceWireframe(final boolean forceWireframe) {
 		onForceWireframe(getModel(), forceWireframe);
 	}
 
-	private void open(java.io.File file) {
+	private void open(final java.io.File file) {
 		setFile(file);
 		try {
 			releasePreviousModel();
-			edu.cmu.cs.stage3.alice.core.Model model = (edu.cmu.cs.stage3.alice.core.Model) edu.cmu.cs.stage3.alice.core.Element.load(file, m_world);
+			final edu.cmu.cs.stage3.alice.core.Model model = (edu.cmu.cs.stage3.alice.core.Model) edu.cmu.cs.stage3.alice.core.Element
+					.load(file, m_world);
 			setModel(model);
 			hardenPoses();
 			setIsDirty(false);
-		} catch (edu.cmu.cs.stage3.alice.core.UnresolvablePropertyReferencesException upre) {
-			edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] propertyReferences = upre.getPropertyReferences();
-			for (PropertyReference propertyReference : propertyReferences) {
+		} catch (final edu.cmu.cs.stage3.alice.core.UnresolvablePropertyReferencesException upre) {
+			final edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] propertyReferences = upre
+					.getPropertyReferences();
+			for (final PropertyReference propertyReference : propertyReferences) {
 				System.err.println(propertyReference);
 			}
-		} catch (java.io.IOException ioe) {
+		} catch (final java.io.IOException ioe) {
 			ioe.printStackTrace();
 		}
 	}
+
 	private void onFileOpen() {
 		onFileOpen(null);
 	}
-	private void onFileOpen(java.io.File file) {
+
+	private void onFileOpen(final java.io.File file) {
 		if (file == null) {
 			if (m_file != null) {
 				m_fileChooser.setCurrentDirectory(m_file.getParentFile());
@@ -674,7 +724,7 @@ public class ModelEditor extends javax.swing.JFrame {
 		m_fileChooser.setFileFilter(new javax.swing.filechooser.FileFilter() {
 
 			@Override
-			public boolean accept(java.io.File file) {
+			public boolean accept(final java.io.File file) {
 				return file.isDirectory() || file.getName().endsWith(".a2c");
 			}
 
@@ -697,7 +747,7 @@ public class ModelEditor extends javax.swing.JFrame {
 			softenPoses();
 			getModel().store(m_file);
 			setIsDirty(false);
-		} catch (java.io.IOException ioe) {
+		} catch (final java.io.IOException ioe) {
 			ioe.printStackTrace();
 		}
 	}
@@ -712,14 +762,17 @@ public class ModelEditor extends javax.swing.JFrame {
 	}
 
 	private void hardenPoses() {
-		edu.cmu.cs.stage3.alice.core.Pose[] poses = (edu.cmu.cs.stage3.alice.core.Pose[]) getModel().getDescendants(edu.cmu.cs.stage3.alice.core.Pose.class);
-		for (Pose pose : poses) {
+		final edu.cmu.cs.stage3.alice.core.Pose[] poses = (edu.cmu.cs.stage3.alice.core.Pose[]) getModel()
+				.getDescendants(edu.cmu.cs.stage3.alice.core.Pose.class);
+		for (final Pose pose : poses) {
 			pose.HACK_harden();
 		}
 	}
+
 	private void softenPoses() {
-		edu.cmu.cs.stage3.alice.core.Pose[] poses = (edu.cmu.cs.stage3.alice.core.Pose[]) getModel().getDescendants(edu.cmu.cs.stage3.alice.core.Pose.class);
-		for (Pose pose : poses) {
+		final edu.cmu.cs.stage3.alice.core.Pose[] poses = (edu.cmu.cs.stage3.alice.core.Pose[]) getModel()
+				.getDescendants(edu.cmu.cs.stage3.alice.core.Pose.class);
+		for (final Pose pose : poses) {
 			pose.HACK_soften();
 		}
 	}

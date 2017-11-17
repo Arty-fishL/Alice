@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -60,7 +60,7 @@ import java.util.Vector;
  * A simple class implemented the <code>RenderedImage</code> interface. Only the
  * <code>getTile()</code> method needs to be implemented by subclasses. The
  * instance variables must also be filled in properly.
- * 
+ *
  * <p>
  * Normally in JAI <code>PlanarImage</code> is used for this purpose, but in the
  * interest of modularity the use of <code>PlanarImage</code> has been avoided.
@@ -256,10 +256,11 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 	 * Gets a property from the property set of this image. If the property name
 	 * is not recognized, <code>java.awt.Image.UndefinedProperty</code> will be
 	 * returned.
-	 * 
+	 *
 	 * @param name
-	 *            the name of the property to get, as a <code>String</code>. @return
-	 *            a reference to the property <code>Object</code>, or the value
+	 *            the name of the property to get, as a
+	 *            <code>String</code>. @return a reference to the property
+	 *            <code>Object</code>, or the value
 	 *            <code>java.awt.Image.UndefinedProperty.</code>
 	 */
 	@Override
@@ -271,18 +272,18 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 	/**
 	 * Returns a list of the properties recognized by this image. If no
 	 * properties are available, <code>null</code> will be returned.
-	 * 
+	 *
 	 * @return an array of <code>String</code>s representing valid property
 	 *         names.
 	 */
 	@Override
 	public String[] getPropertyNames() {
-		String[] names = new String[properties.size()];
+		final String[] names = new String[properties.size()];
 		int index = 0;
 
-		Enumeration e = properties.keys();
+		final Enumeration e = properties.keys();
 		while (e.hasMoreElements()) {
-			String name = (String) e.nextElement();
+			final String name = (String) e.nextElement();
 			names[index++] = name;
 		}
 
@@ -294,23 +295,23 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 	 * property source that begin with the supplied prefix. If no property names
 	 * match, <code>null</code> will be returned. The comparison is done in a
 	 * case-independent manner.
-	 * 
+	 *
 	 * <p>
 	 * The default implementation calls <code>getPropertyNames()</code> and
 	 * searches the list of names for matches.
-	 * 
+	 *
 	 * @return an array of <code>String</code>s giving the valid property names.
 	 */
 	public String[] getPropertyNames(String prefix) {
-		String propertyNames[] = getPropertyNames();
+		final String propertyNames[] = getPropertyNames();
 		if (propertyNames == null) {
 			return null;
 		}
 
 		prefix = prefix.toLowerCase();
 
-		Vector names = new Vector();
-		for (String propertyName : propertyNames) {
+		final Vector names = new Vector();
+		for (final String propertyName : propertyNames) {
 			if (propertyName.startsWith(prefix)) {
 				names.addElement(propertyName);
 			}
@@ -321,9 +322,9 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 		}
 
 		// Copy the strings from the Vector over to a String array.
-		String prefixNames[] = new String[names.size()];
+		final String prefixNames[] = new String[names.size()];
 		int count = 0;
-		for (Iterator it = names.iterator(); it.hasNext();) {
+		for (final Iterator it = names.iterator(); it.hasNext();) {
 			prefixNames[count++] = (String) it.next();
 		}
 
@@ -336,7 +337,7 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 	 * Converts a pixel's X coordinate into a horizontal tile index relative to
 	 * a given tile grid layout specified by its X offset and tile width.
 	 */
-	public static int XToTileX(int x, int tileGridXOffset, int tileWidth) {
+	public static int XToTileX(int x, final int tileGridXOffset, final int tileWidth) {
 		x -= tileGridXOffset;
 		if (x < 0) {
 			x += 1 - tileWidth; // Force round to -infinity
@@ -348,7 +349,7 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 	 * Converts a pixel's Y coordinate into a vertical tile index relative to a
 	 * given tile grid layout specified by its Y offset and tile height.
 	 */
-	public static int YToTileY(int y, int tileGridYOffset, int tileHeight) {
+	public static int YToTileY(int y, final int tileGridYOffset, final int tileHeight) {
 		y -= tileGridYOffset;
 		if (y < 0) {
 			y += 1 - tileHeight; // Force round to -infinity
@@ -360,12 +361,12 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 	 * Converts a pixel's X coordinate into a horizontal tile index. This is a
 	 * convenience method. No attempt is made to detect out-of-range
 	 * coordinates.
-	 * 
+	 *
 	 * @param x
 	 *            the X coordinate of a pixel.
 	 * @return the X index of the tile containing the pixel.
 	 */
-	public int XToTileX(int x) {
+	public int XToTileX(final int x) {
 		return XToTileX(x, getTileGridXOffset(), getTileWidth());
 	}
 
@@ -373,12 +374,12 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 	 * Converts a pixel's Y coordinate into a vertical tile index. This is a
 	 * convenience method. No attempt is made to detect out-of-range
 	 * coordinates.
-	 * 
+	 *
 	 * @param y
 	 *            the Y coordinate of a pixel.
 	 * @return the Y index of the tile containing the pixel.
 	 */
-	public int YToTileY(int y) {
+	public int YToTileY(final int y) {
 		return YToTileY(y, getTileGridYOffset(), getTileHeight());
 	}
 
@@ -387,7 +388,7 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 	 * pixel relative to a given tile grid layout specified by its X offset and
 	 * tile width.
 	 */
-	public static int tileXToX(int tx, int tileGridXOffset, int tileWidth) {
+	public static int tileXToX(final int tx, final int tileGridXOffset, final int tileWidth) {
 		return tx * tileWidth + tileGridXOffset;
 	}
 
@@ -396,7 +397,7 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 	 * pixel relative to a given tile grid layout specified by its Y offset and
 	 * tile height.
 	 */
-	public static int tileYToY(int ty, int tileGridYOffset, int tileHeight) {
+	public static int tileYToY(final int ty, final int tileGridYOffset, final int tileHeight) {
 		return ty * tileHeight + tileGridYOffset;
 	}
 
@@ -404,12 +405,12 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 	 * Converts a horizontal tile index into the X coordinate of its upper left
 	 * pixel. This is a convenience method. No attempt is made to detect
 	 * out-of-range indices.
-	 * 
+	 *
 	 * @param tx
 	 *            the horizontal index of a tile.
 	 * @return the X coordinate of the tile's upper left pixel.
 	 */
-	public int tileXToX(int tx) {
+	public int tileXToX(final int tx) {
 		return tx * tileWidth + tileGridXOffset;
 	}
 
@@ -417,12 +418,12 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 	 * Converts a vertical tile index into the Y coordinate of its upper left
 	 * pixel. This is a convenience method. No attempt is made to detect
 	 * out-of-range indices.
-	 * 
+	 *
 	 * @param ty
 	 *            the vertical index of a tile.
 	 * @return the Y coordinate of the tile's upper left pixel.
 	 */
-	public int tileYToY(int ty) {
+	public int tileYToY(final int ty) {
 		return ty * tileHeight + tileGridYOffset;
 	}
 
@@ -434,7 +435,7 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 	/**
 	 * Returns the entire image in a single Raster. For images with multiple
 	 * tiles this will require making a copy.
-	 * 
+	 *
 	 * <p>
 	 * The returned Raster is semantically a copy. This means that updates to
 	 * the source image will not be reflected in the returned Raster. For
@@ -444,19 +445,19 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 	 * casting it to WritableRaster or obtaining and modifying its DataBuffer)
 	 * may result in undefined behavior. The copyData method should be used if
 	 * the returned Raster is to be modified.
-	 * 
+	 *
 	 * @return a Raster containing a copy of this image's data.
 	 */
 	@Override
 	public Raster getData() {
-		Rectangle rect = new Rectangle(getMinX(), getMinY(), getWidth(), getHeight());
+		final Rectangle rect = new Rectangle(getMinX(), getMinY(), getWidth(), getHeight());
 		return getData(rect);
 	}
 
 	/**
 	 * Returns an arbitrary rectangular region of the RenderedImage in a Raster.
 	 * The rectangle of interest will be clipped against the image bounds.
-	 * 
+	 *
 	 * <p>
 	 * The returned Raster is semantically a copy. This means that updates to
 	 * the source image will not be reflected in the returned Raster. For
@@ -466,16 +467,16 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 	 * casting it to WritableRaster or obtaining and modifying its DataBuffer)
 	 * may result in undefined behavior. The copyData method should be used if
 	 * the returned Raster is to be modified.
-	 * 
+	 *
 	 * @param bounds
 	 *            the region of the RenderedImage to be returned.
 	 */
 	@Override
-	public Raster getData(Rectangle bounds) {
-		int startX = XToTileX(bounds.x);
-		int startY = YToTileY(bounds.y);
-		int endX = XToTileX(bounds.x + bounds.width - 1);
-		int endY = YToTileY(bounds.y + bounds.height - 1);
+	public Raster getData(final Rectangle bounds) {
+		final int startX = XToTileX(bounds.x);
+		final int startY = YToTileY(bounds.y);
+		final int endX = XToTileX(bounds.x + bounds.width - 1);
+		final int endY = YToTileY(bounds.y + bounds.height - 1);
 		Raster tile;
 
 		if (startX == endX && startY == endY) {
@@ -483,16 +484,17 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 			return tile.createChild(bounds.x, bounds.y, bounds.width, bounds.height, bounds.x, bounds.y, null);
 		} else {
 			// Create a WritableRaster of the desired size
-			SampleModel sm = sampleModel.createCompatibleSampleModel(bounds.width, bounds.height);
+			final SampleModel sm = sampleModel.createCompatibleSampleModel(bounds.width, bounds.height);
 
 			// Translate it
-			WritableRaster dest = Raster.createWritableRaster(sm, bounds.getLocation());
+			final WritableRaster dest = Raster.createWritableRaster(sm, bounds.getLocation());
 
 			for (int j = startY; j <= endY; j++) {
 				for (int i = startX; i <= endX; i++) {
 					tile = getTile(i, j);
-					Rectangle intersectRect = bounds.intersection(tile.getBounds());
-					Raster liveRaster = tile.createChild(intersectRect.x, intersectRect.y, intersectRect.width, intersectRect.height, 0, 0, null);
+					final Rectangle intersectRect = bounds.intersection(tile.getBounds());
+					final Raster liveRaster = tile.createChild(intersectRect.x, intersectRect.y, intersectRect.width,
+							intersectRect.height, 0, 0, null);
 					dest.setDataElements(intersectRect.x, intersectRect.y, liveRaster);
 					/*
 					 * Raster liveRaster = tile.createChild(intersectRect.x,
@@ -512,12 +514,12 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 	 * by clipping the bounds of the supplied WritableRaster against the bounds
 	 * of the image. The supplied WritableRaster must have a SampleModel that is
 	 * compatible with that of the image.
-	 * 
+	 *
 	 * <p>
 	 * If the raster argument is null, the entire image will be copied into a
 	 * newly-created WritableRaster with a SampleModel that is compatible with
 	 * that of the image.
-	 * 
+	 *
 	 * @param dest
 	 *            a WritableRaster to hold the returned portion of the image.
 	 * @return a reference to the supplied WritableRaster, or to a new
@@ -530,25 +532,26 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 
 		if (dest == null) {
 			bounds = getBounds();
-			Point p = new Point(minX, minY);
+			final Point p = new Point(minX, minY);
 			/* A SampleModel to hold the entire image. */
-			SampleModel sm = sampleModel.createCompatibleSampleModel(width, height);
+			final SampleModel sm = sampleModel.createCompatibleSampleModel(width, height);
 			dest = Raster.createWritableRaster(sm, p);
 		} else {
 			bounds = dest.getBounds();
 		}
 
-		int startX = XToTileX(bounds.x);
-		int startY = YToTileY(bounds.y);
-		int endX = XToTileX(bounds.x + bounds.width - 1);
-		int endY = YToTileY(bounds.y + bounds.height - 1);
+		final int startX = XToTileX(bounds.x);
+		final int startY = YToTileY(bounds.y);
+		final int endX = XToTileX(bounds.x + bounds.width - 1);
+		final int endY = YToTileY(bounds.y + bounds.height - 1);
 
 		for (int j = startY; j <= endY; j++) {
 			for (int i = startX; i <= endX; i++) {
 				tile = getTile(i, j);
-				Rectangle tileRect = tile.getBounds();
-				Rectangle intersectRect = bounds.intersection(tile.getBounds());
-				Raster liveRaster = tile.createChild(intersectRect.x, intersectRect.y, intersectRect.width, intersectRect.height, intersectRect.x, intersectRect.y, null);
+				final Rectangle tileRect = tile.getBounds();
+				final Rectangle intersectRect = bounds.intersection(tile.getBounds());
+				final Raster liveRaster = tile.createChild(intersectRect.x, intersectRect.y, intersectRect.width,
+						intersectRect.height, intersectRect.x, intersectRect.y, null);
 
 				/*
 				 * WritableRaster.setDataElements takes into account of

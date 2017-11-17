@@ -25,7 +25,8 @@ import edu.cmu.cs.stage3.alice.authoringtool.util.CustomMouseAdapter;
 import edu.cmu.cs.stage3.caitlin.stencilhelp.application.StateCapsule;
 import edu.cmu.cs.stage3.caitlin.stencilhelp.application.StencilApplication;
 
-public class StencilManager implements MouseListener, MouseMotionListener, KeyListener, StencilClient, StencilStackChangeListener {
+public class StencilManager
+		implements MouseListener, MouseMotionListener, KeyListener, StencilClient, StencilStackChangeListener {
 	StencilApplication stencilApp = null;
 	StencilPanel stencilPanel = null;
 	ObjectPositionManager positionManager = null;
@@ -54,13 +55,13 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 
 	boolean overrideMinResolution = false;
 
-	public StencilManager(StencilApplication stencilApp) {
+	public StencilManager(final StencilApplication stencilApp) {
 		this.stencilApp = stencilApp;
 		stencilPanel = new StencilPanel(this);
 		addMouseEventListener(stencilPanel);
 		addReadWriteListener(stencilPanel);
 		positionManager = new ObjectPositionManager(stencilApp);
-		StencilManager.Stencil currentStencil = new StencilManager.Stencil();
+		final StencilManager.Stencil currentStencil = new StencilManager.Stencil();
 
 		stencilList.addElement(currentStencil);
 		// createDefaultStencilObjects();
@@ -68,14 +69,15 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 	}
 
 	protected void createDefaultStencilObjects() {
-		StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
+		final StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList
+				.elementAt(currentStencilIndex);
 
-		NavigationBar navBar = new NavigationBar(this, positionManager);
+		final NavigationBar navBar = new NavigationBar(this, positionManager);
 		addMouseEventListener(navBar);
 		addStencilStackChangeListener(navBar);
 		currentStencil.addObject(navBar);
 
-		Menu menu = new Menu(this);
+		final Menu menu = new Menu(this);
 		addMouseEventListener(menu);
 		addStencilFocusListener(menu);
 		stencilPanel.addMessageListener(menu);
@@ -86,7 +88,7 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 		stencilPanel.redraw();
 	}
 
-	protected void triggerRefresh(long time) {
+	protected void triggerRefresh(final long time) {
 		if (time > lastRedrawTime) {
 			lastRedrawTime = time;
 			stencilPanel.redraw();
@@ -95,12 +97,14 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 
 	/* called by menu */
 	// COME BACK - general purpose way to request focus for all screen objects
-	protected void requestFocus(StencilObject newFocalObject) {
+	protected void requestFocus(final StencilObject newFocalObject) {
 
-		if (focalObject != null && focalObject instanceof StencilFocusListener && stencilFocusListeners.contains(focalObject)) {
+		if (focalObject != null && focalObject instanceof StencilFocusListener
+				&& stencilFocusListeners.contains(focalObject)) {
 			((StencilFocusListener) focalObject).focusLost();
 		}
-		if (newFocalObject != null && newFocalObject instanceof StencilFocusListener && stencilFocusListeners.contains(focalObject)) {
+		if (newFocalObject != null && newFocalObject instanceof StencilFocusListener
+				&& stencilFocusListeners.contains(focalObject)) {
 			((StencilFocusListener) newFocalObject).focusGained();
 		}
 		// focalObject = newFocalObject;
@@ -108,12 +112,12 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 	}
 
 	// COME BACK - THIS SHOULD NOT BE THIS WAY FOREVER
-	protected String showDialog(javax.swing.filechooser.FileFilter filter) {
-		JFileChooser chooser = new JFileChooser();
+	protected String showDialog(final javax.swing.filechooser.FileFilter filter) {
+		final JFileChooser chooser = new JFileChooser();
 		if (filter != null) {
 			chooser.setFileFilter(filter);
 		}
-		int returnVal = chooser.showOpenDialog(stencilPanel);
+		final int returnVal = chooser.showOpenDialog(stencilPanel);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			return chooser.getCurrentDirectory() + "\\" + chooser.getSelectedFile().getName();
 		} else {
@@ -127,18 +131,18 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 		return new StencilManager.Stencil();
 	}
 
-	public StencilManager.Stencil newStencil(int stepsToGoBack) {
-		Stencil newStencil = new Stencil();
+	public StencilManager.Stencil newStencil(final int stepsToGoBack) {
+		final Stencil newStencil = new Stencil();
 		newStencil.setSteps(stepsToGoBack);
 		return newStencil;
 	}
 
 	public void loadStencilsFile() {
 		File loadFile = null;
-		StencilFileFilter filter = new StencilManager.StencilFileFilter();
+		final StencilFileFilter filter = new StencilManager.StencilFileFilter();
 
 		while (loadFile == null) {
-			String fileName = showDialog(filter);
+			final String fileName = showDialog(filter);
 
 			// if the user specified a filename (must be stencil file), make
 			// sure it's valid
@@ -147,14 +151,17 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 
 				// check to see if the file already exists, if not we're fine
 				if (!loadFile.exists()) {
-					int ans = edu.cmu.cs.stage3.swing.DialogManager.showConfirmDialog("Can't find " + fileName + ". Please choose another", "Can't find file", javax.swing.JOptionPane.OK_CANCEL_OPTION);
+					final int ans = edu.cmu.cs.stage3.swing.DialogManager.showConfirmDialog(
+							"Can't find " + fileName + ". Please choose another", "Can't find file",
+							javax.swing.JOptionPane.OK_CANCEL_OPTION);
 
 					if (ans == javax.swing.JOptionPane.CANCEL_OPTION) {
 						return;
 					} else {
 						loadFile = null; // make them choose again
 					}
-				} else {} // no name conflict, we can proceed
+				} else {
+				} // no name conflict, we can proceed
 			} else { // no filename specified, interpret this is a cancel
 				return;
 			}
@@ -178,8 +185,9 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 				}
 				// check to see if the file already exists, if not we're fine
 				if (saveFile.exists()) {
-					String msg = "This file already exists, do you want to overwrite it?";
-					int ans = edu.cmu.cs.stage3.swing.DialogManager.showConfirmDialog(msg, "File already exists", javax.swing.JOptionPane.YES_NO_CANCEL_OPTION);
+					final String msg = "This file already exists, do you want to overwrite it?";
+					final int ans = edu.cmu.cs.stage3.swing.DialogManager.showConfirmDialog(msg, "File already exists",
+							javax.swing.JOptionPane.YES_NO_CANCEL_OPTION);
 
 					if (ans == javax.swing.JOptionPane.YES_OPTION) {
 						// we can proceed
@@ -189,7 +197,8 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 						return;
 					}
 
-				} else {} // no name conflict, we can proceed
+				} else {
+				} // no name conflict, we can proceed
 			} else { // no filename specified, interpret this is a cancel
 				return;
 			}
@@ -199,15 +208,15 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 
 		Document document;
 		try {
-			DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder builder = factory.newDocumentBuilder();
+			final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+			final DocumentBuilder builder = factory.newDocumentBuilder();
 			document = builder.newDocument();
-		} catch (ParserConfigurationException pce) {
+		} catch (final ParserConfigurationException pce) {
 			document = null;
 		}
 
 		if (document != null) {
-			Element root = document.createElement("stencilStack");
+			final Element root = document.createElement("stencilStack");
 			root.setAttribute("access", "read");
 			if (worldToLoad != null) {
 				root.setAttribute("world", worldToLoad);
@@ -219,7 +228,7 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 				root.setAttribute("previousStack", previousStack);
 			}
 			for (int i = 0; i < stencilList.size(); i++) {
-				StencilManager.Stencil stencil = (StencilManager.Stencil) stencilList.elementAt(i);
+				final StencilManager.Stencil stencil = (StencilManager.Stencil) stencilList.elementAt(i);
 				stencil.write(document, root);
 			}
 
@@ -232,10 +241,10 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 			// } catch (IOException ioe)
 			// {System.err.println("problems creating printwriter");};
 			try {
-				FileWriter fileWriter = new FileWriter(saveFile);
+				final FileWriter fileWriter = new FileWriter(saveFile);
 				edu.cmu.cs.stage3.xml.Encoder.write(document, fileWriter);
 				fileWriter.close();
-			} catch (IOException ioe) {
+			} catch (final IOException ioe) {
 				ioe.printStackTrace();
 			}
 		}
@@ -247,16 +256,17 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 
 	/* create and destroy objects */
 
-	public void createNewHole(Point p) {
-		String id = stencilApp.getIDForPoint(p, false);
+	public void createNewHole(final Point p) {
+		final String id = stencilApp.getIDForPoint(p, false);
 		if (id != null) {
-			Hole h = new Hole(id, positionManager, stencilApp, this);
+			final Hole h = new Hole(id, positionManager, stencilApp, this);
 			addMouseEventListener(h);
 			addLayoutChangeListener(h);
-			Note n = new Note(p, new Point(30, 30), h, positionManager, this, false);
+			final Note n = new Note(p, new Point(30, 30), h, positionManager, this, false);
 			addMouseEventListener(n);
 			addKeyEventListener(n);
-			StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
+			final StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList
+					.elementAt(currentStencilIndex);
 			currentStencil.addObject(h);
 			currentStencil.addObject(n);
 			// focalObject = n;
@@ -267,15 +277,16 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 		}
 	}
 
-	public void createNewFrame(Point p) {
-		String id = stencilApp.getIDForPoint(p, false);
+	public void createNewFrame(final Point p) {
+		final String id = stencilApp.getIDForPoint(p, false);
 		if (id != null) {
-			Frame h = new Frame(id, positionManager);
+			final Frame h = new Frame(id, positionManager);
 			addLayoutChangeListener(h);
-			Note n = new Note(p, new Point(30, 30), h, positionManager, this, false);
+			final Note n = new Note(p, new Point(30, 30), h, positionManager, this, false);
 			addMouseEventListener(n);
 			addKeyEventListener(n);
-			StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
+			final StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList
+					.elementAt(currentStencilIndex);
 			currentStencil.addObject(h);
 			currentStencil.addObject(n);
 			// focalObject = n;
@@ -285,11 +296,13 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 			this.triggerRefresh();
 		}
 	}
-	public void createNewNote(Point p) {
-		Note n = new Note(p, new Point(0, 0), null, positionManager, this, false);
+
+	public void createNewNote(final Point p) {
+		final Note n = new Note(p, new Point(0, 0), null, positionManager, this, false);
 		addMouseEventListener(n);
 		addKeyEventListener(n);
-		StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
+		final StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList
+				.elementAt(currentStencilIndex);
 		currentStencil.addObject(n);
 		announceLayoutChange();
 		n.initializeNote();
@@ -299,22 +312,24 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 		// focalObject = n;
 		setNewFocalObject(n);
 	}
+
 	public void removeAllObjects() {
 		// focalObject = null;
 		setNewFocalObject(null);
-		StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
+		final StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList
+				.elementAt(currentStencilIndex);
 		currentStencil.removeAllObjects();
 		stencilChanged = true;
 	}
 
 	/* Current Stencil Object stuff */
 	protected Vector getShapesToDraw() {
-		Vector shapes = new Vector();
-		Stencil currentStencil = (Stencil) stencilList.elementAt(currentStencilIndex);
-		Vector currentObjects = currentStencil.getObjects();
+		final Vector shapes = new Vector();
+		final Stencil currentStencil = (Stencil) stencilList.elementAt(currentStencilIndex);
+		final Vector currentObjects = currentStencil.getObjects();
 		for (int i = 0; i < currentObjects.size(); i++) {
-			StencilObject screenObj = (StencilObject) currentObjects.elementAt(i);
-			Vector temp = screenObj.getShapes();
+			final StencilObject screenObj = (StencilObject) currentObjects.elementAt(i);
+			final Vector temp = screenObj.getShapes();
 			if (temp != null) {
 				shapes.addAll(temp);
 			}
@@ -336,23 +351,23 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 	protected void updateDrawInfo() {
 		updateShapes = new Vector();
 		clearRegions = new Vector();
-		Stencil currentStencil = (Stencil) stencilList.elementAt(currentStencilIndex);
-		Vector currentObjects = currentStencil.getObjects();
-		Vector unmodifiedObjects = new Vector();
+		final Stencil currentStencil = (Stencil) stencilList.elementAt(currentStencilIndex);
+		final Vector currentObjects = currentStencil.getObjects();
+		final Vector unmodifiedObjects = new Vector();
 		boolean overlapping = false;
 
 		if (stencilChanged == false) {
 
 			// add the objects and clear regions that have been modified
 			for (int i = 0; i < currentObjects.size(); i++) {
-				StencilObject obj = (StencilObject) currentObjects.elementAt(i);
+				final StencilObject obj = (StencilObject) currentObjects.elementAt(i);
 
 				if (obj.isModified()) {
-					Vector objShapes = obj.getShapes();
+					final Vector objShapes = obj.getShapes();
 					if (objShapes != null) {
 						updateShapes.addAll(objShapes);
 					}
-					java.awt.Rectangle clear = obj.getPreviousRectangle();
+					final java.awt.Rectangle clear = obj.getPreviousRectangle();
 					if (clear != null) {
 						clearRegions.addElement(clear);
 					}
@@ -363,15 +378,15 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 
 			// check to see if there is any overlapping
 			for (int i = 0; i < unmodifiedObjects.size(); i++) {
-				StencilObject obj = (StencilObject) unmodifiedObjects.elementAt(i);
-				java.awt.Rectangle objRect = obj.getRectangle();
+				final StencilObject obj = (StencilObject) unmodifiedObjects.elementAt(i);
+				final java.awt.Rectangle objRect = obj.getRectangle();
 				java.awt.Rectangle prevObjRect = obj.getPreviousRectangle();
 				if (prevObjRect == null) {
 					prevObjRect = objRect;
 				}
 				if (objRect != null) {
 					for (int j = 0; j < clearRegions.size(); j++) {
-						java.awt.Rectangle clearRect = (java.awt.Rectangle) clearRegions.elementAt(j);
+						final java.awt.Rectangle clearRect = (java.awt.Rectangle) clearRegions.elementAt(j);
 						if (clearRect.intersects(objRect) || clearRect.intersects(prevObjRect)) {
 							overlapping = true;
 							break;
@@ -387,8 +402,8 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 			clearRegions = new Vector();
 			clearRegions.addElement(new java.awt.Rectangle(0, 0, stencilPanel.getWidth(), stencilPanel.getHeight()));
 			for (int i = 0; i < currentObjects.size(); i++) {
-				StencilObject obj = (StencilObject) currentObjects.elementAt(i);
-				Vector newShapes = obj.getShapes();
+				final StencilObject obj = (StencilObject) currentObjects.elementAt(i);
+				final Vector newShapes = obj.getShapes();
 				if (newShapes != null) {
 					updateShapes.addAll(obj.getShapes());
 				}
@@ -400,13 +415,14 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 	/* Stencil Navigation stuff */
 	public boolean hasNext() {
 		boolean autoAdvancingHole = false;
-		Stencil currentStencil = (Stencil) stencilList.elementAt(currentStencilIndex);
+		final Stencil currentStencil = (Stencil) stencilList.elementAt(currentStencilIndex);
 		if (currentStencil != null) {
-			Vector stencilObjects = currentStencil.getObjects();
+			final Vector stencilObjects = currentStencil.getObjects();
 			for (int i = 0; i < stencilObjects.size(); i++) {
-				StencilObject stencilObj = (StencilObject) stencilObjects.elementAt(i);
+				final StencilObject stencilObj = (StencilObject) stencilObjects.elementAt(i);
 				if (stencilObj instanceof Hole) {
-					if (((Hole) stencilObj).getAutoAdvance() == true && ((Hole) stencilObj).getAdvanceEvent() != Hole.ADVANCE_ON_ENTER) {
+					if (((Hole) stencilObj).getAutoAdvance() == true
+							&& ((Hole) stencilObj).getAdvanceEvent() != Hole.ADVANCE_ON_ENTER) {
 						autoAdvancingHole = true;
 					}
 
@@ -419,9 +435,10 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 			return false;
 		}
 	}
+
 	public boolean hasPrevious() {
 		if (currentStencilIndex > 0) {
-			Stencil currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
+			final Stencil currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
 			if (currentStencil.getStepsToGoBack() > 0) {
 				return true;
 			} else {
@@ -431,12 +448,15 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 			return false;
 		}
 	}
+
 	public int getStencilNumber() {
 		return currentStencilIndex;
 	}
+
 	public int getNumberOfStencils() {
 		return stencilList.size();
 	}
+
 	public void reloadStencils() {
 		loadWorld();
 
@@ -457,7 +477,7 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 		stencilChanged = true;
 	}
 
-	protected boolean checkState(Stencil currentStencil) {
+	protected boolean checkState(final Stencil currentStencil) {
 		if (writeEnabled) {
 			// if writing enabled - get the current state so we have the "right"
 			// answer
@@ -466,7 +486,7 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 		} else {
 			// compare against saved "right" answer
 			if (currentStencil.getEndState() != null) {
-				boolean appInRightState = stencilApp.doesStateMatch(currentStencil.getEndState());
+				final boolean appInRightState = stencilApp.doesStateMatch(currentStencil.getEndState());
 				if (!appInRightState) {
 					return false;
 					// TODO: set error stencil instead
@@ -481,7 +501,7 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 			// tell current stencil that it's not current
 			StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
 
-			boolean checkState = checkState(currentStencil);
+			final boolean checkState = checkState(currentStencil);
 
 			currentStencil.setCurrentStencil(false);
 			currentStencilIndex++;
@@ -501,10 +521,11 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 			stencilApp.makeWayPoint();
 		}
 	}
+
 	public void showPreviousStencil() {
 		StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
 		if (currentStencil != null) {
-			int stepsToGoBack = currentStencil.getStepsToGoBack();
+			final int stepsToGoBack = currentStencil.getStepsToGoBack();
 
 			if (stepsToGoBack > 0) {
 				for (int i = 0; i < stepsToGoBack; i++) {
@@ -523,17 +544,18 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 			}
 		}
 	}
-	protected java.io.File getFile(String fileName) {
+
+	protected java.io.File getFile(final String fileName) {
 		// get a valid fileString to open
-		int index = fileName.indexOf("/");
-		int length = fileName.length();
+		final int index = fileName.indexOf("/");
+		final int length = fileName.length();
 		String fileString = null;
 		if (index != -1) {
 			fileString = fileName.substring(0, index) + java.io.File.separator + fileName.substring(index + 1, length);
 		}
 
 		// make a file
-		java.io.File file = new java.io.File(fileString);
+		final java.io.File file = new java.io.File(fileString);
 
 		if (file.exists()) {
 			return file;
@@ -541,22 +563,25 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 			return null;
 		}
 	}
+
 	public void showNextStack() {
-		java.io.File nextFile = getFile(nextStack);
+		final java.io.File nextFile = getFile(nextStack);
 		if (nextFile != null) {
 			loadStencilTutorial(nextFile);
 		}
 	}
+
 	public void showPreviousStack() {
-		java.io.File previousFile = getFile(previousStack);
+		final java.io.File previousFile = getFile(previousStack);
 		if (previousFile != null) {
 			loadStencilTutorial(previousFile);
 		}
 	}
+
 	public void insertNewStencil() {
 		// tell current stencil that it's not current
 		StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
-		boolean checkState = checkState(currentStencil);
+		final boolean checkState = checkState(currentStencil);
 		if (checkState == false) {
 			// some kind of error has happened, handle it.
 		}
@@ -577,10 +602,11 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 
 	/* StencilClient stuff */
 	@Override
-	public boolean isDropAccessible(java.awt.Point p) {
+	public boolean isDropAccessible(final java.awt.Point p) {
 		// COME BACK
 		return false;
 	}
+
 	@Override
 	public void update() {
 		if (getIsShowing()) {
@@ -588,16 +614,19 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 			announceLayoutChange();
 		}
 	}
+
 	// COME BACK TO ME!!!
 	@Override
 	public void stateChanged() {
 	}
+
 	@Override
 	public Component getStencilComponent() {
 		return stencilPanel;
 	}
+
 	@Override
-	public void showStencils(boolean show) {
+	public void showStencils(final boolean show) {
 
 		stencilPanel.setIsDrawing(show); // TAKE THIS OUT WHEN DAVE CHANGES IT
 		if (getIsShowing()) {
@@ -626,9 +655,10 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 	public boolean getIsShowing() {
 		return stencilPanel.getIsDrawing();
 	}
+
 	// COME BACK TO ME
 	@Override
-	public void loadStencilTutorial(java.io.File tutorialFile) {
+	public void loadStencilTutorial(final java.io.File tutorialFile) {
 
 		showStencils(true); // this will need to come out when Dave adds it
 
@@ -636,7 +666,7 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 		worldToLoad = null;
 		nextStack = null;
 		previousStack = null;
-		Vector newStencilList = stencilParser.parseFile(tutorialFile);
+		final Vector newStencilList = stencilParser.parseFile(tutorialFile);
 
 		// update the state of stencilmanager
 		mouseEventListeners = new Vector();
@@ -655,7 +685,8 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 		// tell everyone to update their current values
 		stencilList = newStencilList;
 		addLinks();
-		StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
+		final StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList
+				.elementAt(currentStencilIndex);
 		currentStencil.setCurrentStencil(true);
 		broadcastCurrentStencilChange();
 		broadcastStencilNumberChange();
@@ -671,36 +702,42 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 	}
 
 	/* stencil stack change listener stuff */
-	public void addStencilStackChangeListener(StencilStackChangeListener sscListener) {
+	public void addStencilStackChangeListener(final StencilStackChangeListener sscListener) {
 		stencilStackChangeListeners.addElement(sscListener);
 	}
-	public void removeStencilStackChangeListener(StencilStackChangeListener sscListener) {
+
+	public void removeStencilStackChangeListener(final StencilStackChangeListener sscListener) {
 		stencilStackChangeListeners.remove(sscListener);
 	}
+
 	protected void broadcastStencilNumberChange() {
 		for (int i = 0; i < stencilStackChangeListeners.size(); i++) {
-			((StencilStackChangeListener) stencilStackChangeListeners.elementAt(i)).numberOfStencilsChanged(stencilList.size());
+			((StencilStackChangeListener) stencilStackChangeListeners.elementAt(i))
+					.numberOfStencilsChanged(stencilList.size());
 		}
 	}
+
 	protected void broadcastCurrentStencilChange() {
 		for (int i = 0; i < stencilStackChangeListeners.size(); i++) {
-			((StencilStackChangeListener) stencilStackChangeListeners.elementAt(i)).currentStencilChanged(currentStencilIndex);
+			((StencilStackChangeListener) stencilStackChangeListeners.elementAt(i))
+					.currentStencilChanged(currentStencilIndex);
 		}
 	}
 
 	/* read write listener */
-	public void addReadWriteListener(ReadWriteListener rwListener) {
+	public void addReadWriteListener(final ReadWriteListener rwListener) {
 		readWriteListeners.addElement(rwListener);
 	}
-	public void removeReadWriteListener(ReadWriteListener rwListener) {
+
+	public void removeReadWriteListener(final ReadWriteListener rwListener) {
 		readWriteListeners.removeElement(rwListener);
 	}
 
-	public void setWriteEnabled(boolean enabled) {
+	public void setWriteEnabled(final boolean enabled) {
 		writeEnabled = enabled;
 		// announce the change to all who care
 		for (int i = 0; i < readWriteListeners.size(); i++) {
-			ReadWriteListener rwL = (ReadWriteListener) readWriteListeners.elementAt(i);
+			final ReadWriteListener rwL = (ReadWriteListener) readWriteListeners.elementAt(i);
 			rwL.setWriteEnabled(writeEnabled);
 		}
 		this.triggerRefresh();
@@ -708,11 +745,12 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 
 	protected void loadWorld() {
 		if (worldToLoad != null) {
-			int index = worldToLoad.indexOf("/");
-			int length = worldToLoad.length();
+			final int index = worldToLoad.indexOf("/");
+			final int length = worldToLoad.length();
 			String worldString = null;
 			if (index != -1) {
-				worldString = worldToLoad.substring(0, index) + java.io.File.separator + worldToLoad.substring(index + 1, length);
+				worldString = worldToLoad.substring(0, index) + java.io.File.separator
+						+ worldToLoad.substring(index + 1, length);
 			}
 			if (worldString != null) {
 				stencilApp.performTask("loadWorld<" + worldString + ">");
@@ -720,51 +758,54 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 		}
 	}
 
-	public void setWorld(String worldToLoad) {
+	public void setWorld(final String worldToLoad) {
 		this.worldToLoad = worldToLoad;
 		loadWorld();
 	}
 
-	public void setNextAndPreviousStacks(String previousStack, String nextStack) {
+	public void setNextAndPreviousStacks(final String previousStack, final String nextStack) {
 		this.previousStack = previousStack;
 		this.nextStack = nextStack;
 	}
 
 	protected void addLinks() {
 		if (previousStack != null && stencilList.size() > 0) {
-			Stencil stencil = (Stencil) stencilList.elementAt(0);
+			final Stencil stencil = (Stencil) stencilList.elementAt(0);
 			stencil.addObject(new Link(this, positionManager, false));
 		}
 
 		if (nextStack != null && stencilList.size() > 0) {
-			Stencil stencil = (Stencil) stencilList.elementAt(stencilList.size() - 1);
+			final Stencil stencil = (Stencil) stencilList.elementAt(stencilList.size() - 1);
 			stencil.addObject(new Link(this, positionManager, true));
 		}
 	}
 
 	/* LayoutUpdateListener stuff */
-	public void addLayoutChangeListener(LayoutChangeListener lcListener) {
+	public void addLayoutChangeListener(final LayoutChangeListener lcListener) {
 		layoutChangeListeners.addElement(lcListener);
 	}
-	public void removeLayoutChangeListener(LayoutChangeListener lcListener) {
+
+	public void removeLayoutChangeListener(final LayoutChangeListener lcListener) {
 		layoutChangeListeners.remove(lcListener);
 	}
+
 	protected void announceLayoutChange() {
 		boolean error = false;
 		// System.out.println("LAYOUT CHANGE");
 		for (int i = 0; i < layoutChangeListeners.size(); i++) {
-			LayoutChangeListener lcListener = (LayoutChangeListener) layoutChangeListeners.elementAt(i);
+			final LayoutChangeListener lcListener = (LayoutChangeListener) layoutChangeListeners.elementAt(i);
 			if (!(lcListener instanceof Note)) {
 				error = !lcListener.layoutChanged();
 			}
 			if (error) {
-				StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
+				final StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList
+						.elementAt(currentStencilIndex);
 				// System.out.println("something is missing");
 				currentStencil.setErrorStencil(true);
 			}
 		}
 		for (int i = 0; i < layoutChangeListeners.size(); i++) {
-			LayoutChangeListener lcListener = (LayoutChangeListener) layoutChangeListeners.elementAt(i);
+			final LayoutChangeListener lcListener = (LayoutChangeListener) layoutChangeListeners.elementAt(i);
 			if (lcListener instanceof Note) {
 				lcListener.layoutChanged();
 			}
@@ -774,16 +815,16 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 	}
 
 	/* StencilFocusListener stuff */
-	public void addStencilFocusListener(StencilFocusListener sfListener) {
+	public void addStencilFocusListener(final StencilFocusListener sfListener) {
 		stencilFocusListeners.addElement(sfListener);
 	}
 
-	public void removeStencilFocusListener(StencilFocusListener sfListener) {
+	public void removeStencilFocusListener(final StencilFocusListener sfListener) {
 		stencilFocusListeners.remove(sfListener);
 	}
 
 	/* MouseListener stuff */
-	protected void setNewFocalListener(MouseEventListener meListener) {
+	protected void setNewFocalListener(final MouseEventListener meListener) {
 		StencilObject newFocalObject = null;
 		if (meListener instanceof StencilObject) {
 			newFocalObject = (StencilObject) meListener;
@@ -791,10 +832,12 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 		// notify the past focal object and the new focal object if they are
 		// registered stencilFocusListeners
 		if (focalObject != newFocalObject) {
-			if (focalObject != null && focalObject instanceof StencilFocusListener && stencilFocusListeners.contains(focalObject)) {
+			if (focalObject != null && focalObject instanceof StencilFocusListener
+					&& stencilFocusListeners.contains(focalObject)) {
 				((StencilFocusListener) focalObject).focusLost();
 			}
-			if (newFocalObject != null && newFocalObject instanceof StencilFocusListener && stencilFocusListeners.contains(focalObject)) {
+			if (newFocalObject != null && newFocalObject instanceof StencilFocusListener
+					&& stencilFocusListeners.contains(focalObject)) {
 				((StencilFocusListener) newFocalObject).focusGained();
 			}
 			if (focalObject instanceof Hole) {
@@ -805,7 +848,8 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 			// triggerRefresh();
 		}
 	}
-	public void addMouseEventListener(MouseEventListener meListener) {
+
+	public void addMouseEventListener(final MouseEventListener meListener) {
 		// all the objects should have a chance at these events before
 		// stencilPane
 		if (meListener instanceof StencilPanel) {
@@ -815,18 +859,18 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 		}
 	}
 
-	public void removeMouseEventListener(MouseEventListener meListener) {
+	public void removeMouseEventListener(final MouseEventListener meListener) {
 		mouseEventListeners.removeElement(meListener);
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void mousePressed(final MouseEvent e) {
 		for (int i = 0; i < mouseEventListeners.size(); i++) {
-			MouseEventListener meListener = (MouseEventListener) mouseEventListeners.elementAt(i);
+			final MouseEventListener meListener = (MouseEventListener) mouseEventListeners.elementAt(i);
 			if (meListener.contains(e.getPoint())) {
 				setNewFocalListener(meListener);
 
-				boolean refresh = meListener.mousePressed(e);
+				final boolean refresh = meListener.mousePressed(e);
 				if (refresh) {
 					triggerRefresh(e.getWhen());
 				}
@@ -836,9 +880,9 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
+	public void mouseReleased(final MouseEvent e) {
 		if (focalObject != null && focalObject instanceof MouseEventListener) {
-			boolean refresh = ((MouseEventListener) focalObject).mouseReleased(e);
+			final boolean refresh = ((MouseEventListener) focalObject).mouseReleased(e);
 			if (refresh) {
 				triggerRefresh(e.getWhen());
 			}
@@ -846,14 +890,14 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mouseClicked(final MouseEvent e) {
 		for (int i = 0; i < mouseEventListeners.size(); i++) {
-			MouseEventListener meListener = (MouseEventListener) mouseEventListeners.elementAt(i);
+			final MouseEventListener meListener = (MouseEventListener) mouseEventListeners.elementAt(i);
 			if (meListener.contains(e.getPoint())) {
 				setNewFocalListener(meListener);
 
 				// send the new focal object the event to deal with
-				boolean refresh = meListener.mouseClicked(e);
+				final boolean refresh = meListener.mouseClicked(e);
 				if (refresh) {
 					triggerRefresh(e.getWhen());
 				}
@@ -863,7 +907,7 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
+	public void mouseEntered(final MouseEvent e) {
 		// for (int i = 0; i < mouseEventListeners.size(); i++) {
 		// MouseEventListener meListener = (MouseEventListener)
 		// mouseEventListeners.elementAt(i);
@@ -876,7 +920,7 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 	}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
+	public void mouseExited(final MouseEvent e) {
 		// for (int i = 0; i < mouseEventListeners.size(); i++) {
 		// MouseEventListener meListener = (MouseEventListener)
 		// mouseEventListeners.elementAt(i);
@@ -890,11 +934,11 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 
 	/* Mouse MotionListener stuff */
 	@Override
-	public void mouseMoved(MouseEvent e) {
+	public void mouseMoved(final MouseEvent e) {
 		for (int i = 0; i < mouseEventListeners.size(); i++) {
-			MouseEventListener meListener = (MouseEventListener) mouseEventListeners.elementAt(i);
+			final MouseEventListener meListener = (MouseEventListener) mouseEventListeners.elementAt(i);
 			if (meListener.contains(e.getPoint())) {
-				boolean refresh = meListener.mouseMoved(e);
+				final boolean refresh = meListener.mouseMoved(e);
 				if (refresh) {
 					triggerRefresh(e.getWhen());
 				}
@@ -904,9 +948,9 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 	}
 
 	@Override
-	public void mouseDragged(MouseEvent e) {
+	public void mouseDragged(final MouseEvent e) {
 		if (focalObject != null && focalObject instanceof MouseEventListener) {
-			boolean refresh = ((MouseEventListener) focalObject).mouseDragged(e);
+			final boolean refresh = ((MouseEventListener) focalObject).mouseDragged(e);
 			if (refresh) {
 				triggerRefresh(e.getWhen());
 			}
@@ -914,16 +958,18 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 	}
 
 	/* KeyListener stuff */
-	public void addKeyEventListener(KeyEventListener keListener) {
+	public void addKeyEventListener(final KeyEventListener keListener) {
 		keyEventListeners.addElement(keListener);
 	}
-	public void removeKeyEventListener(KeyEventListener keListener) {
+
+	public void removeKeyEventListener(final KeyEventListener keListener) {
 		keyEventListeners.remove(keListener);
 	}
+
 	@Override
-	public void keyTyped(KeyEvent e) {
+	public void keyTyped(final KeyEvent e) {
 		if (focalObject != null && focalObject instanceof KeyEventListener) {
-			boolean refresh = ((KeyEventListener) focalObject).keyTyped(e);
+			final boolean refresh = ((KeyEventListener) focalObject).keyTyped(e);
 			if (refresh) {
 				triggerRefresh(e.getWhen());
 			}
@@ -932,9 +978,9 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 
 	// may want to check here for whether or not we've hit the enter key
 	@Override
-	public void keyPressed(KeyEvent e) {
+	public void keyPressed(final KeyEvent e) {
 		if (focalObject != null && focalObject instanceof KeyEventListener) {
-			boolean refresh = ((KeyEventListener) focalObject).keyPressed(e);
+			final boolean refresh = ((KeyEventListener) focalObject).keyPressed(e);
 			if (refresh) {
 				triggerRefresh(e.getWhen());
 			}
@@ -942,9 +988,9 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
+	public void keyReleased(final KeyEvent e) {
 		if (focalObject != null && focalObject instanceof KeyEventListener) {
-			boolean refresh = ((KeyEventListener) focalObject).keyReleased(e);
+			final boolean refresh = ((KeyEventListener) focalObject).keyReleased(e);
 			if (refresh) {
 				triggerRefresh(e.getWhen());
 			}
@@ -954,21 +1000,24 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 	// THIS IS GOING TO BE THE PLACE FOR A DIALOG THAT GOES ALONGSIDE AUTHORING
 	// MODE
 	@Override
-	public void numberOfStencilsChanged(int newNumberOfStencils) {
+	public void numberOfStencilsChanged(final int newNumberOfStencils) {
 		if (writeEnabled) {
-			StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
+			final StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList
+					.elementAt(currentStencilIndex);
 			// System.out.println(" stencil number change: " + currentStencil);
 		}
 	}
+
 	@Override
-	public void currentStencilChanged(int selectedStencil) {
+	public void currentStencilChanged(final int selectedStencil) {
 		if (writeEnabled) {
-			StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
+			final StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList
+					.elementAt(currentStencilIndex);
 			// System.out.println(" stencil change: " + currentStencil);
 		}
 	}
 
-	protected void setNewFocalObject(StencilObject newFocalObject) {
+	protected void setNewFocalObject(final StencilObject newFocalObject) {
 		focalObject = newFocalObject;
 		if (writeEnabled) {
 			if (newFocalObject instanceof Note) {
@@ -992,7 +1041,7 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 		protected boolean error = false;
 		protected int goBackSteps = 1;
 
-		public void setSteps(int goBackSteps) {
+		public void setSteps(final int goBackSteps) {
 			this.goBackSteps = goBackSteps;
 		}
 
@@ -1004,23 +1053,23 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 			return endStateCapsule;
 		}
 
-		public void setEndState(StateCapsule stateCapsule) {
+		public void setEndState(final StateCapsule stateCapsule) {
 			endStateCapsule = stateCapsule;
 		}
 
-		public void write(Document document, Element element) {
-			Element stencilElement = document.createElement("stencil");
+		public void write(final Document document, final Element element) {
+			final Element stencilElement = document.createElement("stencil");
 			String stencilTitle = null;
 
 			// figure out how to write out the statecapsule
 			if (endStateCapsule != null) {
-				Element stateNode = document.createElement("stateCapsule");
-				CDATASection stateDataSection = document.createCDATASection(endStateCapsule.getStorableRepr());
+				final Element stateNode = document.createElement("stateCapsule");
+				final CDATASection stateDataSection = document.createCDATASection(endStateCapsule.getStorableRepr());
 				stateNode.appendChild(stateDataSection);
 				stencilElement.appendChild(stateNode);
 			}
 			for (int i = 0; i < stencilObjects.size(); i++) {
-				StencilObject stencilObj = (StencilObject) stencilObjects.elementAt(i);
+				final StencilObject stencilObj = (StencilObject) stencilObjects.elementAt(i);
 				if (stencilObj instanceof Note) {
 					((Note) stencilObj).write(document, stencilElement);
 				} else if (stencilObj instanceof NavigationBar) {
@@ -1034,13 +1083,13 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 			element.appendChild(stencilElement);
 		}
 
-		public void setErrorStencil(boolean idError) {
+		public void setErrorStencil(final boolean idError) {
 			stencilChanged = true;
 			error = idError;
 			StencilManager.this.triggerRefresh(System.currentTimeMillis());
 		}
 
-		public void setCurrentStencil(boolean currentStencil) {
+		public void setCurrentStencil(final boolean currentStencil) {
 			if (currentStencil) {
 				// this is just being shown, so no errors yet
 				error = false;
@@ -1049,24 +1098,26 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 				addAllListeners();
 				// update the positions of objects
 				for (int i = 0; i < stencilObjects.size(); i++) {
-					StencilObject obj = (StencilObject) stencilObjects.elementAt(i);
+					final StencilObject obj = (StencilObject) stencilObjects.elementAt(i);
 					if (obj instanceof Hole) {
-						boolean success = ((Hole) obj).layoutChanged();
+						final boolean success = ((Hole) obj).layoutChanged();
 						// if this comes back unsuccessful, then I need to check
 						// again in a second
-						WaitAndUpdateThread godot = new WaitAndUpdateThread((long) 1250, this, (LayoutChangeListener) obj);
+						final WaitAndUpdateThread godot = new WaitAndUpdateThread((long) 1250, this,
+								(LayoutChangeListener) obj);
 						godot.start();
 					} else if (obj instanceof Frame) {
-						boolean success = ((Frame) obj).layoutChanged();
+						final boolean success = ((Frame) obj).layoutChanged();
 
 						// if this comes back unsuccessful, then I need to check
 						// again in a second
-						WaitAndUpdateThread godot = new WaitAndUpdateThread((long) 1250, this, (LayoutChangeListener) obj);
+						final WaitAndUpdateThread godot = new WaitAndUpdateThread((long) 1250, this,
+								(LayoutChangeListener) obj);
 						godot.start();
 					}
 				}
 				for (int i = 0; i < stencilObjects.size(); i++) {
-					StencilObject obj = (StencilObject) stencilObjects.elementAt(i);
+					final StencilObject obj = (StencilObject) stencilObjects.elementAt(i);
 					// if (obj instanceof Note) (
 					// (Note)obj).updatePosition(StencilManager.this.stencilApp);
 					if (obj instanceof Note) {
@@ -1081,23 +1132,26 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 				removeAllListeners();
 			}
 		}
-		public void addObject(StencilObject stencilObject) {
+
+		public void addObject(final StencilObject stencilObject) {
 			stencilObjects.addElement(stencilObject);
 			if (stencilObject instanceof ReadWriteListener) {
 				addReadWriteListener((ReadWriteListener) stencilObject);
 				((ReadWriteListener) stencilObject).setWriteEnabled(writeEnabled);
 			}
 		}
-		public void removeObject(StencilObject stencilObject) {
+
+		public void removeObject(final StencilObject stencilObject) {
 			stencilObjects.removeElement(stencilObject);
 			if (stencilObject instanceof ReadWriteListener) {
 				removeReadWriteListener((ReadWriteListener) stencilObject);
 			}
 		}
+
 		protected void addAllListeners() {
 			for (int i = 0; i < stencilObjects.size(); i++) {
 
-				StencilObject obj = (StencilObject) stencilObjects.elementAt(i);
+				final StencilObject obj = (StencilObject) stencilObjects.elementAt(i);
 				if (obj instanceof MouseEventListener) {
 					addMouseEventListener((MouseEventListener) obj);
 				}
@@ -1119,10 +1173,11 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 
 			}
 		}
+
 		protected void removeAllListeners() {
 			for (int i = 0; i < stencilObjects.size(); i++) {
 
-				StencilObject obj = (StencilObject) stencilObjects.elementAt(i);
+				final StencilObject obj = (StencilObject) stencilObjects.elementAt(i);
 				if (obj instanceof MouseEventListener) {
 					removeMouseEventListener((MouseEventListener) obj);
 				}
@@ -1144,13 +1199,15 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 
 			}
 		}
+
 		public void removeAllObjects() {
-			Vector newStencilObjects = new Vector();
+			final Vector newStencilObjects = new Vector();
 			for (int i = 0; i < stencilObjects.size(); i++) {
-				if (stencilObjects.elementAt(i) instanceof Menu || stencilObjects.elementAt(i) instanceof NavigationBar || stencilObjects.elementAt(i) instanceof Link) {
+				if (stencilObjects.elementAt(i) instanceof Menu || stencilObjects.elementAt(i) instanceof NavigationBar
+						|| stencilObjects.elementAt(i) instanceof Link) {
 					newStencilObjects.addElement(stencilObjects.elementAt(i));
 				} else {
-					StencilObject obj = (StencilObject) stencilObjects.elementAt(i);
+					final StencilObject obj = (StencilObject) stencilObjects.elementAt(i);
 					if (obj instanceof MouseEventListener) {
 						removeMouseEventListener((MouseEventListener) obj);
 					}
@@ -1173,6 +1230,7 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 			}
 			stencilObjects = newStencilObjects;
 		}
+
 		public Vector getObjects() {
 			if (error) {
 				// next step is to return the error screen stencil objects.
@@ -1190,7 +1248,7 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 	protected class StencilFileFilter extends javax.swing.filechooser.FileFilter {
 
 		@Override
-		public boolean accept(File pathname) {
+		public boolean accept(final File pathname) {
 			if (pathname.getName().endsWith(".stl")) {
 				return true;
 			} else if (pathname.isDirectory()) {
@@ -1209,22 +1267,22 @@ public class StencilManager implements MouseListener, MouseMotionListener, KeyLi
 	protected class StencilMouseAdapter extends CustomMouseAdapter {
 
 		@Override
-		protected void singleClickResponse(java.awt.event.MouseEvent ev) {
+		protected void singleClickResponse(final java.awt.event.MouseEvent ev) {
 			StencilManager.this.mouseClicked(ev);
 		}
 
 		@Override
-		protected void doubleClickResponse(java.awt.event.MouseEvent ev) {
+		protected void doubleClickResponse(final java.awt.event.MouseEvent ev) {
 			StencilManager.this.mouseClicked(ev);
 		}
 
 		@Override
-		protected void mouseUpResponse(java.awt.event.MouseEvent ev) {
+		protected void mouseUpResponse(final java.awt.event.MouseEvent ev) {
 			StencilManager.this.mouseReleased(ev);
 		}
 
 		@Override
-		protected void mouseDownResponse(java.awt.event.MouseEvent ev) {
+		protected void mouseDownResponse(final java.awt.event.MouseEvent ev) {
 			StencilManager.this.mousePressed(ev);
 		}
 	}

@@ -8,7 +8,7 @@ package edu.cmu.cs.stage3.alice.core.criterion;
 
 /**
  * @author caitlin
- * 
+ *
  *         To change the template for this generated type comment go to
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
@@ -17,22 +17,23 @@ public class ElementWithPropertyNameValueCriterion implements edu.cmu.cs.stage3.
 	private Object propertyValue = null;
 	private boolean returnEqual = true;
 
-	public ElementWithPropertyNameValueCriterion(String propertyName, Object value) {
+	public ElementWithPropertyNameValueCriterion(final String propertyName, final Object value) {
 		this(propertyName, value, true);
 	}
 
-	public ElementWithPropertyNameValueCriterion(String propertyName, Object value, boolean returnEqual) {
+	public ElementWithPropertyNameValueCriterion(final String propertyName, final Object value,
+			final boolean returnEqual) {
 		this.propertyName = propertyName;
 		propertyValue = value;
 		this.returnEqual = returnEqual;
 	}
 
 	@Override
-	public boolean accept(Object o) {
+	public boolean accept(final Object o) {
 		if (o instanceof edu.cmu.cs.stage3.alice.core.Element) {
-			edu.cmu.cs.stage3.alice.core.Element element = (edu.cmu.cs.stage3.alice.core.Element) o;
+			final edu.cmu.cs.stage3.alice.core.Element element = (edu.cmu.cs.stage3.alice.core.Element) o;
 
-			edu.cmu.cs.stage3.alice.core.Property property = element.getPropertyNamed(propertyName);
+			final edu.cmu.cs.stage3.alice.core.Property property = element.getPropertyNamed(propertyName);
 			if (property != null) {
 				if (property.getValue().equals(propertyValue)) {
 					if (returnEqual) {

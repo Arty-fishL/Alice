@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -77,47 +77,47 @@ public class FPXUtils {
 	// return file.readDoubleLE();
 	// }
 
-	public static final short getShortLE(byte[] data, int offset) {
-		int b0 = data[offset] & 0xff;
-		int b1 = data[offset + 1] & 0xff;
+	public static final short getShortLE(final byte[] data, final int offset) {
+		final int b0 = data[offset] & 0xff;
+		final int b1 = data[offset + 1] & 0xff;
 
 		return (short) (b1 << 8 | b0);
 	}
 
-	public static final int getUnsignedShortLE(byte[] data, int offset) {
-		int b0 = data[offset] & 0xff;
-		int b1 = data[offset + 1] & 0xff;
+	public static final int getUnsignedShortLE(final byte[] data, final int offset) {
+		final int b0 = data[offset] & 0xff;
+		final int b1 = data[offset + 1] & 0xff;
 
 		return b1 << 8 | b0;
 	}
 
-	public static final int getIntLE(byte[] data, int offset) {
-		int b0 = data[offset] & 0xff;
-		int b1 = data[offset + 1] & 0xff;
-		int b2 = data[offset + 2] & 0xff;
-		int b3 = data[offset + 3] & 0xff;
+	public static final int getIntLE(final byte[] data, final int offset) {
+		final int b0 = data[offset] & 0xff;
+		final int b1 = data[offset + 1] & 0xff;
+		final int b2 = data[offset + 2] & 0xff;
+		final int b3 = data[offset + 3] & 0xff;
 
 		return b3 << 24 | b2 << 16 | b1 << 8 | b0;
 	}
 
-	public static final long getUnsignedIntLE(byte[] data, int offset) {
-		long b0 = data[offset] & 0xff;
-		long b1 = data[offset + 1] & 0xff;
-		long b2 = data[offset + 2] & 0xff;
-		long b3 = data[offset + 3] & 0xff;
+	public static final long getUnsignedIntLE(final byte[] data, final int offset) {
+		final long b0 = data[offset] & 0xff;
+		final long b1 = data[offset + 1] & 0xff;
+		final long b2 = data[offset + 2] & 0xff;
+		final long b3 = data[offset + 3] & 0xff;
 
 		return b3 << 24 | b2 << 16 | b1 << 8 | b0;
 	}
 
-	public static final String getString(byte[] data, int offset, int length) {
+	public static final String getString(final byte[] data, int offset, int length) {
 		if (length == 0) {
 			return "<none>";
 		} else {
 			length = length / 2 - 1; // workaround for Kodak bug
 		}
-		StringBuffer b = new StringBuffer(length);
+		final StringBuffer b = new StringBuffer(length);
 		for (int i = 0; i < length; i++) {
-			int c = getUnsignedShortLE(data, offset);
+			final int c = getUnsignedShortLE(data, offset);
 			b.append((char) c);
 			offset += 2;
 		}
@@ -125,15 +125,15 @@ public class FPXUtils {
 		return b.toString();
 	}
 
-	private static void printDecimal(int i) {
-		DecimalFormat d = new DecimalFormat("00000");
+	private static void printDecimal(final int i) {
+		final DecimalFormat d = new DecimalFormat("00000");
 		System.out.print(d.format(i));
 	}
 
-	private static void printHex(byte b) {
-		int i = b & 0xff;
-		int hi = i / 16;
-		int lo = i % 16;
+	private static void printHex(final byte b) {
+		final int i = b & 0xff;
+		final int hi = i / 16;
+		final int lo = i % 16;
 
 		if (hi < 10) {
 			System.out.print((char) ('0' + hi));
@@ -148,8 +148,8 @@ public class FPXUtils {
 		}
 	}
 
-	private static void printChar(byte b) {
-		char c = (char) (b & 0xff);
+	private static void printChar(final byte b) {
+		final char c = (char) (b & 0xff);
 
 		if (c >= '!' && c <= '~') {
 			System.out.print(' ');
@@ -166,8 +166,8 @@ public class FPXUtils {
 		}
 	}
 
-	public static void dumpBuffer(byte[] buf, int offset, int length, int printOffset) {
-		int lines = length / 8;
+	public static void dumpBuffer(final byte[] buf, int offset, final int length, int printOffset) {
+		final int lines = length / 8;
 
 		for (int j = 0; j < lines; j++) {
 			printDecimal(printOffset);

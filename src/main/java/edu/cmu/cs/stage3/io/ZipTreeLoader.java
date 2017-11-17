@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -42,7 +42,7 @@ public class ZipTreeLoader implements DirectoryTreeLoader {
 	 * java.net.URL, or a java.io.InputStream
 	 */
 	@Override
-	public void open(Object pathname) throws IllegalArgumentException, java.io.IOException {
+	public void open(final Object pathname) throws IllegalArgumentException, java.io.IOException {
 		if (zipIn != null) {
 			close();
 		}
@@ -59,7 +59,8 @@ public class ZipTreeLoader implements DirectoryTreeLoader {
 		} else if (pathname == null) {
 			throw new IllegalArgumentException("pathname is null");
 		} else {
-			throw new IllegalArgumentException("pathname must be an instance of String, java.io.File, java.net.URL, or java.io.InputStream");
+			throw new IllegalArgumentException(
+					"pathname must be an instance of String, java.io.File, java.net.URL, or java.io.InputStream");
 		}
 
 		zipIn = new java.util.zip.ZipInputStream(new java.io.BufferedInputStream(in));
@@ -116,13 +117,13 @@ public class ZipTreeLoader implements DirectoryTreeLoader {
 	}
 
 	@Override
-	public java.io.InputStream readFile(String filename) throws IllegalArgumentException, java.io.IOException {
+	public java.io.InputStream readFile(final String filename) throws IllegalArgumentException, java.io.IOException {
 		closeCurrentFile();
 
-		String pathname = getCanonicalPathname(currentDirectory + filename);
+		final String pathname = getCanonicalPathname(currentDirectory + filename);
 		waitFor(pathname);
 
-		byte[] fileContents = (byte[]) pathnamesToByteArrays.get(pathname);
+		final byte[] fileContents = (byte[]) pathnamesToByteArrays.get(pathname);
 		if (fileContents == null) {
 			throw new java.io.FileNotFoundException("Not Found: " + pathname);
 		}
@@ -147,21 +148,21 @@ public class ZipTreeLoader implements DirectoryTreeLoader {
 	public String[] getFilesInCurrentDirectory() {
 		waitFor(ZipTreeLoader.WHOLE_FILE);
 
-		java.util.Vector files = new java.util.Vector();
-		for (java.util.Enumeration enum0 = pathnamesToByteArrays.keys(); enum0.hasMoreElements();) {
-			String filename = (String) enum0.nextElement();
-			int index = filename.indexOf(currentDirectory);
+		final java.util.Vector files = new java.util.Vector();
+		for (final java.util.Enumeration enum0 = pathnamesToByteArrays.keys(); enum0.hasMoreElements();) {
+			final String filename = (String) enum0.nextElement();
+			final int index = filename.indexOf(currentDirectory);
 			if (index == 0) {
-				String tail = filename.substring(currentDirectory.length());
+				final String tail = filename.substring(currentDirectory.length());
 				if (tail.indexOf('/') == -1) {
 					files.addElement(tail);
 				}
 			}
 		}
 
-		String[] filenames = new String[files.size()];
+		final String[] filenames = new String[files.size()];
 		int i = 0;
-		for (java.util.Enumeration enum0 = files.elements(); enum0.hasMoreElements();) {
+		for (final java.util.Enumeration enum0 = files.elements(); enum0.hasMoreElements();) {
 			filenames[i++] = (String) enum0.nextElement();
 		}
 
@@ -176,12 +177,12 @@ public class ZipTreeLoader implements DirectoryTreeLoader {
 	public String[] getDirectoriesInCurrentDirectory() {
 		waitFor(ZipTreeLoader.WHOLE_FILE);
 
-		java.util.Vector dirs = new java.util.Vector();
-		for (java.util.Enumeration enum0 = directories.elements(); enum0.hasMoreElements();) {
-			String dirname = (String) enum0.nextElement();
-			int index = dirname.indexOf(currentDirectory);
+		final java.util.Vector dirs = new java.util.Vector();
+		for (final java.util.Enumeration enum0 = directories.elements(); enum0.hasMoreElements();) {
+			final String dirname = (String) enum0.nextElement();
+			final int index = dirname.indexOf(currentDirectory);
 			if (index == 0) {
-				String tail = dirname.substring(currentDirectory.length());
+				final String tail = dirname.substring(currentDirectory.length());
 				if (tail.length() > 0) {
 					if (tail.indexOf('/') == tail.lastIndexOf('/')) {
 						dirs.addElement(tail);
@@ -190,9 +191,9 @@ public class ZipTreeLoader implements DirectoryTreeLoader {
 			}
 		}
 
-		String[] dirnames = new String[dirs.size()];
+		final String[] dirnames = new String[dirs.size()];
 		int i = 0;
-		for (java.util.Enumeration enum0 = dirs.elements(); enum0.hasMoreElements();) {
+		for (final java.util.Enumeration enum0 = dirs.elements(); enum0.hasMoreElements();) {
 			dirnames[i++] = (String) enum0.nextElement();
 		}
 
@@ -215,7 +216,7 @@ public class ZipTreeLoader implements DirectoryTreeLoader {
 		return pathname;
 	}
 
-	synchronized protected void waitFor(Object pathname) {
+	synchronized protected void waitFor(final Object pathname) {
 		if (pathnamesToByteArrays.get(pathname) != null) {
 			return;
 		} else if (directories.indexOf(pathname) != -1) {
@@ -226,13 +227,13 @@ public class ZipTreeLoader implements DirectoryTreeLoader {
 			pathnameBeingWaitedOn = pathname;
 			try {
 				wait();
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	synchronized protected void finishedLoading(Object pathname) {
+	synchronized protected void finishedLoading(final Object pathname) {
 		if (pathname.equals(pathnameBeingWaitedOn) || pathname.equals(ZipTreeLoader.WHOLE_FILE)) {
 			notifyAll();
 		}
@@ -258,7 +259,7 @@ public class ZipTreeLoader implements DirectoryTreeLoader {
 						break;
 					}
 
-					String pathname = getCanonicalPathname(entry.getName());
+					final String pathname = getCanonicalPathname(entry.getName());
 					if (entry.isDirectory()) {
 						directories.addElement(pathname);
 						finishedLoading(pathname);
@@ -272,18 +273,18 @@ public class ZipTreeLoader implements DirectoryTreeLoader {
 					while (zipIn.available() == 1) {
 						if (off == size) {
 							size += 1024;
-							byte[] temp = entryContents;
+							final byte[] temp = entryContents;
 							entryContents = new byte[size];
 							System.arraycopy(temp, 0, entryContents, 0, size - 1024);
 						}
-						int theByte = zipIn.read();
+						final int theByte = zipIn.read();
 						if (theByte == -1) {
 							break;
 						}
 						entryContents[off++] = (byte) theByte;
 					}
 					if (off < size) {
-						byte[] temp = entryContents;
+						final byte[] temp = entryContents;
 						entryContents = new byte[off];
 						System.arraycopy(temp, 0, entryContents, 0, off);
 					}
@@ -292,7 +293,7 @@ public class ZipTreeLoader implements DirectoryTreeLoader {
 
 					pathnamesToByteArrays.put(pathname, entryContents);
 					finishedLoading(pathname);
-				} catch (java.io.IOException e) {
+				} catch (final java.io.IOException e) {
 					e.printStackTrace();
 				}
 			}
@@ -313,7 +314,7 @@ public class ZipTreeLoader implements DirectoryTreeLoader {
 	}
 
 	@Override
-	public Object getKeepKey(String filename) throws KeepFileNotSupportedException {
+	public Object getKeepKey(final String filename) throws KeepFileNotSupportedException {
 		throw new KeepFileNotSupportedException();
 	}
 }

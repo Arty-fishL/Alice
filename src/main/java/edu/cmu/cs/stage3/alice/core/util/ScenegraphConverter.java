@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -40,35 +40,49 @@ import edu.cmu.cs.stage3.alice.core.light.PointLight;
 import edu.cmu.cs.stage3.alice.core.light.SpotLight;
 
 public class ScenegraphConverter {
-	private static edu.cmu.cs.stage3.alice.scenegraph.Component getFirstChildOfClass(edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer, Class cls) {
+	private static edu.cmu.cs.stage3.alice.scenegraph.Component getFirstChildOfClass(
+			final edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer, final Class cls) {
 		for (int i = 0; i < sgContainer.getChildCount(); i++) {
-			edu.cmu.cs.stage3.alice.scenegraph.Component sgChild = sgContainer.getChildAt(i);
+			final edu.cmu.cs.stage3.alice.scenegraph.Component sgChild = sgContainer.getChildAt(i);
 			if (cls.isAssignableFrom(sgChild.getClass())) {
 				return sgChild;
 			}
 		}
 		return null;
 	}
-	private static edu.cmu.cs.stage3.alice.scenegraph.Light getFirstLightChild(edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer) {
-		return (edu.cmu.cs.stage3.alice.scenegraph.Light) getFirstChildOfClass(sgContainer, edu.cmu.cs.stage3.alice.scenegraph.Light.class);
-	}
-	private static edu.cmu.cs.stage3.alice.scenegraph.AmbientLight getFirstAmbientLightChild(edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer) {
-		return (edu.cmu.cs.stage3.alice.scenegraph.AmbientLight) getFirstChildOfClass(sgContainer, edu.cmu.cs.stage3.alice.scenegraph.AmbientLight.class);
-	}
-	private static edu.cmu.cs.stage3.alice.scenegraph.Camera getFirstCameraChild(edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer) {
-		return (edu.cmu.cs.stage3.alice.scenegraph.Camera) getFirstChildOfClass(sgContainer, edu.cmu.cs.stage3.alice.scenegraph.Camera.class);
-	}
-	private static edu.cmu.cs.stage3.alice.scenegraph.Visual getFirstVisualChild(edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer) {
-		return (edu.cmu.cs.stage3.alice.scenegraph.Visual) getFirstChildOfClass(sgContainer, edu.cmu.cs.stage3.alice.scenegraph.Visual.class);
+
+	private static edu.cmu.cs.stage3.alice.scenegraph.Light getFirstLightChild(
+			final edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer) {
+		return (edu.cmu.cs.stage3.alice.scenegraph.Light) getFirstChildOfClass(sgContainer,
+				edu.cmu.cs.stage3.alice.scenegraph.Light.class);
 	}
 
-	private static Element internalConvert(edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer, int id) {
+	private static edu.cmu.cs.stage3.alice.scenegraph.AmbientLight getFirstAmbientLightChild(
+			final edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer) {
+		return (edu.cmu.cs.stage3.alice.scenegraph.AmbientLight) getFirstChildOfClass(sgContainer,
+				edu.cmu.cs.stage3.alice.scenegraph.AmbientLight.class);
+	}
+
+	private static edu.cmu.cs.stage3.alice.scenegraph.Camera getFirstCameraChild(
+			final edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer) {
+		return (edu.cmu.cs.stage3.alice.scenegraph.Camera) getFirstChildOfClass(sgContainer,
+				edu.cmu.cs.stage3.alice.scenegraph.Camera.class);
+	}
+
+	private static edu.cmu.cs.stage3.alice.scenegraph.Visual getFirstVisualChild(
+			final edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer) {
+		return (edu.cmu.cs.stage3.alice.scenegraph.Visual) getFirstChildOfClass(sgContainer,
+				edu.cmu.cs.stage3.alice.scenegraph.Visual.class);
+	}
+
+	private static Element internalConvert(final edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer,
+			final int id) {
 		Element element = null;
 		if (sgContainer instanceof edu.cmu.cs.stage3.alice.scenegraph.Scene) {
-			edu.cmu.cs.stage3.alice.scenegraph.Scene sgScene = (edu.cmu.cs.stage3.alice.scenegraph.Scene) sgContainer;
-			edu.cmu.cs.stage3.alice.scenegraph.AmbientLight sgAmbientLight = getFirstAmbientLightChild(sgScene);
-			edu.cmu.cs.stage3.alice.scenegraph.Background sgBackground = sgScene.getBackground();
-			World world = new World();
+			final edu.cmu.cs.stage3.alice.scenegraph.Scene sgScene = (edu.cmu.cs.stage3.alice.scenegraph.Scene) sgContainer;
+			final edu.cmu.cs.stage3.alice.scenegraph.AmbientLight sgAmbientLight = getFirstAmbientLightChild(sgScene);
+			final edu.cmu.cs.stage3.alice.scenegraph.Background sgBackground = sgScene.getBackground();
+			final World world = new World();
 			if (sgBackground != null) {
 				world.atmosphereColor.set(sgBackground.getColor());
 			}
@@ -77,23 +91,23 @@ public class ScenegraphConverter {
 			}
 			element = world;
 		} else if (sgContainer instanceof edu.cmu.cs.stage3.alice.scenegraph.Transformable) {
-			edu.cmu.cs.stage3.alice.scenegraph.Transformable sgTransformable = (edu.cmu.cs.stage3.alice.scenegraph.Transformable) sgContainer;
-			edu.cmu.cs.stage3.alice.scenegraph.Light sgLight = getFirstLightChild(sgTransformable);
-			edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera = getFirstCameraChild(sgTransformable);
-			edu.cmu.cs.stage3.alice.scenegraph.Visual sgVisual = getFirstVisualChild(sgTransformable);
+			final edu.cmu.cs.stage3.alice.scenegraph.Transformable sgTransformable = (edu.cmu.cs.stage3.alice.scenegraph.Transformable) sgContainer;
+			final edu.cmu.cs.stage3.alice.scenegraph.Light sgLight = getFirstLightChild(sgTransformable);
+			final edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera = getFirstCameraChild(sgTransformable);
+			final edu.cmu.cs.stage3.alice.scenegraph.Visual sgVisual = getFirstVisualChild(sgTransformable);
 			Model model = null;
 			if (sgLight != null) {
 				Light light = null;
 				if (sgLight instanceof edu.cmu.cs.stage3.alice.scenegraph.AmbientLight) {
-					AmbientLight ambientLight = new AmbientLight();
+					final AmbientLight ambientLight = new AmbientLight();
 					light = ambientLight;
 				} else if (sgLight instanceof edu.cmu.cs.stage3.alice.scenegraph.DirectionalLight) {
-					DirectionalLight directionalLight = new DirectionalLight();
+					final DirectionalLight directionalLight = new DirectionalLight();
 					light = directionalLight;
 				} else if (sgLight instanceof edu.cmu.cs.stage3.alice.scenegraph.PointLight) {
 					PointLight pointLight = null;
 					if (sgLight instanceof edu.cmu.cs.stage3.alice.scenegraph.SpotLight) {
-						SpotLight spotLight = new SpotLight();
+						final SpotLight spotLight = new SpotLight();
 						pointLight = spotLight;
 					} else {
 						pointLight = new PointLight();
@@ -105,16 +119,16 @@ public class ScenegraphConverter {
 			} else if (sgCamera != null) {
 				Camera camera = null;
 				if (sgCamera instanceof edu.cmu.cs.stage3.alice.scenegraph.SymmetricPerspectiveCamera) {
-					SymmetricPerspectiveCamera symmetricPerspectiveCamera = new SymmetricPerspectiveCamera();
+					final SymmetricPerspectiveCamera symmetricPerspectiveCamera = new SymmetricPerspectiveCamera();
 					camera = symmetricPerspectiveCamera;
 				} else if (sgCamera instanceof edu.cmu.cs.stage3.alice.scenegraph.PerspectiveCamera) {
-					PerspectiveCamera perspectiveCamera = new PerspectiveCamera();
+					final PerspectiveCamera perspectiveCamera = new PerspectiveCamera();
 					camera = perspectiveCamera;
 				} else if (sgCamera instanceof edu.cmu.cs.stage3.alice.scenegraph.OrthographicCamera) {
-					OrthographicCamera orthographicCamera = new OrthographicCamera();
+					final OrthographicCamera orthographicCamera = new OrthographicCamera();
 					camera = orthographicCamera;
 				} else if (sgCamera instanceof edu.cmu.cs.stage3.alice.scenegraph.ProjectionCamera) {
-					ProjectionCamera projectionCamera = new ProjectionCamera();
+					final ProjectionCamera projectionCamera = new ProjectionCamera();
 					camera = projectionCamera;
 				}
 				model = camera;
@@ -124,12 +138,13 @@ public class ScenegraphConverter {
 			}
 			if (sgVisual != null) {
 				sgVisual.setBonus(model);
-				edu.cmu.cs.stage3.alice.scenegraph.Appearance sgAppearance = sgVisual.getFrontFacingAppearance();
-				edu.cmu.cs.stage3.alice.scenegraph.Geometry sgGeometry = sgVisual.getGeometry();
+				final edu.cmu.cs.stage3.alice.scenegraph.Appearance sgAppearance = sgVisual.getFrontFacingAppearance();
+				final edu.cmu.cs.stage3.alice.scenegraph.Geometry sgGeometry = sgVisual.getGeometry();
 				if (sgAppearance != null) {
-					edu.cmu.cs.stage3.alice.scenegraph.TextureMap sgTextureMap = sgAppearance.getDiffuseColorMap();
+					final edu.cmu.cs.stage3.alice.scenegraph.TextureMap sgTextureMap = sgAppearance
+							.getDiffuseColorMap();
 					if (sgTextureMap != null) {
-						TextureMap diffuseColorMap = new TextureMap();
+						final TextureMap diffuseColorMap = new TextureMap();
 						diffuseColorMap.setParent(model);
 						diffuseColorMap.image.set(sgTextureMap.getImage());
 						diffuseColorMap.format.set(new Integer(sgTextureMap.getFormat()));
@@ -140,8 +155,8 @@ public class ScenegraphConverter {
 					model.opacity.set(new Double(sgAppearance.getOpacity()));
 				}
 				if (sgGeometry instanceof edu.cmu.cs.stage3.alice.scenegraph.IndexedTriangleArray) {
-					edu.cmu.cs.stage3.alice.scenegraph.IndexedTriangleArray sgITA = (edu.cmu.cs.stage3.alice.scenegraph.IndexedTriangleArray) sgGeometry;
-					IndexedTriangleArray ita = new IndexedTriangleArray();
+					final edu.cmu.cs.stage3.alice.scenegraph.IndexedTriangleArray sgITA = (edu.cmu.cs.stage3.alice.scenegraph.IndexedTriangleArray) sgGeometry;
+					final IndexedTriangleArray ita = new IndexedTriangleArray();
 					ita.setParent(model);
 					ita.vertices.set(sgITA.getVertices());
 					ita.indices.set(sgITA.getIndices());
@@ -153,9 +168,10 @@ public class ScenegraphConverter {
 			element = model;
 		}
 		for (int i = 0; i < sgContainer.getChildCount(); i++) {
-			edu.cmu.cs.stage3.alice.scenegraph.Component sgChild = sgContainer.getChildAt(i);
+			final edu.cmu.cs.stage3.alice.scenegraph.Component sgChild = sgContainer.getChildAt(i);
 			if (sgChild instanceof edu.cmu.cs.stage3.alice.scenegraph.Transformable) {
-				Model child = (Model) internalConvert((edu.cmu.cs.stage3.alice.scenegraph.Transformable) sgChild, i);
+				final Model child = (Model) internalConvert((edu.cmu.cs.stage3.alice.scenegraph.Transformable) sgChild,
+						i);
 				child.setParent(element);
 				child.vehicle.set(element);
 				if (child.name.getStringValue() == null) {
@@ -170,7 +186,7 @@ public class ScenegraphConverter {
 		}
 		String name = sgContainer.getName();
 		if (name != null) {
-			int i = name.indexOf('.');
+			final int i = name.indexOf('.');
 			if (i != -1) {
 				name = name.substring(0, i);
 			}
@@ -178,8 +194,9 @@ public class ScenegraphConverter {
 		}
 		return element;
 	}
-	public static Element convert(edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer) {
-		Element e = internalConvert(sgContainer, 0);
+
+	public static Element convert(final edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer) {
+		final Element e = internalConvert(sgContainer, 0);
 		if (e instanceof Model) {
 			((Model) e).isFirstClass.set(Boolean.TRUE);
 		}

@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -35,7 +35,7 @@ public class FileSystemTreeStorer implements DirectoryTreeStorer {
 	 * pathname can be a String or java.io.File
 	 */
 	@Override
-	public void open(Object pathname) throws IllegalArgumentException, java.io.IOException {
+	public void open(final Object pathname) throws IllegalArgumentException, java.io.IOException {
 		if (root != null) {
 			close();
 		}
@@ -74,14 +74,14 @@ public class FileSystemTreeStorer implements DirectoryTreeStorer {
 	}
 
 	@Override
-	public void createDirectory(String pathname) throws IllegalArgumentException, java.io.IOException {
+	public void createDirectory(final String pathname) throws IllegalArgumentException, java.io.IOException {
 		if (pathname.indexOf('/') != -1) {
 			throw new IllegalArgumentException("pathname cannot contain path separators");
 		}
 		if (pathname.length() <= 0) {
 			throw new IllegalArgumentException("pathname has no length");
 		}
-		java.io.File newDir = new java.io.File(currentDirectory, pathname);
+		final java.io.File newDir = new java.io.File(currentDirectory, pathname);
 		if (!newDir.exists()) {
 			if (!newDir.mkdir()) {
 				throw new java.io.IOException("cannot create " + newDir);
@@ -90,7 +90,7 @@ public class FileSystemTreeStorer implements DirectoryTreeStorer {
 	}
 
 	@Override
-	public void setCurrentDirectory(String pathname) throws IllegalArgumentException {
+	public void setCurrentDirectory(final String pathname) throws IllegalArgumentException {
 		java.io.File newCurrentDirectory;
 		if (pathname.length() == 0 || pathname.charAt(0) == '/' || pathname.charAt(0) == '\\') {
 			newCurrentDirectory = new java.io.File(root.getAbsolutePath() + pathname);
@@ -110,14 +110,15 @@ public class FileSystemTreeStorer implements DirectoryTreeStorer {
 
 	@Override
 	public String getCurrentDirectory() {
-		StringBuffer dir = new StringBuffer(currentDirectory.getAbsolutePath());
+		final StringBuffer dir = new StringBuffer(currentDirectory.getAbsolutePath());
 		dir.delete(0, root.getAbsolutePath().length());
 		return dir.toString();
 	}
 
 	@Override
-	public java.io.OutputStream createFile(String filename, boolean compressItIfYouGotIt) throws IllegalArgumentException, java.io.IOException {
-		java.io.File newFile = new java.io.File(currentDirectory, filename);
+	public java.io.OutputStream createFile(final String filename, final boolean compressItIfYouGotIt)
+			throws IllegalArgumentException, java.io.IOException {
+		final java.io.File newFile = new java.io.File(currentDirectory, filename);
 		if (!newFile.exists()) {
 			if (!newFile.createNewFile()) {
 				throw new java.io.IOException("cannot create " + newFile);
@@ -141,7 +142,7 @@ public class FileSystemTreeStorer implements DirectoryTreeStorer {
 	}
 
 	@Override
-	public Object getKeepKey(String filename) throws KeepFileNotSupportedException {
+	public Object getKeepKey(final String filename) throws KeepFileNotSupportedException {
 		return FileSystemTreeLoader.getKeepKey(currentDirectory, filename);
 	}
 
@@ -151,8 +152,8 @@ public class FileSystemTreeStorer implements DirectoryTreeStorer {
 	}
 
 	@Override
-	public void keepFile(String filename) throws KeepFileNotSupportedException, KeepFileDoesNotExistException {
-		java.io.File file = new java.io.File(currentDirectory, filename);
+	public void keepFile(final String filename) throws KeepFileNotSupportedException, KeepFileDoesNotExistException {
+		final java.io.File file = new java.io.File(currentDirectory, filename);
 		if (!file.exists()) {
 			throw new KeepFileDoesNotExistException(currentDirectory.getAbsolutePath(), filename);
 		}

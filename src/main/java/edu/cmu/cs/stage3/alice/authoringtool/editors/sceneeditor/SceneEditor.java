@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -39,6 +39,11 @@ import javax.swing.border.Border;
  * @author Clifton Forlines
  */
 public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3.alice.authoringtool.Editor {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -8233884283799857176L;
+
 	public String editorName = "Scene Editor";
 
 	public static int LARGE_MODE = 1;
@@ -47,14 +52,19 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 
 	protected edu.cmu.cs.stage3.alice.core.World world;
 	protected edu.cmu.cs.stage3.alice.core.Camera renderCamera = null;
-	protected edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringToolConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration.getLocalConfiguration(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.class.getPackage());
+	protected edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringToolConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration
+			.getLocalConfiguration(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.class.getPackage());
 	protected edu.cmu.cs.stage3.alice.authoringtool.util.ScriptComboWidget scriptComboWidget = new edu.cmu.cs.stage3.alice.authoringtool.util.ScriptComboWidget();
 	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
 
-	protected java.awt.Image makeSceneEditorBigImage = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getImageForString("makeSceneEditorBig");
-	protected java.awt.Image makeSceneEditorSmallImage = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getImageForString("makeSceneEditorSmall");
-	protected javax.swing.JButton makeSceneEditorBigButton = new javax.swing.JButton(new javax.swing.ImageIcon(makeSceneEditorBigImage));
-	protected javax.swing.JButton makeSceneEditorSmallButton = new javax.swing.JButton(new javax.swing.ImageIcon(makeSceneEditorSmallImage));
+	protected java.awt.Image makeSceneEditorBigImage = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+			.getImageForString("makeSceneEditorBig");
+	protected java.awt.Image makeSceneEditorSmallImage = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+			.getImageForString("makeSceneEditorSmall");
+	protected javax.swing.JButton makeSceneEditorBigButton = new javax.swing.JButton(
+			new javax.swing.ImageIcon(makeSceneEditorBigImage));
+	protected javax.swing.JButton makeSceneEditorSmallButton = new javax.swing.JButton(
+			new javax.swing.ImageIcon(makeSceneEditorSmallImage));
 
 	// ////////////////
 	// Constructor
@@ -67,28 +77,30 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 	}
 
 	private void configInit() {
-		edu.cmu.cs.stage3.alice.authoringtool.util.Configuration.addConfigurationListener(new edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationListener() {
-			@Override
-			public void changing(edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent ev) {
-			}
-			@Override
-			public void changed(edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent ev) {
-				if (ev.getKeyName().equals("edu.cmu.cs.stage3.alice.authoringtool.enableScripting")) {
-					if (authoringToolConfig.getValue("enableScripting").equalsIgnoreCase("true")) {
-						topPanel.add(scriptComboWidget, BorderLayout.CENTER);
-					} else {
-						topPanel.remove(scriptComboWidget);
+		edu.cmu.cs.stage3.alice.authoringtool.util.Configuration
+				.addConfigurationListener(new edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationListener() {
+					@Override
+					public void changing(final edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent ev) {
 					}
-					SceneEditor.this.revalidate();
-					SceneEditor.this.repaint();
-				}
-			}
-		});
+
+					@Override
+					public void changed(final edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent ev) {
+						if (ev.getKeyName().equals("edu.cmu.cs.stage3.alice.authoringtool.enableScripting")) {
+							if (authoringToolConfig.getValue("enableScripting").equalsIgnoreCase("true")) {
+								topPanel.add(scriptComboWidget, BorderLayout.CENTER);
+							} else {
+								topPanel.remove(scriptComboWidget);
+							}
+							SceneEditor.this.revalidate();
+							SceneEditor.this.repaint();
+						}
+					}
+				});
 	}
 
 	private void guiInit() {
 		// set the divider locations
-		int width = (int) (java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth() * .8);
+		final int width = (int) (java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth() * .8);
 		mainPanel.setMinimumSize(new java.awt.Dimension(0, 0));
 
 		if (authoringToolConfig.getValue("enableScripting").equalsIgnoreCase("true")) {
@@ -99,29 +111,39 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 		makeSceneEditorSmallButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
 		makeSceneEditorBigButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
-				authoringTool.getJAliceFrame().setGuiMode(edu.cmu.cs.stage3.alice.authoringtool.JAliceFrame.SCENE_EDITOR_LARGE_MODE);
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
+				authoringTool.getJAliceFrame()
+						.setGuiMode(edu.cmu.cs.stage3.alice.authoringtool.JAliceFrame.SCENE_EDITOR_LARGE_MODE);
 			}
 		});
 		makeSceneEditorSmallButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
-				authoringTool.getJAliceFrame().setGuiMode(edu.cmu.cs.stage3.alice.authoringtool.JAliceFrame.SCENE_EDITOR_SMALL_MODE);
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
+				authoringTool.getJAliceFrame()
+						.setGuiMode(edu.cmu.cs.stage3.alice.authoringtool.JAliceFrame.SCENE_EDITOR_SMALL_MODE);
 			}
 		});
-		makeSceneEditorBigButton.setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("makeSceneEditorBigBackground"));
-		makeSceneEditorSmallButton.setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("makeSceneEditorSmallBackground"));
+		makeSceneEditorBigButton.setBackground(
+				edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("makeSceneEditorBigBackground"));
+		makeSceneEditorSmallButton.setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+				.getColor("makeSceneEditorSmallBackground"));
 
-		cameraViewPanel.navPanel.add(makeSceneEditorBigButton, new java.awt.GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.SOUTHEAST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 2, 2), 0, 0));
-		cameraViewPanel.controlPanel.add(makeSceneEditorSmallButton, new java.awt.GridBagConstraints(0, 9, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.SOUTHEAST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 8, 8), 0, 0));
+		cameraViewPanel.navPanel.add(makeSceneEditorBigButton,
+				new java.awt.GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.SOUTHEAST,
+						java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 2, 2), 0, 0));
+		cameraViewPanel.controlPanel.add(makeSceneEditorSmallButton,
+				new java.awt.GridBagConstraints(0, 9, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.SOUTHEAST,
+						java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 8, 8), 0, 0));
 
 		// tooltips
-		makeSceneEditorBigButton.setToolTipText("<html><font face=arial size=-1>Open the Object Gallery and Layout Tool.<p><p>Objects are added to the world from the Gallery.<p>The Layout Tool has tools that will help you position objects in the world.<p>You will not be able to edit Methods or Events while the Gallery is open.</font></html>");
-		makeSceneEditorSmallButton.setToolTipText("<html><font face=arial size=-1>Close the Gallery and Layout Tool.<p><p>Closes the gallery and returns<p>to the Method and Event editors.</font></html>");
+		makeSceneEditorBigButton.setToolTipText(
+				"<html><font face=arial size=-1>Open the Object Gallery and Layout Tool.<p><p>Objects are added to the world from the Gallery.<p>The Layout Tool has tools that will help you position objects in the world.<p>You will not be able to edit Methods or Events while the Gallery is open.</font></html>");
+		makeSceneEditorSmallButton.setToolTipText(
+				"<html><font face=arial size=-1>Close the Gallery and Layout Tool.<p><p>Closes the gallery and returns<p>to the Method and Event editors.</font></html>");
 	}
 
 	// big hack for now. need to consolidate CameraViewPanel and LayoutViewPanel
-	public void setGuiMode(int guiMode) {
+	public void setGuiMode(final int guiMode) {
 		// // System.out.println("set gui: "+this.guiMode+" ?= "+guiMode);
 		if (this.guiMode != guiMode) {
 			this.guiMode = guiMode;
@@ -130,8 +152,11 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 			if (guiMode == SMALL_MODE) {
 				// // System.out.println("making gui small");
 				cameraViewPanel.setViewMode(CameraViewPanel.SINGLE_VIEW_MODE);
-				cameraViewPanel.navPanel.add(makeSceneEditorBigButton, new java.awt.GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.SOUTHEAST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 2, 2), 0, 0));
-				cameraViewPanel.guiNavigator.setImageSize(edu.cmu.cs.stage3.alice.authoringtool.util.GuiNavigator.SMALL_IMAGES);
+				cameraViewPanel.navPanel.add(makeSceneEditorBigButton,
+						new java.awt.GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, java.awt.GridBagConstraints.SOUTHEAST,
+								java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 2, 2), 0, 0));
+				cameraViewPanel.guiNavigator
+						.setImageSize(edu.cmu.cs.stage3.alice.authoringtool.util.GuiNavigator.SMALL_IMAGES);
 				cameraViewPanel.defaultMoveModeButton.doClick();
 				if (cameraViewPanel.affectSubpartsCheckBox.isSelected()) {
 					cameraViewPanel.affectSubpartsCheckBox.doClick();
@@ -141,7 +166,8 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 				// // System.out.println("making gui large");
 				cameraViewPanel.navPanel.remove(makeSceneEditorBigButton);
 				cameraViewPanel.singleViewButton.doClick();
-				cameraViewPanel.guiNavigator.setImageSize(edu.cmu.cs.stage3.alice.authoringtool.util.GuiNavigator.LARGE_IMAGES);
+				cameraViewPanel.guiNavigator
+						.setImageSize(edu.cmu.cs.stage3.alice.authoringtool.util.GuiNavigator.LARGE_IMAGES);
 				// if( cameraViewPanel.quadViewButton.isSelected() ) {
 				// cameraViewPanel.setViewMode( CameraViewPanel.QUAD_VIEW_MODE
 				// );
@@ -165,7 +191,7 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 		return guiMode;
 	}
 
-	public void setViewMode(int mode) {
+	public void setViewMode(final int mode) {
 		cameraViewPanel.setViewMode(mode);
 	}
 
@@ -207,7 +233,7 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 		return world;
 	}
 
-	public void setObject(edu.cmu.cs.stage3.alice.core.World world) {
+	public void setObject(final edu.cmu.cs.stage3.alice.core.World world) {
 		this.world = world;
 		scriptComboWidget.setSandbox(world);
 		cameraViewPanel.setWorld(world);
@@ -215,7 +241,8 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 		if (world != null) {
 			// set the renderCamera variable to the scene's camera (TODO: handle
 			// multiple cameras better)
-			edu.cmu.cs.stage3.alice.core.Camera[] cameras = (edu.cmu.cs.stage3.alice.core.Camera[]) world.getDescendants(edu.cmu.cs.stage3.alice.core.Camera.class);
+			final edu.cmu.cs.stage3.alice.core.Camera[] cameras = (edu.cmu.cs.stage3.alice.core.Camera[]) world
+					.getDescendants(edu.cmu.cs.stage3.alice.core.Camera.class);
 			if (cameras.length > 0) {
 				renderCamera = cameras[0];
 			}
@@ -225,7 +252,7 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 	}
 
 	@Override
-	public void setAuthoringTool(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
+	public void setAuthoringTool(final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
 		if (this.authoringTool != null) {
 			this.authoringTool.removeAuthoringToolStateListener(this);
 		}
@@ -278,17 +305,17 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 		idsToComponents.put("superRenderPanel", cameraViewPanel.superRenderPanel);
 		idsToComponents.put("renderPanel", cameraViewPanel.renderPanel);
 
-		for (java.util.Iterator iter = idsToComponents.keySet().iterator(); iter.hasNext();) {
-			Object key = iter.next();
+		for (final java.util.Iterator iter = idsToComponents.keySet().iterator(); iter.hasNext();) {
+			final Object key = iter.next();
 			componentsToIds.put(idsToComponents.get(key), key);
 		}
 	}
 
-	public String getIdForComponent(java.awt.Component c) {
+	public String getIdForComponent(final java.awt.Component c) {
 		return (String) componentsToIds.get(c);
 	}
 
-	public java.awt.Component getComponentForId(String id) {
+	public java.awt.Component getComponentForId(final String id) {
 		return (java.awt.Component) idsToComponents.get(id);
 	}
 
@@ -297,7 +324,7 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 	// ///////////////////////////////////////////////
 
 	@Override
-	public void stateChanged(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void stateChanged(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 		cameraViewPanel.setTargetsDirty();
 		if (ev.getCurrentState() == edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent.RUNTIME_STATE) {
 			cameraViewPanel.deactivate();
@@ -307,56 +334,67 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 	}
 
 	@Override
-	public void worldLoaded(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldLoaded(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 		cameraViewPanel.activate();
 	}
 
 	@Override
-	public void stateChanging(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void stateChanging(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 		cameraViewPanel.setTargetsDirty();
 	}
+
 	@Override
-	public void worldLoading(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldLoading(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 		cameraViewPanel.setTargetsDirty();
 	}
+
 	@Override
-	public void worldUnLoading(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldUnLoading(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 		cameraViewPanel.setTargetsDirty();
 	}
+
 	@Override
-	public void worldStarting(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldStarting(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 		cameraViewPanel.setTargetsDirty();
 	}
+
 	@Override
-	public void worldStopping(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldStopping(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 		cameraViewPanel.setTargetsDirty();
 	}
+
 	@Override
-	public void worldPausing(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldPausing(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 		cameraViewPanel.setTargetsDirty();
 	}
+
 	@Override
-	public void worldSaving(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldSaving(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 		cameraViewPanel.setTargetsDirty();
 	}
+
 	@Override
-	public void worldUnLoaded(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldUnLoaded(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 		cameraViewPanel.setTargetsDirty();
 	}
+
 	@Override
-	public void worldStarted(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldStarted(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 		cameraViewPanel.setTargetsDirty();
 	}
+
 	@Override
-	public void worldStopped(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldStopped(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 		cameraViewPanel.setTargetsDirty();
 	}
+
 	@Override
-	public void worldPaused(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldPaused(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 		cameraViewPanel.setTargetsDirty();
 	}
+
 	@Override
-	public void worldSaved(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldSaved(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 		cameraViewPanel.setTargetsDirty();
 	}
 
@@ -374,7 +412,7 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 	// }
 	// }
 
-	void this_componentShown(ComponentEvent e) {
+	void this_componentShown(final ComponentEvent e) {
 		cameraViewPanel.setTargetsDirty();
 		cameraViewPanel.activate();
 	}
@@ -420,7 +458,7 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 		addComponentListener(new java.awt.event.ComponentAdapter() {
 
 			@Override
-			public void componentShown(ComponentEvent e) {
+			public void componentShown(final ComponentEvent e) {
 				this_componentShown(e);
 			}
 		});

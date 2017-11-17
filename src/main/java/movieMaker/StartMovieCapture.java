@@ -9,7 +9,7 @@ import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
 /**
  * Class that is Runnable to start Movie Capture and stop it Copyright Georgia
  * Institute of Technology 2007
- * 
+ *
  * @author Barb Ericson ericson@cc.gatech.edu
  */
 public class StartMovieCapture implements Runnable {
@@ -20,7 +20,7 @@ public class StartMovieCapture implements Runnable {
 	private int framesPerSecond = 16;
 
 	/** the region to capture */
-	private Rectangle region = null;
+	private final Rectangle region = null;
 
 	/** the active thread */
 	private Thread active = null;
@@ -34,7 +34,7 @@ public class StartMovieCapture implements Runnable {
 	/**
 	 * Constructor that takes the frame sequencer, number of frames per second,
 	 * and the region to capture
-	 * 
+	 *
 	 * @param sequencer
 	 *            the frame sequencer
 	 * @param framesPerSec
@@ -42,7 +42,9 @@ public class StartMovieCapture implements Runnable {
 	 * @param area
 	 *            the region to capture
 	 */
-	public StartMovieCapture(AuthoringTool a, edu.cmu.cs.stage3.alice.authoringtool.dialog.CaptureContentPane pane, FrameSequencer sequencer, int framesPerSec) {
+	public StartMovieCapture(final AuthoringTool a,
+			final edu.cmu.cs.stage3.alice.authoringtool.dialog.CaptureContentPane pane, final FrameSequencer sequencer,
+			final int framesPerSec) {
 		frameSequencer = sequencer;
 		framesPerSecond = framesPerSec;
 		author = a;
@@ -66,7 +68,7 @@ public class StartMovieCapture implements Runnable {
 		Rectangle r = new Rectangle(1, 1, 1, 1);
 		r = renderContent.getRenderPanelLocation();
 		reg.y = r.y + 3;
-		int buttonPanelWidth = renderContent.getButtonPanel().getWidth();
+		final int buttonPanelWidth = renderContent.getButtonPanel().getWidth();
 		reg.x = r.x + (buttonPanelWidth - reg.width) / 2;
 		reg.height -= 2;
 	}
@@ -74,9 +76,9 @@ public class StartMovieCapture implements Runnable {
 	public void captureMovie() {
 		long startTime = 0;
 		long endTime = 0;
-		int timeToSleep = 1000 / framesPerSecond;
+		final int timeToSleep = 1000 / framesPerSecond;
 
-		Thread current = Thread.currentThread();
+		final Thread current = Thread.currentThread();
 
 		upDateRectangle();
 		while (current == active && renderContent.getEnd()) {
@@ -85,14 +87,14 @@ public class StartMovieCapture implements Runnable {
 				startTime = System.currentTimeMillis();
 				try {
 					upDateRectangle();
-					BufferedImage bi = new Robot().createScreenCapture(reg);
+					final BufferedImage bi = new Robot().createScreenCapture(reg);
 					author.getSoundStorage().frameList.add(new Long(startTime));
 					frameSequencer.addFrame(new Picture(bi));
 					endTime = System.currentTimeMillis();
 					if (endTime - startTime < timeToSleep) {
 						Thread.sleep(timeToSleep - (endTime - startTime));
 					}
-				} catch (Exception ex) {
+				} catch (final Exception ex) {
 					System.err.println("Caught exception in StartMovieCapture");
 					// done = true;
 				}

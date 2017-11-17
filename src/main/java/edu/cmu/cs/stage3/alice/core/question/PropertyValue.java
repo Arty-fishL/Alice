@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -30,21 +30,22 @@ import edu.cmu.cs.stage3.alice.core.property.OverridableElementProperty;
 import edu.cmu.cs.stage3.alice.core.property.StringProperty;
 
 public class PropertyValue extends edu.cmu.cs.stage3.alice.core.Question {
-	private boolean m_ignorePropertyChanges = false;
+	private final boolean m_ignorePropertyChanges = false;
 	public final OverridableElementProperty element = new OverridableElementProperty(this, "element", null);
 	public final StringProperty propertyName = new StringProperty(this, "propertyName", null);
+
 	private void updateOverrideValueClass() {
 		Class elementOverrideValueClass = null;
-		String propertyNameValue = propertyName.getStringValue();
+		final String propertyNameValue = propertyName.getStringValue();
 		if (propertyNameValue != null) {
-			Element elementValue = element.getElementValue();
+			final Element elementValue = element.getElementValue();
 			if (elementValue != null) {
-				Property property = elementValue.getPropertyNamed(propertyNameValue);
+				final Property property = elementValue.getPropertyNamed(propertyNameValue);
 				if (property != null) {
 					elementOverrideValueClass = property.getDeclaredClass();
 				} else {
 					if (elementValue instanceof Expression) {
-						Class cls = ((Expression) elementValue).getValueClass();
+						final Class cls = ((Expression) elementValue).getValueClass();
 						if (cls != null) {
 							elementOverrideValueClass = cls;
 						}
@@ -56,7 +57,7 @@ public class PropertyValue extends edu.cmu.cs.stage3.alice.core.Question {
 	}
 
 	@Override
-	protected void propertyChanged(Property property, Object value) {
+	protected void propertyChanged(final Property property, final Object value) {
 		if (m_ignorePropertyChanges) {
 			return;
 		}
@@ -68,12 +69,13 @@ public class PropertyValue extends edu.cmu.cs.stage3.alice.core.Question {
 			super.propertyChanged(property, value);
 		}
 	}
+
 	private Property getPropertyValue() {
 		if (element.getOverrideValueClass() == null) {
 			updateOverrideValueClass();
 		}
-		Element elementValue = element.getElementValue();
-		String propertyNameValue = propertyName.getStringValue();
+		final Element elementValue = element.getElementValue();
+		final String propertyNameValue = propertyName.getStringValue();
 		if (elementValue != null && propertyNameValue != null) {
 			return elementValue.getPropertyNamed(propertyNameValue);
 			// Property property = elementValue.getPropertyNamed(
@@ -98,7 +100,7 @@ public class PropertyValue extends edu.cmu.cs.stage3.alice.core.Question {
 
 	@Override
 	public Object getValue() {
-		Property property = getPropertyValue();
+		final Property property = getPropertyValue();
 		if (property != null) {
 			return property.getValue();
 		} else {
@@ -109,22 +111,22 @@ public class PropertyValue extends edu.cmu.cs.stage3.alice.core.Question {
 
 	@Override
 	public Class getValueClass() {
-		Property property = getPropertyValue();
+		final Property property = getPropertyValue();
 		if (property != null) {
 			return property.getValueClass();
 		} else {
-			String propertyNameValue = propertyName.getStringValue();
+			final String propertyNameValue = propertyName.getStringValue();
 			if (propertyNameValue != null) {
-				Class cls = element.getValueClass();
+				final Class cls = element.getValueClass();
 				if (edu.cmu.cs.stage3.alice.core.Element.class.isAssignableFrom(cls)) {
 					try {
-						java.lang.reflect.Field field = cls.getField(propertyNameValue);
+						final java.lang.reflect.Field field = cls.getField(propertyNameValue);
 						if (field != null) {
 							return Element.getValueClassForPropertyNamed(field.getDeclaringClass(), propertyNameValue);
 						}
-					} catch (java.lang.NoSuchFieldException nsfe) {
+					} catch (final java.lang.NoSuchFieldException nsfe) {
 						// pass
-					} catch (java.lang.SecurityException se) {
+					} catch (final java.lang.SecurityException se) {
 						// pass
 					}
 				}

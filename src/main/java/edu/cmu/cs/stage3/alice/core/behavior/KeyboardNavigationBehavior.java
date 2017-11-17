@@ -13,7 +13,7 @@ import edu.cmu.cs.stage3.alice.core.property.TransformableProperty;
 
 /**
  * Title: Description: Copyright: Copyright (c) 2001 Company: Stage3
- * 
+ *
  * @author Ben Buchwald
  * @version 1.0
  */
@@ -22,8 +22,8 @@ public class KeyboardNavigationBehavior extends InternalResponseBehavior {
 
 	private edu.cmu.cs.stage3.alice.core.RenderTarget renderTarget;
 
-	private javax.vecmath.Vector3d speed = new javax.vecmath.Vector3d(0, 0, 0);
-	private javax.vecmath.Vector3d turning = new javax.vecmath.Vector3d(0, 0, 0);
+	private final javax.vecmath.Vector3d speed = new javax.vecmath.Vector3d(0, 0, 0);
+	private final javax.vecmath.Vector3d turning = new javax.vecmath.Vector3d(0, 0, 0);
 
 	public NumberProperty maxSpeed = new NumberProperty(this, "maxSpeed", new Double(15));
 	public NumberProperty maxTurning = new NumberProperty(this, "maxTurning", new Double(.15));
@@ -42,14 +42,14 @@ public class KeyboardNavigationBehavior extends InternalResponseBehavior {
 	}
 
 	@Override
-	public void started(World world, double time) {
+	public void started(final World world, final double time) {
 		super.started(world, time);
 		if (isEnabled.booleanValue()) {
-			RenderTarget[] rts = (RenderTarget[]) world.getDescendants(RenderTarget.class);
+			final RenderTarget[] rts = (RenderTarget[]) world.getDescendants(RenderTarget.class);
 			if (rts.length > 0) {
 				renderTarget = rts[0];
 				if (subject.get() == null) {
-					Camera[] cameras = renderTarget.getCameras();
+					final Camera[] cameras = renderTarget.getCameras();
 					if (cameras.length > 0) {
 						subject.set(cameras[0]);
 					}
@@ -67,7 +67,7 @@ public class KeyboardNavigationBehavior extends InternalResponseBehavior {
 	}
 
 	@Override
-	public void stopped(World world, double time) {
+	public void stopped(final World world, final double time) {
 		super.stopped(world, time);
 		if (isEnabled.booleanValue()) {
 			disable();
@@ -75,8 +75,8 @@ public class KeyboardNavigationBehavior extends InternalResponseBehavior {
 	}
 
 	@Override
-	public void internalSchedule(double time, double dt) {
-		KeyMapping keyMapping = (KeyMapping) keyMap.getElementValue();
+	public void internalSchedule(final double time, final double dt) {
+		final KeyMapping keyMapping = (KeyMapping) keyMap.getElementValue();
 		int actions;
 		if (keyMapping != null) {
 			actions = keyMapping.getActions();
@@ -139,7 +139,8 @@ public class KeyboardNavigationBehavior extends InternalResponseBehavior {
 		} else {
 			turning.z = 0;
 		}
-		if ((actions & KeyMapping.NAV_HEADSUP) != 0) {}
+		if ((actions & KeyMapping.NAV_HEADSUP) != 0) {
+		}
 
 		// obey maximums
 		if (speed.x < -maxSpeed.getNumberValue().doubleValue()) {
@@ -181,10 +182,10 @@ public class KeyboardNavigationBehavior extends InternalResponseBehavior {
 
 		// move
 		javax.vecmath.Vector3d vector = new javax.vecmath.Vector3d(dt * speed.x, dt * speed.y, dt * speed.z);
-		Transformable subjectTransformable = subject.getTransformableValue();
+		final Transformable subjectTransformable = subject.getTransformableValue();
 		try {
 			vector = subjectTransformable.preventPassingThroughOtherObjects(vector, 2);
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			// pass
 		}
 		subjectTransformable.moveRightNow(vector);
@@ -203,8 +204,9 @@ public class KeyboardNavigationBehavior extends InternalResponseBehavior {
 		((Transformable) subject.get()).turnRightNow(Direction.FORWARD, dt * turning.x);
 
 		if (((Boolean) stayOnGround.get()).booleanValue()) {
-			Transformable t = new Transformable();
-			t.setPositionRightNow(((Transformable) subject.get()).getPosition(((Transformable) subject.get()).getWorld()));
+			final Transformable t = new Transformable();
+			t.setPositionRightNow(
+					((Transformable) subject.get()).getPosition(((Transformable) subject.get()).getWorld()));
 			// t.setOrientationRightNow(((Transformable)subject.get()).getWorld().getOrientationAsQuaternion());
 			((Transformable) subject.get()).turnRightNow(Direction.RIGHT, dt * turning.y, t);
 		} else {

@@ -31,6 +31,7 @@ import edu.cmu.cs.stage3.alice.scenegraph.VertexGeometry;
 public class Dummy extends Model {
 	private static edu.cmu.cs.stage3.alice.scenegraph.IndexedTriangleArray s_sgITA = null;
 	private static edu.cmu.cs.stage3.alice.scenegraph.TextureMap s_sgTexture = null;
+
 	public Dummy() {
 		isFirstClass.set(true);
 		opacity.set(new Double(.5));
@@ -40,28 +41,28 @@ public class Dummy extends Model {
 		if (s_sgITA == null) {
 			s_sgITA = new edu.cmu.cs.stage3.alice.scenegraph.IndexedTriangleArray();
 			try {
-				java.io.InputStream is = Dummy.class.getResourceAsStream("axesIndices.bin");
+				final java.io.InputStream is = Dummy.class.getResourceAsStream("axesIndices.bin");
 				s_sgITA.setIndices(edu.cmu.cs.stage3.alice.scenegraph.IndexedTriangleArray.loadIndices(is));
 				is.close();
-			} catch (java.io.IOException ioe) {
+			} catch (final java.io.IOException ioe) {
 				throw new ExceptionWrapper(ioe, "failed to load axesIndices.bin resource");
 			}
 			try {
-				java.io.InputStream is = Dummy.class.getResourceAsStream("axesVertices.bin");
+				final java.io.InputStream is = Dummy.class.getResourceAsStream("axesVertices.bin");
 				s_sgITA.setVertices(VertexGeometry.loadVertices(is));
 				is.close();
-			} catch (java.io.IOException ioe) {
+			} catch (final java.io.IOException ioe) {
 				throw new ExceptionWrapper(ioe, "failed to load axesVertices.bin resource");
 			}
 		}
 		if (s_sgTexture == null) {
 			s_sgTexture = new edu.cmu.cs.stage3.alice.scenegraph.TextureMap();
 			try {
-				java.io.InputStream is = Dummy.class.getResourceAsStream("axesImage.png");
-				java.awt.Image image = edu.cmu.cs.stage3.image.ImageIO.load("png", is);
+				final java.io.InputStream is = Dummy.class.getResourceAsStream("axesImage.png");
+				final java.awt.Image image = edu.cmu.cs.stage3.image.ImageIO.load("png", is);
 				is.close();
 				s_sgTexture.setImage(image);
-			} catch (java.io.IOException ioe) {
+			} catch (final java.io.IOException ioe) {
 				throw new ExceptionWrapper(ioe, "failed to load axesImage.png resource");
 			}
 		}
@@ -72,7 +73,7 @@ public class Dummy extends Model {
 	// scenegraph changes
 
 	@Override
-	protected void propertyChanged(edu.cmu.cs.stage3.alice.core.Property property, Object value) {
+	protected void propertyChanged(final edu.cmu.cs.stage3.alice.core.Property property, final Object value) {
 		if (property == diffuseColorMap) {
 			// pass
 		} else if (property == geometry) {

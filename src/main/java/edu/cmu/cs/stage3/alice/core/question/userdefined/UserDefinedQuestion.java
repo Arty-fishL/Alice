@@ -30,13 +30,17 @@ import edu.cmu.cs.stage3.alice.core.property.ElementArrayProperty;
 
 public class UserDefinedQuestion extends edu.cmu.cs.stage3.alice.core.Question {
 	public final ClassProperty valueClass = new ClassProperty(this, "valueClass", null);
-	public final ElementArrayProperty components = new ElementArrayProperty(this, "components", null, Component[].class);
-	public final ElementArrayProperty requiredFormalParameters = new ElementArrayProperty(this, "requiredFormalParameters", null, Variable[].class);
-	public final ElementArrayProperty keywordFormalParameters = new ElementArrayProperty(this, "keywordFormalParameters", null, Variable[].class);
-	public final ElementArrayProperty localVariables = new ElementArrayProperty(this, "localVariables", null, Variable[].class);
+	public final ElementArrayProperty components = new ElementArrayProperty(this, "components", null,
+			Component[].class);
+	public final ElementArrayProperty requiredFormalParameters = new ElementArrayProperty(this,
+			"requiredFormalParameters", null, Variable[].class);
+	public final ElementArrayProperty keywordFormalParameters = new ElementArrayProperty(this,
+			"keywordFormalParameters", null, Variable[].class);
+	public final ElementArrayProperty localVariables = new ElementArrayProperty(this, "localVariables", null,
+			Variable[].class);
 
 	@Override
-	protected void internalFindAccessibleExpressions(Class cls, java.util.Vector v) {
+	protected void internalFindAccessibleExpressions(final Class cls, final java.util.Vector v) {
 		for (int i = 0; i < requiredFormalParameters.size(); i++) {
 			internalAddExpressionIfAssignableTo((Expression) requiredFormalParameters.get(i), cls, v);
 		}
@@ -52,8 +56,8 @@ public class UserDefinedQuestion extends edu.cmu.cs.stage3.alice.core.Question {
 	@Override
 	public Object getValue() {
 		for (int i = 0; i < components.size(); i++) {
-			Component component = (Component) components.get(i);
-			Object[] value = component.execute();
+			final Component component = (Component) components.get(i);
+			final Object[] value = component.execute();
 			if (value != null) {
 				return value[0];
 			}

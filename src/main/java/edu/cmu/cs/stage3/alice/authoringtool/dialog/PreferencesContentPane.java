@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -57,9 +57,13 @@ import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
  */
 
 public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -5640197307370575192L;
 	protected java.util.HashMap checkBoxToConfigKeyMap = new java.util.HashMap();
 	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
-	private Package authoringToolPackage = Package.getPackage("edu.cmu.cs.stage3.alice.authoringtool");
+	private final Package authoringToolPackage = Package.getPackage("edu.cmu.cs.stage3.alice.authoringtool");
 	protected javax.swing.JFileChooser browseFileChooser = new javax.swing.JFileChooser();
 	protected java.util.HashMap rendererStringMap = new java.util.HashMap();
 	protected boolean restartRequired = false;
@@ -67,11 +71,12 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	protected boolean shouldListenToRenderBoundsChanges = true;
 	protected boolean changedCaptureDirectory = false;
 	protected java.awt.Frame owner;
-	private java.util.Vector m_okActionListeners = new java.util.Vector();
+	private final java.util.Vector m_okActionListeners = new java.util.Vector();
 	private final String FOREVER_INTERVAL_STRING = "Forever";
 	private final String INFINITE_BACKUPS_STRING = "Infinite";
 
-	private static edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringToolConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration.getLocalConfiguration(edu.cmu.cs.stage3.alice.authoringtool.JAlice.class.getPackage());
+	private static edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringToolConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration
+			.getLocalConfiguration(edu.cmu.cs.stage3.alice.authoringtool.JAlice.class.getPackage());
 
 	public PreferencesContentPane() {
 		super();
@@ -154,26 +159,33 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		browseFileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
 		browseFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-		Configuration.addConfigurationListener(new edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationListener() {
-			@Override
-			public void changing(edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent ev) {
-			}
-			@Override
-			public void changed(edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent ev) {
-				if (ev.getKeyName().endsWith("rendering.orderedRendererList")) {
-					restartRequired = true;
-				} else if (ev.getKeyName().endsWith("rendering.forceSoftwareRendering")) {
-					restartRequired = true;
-				} else if (ev.getKeyName().endsWith("resourceFile")) {
-					restartRequired = true;
-				}
-			}
-		});
+		Configuration
+				.addConfigurationListener(new edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationListener() {
+					@Override
+					public void changing(final edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent ev) {
+					}
+
+					@Override
+					public void changed(final edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent ev) {
+						if (ev.getKeyName().endsWith("rendering.orderedRendererList")) {
+							restartRequired = true;
+						} else if (ev.getKeyName().endsWith("rendering.forceSoftwareRendering")) {
+							restartRequired = true;
+						} else if (ev.getKeyName().endsWith("resourceFile")) {
+							restartRequired = true;
+						}
+					}
+				});
 	}
 
 	public final javax.swing.AbstractAction okayAction = new javax.swing.AbstractAction() {
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = 1054243740951966857L;
+
 		@Override
-		public void actionPerformed(java.awt.event.ActionEvent ev) {
+		public void actionPerformed(final java.awt.event.ActionEvent ev) {
 			if (PreferencesContentPane.this.validateInput()) {
 				fireOKActionListeners();
 			}
@@ -181,41 +193,50 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	};
 
 	public final javax.swing.AbstractAction cancelAction = new javax.swing.AbstractAction() {
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = -6034345458193991590L;
+
 		@Override
-		public void actionPerformed(java.awt.event.ActionEvent ev) {
+		public void actionPerformed(final java.awt.event.ActionEvent ev) {
 		}
 	};
 
 	public final javax.swing.event.DocumentListener captureDirectoryChangeListener = new javax.swing.event.DocumentListener() {
 		@Override
-		public void changedUpdate(javax.swing.event.DocumentEvent e) {
+		public void changedUpdate(final javax.swing.event.DocumentEvent e) {
 			changedCaptureDirectory = true;
 		}
+
 		@Override
-		public void insertUpdate(javax.swing.event.DocumentEvent e) {
+		public void insertUpdate(final javax.swing.event.DocumentEvent e) {
 			changedCaptureDirectory = true;
 		}
+
 		@Override
-		public void removeUpdate(javax.swing.event.DocumentEvent e) {
+		public void removeUpdate(final javax.swing.event.DocumentEvent e) {
 			changedCaptureDirectory = true;
 		}
 	};
 
 	public final javax.swing.event.DocumentListener renderDialogBoundsChecker = new javax.swing.event.DocumentListener() {
 		@Override
-		public void changedUpdate(javax.swing.event.DocumentEvent e) {
+		public void changedUpdate(final javax.swing.event.DocumentEvent e) {
 			if (shouldListenToRenderBoundsChanges) {
 				checkAndUpdateRenderBounds();
 			}
 		}
+
 		@Override
-		public void insertUpdate(javax.swing.event.DocumentEvent e) {
+		public void insertUpdate(final javax.swing.event.DocumentEvent e) {
 			if (shouldListenToRenderBoundsChanges) {
 				checkAndUpdateRenderBounds();
 			}
 		}
+
 		@Override
-		public void removeUpdate(javax.swing.event.DocumentEvent e) {
+		public void removeUpdate(final javax.swing.event.DocumentEvent e) {
 			if (shouldListenToRenderBoundsChanges) {
 				checkAndUpdateRenderBounds();
 			}
@@ -224,19 +245,21 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 
 	public final javax.swing.event.DocumentListener renderDialogWidthChecker = new javax.swing.event.DocumentListener() {
 		@Override
-		public void changedUpdate(javax.swing.event.DocumentEvent e) {
+		public void changedUpdate(final javax.swing.event.DocumentEvent e) {
 			if (shouldListenToRenderBoundsChanges) {
 				checkAndUpdateRenderWidth();
 			}
 		}
+
 		@Override
-		public void insertUpdate(javax.swing.event.DocumentEvent e) {
+		public void insertUpdate(final javax.swing.event.DocumentEvent e) {
 			if (shouldListenToRenderBoundsChanges) {
 				checkAndUpdateRenderWidth();
 			}
 		}
+
 		@Override
-		public void removeUpdate(javax.swing.event.DocumentEvent e) {
+		public void removeUpdate(final javax.swing.event.DocumentEvent e) {
 			if (shouldListenToRenderBoundsChanges) {
 				checkAndUpdateRenderWidth();
 			}
@@ -245,26 +268,28 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 
 	public final javax.swing.event.DocumentListener renderDialogHeightChecker = new javax.swing.event.DocumentListener() {
 		@Override
-		public void changedUpdate(javax.swing.event.DocumentEvent e) {
+		public void changedUpdate(final javax.swing.event.DocumentEvent e) {
 			if (shouldListenToRenderBoundsChanges) {
 				checkAndUpdateRenderHeight();
 			}
 		}
+
 		@Override
-		public void insertUpdate(javax.swing.event.DocumentEvent e) {
+		public void insertUpdate(final javax.swing.event.DocumentEvent e) {
 			if (shouldListenToRenderBoundsChanges) {
 				checkAndUpdateRenderHeight();
 			}
 		}
+
 		@Override
-		public void removeUpdate(javax.swing.event.DocumentEvent e) {
+		public void removeUpdate(final javax.swing.event.DocumentEvent e) {
 			if (shouldListenToRenderBoundsChanges) {
 				checkAndUpdateRenderHeight();
 			}
 		}
 	};
 
-	private void scaleFont(Component currentComponent) {
+	private void scaleFont(final Component currentComponent) {
 		currentComponent.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, 12));
 
 		if (currentComponent instanceof Container) {
@@ -274,7 +299,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		}
 	}
 
-	public void setAuthoringTool(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
+	public void setAuthoringTool(final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
 		this.authoringTool = authoringTool;
 	}
 
@@ -284,38 +309,42 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	}
 
 	@Override
-	public void preDialogShow(javax.swing.JDialog dialog) {
+	public void preDialogShow(final javax.swing.JDialog dialog) {
 		super.preDialogShow(dialog);
 		updateGUI();
 		changedCaptureDirectory = false;
 	}
 
 	@Override
-	public void postDialogShow(javax.swing.JDialog dialog) {
+	public void postDialogShow(final javax.swing.JDialog dialog) {
 		super.postDialogShow(dialog);
 	}
 
 	@Override
-	public void addOKActionListener(java.awt.event.ActionListener l) {
+	public void addOKActionListener(final java.awt.event.ActionListener l) {
 		m_okActionListeners.addElement(l);
 	}
+
 	@Override
-	public void removeOKActionListener(java.awt.event.ActionListener l) {
+	public void removeOKActionListener(final java.awt.event.ActionListener l) {
 		m_okActionListeners.removeElement(l);
 	}
+
 	@Override
-	public void addCancelActionListener(java.awt.event.ActionListener l) {
+	public void addCancelActionListener(final java.awt.event.ActionListener l) {
 		cancelButton.addActionListener(l);
 	}
+
 	@Override
-	public void removeCancelActionListener(java.awt.event.ActionListener l) {
+	public void removeCancelActionListener(final java.awt.event.ActionListener l) {
 		cancelButton.removeActionListener(l);
 	}
 
 	private void fireOKActionListeners() {
-		java.awt.event.ActionEvent e = new java.awt.event.ActionEvent(this, java.awt.event.ActionEvent.ACTION_PERFORMED, "OK");
+		final java.awt.event.ActionEvent e = new java.awt.event.ActionEvent(this,
+				java.awt.event.ActionEvent.ACTION_PERFORMED, "OK");
 		for (int i = 0; i < m_okActionListeners.size(); i++) {
-			java.awt.event.ActionListener l = (java.awt.event.ActionListener) m_okActionListeners.elementAt(i);
+			final java.awt.event.ActionListener l = (java.awt.event.ActionListener) m_okActionListeners.elementAt(i);
 			l.actionPerformed(e);
 		}
 	}
@@ -323,10 +352,14 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	public void finalizeSelections() {
 		setInput();
 		if (restartRequired) {
-			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("You will have to restart Alice in order for these settings to take effect.", "Restart Required", JOptionPane.INFORMATION_MESSAGE);
+			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog(
+					"You will have to restart Alice in order for these settings to take effect.", "Restart Required",
+					JOptionPane.INFORMATION_MESSAGE);
 			restartRequired = false;
 		} else if (reloadRequired) {
-			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("You will have to reload the current world in order for these settings to take effect.", "Reload Required", JOptionPane.INFORMATION_MESSAGE);
+			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog(
+					"You will have to reload the current world in order for these settings to take effect.",
+					"Reload Required", JOptionPane.INFORMATION_MESSAGE);
 			reloadRequired = false;
 		}
 		if (configTabbedPane != null && generalPanel != null) {
@@ -334,7 +367,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		}
 	}
 
-	protected boolean isValidRenderBounds(int x, int y, int w, int h) {
+	protected boolean isValidRenderBounds(final int x, final int y, final int w, final int h) {
 		if (x < 0 || y < 0 || w <= 0 || h <= 0) {
 			return false;
 		}
@@ -352,7 +385,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 				boundsWidthTextField.setForeground(java.awt.Color.red);
 				isOK = false;
 			}
-		} catch (java.lang.NumberFormatException e) {
+		} catch (final java.lang.NumberFormatException e) {
 			boundsWidthTextField.setForeground(java.awt.Color.red);
 			isOK = false;
 		}
@@ -361,11 +394,11 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 			if (h <= 0) {
 				isOK = false;
 			}
-		} catch (java.lang.NumberFormatException e) {
+		} catch (final java.lang.NumberFormatException e) {
 			isOK = false;
 		}
 		if (constrainRenderDialogAspectCheckBox.isSelected() && isOK && authoringTool != null) {
-			double currentAspectRatio = authoringTool.getAspectRatio();
+			final double currentAspectRatio = authoringTool.getAspectRatio();
 			h = (int) Math.round(w / currentAspectRatio);
 			if (h <= 0) {
 				h = 1;
@@ -388,7 +421,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 				boundsHeightTextField.setForeground(java.awt.Color.red);
 				isOK = false;
 			}
-		} catch (java.lang.NumberFormatException e) {
+		} catch (final java.lang.NumberFormatException e) {
 			boundsHeightTextField.setForeground(java.awt.Color.red);
 			isOK = false;
 		}
@@ -397,11 +430,11 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 			if (w <= 0) {
 				isOK = false;
 			}
-		} catch (java.lang.NumberFormatException e) {
+		} catch (final java.lang.NumberFormatException e) {
 			isOK = false;
 		}
 		if (constrainRenderDialogAspectCheckBox.isSelected() && isOK && authoringTool != null) {
-			double currentAspectRatio = authoringTool.getAspectRatio();
+			final double currentAspectRatio = authoringTool.getAspectRatio();
 			w = (int) Math.round(h * currentAspectRatio);
 			if (w <= 0) {
 				w = 1;
@@ -424,7 +457,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 				boundsXTextField.setForeground(java.awt.Color.red);
 				isOK = false;
 			}
-		} catch (java.lang.NumberFormatException e) {
+		} catch (final java.lang.NumberFormatException e) {
 			boundsXTextField.setForeground(java.awt.Color.red);
 			isOK = false;
 		}
@@ -436,7 +469,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 				boundsYTextField.setForeground(java.awt.Color.red);
 				isOK = false;
 			}
-		} catch (java.lang.NumberFormatException e) {
+		} catch (final java.lang.NumberFormatException e) {
 			boundsYTextField.setForeground(java.awt.Color.red);
 			isOK = false;
 		}
@@ -448,7 +481,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 				boundsWidthTextField.setForeground(java.awt.Color.red);
 				isOK = false;
 			}
-		} catch (java.lang.NumberFormatException e) {
+		} catch (final java.lang.NumberFormatException e) {
 			boundsWidthTextField.setForeground(java.awt.Color.red);
 			isOK = false;
 		}
@@ -460,12 +493,12 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 				boundsHeightTextField.setForeground(java.awt.Color.red);
 				isOK = false;
 			}
-		} catch (java.lang.NumberFormatException e) {
+		} catch (final java.lang.NumberFormatException e) {
 			boundsHeightTextField.setForeground(java.awt.Color.red);
 			isOK = false;
 		}
 		if (constrainRenderDialogAspectCheckBox.isSelected() && isOK && authoringTool != null) {
-			double currentAspectRatio = authoringTool.getAspectRatio();
+			final double currentAspectRatio = authoringTool.getAspectRatio();
 			if (currentAspectRatio > 1.0) {
 				w = (int) Math.round(h * currentAspectRatio);
 				if (w <= 0) {
@@ -489,51 +522,62 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 
 	protected boolean validateInput() {
 		try {
-			int i = java.lang.Integer.parseInt(maxRecentWorldsTextField.getText());
+			final int i = java.lang.Integer.parseInt(maxRecentWorldsTextField.getText());
 			if (i < 0 || i > 30) {
 				throw new java.lang.NumberFormatException();
 			}
-		} catch (java.lang.NumberFormatException e) {
-			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("the maximum number of recent worlds must be between 0 and 30", "Invalid Clipboard Number", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+		} catch (final java.lang.NumberFormatException e) {
+			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog(
+					"the maximum number of recent worlds must be between 0 and 30", "Invalid Clipboard Number",
+					javax.swing.JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
 
 		try {
-			int i = java.lang.Integer.parseInt(numClipboardsTextField.getText());
+			final int i = java.lang.Integer.parseInt(numClipboardsTextField.getText());
 			if (i < 0 || i > 30) {
 				throw new java.lang.NumberFormatException();
 			}
-		} catch (java.lang.NumberFormatException e) {
-			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("the number of clipboards must be between 0 and 30", "Invalid Clipboard Number", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+		} catch (final java.lang.NumberFormatException e) {
+			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("the number of clipboards must be between 0 and 30",
+					"Invalid Clipboard Number", javax.swing.JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
 
 		try {
-			int x = java.lang.Integer.parseInt(boundsXTextField.getText());
-			int y = java.lang.Integer.parseInt(boundsYTextField.getText());
-			int w = java.lang.Integer.parseInt(boundsWidthTextField.getText());
-			int h = java.lang.Integer.parseInt(boundsHeightTextField.getText());
+			final int x = java.lang.Integer.parseInt(boundsXTextField.getText());
+			final int y = java.lang.Integer.parseInt(boundsYTextField.getText());
+			final int w = java.lang.Integer.parseInt(boundsWidthTextField.getText());
+			final int h = java.lang.Integer.parseInt(boundsHeightTextField.getText());
 			if (!isValidRenderBounds(x, y, w, h)) {
 				throw new java.lang.NumberFormatException();
 			}
-		} catch (java.lang.NumberFormatException e) {
-			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("all of the render window bounds values must be integers greater than 0", "Bad Render Bounds", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+		} catch (final java.lang.NumberFormatException e) {
+			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog(
+					"all of the render window bounds values must be integers greater than 0", "Bad Render Bounds",
+					javax.swing.JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
 
 		// bad directories are just given warnings
-		java.io.File worldDirectoryFile = new java.io.File(worldDirectoryTextField.getText());
+		final java.io.File worldDirectoryFile = new java.io.File(worldDirectoryTextField.getText());
 		if (!worldDirectoryFile.exists() || !worldDirectoryFile.isDirectory() || !worldDirectoryFile.canRead()) {
-			int result = edu.cmu.cs.stage3.swing.DialogManager.showConfirmDialog(worldDirectoryFile.getAbsolutePath() + " is not valid.  The worlds directory must be a directory that exists and can be read.  Would you like to fix this now?", "Bad Directory", javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.WARNING_MESSAGE);
+			final int result = edu.cmu.cs.stage3.swing.DialogManager.showConfirmDialog(
+					worldDirectoryFile.getAbsolutePath()
+							+ " is not valid.  The worlds directory must be a directory that exists and can be read.  Would you like to fix this now?",
+					"Bad Directory", javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.WARNING_MESSAGE);
 			if (result != javax.swing.JOptionPane.NO_OPTION) {
 				return false;
 			}
 			// return false;
 		}
 
-		java.io.File importDirectoryFile = new java.io.File(importDirectoryTextField.getText());
+		final java.io.File importDirectoryFile = new java.io.File(importDirectoryTextField.getText());
 		if (!importDirectoryFile.exists() || !importDirectoryFile.isDirectory() || !importDirectoryFile.canRead()) {
-			int result = edu.cmu.cs.stage3.swing.DialogManager.showConfirmDialog(importDirectoryFile.getAbsolutePath() + " is not valid.  The import directory must be a directory that exists and can be read.  Would you like to fix this now?", "Bad Directory", javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.WARNING_MESSAGE);
+			final int result = edu.cmu.cs.stage3.swing.DialogManager.showConfirmDialog(
+					importDirectoryFile.getAbsolutePath()
+							+ " is not valid.  The import directory must be a directory that exists and can be read.  Would you like to fix this now?",
+					"Bad Directory", javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.WARNING_MESSAGE);
 			if (result != javax.swing.JOptionPane.NO_OPTION) {
 				return false;
 			}
@@ -546,7 +590,8 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		// (!galleryDirectoryFile.isDirectory()) ||
 		// (!galleryDirectoryFile.canRead()) ) {
 		// edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog( this,
-		// "The gallery directory must be a directory that exists and can be read."
+		// "The gallery directory must be a directory that exists and can be
+		// read."
 		// );
 		// return false;
 		// }
@@ -557,70 +602,83 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		// (!characterDirectoryFile.isDirectory()) ||
 		// (!characterDirectoryFile.canRead()) ) {
 		// edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog( this,
-		// "The character directory must be a directory that exists and can be read."
+		// "The character directory must be a directory that exists and can be
+		// read."
 		// );
 		// return false;
 		// }
 		if (changedCaptureDirectory) {
-			java.io.File captureDirectoryFile = new java.io.File(captureDirectoryTextField.getText());
-			int directoryCheck = edu.cmu.cs.stage3.io.FileUtilities.isWritableDirectory(captureDirectoryFile);
+			final java.io.File captureDirectoryFile = new java.io.File(captureDirectoryTextField.getText());
+			final int directoryCheck = edu.cmu.cs.stage3.io.FileUtilities.isWritableDirectory(captureDirectoryFile);
 			if (directoryCheck == edu.cmu.cs.stage3.io.FileUtilities.DIRECTORY_IS_NOT_WRITABLE) {
-				edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("The capture directory specified can not be written to. Please choose another directory.", "Bad Directory", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+				edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog(
+						"The capture directory specified can not be written to. Please choose another directory.",
+						"Bad Directory", javax.swing.JOptionPane.INFORMATION_MESSAGE);
 				return false;
-			} else if (directoryCheck == edu.cmu.cs.stage3.io.FileUtilities.DIRECTORY_DOES_NOT_EXIST || directoryCheck == edu.cmu.cs.stage3.io.FileUtilities.BAD_DIRECTORY_INPUT) {
-				edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("The capture directory must be a directory that exists.", "Bad Directory", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+			} else if (directoryCheck == edu.cmu.cs.stage3.io.FileUtilities.DIRECTORY_DOES_NOT_EXIST
+					|| directoryCheck == edu.cmu.cs.stage3.io.FileUtilities.BAD_DIRECTORY_INPUT) {
+				edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog(
+						"The capture directory must be a directory that exists.", "Bad Directory",
+						javax.swing.JOptionPane.INFORMATION_MESSAGE);
 				return false;
 			}
 		}
 
 		if (baseNameTextField.getText().trim().equals("")) {
-			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("The capture base name must not be empty.", "Bad Base Name", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("The capture base name must not be empty.",
+					"Bad Base Name", javax.swing.JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
 
-		char[] badChars = {'\\', '/', ':', '*', '?', '"', '<', '>', '|'}; // TODO:
-																			// make
-																			// this
-																			// more
-																			// platform
-																			// independent
-		String baseName = baseNameTextField.getText().trim();
-		for (char badChar : badChars) {
+		final char[] badChars = { '\\', '/', ':', '*', '?', '"', '<', '>', '|' }; // TODO:
+		// make
+		// this
+		// more
+		// platform
+		// independent
+		final String baseName = baseNameTextField.getText().trim();
+		for (final char badChar : badChars) {
 			if (baseName.indexOf(badChar) != -1) {
-				StringBuffer message = new StringBuffer("Filenames may not contain the following characters:");
-				for (char badChar2 : badChars) {
+				final StringBuffer message = new StringBuffer("Filenames may not contain the following characters:");
+				for (final char badChar2 : badChars) {
 					message.append(" ");
 					message.append(badChar2);
 				}
-				edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog(message.toString(), "Bad Filename", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+				edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog(message.toString(), "Bad Filename",
+						javax.swing.JOptionPane.INFORMATION_MESSAGE);
 				return false;
 			}
 		}
 
-		String saveIntervalString = (String) saveIntervalComboBox.getSelectedItem();
+		final String saveIntervalString = (String) saveIntervalComboBox.getSelectedItem();
 		if (!saveIntervalString.equalsIgnoreCase(FOREVER_INTERVAL_STRING)) {
 			try {
 				Integer.parseInt(saveIntervalString);
-			} catch (Throwable t) {
-				edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("You must enter a valid number for the time to wait before prompting to save.", "Bad Prompt To Save Interval", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+			} catch (final Throwable t) {
+				edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog(
+						"You must enter a valid number for the time to wait before prompting to save.",
+						"Bad Prompt To Save Interval", javax.swing.JOptionPane.INFORMATION_MESSAGE);
 				return false;
 			}
 		}
 
-		String backupCountString = (String) backupCountComboBox.getSelectedItem();
+		final String backupCountString = (String) backupCountComboBox.getSelectedItem();
 		if (!backupCountString.equalsIgnoreCase(INFINITE_BACKUPS_STRING)) {
 			try {
 				Integer.parseInt(backupCountString);
-			} catch (Throwable t) {
-				edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("You must enter a valid number for the number of backups you want Alice to save.", "Bad Backup Count Value", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+			} catch (final Throwable t) {
+				edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog(
+						"You must enter a valid number for the number of backups you want Alice to save.",
+						"Bad Backup Count Value", javax.swing.JOptionPane.INFORMATION_MESSAGE);
 				return false;
 			}
 		}
-		String fontSizeString = (String) fontSizeComboBox.getSelectedItem();
+		final String fontSizeString = (String) fontSizeComboBox.getSelectedItem();
 		try {
 			Integer.parseInt(fontSizeString);
-		} catch (Throwable t) {
-			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("You must enter a valid number for the font size.", "Bad Backup Font Size", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+		} catch (final Throwable t) {
+			edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("You must enter a valid number for the font size.",
+					"Bad Backup Font Size", javax.swing.JOptionPane.INFORMATION_MESSAGE);
 			return false;
 		}
 
@@ -628,35 +686,47 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	}
 
 	protected void setInput() {
-		boolean oldContrast = Configuration.getValue(authoringToolPackage, "enableHighContrastMode").equalsIgnoreCase("true");
-		for (java.util.Iterator iter = checkBoxToConfigKeyMap.keySet().iterator(); iter.hasNext();) {
-			javax.swing.JCheckBox checkBox = (javax.swing.JCheckBox) iter.next();
-			String currentValue = Configuration.getValue(authoringToolPackage, (String) checkBoxToConfigKeyMap.get(checkBox));
+		final boolean oldContrast = Configuration.getValue(authoringToolPackage, "enableHighContrastMode")
+				.equalsIgnoreCase("true");
+		for (final java.util.Iterator iter = checkBoxToConfigKeyMap.keySet().iterator(); iter.hasNext();) {
+			final javax.swing.JCheckBox checkBox = (javax.swing.JCheckBox) iter.next();
+			String currentValue = Configuration.getValue(authoringToolPackage,
+					(String) checkBoxToConfigKeyMap.get(checkBox));
 			if (currentValue == null) {
-				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Warning: no value found for preference: " + checkBoxToConfigKeyMap.get(checkBox), null);
+				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog(
+						"Warning: no value found for preference: " + checkBoxToConfigKeyMap.get(checkBox), null);
 				currentValue = "false";
-				Configuration.setValue(authoringToolPackage, (String) checkBoxToConfigKeyMap.get(checkBox), currentValue);
+				Configuration.setValue(authoringToolPackage, (String) checkBoxToConfigKeyMap.get(checkBox),
+						currentValue);
 			}
 			if (currentValue.equalsIgnoreCase("true") != checkBox.isSelected()) {
-				Configuration.setValue(authoringToolPackage, (String) checkBoxToConfigKeyMap.get(checkBox), checkBox.isSelected() ? "true" : "false");
+				Configuration.setValue(authoringToolPackage, (String) checkBoxToConfigKeyMap.get(checkBox),
+						checkBox.isSelected() ? "true" : "false");
 			}
 		}
 
-		if (!Configuration.getValue(authoringToolPackage, "recentWorlds.maxWorlds").equals(maxRecentWorldsTextField.getText())) {
+		if (!Configuration.getValue(authoringToolPackage, "recentWorlds.maxWorlds")
+				.equals(maxRecentWorldsTextField.getText())) {
 			Configuration.setValue(authoringToolPackage, "recentWorlds.maxWorlds", maxRecentWorldsTextField.getText());
 		}
-		if (!Configuration.getValue(authoringToolPackage, "numberOfClipboards").equals(numClipboardsTextField.getText())) {
+		if (!Configuration.getValue(authoringToolPackage, "numberOfClipboards")
+				.equals(numClipboardsTextField.getText())) {
 			Configuration.setValue(authoringToolPackage, "numberOfClipboards", numClipboardsTextField.getText());
 		}
-		String boundsString = boundsXTextField.getText() + ", " + boundsYTextField.getText() + ", " + boundsWidthTextField.getText() + ", " + boundsHeightTextField.getText();
+		final String boundsString = boundsXTextField.getText() + ", " + boundsYTextField.getText() + ", "
+				+ boundsWidthTextField.getText() + ", " + boundsHeightTextField.getText();
 		if (!Configuration.getValue(authoringToolPackage, "rendering.renderWindowBounds").equals(boundsString)) {
 			Configuration.setValue(authoringToolPackage, "rendering.renderWindowBounds", boundsString);
 		}
-		if (!Configuration.getValue(authoringToolPackage, "directories.worldsDirectory").equals(worldDirectoryTextField.getText())) {
-			Configuration.setValue(authoringToolPackage, "directories.worldsDirectory", worldDirectoryTextField.getText());
+		if (!Configuration.getValue(authoringToolPackage, "directories.worldsDirectory")
+				.equals(worldDirectoryTextField.getText())) {
+			Configuration.setValue(authoringToolPackage, "directories.worldsDirectory",
+					worldDirectoryTextField.getText());
 		}
-		if (!Configuration.getValue(authoringToolPackage, "directories.importDirectory").equals(worldDirectoryTextField.getText())) {
-			Configuration.setValue(authoringToolPackage, "directories.importDirectory", worldDirectoryTextField.getText());
+		if (!Configuration.getValue(authoringToolPackage, "directories.importDirectory")
+				.equals(worldDirectoryTextField.getText())) {
+			Configuration.setValue(authoringToolPackage, "directories.importDirectory",
+					worldDirectoryTextField.getText());
 		}
 		// if( ! Configuration.getValue( authoringToolPackage,
 		// "directories.galleryDirectory" ).equals(
@@ -672,20 +742,29 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		// "directories.charactersDirectory",
 		// characterDirectoryTextField.getText() );
 		// }
-		if (!Configuration.getValue(authoringToolPackage, "screenCapture.directory").equals(captureDirectoryTextField.getText())) {
-			Configuration.setValue(authoringToolPackage, "screenCapture.directory", captureDirectoryTextField.getText());
+		if (!Configuration.getValue(authoringToolPackage, "screenCapture.directory")
+				.equals(captureDirectoryTextField.getText())) {
+			Configuration.setValue(authoringToolPackage, "screenCapture.directory",
+					captureDirectoryTextField.getText());
 		}
-		if (!Configuration.getValue(authoringToolPackage, "screenCapture.baseName").equals(baseNameTextField.getText())) {
+		if (!Configuration.getValue(authoringToolPackage, "screenCapture.baseName")
+				.equals(baseNameTextField.getText())) {
 			Configuration.setValue(authoringToolPackage, "screenCapture.baseName", baseNameTextField.getText());
 		}
-		if (!Configuration.getValue(authoringToolPackage, "screenCapture.numDigits").equals(numDigitsComboBox.getSelectedItem())) {
-			Configuration.setValue(authoringToolPackage, "screenCapture.numDigits", (String) numDigitsComboBox.getSelectedItem());
+		if (!Configuration.getValue(authoringToolPackage, "screenCapture.numDigits")
+				.equals(numDigitsComboBox.getSelectedItem())) {
+			Configuration.setValue(authoringToolPackage, "screenCapture.numDigits",
+					(String) numDigitsComboBox.getSelectedItem());
 		}
-		if (!Configuration.getValue(authoringToolPackage, "screenCapture.codec").equals(codecComboBox.getSelectedItem())) {
-			Configuration.setValue(authoringToolPackage, "screenCapture.codec", (String) codecComboBox.getSelectedItem());
+		if (!Configuration.getValue(authoringToolPackage, "screenCapture.codec")
+				.equals(codecComboBox.getSelectedItem())) {
+			Configuration.setValue(authoringToolPackage, "screenCapture.codec",
+					(String) codecComboBox.getSelectedItem());
 		}
-		if (!Configuration.getValue(authoringToolPackage, "resourceFile").equals(resourceFileComboBox.getSelectedItem())) {
-			Configuration.setValue(authoringToolPackage, "resourceFile", (String) resourceFileComboBox.getSelectedItem());
+		if (!Configuration.getValue(authoringToolPackage, "resourceFile")
+				.equals(resourceFileComboBox.getSelectedItem())) {
+			Configuration.setValue(authoringToolPackage, "resourceFile",
+					(String) resourceFileComboBox.getSelectedItem());
 		}
 		// if( ! Configuration.getValue( authoringToolPackage,
 		// "printing.scaleFactor" ).equals(
@@ -694,24 +773,25 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		// printingScaleComboBox.getSelectedItem().toString() );
 		// }
 
-		String saveIntervalString = (String) saveIntervalComboBox.getSelectedItem();
+		final String saveIntervalString = (String) saveIntervalComboBox.getSelectedItem();
 		if (saveIntervalString.equalsIgnoreCase(FOREVER_INTERVAL_STRING)) {
 			Configuration.setValue(authoringToolPackage, "promptToSaveInterval", Integer.toString(Integer.MAX_VALUE));
 		} else {
 			Configuration.setValue(authoringToolPackage, "promptToSaveInterval", saveIntervalString);
 		}
 
-		String backupCountString = (String) backupCountComboBox.getSelectedItem();
+		final String backupCountString = (String) backupCountComboBox.getSelectedItem();
 		if (saveIntervalString.equalsIgnoreCase(FOREVER_INTERVAL_STRING)) {
-			Configuration.setValue(authoringToolPackage, "maximumWorldBackupCount", Integer.toString(Integer.MAX_VALUE));
+			Configuration.setValue(authoringToolPackage, "maximumWorldBackupCount",
+					Integer.toString(Integer.MAX_VALUE));
 		} else {
 			Configuration.setValue(authoringToolPackage, "maximumWorldBackupCount", backupCountString);
 		}
 
-		int oldFontSize = ((java.awt.Font) javax.swing.UIManager.get("Label.font")).getSize();
-		String fontSizeString = (String) fontSizeComboBox.getSelectedItem();
+		final int oldFontSize = ((java.awt.Font) javax.swing.UIManager.get("Label.font")).getSize();
+		final String fontSizeString = (String) fontSizeComboBox.getSelectedItem();
 		Configuration.setValue(authoringToolPackage, "fontSize", fontSizeString);
-		int newFontSize = Integer.valueOf(fontSizeString).intValue();
+		final int newFontSize = Integer.valueOf(fontSizeString).intValue();
 		if (oldContrast != enableHighContrastCheckBox.isSelected() || oldFontSize != newFontSize) {
 			restartRequired = true;
 		}
@@ -730,18 +810,19 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 
 		try {
 			Configuration.storeConfig();
-		} catch (java.io.IOException e) {
+		} catch (final java.io.IOException e) {
 			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Error storing preferences.", e);
 		}
 	}
 
 	protected void updateGUI() {
-		for (java.util.Iterator iter = checkBoxToConfigKeyMap.keySet().iterator(); iter.hasNext();) {
-			javax.swing.JCheckBox checkBox = (javax.swing.JCheckBox) iter.next();
+		for (final java.util.Iterator iter = checkBoxToConfigKeyMap.keySet().iterator(); iter.hasNext();) {
+			final javax.swing.JCheckBox checkBox = (javax.swing.JCheckBox) iter.next();
 			boolean value;
 			try {
-				value = Configuration.getValue(authoringToolPackage, (String) checkBoxToConfigKeyMap.get(checkBox)).equalsIgnoreCase("true");
-			} catch (Exception e) {
+				value = Configuration.getValue(authoringToolPackage, (String) checkBoxToConfigKeyMap.get(checkBox))
+						.equalsIgnoreCase("true");
+			} catch (final Exception e) {
 				value = false;
 			}
 			checkBox.setSelected(value);
@@ -763,8 +844,8 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		// edu.cmu.cs.stage3.alice.scenegraph.Color.valueOf(
 		// backgroundColorString ).createAWTColor() );
 
-		String boundsString = Configuration.getValue(authoringToolPackage, "rendering.renderWindowBounds");
-		java.util.StringTokenizer st = new java.util.StringTokenizer(boundsString, " \t,");
+		final String boundsString = Configuration.getValue(authoringToolPackage, "rendering.renderWindowBounds");
+		final java.util.StringTokenizer st = new java.util.StringTokenizer(boundsString, " \t,");
 		if (st.countTokens() == 4) {
 			boundsXTextField.setText(st.nextToken());
 			boundsYTextField.setText(st.nextToken());
@@ -772,9 +853,9 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 			boundsHeightTextField.setText(st.nextToken());
 		}
 
-		String worldDirectory = Configuration.getValue(authoringToolPackage, "directories.worldsDirectory");
+		final String worldDirectory = Configuration.getValue(authoringToolPackage, "directories.worldsDirectory");
 		worldDirectoryTextField.setText(worldDirectory);
-		String importDirectory = Configuration.getValue(authoringToolPackage, "directories.importDirectory");
+		final String importDirectory = Configuration.getValue(authoringToolPackage, "directories.importDirectory");
 		importDirectoryTextField.setText(importDirectory);
 		// String galleryDirectory = Configuration.getValue(
 		// authoringToolPackage, "directories.galleryDirectory" );
@@ -782,7 +863,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		// String characterDirectory = Configuration.getValue(
 		// authoringToolPackage, "directories.charactersDirectory" );
 		// characterDirectoryTextField.setText( characterDirectory );
-		String captureDirectory = Configuration.getValue(authoringToolPackage, "screenCapture.directory");
+		final String captureDirectory = Configuration.getValue(authoringToolPackage, "screenCapture.directory");
 		captureDirectoryTextField.setText(captureDirectory);
 
 		baseNameTextField.setText(Configuration.getValue(authoringToolPackage, "screenCapture.baseName"));
@@ -809,31 +890,32 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	}
 
 	@Override
-	public void setVisible(boolean b) {
+	public void setVisible(final boolean b) {
 		if (b) {
 			updateGUI();
 		}
 		super.setVisible(b);
 	}
 
-	protected class ConfigListModel implements javax.swing.ListModel, edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationListener {
+	protected class ConfigListModel
+			implements javax.swing.ListModel, edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationListener {
 		protected Package configPackage;
 		protected String configKey;
 		protected java.util.Set listenerSet = new java.util.HashSet();
 
-		public ConfigListModel(Package configPackage, String configKey) {
+		public ConfigListModel(final Package configPackage, final String configKey) {
 			this.configPackage = configPackage;
 			this.configKey = configKey;
 			Configuration.addConfigurationListener(this);
 		}
 
 		@Override
-		public void addListDataListener(javax.swing.event.ListDataListener listener) {
+		public void addListDataListener(final javax.swing.event.ListDataListener listener) {
 			listenerSet.add(listener);
 		}
 
 		@Override
-		public void removeListDataListener(javax.swing.event.ListDataListener listener) {
+		public void removeListDataListener(final javax.swing.event.ListDataListener listener) {
 			listenerSet.remove(listener);
 		}
 
@@ -843,29 +925,29 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		}
 
 		@Override
-		public Object getElementAt(int index) {
-			String item = Configuration.getValueList(configPackage, configKey)[index];
+		public Object getElementAt(final int index) {
+			final String item = Configuration.getValueList(configPackage, configKey)[index];
 			return edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(item);
 		}
 
-		public void moveIndexHigher(int index) {
-			String[] valueList = Configuration.getValueList(configPackage, configKey);
+		public void moveIndexHigher(final int index) {
+			final String[] valueList = Configuration.getValueList(configPackage, configKey);
 			if (index > 0 && index < valueList.length) {
-				String[] newValueList = new String[valueList.length];
+				final String[] newValueList = new String[valueList.length];
 				System.arraycopy(valueList, 0, newValueList, 0, valueList.length);
-				String temp = newValueList[index];
+				final String temp = newValueList[index];
 				newValueList[index] = newValueList[index - 1];
 				newValueList[index - 1] = temp;
 				Configuration.setValueList(configPackage, configKey, newValueList);
 			}
 		}
 
-		public void moveIndexLower(int index) {
-			String[] valueList = Configuration.getValueList(configPackage, configKey);
+		public void moveIndexLower(final int index) {
+			final String[] valueList = Configuration.getValueList(configPackage, configKey);
 			if (index >= 0 && index < valueList.length - 1) {
-				String[] newValueList = new String[valueList.length];
+				final String[] newValueList = new String[valueList.length];
 				System.arraycopy(valueList, 0, newValueList, 0, valueList.length);
-				String temp = newValueList[index];
+				final String temp = newValueList[index];
 				newValueList[index] = newValueList[index + 1];
 				newValueList[index + 1] = temp;
 				Configuration.setValueList(configPackage, configKey, newValueList);
@@ -873,10 +955,11 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		}
 
 		@Override
-		public void changing(edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent ev) {
+		public void changing(final edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent ev) {
 		}
+
 		@Override
-		public void changed(edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent ev) {
+		public void changed(final edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationEvent ev) {
 			if (ev.getKeyName().endsWith("rendering.orderedRendererList")) {
 				int upperRange = 0;
 				if (ev.getOldValueList() != null) {
@@ -885,22 +968,24 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 				if (ev.getNewValueList() != null) {
 					upperRange = Math.max(upperRange, ev.getNewValueList().length);
 				}
-				javax.swing.event.ListDataEvent listDataEvent = new javax.swing.event.ListDataEvent(this, javax.swing.event.ListDataEvent.CONTENTS_CHANGED, 0, upperRange);
-				for (java.util.Iterator iter = listenerSet.iterator(); iter.hasNext();) {
+				final javax.swing.event.ListDataEvent listDataEvent = new javax.swing.event.ListDataEvent(this,
+						javax.swing.event.ListDataEvent.CONTENTS_CHANGED, 0, upperRange);
+				for (final java.util.Iterator iter = listenerSet.iterator(); iter.hasNext();) {
 					((javax.swing.event.ListDataListener) iter.next()).contentsChanged(listDataEvent);
 				}
 			}
 		}
 	}
 
-	private int getValueForString(String numString) {
-		if (numString.equalsIgnoreCase(FOREVER_INTERVAL_STRING) || numString.equalsIgnoreCase(INFINITE_BACKUPS_STRING)) {
+	private int getValueForString(final String numString) {
+		if (numString.equalsIgnoreCase(FOREVER_INTERVAL_STRING)
+				|| numString.equalsIgnoreCase(INFINITE_BACKUPS_STRING)) {
 			return Integer.MAX_VALUE;
 		}
 		try {
-			int toReturn = Integer.parseInt(numString);
+			final int toReturn = Integer.parseInt(numString);
 			return toReturn;
-		} catch (NumberFormatException nfe) {
+		} catch (final NumberFormatException nfe) {
 			return -1;
 		}
 	}
@@ -912,20 +997,21 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		saveIntervalOptions.add("45");
 		saveIntervalOptions.add("60");
 		saveIntervalOptions.add(FOREVER_INTERVAL_STRING);
-		String intervalString = Configuration.getValue(authoringToolPackage, "promptToSaveInterval");
+		final String intervalString = Configuration.getValue(authoringToolPackage, "promptToSaveInterval");
 		int interval = -1;
 		try {
 			interval = Integer.parseInt(intervalString);
-		} catch (Throwable t) {}
+		} catch (final Throwable t) {
+		}
 		addComboBoxValueValue(interval, saveIntervalOptions);
 	}
 
-	private void addComboBoxValueValue(int toAdd, java.util.Vector toAddTo) {
+	private void addComboBoxValueValue(final int toAdd, final java.util.Vector toAddTo) {
 		if (toAdd > 0) {
 			boolean isThere = false;
 			int location = toAddTo.size() - 1;
 			for (int i = 0; i < toAddTo.size(); i++) {
-				int currentValue = getValueForString((String) toAddTo.get(i));
+				final int currentValue = getValueForString((String) toAddTo.get(i));
 				if (toAdd == currentValue) {
 					isThere = true;
 				} else if (toAdd < currentValue && location > i) {
@@ -933,7 +1019,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 				}
 			}
 			if (!isThere) {
-				Integer currentValue = new Integer(toAdd);
+				final Integer currentValue = new Integer(toAdd);
 				toAddTo.insertElementAt(currentValue.toString(), location);
 			}
 		}
@@ -941,12 +1027,13 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 
 	private void initSaveIntervalComboBox() {
 		saveIntervalComboBox.removeAllItems();
-		String intervalString = Configuration.getValue(authoringToolPackage, "promptToSaveInterval");
+		final String intervalString = Configuration.getValue(authoringToolPackage, "promptToSaveInterval");
 		for (int i = 0; i < saveIntervalOptions.size(); i++) {
 			saveIntervalComboBox.addItem(saveIntervalOptions.get(i));
 			if (intervalString.equalsIgnoreCase(saveIntervalOptions.get(i).toString())) {
 				saveIntervalComboBox.setSelectedIndex(i);
-			} else if (intervalString.equalsIgnoreCase(Integer.toString(Integer.MAX_VALUE)) && ((String) saveIntervalOptions.get(i)).equalsIgnoreCase(FOREVER_INTERVAL_STRING)) {
+			} else if (intervalString.equalsIgnoreCase(Integer.toString(Integer.MAX_VALUE))
+					&& ((String) saveIntervalOptions.get(i)).equalsIgnoreCase(FOREVER_INTERVAL_STRING)) {
 				saveIntervalComboBox.setSelectedIndex(i);
 			}
 		}
@@ -962,22 +1049,24 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		backupCountOptions.add("5");
 		backupCountOptions.add("10");
 		backupCountOptions.add(INFINITE_BACKUPS_STRING);
-		String intervalString = Configuration.getValue(authoringToolPackage, "maximumWorldBackupCount");
+		final String intervalString = Configuration.getValue(authoringToolPackage, "maximumWorldBackupCount");
 		int interval = -1;
 		try {
 			interval = Integer.parseInt(intervalString);
-		} catch (Throwable t) {}
+		} catch (final Throwable t) {
+		}
 		addComboBoxValueValue(interval, backupCountOptions);
 	}
 
 	private void initBackupCountComboBox() {
 		backupCountComboBox.removeAllItems();
-		String intervalString = Configuration.getValue(authoringToolPackage, "maximumWorldBackupCount");
+		final String intervalString = Configuration.getValue(authoringToolPackage, "maximumWorldBackupCount");
 		for (int i = 0; i < backupCountOptions.size(); i++) {
 			backupCountComboBox.addItem(backupCountOptions.get(i));
 			if (intervalString.equalsIgnoreCase(backupCountOptions.get(i).toString())) {
 				backupCountComboBox.setSelectedIndex(i);
-			} else if (intervalString.equalsIgnoreCase(Integer.toString(Integer.MAX_VALUE)) && ((String) backupCountOptions.get(i)).equalsIgnoreCase(INFINITE_BACKUPS_STRING)) {
+			} else if (intervalString.equalsIgnoreCase(Integer.toString(Integer.MAX_VALUE))
+					&& ((String) backupCountOptions.get(i)).equalsIgnoreCase(INFINITE_BACKUPS_STRING)) {
 				backupCountComboBox.setSelectedIndex(i);
 			}
 		}
@@ -985,8 +1074,8 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 
 	private void setFontSizeValues() {
 		fontSizeOptions.removeAllElements();
-		int fontSize = Integer.parseInt(authoringToolConfig.getValue("fontSize"));
-		java.util.List size = new java.util.ArrayList();
+		final int fontSize = Integer.parseInt(authoringToolConfig.getValue("fontSize"));
+		final java.util.List size = new java.util.ArrayList();
 		size.add(Integer.valueOf(8));
 		size.add(Integer.valueOf(10));
 		size.add(Integer.valueOf(12));
@@ -1004,7 +1093,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 
 	private void initFontSizeComboBox() {
 		fontSizeComboBox.removeAllItems();
-		String intervalString = Configuration.getValue(authoringToolPackage, "fontSize");
+		final String intervalString = Configuration.getValue(authoringToolPackage, "fontSize");
 		for (int i = 0; i < fontSizeOptions.size(); i++) {
 			fontSizeComboBox.addItem(fontSizeOptions.get(i));
 			if (intervalString.equalsIgnoreCase(fontSizeOptions.get(i).toString())) {
@@ -1029,29 +1118,31 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	// renderWindowMatchesSceneEditorCheckBox.isSelected() );
 	// }
 
-	void worldDirectoryBrowseButton_actionPerformed(ActionEvent ev) {
-		java.io.File parent = new java.io.File(Configuration.getValue(authoringToolPackage, "directories.worldsDirectory")).getParentFile();
+	void worldDirectoryBrowseButton_actionPerformed(final ActionEvent ev) {
+		final java.io.File parent = new java.io.File(
+				Configuration.getValue(authoringToolPackage, "directories.worldsDirectory")).getParentFile();
 		browseFileChooser.setCurrentDirectory(parent);
-		int returnVal = browseFileChooser.showOpenDialog(this);
+		final int returnVal = browseFileChooser.showOpenDialog(this);
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			java.io.File file = browseFileChooser.getSelectedFile();
+			final java.io.File file = browseFileChooser.getSelectedFile();
 			worldDirectoryTextField.setText(file.getAbsolutePath());
 		}
 	}
 
-	void importDirectoryBrowseButton_actionPerformed(ActionEvent ev) {
-		java.io.File parent = new java.io.File(Configuration.getValue(authoringToolPackage, "directories.importDirectory")).getParentFile();
+	void importDirectoryBrowseButton_actionPerformed(final ActionEvent ev) {
+		final java.io.File parent = new java.io.File(
+				Configuration.getValue(authoringToolPackage, "directories.importDirectory")).getParentFile();
 		browseFileChooser.setCurrentDirectory(parent);
-		int returnVal = browseFileChooser.showOpenDialog(this);
+		final int returnVal = browseFileChooser.showOpenDialog(this);
 
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			java.io.File file = browseFileChooser.getSelectedFile();
+			final java.io.File file = browseFileChooser.getSelectedFile();
 			importDirectoryTextField.setText(file.getAbsolutePath());
 		}
 	}
 
-	void browseButton_actionPerformed(ActionEvent e) {
+	void browseButton_actionPerformed(final ActionEvent e) {
 		boolean done = false;
 		String finalFilePath = captureDirectoryTextField.getText();
 		while (!done) {
@@ -1060,17 +1151,22 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 				parent = new java.io.File(Configuration.getValue(authoringToolPackage, "screenCapture.directory"));
 			}
 			browseFileChooser.setCurrentDirectory(parent);
-			int returnVal = browseFileChooser.showOpenDialog(this);
+			final int returnVal = browseFileChooser.showOpenDialog(this);
 
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				java.io.File captureDirectoryFile = browseFileChooser.getSelectedFile();
-				int directoryCheck = edu.cmu.cs.stage3.io.FileUtilities.isWritableDirectory(captureDirectoryFile);
+				final java.io.File captureDirectoryFile = browseFileChooser.getSelectedFile();
+				final int directoryCheck = edu.cmu.cs.stage3.io.FileUtilities.isWritableDirectory(captureDirectoryFile);
 				if (directoryCheck == edu.cmu.cs.stage3.io.FileUtilities.DIRECTORY_IS_NOT_WRITABLE) {
 					done = false;
-					edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("The capture directory specified can not be written to. Please choose another directory.", "Bad Directory", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-				} else if (directoryCheck == edu.cmu.cs.stage3.io.FileUtilities.DIRECTORY_DOES_NOT_EXIST || directoryCheck == edu.cmu.cs.stage3.io.FileUtilities.BAD_DIRECTORY_INPUT) {
+					edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog(
+							"The capture directory specified can not be written to. Please choose another directory.",
+							"Bad Directory", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+				} else if (directoryCheck == edu.cmu.cs.stage3.io.FileUtilities.DIRECTORY_DOES_NOT_EXIST
+						|| directoryCheck == edu.cmu.cs.stage3.io.FileUtilities.BAD_DIRECTORY_INPUT) {
 					done = false;
-					edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog("The capture directory must be a directory that exists.", "Bad Directory", javax.swing.JOptionPane.INFORMATION_MESSAGE);
+					edu.cmu.cs.stage3.swing.DialogManager.showMessageDialog(
+							"The capture directory must be a directory that exists.", "Bad Directory",
+							javax.swing.JOptionPane.INFORMATION_MESSAGE);
 				} else {
 					finalFilePath = captureDirectoryFile.getAbsolutePath();
 					done = true;
@@ -1129,14 +1225,15 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	JComboBox saveIntervalComboBox = new JComboBox();
 
 	JTabbedPane configTabbedPane = new JTabbedPane();
+
 	private void jbInit() {
 
 		setLayout(new BorderLayout());
 		okayButton.setText("Okay");
 		cancelButton.setText("Cancel");
 
-		Border emptyBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10);
-		JPanel buttonPanel = new JPanel();
+		final Border emptyBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10);
+		final JPanel buttonPanel = new JPanel();
 		buttonPanel.setLayout(new BorderLayout());
 		buttonPanel.setBorder(emptyBorder);
 
@@ -1180,16 +1277,17 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		this.add(buttonPanel, BorderLayout.SOUTH);
 	}
 
-	private JTextField maxRecentWorldsTextField = new JTextField();
-	private JLabel maxRecentWorldsLabel = new JLabel();
-	private JComboBox resourceFileComboBox = new JComboBox();
-	private JComboBox fontSizeComboBox = new JComboBox();
-	private JTextField worldDirectoryTextField = new JTextField();
+	private final JTextField maxRecentWorldsTextField = new JTextField();
+	private final JLabel maxRecentWorldsLabel = new JLabel();
+	private final JComboBox resourceFileComboBox = new JComboBox();
+	private final JComboBox fontSizeComboBox = new JComboBox();
+	private final JTextField worldDirectoryTextField = new JTextField();
+
 	private void GeneralTabInit() {
-		JPanel maxRecentWorldsPanel = new JPanel();
-		JPanel resourcesPanel = new JPanel();
-		JPanel inputDirectoriesPanel = new JPanel();
-		JPanel fontSizePanel = new JPanel();
+		final JPanel maxRecentWorldsPanel = new JPanel();
+		final JPanel resourcesPanel = new JPanel();
+		final JPanel inputDirectoriesPanel = new JPanel();
+		final JPanel fontSizePanel = new JPanel();
 
 		maxRecentWorldsTextField.setColumns(3);
 		maxRecentWorldsTextField.setMinimumSize(new Dimension(50, 22));
@@ -1197,27 +1295,34 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		maxRecentWorldsLabel.setText("maximum number of worlds kept in the recent worlds menu");
 
 		maxRecentWorldsPanel.setLayout(new GridBagLayout());
-		maxRecentWorldsPanel.add(maxRecentWorldsTextField, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		maxRecentWorldsPanel.add(maxRecentWorldsLabel, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		maxRecentWorldsPanel.add(maxRecentWorldsTextField, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		maxRecentWorldsPanel.add(maxRecentWorldsLabel, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 
-		JLabel resourcesLabel = new JLabel();
+		final JLabel resourcesLabel = new JLabel();
 		resourcesPanel.setLayout(new GridBagLayout());
-		resourcesPanel.add(resourcesLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		resourcesPanel.add(resourceFileComboBox, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		resourcesPanel.add(resourcesLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		resourcesPanel.add(resourceFileComboBox, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 
 		resourceFileComboBox.setSelectedItem(Configuration.getValue(authoringToolPackage, "resourceFile"));
 		resourcesLabel.setText("display my program:");
 
-		java.io.File resourceDirectory = new java.io.File(edu.cmu.cs.stage3.alice.authoringtool.JAlice.getAliceHomeDirectory(), "resources").getAbsoluteFile();
-		java.io.File[] resourceFiles = resourceDirectory.listFiles(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.resourceFileFilter);
-		for (File resourceFile : resourceFiles) {
+		final java.io.File resourceDirectory = new java.io.File(
+				edu.cmu.cs.stage3.alice.authoringtool.JAlice.getAliceHomeDirectory(), "resources").getAbsoluteFile();
+		final java.io.File[] resourceFiles = resourceDirectory
+				.listFiles(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.resourceFileFilter);
+		for (final File resourceFile : resourceFiles) {
 			resourceFileComboBox.addItem(resourceFile.getName());
 		}
 
 		resourceFileComboBox.setRenderer(new javax.swing.ListCellRenderer() {
 			@Override
-			public java.awt.Component getListCellRendererComponent(javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-				javax.swing.JLabel toReturn = new javax.swing.JLabel("No Name");
+			public java.awt.Component getListCellRendererComponent(final javax.swing.JList list, final Object value,
+					final int index, final boolean isSelected, final boolean cellHasFocus) {
+				final javax.swing.JLabel toReturn = new javax.swing.JLabel("No Name");
 				toReturn.setOpaque(true);
 				// toReturn.setHorizontalAlignment(javax.swing.JLabel.CENTER);
 				// toReturn.setVerticalAlignment(javax.swing.JLabel.CENTER);
@@ -1230,7 +1335,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 				} else if (name.equals("Java Text Style.py")) {
 					name = "Java Style in Black & White";
 				} else {
-					int dotIndex = name.lastIndexOf(".");
+					final int dotIndex = name.lastIndexOf(".");
 					if (dotIndex > -1) {
 						name = name.substring(0, dotIndex);
 					}
@@ -1248,13 +1353,16 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 			}
 		});
 
-		JLabel worldDirectoryLabel = new JLabel();
-		JButton worldDirectoryBrowseButton = new JButton();
+		final JLabel worldDirectoryLabel = new JLabel();
+		final JButton worldDirectoryBrowseButton = new JButton();
 		worldDirectoryTextField.setColumns(15);
 		inputDirectoriesPanel.setLayout(new GridBagLayout());
-		inputDirectoriesPanel.add(worldDirectoryLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		inputDirectoriesPanel.add(worldDirectoryTextField, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
-		inputDirectoriesPanel.add(worldDirectoryBrowseButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		inputDirectoriesPanel.add(worldDirectoryLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		inputDirectoriesPanel.add(worldDirectoryTextField, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
+		inputDirectoriesPanel.add(worldDirectoryBrowseButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 		// inputDirectoriesPanel.add(importDirectoryLabel, new
 		// GridBagConstraints(0, 2, 1, 1, 0.0, 0.0
 		// ,GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(4, 4,
@@ -1284,16 +1392,18 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		worldDirectoryBrowseButton.setText("Browse...");
 		worldDirectoryBrowseButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				worldDirectoryBrowseButton_actionPerformed(e);
 			}
 		});
 
-		JLabel fontSizeLabel = new JLabel();
+		final JLabel fontSizeLabel = new JLabel();
 
 		fontSizePanel.setLayout(new GridBagLayout());
-		fontSizePanel.add(fontSizeComboBox, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		fontSizePanel.add(fontSizeLabel, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		fontSizePanel.add(fontSizeComboBox, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		fontSizePanel.add(fontSizeLabel, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 
 		fontSizeComboBox.setEditable(true);
 		fontSizeComboBox.setPreferredSize(new java.awt.Dimension(55, 25));
@@ -1301,18 +1411,23 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 
 		fontSizeLabel.setText(" general font size (default value is 12)");
 
-		Component component = Box.createGlue();
+		final Component component = Box.createGlue();
 		// generalPanel.setBorder(emptyBorder);
 		generalPanel.setLayout(new GridBagLayout());
-		generalPanel.add(maxRecentWorldsPanel, new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		generalPanel.add(maxRecentWorldsPanel, new GridBagConstraints(0, 2, 1, 1, 1.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 		// generalPanel.add(backgroundColorPanel, new GridBagConstraints(0, 2,
 		// 1, 1, 1.0, 0.0
 		// ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new
 		// Insets(4, 0, 4, 0), 0, 0));
-		generalPanel.add(resourcesPanel, new GridBagConstraints(0, 3, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		generalPanel.add(inputDirectoriesPanel, new GridBagConstraints(0, 4, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-		generalPanel.add(fontSizePanel, new GridBagConstraints(0, 5, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		generalPanel.add(component, new GridBagConstraints(0, 6, 1, 1, 1.0, 1.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+		generalPanel.add(resourcesPanel, new GridBagConstraints(0, 3, 1, 1, 1.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		generalPanel.add(inputDirectoriesPanel, new GridBagConstraints(0, 4, 1, 1, 1.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+		generalPanel.add(fontSizePanel, new GridBagConstraints(0, 5, 1, 1, 1.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		generalPanel.add(component, new GridBagConstraints(0, 6, 1, 1, 1.0, 1.0, GridBagConstraints.WEST,
+				GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		// generalPanel.add(watcherPanelEnabledCheckBox, new
 		// GridBagConstraints(0, 7, 1, 1, 0.0, 0.0
 		// ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new
@@ -1324,22 +1439,23 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 
 	}
 
-	private JCheckBox forceSoftwareRenderingCheckBox = new JCheckBox();
-	private JCheckBox showFPSCheckBox = new JCheckBox();
-	private JCheckBox deleteFiles = new JCheckBox(); // Aik Min added this.
-	private JTextField boundsXTextField = new JTextField();
-	private JTextField boundsYTextField = new JTextField();
-	private JTextField boundsWidthTextField = new JTextField();
-	private JTextField boundsHeightTextField = new JTextField();
-	private JCheckBox constrainRenderDialogAspectCheckBox = new JCheckBox();
-	private JCheckBox ensureRenderDialogIsOnScreenCheckBox = new JCheckBox();
-	private JList rendererList = new JList();
+	private final JCheckBox forceSoftwareRenderingCheckBox = new JCheckBox();
+	private final JCheckBox showFPSCheckBox = new JCheckBox();
+	private final JCheckBox deleteFiles = new JCheckBox(); // Aik Min added
+															// this.
+	private final JTextField boundsXTextField = new JTextField();
+	private final JTextField boundsYTextField = new JTextField();
+	private final JTextField boundsWidthTextField = new JTextField();
+	private final JTextField boundsHeightTextField = new JTextField();
+	private final JCheckBox constrainRenderDialogAspectCheckBox = new JCheckBox();
+	private final JCheckBox ensureRenderDialogIsOnScreenCheckBox = new JCheckBox();
+	private final JList rendererList = new JList();
 
 	private void RenderingTabInit() {
-		JPanel renderWindowBoundsPanel = new JPanel();
-		JLabel rendererListLabel = new JLabel();
-		JButton rendererMoveUpButton = new JButton();
-		JButton rendererMoveDownButton = new JButton();
+		final JPanel renderWindowBoundsPanel = new JPanel();
+		final JLabel rendererListLabel = new JLabel();
+		final JButton rendererMoveUpButton = new JButton();
+		final JButton rendererMoveDownButton = new JButton();
 
 		forceSoftwareRenderingCheckBox.setText(" force software rendering (slower and safer)");
 		showFPSCheckBox.setText(" show frames per second");
@@ -1352,11 +1468,11 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		// renderWindowBoundsPanel.setPreferredSize(new Dimension(300, 125));
 		// renderWindowBoundsPanel.setLayout(null);
 
-		JLabel renderWindowBoundsLabel = new JLabel();
-		JLabel boundsWidthLabel = new JLabel();
-		JLabel boundsHeightLabel = new JLabel();
-		JLabel boundsXLabel = new JLabel();
-		JLabel boundsYLabel = new JLabel();
+		final JLabel renderWindowBoundsLabel = new JLabel();
+		final JLabel boundsWidthLabel = new JLabel();
+		final JLabel boundsHeightLabel = new JLabel();
+		final JLabel boundsXLabel = new JLabel();
+		final JLabel boundsYLabel = new JLabel();
 
 		renderWindowBoundsLabel.setText("render window position and size:");
 
@@ -1388,20 +1504,29 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		boundsHeightTextField.getDocument().addDocumentListener(renderDialogHeightChecker);
 
 		renderWindowBoundsPanel.setLayout(new GridBagLayout());
-		renderWindowBoundsPanel.add(renderWindowBoundsLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(3, 5, 3, 0), 0, 0));
-		renderWindowBoundsPanel.add(boundsXLabel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(3, 5, 3, 0), 0, 0));
-		renderWindowBoundsPanel.add(boundsXTextField, new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(3, 5, 3, 0), 0, 0));
-		renderWindowBoundsPanel.add(boundsYLabel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(3, 5, 3, 0), 0, 0));
-		renderWindowBoundsPanel.add(boundsYTextField, new GridBagConstraints(1, 2, 2, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(3, 5, 3, 0), 0, 0));
-		renderWindowBoundsPanel.add(boundsWidthLabel, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(3, 5, 3, 0), 0, 0));
-		renderWindowBoundsPanel.add(boundsWidthTextField, new GridBagConstraints(1, 3, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(3, 5, 3, 0), 0, 0));
-		renderWindowBoundsPanel.add(boundsHeightLabel, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(3, 5, 3, 0), 0, 0));
-		renderWindowBoundsPanel.add(boundsHeightTextField, new GridBagConstraints(1, 4, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(3, 5, 3, 0), 0, 0));
+		renderWindowBoundsPanel.add(renderWindowBoundsLabel, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(3, 5, 3, 0), 0, 0));
+		renderWindowBoundsPanel.add(boundsXLabel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
+				GridBagConstraints.NONE, new Insets(3, 5, 3, 0), 0, 0));
+		renderWindowBoundsPanel.add(boundsXTextField, new GridBagConstraints(1, 1, 1, 1, 1.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(3, 5, 3, 0), 0, 0));
+		renderWindowBoundsPanel.add(boundsYLabel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
+				GridBagConstraints.NONE, new Insets(3, 5, 3, 0), 0, 0));
+		renderWindowBoundsPanel.add(boundsYTextField, new GridBagConstraints(1, 2, 2, 1, 1.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(3, 5, 3, 0), 0, 0));
+		renderWindowBoundsPanel.add(boundsWidthLabel, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0,
+				GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(3, 5, 3, 0), 0, 0));
+		renderWindowBoundsPanel.add(boundsWidthTextField, new GridBagConstraints(1, 3, 1, 1, 1.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(3, 5, 3, 0), 0, 0));
+		renderWindowBoundsPanel.add(boundsHeightLabel, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0,
+				GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(3, 5, 3, 0), 0, 0));
+		renderWindowBoundsPanel.add(boundsHeightTextField, new GridBagConstraints(1, 4, 1, 1, 1.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(3, 5, 3, 0), 0, 0));
 
 		constrainRenderDialogAspectCheckBox.setText(" constrain render window\'s aspect ratio");
 		constrainRenderDialogAspectCheckBox.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ae) {
+			public void actionPerformed(final java.awt.event.ActionEvent ae) {
 				checkAndUpdateRenderBounds();
 			}
 		});
@@ -1418,8 +1543,8 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		rendererMoveUpButton.setText("move up");
 		rendererMoveUpButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				Object selectedItem = rendererList.getSelectedValue();
+			public void actionPerformed(final ActionEvent e) {
+				final Object selectedItem = rendererList.getSelectedValue();
 				((ConfigListModel) rendererList.getModel()).moveIndexHigher(rendererList.getSelectedIndex());
 				rendererList.setSelectedValue(selectedItem, false);
 			}
@@ -1427,59 +1552,71 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		rendererMoveDownButton.setText("move down");
 		rendererMoveDownButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				Object selectedItem = rendererList.getSelectedValue();
+			public void actionPerformed(final ActionEvent e) {
+				final Object selectedItem = rendererList.getSelectedValue();
 				((ConfigListModel) rendererList.getModel()).moveIndexLower(rendererList.getSelectedIndex());
 				rendererList.setSelectedValue(selectedItem, false);
 			}
 		});
 
-		Component component = Box.createGlue();
+		final Component component = Box.createGlue();
 		renderingPanel.setLayout(new GridBagLayout());
 		// renderingPanel.setBorder(emptyBorder);
 
-		renderingPanel.add(forceSoftwareRenderingCheckBox, new GridBagConstraints(0, 0, 2, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		renderingPanel.add(showFPSCheckBox, new GridBagConstraints(0, 1, 2, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		renderingPanel.add(forceSoftwareRenderingCheckBox, new GridBagConstraints(0, 0, 2, 1, 0.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		renderingPanel.add(showFPSCheckBox, new GridBagConstraints(0, 1, 2, 1, 0.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 		// Aik Min added this.
-		renderingPanel.add(deleteFiles, new GridBagConstraints(0, 2, 2, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		renderingPanel.add(renderWindowBoundsPanel, new GridBagConstraints(0, 3, 2, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(10, 0, 0, 0), 0, 0));
-		renderingPanel.add(constrainRenderDialogAspectCheckBox, new GridBagConstraints(0, 4, 2, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(10, 0, 0, 0), 0, 0));
-		renderingPanel.add(ensureRenderDialogIsOnScreenCheckBox, new GridBagConstraints(0, 5, 2, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		renderingPanel.add(rendererListLabel, new GridBagConstraints(0, 6, 2, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(10, 5, 0, 0), 0, 0));
-		renderingPanel.add(rendererList, new GridBagConstraints(0, 7, 2, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 0, 5), 0, 0));
-		renderingPanel.add(rendererMoveUpButton, new GridBagConstraints(0, 8, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		renderingPanel.add(rendererMoveDownButton, new GridBagConstraints(1, 8, 1, 1, 1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		renderingPanel.add(component, new GridBagConstraints(0, 9, 2, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		renderingPanel.add(deleteFiles, new GridBagConstraints(0, 2, 2, 1, 0.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		renderingPanel.add(renderWindowBoundsPanel, new GridBagConstraints(0, 3, 2, 1, 0.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(10, 0, 0, 0), 0, 0));
+		renderingPanel.add(constrainRenderDialogAspectCheckBox, new GridBagConstraints(0, 4, 2, 1, 0.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(10, 0, 0, 0), 0, 0));
+		renderingPanel.add(ensureRenderDialogIsOnScreenCheckBox, new GridBagConstraints(0, 5, 2, 1, 0.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		renderingPanel.add(rendererListLabel, new GridBagConstraints(0, 6, 2, 1, 0.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(10, 5, 0, 0), 0, 0));
+		renderingPanel.add(rendererList, new GridBagConstraints(0, 7, 2, 1, 1.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.HORIZONTAL, new Insets(5, 5, 0, 5), 0, 0));
+		renderingPanel.add(rendererMoveUpButton, new GridBagConstraints(0, 8, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		renderingPanel.add(rendererMoveDownButton, new GridBagConstraints(1, 8, 1, 1, 1.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		renderingPanel.add(component, new GridBagConstraints(0, 9, 2, 1, 1.0, 1.0, GridBagConstraints.CENTER,
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 
 	}
 
 	JTextField captureDirectoryTextField = new JTextField();
-	private JTextField baseNameTextField = new JTextField();
-	private JComboBox numDigitsComboBox = new JComboBox();
-	private JComboBox codecComboBox = new JComboBox();
-	private JCheckBox screenCaptureInformUserCheckBox = new JCheckBox();
+	private final JTextField baseNameTextField = new JTextField();
+	private final JComboBox numDigitsComboBox = new JComboBox();
+	private final JComboBox codecComboBox = new JComboBox();
+	private final JCheckBox screenCaptureInformUserCheckBox = new JCheckBox();
+
 	private void ScreenGrabTabInit() {
-		JLabel captureDirectory = new JLabel();
+		final JLabel captureDirectory = new JLabel();
 		captureDirectory.setText("directory to capture to:");
 		captureDirectoryTextField.getDocument().addDocumentListener(captureDirectoryChangeListener);
 		captureDirectoryTextField.setColumns(15);
 
-		JButton browseButton = new JButton();
+		final JButton browseButton = new JButton();
 		browseButton.setText("Browse...");
 		browseButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				browseButton_actionPerformed(e);
 			}
 		});
 
-		JLabel baseNameLabel = new JLabel();
+		final JLabel baseNameLabel = new JLabel();
 		baseNameLabel.setText("base filename:");
 
 		baseNameTextField.setMinimumSize(new Dimension(100, 28));
 		baseNameTextField.setPreferredSize(new Dimension(100, 28));
 
-		JLabel numDigitsLabel = new JLabel();
+		final JLabel numDigitsLabel = new JLabel();
 		numDigitsLabel.setText("number of digits to append:");
 		// this.setPreferredSize(new java.awt.Dimension( 600, 600 ));
 		numDigitsComboBox.addItem("1");
@@ -1489,7 +1626,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		numDigitsComboBox.addItem("5");
 		numDigitsComboBox.addItem("6");
 
-		JLabel codecLabel = new JLabel();
+		final JLabel codecLabel = new JLabel();
 		codecLabel.setText("image format:");
 		codecComboBox.setPreferredSize(new java.awt.Dimension(60, 25));
 		codecComboBox.addItem("jpeg");
@@ -1497,40 +1634,53 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 
 		screenCaptureInformUserCheckBox.setText(" show information dialog when capture is made");
 
-		JLabel usageLabel = new JLabel();
+		final JLabel usageLabel = new JLabel();
 		usageLabel.setText("Note: use Ctrl-G to grab a frame while the world is running.");
 
 		screenGrabPanel.setLayout(new GridBagLayout());
 
-		Component component = Box.createGlue();
-		screenGrabPanel.add(captureDirectory, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		screenGrabPanel.add(captureDirectoryTextField, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
-		screenGrabPanel.add(browseButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		screenGrabPanel.add(baseNameLabel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		screenGrabPanel.add(baseNameTextField, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		screenGrabPanel.add(numDigitsLabel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		screenGrabPanel.add(numDigitsComboBox, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		screenGrabPanel.add(codecLabel, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.EAST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		screenGrabPanel.add(codecComboBox, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
-		screenGrabPanel.add(screenCaptureInformUserCheckBox, new GridBagConstraints(0, 4, 3, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		screenGrabPanel.add(component, new GridBagConstraints(0, 5, 3, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
-		screenGrabPanel.add(usageLabel, new GridBagConstraints(0, 6, 3, 1, 0.0, 0.0, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		final Component component = Box.createGlue();
+		screenGrabPanel.add(captureDirectory, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
+				GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		screenGrabPanel.add(captureDirectoryTextField, new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0,
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(5, 5, 5, 5), 0, 0));
+		screenGrabPanel.add(browseButton, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+				GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		screenGrabPanel.add(baseNameLabel, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
+				GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		screenGrabPanel.add(baseNameTextField, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		screenGrabPanel.add(numDigitsLabel, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
+				GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		screenGrabPanel.add(numDigitsComboBox, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		screenGrabPanel.add(codecLabel, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.EAST,
+				GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		screenGrabPanel.add(codecComboBox, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
+		screenGrabPanel.add(screenCaptureInformUserCheckBox, new GridBagConstraints(0, 4, 3, 1, 0.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		screenGrabPanel.add(component, new GridBagConstraints(0, 5, 3, 1, 1.0, 1.0, GridBagConstraints.CENTER,
+				GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+		screenGrabPanel.add(usageLabel, new GridBagConstraints(0, 6, 3, 1, 0.0, 0.0, GridBagConstraints.SOUTHWEST,
+				GridBagConstraints.NONE, new Insets(5, 5, 5, 5), 0, 0));
 	}
 
-	private JCheckBox showStartUpDialogCheckBox = new JCheckBox();
-	private JCheckBox showWebWarningCheckBox = new JCheckBox();
-	private JCheckBox loadSavedTabsCheckBox = new JCheckBox();
-	private JCheckBox pickUpTilesCheckBox = new JCheckBox();
-	private JCheckBox useAlphaTilesCheckBox = new JCheckBox();
-	private JCheckBox saveThumbnailWithWorldCheckBox = new JCheckBox();
-	private JCheckBox showWorldStatsCheckBox = new JCheckBox();
-	private JCheckBox clearStdOutOnRunCheckBox = new JCheckBox();
-	private JCheckBox enableHighContrastCheckBox = new JCheckBox();
-	private JTextField numClipboardsTextField = new JTextField();
-	private JComboBox backupCountComboBox = new JComboBox();
+	private final JCheckBox showStartUpDialogCheckBox = new JCheckBox();
+	private final JCheckBox showWebWarningCheckBox = new JCheckBox();
+	private final JCheckBox loadSavedTabsCheckBox = new JCheckBox();
+	private final JCheckBox pickUpTilesCheckBox = new JCheckBox();
+	private final JCheckBox useAlphaTilesCheckBox = new JCheckBox();
+	private final JCheckBox saveThumbnailWithWorldCheckBox = new JCheckBox();
+	private final JCheckBox showWorldStatsCheckBox = new JCheckBox();
+	private final JCheckBox clearStdOutOnRunCheckBox = new JCheckBox();
+	private final JCheckBox enableHighContrastCheckBox = new JCheckBox();
+	private final JTextField numClipboardsTextField = new JTextField();
+	private final JComboBox backupCountComboBox = new JComboBox();
+
 	private void SeldomUsedTabInit() {
-		JPanel saveIntervalPanel = new JPanel();
-		JPanel backupCountPanel = new JPanel();
+		final JPanel saveIntervalPanel = new JPanel();
+		final JPanel backupCountPanel = new JPanel();
 
 		showStartUpDialogCheckBox.setText(" show startup dialog when Alice launches");
 		showWebWarningCheckBox.setText(" show warning when browsing the web gallery");
@@ -1542,20 +1692,20 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		clearStdOutOnRunCheckBox.setText(" clear text output on play");
 		enableHighContrastCheckBox.setText(" enable high contrast mode for projectors");
 
-		JLabel numClipboardsLabel = new JLabel();
+		final JLabel numClipboardsLabel = new JLabel();
 		numClipboardsTextField.setColumns(3);
 		numClipboardsTextField.setMargin(new Insets(1, 1, 1, 1));
 		numClipboardsLabel.setText("number of clipboards");
 		// numClipboardsLabel.setVerticalAlignment(SwingConstants.BOTTOM);
 
-		JPanel numClipboardsPanel = new JPanel();
-		BorderLayout borderLayout = new BorderLayout();
+		final JPanel numClipboardsPanel = new JPanel();
+		final BorderLayout borderLayout = new BorderLayout();
 		borderLayout.setHgap(8);
 		numClipboardsPanel.setLayout(borderLayout);
 		numClipboardsPanel.add(numClipboardsTextField, BorderLayout.WEST);
 		numClipboardsPanel.add(numClipboardsLabel, BorderLayout.CENTER);
 
-		JLabel saveIntervalLabelEnd = new JLabel();
+		final JLabel saveIntervalLabelEnd = new JLabel();
 		saveIntervalComboBox.setEditable(true);
 		saveIntervalComboBox.setPreferredSize(new java.awt.Dimension(60, 25));
 		saveIntervalLabelEnd.setText(" number of minutes to wait before displaying save reminder");
@@ -1565,7 +1715,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		saveIntervalPanel.add(saveIntervalComboBox);
 		saveIntervalPanel.add(saveIntervalLabelEnd);
 
-		JLabel backupCountLabel = new JLabel();
+		final JLabel backupCountLabel = new JLabel();
 		backupCountLabel.setText(" number of backups of each world to save");
 		backupCountComboBox.setEditable(true);
 		backupCountComboBox.setPreferredSize(new java.awt.Dimension(60, 25));
@@ -1579,23 +1729,36 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		// seldomUsedPanel.setBorder(emptyBorder);
 		seldomUsedPanel.setLayout(new GridBagLayout());
 
-		seldomUsedPanel.add(showStartUpDialogCheckBox, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		seldomUsedPanel.add(showWebWarningCheckBox, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		seldomUsedPanel.add(loadSavedTabsCheckBox, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		seldomUsedPanel.add(pickUpTilesCheckBox, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		seldomUsedPanel.add(useAlphaTilesCheckBox, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		seldomUsedPanel.add(saveThumbnailWithWorldCheckBox, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		seldomUsedPanel.add(showWorldStatsCheckBox, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+		seldomUsedPanel.add(showStartUpDialogCheckBox, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		seldomUsedPanel.add(showWebWarningCheckBox, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		seldomUsedPanel.add(loadSavedTabsCheckBox, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		seldomUsedPanel.add(pickUpTilesCheckBox, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		seldomUsedPanel.add(useAlphaTilesCheckBox, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		seldomUsedPanel.add(saveThumbnailWithWorldCheckBox, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		seldomUsedPanel.add(showWorldStatsCheckBox, new GridBagConstraints(0, 6, 1, 1, 0.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
 		// seldomUsedPanel.add(saveAsSingleFileCheckBox, new
 		// GridBagConstraints(0, 6, 1, 1, 0.0, 0.0
 		// ,GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0,
 		// 0, 0), 0, 0));
-		seldomUsedPanel.add(clearStdOutOnRunCheckBox, new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		seldomUsedPanel.add(enableHighContrastCheckBox, new GridBagConstraints(0, 8, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		seldomUsedPanel.add(enableScriptingCheckBox, new GridBagConstraints(0, 9, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-		seldomUsedPanel.add(numClipboardsPanel, new GridBagConstraints(0, 10, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 0), 0, 0));
-		seldomUsedPanel.add(saveIntervalPanel, new GridBagConstraints(0, 11, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		seldomUsedPanel.add(backupCountPanel, new GridBagConstraints(0, 12, 1, 1, 0.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		seldomUsedPanel.add(clearStdOutOnRunCheckBox, new GridBagConstraints(0, 7, 1, 1, 0.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		seldomUsedPanel.add(enableHighContrastCheckBox, new GridBagConstraints(0, 8, 1, 1, 0.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		seldomUsedPanel.add(enableScriptingCheckBox, new GridBagConstraints(0, 9, 1, 1, 0.0, 0.0,
+				GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+		seldomUsedPanel.add(numClipboardsPanel, new GridBagConstraints(0, 10, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.HORIZONTAL, new Insets(5, 5, 5, 0), 0, 0));
+		seldomUsedPanel.add(saveIntervalPanel, new GridBagConstraints(0, 11, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		seldomUsedPanel.add(backupCountPanel, new GridBagConstraints(0, 12, 1, 1, 0.0, 0.0, GridBagConstraints.WEST,
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 		// seldomUsedPanel.add(runtimeScratchPadEnabledCheckBox, new
 		// GridBagConstraints(0, 10, 1, 1, 0.0, 0.0
 		// ,GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new
@@ -1616,7 +1779,8 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		// 1, 1, 1.0, 0.0
 		// ,GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0,
 		// 0, 0), 0, 0));
-		seldomUsedPanel.add(javax.swing.Box.createVerticalGlue(), new GridBagConstraints(0, 15, 1, 1, 1.0, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+		seldomUsedPanel.add(javax.swing.Box.createVerticalGlue(), new GridBagConstraints(0, 15, 1, 1, 1.0, 1.0,
+				GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 
 	}
 
@@ -1625,6 +1789,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	JCheckBox useSpecularCheckBox = new JCheckBox();
 	JCheckBox groupMultipleRootObjectsCheckBox = new JCheckBox();
 	JCheckBox colorToWhiteWhenTexturedCheckBox = new JCheckBox();
+
 	private void ASEImportTabInit() {
 		Border emptyBorder;
 		emptyBorder = BorderFactory.createEmptyBorder(10, 10, 10, 10);

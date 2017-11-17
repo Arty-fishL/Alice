@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -25,14 +25,21 @@ package edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor;
 
 /**
  * Title: Description: Copyright: Copyright (c) 2001 Company:
- * 
+ *
  * @author
  * @version 1.0
  */
 
-public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel implements edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement, edu.cmu.cs.stage3.alice.core.event.PropertyListener {
+public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel implements
+		edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement, edu.cmu.cs.stage3.alice.core.event.PropertyListener {
 
-	public static final java.awt.Color COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("behavior");
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 3567536365903327683L;
+
+	public static final java.awt.Color COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+			.getColor("behavior");
 
 	protected javax.swing.JPopupMenu popUpMenu;
 
@@ -45,7 +52,7 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 	protected final java.awt.event.MouseListener behaviorMouseListener = new edu.cmu.cs.stage3.alice.authoringtool.util.CustomMouseAdapter() {
 
 		@Override
-		protected void popupResponse(java.awt.event.MouseEvent e) {
+		protected void popupResponse(final java.awt.event.MouseEvent e) {
 			popUpMenu.show(e.getComponent(), e.getX(), e.getY());
 			edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.ensurePopupIsOnScreen(popUpMenu);
 		}
@@ -56,7 +63,8 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 		grip.addMouseListener(behaviorMouseListener);
 	}
 
-	public void set(edu.cmu.cs.stage3.alice.core.Behavior behavior, String type, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
+	public void set(final edu.cmu.cs.stage3.alice.core.Behavior behavior, final String type,
+			final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
 		clean();
 		super.reset();
 		this.authoringTool = authoringTool;
@@ -64,13 +72,15 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 		setTransferable(new edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable(behavior)); // added
 																														// by
 																														// JFP
-		typeString = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(m_behavior.getClass());
+		typeString = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+				.getReprForValue(m_behavior.getClass());
 		m_behavior.isEnabled.addPropertyListener(this);
 		popUpMenu = createPopup();
 		guiInit();
 	}
 
-	public void set(edu.cmu.cs.stage3.alice.core.Behavior behavior, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
+	public void set(final edu.cmu.cs.stage3.alice.core.Behavior behavior,
+			final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
 		clean();
 		super.reset();
 		this.authoringTool = authoringTool;
@@ -78,13 +88,14 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 		setTransferable(new edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable(behavior)); // added
 																														// by
 																														// JFP
-		typeString = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(m_behavior.getClass());
+		typeString = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+				.getReprForValue(m_behavior.getClass());
 		m_behavior.isEnabled.addPropertyListener(this);
 		popUpMenu = createPopup();
 		guiInit();
 	}
 
-	protected String getHTMLColorString(java.awt.Color color) {
+	protected String getHTMLColorString(final java.awt.Color color) {
 		String r = Integer.toHexString(color.getRed());
 		String g = Integer.toHexString(color.getGreen());
 		String b = Integer.toHexString(color.getBlue());
@@ -101,16 +112,21 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 		return new String("#" + r + g + b);
 	}
 
-	public void getHTML(StringBuffer toWriteTo, boolean useColor) {
+	public void getHTML(final StringBuffer toWriteTo, final boolean useColor) {
 		java.awt.Color bgColor = COLOR;
 		String strikeStart = "";
 		String strikeEnd = "";
 		if (!m_behavior.isEnabled.booleanValue()) {
 			bgColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTML");
-			strikeStart = "<strike><font color=\"" + getHTMLColorString(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTMLText")) + "\">";
+			strikeStart = "<strike><font color=\""
+					+ getHTMLColorString(
+							edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTMLText"))
+					+ "\">";
 			strikeEnd = "</font></strike>";
 		}
-		toWriteTo.append("<tr>\n<td bgcolor=" + getHTMLColorString(bgColor) + "><b>" + strikeStart + edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getHTMLStringForComponent(this) + "</b>" + strikeEnd + "</td>\n</tr>\n");
+		toWriteTo.append("<tr>\n<td bgcolor=" + getHTMLColorString(bgColor) + "><b>" + strikeStart
+				+ edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getHTMLStringForComponent(this) + "</b>"
+				+ strikeEnd + "</td>\n</tr>\n");
 	}
 
 	public edu.cmu.cs.stage3.alice.core.Behavior getBehavior() {
@@ -118,18 +134,19 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 	}
 
 	protected javax.swing.JPopupMenu createPopup() {
-		java.util.Vector popupStructure = new java.util.Vector();
+		final java.util.Vector popupStructure = new java.util.Vector();
 		// popupStructure.add(
 		// edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.MakeCopyRunnable.class
 		// );
 		popupStructure.add(edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.DeleteRunnable.class);
-		java.util.Vector coerceStructure = edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.makeCoerceToStructure(m_behavior);
+		final java.util.Vector coerceStructure = edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities
+				.makeCoerceToStructure(m_behavior);
 		if (coerceStructure != null && coerceStructure.size() > 0) {
 			popupStructure.add(coerceStructure.elementAt(0));
 		}
 		edu.cmu.cs.stage3.util.StringObjectPair commentOut = null;
 		if (m_behavior.isEnabled.booleanValue()) {
-			Runnable setEnabled = new Runnable() {
+			final Runnable setEnabled = new Runnable() {
 				@Override
 				public void run() {
 					m_behavior.isEnabled.set(false);
@@ -138,7 +155,7 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 			};
 			commentOut = new edu.cmu.cs.stage3.util.StringObjectPair("disable", setEnabled);
 		} else {
-			Runnable setEnabled = new Runnable() {
+			final Runnable setEnabled = new Runnable() {
 				@Override
 				public void run() {
 					m_behavior.isEnabled.set(true);
@@ -148,7 +165,8 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 			commentOut = new edu.cmu.cs.stage3.util.StringObjectPair("enable", setEnabled);
 		}
 		popupStructure.add(commentOut);
-		return edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.makeElementPopupMenu(m_behavior, popupStructure);
+		return edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.makeElementPopupMenu(m_behavior,
+				popupStructure);
 	}
 
 	@Override
@@ -198,7 +216,7 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 		authoringTool = null;
 	}
 
-	protected void releasePanel(java.awt.Container toRelease) {
+	protected void releasePanel(final java.awt.Container toRelease) {
 		if (toRelease != null) {
 			for (int i = 0; i < toRelease.getComponentCount(); i++) {
 				if (toRelease.getComponent(i) instanceof edu.cmu.cs.stage3.alice.authoringtool.util.Releasable) {
@@ -208,7 +226,7 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 		}
 	}
 
-	public static void buildLabel(javax.swing.JPanel container, String typeString) {
+	public static void buildLabel(final javax.swing.JPanel container, final String typeString) {
 		int locationLeft, locationRight;
 		int oldLocation = 0;
 		int insertX = 0;
@@ -217,22 +235,32 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 		locationRight = typeString.indexOf('>', locationLeft);
 		while (locationLeft > -1 && locationRight > -1 && oldLocation < typeString.length()) {
 			currentSubstring = typeString.substring(oldLocation, locationLeft);
-			String key = typeString.substring(locationLeft + 1, locationRight);
+			final String key = typeString.substring(locationLeft + 1, locationRight);
 			java.awt.Component toAdd;
-			javax.swing.Icon icon = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getIconForValue(key);
+			final javax.swing.Icon icon = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+					.getIconForValue(key);
 			if (icon == null) {
 				toAdd = new edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel();
-				((edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel) toAdd).setLayout(new java.awt.BorderLayout(0, 0));
+				((edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel) toAdd)
+						.setLayout(new java.awt.BorderLayout(0, 0));
 				((edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel) toAdd).setBackground(COLOR);
-				((edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel) toAdd).setBorder(javax.swing.BorderFactory.createCompoundBorder(((edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel) toAdd).getBorder(), javax.swing.BorderFactory.createEmptyBorder(0, 2, 0, 0)));
-				javax.swing.JLabel expressionLabel = new javax.swing.JLabel(key);
-				((edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel) toAdd).add(expressionLabel, java.awt.BorderLayout.CENTER);
+				((edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel) toAdd)
+						.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+								((edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel) toAdd).getBorder(),
+								javax.swing.BorderFactory.createEmptyBorder(0, 2, 0, 0)));
+				final javax.swing.JLabel expressionLabel = new javax.swing.JLabel(key);
+				((edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel) toAdd).add(expressionLabel,
+						java.awt.BorderLayout.CENTER);
 			} else {
 				toAdd = new javax.swing.JLabel(icon);
 			}
-			container.add(new javax.swing.JLabel(currentSubstring), new java.awt.GridBagConstraints(insertX, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 0), 0, 0));
+			container.add(new javax.swing.JLabel(currentSubstring),
+					new java.awt.GridBagConstraints(insertX, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST,
+							java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 0), 0, 0));
 			insertX++;
-			container.add(toAdd, new java.awt.GridBagConstraints(insertX, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 0), 0, 0));
+			container.add(toAdd,
+					new java.awt.GridBagConstraints(insertX, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST,
+							java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 0), 0, 0));
 			insertX++;
 			oldLocation = locationRight + 1;
 			locationLeft = typeString.indexOf('<', oldLocation);
@@ -240,12 +268,14 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 		}
 		if (oldLocation < typeString.length()) {
 			currentSubstring = typeString.substring(oldLocation, typeString.length());
-			container.add(new javax.swing.JLabel(currentSubstring), new java.awt.GridBagConstraints(insertX, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 0), 0, 0));
+			container.add(new javax.swing.JLabel(currentSubstring),
+					new java.awt.GridBagConstraints(insertX, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST,
+							java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 0), 0, 0));
 			insertX++;
 		}
 	}
 
-	protected void buildLabel(javax.swing.JPanel container) {
+	protected void buildLabel(final javax.swing.JPanel container) {
 		int locationLeft, locationRight;
 		int oldLocation = 0;
 		int insertX = 0;
@@ -254,26 +284,37 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 		locationRight = typeString.indexOf('>', locationLeft);
 		while (locationLeft > -1 && locationRight > -1 && oldLocation < typeString.length()) {
 			currentSubstring = typeString.substring(oldLocation, locationLeft);
-			String key = typeString.substring(locationLeft + 1, locationRight);
+			final String key = typeString.substring(locationLeft + 1, locationRight);
 			java.awt.Component toAdd;
 			final edu.cmu.cs.stage3.alice.core.Property prop = m_behavior.getPropertyNamed(key);
 			if (prop != null) {
-				edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory propPIF = new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(prop);
+				final edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory propPIF = new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(
+						prop);
 				boolean shouldAllowExpressions = true;
-				Class desiredValueClass = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.getDesiredValueClass(prop);
-				if (edu.cmu.cs.stage3.alice.core.Response.class.isAssignableFrom(desiredValueClass) || prop.getName().equalsIgnoreCase("keyCode")) {
+				final Class desiredValueClass = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+						.getDesiredValueClass(prop);
+				if (edu.cmu.cs.stage3.alice.core.Response.class.isAssignableFrom(desiredValueClass)
+						|| prop.getName().equalsIgnoreCase("keyCode")) {
 					shouldAllowExpressions = false;
 				}
-				toAdd = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getPropertyViewController(prop, true, shouldAllowExpressions, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitPropertyName(prop), propPIF);
+				toAdd = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getPropertyViewController(prop, true,
+						shouldAllowExpressions,
+						edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitPropertyName(prop),
+						propPIF);
 			} else {
-				toAdd = new javax.swing.JLabel(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getIconForValue(key));
+				toAdd = new javax.swing.JLabel(
+						edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getIconForValue(key));
 				if (toAdd == null) {
 					toAdd = new javax.swing.JLabel("(no image)");
 				}
 			}
-			container.add(new javax.swing.JLabel(currentSubstring), new java.awt.GridBagConstraints(insertX, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 0), 0, 0));
+			container.add(new javax.swing.JLabel(currentSubstring),
+					new java.awt.GridBagConstraints(insertX, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST,
+							java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 0), 0, 0));
 			insertX++;
-			container.add(toAdd, new java.awt.GridBagConstraints(insertX, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 0), 0, 0));
+			container.add(toAdd,
+					new java.awt.GridBagConstraints(insertX, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST,
+							java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 0), 0, 0));
 			insertX++;
 			oldLocation = locationRight + 1;
 			locationLeft = typeString.indexOf('<', oldLocation);
@@ -281,29 +322,31 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 		}
 		if (oldLocation < typeString.length()) {
 			currentSubstring = typeString.substring(oldLocation, typeString.length());
-			container.add(new javax.swing.JLabel(currentSubstring), new java.awt.GridBagConstraints(insertX, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 0), 0, 0));
+			container.add(new javax.swing.JLabel(currentSubstring),
+					new java.awt.GridBagConstraints(insertX, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST,
+							java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 0), 0, 0));
 			insertX++;
 		}
 	}
 
-	public void prePropertyChange(edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
+	public void prePropertyChange(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
 	}
 
 	@Override
-	public void propertyChanging(edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
+	public void propertyChanging(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
 	}
 
 	@Override
-	public void paintForeground(java.awt.Graphics g) {
+	public void paintForeground(final java.awt.Graphics g) {
 		super.paintForeground(g);
 		if (!m_behavior.isEnabled.booleanValue()) {
-			java.awt.Rectangle bounds = new java.awt.Rectangle(0, 0, getWidth(), getHeight());
+			final java.awt.Rectangle bounds = new java.awt.Rectangle(0, 0, getWidth(), getHeight());
 			edu.cmu.cs.stage3.alice.authoringtool.util.GUIEffects.paintDisabledEffect(g, bounds);
 		}
 	}
 
 	@Override
-	public void propertyChanged(edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
+	public void propertyChanged(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
 		// stopListening();
 		popUpMenu = createPopup();
 		guiInit();

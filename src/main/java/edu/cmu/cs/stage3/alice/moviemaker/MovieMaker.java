@@ -24,20 +24,21 @@
 package edu.cmu.cs.stage3.alice.moviemaker;
 
 public class MovieMaker extends edu.cmu.cs.stage3.alice.player.DefaultPlayer {
-	private String m_directoryPath;
-	private String m_fileName;
-	private java.text.NumberFormat m_numberFormat;
-	private String m_extension;
+	private final String m_directoryPath;
+	private final String m_fileName;
+	private final java.text.NumberFormat m_numberFormat;
+	private final String m_extension;
 	@SuppressWarnings("unused")
-	private int m_index;
+	private final int m_index;
 
-	public MovieMaker(Class<?> rendererClass, String directoryPath, String fileName, String localizedPattern, String extension) {
+	public MovieMaker(final Class<?> rendererClass, final String directoryPath, final String fileName,
+			final String localizedPattern, final String extension) {
 		super(rendererClass);
 		m_directoryPath = directoryPath;
 		m_fileName = fileName;
 		m_numberFormat = java.text.NumberFormat.getInstance();
 		if (m_numberFormat instanceof java.text.DecimalFormat) {
-			java.text.DecimalFormat df = (java.text.DecimalFormat) m_numberFormat;
+			final java.text.DecimalFormat df = (java.text.DecimalFormat) m_numberFormat;
 			df.applyLocalizedPattern(localizedPattern);
 		}
 		m_extension = extension;
@@ -59,7 +60,7 @@ public class MovieMaker extends edu.cmu.cs.stage3.alice.player.DefaultPlayer {
 		return 480 + 34;
 	}
 
-	private void getPathForIndex(StringBuffer sb, int index) {
+	private void getPathForIndex(final StringBuffer sb, final int index) {
 		sb.append(m_directoryPath);
 		sb.append(java.io.File.separatorChar);
 		sb.append(m_fileName);
@@ -67,43 +68,52 @@ public class MovieMaker extends edu.cmu.cs.stage3.alice.player.DefaultPlayer {
 		sb.append(".");
 		sb.append(m_extension);
 	}
-	public String getPathForIndex(int index) {
-		StringBuffer sb = new StringBuffer();
+
+	public String getPathForIndex(final int index) {
+		final StringBuffer sb = new StringBuffer();
 		getPathForIndex(sb, index);
 		return sb.toString();
 	}
 
 	@Override
-	protected void handleRenderTarget(edu.cmu.cs.stage3.alice.core.RenderTarget renderTarget) {
+	protected void handleRenderTarget(final edu.cmu.cs.stage3.alice.core.RenderTarget renderTarget) {
 		super.handleRenderTarget(renderTarget);
-		renderTarget.addRenderTargetListener(new edu.cmu.cs.stage3.alice.scenegraph.renderer.event.RenderTargetListener() {
-			private int m_index = 0;
-			@Override
-			public void cleared(edu.cmu.cs.stage3.alice.scenegraph.renderer.event.RenderTargetEvent renderTargetEvent) {
-			}
-			@Override
-			public void rendered(edu.cmu.cs.stage3.alice.scenegraph.renderer.event.RenderTargetEvent renderTargetEvent) {
-				java.awt.Image image = renderTargetEvent.getRenderTarget().getOffscreenImage();
-				String path = getPathForIndex(m_index++);
-				try {
-					java.awt.image.ImageObserver observer = new java.awt.image.ImageObserver() {
-						@Override
-						public boolean imageUpdate(java.awt.Image arg0, int arg1, int arg2, int arg3, int arg4, int arg5) {
-							return false;
-						}
-					};
-					java.awt.image.BufferedImage bi = new java.awt.image.BufferedImage(image.getWidth(observer), image.getHeight(observer), java.awt.image.BufferedImage.TYPE_3BYTE_BGR);
-					bi.getGraphics().drawImage(image, 0, 0, observer);
-					edu.cmu.cs.stage3.image.ImageIO.store("bmp", new java.io.FileOutputStream(path), bi);
-				} catch (InterruptedException ie) {
-					throw new RuntimeException(ie);
-				} catch (java.io.IOException ioe) {
-					throw new RuntimeException(ioe);
-				}
-				System.err.println(image);
-			}
+		renderTarget
+				.addRenderTargetListener(new edu.cmu.cs.stage3.alice.scenegraph.renderer.event.RenderTargetListener() {
+					private int m_index = 0;
 
-		});
+					@Override
+					public void cleared(
+							final edu.cmu.cs.stage3.alice.scenegraph.renderer.event.RenderTargetEvent renderTargetEvent) {
+					}
+
+					@Override
+					public void rendered(
+							final edu.cmu.cs.stage3.alice.scenegraph.renderer.event.RenderTargetEvent renderTargetEvent) {
+						final java.awt.Image image = renderTargetEvent.getRenderTarget().getOffscreenImage();
+						final String path = getPathForIndex(m_index++);
+						try {
+							final java.awt.image.ImageObserver observer = new java.awt.image.ImageObserver() {
+								@Override
+								public boolean imageUpdate(final java.awt.Image arg0, final int arg1, final int arg2,
+										final int arg3, final int arg4, final int arg5) {
+									return false;
+								}
+							};
+							final java.awt.image.BufferedImage bi = new java.awt.image.BufferedImage(
+									image.getWidth(observer), image.getHeight(observer),
+									java.awt.image.BufferedImage.TYPE_3BYTE_BGR);
+							bi.getGraphics().drawImage(image, 0, 0, observer);
+							edu.cmu.cs.stage3.image.ImageIO.store("bmp", new java.io.FileOutputStream(path), bi);
+						} catch (final InterruptedException ie) {
+							throw new RuntimeException(ie);
+						} catch (final java.io.IOException ioe) {
+							throw new RuntimeException(ioe);
+						}
+						System.err.println(image);
+					}
+
+				});
 	}
 	/*
 	 * public static void main(String[] args) { Class rendererClass =

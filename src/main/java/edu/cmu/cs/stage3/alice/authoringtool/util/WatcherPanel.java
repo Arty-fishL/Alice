@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -26,20 +26,19 @@ package edu.cmu.cs.stage3.alice.authoringtool.util;
 /**
  * @author Jason Pratt
  */
-public class WatcherPanel extends javax.swing.JPanel /*
-													 * implements
-													 * edu.cmu.cs.stage3
-													 * .alice.core
-													 * .event.PropertyListener,
-													 * edu
-													 * .cmu.cs.stage3.alice.core
-													 * .event.
-													 * ObjectArrayPropertyListener
-													 * ,
-													 * edu.cmu.cs.stage3.alice.
-													 * core
-													 * .event.ChildrenListener
-													 */{
+public class WatcherPanel
+		extends javax.swing.JPanel /*
+									 * implements edu.cmu.cs.stage3 .alice.core
+									 * .event.PropertyListener, edu
+									 * .cmu.cs.stage3.alice.core .event.
+									 * ObjectArrayPropertyListener ,
+									 * edu.cmu.cs.stage3.alice. core
+									 * .event.ChildrenListener
+									 */ {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 7622286365305225250L;
 	protected java.util.List variablesToWatch = new java.util.ArrayList();
 	protected java.util.List propertiesToWatch = new java.util.ArrayList();
 	protected edu.cmu.cs.stage3.alice.core.Element root;
@@ -59,12 +58,12 @@ public class WatcherPanel extends javax.swing.JPanel /*
 		removeAllPropertiesBeingWatched();
 	}
 
-	public void addVariableToWatch(edu.cmu.cs.stage3.alice.core.Variable variable) {
+	public void addVariableToWatch(final edu.cmu.cs.stage3.alice.core.Variable variable) {
 		variablesToWatch.add(variable);
 		refreshGUI();
 	}
 
-	public void removeVariableBeingWatched(edu.cmu.cs.stage3.alice.core.Variable variable) {
+	public void removeVariableBeingWatched(final edu.cmu.cs.stage3.alice.core.Variable variable) {
 		variablesToWatch.remove(variable);
 		refreshGUI();
 	}
@@ -74,16 +73,16 @@ public class WatcherPanel extends javax.swing.JPanel /*
 		refreshGUI();
 	}
 
-	public boolean isVariableBeingWatched(edu.cmu.cs.stage3.alice.core.Variable variable) {
+	public boolean isVariableBeingWatched(final edu.cmu.cs.stage3.alice.core.Variable variable) {
 		return variablesToWatch.contains(variable);
 	}
 
-	public void addPropertyToWatch(edu.cmu.cs.stage3.alice.core.Property property) {
+	public void addPropertyToWatch(final edu.cmu.cs.stage3.alice.core.Property property) {
 		propertiesToWatch.add(property);
 		refreshGUI();
 	}
 
-	public void removePropertyBeingWatched(edu.cmu.cs.stage3.alice.core.Property property) {
+	public void removePropertyBeingWatched(final edu.cmu.cs.stage3.alice.core.Property property) {
 		propertiesToWatch.remove(property);
 		refreshGUI();
 	}
@@ -93,39 +92,52 @@ public class WatcherPanel extends javax.swing.JPanel /*
 		refreshGUI();
 	}
 
-	public boolean isPropertyBeingWatched(edu.cmu.cs.stage3.alice.core.Property property) {
+	public boolean isPropertyBeingWatched(final edu.cmu.cs.stage3.alice.core.Property property) {
 		return propertiesToWatch.contains(property);
 	}
 
 	protected void refreshGUI() {
 		removeAll();
 		int count = 0;
-		for (java.util.Iterator iter = variablesToWatch.iterator(); iter.hasNext();) {
-			edu.cmu.cs.stage3.alice.core.Variable variable = (edu.cmu.cs.stage3.alice.core.Variable) iter.next();
-			edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory factory = new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(variable.value);
-			javax.swing.JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getVariableGUI(variable, true, factory);
+		for (final java.util.Iterator iter = variablesToWatch.iterator(); iter.hasNext();) {
+			final edu.cmu.cs.stage3.alice.core.Variable variable = (edu.cmu.cs.stage3.alice.core.Variable) iter.next();
+			final edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory factory = new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(
+					variable.value);
+			final javax.swing.JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
+					.getVariableGUI(variable, true, factory);
 			if (gui != null) {
-				this.add(gui, new java.awt.GridBagConstraints(0, count++, 1, 1, 1.0, 0.0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(2, 2, 2, 2), 0, 0));
+				this.add(gui,
+						new java.awt.GridBagConstraints(0, count++, 1, 1, 1.0, 0.0, java.awt.GridBagConstraints.WEST,
+								java.awt.GridBagConstraints.NONE, new java.awt.Insets(2, 2, 2, 2), 0, 0));
 			} else {
-				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Unable to create gui for variable: " + variable, null);
+				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+						.showErrorDialog("Unable to create gui for variable: " + variable, null);
 			}
 		}
 
-		this.add(javax.swing.Box.createVerticalStrut(8), new java.awt.GridBagConstraints(0, count++, 1, 1, 1.0, 0.0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(2, 2, 2, 2), 0, 0));
+		this.add(javax.swing.Box.createVerticalStrut(8),
+				new java.awt.GridBagConstraints(0, count++, 1, 1, 1.0, 0.0, java.awt.GridBagConstraints.WEST,
+						java.awt.GridBagConstraints.NONE, new java.awt.Insets(2, 2, 2, 2), 0, 0));
 
-		for (java.util.Iterator iter = propertiesToWatch.iterator(); iter.hasNext();) {
-			edu.cmu.cs.stage3.alice.core.Property property = (edu.cmu.cs.stage3.alice.core.Property) iter.next();
-			edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory factory = new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(property);
-			javax.swing.JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getPropertyGUI(property, true, false, factory);
+		for (final java.util.Iterator iter = propertiesToWatch.iterator(); iter.hasNext();) {
+			final edu.cmu.cs.stage3.alice.core.Property property = (edu.cmu.cs.stage3.alice.core.Property) iter.next();
+			final edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory factory = new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(
+					property);
+			final javax.swing.JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
+					.getPropertyGUI(property, true, false, factory);
 			if (gui != null) {
-				this.add(gui, new java.awt.GridBagConstraints(0, count++, 1, 1, 1.0, 0.0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(2, 2, 2, 2), 0, 0));
+				this.add(gui,
+						new java.awt.GridBagConstraints(0, count++, 1, 1, 1.0, 0.0, java.awt.GridBagConstraints.WEST,
+								java.awt.GridBagConstraints.NONE, new java.awt.Insets(2, 2, 2, 2), 0, 0));
 			} else {
-				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Unable to create gui for property: " + property, null);
+				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+						.showErrorDialog("Unable to create gui for property: " + property, null);
 			}
 		}
 
-		java.awt.Component glue = javax.swing.Box.createGlue();
-		this.add(glue, new java.awt.GridBagConstraints(0, count++, 1, 1, 1.0, 1.0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.BOTH, new java.awt.Insets(2, 2, 2, 2), 0, 0));
+		final java.awt.Component glue = javax.swing.Box.createGlue();
+		this.add(glue, new java.awt.GridBagConstraints(0, count++, 1, 1, 1.0, 1.0, java.awt.GridBagConstraints.WEST,
+				java.awt.GridBagConstraints.BOTH, new java.awt.Insets(2, 2, 2, 2), 0, 0));
 
 		revalidate();
 		repaint();

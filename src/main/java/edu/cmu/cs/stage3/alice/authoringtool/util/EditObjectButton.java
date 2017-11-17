@@ -28,20 +28,27 @@ import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
 /**
  * @author Jason Pratt
  */
-public class EditObjectButton extends javax.swing.JButton implements edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement, edu.cmu.cs.stage3.alice.authoringtool.util.Releasable {
+public class EditObjectButton extends javax.swing.JButton implements
+		edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement, edu.cmu.cs.stage3.alice.authoringtool.util.Releasable {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 2176527341279505192L;
 	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
 	protected Object object;
 	protected javax.swing.JComponent animationSource;
-	private edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringToolConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration.getLocalConfiguration(AuthoringTool.class.getPackage());
+	private final edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringToolConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration
+			.getLocalConfiguration(AuthoringTool.class.getPackage());
 
 	public EditObjectButton() {
 		setBackground(new java.awt.Color(240, 240, 255));
 		setMargin(new java.awt.Insets(0, 2, 0, 2));
 		setText("edit");
-		int fontSize = Integer.parseInt(authoringToolConfig.getValue("fontSize"));
+		final int fontSize = Integer.parseInt(authoringToolConfig.getValue("fontSize"));
 		setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, (int) (11 * fontSize / 12.0)));
 		setFocusPainted(false);
-		setBorder(new javax.swing.plaf.BorderUIResource.CompoundBorderUIResource(new CustomButtonBorder(), new javax.swing.plaf.basic.BasicBorders.MarginBorder()));
+		setBorder(new javax.swing.plaf.BorderUIResource.CompoundBorderUIResource(new CustomButtonBorder(),
+				new javax.swing.plaf.basic.BasicBorders.MarginBorder()));
 		// setBorder( new javax.swing.plaf.metal.MetalBorders.ButtonBorder() {
 		// protected java.awt.Insets borderInsets = new java.awt.Insets( 1, 3,
 		// 1, 3 );
@@ -51,7 +58,7 @@ public class EditObjectButton extends javax.swing.JButton implements edu.cmu.cs.
 		// } );
 		addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				if (authoringTool != null) {
 					if (object != null) {
 						if (animationSource != null) {
@@ -60,20 +67,22 @@ public class EditObjectButton extends javax.swing.JButton implements edu.cmu.cs.
 							authoringTool.editObject(object);
 						}
 					} else {
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("object unexpectedly null in EditObjectButton", null);
+						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+								.showErrorDialog("object unexpectedly null in EditObjectButton", null);
 					}
 				} else {
-					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("authoringTool unexpectedly null in EditObjectButton", null);
+					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+							.showErrorDialog("authoringTool unexpectedly null in EditObjectButton", null);
 				}
 			}
 		});
 	}
 
-	public void setAuthoringTool(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
+	public void setAuthoringTool(final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
 		this.authoringTool = authoringTool;
 	}
 
-	public void setObject(Object object) {
+	public void setObject(final Object object) {
 		this.object = object;
 	}
 
@@ -81,13 +90,14 @@ public class EditObjectButton extends javax.swing.JButton implements edu.cmu.cs.
 		return object;
 	}
 
-	public void setAnimationSource(javax.swing.JComponent animationSource) {
+	public void setAnimationSource(final javax.swing.JComponent animationSource) {
 		this.animationSource = animationSource;
 	}
 
 	@Override
 	public void goToSleep() {
 	}
+
 	@Override
 	public void wakeUp() {
 	}
@@ -110,13 +120,21 @@ public class EditObjectButton extends javax.swing.JButton implements edu.cmu.cs.
 	}
 
 	class CustomButtonBorder extends javax.swing.border.AbstractBorder implements javax.swing.plaf.UIResource {
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = 6387593195880077007L;
 		protected java.awt.Insets insets = new java.awt.Insets(1, 3, 1, 3);
-		protected javax.swing.border.Border line = javax.swing.BorderFactory.createLineBorder(java.awt.Color.darkGray, 1);
+		protected javax.swing.border.Border line = javax.swing.BorderFactory.createLineBorder(java.awt.Color.darkGray,
+				1);
 		protected javax.swing.border.Border spacer = javax.swing.BorderFactory.createEmptyBorder(0, 3, 0, 3);
 		protected javax.swing.border.Border raisedBevel = new CustomBevelBorder(javax.swing.border.BevelBorder.RAISED);
-		protected javax.swing.border.Border loweredBevel = new CustomBevelBorder(javax.swing.border.BevelBorder.LOWERED);
-		protected javax.swing.border.Border raisedBorder = javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createCompoundBorder(line, raisedBevel), spacer);
-		protected javax.swing.border.Border loweredBorder = javax.swing.BorderFactory.createCompoundBorder(javax.swing.BorderFactory.createCompoundBorder(line, loweredBevel), spacer);
+		protected javax.swing.border.Border loweredBevel = new CustomBevelBorder(
+				javax.swing.border.BevelBorder.LOWERED);
+		protected javax.swing.border.Border raisedBorder = javax.swing.BorderFactory
+				.createCompoundBorder(javax.swing.BorderFactory.createCompoundBorder(line, raisedBevel), spacer);
+		protected javax.swing.border.Border loweredBorder = javax.swing.BorderFactory
+				.createCompoundBorder(javax.swing.BorderFactory.createCompoundBorder(line, loweredBevel), spacer);
 		// protected javax.swing.border.Border raisedBorder =
 		// javax.swing.BorderFactory.createCompoundBorder( raisedBevel, spacer
 		// );
@@ -125,9 +143,10 @@ public class EditObjectButton extends javax.swing.JButton implements edu.cmu.cs.
 		// );
 
 		@Override
-		public void paintBorder(java.awt.Component c, java.awt.Graphics g, int x, int y, int w, int h) {
-			javax.swing.JButton button = (javax.swing.JButton) c;
-			javax.swing.ButtonModel model = button.getModel();
+		public void paintBorder(final java.awt.Component c, final java.awt.Graphics g, final int x, final int y,
+				final int w, final int h) {
+			final javax.swing.JButton button = (javax.swing.JButton) c;
+			final javax.swing.ButtonModel model = button.getModel();
 
 			if (model.isEnabled()) {
 				if (model.isPressed() && model.isArmed()) {
@@ -141,23 +160,28 @@ public class EditObjectButton extends javax.swing.JButton implements edu.cmu.cs.
 		}
 
 		@Override
-		public java.awt.Insets getBorderInsets(java.awt.Component c) {
+		public java.awt.Insets getBorderInsets(final java.awt.Component c) {
 			return insets;
 		}
 	}
 
 	class CustomBevelBorder extends javax.swing.border.BevelBorder {
-		public CustomBevelBorder(int type) {
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = 805855194163642454L;
+
+		public CustomBevelBorder(final int type) {
 			super(type);
 		}
 
 		@Override
-		public java.awt.Color getHighlightInnerColor(java.awt.Component c) {
+		public java.awt.Color getHighlightInnerColor(final java.awt.Component c) {
 			return c.getBackground();
 		}
 
 		@Override
-		public java.awt.Color getShadowInnerColor(java.awt.Component c) {
+		public java.awt.Color getShadowInnerColor(final java.awt.Component c) {
 			return c.getBackground();
 		}
 	}

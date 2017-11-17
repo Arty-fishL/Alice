@@ -31,7 +31,7 @@ public class Paragraph {
 	protected Vector iterators = new Vector();
 	protected Vector measurers = new Vector();
 
-	private int fontSize = 14;
+	private final int fontSize = 14;
 	// private java.awt.Font font = new Font("Arial",
 
 	public Paragraph() {
@@ -41,18 +41,18 @@ public class Paragraph {
 		regenerateLineBreakMeasurer();
 	}
 
-	public Paragraph(int textWidth, Point textOrigin) {
+	public Paragraph(final int textWidth, final Point textOrigin) {
 		this();
 		this.textWidth = textWidth;
 		this.textOrigin = textOrigin;
 	}
 
 	// set config values
-	public void setTextWidth(int textWidth) {
+	public void setTextWidth(final int textWidth) {
 		this.textWidth = textWidth;
 	}
 
-	public void setTextOrigin(Point textOrigin) {
+	public void setTextOrigin(final Point textOrigin) {
 		this.textOrigin = textOrigin;
 	}
 
@@ -62,7 +62,7 @@ public class Paragraph {
 	 * StringBuffer(textString); regenerateLineBreakMeasurer(); }
 	 */
 
-	public void addText(String textString, Color textColor) {
+	public void addText(final String textString, final Color textColor) {
 		buffers.addElement(new StringBuffer(textString));
 		colors.addElement(textColor);
 		currentText = (StringBuffer) buffers.elementAt(0);
@@ -88,20 +88,20 @@ public class Paragraph {
 			newBuffer = new StringBuffer(currentText.substring(cursorIndex));
 		}
 		// add the buffers in
-		int index = buffers.indexOf(currentText);
+		final int index = buffers.indexOf(currentText);
 		if (index != -1) {
 			buffers.setElementAt(lastBuffer, index);
 			currentText = newBuffer;
 			cursorIndex = 0;
 			buffers.insertElementAt(newBuffer, index + 1);
 
-			Color textColor = (Color) colors.elementAt(index);
+			final Color textColor = (Color) colors.elementAt(index);
 			colors.insertElementAt(textColor, index + 1);
 		}
 		regenerateLineBreakMeasurer();
 	}
 
-	public void insertChar(char c) {
+	public void insertChar(final char c) {
 		if (cursorIndex == currentText.length()) {
 			currentText.append(c);
 		} else {
@@ -113,7 +113,7 @@ public class Paragraph {
 
 	// same - need a current textString
 	public void deleteChar() {
-		int lineIndex = buffers.indexOf(currentText);
+		final int lineIndex = buffers.indexOf(currentText);
 		if (cursorIndex > 0) {
 			currentText.deleteCharAt(cursorIndex - 1);
 			cursorIndex -= 1;
@@ -124,10 +124,10 @@ public class Paragraph {
 			}
 			regenerateLineBreakMeasurer();
 		} else if (cursorIndex == 0 && lineIndex > 0) {
-			StringBuffer previousLine = (StringBuffer) buffers.elementAt(lineIndex - 1);
+			final StringBuffer previousLine = (StringBuffer) buffers.elementAt(lineIndex - 1);
 			cursorIndex = previousLine.length();
 			previousLine.append(currentText.toString());
-			int index = buffers.indexOf(currentText);
+			final int index = buffers.indexOf(currentText);
 			buffers.remove(currentText);
 			colors.removeElementAt(index);
 			currentText = previousLine;
@@ -142,15 +142,15 @@ public class Paragraph {
 		iterators = new Vector();
 		measurers = new Vector();
 		for (int i = 0; i < buffers.size(); i++) {
-			StringBuffer currBuffer = (StringBuffer) buffers.elementAt(i);
-			java.text.AttributedString attrString = new java.text.AttributedString(currBuffer.toString());
+			final StringBuffer currBuffer = (StringBuffer) buffers.elementAt(i);
+			final java.text.AttributedString attrString = new java.text.AttributedString(currBuffer.toString());
 			if (currBuffer.toString().length() > 0) {
 				attrString.addAttribute(java.awt.font.TextAttribute.SIZE, new Float(fontSize));
-				java.awt.Font font = new java.awt.Font("Comic Sans MS", 1, fontSize);
+				final java.awt.Font font = new java.awt.Font("Comic Sans MS", 1, fontSize);
 				attrString.addAttribute(java.awt.font.TextAttribute.FONT, font);
 			}
 			// iterator = attrString.getIterator();
-			AttributedCharacterIterator itr = attrString.getIterator();
+			final AttributedCharacterIterator itr = attrString.getIterator();
 			iterators.addElement(itr);
 
 			if (itr.getEndIndex() != 0) {
@@ -170,28 +170,28 @@ public class Paragraph {
 		return (int) textOrigin.getY() + (int) lineAscent;
 	}
 
-	public int getNextY(int currentY) {
+	public int getNextY(final int currentY) {
 		return currentY + (int) lineHeight;
 	}
 
 	// this has to loop over the iterators, measurers
 	public Vector getShapes() {
-		Vector shapes = new Vector();
+		final Vector shapes = new Vector();
 		double line = 0;
 		for (int i = 0; i < iterators.size(); i++) {
-			AttributedCharacterIterator itr = (AttributedCharacterIterator) iterators.elementAt(i);
-			StringBuffer bfr = (StringBuffer) buffers.elementAt(i); // PROBLEM
-			Color color = (Color) colors.elementAt(i);
-			int paragraphStart = itr.getBeginIndex();
-			int paragraphEnd = itr.getEndIndex();
+			final AttributedCharacterIterator itr = (AttributedCharacterIterator) iterators.elementAt(i);
+			final StringBuffer bfr = (StringBuffer) buffers.elementAt(i); // PROBLEM
+			final Color color = (Color) colors.elementAt(i);
+			final int paragraphStart = itr.getBeginIndex();
+			final int paragraphEnd = itr.getEndIndex();
 
-			LineBreakMeasurer msr = (LineBreakMeasurer) measurers.elementAt(i);
+			final LineBreakMeasurer msr = (LineBreakMeasurer) measurers.elementAt(i);
 			if (msr != null) {
 				msr.setPosition(paragraphStart);
 				while (msr.getPosition() < paragraphEnd) {
-					int begin = msr.getPosition();
-					TextLayout layout = msr.nextLayout(textWidth);
-					int end = begin + layout.getCharacterCount();
+					final int begin = msr.getPosition();
+					final TextLayout layout = msr.nextLayout(textWidth);
+					final int end = begin + layout.getCharacterCount();
 
 					// update the lineheight if that's necessary
 					lineHeight = layout.getAscent() + layout.getDescent() + layout.getLeading();
@@ -200,17 +200,17 @@ public class Paragraph {
 					// check to see if this is where the caret should be drawn
 					// and draw it
 					if (currentText == bfr && cursorIndex >= begin && cursorIndex <= end) {
-						Shape[] carets = layout.getCaretShapes(cursorIndex - begin);
-						AffineTransform at = new AffineTransform();
+						final Shape[] carets = layout.getCaretShapes(cursorIndex - begin);
+						final AffineTransform at = new AffineTransform();
 						at.translate(textOrigin.getX(), getStartY() + line * lineHeight);
 
 						caretShape = at.createTransformedShape(carets[0]);
 					}
 
-					AffineTransform at = new AffineTransform();
+					final AffineTransform at = new AffineTransform();
 					at.translate(textOrigin.getX(), getStartY() + line * lineHeight);
-					Shape s = layout.getOutline(at);
-					ScreenShape sShape = new ScreenShape(color, s, true, 5);
+					final Shape s = layout.getOutline(at);
+					final ScreenShape sShape = new ScreenShape(color, s, true, 5);
 					shapes.addElement(sShape);
 					line += 1;
 				}
@@ -221,9 +221,9 @@ public class Paragraph {
 	}
 
 	public Vector getText() {
-		Vector strings = new Vector();
+		final Vector strings = new Vector();
 		for (int i = 0; i < buffers.size(); i++) {
-			String st = ((StringBuffer) buffers.elementAt(i)).toString();
+			final String st = ((StringBuffer) buffers.elementAt(i)).toString();
 			if (st.length() > 0) {
 				strings.addElement(st);
 			}
@@ -235,19 +235,19 @@ public class Paragraph {
 		return colors;
 	}
 
-	public void updateCaretPosition(Point clickPos) {
-		float clickX = (float) (clickPos.getX() - textOrigin.getX());
-		float clickY = (float) (clickPos.getY() - textOrigin.getY());
+	public void updateCaretPosition(final Point clickPos) {
+		final float clickX = (float) (clickPos.getX() - textOrigin.getX());
+		final float clickY = (float) (clickPos.getY() - textOrigin.getY());
 
 		float bottomBoundary = 0;
 		float topBoundary = 0;
 
 		for (int i = 0; i < iterators.size(); i++) {
-			AttributedCharacterIterator iterator = (AttributedCharacterIterator) iterators.elementAt(i);
-			LineBreakMeasurer measurer = (LineBreakMeasurer) measurers.elementAt(i);
+			final AttributedCharacterIterator iterator = (AttributedCharacterIterator) iterators.elementAt(i);
+			final LineBreakMeasurer measurer = (LineBreakMeasurer) measurers.elementAt(i);
 
-			int paragraphStart = iterator.getBeginIndex();
-			int paragraphEnd = iterator.getEndIndex();
+			final int paragraphStart = iterator.getBeginIndex();
+			final int paragraphEnd = iterator.getEndIndex();
 
 			if (measurer != null) {
 				measurer.setPosition(paragraphStart);
@@ -264,12 +264,12 @@ public class Paragraph {
 				while (measurer.getPosition() < paragraphEnd) {
 
 					// Retrieve next layout.
-					TextLayout layout = measurer.nextLayout(textWidth);
+					final TextLayout layout = measurer.nextLayout(textWidth);
 					bottomBoundary = topBoundary + lineHeight;
 
 					if (clickY > topBoundary && clickY < bottomBoundary) {
 						// Get the character position of the mouse click.
-						TextHitInfo currentHit = layout.hitTestChar(clickX, clickY);
+						final TextHitInfo currentHit = layout.hitTestChar(clickX, clickY);
 						if (currentHit != null) {
 							currentText = (StringBuffer) buffers.elementAt(i);
 							cursorIndex += currentHit.getInsertionIndex();

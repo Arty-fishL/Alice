@@ -4,9 +4,10 @@ import edu.cmu.cs.stage3.alice.core.Element;
 import edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion;
 
 public class UserDefinedQuestionProperty extends ElementProperty {
-	public UserDefinedQuestionProperty(Element owner, String name, UserDefinedQuestion defaultValue) {
+	public UserDefinedQuestionProperty(final Element owner, final String name, final UserDefinedQuestion defaultValue) {
 		super(owner, name, defaultValue, UserDefinedQuestion.class);
 	}
+
 	public UserDefinedQuestion getUserDefinedQuestionValue() {
 		return (UserDefinedQuestion) getElementValue();
 	}

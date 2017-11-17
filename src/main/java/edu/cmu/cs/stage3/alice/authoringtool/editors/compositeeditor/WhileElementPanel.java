@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -36,12 +36,16 @@ package edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor;
  * <p>
  * Company:
  * </p>
- * 
+ *
  * @author David Culyba
  * @version 1.0
  */
 
 public abstract class WhileElementPanel extends CompositeElementPanel {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 6292254947219292623L;
 	protected javax.swing.JComponent conditionalInput;
 	protected javax.swing.JLabel endHeader;
 	protected edu.cmu.cs.stage3.alice.core.property.BooleanProperty m_condition;
@@ -56,10 +60,10 @@ public abstract class WhileElementPanel extends CompositeElementPanel {
 	protected void variableInit() {
 		super.variableInit();
 		if (m_element instanceof edu.cmu.cs.stage3.alice.core.response.WhileLoopInOrder) {
-			edu.cmu.cs.stage3.alice.core.response.WhileLoopInOrder proxy = (edu.cmu.cs.stage3.alice.core.response.WhileLoopInOrder) m_element;
+			final edu.cmu.cs.stage3.alice.core.response.WhileLoopInOrder proxy = (edu.cmu.cs.stage3.alice.core.response.WhileLoopInOrder) m_element;
 			m_condition = proxy.condition;
 		} else if (m_element instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.While) {
-			edu.cmu.cs.stage3.alice.core.question.userdefined.While proxy = (edu.cmu.cs.stage3.alice.core.question.userdefined.While) m_element;
+			final edu.cmu.cs.stage3.alice.core.question.userdefined.While proxy = (edu.cmu.cs.stage3.alice.core.question.userdefined.While) m_element;
 			m_condition = proxy.condition;
 		}
 	}
@@ -118,12 +122,20 @@ public abstract class WhileElementPanel extends CompositeElementPanel {
 	@Override
 	protected void updateGUI() {
 		super.updateGUI();
-		edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory pif = new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(m_condition);
-		conditionalInput = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getPropertyViewController(m_condition, true, true, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitPropertyName(m_condition), pif);
+		final edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory pif = new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(
+				m_condition);
+		conditionalInput = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getPropertyViewController(m_condition,
+				true, true,
+				edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitPropertyName(m_condition),
+				pif);
 		headerPanel.remove(glue);
-		headerPanel.add(conditionalInput, new java.awt.GridBagConstraints(3, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
-		headerPanel.add(endHeader, new java.awt.GridBagConstraints(4, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
-		headerPanel.add(glue, new java.awt.GridBagConstraints(5, 0, 1, 1, 1, 0, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+		headerPanel.add(conditionalInput,
+				new java.awt.GridBagConstraints(3, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.CENTER,
+						java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
+		headerPanel.add(endHeader, new java.awt.GridBagConstraints(4, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.CENTER,
+				java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
+		headerPanel.add(glue, new java.awt.GridBagConstraints(5, 0, 1, 1, 1, 0, java.awt.GridBagConstraints.CENTER,
+				java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0, 0, 0, 0), 0, 0));
 	}
 
 	// Texture stuff
@@ -131,11 +143,13 @@ public abstract class WhileElementPanel extends CompositeElementPanel {
 	protected static java.awt.image.BufferedImage whileLoopBackgroundImage;
 	protected static java.awt.Dimension whileLoopBackgroundImageSize = new java.awt.Dimension(-1, -1);
 
-	protected void createBackgroundImage(int width, int height) {
+	protected void createBackgroundImage(final int width, final int height) {
 		whileLoopBackgroundImageSize.setSize(width, height);
-		whileLoopBackgroundImage = new java.awt.image.BufferedImage(width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB);
-		java.awt.Graphics2D g = (java.awt.Graphics2D) whileLoopBackgroundImage.getGraphics();
-		g.addRenderingHints(new java.awt.RenderingHints(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON));
+		whileLoopBackgroundImage = new java.awt.image.BufferedImage(width, height,
+				java.awt.image.BufferedImage.TYPE_INT_ARGB);
+		final java.awt.Graphics2D g = (java.awt.Graphics2D) whileLoopBackgroundImage.getGraphics();
+		g.addRenderingHints(new java.awt.RenderingHints(java.awt.RenderingHints.KEY_ANTIALIASING,
+				java.awt.RenderingHints.VALUE_ANTIALIAS_ON));
 		g.setColor(backgroundColor);
 		g.fillRect(0, 0, width, height);
 		/*
@@ -144,7 +158,7 @@ public abstract class WhileElementPanel extends CompositeElementPanel {
 		 */
 	}
 
-	protected void paintTextureEffect(java.awt.Graphics g, java.awt.Rectangle bounds) {
+	protected void paintTextureEffect(final java.awt.Graphics g, final java.awt.Rectangle bounds) {
 		if (bounds.width > whileLoopBackgroundImageSize.width || bounds.height > whileLoopBackgroundImageSize.height) {
 			createBackgroundImage(bounds.width, bounds.height);
 		}

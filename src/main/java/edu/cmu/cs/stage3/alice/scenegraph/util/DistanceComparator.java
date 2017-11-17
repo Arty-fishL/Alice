@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -40,12 +40,12 @@ public class DistanceComparator implements java.util.Comparator {
 	public DistanceComparator() {
 	}
 
-	public DistanceComparator(Point2d point) {
+	public DistanceComparator(final Point2d point) {
 		start = point;
 	}
 
 	@Override
-	public int compare(Object o1, Object o2) throws ClassCastException {
+	public int compare(final Object o1, final Object o2) throws ClassCastException {
 		Point2d p1, p2;
 
 		if (o1 instanceof Point2d) {
@@ -63,8 +63,8 @@ public class DistanceComparator implements java.util.Comparator {
 			throw new ClassCastException();
 		}
 
-		double a = start.distanceL1(p1);
-		double b = start.distanceL1(p2);
+		final double a = start.distanceL1(p1);
+		final double b = start.distanceL1(p2);
 
 		if (a < b) {
 			return -1;

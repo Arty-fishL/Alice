@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -38,6 +38,11 @@ import javax.swing.border.Border;
  * @author Jason Pratt
  */
 public class ScriptEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3.alice.authoringtool.Editor {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 3579137398392545588L;
+
 	public String editorName = "Script Editor";
 
 	protected edu.cmu.cs.stage3.alice.core.property.ScriptProperty scriptProperty;
@@ -45,7 +50,7 @@ public class ScriptEditor extends javax.swing.JPanel implements edu.cmu.cs.stage
 	protected edu.cmu.cs.stage3.alice.authoringtool.util.ScriptEditorPane scriptEditorPane = new edu.cmu.cs.stage3.alice.authoringtool.util.ScriptEditorPane();
 	protected javax.swing.event.CaretListener caretListener = new javax.swing.event.CaretListener() {
 		@Override
-		public void caretUpdate(javax.swing.event.CaretEvent e) {
+		public void caretUpdate(final javax.swing.event.CaretEvent e) {
 			ScriptEditor.this.updateLineNumber();
 		}
 	};
@@ -53,15 +58,17 @@ public class ScriptEditor extends javax.swing.JPanel implements edu.cmu.cs.stage
 		// TODO: more efficient updating; this is going to be really costly when
 		// the script is large...
 		@Override
-		public void changedUpdate(javax.swing.event.DocumentEvent e) {
+		public void changedUpdate(final javax.swing.event.DocumentEvent e) {
 			scriptProperty.set(scriptEditorPane.getText());
 		}
+
 		@Override
-		public void insertUpdate(javax.swing.event.DocumentEvent e) {
+		public void insertUpdate(final javax.swing.event.DocumentEvent e) {
 			scriptProperty.set(scriptEditorPane.getText());
 		}
+
 		@Override
-		public void removeUpdate(javax.swing.event.DocumentEvent e) {
+		public void removeUpdate(final javax.swing.event.DocumentEvent e) {
 			scriptProperty.set(scriptEditorPane.getText());
 		}
 	};
@@ -88,7 +95,7 @@ public class ScriptEditor extends javax.swing.JPanel implements edu.cmu.cs.stage
 		return scriptProperty;
 	}
 
-	public void setObject(edu.cmu.cs.stage3.alice.core.property.ScriptProperty scriptProperty) {
+	public void setObject(final edu.cmu.cs.stage3.alice.core.property.ScriptProperty scriptProperty) {
 		scriptEditorPane.getDocument().removeDocumentListener(documentListener);
 		this.scriptProperty = scriptProperty;
 
@@ -109,7 +116,7 @@ public class ScriptEditor extends javax.swing.JPanel implements edu.cmu.cs.stage
 	}
 
 	@Override
-	public void setAuthoringTool(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
+	public void setAuthoringTool(final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
 		this.authoringTool = authoringTool;
 	}
 
@@ -123,47 +130,59 @@ public class ScriptEditor extends javax.swing.JPanel implements edu.cmu.cs.stage
 	// /////////////////////////////////////////////
 
 	@Override
-	public void stateChanging(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
-	}
-	@Override
-	public void worldLoading(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
-	}
-	@Override
-	public void worldUnLoading(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
-	}
-	@Override
-	public void worldStarting(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
-	}
-	@Override
-	public void worldStopping(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
-	}
-	@Override
-	public void worldPausing(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
-	}
-	@Override
-	public void worldSaving(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void stateChanging(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
 
 	@Override
-	public void stateChanged(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldLoading(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldLoaded(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldUnLoading(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldUnLoaded(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldStarting(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldStarted(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldStopping(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldStopped(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldPausing(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldPaused(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldSaving(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldSaved(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void stateChanged(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	}
+
+	@Override
+	public void worldLoaded(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	}
+
+	@Override
+	public void worldUnLoaded(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	}
+
+	@Override
+	public void worldStarted(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	}
+
+	@Override
+	public void worldStopped(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	}
+
+	@Override
+	public void worldPaused(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	}
+
+	@Override
+	public void worldSaved(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
 
 	// ////////////////////
@@ -182,10 +201,13 @@ public class ScriptEditor extends javax.swing.JPanel implements edu.cmu.cs.stage
 	Border border4;
 
 	private void jbInit() {
-		border1 = BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color.white, Color.lightGray, new Color(142, 142, 142), new Color(99, 99, 99));
-		border2 = BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color.white, Color.gray, new Color(142, 142, 142), new Color(99, 99, 99));
+		border1 = BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color.white, Color.lightGray,
+				new Color(142, 142, 142), new Color(99, 99, 99));
+		border2 = BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color.white, Color.gray,
+				new Color(142, 142, 142), new Color(99, 99, 99));
 		border3 = BorderFactory.createEmptyBorder(1, 1, 1, 1);
-		border4 = BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color.white, Color.lightGray, new Color(99, 99, 99), new Color(142, 142, 142));
+		border4 = BorderFactory.createBevelBorder(BevelBorder.LOWERED, Color.white, Color.lightGray,
+				new Color(99, 99, 99), new Color(142, 142, 142));
 		setLayout(borderLayout1);
 		lineNumberLabel.setBorder(border1);
 		lineNumberLabel.setText("  line number:     ");

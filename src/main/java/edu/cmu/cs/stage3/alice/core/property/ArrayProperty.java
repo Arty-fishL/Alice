@@ -4,9 +4,10 @@ import edu.cmu.cs.stage3.alice.core.Array;
 import edu.cmu.cs.stage3.alice.core.Element;
 
 public class ArrayProperty extends CollectionProperty {
-	public ArrayProperty(Element owner, String name, Array defaultValue) {
+	public ArrayProperty(final Element owner, final String name, final Array defaultValue) {
 		super(owner, name, defaultValue, Array.class);
 	}
+
 	public Array getArrayValue() {
 		return (Array) getCollectionValue();
 	}

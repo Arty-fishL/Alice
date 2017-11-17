@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -47,7 +47,8 @@ public class TextureMap extends Element {
 		}
 		return m_image;
 	}
-	public void setImage(java.awt.Image image) {
+
+	public void setImage(final java.awt.Image image) {
 		if (m_image != image) {
 			m_image = image;
 			onPropertyChange(IMAGE_PROPERTY);
@@ -63,14 +64,17 @@ public class TextureMap extends Element {
 	public edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget getRenderTargetWithLatestImage() {
 		return m_renderTargetWithLatestImage;
 	}
-	public void setRenderTargetWithLatestImage(edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget renderTargetWithLatestImage) {
+
+	public void setRenderTargetWithLatestImage(
+			final edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget renderTargetWithLatestImage) {
 		m_renderTargetWithLatestImage = renderTargetWithLatestImage;
 	}
 
 	public int getFormat() {
 		return m_format;
 	}
-	public void setFormat(int format) {
+
+	public void setFormat(final int format) {
 		if (m_format != format) {
 			m_format = format;
 			onPropertyChange(FORMAT_PROPERTY);

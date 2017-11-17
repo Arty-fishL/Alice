@@ -38,18 +38,28 @@ import edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeEl
  * <p>
  * Company:
  * </p>
- * 
+ *
  * @author David Culyba
  * @version 1.0
  */
 
-public class MainCompositeQuestionPanel extends edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.MainCompositeElementPanel {
+public class MainCompositeQuestionPanel
+		extends edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.MainCompositeElementPanel {
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 671552390531431233L;
 	public ComponentQuestionPanel returnPanel;
 	protected edu.cmu.cs.stage3.alice.core.question.userdefined.Return returnQuestion;
 	protected javax.swing.JPanel questionArea;
 
 	protected class MainCompositeComponentQuestionPanel extends CompositeComponentQuestionPanel {
+
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = 8448372404620649494L;
 
 		@Override
 		protected void updateGUI() {
@@ -57,9 +67,10 @@ public class MainCompositeQuestionPanel extends edu.cmu.cs.stage3.alice.authorin
 				removeAll();
 				resetGUI();
 				for (int i = 0; i < componentElements.size(); i++) {
-					edu.cmu.cs.stage3.alice.core.Element currentElement = (edu.cmu.cs.stage3.alice.core.Element) componentElements.getArrayValue()[i];
+					final edu.cmu.cs.stage3.alice.core.Element currentElement = (edu.cmu.cs.stage3.alice.core.Element) componentElements
+							.getArrayValue()[i];
 					if (currentElement != returnQuestion) {
-						java.awt.Component toAdd = makeGUI(currentElement);
+						final java.awt.Component toAdd = makeGUI(currentElement);
 						if (toAdd != null) {
 							addElementPanel(toAdd, i);
 						}
@@ -85,9 +96,10 @@ public class MainCompositeQuestionPanel extends edu.cmu.cs.stage3.alice.authorin
 
 		@Override
 		protected boolean checkGUI() {
-			java.awt.Component c[] = getComponents();
-			edu.cmu.cs.stage3.alice.core.Element elements[] = (edu.cmu.cs.stage3.alice.core.Element[]) componentElements.get();
-			int elementCount = getElementComponentCount();
+			final java.awt.Component c[] = getComponents();
+			final edu.cmu.cs.stage3.alice.core.Element elements[] = (edu.cmu.cs.stage3.alice.core.Element[]) componentElements
+					.get();
+			final int elementCount = getElementComponentCount();
 			boolean aOkay = elements.length - 1 == elementCount; // There's a
 																	// return at
 																	// the end
@@ -99,7 +111,8 @@ public class MainCompositeQuestionPanel extends edu.cmu.cs.stage3.alice.authorin
 				for (int i = 0; i < elements.length - 1; i++) {
 					if (c[i] instanceof edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeElementPanel) {
 						if (i < elements.length - 1) {
-							if (((edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeElementPanel) c[i]).getElement() != elements[i]) {
+							if (((edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeElementPanel) c[i])
+									.getElement() != elements[i]) {
 								aOkay = false;
 								break;
 							}
@@ -110,7 +123,8 @@ public class MainCompositeQuestionPanel extends edu.cmu.cs.stage3.alice.authorin
 					}
 					if (c[i] instanceof edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.ComponentElementPanel) {
 						if (i < elements.length - 1) {
-							if (((edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.ComponentElementPanel) c[i]).getElement() != elements[i]) {
+							if (((edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.ComponentElementPanel) c[i])
+									.getElement() != elements[i]) {
 								aOkay = false;
 								break;
 							}
@@ -125,7 +139,8 @@ public class MainCompositeQuestionPanel extends edu.cmu.cs.stage3.alice.authorin
 		}
 
 		@Override
-		protected void addToElement(edu.cmu.cs.stage3.alice.core.Element toAdd, edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty toAddTo, int location) {
+		protected void addToElement(final edu.cmu.cs.stage3.alice.core.Element toAdd,
+				final edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty toAddTo, final int location) {
 			if (location < 0) {
 				super.addToElement(toAdd, toAddTo, componentElements.size() - 1);
 			} else {
@@ -145,26 +160,31 @@ public class MainCompositeQuestionPanel extends edu.cmu.cs.stage3.alice.authorin
 
 	@Override
 	protected String getHeaderHTML() {
-		String htmlToReturn = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(returnQuestion.valueClass.getClassValue()) + " " + super.getHeaderHTML();
+		final String htmlToReturn = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+				.getReprForValue(returnQuestion.valueClass.getClassValue()) + " " + super.getHeaderHTML();
 		return htmlToReturn;
 	}
 
-	public void getHTML(StringBuffer toWriteTo, int colSpan, boolean useColor) {
+	public void getHTML(final StringBuffer toWriteTo, final int colSpan, final boolean useColor) {
 		super.getHTML(toWriteTo, colSpan, useColor, false);
 	}
 
 	@Override
-	public void set(edu.cmu.cs.stage3.alice.core.Element question, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
+	public void set(final edu.cmu.cs.stage3.alice.core.Element question,
+			final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
 		if (question instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion) {
-			edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion setQuestion = (edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion) question;
+			final edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion setQuestion = (edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion) question;
 			if (setQuestion != null) {
 				if (setQuestion.components.size() > 0) {
-					if (setQuestion.components.get(setQuestion.components.size() - 1) instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.Return) {
-						returnQuestion = (edu.cmu.cs.stage3.alice.core.question.userdefined.Return) setQuestion.components.get(setQuestion.components.size() - 1);
+					if (setQuestion.components.get(setQuestion.components.size()
+							- 1) instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.Return) {
+						returnQuestion = (edu.cmu.cs.stage3.alice.core.question.userdefined.Return) setQuestion.components
+								.get(setQuestion.components.size() - 1);
 					} else {
 						returnQuestion = new edu.cmu.cs.stage3.alice.core.question.userdefined.Return();
 						returnQuestion.valueClass.set(setQuestion.valueClass.get());
-						returnQuestion.value.set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getDefaultValueForClass((Class) setQuestion.valueClass.get()));
+						returnQuestion.value.set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+								.getDefaultValueForClass((Class) setQuestion.valueClass.get()));
 						returnQuestion.setParent(setQuestion);
 
 						setQuestion.components.add(setQuestion.components.size(), returnQuestion);
@@ -172,7 +192,8 @@ public class MainCompositeQuestionPanel extends edu.cmu.cs.stage3.alice.authorin
 				} else {
 					returnQuestion = new edu.cmu.cs.stage3.alice.core.question.userdefined.Return();
 					returnQuestion.valueClass.set(setQuestion.valueClass.get());
-					returnQuestion.value.set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getDefaultValueForClass((Class) setQuestion.valueClass.get()));
+					returnQuestion.value.set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+							.getDefaultValueForClass((Class) setQuestion.valueClass.get()));
 					returnQuestion.setParent(setQuestion);
 					setQuestion.components.add(0, returnQuestion);
 				}
@@ -205,12 +226,29 @@ public class MainCompositeQuestionPanel extends edu.cmu.cs.stage3.alice.authorin
 		removeAll();
 		buildParameterPanel();
 		buildVariablePanel();
-		headerPanel.add(mainParameterPanel, new java.awt.GridBagConstraints(0, 0, 1, 1, 1, 1, java.awt.GridBagConstraints.NORTH, java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0, 0, 0, 0), 0, 0));
-		headerPanel.add(mainVariablePanel, new java.awt.GridBagConstraints(0, 1, 1, 1, 1, 1, java.awt.GridBagConstraints.NORTH, java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+		headerPanel.add(mainParameterPanel,
+				new java.awt.GridBagConstraints(0, 0, 1, 1, 1, 1, java.awt.GridBagConstraints.NORTH,
+						java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+		headerPanel.add(mainVariablePanel,
+				new java.awt.GridBagConstraints(0, 1, 1, 1, 1, 1, java.awt.GridBagConstraints.NORTH,
+						java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0, 0, 0, 0), 0, 0));
 		questionArea.removeAll();
-		questionArea.add(componentElementPanel, new java.awt.GridBagConstraints(0, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.NORTHWEST, java.awt.GridBagConstraints.HORIZONTAL, new java.awt.Insets(0, 0, 0, 0), 0, 0));
-		questionArea.add(returnPanel, new java.awt.GridBagConstraints(0, 1, 1, 1, 0, 0, java.awt.GridBagConstraints.NORTHWEST, java.awt.GridBagConstraints.HORIZONTAL, new java.awt.Insets(0, edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeComponentElementPanel.LEFT_INDENT + 1, 0, edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeComponentElementPanel.RIGHT_INDENT + 1), 0, 0));
-		questionArea.add(javax.swing.Box.createVerticalGlue(), new java.awt.GridBagConstraints(0, 2, 1, 1, 1, 1, java.awt.GridBagConstraints.NORTHWEST, java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+		questionArea.add(componentElementPanel,
+				new java.awt.GridBagConstraints(0, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.NORTHWEST,
+						java.awt.GridBagConstraints.HORIZONTAL, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+		questionArea.add(returnPanel,
+				new java.awt.GridBagConstraints(0, 1, 1, 1, 0, 0, java.awt.GridBagConstraints.NORTHWEST,
+						java.awt.GridBagConstraints.HORIZONTAL,
+						new java.awt.Insets(0,
+								edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeComponentElementPanel.LEFT_INDENT
+										+ 1,
+								0,
+								edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeComponentElementPanel.RIGHT_INDENT
+										+ 1),
+						0, 0));
+		questionArea.add(javax.swing.Box.createVerticalGlue(),
+				new java.awt.GridBagConstraints(0, 2, 1, 1, 1, 1, java.awt.GridBagConstraints.NORTHWEST,
+						java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0, 0, 0, 0), 0, 0));
 		scrollPane.setViewportView(questionArea);
 		this.add(scrollPane, java.awt.BorderLayout.CENTER);
 		this.add(headerPanel, java.awt.BorderLayout.NORTH);
@@ -228,7 +266,7 @@ public class MainCompositeQuestionPanel extends edu.cmu.cs.stage3.alice.authorin
 	protected void variableInit() {
 		super.variableInit();
 		if (m_element instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion) {
-			edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion proxy = (edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion) m_element;
+			final edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion proxy = (edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion) m_element;
 			m_components = proxy.components;
 			m_isCommentedOut = null;
 			componentElementPanel = new MainCompositeComponentQuestionPanel();
@@ -239,7 +277,7 @@ public class MainCompositeQuestionPanel extends edu.cmu.cs.stage3.alice.authorin
 		}
 	}
 
-	protected void disableDrag(java.awt.Container c) {
+	protected void disableDrag(final java.awt.Container c) {
 		if (c instanceof edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel) {
 			((edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel) c).setDragEnabled(false);
 		}

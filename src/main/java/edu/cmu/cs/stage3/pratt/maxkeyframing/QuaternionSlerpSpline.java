@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -27,22 +27,24 @@ package edu.cmu.cs.stage3.pratt.maxkeyframing;
  * @author Jason Pratt
  */
 public class QuaternionSlerpSpline extends Spline {
-	public boolean addKey(QuaternionKey key) {
+	public boolean addKey(final QuaternionKey key) {
 		return super.addKey(key);
 	}
 
-	public boolean removeKey(QuaternionKey key) {
+	public boolean removeKey(final QuaternionKey key) {
 		return super.removeKey(key);
 	}
 
 	public void correctForMAXRelativeKeys() {
 		edu.cmu.cs.stage3.math.Matrix33 lastRot = null;
-		QuaternionKey[] keys = (QuaternionKey[]) getKeyArray(new QuaternionKey[0]);
+		final QuaternionKey[] keys = (QuaternionKey[]) getKeyArray(new QuaternionKey[0]);
 		for (int i = 0; i < keys.length; i++) {
-			edu.cmu.cs.stage3.math.Quaternion thisQ = (edu.cmu.cs.stage3.math.Quaternion) keys[i].createSample(keys[i].getValueComponents());
+			final edu.cmu.cs.stage3.math.Quaternion thisQ = (edu.cmu.cs.stage3.math.Quaternion) keys[i]
+					.createSample(keys[i].getValueComponents());
 			if (i > 0) {
-				edu.cmu.cs.stage3.math.Quaternion realQ = edu.cmu.cs.stage3.math.Matrix33.multiply(lastRot, thisQ.getMatrix33()).getQuaternion();
-				QuaternionKey realKey = new QuaternionKey(keys[i].getTime(), realQ);
+				final edu.cmu.cs.stage3.math.Quaternion realQ = edu.cmu.cs.stage3.math.Matrix33
+						.multiply(lastRot, thisQ.getMatrix33()).getQuaternion();
+				final QuaternionKey realKey = new QuaternionKey(keys[i].getTime(), realQ);
 				this.removeKey(keys[i]);
 				this.addKey(realKey);
 				lastRot = realQ.getMatrix33();
@@ -53,24 +55,25 @@ public class QuaternionSlerpSpline extends Spline {
 	}
 
 	@Override
-	public Object getSample(double t) {
+	public Object getSample(final double t) {
 		if (t <= 0.0) {
-			Key key = getFirstKey();
+			final Key key = getFirstKey();
 			if (key != null) {
 				return key.createSample(key.getValueComponents());
 			}
 		} else if (t >= getDuration()) {
-			Key key = getLastKey();
+			final Key key = getLastKey();
 			if (key != null) {
 				return key.createSample(key.getValueComponents());
 			}
 		} else {
-			Key[] boundingKeys = getBoundingKeys(t);
+			final Key[] boundingKeys = getBoundingKeys(t);
 			if (boundingKeys != null) {
-				double timeSpan = boundingKeys[1].getTime() - boundingKeys[0].getTime();
-				double portion = (t - boundingKeys[0].getTime()) / timeSpan;
+				final double timeSpan = boundingKeys[1].getTime() - boundingKeys[0].getTime();
+				final double portion = (t - boundingKeys[0].getTime()) / timeSpan;
 
-				return edu.cmu.cs.stage3.math.Quaternion.interpolate(((QuaternionKey) boundingKeys[0]).getQuaternion(), ((QuaternionKey) boundingKeys[1]).getQuaternion(), portion);
+				return edu.cmu.cs.stage3.math.Quaternion.interpolate(((QuaternionKey) boundingKeys[0]).getQuaternion(),
+						((QuaternionKey) boundingKeys[1]).getQuaternion(), portion);
 			}
 		}
 		return null;

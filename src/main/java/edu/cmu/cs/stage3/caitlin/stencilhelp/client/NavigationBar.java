@@ -13,7 +13,8 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Vector;
 
-public class NavigationBar implements StencilObject, MouseEventListener, StencilStackChangeListener, LayoutChangeListener {
+public class NavigationBar
+		implements StencilObject, MouseEventListener, StencilStackChangeListener, LayoutChangeListener {
 	protected StencilManager stencilManager = null;
 	protected ObjectPositionManager positionManager = null;
 	protected Vector shapes = new Vector();
@@ -33,7 +34,7 @@ public class NavigationBar implements StencilObject, MouseEventListener, Stencil
 
 	private Polygon forwardArrow = null;
 	private Polygon backArrow = null;
-	private Font font = new Font("Arial", 1, 16);
+	private final Font font = new Font("Arial", 1, 16);
 
 	private String titleString = null;
 	private ScreenShape titleShape = null;
@@ -46,20 +47,21 @@ public class NavigationBar implements StencilObject, MouseEventListener, Stencil
 
 	protected Vector stencilObjectPositionListeners = new Vector();
 
-	public NavigationBar(StencilManager stencilManager, ObjectPositionManager positionManager) {
+	public NavigationBar(final StencilManager stencilManager, final ObjectPositionManager positionManager) {
 		this.stencilManager = stencilManager;
 		this.positionManager = positionManager;
 		generateShapes();
 	}
 
-	public NavigationBar(StencilManager stencilManager, ObjectPositionManager positionManager, boolean isError) {
+	public NavigationBar(final StencilManager stencilManager, final ObjectPositionManager positionManager,
+			final boolean isError) {
 		this.isError = isError;
 		this.stencilManager = stencilManager;
 		this.positionManager = positionManager;
 		generateShapes();
 	}
 
-	public void setTitleString(String titleString) {
+	public void setTitleString(final String titleString) {
 		this.titleString = titleString;
 		updateNavBar();
 	}
@@ -68,7 +70,7 @@ public class NavigationBar implements StencilObject, MouseEventListener, Stencil
 		return titleString;
 	}
 
-	protected void createArrows(Point topCenter, int width) {
+	protected void createArrows(final Point topCenter, int width) {
 		ScreenShape scrShape = null;
 		width = 80;
 		backArrow = new Polygon();
@@ -104,8 +106,9 @@ public class NavigationBar implements StencilObject, MouseEventListener, Stencil
 		shapes.addElement(scrShape);
 	}
 
-	protected int createShape(Point topCenter) { // returns the width of the
-													// text
+	protected int createShape(final Point topCenter) { // returns the width of
+														// the
+														// text
 		// save the current rectangle
 		previousRect = getRectangle();
 
@@ -115,7 +118,7 @@ public class NavigationBar implements StencilObject, MouseEventListener, Stencil
 		if (titleString != null) {
 			word += ": " + titleString;
 		}
-		String close = "Exit Tutorial";
+		final String close = "Exit Tutorial";
 
 		TextLayout wordLayout = new TextLayout(word, font, new FontRenderContext(null, false, false));
 		AffineTransform textAt = new AffineTransform();
@@ -156,8 +159,8 @@ public class NavigationBar implements StencilObject, MouseEventListener, Stencil
 		// save the current rectangle
 		previousRect = getRectangle();
 
-		Point topCenter = new Point((int) positionManager.getScreenWidth() / 2, 0);
-		int width = createShape(topCenter) + 60;
+		final Point topCenter = new Point((int) positionManager.getScreenWidth() / 2, 0);
+		final int width = createShape(topCenter) + 60;
 
 		// underBar = new RoundRectangle2D.Double(topCenter.x - 100+2,
 		// topCenter.y+2, 200,25, 10, 10);
@@ -170,7 +173,7 @@ public class NavigationBar implements StencilObject, MouseEventListener, Stencil
 		underRestart = new RoundRectangle2D.Double(topCenter.x + 3 - 65, topCenter.y + 2 + 27, 60, 20, 10, 10);
 		underPrev = new RoundRectangle2D.Double(topCenter.x + 3 - 130, topCenter.y + 2 + 27, 60, 20, 10, 10);
 
-		Color transGray = new Color(255, 200, 240, 100);
+		final Color transGray = new Color(255, 200, 240, 100);
 		ScreenShape scrShape = new ScreenShape(transGray, underBar, true, 0);
 		shapes.addElement(scrShape);
 		scrShape = new ScreenShape(transGray, underClose, true, 1);
@@ -235,18 +238,23 @@ public class NavigationBar implements StencilObject, MouseEventListener, Stencil
 	public Vector getShapes() {
 		return shapes;
 	}
+
 	@Override
 	public Rectangle getRectangle() {
 		if (bgBar != null) {
-			return new Rectangle((int) bgBar.getBounds().getX(), (int) bgBar.getBounds().getY(), (int) bgBar.getBounds().getWidth() + (int) bgClose.getBounds().getWidth(), (int) bgBar.getBounds().getHeight() + (int) bgNext.getBounds().getHeight());
+			return new Rectangle((int) bgBar.getBounds().getX(), (int) bgBar.getBounds().getY(),
+					(int) bgBar.getBounds().getWidth() + (int) bgClose.getBounds().getWidth(),
+					(int) bgBar.getBounds().getHeight() + (int) bgNext.getBounds().getHeight());
 		} else {
 			return null;
 		}
 	}
+
 	@Override
 	public Rectangle getPreviousRectangle() {
 		return previousRect;
 	}
+
 	@Override
 	public boolean isModified() {
 		if (isModified) {
@@ -256,24 +264,29 @@ public class NavigationBar implements StencilObject, MouseEventListener, Stencil
 			return false;
 		}
 	}
+
 	@Override
-	public boolean intersectsRectangle(Rectangle rect) {
+	public boolean intersectsRectangle(final Rectangle rect) {
 		return rect.intersects(getRectangle());
 	}
+
 	@Override
-	public void addStencilObjectPositionListener(StencilObjectPositionListener posListener) {
+	public void addStencilObjectPositionListener(final StencilObjectPositionListener posListener) {
 		stencilObjectPositionListeners.addElement(posListener);
 	}
+
 	@Override
-	public void removeStencilObjectPositionListener(StencilObjectPositionListener posListener) {
+	public void removeStencilObjectPositionListener(final StencilObjectPositionListener posListener) {
 		stencilObjectPositionListeners.remove(posListener);
 	}
+
 	@Override
 	public String getComponentID() {
 		return null;
 	}
+
 	public Point getNotePoint() {
-		Rectangle r = getRectangle();
+		final Rectangle r = getRectangle();
 		Point p = new Point(0, 0);
 		if (r != null) {
 			p = new Point((int) r.getX(), (int) r.getY());
@@ -283,23 +296,28 @@ public class NavigationBar implements StencilObject, MouseEventListener, Stencil
 
 	/* mouse event stuff */
 	@Override
-	public boolean contains(Point point) {
-		if (bgBar.contains(point.getX(), point.getY()) || bgClose.contains(point.getX(), point.getY()) || bgNext.contains(point.getX(), point.getY()) || bgRestart.contains(point.getX(), point.getY()) || bgPrev.contains(point.getX(), point.getY())) {
+	public boolean contains(final Point point) {
+		if (bgBar.contains(point.getX(), point.getY()) || bgClose.contains(point.getX(), point.getY())
+				|| bgNext.contains(point.getX(), point.getY()) || bgRestart.contains(point.getX(), point.getY())
+				|| bgPrev.contains(point.getX(), point.getY())) {
 			return true;
 		} else {
 			return false;
 		}
 	}
+
 	@Override
-	public boolean mousePressed(MouseEvent e) {
+	public boolean mousePressed(final MouseEvent e) {
 		return false;
 	}
+
 	@Override
-	public boolean mouseReleased(MouseEvent e) {
+	public boolean mouseReleased(final MouseEvent e) {
 		return false;
 	}
+
 	@Override
-	public boolean mouseClicked(MouseEvent e) {
+	public boolean mouseClicked(final MouseEvent e) {
 		if (bgNext.contains(e.getPoint()) && stencilManager.hasNext()) {
 			stencilManager.showNextStencil();
 		} else if (bgRestart.contains(e.getPoint())) { // (
@@ -315,20 +333,24 @@ public class NavigationBar implements StencilObject, MouseEventListener, Stencil
 		}
 		return true;
 	}
+
 	@Override
-	public boolean mouseEntered(MouseEvent e) {
+	public boolean mouseEntered(final MouseEvent e) {
 		return false;
 	}
+
 	@Override
-	public boolean mouseExited(MouseEvent e) {
+	public boolean mouseExited(final MouseEvent e) {
 		return false;
 	}
+
 	@Override
-	public boolean mouseMoved(MouseEvent e) {
+	public boolean mouseMoved(final MouseEvent e) {
 		return false;
 	}
+
 	@Override
-	public boolean mouseDragged(MouseEvent e) {
+	public boolean mouseDragged(final MouseEvent e) {
 		return false;
 	}
 
@@ -348,12 +370,14 @@ public class NavigationBar implements StencilObject, MouseEventListener, Stencil
 		shapes = new Vector();
 		generateShapes();
 	}
+
 	@Override
-	public void numberOfStencilsChanged(int newNumberOfStencils) {
+	public void numberOfStencilsChanged(final int newNumberOfStencils) {
 		updateNavBar();
 	}
+
 	@Override
-	public void currentStencilChanged(int selectedStencil) {
+	public void currentStencilChanged(final int selectedStencil) {
 		updateNavBar();
 	}
 

@@ -1,8 +1,9 @@
 package edu.cmu.cs.stage3.media.nullmedia;
 
 public class DataSource extends edu.cmu.cs.stage3.media.AbstractDataSource {
-	private byte[] m_data;
-	public DataSource(byte[] data, String extension) {
+	private final byte[] m_data;
+
+	public DataSource(final byte[] data, final String extension) {
 		super(extension);
 		m_data = data;
 	}
@@ -16,7 +17,8 @@ public class DataSource extends edu.cmu.cs.stage3.media.AbstractDataSource {
 	protected edu.cmu.cs.stage3.media.Player createPlayer() {
 		return new Player(this);
 	}
-	public double waitForDuration(long timeout) {
+
+	public double waitForDuration(final long timeout) {
 		return getDurationHint();
 	}
 }

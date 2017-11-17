@@ -6,9 +6,9 @@ import javax.swing.JLabel;
 
 /**
  * Class that holds a digital picture and displays it.
- * 
+ *
  * Copyright Georgia Institute of Technology 2004
- * 
+ *
  * @author Barb Ericson
  */
 public class PictureFrame {
@@ -28,7 +28,7 @@ public class PictureFrame {
 	/**
 	 * Label used to display the picture
 	 */
-	private JLabel label = new JLabel(imageIcon);
+	private final JLabel label = new JLabel(imageIcon);
 
 	/**
 	 * Digital Picture to display
@@ -48,11 +48,11 @@ public class PictureFrame {
 
 	/**
 	 * A constructor that takes a picture to display
-	 * 
+	 *
 	 * @param picture
 	 *            the digital picture to display in the picture frame
 	 */
-	public PictureFrame(DigitalPicture picture) {
+	public PictureFrame(final DigitalPicture picture) {
 		// set the current object's picture to the passed in picture
 		this.picture = picture;
 
@@ -64,11 +64,11 @@ public class PictureFrame {
 
 	/**
 	 * Method to set the picture to show in this picture frame
-	 * 
+	 *
 	 * @param picture
 	 *            the new picture to use
 	 */
-	public void setPicture(Picture picture) {
+	public void setPicture(final Picture picture) {
 		this.picture = picture;
 		imageIcon.setImage(picture.getImage());
 		frame.pack();
@@ -118,11 +118,11 @@ public class PictureFrame {
 
 	/**
 	 * A method to set the visible flag on the frame
-	 * 
+	 *
 	 * @param flag
 	 *            the flag to use
 	 */
-	public void setVisible(boolean flag) {
+	public void setVisible(final boolean flag) {
 		frame.setVisible(flag);
 	}
 
@@ -136,11 +136,11 @@ public class PictureFrame {
 
 	/**
 	 * Method to set the title for the picture frame
-	 * 
+	 *
 	 * @param title
 	 *            the title to use
 	 */
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		frame.setTitle(title);
 	}
 

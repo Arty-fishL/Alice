@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -38,7 +38,8 @@ public class Box extends Shape {
 	public double getWidth() {
 		return m_width;
 	}
-	public void setWidth(double width) {
+
+	public void setWidth(final double width) {
 		if (m_width != width) {
 			m_width = width;
 			onPropertyChange(WIDTH_PROPERTY);
@@ -49,7 +50,8 @@ public class Box extends Shape {
 	public double getHeight() {
 		return m_height;
 	}
-	public void setHeight(double height) {
+
+	public void setHeight(final double height) {
 		if (m_height != height) {
 			m_height = height;
 			onPropertyChange(HEIGHT_PROPERTY);
@@ -60,7 +62,8 @@ public class Box extends Shape {
 	public double getDepth() {
 		return m_depth;
 	}
-	public void setDepth(double depth) {
+
+	public void setDepth(final double depth) {
 		if (m_depth != depth) {
 			m_depth = depth;
 			onPropertyChange(DEPTH_PROPERTY);
@@ -70,17 +73,19 @@ public class Box extends Shape {
 
 	@Override
 	protected void updateBoundingBox() {
-		double halfWidth = m_width * 0.5;
-		double halfHeight = m_height * 0.5;
-		double halfDepth = m_depth * 0.5;
-		m_boundingBox = new edu.cmu.cs.stage3.math.Box(-halfWidth, -halfHeight, -halfDepth, halfWidth, halfHeight, halfDepth);
+		final double halfWidth = m_width * 0.5;
+		final double halfHeight = m_height * 0.5;
+		final double halfDepth = m_depth * 0.5;
+		m_boundingBox = new edu.cmu.cs.stage3.math.Box(-halfWidth, -halfHeight, -halfDepth, halfWidth, halfHeight,
+				halfDepth);
 	}
 
 	@Override
 	protected void updateBoundingSphere() {
-		double halfWidth = m_width * 0.5;
-		double halfHeight = m_height * 0.5;
-		double halfDepth = m_depth * 0.5;
-		m_boundingSphere = new edu.cmu.cs.stage3.math.Sphere(0, 0, 0, Math.max(Math.max(halfWidth, halfHeight), halfDepth));
+		final double halfWidth = m_width * 0.5;
+		final double halfHeight = m_height * 0.5;
+		final double halfDepth = m_depth * 0.5;
+		m_boundingSphere = new edu.cmu.cs.stage3.math.Sphere(0, 0, 0,
+				Math.max(Math.max(halfWidth, halfHeight), halfDepth));
 	}
 }

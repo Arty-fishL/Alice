@@ -7,6 +7,10 @@ import javax.media.Format;
  * @author Ben Buchwald, Dennis Cosgrove
  */
 public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -8486697810363583715L;
 	private static byte[] s_wavHeader = new byte[44];
 	static {
 		System.arraycopy("RIFF????WAVEfmt ".getBytes(), 0, s_wavHeader, 0, 16);
@@ -43,12 +47,12 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 
 	private edu.cmu.cs.stage3.alice.core.Sound m_sound;
 
-	private javax.swing.JTextField m_nameTextField;
-	private javax.swing.JLabel m_durationLabel;
-	private javax.swing.JButton m_recordButton;
-	private javax.swing.JButton m_playButton;
-	private javax.swing.JButton m_okButton;
-	private javax.swing.JButton m_cancelButton;
+	private final javax.swing.JTextField m_nameTextField;
+	private final javax.swing.JLabel m_durationLabel;
+	private final javax.swing.JButton m_recordButton;
+	private final javax.swing.JButton m_playButton;
+	private final javax.swing.JButton m_okButton;
+	private final javax.swing.JButton m_cancelButton;
 
 	private javax.media.protocol.DataSource m_jmfDataSource;
 	private javax.media.Processor m_jmfProcessor;
@@ -57,12 +61,13 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 	private edu.cmu.cs.stage3.media.DataSource m_dataSource;
 	private edu.cmu.cs.stage3.media.Player m_player;
 
-	private javax.swing.Timer m_durationUpdateTimer = new javax.swing.Timer(100, new java.awt.event.ActionListener() {
-		@Override
-		public void actionPerformed(java.awt.event.ActionEvent e) {
-			SoundRecorder.this.onDurationUpdate();
-		}
-	});
+	private final javax.swing.Timer m_durationUpdateTimer = new javax.swing.Timer(100,
+			new java.awt.event.ActionListener() {
+				@Override
+				public void actionPerformed(final java.awt.event.ActionEvent e) {
+					SoundRecorder.this.onDurationUpdate();
+				}
+			});
 	private long m_durationT0;
 
 	public SoundRecorder() {
@@ -72,7 +77,7 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 		m_recordButton = new javax.swing.JButton("Record");
 		m_recordButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				onRecord();
 			}
 		});
@@ -81,7 +86,7 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 		m_playButton.setEnabled(false);
 		m_playButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				onPlay();
 			}
 		});
@@ -90,15 +95,17 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 		m_nameTextField.setText("unnamedSound");
 		m_nameTextField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
 			@Override
-			public void changedUpdate(javax.swing.event.DocumentEvent e) {
+			public void changedUpdate(final javax.swing.event.DocumentEvent e) {
 				SoundRecorder.this.checkNameForValidity();
 			}
+
 			@Override
-			public void insertUpdate(javax.swing.event.DocumentEvent e) {
+			public void insertUpdate(final javax.swing.event.DocumentEvent e) {
 				SoundRecorder.this.checkNameForValidity();
 			}
+
 			@Override
-			public void removeUpdate(javax.swing.event.DocumentEvent e) {
+			public void removeUpdate(final javax.swing.event.DocumentEvent e) {
 				SoundRecorder.this.checkNameForValidity();
 			}
 		});
@@ -107,7 +114,7 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 		m_okButton.setEnabled(false);
 		m_okButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				onOK();
 			}
 		});
@@ -115,7 +122,7 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 		m_cancelButton = new javax.swing.JButton("Cancel");
 		m_cancelButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				onCancel();
 			}
 		});
@@ -124,7 +131,7 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 
 		java.awt.GridBagConstraints gbc;
 
-		javax.swing.JPanel namePanel = new javax.swing.JPanel();
+		final javax.swing.JPanel namePanel = new javax.swing.JPanel();
 		namePanel.setLayout(new java.awt.GridBagLayout());
 		gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
@@ -134,7 +141,7 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 		gbc.gridwidth = java.awt.GridBagConstraints.REMAINDER;
 		namePanel.add(m_nameTextField, gbc);
 
-		javax.swing.JPanel controlPanel = new javax.swing.JPanel();
+		final javax.swing.JPanel controlPanel = new javax.swing.JPanel();
 		controlPanel.setLayout(new java.awt.GridBagLayout());
 		gbc = new java.awt.GridBagConstraints();
 		gbc.fill = java.awt.GridBagConstraints.HORIZONTAL;
@@ -143,7 +150,7 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 		controlPanel.add(m_recordButton, gbc);
 		controlPanel.add(m_playButton, gbc);
 
-		javax.swing.JPanel okCancelPanel = new javax.swing.JPanel();
+		final javax.swing.JPanel okCancelPanel = new javax.swing.JPanel();
 		okCancelPanel.setLayout(new java.awt.GridBagLayout());
 		gbc = new java.awt.GridBagConstraints();
 		gbc.weightx = 1.0;
@@ -169,7 +176,7 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 
 		gbc.insets.top = 0;
 
-		javax.swing.JLabel spacer1 = new javax.swing.JLabel();
+		final javax.swing.JLabel spacer1 = new javax.swing.JLabel();
 		spacer1.setPreferredSize(new java.awt.Dimension(480, 16));
 		gbc.weighty = 1.0;
 		add(spacer1, gbc);
@@ -179,7 +186,7 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 		add(m_durationLabel, gbc);
 		add(controlPanel, gbc);
 
-		javax.swing.JLabel spacer2 = new javax.swing.JLabel();
+		final javax.swing.JLabel spacer2 = new javax.swing.JLabel();
 		spacer2.setPreferredSize(new java.awt.Dimension(480, 16));
 		gbc.weighty = 1.0;
 		add(spacer2, gbc);
@@ -198,37 +205,41 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 	}
 
 	@Override
-	public void addOKActionListener(java.awt.event.ActionListener l) {
+	public void addOKActionListener(final java.awt.event.ActionListener l) {
 		m_okButton.addActionListener(l);
 	}
 
 	@Override
-	public void removeOKActionListener(java.awt.event.ActionListener l) {
+	public void removeOKActionListener(final java.awt.event.ActionListener l) {
 		m_okButton.removeActionListener(l);
 	}
 
 	@Override
-	public void addCancelActionListener(java.awt.event.ActionListener l) {
+	public void addCancelActionListener(final java.awt.event.ActionListener l) {
 		m_cancelButton.addActionListener(l);
 	}
 
 	@Override
-	public void removeCancelActionListener(java.awt.event.ActionListener l) {
+	public void removeCancelActionListener(final java.awt.event.ActionListener l) {
 		m_cancelButton.removeActionListener(l);
 	}
 
 	public edu.cmu.cs.stage3.alice.core.Element getParentToCheckForNameValidity() {
 		return m_parentToCheckForNameValidity;
 	}
-	public void setParentToCheckForNameValidity(edu.cmu.cs.stage3.alice.core.Element parentToCheckForNameValidity) {
+
+	public void setParentToCheckForNameValidity(
+			final edu.cmu.cs.stage3.alice.core.Element parentToCheckForNameValidity) {
 		m_parentToCheckForNameValidity = parentToCheckForNameValidity;
-		m_nameTextField.setText(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getNameForNewChild("unnamedSound", m_parentToCheckForNameValidity));
+		m_nameTextField.setText(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+				.getNameForNewChild("unnamedSound", m_parentToCheckForNameValidity));
 	}
 
 	public edu.cmu.cs.stage3.alice.core.Sound getSound() {
 		return m_sound;
 	}
-	public void setSound(edu.cmu.cs.stage3.alice.core.Sound sound) {
+
+	public void setSound(final edu.cmu.cs.stage3.alice.core.Sound sound) {
 		m_sound = sound;
 	}
 
@@ -250,17 +261,18 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 	private void onDurationUpdate() {
 		double t = 0;
 		switch (m_state) {
-			case RECORDING :
-				long dt = System.currentTimeMillis() - m_durationT0;
-				t = dt * 0.001;
-				break;
-			case PLAYING :
-				if (m_player != null) {
-					t = m_player.getDuration();
-				}
-				break;
+		case RECORDING:
+			final long dt = System.currentTimeMillis() - m_durationT0;
+			t = dt * 0.001;
+			break;
+		case PLAYING:
+			if (m_player != null) {
+				t = m_player.getDuration();
+			}
+			break;
 		}
-		m_durationLabel.setText("Duration: " + edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.formatTime(t));
+		m_durationLabel
+				.setText("Duration: " + edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.formatTime(t));
 	}
 
 	private void onStop() {
@@ -281,7 +293,7 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 		if (m_jmfDataSource != null) {
 			try {
 				m_jmfDataSource.stop();
-			} catch (java.io.IOException ioe) {
+			} catch (final java.io.IOException ioe) {
 				ioe.printStackTrace();
 			}
 			m_jmfDataSource.disconnect();
@@ -305,10 +317,10 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 			m_jmfRenderer.stop();
 			m_jmfRenderer.close();
 
-			int dataLength = m_jmfRenderer.getDataLength();
-			byte[] data = new byte[s_wavHeader.length + dataLength];
+			final int dataLength = m_jmfRenderer.getDataLength();
+			final byte[] data = new byte[s_wavHeader.length + dataLength];
 
-			byte[] dataLengthInBytes = new byte[4];
+			final byte[] dataLengthInBytes = new byte[4];
 			dataLengthInBytes[0] = (byte) (dataLength & 0x000000FF);
 			dataLengthInBytes[1] = (byte) ((dataLength & 0x0000FF00) >> 8);
 			dataLengthInBytes[2] = (byte) ((dataLength & 0x00FF0000) >> 16);
@@ -329,22 +341,24 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 			m_recordButton.setText("Stop");
 			m_playButton.setEnabled(false);
 			if (m_jmfDataSource == null) {
-				javax.media.format.AudioFormat format = new javax.media.format.AudioFormat(javax.media.format.AudioFormat.LINEAR, Format.NOT_SPECIFIED, 16, 1);
-				java.util.Vector captureDeviceList = javax.media.CaptureDeviceManager.getDeviceList(format);
+				final javax.media.format.AudioFormat format = new javax.media.format.AudioFormat(
+						javax.media.format.AudioFormat.LINEAR, Format.NOT_SPECIFIED, 16, 1);
+				final java.util.Vector captureDeviceList = javax.media.CaptureDeviceManager.getDeviceList(format);
 				if (captureDeviceList.size() > 0) {
-					javax.media.CaptureDeviceInfo captureDevice = (javax.media.CaptureDeviceInfo) captureDeviceList.firstElement();
-					javax.media.MediaLocator locator = captureDevice.getLocator();
+					final javax.media.CaptureDeviceInfo captureDevice = (javax.media.CaptureDeviceInfo) captureDeviceList
+							.firstElement();
+					final javax.media.MediaLocator locator = captureDevice.getLocator();
 					try {
 						m_jmfDataSource = javax.media.Manager.createDataSource(locator);
 						m_jmfProcessor = javax.media.Manager.createProcessor(m_jmfDataSource);
 
 						final Object configureLock = new Object();
 						synchronized (configureLock) {
-							javax.media.ControllerListener configureControllerListener = new javax.media.ControllerListener() {
+							final javax.media.ControllerListener configureControllerListener = new javax.media.ControllerListener() {
 								@Override
-								public void controllerUpdate(javax.media.ControllerEvent e) {
+								public void controllerUpdate(final javax.media.ControllerEvent e) {
 									if (e instanceof javax.media.TransitionEvent) {
-										javax.media.TransitionEvent te = (javax.media.TransitionEvent) e;
+										final javax.media.TransitionEvent te = (javax.media.TransitionEvent) e;
 										if (te.getCurrentState() == javax.media.Processor.Configured) {
 											synchronized (configureLock) {
 												configureLock.notify();
@@ -361,7 +375,7 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 								public void run() {
 									try {
 										sleep(1000);
-									} catch (InterruptedException ie) {
+									} catch (final InterruptedException ie) {
 										ie.printStackTrace();
 									} finally {
 										synchronized (configureLock) {
@@ -374,7 +388,7 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 							m_jmfProcessor.configure();
 							try {
 								configureLock.wait();
-							} catch (InterruptedException ie) {
+							} catch (final InterruptedException ie) {
 								ie.printStackTrace();
 							}
 							m_jmfProcessor.removeControllerListener(configureControllerListener);
@@ -387,11 +401,11 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 						m_jmfProcessor.realize();
 						final Object realizeLock = new Object();
 						synchronized (realizeLock) {
-							javax.media.ControllerListener realizeControllerListener = new javax.media.ControllerListener() {
+							final javax.media.ControllerListener realizeControllerListener = new javax.media.ControllerListener() {
 								@Override
-								public void controllerUpdate(javax.media.ControllerEvent e) {
+								public void controllerUpdate(final javax.media.ControllerEvent e) {
 									if (e instanceof javax.media.TransitionEvent) {
-										javax.media.TransitionEvent te = (javax.media.TransitionEvent) e;
+										final javax.media.TransitionEvent te = (javax.media.TransitionEvent) e;
 										if (te.getCurrentState() == Controller.Realized) {
 											synchronized (realizeLock) {
 												realizeLock.notify();
@@ -408,7 +422,7 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 								public void run() {
 									try {
 										sleep(1000);
-									} catch (InterruptedException ie) {
+									} catch (final InterruptedException ie) {
 										ie.printStackTrace();
 									} finally {
 										synchronized (realizeLock) {
@@ -421,7 +435,7 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 							m_jmfProcessor.realize();
 							try {
 								realizeLock.wait();
-							} catch (InterruptedException ie) {
+							} catch (final InterruptedException ie) {
 								ie.printStackTrace();
 							}
 							m_jmfProcessor.removeControllerListener(realizeControllerListener);
@@ -429,13 +443,13 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 						m_jmfProcessor.start();
 						m_durationT0 = System.currentTimeMillis();
 						m_durationUpdateTimer.start();
-					} catch (javax.media.UnsupportedPlugInException upie) {
+					} catch (final javax.media.UnsupportedPlugInException upie) {
 						upie.printStackTrace();
-					} catch (javax.media.NoProcessorException npe) {
+					} catch (final javax.media.NoProcessorException npe) {
 						npe.printStackTrace();
-					} catch (javax.media.NoDataSourceException ndse) {
+					} catch (final javax.media.NoDataSourceException ndse) {
 						ndse.printStackTrace();
-					} catch (java.io.IOException ioe) {
+					} catch (final java.io.IOException ioe) {
 						ioe.printStackTrace();
 					}
 				}
@@ -454,13 +468,14 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 			m_player = m_dataSource.acquirePlayer();
 			m_player.addPlayerListener(new edu.cmu.cs.stage3.media.event.PlayerListener() {
 				@Override
-				public void endReached(edu.cmu.cs.stage3.media.event.PlayerEvent e) {
+				public void endReached(final edu.cmu.cs.stage3.media.event.PlayerEvent e) {
 					if (m_state == PLAYING) {
 						onPlay();
 					}
 				}
+
 				@Override
-				public void stateChanged(edu.cmu.cs.stage3.media.event.PlayerEvent e) {
+				public void stateChanged(final edu.cmu.cs.stage3.media.event.PlayerEvent e) {
 				}
 			});
 			m_player.startFromBeginning();
@@ -474,7 +489,7 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 
 	private void onOK() {
 		onStop();
-		edu.cmu.cs.stage3.alice.core.Sound sound = new edu.cmu.cs.stage3.alice.core.Sound();
+		final edu.cmu.cs.stage3.alice.core.Sound sound = new edu.cmu.cs.stage3.alice.core.Sound();
 		sound.name.set(m_nameTextField.getText());
 		sound.dataSource.set(m_dataSource);
 		setSound(sound);

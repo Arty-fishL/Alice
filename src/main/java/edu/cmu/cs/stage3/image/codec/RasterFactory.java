@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -63,7 +63,8 @@ import java.awt.image.WritableRaster;
 
 class WritableRasterJAI extends WritableRaster {
 
-	protected WritableRasterJAI(SampleModel sampleModel, DataBuffer dataBuffer, Rectangle aRegion, Point sampleModelTranslate, WritableRaster parent) {
+	protected WritableRasterJAI(final SampleModel sampleModel, final DataBuffer dataBuffer, final Rectangle aRegion,
+			final Point sampleModelTranslate, final WritableRaster parent) {
 		super(sampleModel, dataBuffer, aRegion, sampleModelTranslate, parent);
 	}
 }
@@ -71,11 +72,11 @@ class WritableRasterJAI extends WritableRaster {
 /**
  * A convenience class for the construction of various types of
  * <code>WritableRaster</code> and <code>SampleModel</code> objects.
- * 
+ *
  * <p>
  * This class provides the capability of creating <code>Raster</code>s with the
  * enumerated data types in the java.awt.image.DataBuffer.
- * 
+ *
  * <p>
  * In come cases, instances of <code>ComponentSampleModelJAI</code>, a subclass
  * of <code>java.awt.image.ComponentSampleModel</code> are instantiated instead
@@ -88,14 +89,14 @@ public class RasterFactory {
 	 * Creates a <code>WritableRaster</code> based on a
 	 * <code>PixelInterleavedSampleModel</code> with the specified data type,
 	 * width, height, and number of bands.
-	 * 
+	 *
 	 * <p>
 	 * The upper left corner of the <code>WritableRaster</code> is given by the
 	 * <code>location</code> argument. If <code>location</code> is
 	 * <code>null</code>, (0, 0) will be used. The <code>dataType</code>
 	 * parameter should be one of the enumerated values defined in the
 	 * <code>DataBuffer</code> class.
-	 * 
+	 *
 	 * @param dataType
 	 *            The data type of the <code>SampleModel</code>, one of
 	 *            <code>DataBuffer.TYPE_BYTE</code>, <code>TYPE_USHORT</code>,
@@ -110,15 +111,16 @@ public class RasterFactory {
 	 * @param location
 	 *            A <code>Point</code> indicating the starting coordinates of
 	 *            the <code>WritableRaster</code>.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             if <code>numbands</code> is <code><1</code>.
 	 */
-	public static WritableRaster createInterleavedRaster(int dataType, int width, int height, int numBands, Point location) {
+	public static WritableRaster createInterleavedRaster(final int dataType, final int width, final int height,
+			final int numBands, final Point location) {
 		if (numBands < 1) {
 			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory0"));
 		}
-		int[] bandOffsets = new int[numBands];
+		final int[] bandOffsets = new int[numBands];
 		for (int i = 0; i < numBands; i++) {
 			bandOffsets[i] = numBands - 1 - i;
 		}
@@ -130,14 +132,14 @@ public class RasterFactory {
 	 * <code>PixelInterleavedSampleModel</code> with the specified data type,
 	 * width, height, scanline stride, pixel stride, and band offsets. The
 	 * number of bands is inferred from bandOffsets.length.
-	 * 
+	 *
 	 * <p>
 	 * The upper left corner of the <code>WritableRaster</code> is given by the
 	 * <code>location</code> argument. If <code>location</code> is
 	 * <code>null</code>, (0, 0) will be used. The <code>dataType</code>
 	 * parameter should be one of the enumerated values defined in the
 	 * <code>DataBuffer</code> class.
-	 * 
+	 *
 	 * @param dataType
 	 *            The data type of the <code>WritableRaster</code>, one of the
 	 *            enumerated dataType values in java.awt.image.DataBuffer.
@@ -155,25 +157,26 @@ public class RasterFactory {
 	 * @param location
 	 *            A <code>Point</code> indicating the starting coordinates of
 	 *            the <code>WritableRaster</code>.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             if <code>bandOffsets</code> is <code>null</code>,
 	 *             <code>dataType</code> is not one of the enumerated dataType
 	 *             value of java.awt.image.DataBuffer.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             if the number of array elements required by the returned
 	 *             <code>WritableRaster</code> would exceed
 	 *             <code>Integer.MAX_VALUE</code>.
 	 */
-	public static WritableRaster createInterleavedRaster(int dataType, int width, int height, int scanlineStride, int pixelStride, int bandOffsets[], Point location) {
+	public static WritableRaster createInterleavedRaster(final int dataType, final int width, final int height,
+			final int scanlineStride, final int pixelStride, final int bandOffsets[], final Point location) {
 
 		if (bandOffsets == null) {
 			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory4"));
 		}
 
 		DataBuffer d;
-		int bands = bandOffsets.length;
+		final int bands = bandOffsets.length;
 
 		int maxBandOff = bandOffsets[0];
 		for (int i = 1; i < bands; i++) {
@@ -182,39 +185,39 @@ public class RasterFactory {
 			}
 		}
 
-		long lsize = maxBandOff + (long) scanlineStride * (height - 1) + (long) pixelStride * (width - 1) + 1L;
+		final long lsize = maxBandOff + (long) scanlineStride * (height - 1) + (long) pixelStride * (width - 1) + 1L;
 		if (lsize > Integer.MAX_VALUE) {
 			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory16"));
 		}
-		int size = (int) lsize;
+		final int size = (int) lsize;
 
 		switch (dataType) {
-			case DataBuffer.TYPE_BYTE :
-				d = new DataBufferByte(size);
-				break;
+		case DataBuffer.TYPE_BYTE:
+			d = new DataBufferByte(size);
+			break;
 
-			case DataBuffer.TYPE_USHORT :
-				d = new DataBufferUShort(size);
-				break;
+		case DataBuffer.TYPE_USHORT:
+			d = new DataBufferUShort(size);
+			break;
 
-			case DataBuffer.TYPE_SHORT :
-				d = new DataBufferShort(size);
-				break;
+		case DataBuffer.TYPE_SHORT:
+			d = new DataBufferShort(size);
+			break;
 
-			case DataBuffer.TYPE_INT :
-				d = new DataBufferInt(size);
-				break;
+		case DataBuffer.TYPE_INT:
+			d = new DataBufferInt(size);
+			break;
 
-			case DataBuffer.TYPE_FLOAT :
-				d = new DataBufferFloat(size);
-				break;
+		case DataBuffer.TYPE_FLOAT:
+			d = new DataBufferFloat(size);
+			break;
 
-			case DataBuffer.TYPE_DOUBLE :
-				d = new DataBufferDouble(size);
-				break;
+		case DataBuffer.TYPE_DOUBLE:
+			d = new DataBufferDouble(size);
+			break;
 
-			default :
-				throw new IllegalArgumentException(JaiI18N.getString("RasterFactory3"));
+		default:
+			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory3"));
 		}
 
 		return createInterleavedRaster(d, width, height, scanlineStride, pixelStride, bandOffsets, location);
@@ -224,19 +227,19 @@ public class RasterFactory {
 	 * Creates a <code>WritableRaster</code> based on a
 	 * <code>ComponentSampleModel</code> with the specified data type, width,
 	 * height, and number of bands.
-	 * 
+	 *
 	 * <p>
 	 * Note that the <code>Raster</code>'s <code>SampleModel</code> will be of
 	 * type <code>ComponentSampleModel</code>, not
 	 * <code>BandedSampleModel</code> as might be expected.
-	 * 
+	 *
 	 * <p>
 	 * The upper left corner of the <code>WritableRaster</code> is given by the
 	 * <code>location</code> argument. If <code>location</code> is
 	 * <code>null</code>, (0, 0) will be used. The <code>dataType</code>
 	 * parameter should be one of the enumerated values defined in the
 	 * <code>DataBuffer</code> class.
-	 * 
+	 *
 	 * @param dataType
 	 *            The data type of the <code>WritableRaster</code>, one of the
 	 *            enumerated dataType values in java.awt.image.DataBuffer.
@@ -249,16 +252,17 @@ public class RasterFactory {
 	 * @param location
 	 *            A <code>Point</code> indicating the starting coordinates of
 	 *            the <code>WritableRaster</code>.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             if <code>bands</code> is <code><1</code>.
 	 */
-	public static WritableRaster createBandedRaster(int dataType, int width, int height, int bands, Point location) {
+	public static WritableRaster createBandedRaster(final int dataType, final int width, final int height,
+			final int bands, final Point location) {
 		if (bands < 1) {
 			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory0"));
 		}
-		int[] bankIndices = new int[bands];
-		int[] bandOffsets = new int[bands];
+		final int[] bankIndices = new int[bands];
+		final int[] bandOffsets = new int[bands];
 		for (int i = 0; i < bands; i++) {
 			bankIndices[i] = i;
 			bandOffsets[i] = 0;
@@ -273,18 +277,18 @@ public class RasterFactory {
 	 * height, scanline stride, bank indices and band offsets. The number of
 	 * bands is inferred from <code>bankIndices.length</code> and
 	 * <code>bandOffsets.length</code>, which must be the same.
-	 * 
+	 *
 	 * <p>
 	 * Note that the <code>Raster</code>'s <code>SampleModel</code> will be of
 	 * type <code>ComponentSampleModel</code>, not
 	 * <code>BandedSampleModel</code> as might be expected.
-	 * 
+	 *
 	 * <p>
 	 * The upper left corner of the <code>WritableRaster</code> is given by the
 	 * <code>location</code> argument. The <code>dataType</code> parameter
 	 * should be one of the enumerated values defined in the
 	 * <code>DataBuffer</code> class.
-	 * 
+	 *
 	 * @param dataType
 	 *            The data type of the <code>WritableRaster</code>, one of the
 	 *            enumerated dataType values in java.awt.image.DataBuffer.
@@ -303,7 +307,7 @@ public class RasterFactory {
 	 * @param location
 	 *            A <code>Point</code> indicating the starting coordinates of
 	 *            the <code>WritableRaster</code>.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             if <code>bankIndices</code> is <code>null</code>,
 	 *             <code>bandOffsets</code> is <code>null</code>, if
@@ -312,9 +316,10 @@ public class RasterFactory {
 	 *             not one of the enumerated datatypes of
 	 *             java.awt.image.DataBuffer.
 	 */
-	public static WritableRaster createBandedRaster(int dataType, int width, int height, int scanlineStride, int bankIndices[], int bandOffsets[], Point location) {
+	public static WritableRaster createBandedRaster(final int dataType, final int width, final int height,
+			final int scanlineStride, final int bankIndices[], final int bandOffsets[], final Point location) {
 		DataBuffer d;
-		int bands = bandOffsets.length;
+		final int bands = bandOffsets.length;
 
 		if (bankIndices == null) {
 			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory1"));
@@ -339,40 +344,40 @@ public class RasterFactory {
 			}
 		}
 
-		int banks = maxBank + 1;
-		long lsize = maxBandOff + (long) scanlineStride * (height - 1) + (width - 1) + 1L;
+		final int banks = maxBank + 1;
+		final long lsize = maxBandOff + (long) scanlineStride * (height - 1) + (width - 1) + 1L;
 		if (lsize > Integer.MAX_VALUE) {
 			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory16"));
 		}
-		int size = (int) lsize;
+		final int size = (int) lsize;
 
 		switch (dataType) {
-			case DataBuffer.TYPE_BYTE :
-				d = new DataBufferByte(size, banks);
-				break;
+		case DataBuffer.TYPE_BYTE:
+			d = new DataBufferByte(size, banks);
+			break;
 
-			case DataBuffer.TYPE_USHORT :
-				d = new DataBufferUShort(size, banks);
-				break;
+		case DataBuffer.TYPE_USHORT:
+			d = new DataBufferUShort(size, banks);
+			break;
 
-			case DataBuffer.TYPE_SHORT :
-				d = new DataBufferShort(size, banks);
-				break;
+		case DataBuffer.TYPE_SHORT:
+			d = new DataBufferShort(size, banks);
+			break;
 
-			case DataBuffer.TYPE_INT :
-				d = new DataBufferInt(size, banks);
-				break;
+		case DataBuffer.TYPE_INT:
+			d = new DataBufferInt(size, banks);
+			break;
 
-			case DataBuffer.TYPE_FLOAT :
-				d = new DataBufferFloat(size, banks);
-				break;
+		case DataBuffer.TYPE_FLOAT:
+			d = new DataBufferFloat(size, banks);
+			break;
 
-			case DataBuffer.TYPE_DOUBLE :
-				d = new DataBufferDouble(size, banks);
-				break;
+		case DataBuffer.TYPE_DOUBLE:
+			d = new DataBufferDouble(size, banks);
+			break;
 
-			default :
-				throw new IllegalArgumentException(JaiI18N.getString("RasterFactory3"));
+		default:
+			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory3"));
 		}
 
 		return createBandedRaster(d, width, height, scanlineStride, bankIndices, bandOffsets, location);
@@ -383,14 +388,14 @@ public class RasterFactory {
 	 * <code>SinglePixelPackedSampleModel</code> with the specified data type,
 	 * width, height, and band masks. The number of bands is inferred from
 	 * <code>bandMasks.length</code>.
-	 * 
+	 *
 	 * <p>
 	 * The upper left corner of the <code>WritableRaster</code> is given by the
 	 * <code>location</code> argument. If <code>location</code> is
 	 * <code>null</code>, (0, 0) will be used. The <code>dataType</code>
 	 * parameter should be one of the enumerated values defined in the
 	 * <code>DataBuffer</code> class.
-	 * 
+	 *
 	 * @param dataType
 	 *            The data type of the <code>WritableRaster</code>, one of
 	 *            <code>DataBuffer.TYPE_BYTE</code>, <code>TYPE_USHORT</code> or
@@ -402,12 +407,13 @@ public class RasterFactory {
 	 * @param location
 	 *            A <code>Point</code> indicating the starting coordinates of
 	 *            the <code>WritableRaster</code>.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             is thrown if the <code>dataType</code> is not of either
 	 *             TYPE_BYTE or TYPE_USHORT or TYPE_INT.
 	 */
-	public static WritableRaster createPackedRaster(int dataType, int width, int height, int bandMasks[], Point location) {
+	public static WritableRaster createPackedRaster(final int dataType, final int width, final int height,
+			final int bandMasks[], final Point location) {
 		return Raster.createPackedRaster(dataType, width, height, bandMasks, location);
 	}
 
@@ -417,21 +423,21 @@ public class RasterFactory {
 	 * number of bands, and bits per band. If the number of bands is one, the
 	 * <code>SampleModel</code> will be a
 	 * <code>MultiPixelPackedSampleModel</code>.
-	 * 
+	 *
 	 * <p>
 	 * If the number of bands is more than one, the <code>SampleModel</code>
 	 * will be a <code>SinglePixelPackedSampleModel</code>, with each band
 	 * having <code>bitsPerBand</code> bits. In either case, the requirements on
 	 * <code>dataType</code> and <code>bitsPerBand</code> imposed by the
 	 * corresponding <code>SampleModel</code> must be met.
-	 * 
+	 *
 	 * <p>
 	 * The upper left corner of the <code>WritableRaster</code> is given by the
 	 * <code>location</code> argument. If <code>location</code> is
 	 * <code>null</code>, (0, 0) will be used. The <code>dataType</code>
 	 * parameter should be one of the enumerated values defined in the
 	 * <code>DataBuffer</code> class.
-	 * 
+	 *
 	 * @param dataType
 	 *            The data type of the <code>WritableRaster</code>, one of
 	 *            <code>DataBuffer.TYPE_BYTE</code>, <code>TYPE_USHORT</code> or
@@ -447,14 +453,15 @@ public class RasterFactory {
 	 * @param location
 	 *            A <code>Point</code> indicating the starting coordinates of
 	 *            the <code>WritableRaster</code>.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             is thrown if the <code>dataType</code> is not of either
 	 *             TYPE_BYTE or TYPE_USHORT or TYPE_INT.
 	 * @throws IllegalArgumentException
 	 *             is thrown if bitsPerBand is negative or zero.
 	 */
-	public static WritableRaster createPackedRaster(int dataType, int width, int height, int numBands, int bitsPerBand, Point location) {
+	public static WritableRaster createPackedRaster(final int dataType, final int width, final int height,
+			final int numBands, final int bitsPerBand, final Point location) {
 		if (bitsPerBand <= 0) {
 			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory15"));
 		}
@@ -471,7 +478,7 @@ public class RasterFactory {
 	 * <code>WritableRaster</code> is given by the <code>location</code>
 	 * argument. If <code>location</code> is <code>null</code>, (0, 0) will be
 	 * used.
-	 * 
+	 *
 	 * @param dataBuffer
 	 *            The <code>DataBuffer</code> to be used.
 	 * @param width
@@ -488,7 +495,7 @@ public class RasterFactory {
 	 * @param location
 	 *            A <code>Point</code> indicating the starting coordinates of
 	 *            the <code>WritableRaster</code>.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             if <code>bandOffsets</code> is <code>null</code>, if
 	 *             <code>pixelStride*width</code> is <code>></code>
@@ -496,7 +503,8 @@ public class RasterFactory {
 	 *             DataBuffer is not one the enumerated dataType value of
 	 *             java.awt.image.DataBuffer.
 	 */
-	public static WritableRaster createInterleavedRaster(DataBuffer dataBuffer, int width, int height, int scanlineStride, int pixelStride, int bandOffsets[], Point location) {
+	public static WritableRaster createInterleavedRaster(final DataBuffer dataBuffer, final int width, final int height,
+			final int scanlineStride, final int pixelStride, final int bandOffsets[], Point location) {
 
 		if (bandOffsets == null) {
 			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory4"));
@@ -504,41 +512,43 @@ public class RasterFactory {
 		if (location == null) {
 			location = new Point(0, 0);
 		}
-		int dataType = dataBuffer.getDataType();
+		final int dataType = dataBuffer.getDataType();
 
 		switch (dataType) {
-			case DataBuffer.TYPE_BYTE :
-			case DataBuffer.TYPE_USHORT :
-				PixelInterleavedSampleModel csm = new PixelInterleavedSampleModel(dataType, width, height, pixelStride, scanlineStride, bandOffsets);
-				return Raster.createWritableRaster(csm, dataBuffer, location);
+		case DataBuffer.TYPE_BYTE:
+		case DataBuffer.TYPE_USHORT:
+			final PixelInterleavedSampleModel csm = new PixelInterleavedSampleModel(dataType, width, height,
+					pixelStride, scanlineStride, bandOffsets);
+			return Raster.createWritableRaster(csm, dataBuffer, location);
 
-			case DataBuffer.TYPE_INT :
-			case DataBuffer.TYPE_SHORT :
-			case DataBuffer.TYPE_FLOAT :
-			case DataBuffer.TYPE_DOUBLE :
-				int minBandOff = bandOffsets[0];
-				int maxBandOff = bandOffsets[0];
-				for (int i = 1; i < bandOffsets.length; i++) {
-					minBandOff = Math.min(minBandOff, bandOffsets[i]);
-					maxBandOff = Math.max(maxBandOff, bandOffsets[i]);
-				}
-				maxBandOff -= minBandOff;
-				if (maxBandOff > scanlineStride) {
-					throw new IllegalArgumentException(JaiI18N.getString("RasterFactory5"));
+		case DataBuffer.TYPE_INT:
+		case DataBuffer.TYPE_SHORT:
+		case DataBuffer.TYPE_FLOAT:
+		case DataBuffer.TYPE_DOUBLE:
+			int minBandOff = bandOffsets[0];
+			int maxBandOff = bandOffsets[0];
+			for (int i = 1; i < bandOffsets.length; i++) {
+				minBandOff = Math.min(minBandOff, bandOffsets[i]);
+				maxBandOff = Math.max(maxBandOff, bandOffsets[i]);
+			}
+			maxBandOff -= minBandOff;
+			if (maxBandOff > scanlineStride) {
+				throw new IllegalArgumentException(JaiI18N.getString("RasterFactory5"));
 
-				}
-				if (pixelStride * width > scanlineStride) {
-					throw new IllegalArgumentException(JaiI18N.getString("RasterFactory6"));
-				}
-				if (pixelStride < maxBandOff) {
-					throw new IllegalArgumentException(JaiI18N.getString("RasterFactory7"));
-				}
+			}
+			if (pixelStride * width > scanlineStride) {
+				throw new IllegalArgumentException(JaiI18N.getString("RasterFactory6"));
+			}
+			if (pixelStride < maxBandOff) {
+				throw new IllegalArgumentException(JaiI18N.getString("RasterFactory7"));
+			}
 
-				SampleModel sm = new ComponentSampleModelJAI(dataType, width, height, pixelStride, scanlineStride, bandOffsets);
-				return Raster.createWritableRaster(sm, dataBuffer, location);
+			final SampleModel sm = new ComponentSampleModelJAI(dataType, width, height, pixelStride, scanlineStride,
+					bandOffsets);
+			return Raster.createWritableRaster(sm, dataBuffer, location);
 
-			default :
-				throw new IllegalArgumentException(JaiI18N.getString("RasterFactory3"));
+		default:
+			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory3"));
 		}
 	}
 
@@ -552,12 +562,12 @@ public class RasterFactory {
 	 * <code>WritableRaster</code> is given by the <code>location</code>
 	 * argument. If <code>location</code> is <code>null</code>, (0, 0) will be
 	 * used.
-	 * 
+	 *
 	 * <p>
 	 * Note that the <code>Raster</code>'s <code>SampleModel</code> will be of
 	 * type <code>ComponentSampleModel</code>, not
 	 * <code>BandedSampleModel</code> as might be expected.
-	 * 
+	 *
 	 * @param dataBuffer
 	 *            The <code>DataBuffer</code> to be used.
 	 * @param width
@@ -575,7 +585,7 @@ public class RasterFactory {
 	 * @param location
 	 *            A <code>Point</code> indicating the starting coordinates of
 	 *            the <code>WritableRaster</code>.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             if <code>bankIndices</code> is <code>null</code>, if
 	 *             <code>bandOffsets</code> is <code>null</code>, if
@@ -584,11 +594,12 @@ public class RasterFactory {
 	 *             not one of the enumerated datatypes of
 	 *             java.awt.image.DataBuffer.
 	 */
-	public static WritableRaster createBandedRaster(DataBuffer dataBuffer, int width, int height, int scanlineStride, int bankIndices[], int bandOffsets[], Point location) {
+	public static WritableRaster createBandedRaster(final DataBuffer dataBuffer, final int width, final int height,
+			final int scanlineStride, final int bankIndices[], final int bandOffsets[], Point location) {
 		if (location == null) {
 			location = new Point(0, 0);
 		}
-		int dataType = dataBuffer.getDataType();
+		final int dataType = dataBuffer.getDataType();
 
 		if (bankIndices == null) {
 			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory1"));
@@ -597,24 +608,25 @@ public class RasterFactory {
 			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory4"));
 		}
 
-		int bands = bankIndices.length;
+		final int bands = bankIndices.length;
 		if (bandOffsets.length != bands) {
 			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory2"));
 		}
 
-		SampleModel bsm = new ComponentSampleModelJAI(dataType, width, height, 1, scanlineStride, bankIndices, bandOffsets);
+		final SampleModel bsm = new ComponentSampleModelJAI(dataType, width, height, 1, scanlineStride, bankIndices,
+				bandOffsets);
 
 		switch (dataType) {
-			case DataBuffer.TYPE_BYTE :
-			case DataBuffer.TYPE_USHORT :
-			case DataBuffer.TYPE_INT :
-			case DataBuffer.TYPE_SHORT :
-			case DataBuffer.TYPE_FLOAT :
-			case DataBuffer.TYPE_DOUBLE :
-				return Raster.createWritableRaster(bsm, dataBuffer, location);
+		case DataBuffer.TYPE_BYTE:
+		case DataBuffer.TYPE_USHORT:
+		case DataBuffer.TYPE_INT:
+		case DataBuffer.TYPE_SHORT:
+		case DataBuffer.TYPE_FLOAT:
+		case DataBuffer.TYPE_DOUBLE:
+			return Raster.createWritableRaster(bsm, dataBuffer, location);
 
-			default :
-				throw new IllegalArgumentException(JaiI18N.getString("RasterFactory3"));
+		default:
+			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory3"));
 		}
 	}
 
@@ -626,7 +638,7 @@ public class RasterFactory {
 	 * upper left corner of the <code>WritableRaster</code> is given by the
 	 * <code>location</code> argument. If <code>location</code> is
 	 * <code>null</code>, (0, 0) will be used.
-	 * 
+	 *
 	 * @param dataBuffer
 	 *            The <code>DataBuffer</code> to be used.
 	 * @param width
@@ -641,12 +653,13 @@ public class RasterFactory {
 	 * @param location
 	 *            A <code>Point</code> indicating the starting coordinates of
 	 *            the <code>WritableRaster</code>.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             is thrown if the <code>dataType</code> is not of either
 	 *             TYPE_BYTE or TYPE_USHORT or TYPE_INT.
 	 */
-	public static WritableRaster createPackedRaster(DataBuffer dataBuffer, int width, int height, int scanlineStride, int bandMasks[], Point location) {
+	public static WritableRaster createPackedRaster(final DataBuffer dataBuffer, final int width, final int height,
+			final int scanlineStride, final int bandMasks[], final Point location) {
 		return Raster.createPackedRaster(dataBuffer, width, height, scanlineStride, bandMasks, location);
 	}
 
@@ -657,7 +670,7 @@ public class RasterFactory {
 	 * left corner of the <code>WritableRaster</code> is given by the
 	 * <code>location</code> argument. If <code>location</code> is
 	 * <code>null</code>, (0, 0) will be used.
-	 * 
+	 *
 	 * @param dataBuffer
 	 *            The <code>DataBuffer</code> to be used.
 	 * @param width
@@ -669,13 +682,14 @@ public class RasterFactory {
 	 * @param location
 	 *            A <code>Point</code> indicating the starting coordinates of
 	 *            the <code>WritableRaster</code>.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             is thrown if the <code>dataType</code> of the
 	 *             <code>dataBuffer</code> is not of either TYPE_BYTE or
 	 *             TYPE_USHORT or TYPE_INT.
 	 */
-	public static WritableRaster createPackedRaster(DataBuffer dataBuffer, int width, int height, int bitsPerPixel, Point location) {
+	public static WritableRaster createPackedRaster(final DataBuffer dataBuffer, final int width, final int height,
+			final int bitsPerPixel, final Point location) {
 		return Raster.createPackedRaster(dataBuffer, width, height, bitsPerPixel, location);
 	}
 
@@ -685,7 +699,7 @@ public class RasterFactory {
 	 * corner of the <code>WritableRaster</code> is given by the
 	 * <code>location</code> argument. If <code>location</code> is
 	 * <code>null</code>, (0, 0) will be used.
-	 * 
+	 *
 	 * @param sampleModel
 	 *            The <code>SampleModel</code> to be used.
 	 * @param dataBuffer
@@ -694,7 +708,8 @@ public class RasterFactory {
 	 *            A <code>Point</code> indicating the starting coordinates of
 	 *            the <code>WritableRaster</code>.
 	 */
-	public static Raster createRaster(SampleModel sampleModel, DataBuffer dataBuffer, Point location) {
+	public static Raster createRaster(final SampleModel sampleModel, final DataBuffer dataBuffer,
+			final Point location) {
 		return Raster.createRaster(sampleModel, dataBuffer, location);
 	}
 
@@ -704,14 +719,14 @@ public class RasterFactory {
 	 * <code>WritableRaster</code> is given by the <code>location</code>
 	 * argument. If <code>location</code> is <code>null</code>, (0, 0) will be
 	 * used.
-	 * 
+	 *
 	 * @param sampleModel
 	 *            The <code>SampleModel</code> to use.
 	 * @param location
 	 *            A <code>Point</code> indicating the starting coordinates of
 	 *            the <code>WritableRaster</code>.
 	 */
-	public static WritableRaster createWritableRaster(SampleModel sampleModel, Point location) {
+	public static WritableRaster createWritableRaster(final SampleModel sampleModel, Point location) {
 		if (location == null) {
 			location = new Point(0, 0);
 		}
@@ -725,7 +740,7 @@ public class RasterFactory {
 	 * corner of the <code>WritableRaster</code> is given by the
 	 * <code>location</code> argument. If <code>location</code> is
 	 * <code>null</code>, (0, 0) will be used.
-	 * 
+	 *
 	 * @param sampleModel
 	 *            The <code>SampleModel</code> to be used.
 	 * @param dataBuffer
@@ -734,7 +749,8 @@ public class RasterFactory {
 	 *            A <code>Point</code> indicating the starting coordinates of
 	 *            the <code>WritableRaster</code>.
 	 */
-	public static WritableRaster createWritableRaster(SampleModel sampleModel, DataBuffer dataBuffer, Point location) {
+	public static WritableRaster createWritableRaster(final SampleModel sampleModel, final DataBuffer dataBuffer,
+			final Point location) {
 		return Raster.createWritableRaster(sampleModel, dataBuffer, location);
 	}
 
@@ -743,19 +759,19 @@ public class RasterFactory {
 	 * WritableRaster's DataBuffer. The new WritableRaster will possess a
 	 * reference to the supplied WritableRaster, accessible through its
 	 * getParent() and getWritableParent() methods.
-	 * 
+	 *
 	 * <p>
 	 * This method provides a workaround for a bug in the implementation of
 	 * WritableRaster.createWritableChild in the initial relase of the Java2
 	 * platform.
-	 * 
+	 *
 	 * <p>
 	 * The <code>parentX</code>, <code>parentY</code>, <code>width</code> and
 	 * <code>height</code> parameters form a Rectangle in this WritableRaster's
 	 * coordinate space, indicating the area of pixels to be shared. An error
 	 * will be thrown if this Rectangle is not contained with the bounds of the
 	 * supplied WritableRaster.
-	 * 
+	 *
 	 * <p>
 	 * The new WritableRaster may additionally be translated to a different
 	 * coordinate system for the plane than that used by the supplied
@@ -764,19 +780,19 @@ public class RasterFactory {
 	 * coordinate (childMinX, childMinY) in the new WritableRaster will map to
 	 * the same pixel as the coordinate (parentX, parentY) in the supplied
 	 * WritableRaster.
-	 * 
+	 *
 	 * <p>
 	 * The new WritableRaster may be defined to contain only a subset of the
 	 * bands of the supplied WritableRaster, possibly reordered, by means of the
 	 * bandList parameter. If bandList is null, it is taken to include all of
 	 * the bands of the supplied WritableRaster in their current order.
-	 * 
+	 *
 	 * <p>
 	 * To create a new WritableRaster that contains a subregion of the supplied
 	 * WritableRaster, but shares its coordinate system and bands, this method
 	 * should be called with childMinX equal to parentX, childMinY equal to
 	 * parentY, and bandList equal to null.
-	 * 
+	 *
 	 * @param raster
 	 *            The parent WritableRaster.
 	 * @param parentX
@@ -799,11 +815,12 @@ public class RasterFactory {
 	 *            WritableRaster.
 	 * @param bandList
 	 *            Array of band indices, or null to use all bands.
-	 * 
+	 *
 	 * @throws RasterFormatException
 	 *             if the subregion is outside of the raster bounds.
 	 */
-	public static WritableRaster createWritableChild(WritableRaster raster, int parentX, int parentY, int width, int height, int childMinX, int childMinY, int bandList[]) {
+	public static WritableRaster createWritableChild(final WritableRaster raster, final int parentX, final int parentY,
+			final int width, final int height, final int childMinX, final int childMinY, final int bandList[]) {
 		if (parentX < raster.getMinX()) {
 			throw new RasterFormatException(JaiI18N.getString("RasterFactory9"));
 		}
@@ -817,10 +834,10 @@ public class RasterFactory {
 			throw new RasterFormatException(JaiI18N.getString("RasterFactory12"));
 		}
 
-		SampleModel sampleModel = raster.getSampleModel();
-		DataBuffer dataBuffer = raster.getDataBuffer();
-		int sampleModelTranslateX = raster.getSampleModelTranslateX();
-		int sampleModelTranslateY = raster.getSampleModelTranslateY();
+		final SampleModel sampleModel = raster.getSampleModel();
+		final DataBuffer dataBuffer = raster.getDataBuffer();
+		final int sampleModelTranslateX = raster.getSampleModelTranslateX();
+		final int sampleModelTranslateY = raster.getSampleModelTranslateY();
 
 		SampleModel sm;
 
@@ -831,23 +848,24 @@ public class RasterFactory {
 			sm = sampleModel;
 		}
 
-		int deltaX = childMinX - parentX;
-		int deltaY = childMinY - parentY;
+		final int deltaX = childMinX - parentX;
+		final int deltaY = childMinY - parentY;
 
-		return new WritableRasterJAI(sm, dataBuffer, new Rectangle(childMinX, childMinY, width, height), new Point(sampleModelTranslateX + deltaX, sampleModelTranslateY + deltaY), raster);
+		return new WritableRasterJAI(sm, dataBuffer, new Rectangle(childMinX, childMinY, width, height),
+				new Point(sampleModelTranslateX + deltaX, sampleModelTranslateY + deltaY), raster);
 	}
 
 	/**
 	 * Creates a banded <code>SampleModel</code> with a given data type, width,
 	 * height, number of bands, bank indices, and band offsets.
-	 * 
+	 *
 	 * <p>
 	 * Note that the returned <code>SampleModel</code> will be of type
 	 * <code>ComponentSampleModel</code>, not <code>BandedSampleModel</code> as
 	 * might be expected. Its behavior will be equivalent to that of a
 	 * <code>BandedSampleModel</code>, and in particular its pixel stride will
 	 * always be 1.
-	 * 
+	 *
 	 * @param dataType
 	 *            The data type of the <code>SampleModel</code>, one of
 	 *            <code>DataBuffer.TYPE_BYTE</code>, <code>TYPE_USHORT</code>,
@@ -865,13 +883,14 @@ public class RasterFactory {
 	 * @param bandOffsets
 	 *            An array of <code>int</code>s indicating the relative offsets
 	 *            of the bands within a pixel.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             if <code>numBands</code> is <code><1</code>, if
 	 *             <code>bandOffsets.length</code> is <code>!=</code>
 	 *             <code>bankIndices.length</code>.
 	 */
-	public static SampleModel createBandedSampleModel(int dataType, int width, int height, int numBands, int bankIndices[], int bandOffsets[]) {
+	public static SampleModel createBandedSampleModel(final int dataType, final int width, final int height,
+			final int numBands, int bankIndices[], int bandOffsets[]) {
 		if (numBands < 1) {
 			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory0"));
 		}
@@ -897,14 +916,14 @@ public class RasterFactory {
 	 * Creates a banded <code>SampleModel</code> with a given data type, width,
 	 * height, and number of bands. The bank indices and band offsets are set to
 	 * default values.
-	 * 
+	 *
 	 * <p>
 	 * Note that the returned <code>SampleModel</code> will be of type
 	 * <code>ComponentSampleModel</code>, not <code>BandedSampleModel</code> as
 	 * might be expected. Its behavior will be equivalent to that of a
 	 * <code>BandedSampleModel</code>, and in particular its pixel stride will
 	 * always be 1.
-	 * 
+	 *
 	 * @param dataType
 	 *            The data type of the <code>SampleModel</code>, one of
 	 *            <code>DataBuffer.TYPE_BYTE</code>, <code>TYPE_USHORT</code>,
@@ -917,14 +936,15 @@ public class RasterFactory {
 	 * @param numBands
 	 *            The desired number of bands.
 	 */
-	public static SampleModel createBandedSampleModel(int dataType, int width, int height, int numBands) {
+	public static SampleModel createBandedSampleModel(final int dataType, final int width, final int height,
+			final int numBands) {
 		return createBandedSampleModel(dataType, width, height, numBands, null, null);
 	}
 
 	/**
 	 * Creates a pixel interleaved <code>SampleModel</code> with a given data
 	 * type, width, height, pixel and scanline strides, and band offsets.
-	 * 
+	 *
 	 * @param dataType
 	 *            The data type of the <code>SampleModel</code>, one of
 	 *            <code>DataBuffer.TYPE_BYTE</code>, <code>TYPE_USHORT</code>,
@@ -941,14 +961,15 @@ public class RasterFactory {
 	 * @param bandOffsets
 	 *            An array of <code>int</code>s indicating the relative offsets
 	 *            of the bands within a pixel.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             if <code>bandOffsets</code> is <code>null</code>, if the
 	 *             <code>pixelStride*width</code> is <code>></code> than
 	 *             <code>scanlineStride</code>, if the <code>dataType</code> is
 	 *             not one of the above mentioned datatypes.
 	 */
-	public static SampleModel createPixelInterleavedSampleModel(int dataType, int width, int height, int pixelStride, int scanlineStride, int bandOffsets[]) {
+	public static SampleModel createPixelInterleavedSampleModel(final int dataType, final int width, final int height,
+			final int pixelStride, final int scanlineStride, final int bandOffsets[]) {
 		if (bandOffsets == null) {
 			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory4"));
 		}
@@ -971,16 +992,16 @@ public class RasterFactory {
 		}
 
 		switch (dataType) {
-			case DataBuffer.TYPE_BYTE :
-			case DataBuffer.TYPE_USHORT :
-				return new PixelInterleavedSampleModel(dataType, width, height, pixelStride, scanlineStride, bandOffsets);
-			case DataBuffer.TYPE_INT :
-			case DataBuffer.TYPE_SHORT :
-			case DataBuffer.TYPE_FLOAT :
-			case DataBuffer.TYPE_DOUBLE :
-				return new ComponentSampleModelJAI(dataType, width, height, pixelStride, scanlineStride, bandOffsets);
-			default :
-				throw new IllegalArgumentException(JaiI18N.getString("RasterFactory3"));
+		case DataBuffer.TYPE_BYTE:
+		case DataBuffer.TYPE_USHORT:
+			return new PixelInterleavedSampleModel(dataType, width, height, pixelStride, scanlineStride, bandOffsets);
+		case DataBuffer.TYPE_INT:
+		case DataBuffer.TYPE_SHORT:
+		case DataBuffer.TYPE_FLOAT:
+		case DataBuffer.TYPE_DOUBLE:
+			return new ComponentSampleModelJAI(dataType, width, height, pixelStride, scanlineStride, bandOffsets);
+		default:
+			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory3"));
 		}
 	}
 
@@ -988,7 +1009,7 @@ public class RasterFactory {
 	 * Creates a pixel interleaved <code>SampleModel</code> with a given data
 	 * type, width, height, and number of bands. The pixel stride, scanline
 	 * stride, and band offsets are set to default values.
-	 * 
+	 *
 	 * @param dataType
 	 *            The data type of the <code>SampleModel</code>, one of
 	 *            <code>DataBuffer.TYPE_BYTE</code>, <code>TYPE_USHORT</code>,
@@ -1000,15 +1021,16 @@ public class RasterFactory {
 	 *            The desired height of the <code>SampleModel</code>.
 	 * @param numBands
 	 *            The desired number of bands.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             if <code>numBands</code> is <code><1</code>.
 	 */
-	public static SampleModel createPixelInterleavedSampleModel(int dataType, int width, int height, int numBands) {
+	public static SampleModel createPixelInterleavedSampleModel(final int dataType, final int width, final int height,
+			final int numBands) {
 		if (numBands < 1) {
 			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory0"));
 		}
-		int[] bandOffsets = new int[numBands];
+		final int[] bandOffsets = new int[numBands];
 		for (int i = 0; i < numBands; i++) {
 			bandOffsets[i] = numBands - 1 - i;
 		}
@@ -1020,7 +1042,7 @@ public class RasterFactory {
 	 * Creates a component <code>SampleModel</code> with a given data type,
 	 * width, height, and number of bands that is "compatible" with a given
 	 * SampleModel.
-	 * 
+	 *
 	 * @param sm
 	 *            The <code>SampleModel</code> to be compatible with.
 	 * @param dataType
@@ -1035,7 +1057,8 @@ public class RasterFactory {
 	 * @param numBands
 	 *            The desired number of bands.
 	 */
-	public static SampleModel createComponentSampleModel(SampleModel sm, int dataType, int width, int height, int numBands) {
+	public static SampleModel createComponentSampleModel(final SampleModel sm, final int dataType, final int width,
+			final int height, final int numBands) {
 		if (sm instanceof BandedSampleModel) {
 			return createBandedSampleModel(dataType, width, height, numBands);
 		} else { // default SampleModel
@@ -1047,7 +1070,7 @@ public class RasterFactory {
 	 * Creates a component-based <code>ColorModel</code> with a given data type,
 	 * color space, and transparency type. Currently this method does not
 	 * support data type <code>DataBuffer.TYPE_SHORT</code>.
-	 * 
+	 *
 	 * @param dataType
 	 *            The data type of the <code>ColorModel</code>, one of
 	 *            <code>DataBuffer.TYPE_BYTE</code>, <code>TYPE_USHORT</code>,
@@ -1069,7 +1092,7 @@ public class RasterFactory {
 	 *            <code>transparency</code> is ignored. If <code>useAlpha</code>
 	 *            is <code>true</code>, <code>transparency</code> must not equal
 	 *            <code>Transparency.OPQAUE</code>.
-	 * 
+	 *
 	 * @throws NullPointerException
 	 *             if <code>colorSpace</code> is <code>null</code>.
 	 * @throws IllegalArgumentException
@@ -1079,8 +1102,10 @@ public class RasterFactory {
 	 *             <code>dataType</code> is not one of the standard types listed
 	 *             above.
 	 */
-	public static ComponentColorModel createComponentColorModel(int dataType, ColorSpace colorSpace, boolean useAlpha, boolean premultiplied, int transparency) {
-		if (transparency != Transparency.OPAQUE && transparency != Transparency.BITMASK && transparency != Transparency.TRANSLUCENT) {
+	public static ComponentColorModel createComponentColorModel(final int dataType, final ColorSpace colorSpace,
+			final boolean useAlpha, boolean premultiplied, int transparency) {
+		if (transparency != Transparency.OPAQUE && transparency != Transparency.BITMASK
+				&& transparency != Transparency.TRANSLUCENT) {
 			// Illegal value for transparency
 			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory13"));
 		}
@@ -1099,26 +1124,26 @@ public class RasterFactory {
 			++bands;
 		}
 
-		int dataTypeSize = DataBuffer.getDataTypeSize(dataType);
-		int[] bits = new int[bands];
+		final int dataTypeSize = DataBuffer.getDataTypeSize(dataType);
+		final int[] bits = new int[bands];
 		for (int i = 0; i < bands; i++) {
 			bits[i] = dataTypeSize;
 		}
 
 		switch (dataType) {
-			case DataBuffer.TYPE_BYTE :
-				return new ComponentColorModel(colorSpace, bits, useAlpha, premultiplied, transparency, dataType);
-			case DataBuffer.TYPE_USHORT :
-				return new ComponentColorModel(colorSpace, bits, useAlpha, premultiplied, transparency, dataType);
+		case DataBuffer.TYPE_BYTE:
+			return new ComponentColorModel(colorSpace, bits, useAlpha, premultiplied, transparency, dataType);
+		case DataBuffer.TYPE_USHORT:
+			return new ComponentColorModel(colorSpace, bits, useAlpha, premultiplied, transparency, dataType);
 
-			case DataBuffer.TYPE_INT :
-				return new ComponentColorModel(colorSpace, bits, useAlpha, premultiplied, transparency, dataType);
-			case DataBuffer.TYPE_FLOAT :
-				return new FloatDoubleColorModel(colorSpace, useAlpha, premultiplied, transparency, dataType);
-			case DataBuffer.TYPE_DOUBLE :
-				return new FloatDoubleColorModel(colorSpace, useAlpha, premultiplied, transparency, dataType);
-			default :
-				throw new IllegalArgumentException(JaiI18N.getString("RasterFactory8"));
+		case DataBuffer.TYPE_INT:
+			return new ComponentColorModel(colorSpace, bits, useAlpha, premultiplied, transparency, dataType);
+		case DataBuffer.TYPE_FLOAT:
+			return new FloatDoubleColorModel(colorSpace, useAlpha, premultiplied, transparency, dataType);
+		case DataBuffer.TYPE_DOUBLE:
+			return new FloatDoubleColorModel(colorSpace, useAlpha, premultiplied, transparency, dataType);
+		default:
+			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory8"));
 		}
 	}
 }

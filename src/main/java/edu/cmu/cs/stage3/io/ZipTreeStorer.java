@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -34,12 +34,13 @@ public class ZipTreeStorer implements DirectoryTreeStorer {
 	protected boolean isCompressed() {
 		return true;
 	}
+
 	/**
 	 * pathname can be a String (representing a file on disk), a java.io.File,
 	 * or a java.io.OutputStream
 	 */
 	@Override
-	public void open(Object pathname) throws IllegalArgumentException, java.io.IOException {
+	public void open(final Object pathname) throws IllegalArgumentException, java.io.IOException {
 		if (zipOut != null) {
 			close();
 		}
@@ -52,7 +53,8 @@ public class ZipTreeStorer implements DirectoryTreeStorer {
 		} else if (pathname instanceof java.io.OutputStream) {
 			out = (java.io.OutputStream) pathname;
 		} else {
-			throw new IllegalArgumentException("pathname must be an instance of String, java.io.File, or java.io.OutputStream");
+			throw new IllegalArgumentException(
+					"pathname must be an instance of String, java.io.File, or java.io.OutputStream");
 		}
 
 		zipOut = new java.util.zip.ZipOutputStream(new java.io.BufferedOutputStream(out));
@@ -76,7 +78,7 @@ public class ZipTreeStorer implements DirectoryTreeStorer {
 	}
 
 	@Override
-	public void createDirectory(String pathname) throws IllegalArgumentException, java.io.IOException {
+	public void createDirectory(final String pathname) throws IllegalArgumentException, java.io.IOException {
 		if (pathname.indexOf('/') != -1 || pathname.indexOf('\\') != -1) {
 			throw new IllegalArgumentException("pathname cannot contain path separators");
 		}
@@ -84,7 +86,7 @@ public class ZipTreeStorer implements DirectoryTreeStorer {
 			throw new IllegalArgumentException("pathname has no length");
 		}
 
-		java.util.zip.ZipEntry newEntry = new java.util.zip.ZipEntry(currentDirectory + pathname + "/");
+		final java.util.zip.ZipEntry newEntry = new java.util.zip.ZipEntry(currentDirectory + pathname + "/");
 		if (zipOut != null) {
 			zipOut.putNextEntry(newEntry);
 			zipOut.closeEntry();
@@ -129,7 +131,8 @@ public class ZipTreeStorer implements DirectoryTreeStorer {
 	}
 
 	@Override
-	public java.io.OutputStream createFile(String filename, boolean compressItIfYouGotIt) throws IllegalArgumentException, java.io.IOException {
+	public java.io.OutputStream createFile(final String filename, final boolean compressItIfYouGotIt)
+			throws IllegalArgumentException, java.io.IOException {
 		// TODO: respect compressItIfYouGotIt
 		if (zipOut != null) {
 			currentEntry = new java.util.zip.ZipEntry(currentDirectory + filename);
@@ -156,7 +159,7 @@ public class ZipTreeStorer implements DirectoryTreeStorer {
 	}
 
 	@Override
-	public Object getKeepKey(String filename) {
+	public Object getKeepKey(final String filename) {
 		return null;
 	}
 
@@ -166,7 +169,7 @@ public class ZipTreeStorer implements DirectoryTreeStorer {
 	}
 
 	@Override
-	public void keepFile(String filename) throws KeepFileNotSupportedException, KeepFileDoesNotExistException {
+	public void keepFile(final String filename) throws KeepFileNotSupportedException, KeepFileDoesNotExistException {
 		throw new KeepFileNotSupportedException();
 	}
 }

@@ -29,6 +29,7 @@ public class ScriptDefinedNumber extends AbstractScriptDefinedObject {
 	public Class getValueClass() {
 		return Number.class;
 	}
+
 	public Number getNumberValue() {
 		return (Number) getValue();
 	}

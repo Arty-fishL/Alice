@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -28,21 +28,21 @@ import javax.media.opengl.GL;
 class AppearanceProxy extends ElementProxy {
 	private boolean m_isShaded;
 	private boolean m_isAmbientLinkedToDiffuse;
-	private float[] m_ambient = new float[4];
-	private float[] m_diffuse = new float[4];
-	private float[] m_specular = new float[4];
-	private float[] m_emissive = new float[4];
+	private final float[] m_ambient = new float[4];
+	private final float[] m_diffuse = new float[4];
+	private final float[] m_specular = new float[4];
+	private final float[] m_emissive = new float[4];
 	private float m_opacity = 1.0f;
 	private float m_shininess;
 	private int m_polygonMode;
 	private TextureMapProxy m_diffuseColorMapProxy;
 
-	private java.nio.FloatBuffer m_ambientBuffer = java.nio.FloatBuffer.wrap(m_ambient);
-	private java.nio.FloatBuffer m_diffuseBuffer = java.nio.FloatBuffer.wrap(m_diffuse);
-	private java.nio.FloatBuffer m_specularBuffer = java.nio.FloatBuffer.wrap(m_specular);
-	private java.nio.FloatBuffer m_emissiveBuffer = java.nio.FloatBuffer.wrap(m_emissive);
+	private final java.nio.FloatBuffer m_ambientBuffer = java.nio.FloatBuffer.wrap(m_ambient);
+	private final java.nio.FloatBuffer m_diffuseBuffer = java.nio.FloatBuffer.wrap(m_diffuse);
+	private final java.nio.FloatBuffer m_specularBuffer = java.nio.FloatBuffer.wrap(m_specular);
+	private final java.nio.FloatBuffer m_emissiveBuffer = java.nio.FloatBuffer.wrap(m_emissive);
 
-	public void setPipelineState(RenderContext context, int face) {
+	public void setPipelineState(final RenderContext context, final int face) {
 		context.setIsShadingEnabled(m_isShaded);
 		m_diffuse[3] = m_opacity;
 		if (m_isShaded) {
@@ -66,7 +66,7 @@ class AppearanceProxy extends ElementProxy {
 	}
 
 	@Override
-	protected void changed(edu.cmu.cs.stage3.alice.scenegraph.Property property, Object value) {
+	protected void changed(final edu.cmu.cs.stage3.alice.scenegraph.Property property, final Object value) {
 		if (property == edu.cmu.cs.stage3.alice.scenegraph.Appearance.AMBIENT_COLOR_PROPERTY) {
 			m_isAmbientLinkedToDiffuse = value == null;
 			if (m_isAmbientLinkedToDiffuse) {
@@ -107,7 +107,8 @@ class AppearanceProxy extends ElementProxy {
 		} else if (property == edu.cmu.cs.stage3.alice.scenegraph.Appearance.EMISSIVE_COLOR_PROPERTY) {
 			copy(m_emissive, (edu.cmu.cs.stage3.alice.scenegraph.Color) value);
 		} else if (property == edu.cmu.cs.stage3.alice.scenegraph.Appearance.DIFFUSE_COLOR_MAP_PROPERTY) {
-			m_diffuseColorMapProxy = (TextureMapProxy) getProxyFor((edu.cmu.cs.stage3.alice.scenegraph.TextureMap) value);
+			m_diffuseColorMapProxy = (TextureMapProxy) getProxyFor(
+					(edu.cmu.cs.stage3.alice.scenegraph.TextureMap) value);
 		} else if (property == edu.cmu.cs.stage3.alice.scenegraph.Appearance.OPACITY_MAP_PROPERTY) {
 			// todo
 		} else if (property == edu.cmu.cs.stage3.alice.scenegraph.Appearance.EMISSIVE_COLOR_MAP_PROPERTY) {
@@ -122,6 +123,7 @@ class AppearanceProxy extends ElementProxy {
 			super.changed(property, value);
 		}
 	}
+
 	// todo
 	public double Showing() {
 		return m_opacity;

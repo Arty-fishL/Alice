@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -69,7 +69,8 @@ class SSDirectoryEntry {
 	long SIDRightSibling;
 	long SIDChild;
 
-	public SSDirectoryEntry(int index, String name, long size, long startSector, long SIDLeftSibling, long SIDRightSibling, long SIDChild) {
+	public SSDirectoryEntry(final int index, final String name, final long size, final long startSector,
+			final long SIDLeftSibling, final long SIDRightSibling, final long SIDChild) {
 		this.name = name;
 		this.index = index;
 		this.size = size;
@@ -135,7 +136,7 @@ public class StructuredStorage {
 	// The index of the current directory
 	long cwdIndex = -1L;
 
-	public StructuredStorage(SeekableStream file) throws IOException {
+	public StructuredStorage(final SeekableStream file) throws IOException {
 		this.file = file;
 
 		// Read fields from the header
@@ -190,16 +191,16 @@ public class StructuredStorage {
 	}
 
 	private void getFat() throws IOException {
-		int size = getSectorSize();
-		int sectsPerFat = size / 4;
-		int fatsPerDif = size / 4 - 1;
+		final int size = getSectorSize();
+		final int sectsPerFat = size / 4;
+		final int fatsPerDif = size / 4 - 1;
 
-		int numFATSectors = (int) (csectFat + csectDif * fatsPerDif);
-		long[] FATSectors = new long[numFATSectors];
+		final int numFATSectors = (int) (csectFat + csectDif * fatsPerDif);
+		final long[] FATSectors = new long[numFATSectors];
 		int count = 0;
 
 		for (int i = 0; i < 109; i++) {
-			long sector = sectFat[i];
+			final long sector = sectFat[i];
 			if (sector == 0xFFFFFFFFL) {
 				break;
 			}
@@ -209,12 +210,12 @@ public class StructuredStorage {
 
 		if (csectDif > 0) {
 			long dif = sectDifStart;
-			byte[] difBuf = new byte[size];
+			final byte[] difBuf = new byte[size];
 
 			for (int i = 0; i < csectDif; i++) {
 				readSector(dif, difBuf, 0);
 				for (int j = 0; j < fatsPerDif; j++) {
-					int sec = FPXUtils.getIntLE(difBuf, 4 * j);
+					final int sec = FPXUtils.getIntLE(difBuf, 4 * j);
 					FATSectors[count++] = getOffsetOfSector(sec);
 				}
 
@@ -226,14 +227,14 @@ public class StructuredStorage {
 	}
 
 	private void getMiniFat() throws IOException {
-		int size = getSectorSize();
-		int sectsPerFat = size / 4;
+		final int size = getSectorSize();
+		final int sectsPerFat = size / 4;
 		int index = 0;
 
 		MINIFAT = new long[(int) (csectMiniFat * sectsPerFat)];
 
 		long sector = sectMiniFatStart;
-		byte[] buf = new byte[size];
+		final byte[] buf = new byte[size];
 		while (sector != 0xFFFFFFFEL) {
 			readSector(sector, buf, 0);
 			for (int j = 0; j < sectsPerFat; j++) {
@@ -244,7 +245,7 @@ public class StructuredStorage {
 	}
 
 	private void getDirectory() throws IOException {
-		int size = getSectorSize();
+		final int size = getSectorSize();
 		long sector = sectDirStart;
 
 		// Count the length of the directory in sectors
@@ -254,11 +255,11 @@ public class StructuredStorage {
 			++numDirectorySectors;
 		}
 
-		int directoryEntries = 4 * numDirectorySectors;
+		final int directoryEntries = 4 * numDirectorySectors;
 		DIR = new SSDirectoryEntry[directoryEntries];
 
 		sector = sectDirStart;
-		byte[] buf = new byte[size];
+		final byte[] buf = new byte[size];
 		int index = 0;
 		while (sector != 0xFFFFFFFEL) {
 			readSector(sector, buf, 0);
@@ -267,16 +268,17 @@ public class StructuredStorage {
 			for (int i = 0; i < 4; i++) { // 4 dirents per sector
 				// We divide the length by 2 for now even though
 				// the spec says not to...
-				int length = FPXUtils.getShortLE(buf, offset + 0x40);
+				final int length = FPXUtils.getShortLE(buf, offset + 0x40);
 
-				String name = FPXUtils.getString(buf, offset + 0x00, length);
-				long SIDLeftSibling = FPXUtils.getUnsignedIntLE(buf, offset + 0x44);
-				long SIDRightSibling = FPXUtils.getUnsignedIntLE(buf, offset + 0x48);
-				long SIDChild = FPXUtils.getUnsignedIntLE(buf, offset + 0x4c);
-				long startSector = FPXUtils.getUnsignedIntLE(buf, offset + 0x74);
-				long streamSize = FPXUtils.getUnsignedIntLE(buf, offset + 0x78);
+				final String name = FPXUtils.getString(buf, offset + 0x00, length);
+				final long SIDLeftSibling = FPXUtils.getUnsignedIntLE(buf, offset + 0x44);
+				final long SIDRightSibling = FPXUtils.getUnsignedIntLE(buf, offset + 0x48);
+				final long SIDChild = FPXUtils.getUnsignedIntLE(buf, offset + 0x4c);
+				final long startSector = FPXUtils.getUnsignedIntLE(buf, offset + 0x74);
+				final long streamSize = FPXUtils.getUnsignedIntLE(buf, offset + 0x78);
 
-				DIR[index] = new SSDirectoryEntry(index, name, streamSize, startSector, SIDLeftSibling, SIDRightSibling, SIDChild);
+				DIR[index] = new SSDirectoryEntry(index, name, streamSize, startSector, SIDLeftSibling, SIDRightSibling,
+						SIDChild);
 				++index;
 				offset += 128;
 			}
@@ -286,11 +288,11 @@ public class StructuredStorage {
 	}
 
 	private void getMiniStream() throws IOException {
-		int length = getLength(0L);
-		int sectorSize = getSectorSize();
-		int sectors = (length + sectorSize - 1) / sectorSize;
+		final int length = getLength(0L);
+		final int sectorSize = getSectorSize();
+		final int sectors = (length + sectorSize - 1) / sectorSize;
 
-		long[] segmentPositions = new long[sectors];
+		final long[] segmentPositions = new long[sectors];
 
 		long sector = getStartSector(0);
 
@@ -307,7 +309,7 @@ public class StructuredStorage {
 		return 1 << sectorShift;
 	}
 
-	private long getOffsetOfSector(long sector) {
+	private long getOffsetOfSector(final long sector) {
 		return sector * getSectorSize() + 512;
 	}
 
@@ -315,50 +317,52 @@ public class StructuredStorage {
 		return 1 << miniSectorShift;
 	}
 
-	private long getOffsetOfMiniSector(long sector) {
+	private long getOffsetOfMiniSector(final long sector) {
 		return sector * getMiniSectorSize();
 	}
 
-	private void readMiniSector(long sector, byte[] buf, int offset, int length) throws IOException {
+	private void readMiniSector(final long sector, final byte[] buf, final int offset, final int length)
+			throws IOException {
 		miniStream.seek(getOffsetOfMiniSector(sector));
 		miniStream.read(buf, offset, length);
 	}
 
-	private void readMiniSector(long sector, byte[] buf, int offset) throws IOException {
+	private void readMiniSector(final long sector, final byte[] buf, final int offset) throws IOException {
 		readMiniSector(sector, buf, offset, getMiniSectorSize());
 	}
 
-	private void readSector(long sector, byte[] buf, int offset, int length) throws IOException {
+	private void readSector(final long sector, final byte[] buf, final int offset, final int length)
+			throws IOException {
 		file.seek(getOffsetOfSector(sector));
 		file.read(buf, offset, length);
 	}
 
-	private void readSector(long sector, byte[] buf, int offset) throws IOException {
+	private void readSector(final long sector, final byte[] buf, final int offset) throws IOException {
 		readSector(sector, buf, offset, getSectorSize());
 	}
 
-	private SSDirectoryEntry getDirectoryEntry(long index) {
+	private SSDirectoryEntry getDirectoryEntry(final long index) {
 		// Assume #streams < 2^31
 		return DIR[(int) index];
 	}
 
-	private long getStartSector(long index) {
+	private long getStartSector(final long index) {
 		// Assume #streams < 2^31
 		return DIR[(int) index].getStartSector();
 	}
 
-	private int getLength(long index) {
+	private int getLength(final long index) {
 		// Assume #streams < 2^31
 		// Assume size < 2GB
 		return (int) DIR[(int) index].getSize();
 	}
 
-	private long getFATSector(long sector) throws IOException {
+	private long getFATSector(final long sector) throws IOException {
 		FATStream.seek(4 * sector);
 		return FATStream.readUnsignedIntLE();
 	}
 
-	private long getMiniFATSector(long sector) {
+	private long getMiniFATSector(final long sector) {
 		return MINIFAT[(int) sector];
 	}
 
@@ -366,26 +370,26 @@ public class StructuredStorage {
 		return -1;
 	}
 
-	private int getIndex(String name, int index) {
+	private int getIndex(final String name, final int index) {
 		return -1;
 	}
 
-	private long searchDirectory(String name, long index) {
+	private long searchDirectory(final String name, final long index) {
 		if (index == 0xFFFFFFFFL) {
 			return -1L;
 		}
 
-		SSDirectoryEntry dirent = getDirectoryEntry(index);
+		final SSDirectoryEntry dirent = getDirectoryEntry(index);
 
 		if (name.equals(dirent.getName())) {
 			return index;
 		} else {
-			long lindex = searchDirectory(name, dirent.getSIDLeftSibling());
+			final long lindex = searchDirectory(name, dirent.getSIDLeftSibling());
 			if (lindex != -1L) {
 				return lindex;
 			}
 
-			long rindex = searchDirectory(name, dirent.getSIDRightSibling());
+			final long rindex = searchDirectory(name, dirent.getSIDRightSibling());
 			if (rindex != -1L) {
 				return rindex;
 			}
@@ -400,8 +404,8 @@ public class StructuredStorage {
 		cwdIndex = getDirectoryEntry(0L).getSIDChild();
 	}
 
-	public boolean changeDirectory(String name) {
-		long index = searchDirectory(name, cwdIndex);
+	public boolean changeDirectory(final String name) {
+		final long index = searchDirectory(name, cwdIndex);
 		if (index != -1L) {
 			cwdIndex = getDirectoryEntry(index).getSIDChild();
 			return true;
@@ -410,14 +414,14 @@ public class StructuredStorage {
 		}
 	}
 
-	private long getStreamIndex(String name) {
+	private long getStreamIndex(final String name) {
 		// Move down the directory hierarchy
 		long index = cwdIndex;
 
-		StringTokenizer st = new StringTokenizer(name, "/");
+		final StringTokenizer st = new StringTokenizer(name, "/");
 		boolean firstTime = true;
 		while (st.hasMoreTokens()) {
-			String tok = st.nextToken();
+			final String tok = st.nextToken();
 
 			if (!firstTime) {
 				index = getDirectoryEntry(index).getSIDChild();
@@ -430,20 +434,20 @@ public class StructuredStorage {
 		return index;
 	}
 
-	public byte[] getStreamAsBytes(String name) throws IOException {
-		long index = getStreamIndex(name);
+	public byte[] getStreamAsBytes(final String name) throws IOException {
+		final long index = getStreamIndex(name);
 		if (index == -1L) {
 			return null;
 		}
 
 		// Cast index to int (streams < 2^31) and cast stream size to an
 		// int (size < 2GB)
-		int length = getLength(index);
-		byte[] buf = new byte[length];
+		final int length = getLength(index);
+		final byte[] buf = new byte[length];
 
 		if (length > miniSectorCutoff) {
-			int sectorSize = getSectorSize();
-			int sectors = (length + sectorSize - 1) / sectorSize;
+			final int sectorSize = getSectorSize();
+			final int sectors = (length + sectorSize - 1) / sectorSize;
 
 			long sector = getStartSector(index);
 			int offset = 0;
@@ -455,15 +459,15 @@ public class StructuredStorage {
 
 			readSector(sector, buf, offset, length - offset);
 		} else {
-			int sectorSize = getMiniSectorSize();
-			int sectors = (length + sectorSize - 1) / sectorSize;
+			final int sectorSize = getMiniSectorSize();
+			final int sectors = (length + sectorSize - 1) / sectorSize;
 
 			long sector = getStartSector(index);
 
 			// Assume ministream size < 2GB
 			int offset = 0;
 			for (int i = 0; i < sectors - 1; i++) {
-				long miniSectorOffset = getOffsetOfMiniSector(sector);
+				final long miniSectorOffset = getOffsetOfMiniSector(sector);
 				readMiniSector(sector, buf, offset, sectorSize);
 				offset += sectorSize;
 				sector = getMiniFATSector(sector);
@@ -474,15 +478,15 @@ public class StructuredStorage {
 		return buf;
 	}
 
-	public SeekableStream getStream(String name) throws IOException {
-		long index = getStreamIndex(name);
+	public SeekableStream getStream(final String name) throws IOException {
+		final long index = getStreamIndex(name);
 		if (index == -1L) {
 			return null;
 		}
 
 		// Cast index to int (streams < 2^31) and cast stream size to an
 		// int (size < 2GB)
-		int length = getLength(index);
+		final int length = getLength(index);
 
 		long[] segmentPositions;
 		int sectorSize, sectors;
@@ -519,15 +523,15 @@ public class StructuredStorage {
 	 * public static void main(String[] args) { try { RandomAccessFile f = new
 	 * RandomAccessFile(args[0], "r"); SeekableStream sis = new
 	 * FileSeekableStream(f); StructuredStorage ss = new StructuredStorage(sis);
-	 * 
+	 *
 	 * ss.changeDirectoryToRoot();
-	 * 
+	 *
 	 * byte[] s = ss.getStreamAsBytes("SummaryInformation");
-	 * 
+	 *
 	 * PropertySet ps = new PropertySet(new ByteArraySeekableStream(s));
-	 * 
+	 *
 	 * // Get the thumbnail property byte[] thumb = ps.getBlob(17);
-	 * 
+	 *
 	 * // Emit it as a BMP file System.out.print("BM"); int fs = (thumb.length -
 	 * 8) + 14 + 40; System.out.print((char)(fs & 0xff));
 	 * System.out.print((char)((fs >> 8) & 0xff)); System.out.print((char)((fs
@@ -537,7 +541,7 @@ public class StructuredStorage {
 	 * System.out.print('6'); System.out.print((char)0);
 	 * System.out.print((char)0); System.out.print((char)0); for (int i = 8; i <
 	 * thumb.length; i++) { System.out.print((char)(thumb[i] & 0xff)); }
-	 * 
+	 *
 	 * } catch (Exception e) { e.printStackTrace(); } }
 	 */
 }

@@ -3,17 +3,17 @@ package edu.cmu.cs.stage3.alice.core.question;
 import edu.cmu.cs.stage3.alice.core.Expression;
 
 public abstract class AbstractIsEqualTo extends BinaryObjectResultingInBooleanQuestion {
-	protected boolean isEqualTo(Object aValue, Object bValue) {
+	protected boolean isEqualTo(final Object aValue, final Object bValue) {
 		if (aValue != null) {
 			if (aValue.equals(bValue)) {
 				return true;
 			} else {
 				if (aValue instanceof Expression) {
-					Expression aExpression = (Expression) aValue;
-					Object aValue2 = aExpression.getValue();
+					final Expression aExpression = (Expression) aValue;
+					final Object aValue2 = aExpression.getValue();
 					if (bValue instanceof Expression) {
-						Expression bExpression = (Expression) bValue;
-						Object bValue2 = bExpression.getValue();
+						final Expression bExpression = (Expression) bValue;
+						final Object bValue2 = bExpression.getValue();
 						if (aExpression.equals(bExpression.getValue())) {
 							return true;
 						} else {
@@ -36,8 +36,8 @@ public abstract class AbstractIsEqualTo extends BinaryObjectResultingInBooleanQu
 					}
 				} else {
 					if (bValue instanceof Expression) {
-						Expression bExpression = (Expression) bValue;
-						Object bValue2 = bExpression.getValue();
+						final Expression bExpression = (Expression) bValue;
+						final Object bValue2 = bExpression.getValue();
 						if (aValue.equals(bExpression)) {
 							return true;
 						} else {
@@ -50,8 +50,8 @@ public abstract class AbstractIsEqualTo extends BinaryObjectResultingInBooleanQu
 			}
 		} else {
 			if (bValue instanceof Expression) {
-				Expression bExpression = (Expression) bValue;
-				Object bValue2 = bExpression.getValue();
+				final Expression bExpression = (Expression) bValue;
+				final Object bValue2 = bExpression.getValue();
 				return bValue2 == null;
 			} else {
 				return bValue == null;

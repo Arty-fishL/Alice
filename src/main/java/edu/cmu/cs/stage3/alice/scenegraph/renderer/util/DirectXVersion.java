@@ -4,5 +4,6 @@ public class DirectXVersion {
 	static {
 		System.loadLibrary("jni_directxversion");
 	}
+
 	public static native double getVersion();
 }

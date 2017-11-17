@@ -32,12 +32,13 @@ public class AWTUtilities {
 			System.loadLibrary("jni_awtutilities");
 			s_successfullyLoadedLibrary = true;
 			// } catch( UnsatisfiedLinkError ule ) {
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			s_successfullyLoadedLibrary = false;
 		}
 	}
 
 	private static native boolean isGetCursorLocationSupportedNative();
+
 	public static boolean isGetCursorLocationSupported() {
 		if (s_successfullyLoadedLibrary) {
 			return isGetCursorLocationSupportedNative();
@@ -47,6 +48,7 @@ public class AWTUtilities {
 	}
 
 	private static native boolean isSetCursorLocationSupportedNative();
+
 	public static boolean isSetCursorLocationSupported() {
 		if (s_successfullyLoadedLibrary) {
 			return isSetCursorLocationSupportedNative();
@@ -56,6 +58,7 @@ public class AWTUtilities {
 	}
 
 	private static native boolean isIsKeyPressedSupportedNative();
+
 	public static boolean isIsKeyPressedSupported() {
 		if (s_successfullyLoadedLibrary) {
 			return isIsKeyPressedSupportedNative();
@@ -65,6 +68,7 @@ public class AWTUtilities {
 	}
 
 	private static native boolean isGetModifiersSupportedNative();
+
 	public static boolean isGetModifiersSupported() {
 		if (s_successfullyLoadedLibrary) {
 			return isGetModifiersSupportedNative();
@@ -74,6 +78,7 @@ public class AWTUtilities {
 	}
 
 	private static native boolean isPumpMessageQueueSupportedNative();
+
 	public static boolean isPumpMessageQueueSupported() {
 		if (s_successfullyLoadedLibrary) {
 			return isPumpMessageQueueSupportedNative();
@@ -83,6 +88,7 @@ public class AWTUtilities {
 	}
 
 	private static native void pumpMessageQueueNative();
+
 	public static void pumpMessageQueue() {
 		if (s_successfullyLoadedLibrary) {
 			pumpMessageQueueNative();
@@ -92,9 +98,10 @@ public class AWTUtilities {
 	}
 
 	private static native void getCursorLocationNative(java.awt.Point p);
+
 	public static java.awt.Point getCursorLocation() {
 		if (s_successfullyLoadedLibrary) {
-			java.awt.Point p = new java.awt.Point();
+			final java.awt.Point p = new java.awt.Point();
 			getCursorLocationNative(p);
 			return p;
 		} else {
@@ -103,18 +110,21 @@ public class AWTUtilities {
 	}
 
 	private static native void setCursorLocationNative(int x, int y);
-	public static void setCursorLocation(int x, int y) {
+
+	public static void setCursorLocation(final int x, final int y) {
 		if (s_successfullyLoadedLibrary) {
 			setCursorLocationNative(x, y);
 		} else {
 			// pass
 		}
 	}
-	public static void setCursorLocation(java.awt.Point p) {
+
+	public static void setCursorLocation(final java.awt.Point p) {
 		setCursorLocation(p.x, p.y);
 	}
 
 	private static native boolean isCursorShowingNative();
+
 	public static boolean isCursorShowing() {
 		if (s_successfullyLoadedLibrary) {
 			return isCursorShowingNative();
@@ -122,8 +132,10 @@ public class AWTUtilities {
 			return true;
 		}
 	}
+
 	private static native void setIsCursorShowingNative(boolean isCursorShowing);
-	public static void setIsCursorShowing(boolean isCursorShowing) {
+
+	public static void setIsCursorShowing(final boolean isCursorShowing) {
 		if (s_successfullyLoadedLibrary) {
 			setIsCursorShowingNative(isCursorShowing);
 		} else {
@@ -132,6 +144,7 @@ public class AWTUtilities {
 	}
 
 	private static native boolean isIsCursorShowingSupportedNative();
+
 	public static boolean isIsCursorShowingSupported() {
 		if (s_successfullyLoadedLibrary) {
 			return isIsCursorShowingSupportedNative();
@@ -139,7 +152,9 @@ public class AWTUtilities {
 			return false;
 		}
 	}
+
 	private static native boolean isSetIsCursorShowingSupportedNative();
+
 	public static boolean isSetIsCursorShowingSupported() {
 		if (s_successfullyLoadedLibrary) {
 			return isSetIsCursorShowingSupportedNative();
@@ -149,7 +164,8 @@ public class AWTUtilities {
 	}
 
 	private static native boolean isKeyPressedNative(int keyCode);
-	public static boolean isKeyPressed(int keyCode) {
+
+	public static boolean isKeyPressed(final int keyCode) {
 		if (s_successfullyLoadedLibrary) {
 			return isKeyPressedNative(keyCode);
 		} else {
@@ -158,6 +174,7 @@ public class AWTUtilities {
 	}
 
 	private static native int getModifiersNative();
+
 	public static int getModifiers() {
 		if (s_successfullyLoadedLibrary) {
 			return getModifiersNative();
@@ -169,22 +186,27 @@ public class AWTUtilities {
 	public static boolean mouseListenersAreSupported() {
 		return isGetModifiersSupported() && isGetCursorLocationSupported();
 	}
+
 	public static boolean mouseMotionListenersAreSupported() {
 		return isGetModifiersSupported() && isGetCursorLocationSupported();
 	}
 
 	private static java.util.Vector s_mouseListeners = new java.util.Vector();
 	private static java.util.Vector s_mouseMotionListeners = new java.util.Vector();
-	public static void addMouseListener(java.awt.event.MouseListener mouseListener) {
+
+	public static void addMouseListener(final java.awt.event.MouseListener mouseListener) {
 		s_mouseListeners.addElement(mouseListener);
 	}
-	public static void removeMouseListener(java.awt.event.MouseListener mouseListener) {
+
+	public static void removeMouseListener(final java.awt.event.MouseListener mouseListener) {
 		s_mouseListeners.removeElement(mouseListener);
 	}
-	public static void addMouseMotionListener(java.awt.event.MouseMotionListener mouseMotionListener) {
+
+	public static void addMouseMotionListener(final java.awt.event.MouseMotionListener mouseMotionListener) {
 		s_mouseMotionListeners.addElement(mouseMotionListener);
 	}
-	public static void removeMouseMotionListener(java.awt.event.MouseMotionListener mouseMotionListener) {
+
+	public static void removeMouseMotionListener(final java.awt.event.MouseMotionListener mouseMotionListener) {
 		s_mouseMotionListeners.removeElement(mouseMotionListener);
 	}
 
@@ -193,13 +215,16 @@ public class AWTUtilities {
 	private static int s_prevModifiers = 0;
 	// todo
 	private static int s_clickCount = 0;
-	private static boolean isButton1Pressed(int modifiers) {
+
+	private static boolean isButton1Pressed(final int modifiers) {
 		return (modifiers & InputEvent.BUTTON1_MASK) == InputEvent.BUTTON1_MASK;
 	}
-	private static boolean isButton2Pressed(int modifiers) {
+
+	private static boolean isButton2Pressed(final int modifiers) {
 		return (modifiers & InputEvent.BUTTON2_MASK) == InputEvent.BUTTON2_MASK;
 	}
-	private static boolean isButton3Pressed(int modifiers) {
+
+	private static boolean isButton3Pressed(final int modifiers) {
 		return (modifiers & InputEvent.BUTTON3_MASK) == InputEvent.BUTTON3_MASK;
 	}
 
@@ -209,7 +234,7 @@ public class AWTUtilities {
 	public static void fireMouseAndMouseMotionListenersIfNecessary() {
 		if (mouseListenersAreSupported()) {
 			int id = 0;
-			int currModifiers = getModifiers();
+			final int currModifiers = getModifiers();
 			boolean drag = false;
 			if (isButton1Pressed(s_prevModifiers)) {
 				if (isButton1Pressed(currModifiers)) {
@@ -221,7 +246,8 @@ public class AWTUtilities {
 				if (isButton1Pressed(currModifiers)) {
 					id = java.awt.event.MouseEvent.MOUSE_PRESSED;
 					drag = true;
-				} else {}
+				} else {
+				}
 			}
 			if (isButton2Pressed(s_prevModifiers)) {
 				if (isButton2Pressed(currModifiers)) {
@@ -233,7 +259,8 @@ public class AWTUtilities {
 				if (isButton2Pressed(currModifiers)) {
 					id = java.awt.event.MouseEvent.MOUSE_PRESSED;
 					drag = true;
-				} else {}
+				} else {
+				}
 			}
 			if (isButton3Pressed(s_prevModifiers)) {
 				if (isButton3Pressed(currModifiers)) {
@@ -245,34 +272,37 @@ public class AWTUtilities {
 				if (isButton3Pressed(currModifiers)) {
 					id = java.awt.event.MouseEvent.MOUSE_PRESSED;
 					drag = true;
-				} else {}
+				} else {
+				}
 			}
-			long when = System.currentTimeMillis();
-			boolean isPopupTrigger = false;
+			final long when = System.currentTimeMillis();
+			final boolean isPopupTrigger = false;
 
 			getCursorLocationNative(s_currCursorPos);
 
 			if (id != 0) {
 				if (s_mouseListeners.size() > 0) {
-					java.awt.event.MouseEvent mouseEvent = new java.awt.event.MouseEvent(s_source, id, when, currModifiers, s_currCursorPos.x, s_currCursorPos.y, s_clickCount, isPopupTrigger);
+					final java.awt.event.MouseEvent mouseEvent = new java.awt.event.MouseEvent(s_source, id, when,
+							currModifiers, s_currCursorPos.x, s_currCursorPos.y, s_clickCount, isPopupTrigger);
 					for (int i = 0; i < s_mouseListeners.size(); i++) {
-						java.awt.event.MouseListener mouseListener = (java.awt.event.MouseListener) s_mouseListeners.elementAt(i);
+						final java.awt.event.MouseListener mouseListener = (java.awt.event.MouseListener) s_mouseListeners
+								.elementAt(i);
 						switch (id) {
-							case java.awt.event.MouseEvent.MOUSE_CLICKED :
-								mouseListener.mouseClicked(mouseEvent);
-								break;
-							case java.awt.event.MouseEvent.MOUSE_ENTERED :
-								mouseListener.mouseEntered(mouseEvent);
-								break;
-							case java.awt.event.MouseEvent.MOUSE_EXITED :
-								mouseListener.mouseExited(mouseEvent);
-								break;
-							case java.awt.event.MouseEvent.MOUSE_PRESSED :
-								mouseListener.mousePressed(mouseEvent);
-								break;
-							case java.awt.event.MouseEvent.MOUSE_RELEASED :
-								mouseListener.mouseReleased(mouseEvent);
-								break;
+						case java.awt.event.MouseEvent.MOUSE_CLICKED:
+							mouseListener.mouseClicked(mouseEvent);
+							break;
+						case java.awt.event.MouseEvent.MOUSE_ENTERED:
+							mouseListener.mouseEntered(mouseEvent);
+							break;
+						case java.awt.event.MouseEvent.MOUSE_EXITED:
+							mouseListener.mouseExited(mouseEvent);
+							break;
+						case java.awt.event.MouseEvent.MOUSE_PRESSED:
+							mouseListener.mousePressed(mouseEvent);
+							break;
+						case java.awt.event.MouseEvent.MOUSE_RELEASED:
+							mouseListener.mouseReleased(mouseEvent);
+							break;
 						}
 					}
 				}
@@ -286,16 +316,18 @@ public class AWTUtilities {
 						} else {
 							id = java.awt.event.MouseEvent.MOUSE_MOVED;
 						}
-						java.awt.event.MouseEvent mouseEvent = new java.awt.event.MouseEvent(s_source, id, when, currModifiers, s_currCursorPos.x, s_currCursorPos.y, s_clickCount, isPopupTrigger);
+						final java.awt.event.MouseEvent mouseEvent = new java.awt.event.MouseEvent(s_source, id, when,
+								currModifiers, s_currCursorPos.x, s_currCursorPos.y, s_clickCount, isPopupTrigger);
 						for (int i = 0; i < s_mouseMotionListeners.size(); i++) {
-							java.awt.event.MouseMotionListener mouseMotionListener = (java.awt.event.MouseMotionListener) s_mouseMotionListeners.elementAt(i);
+							final java.awt.event.MouseMotionListener mouseMotionListener = (java.awt.event.MouseMotionListener) s_mouseMotionListeners
+									.elementAt(i);
 							switch (id) {
-								case java.awt.event.MouseEvent.MOUSE_MOVED :
-									mouseMotionListener.mouseMoved(mouseEvent);
-									break;
-								case java.awt.event.MouseEvent.MOUSE_DRAGGED :
-									mouseMotionListener.mouseDragged(mouseEvent);
-									break;
+							case java.awt.event.MouseEvent.MOUSE_MOVED:
+								mouseMotionListener.mouseMoved(mouseEvent);
+								break;
+							case java.awt.event.MouseEvent.MOUSE_DRAGGED:
+								mouseMotionListener.mouseDragged(mouseEvent);
+								break;
 							}
 						}
 					}

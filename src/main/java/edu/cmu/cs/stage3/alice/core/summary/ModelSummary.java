@@ -13,7 +13,8 @@ public class ModelSummary extends ElementSummary {
 	private edu.cmu.cs.stage3.alice.core.Model getModel() {
 		return (edu.cmu.cs.stage3.alice.core.Model) getElement();
 	}
-	public void setModel(edu.cmu.cs.stage3.alice.core.Model model) {
+
+	public void setModel(final edu.cmu.cs.stage3.alice.core.Model model) {
 		super.setElement(model);
 		m_name = null;
 		m_modeledBy = null;
@@ -32,6 +33,7 @@ public class ModelSummary extends ElementSummary {
 			return m_name;
 		}
 	}
+
 	public String getModeledBy() {
 		if (getModel() != null) {
 			return (String) getModel().data.get("modeled by");
@@ -39,6 +41,7 @@ public class ModelSummary extends ElementSummary {
 			return m_modeledBy;
 		}
 	}
+
 	public String getPaintedBy() {
 		if (getModel() != null) {
 			return (String) getModel().data.get("painted by");
@@ -46,18 +49,22 @@ public class ModelSummary extends ElementSummary {
 			return m_paintedBy;
 		}
 	}
+
 	public int getPartCount() {
 		return m_partCount;
 	}
+
 	// todo: getBoundingBox?
 	public String getPhysicalSizeDescription() {
 		return m_physicalSizeDescription;
 	}
+
 	public String[] getMethodNames() {
 		if (getModel() != null) {
-			String[] methodNames = new String[getModel().responses.size()];
+			final String[] methodNames = new String[getModel().responses.size()];
 			for (int i = 0; i < methodNames.length; i++) {
-				edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse methodI = (edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse) getModel().responses.get(i);
+				final edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse methodI = (edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse) getModel().responses
+						.get(i);
 				methodNames[i] = methodI.name.getStringValue();
 			}
 			return methodNames;
@@ -65,9 +72,11 @@ public class ModelSummary extends ElementSummary {
 			return m_methodNames;
 		}
 	}
+
 	public String[] getQuestionNames() {
 		return m_questionNames;
 	}
+
 	public String[] getSoundNames() {
 		return m_soundNames;
 	}

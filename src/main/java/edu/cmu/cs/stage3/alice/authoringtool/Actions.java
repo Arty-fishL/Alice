@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -75,7 +75,7 @@ public class Actions {
 	protected java.util.LinkedList<Action> applicationActions = new java.util.LinkedList<Action>();
 	public java.util.LinkedList<Action> renderActions = new java.util.LinkedList<Action>();
 
-	public Actions(AuthoringTool authoringTool, JAliceFrame jAliceFrame) {
+	public Actions(final AuthoringTool authoringTool, final JAliceFrame jAliceFrame) {
 		this.authoringTool = authoringTool;
 		this.jAliceFrame = jAliceFrame;
 		actionInit();
@@ -86,246 +86,422 @@ public class Actions {
 
 	private void actionInit() {
 		newWorldAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 7976792694799987690L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.newWorld();
 			}
 		};
 
 		openWorldAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -6918064989692847348L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.openWorld();
 			}
 		};
 
 		openExampleWorldAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -2942244402250318980L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.openExampleWorld();
 			}
 		};
 
 		saveWorldAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -8372995162600959507L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.saveWorld();
 			}
 		};
 
 		saveWorld = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 3417083104980943057L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.saveWorld();
 			}
 		};
 
 		saveWorldAsAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -8945557041866064147L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.saveWorldAs();
 			}
 		};
 
 		saveForWebAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -3207724570078776545L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.saveForWeb();
 			}
 		};
 
 		importObjectAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 5059310932988125709L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
-				authoringTool.getImportFileChooser().setFileFilter(authoringTool.getImportFileChooser().getAcceptAllFileFilter());
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
+				authoringTool.getImportFileChooser()
+						.setFileFilter(authoringTool.getImportFileChooser().getAcceptAllFileFilter());
 				authoringTool.importElement();
 			}
 		};
 
 		quitAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 5318263056479447807L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.quit();
 			}
 		};
 
 		cutAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -7958523488886455370L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				// TODO
 			}
 		};
 
 		copyAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 8119683086463783072L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				// TODO
 			}
 		};
 
 		pasteAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -1782350302322267369L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				// TODO
 			}
 		};
 
 		undoAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -6844320942149549754L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.getUndoRedoStack().undo();
 			}
 		};
 
 		redoAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 4831722153871597436L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.getUndoRedoStack().redo();
 			}
 		};
 
 		aboutAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -4953235339343067451L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.showAbout();
 			}
 		};
 
 		playAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 929328245711412998L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.play();
 			}
 		};
 
 		addCharacterAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -6565211677801052914L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.loadAndAddCharacter();
 			}
 		};
 
 		add3DTextAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -4916208960306445529L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.add3DText();
 			}
 		};
 
 		exportMovieAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 1401849244045731939L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.exportMovie();
 			}
 		};
 
 		trashAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -590284535251255748L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				// TODO
 			}
 		};
 
 		helpAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 2353030092178926704L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 			}
 		};
 
 		onScreenHelpAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -7698342998409119247L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.showOnScreenHelp();
 			}
 		};
 
 		preferencesAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -4268675753409252475L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.showPreferences();
 			}
 		};
 
 		makeBillboardAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 3073497309523050630L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.makeBillboard();
 			}
 		};
 
 		showWorldInfoAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -2152439209334904672L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.showWorldInfoDialog();
 			}
 		};
 
 		launchTutorialAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -210224909634973941L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.launchTutorial();
 			}
 		};
 
 		launchTutorialFileAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -7457401237550182733L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.openTutorialWorld();
 			}
 		};
 
 		launchSoftwareUpdate = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 3071613494424170101L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.updateAlice();
 			}
 		};
 
 		showStdOutDialogAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -7699097769158160639L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.showStdErrOutDialog();
 			}
 		};
 
 		showStdErrDialogAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -2987453785573418498L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.showStdErrOutDialog();
 			}
 		};
 
 		showPrintDialogAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -4703745778258212753L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.showPrintDialog();
 			}
 		};
 
 		pauseWorldAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 4607196602681407497L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.pause();
 			}
 		};
 
 		resumeWorldAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 4473034162516251188L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.resume();
 			}
 		};
 
 		restartWorldAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -4931419223519682102L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.restartWorld();
 			}
 		};
 
 		restartStopWorldAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 8519848844362404038L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				authoringTool.restartWorld();
 				authoringTool.pause();
 			}
@@ -333,6 +509,11 @@ public class Actions {
 		};
 
 		stopWorldAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 1711779000145057970L;
+
 			@Override
 			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				// authoringTool.stopWorld();
@@ -340,15 +521,21 @@ public class Actions {
 		};
 
 		takePictureAction = new javax.swing.AbstractAction() {
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = 7790487433800085235L;
+
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				takePictureAction.setEnabled(false);
 				authoringTool.takePicture();
 				takePictureAction.setEnabled(true);
 			}
 		};
 
-		newWorldAction.putValue(javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.Event.CTRL_MASK));
+		newWorldAction.putValue(javax.swing.Action.ACCELERATOR_KEY,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.Event.CTRL_MASK));
 		newWorldAction.putValue(javax.swing.Action.ACTION_COMMAND_KEY, "newWorld");
 		newWorldAction.putValue(javax.swing.Action.MNEMONIC_KEY, new Integer('N'));
 		newWorldAction.putValue(javax.swing.Action.NAME, "New World");
@@ -356,7 +543,8 @@ public class Actions {
 		newWorldAction.putValue(javax.swing.Action.SMALL_ICON, AuthoringToolResources.getIconForString("new"));
 		applicationActions.add(newWorldAction);
 
-		openWorldAction.putValue(javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.Event.CTRL_MASK));
+		openWorldAction.putValue(javax.swing.Action.ACCELERATOR_KEY,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_O, java.awt.Event.CTRL_MASK));
 		openWorldAction.putValue(javax.swing.Action.ACTION_COMMAND_KEY, "openWorld");
 		openWorldAction.putValue(javax.swing.Action.MNEMONIC_KEY, new Integer('O'));
 		openWorldAction.putValue(javax.swing.Action.NAME, "Open World...");
@@ -364,7 +552,8 @@ public class Actions {
 		openWorldAction.putValue(javax.swing.Action.SMALL_ICON, AuthoringToolResources.getIconForString("open"));
 		applicationActions.add(openWorldAction);
 
-		saveWorldAction.putValue(javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.Event.CTRL_MASK));
+		saveWorldAction.putValue(javax.swing.Action.ACCELERATOR_KEY,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.Event.CTRL_MASK));
 		saveWorldAction.putValue(javax.swing.Action.ACTION_COMMAND_KEY, "saveWorld");
 		saveWorldAction.putValue(javax.swing.Action.MNEMONIC_KEY, new Integer('S'));
 		saveWorldAction.putValue(javax.swing.Action.NAME, "Save World");
@@ -372,7 +561,8 @@ public class Actions {
 		saveWorldAction.putValue(javax.swing.Action.SMALL_ICON, AuthoringToolResources.getIconForString("save"));
 		applicationActions.add(saveWorldAction);
 
-		saveWorld.putValue(javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
+		saveWorld.putValue(javax.swing.Action.ACCELERATOR_KEY,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F2, 0));
 		saveWorld.putValue(javax.swing.Action.ACTION_COMMAND_KEY, "saveWorld");
 		saveWorld.putValue(javax.swing.Action.NAME, "Save World");
 		applicationActions.add(saveWorld);
@@ -419,7 +609,8 @@ public class Actions {
 		// quitAction.putValue( javax.swing.Action.SMALL_ICON, );
 		applicationActions.add(quitAction);
 
-		cutAction.putValue(javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.Event.CTRL_MASK));
+		cutAction.putValue(javax.swing.Action.ACCELERATOR_KEY,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.Event.CTRL_MASK));
 		cutAction.putValue(javax.swing.Action.ACTION_COMMAND_KEY, "cut");
 		cutAction.putValue(javax.swing.Action.MNEMONIC_KEY, new Integer('t'));
 		cutAction.putValue(javax.swing.Action.NAME, "Cut");
@@ -427,7 +618,8 @@ public class Actions {
 		cutAction.putValue(javax.swing.Action.SMALL_ICON, AuthoringToolResources.getIconForString("cut"));
 		applicationActions.add(cutAction);
 
-		copyAction.putValue(javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.Event.CTRL_MASK));
+		copyAction.putValue(javax.swing.Action.ACCELERATOR_KEY,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_C, java.awt.Event.CTRL_MASK));
 		copyAction.putValue(javax.swing.Action.ACTION_COMMAND_KEY, "copy");
 		copyAction.putValue(javax.swing.Action.MNEMONIC_KEY, new Integer('C'));
 		copyAction.putValue(javax.swing.Action.NAME, "Copy");
@@ -435,7 +627,8 @@ public class Actions {
 		copyAction.putValue(javax.swing.Action.SMALL_ICON, AuthoringToolResources.getIconForString("copy"));
 		applicationActions.add(copyAction);
 
-		pasteAction.putValue(javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.Event.CTRL_MASK));
+		pasteAction.putValue(javax.swing.Action.ACCELERATOR_KEY,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_V, java.awt.Event.CTRL_MASK));
 		pasteAction.putValue(javax.swing.Action.ACTION_COMMAND_KEY, "paste");
 		pasteAction.putValue(javax.swing.Action.MNEMONIC_KEY, new Integer('P'));
 		pasteAction.putValue(javax.swing.Action.NAME, "Paste");
@@ -443,15 +636,18 @@ public class Actions {
 		pasteAction.putValue(javax.swing.Action.SMALL_ICON, AuthoringToolResources.getIconForString("paste"));
 		applicationActions.add(pasteAction);
 
-		undoAction.putValue(javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.Event.CTRL_MASK));
+		undoAction.putValue(javax.swing.Action.ACCELERATOR_KEY,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Z, java.awt.Event.CTRL_MASK));
 		undoAction.putValue(javax.swing.Action.ACTION_COMMAND_KEY, "undo");
 		undoAction.putValue(javax.swing.Action.MNEMONIC_KEY, new Integer('U'));
 		undoAction.putValue(javax.swing.Action.NAME, "Undo");
-		undoAction.putValue(javax.swing.Action.SHORT_DESCRIPTION, "<html><font face=arial size=-1>Undo the Last Action</font></html>");
+		undoAction.putValue(javax.swing.Action.SHORT_DESCRIPTION,
+				"<html><font face=arial size=-1>Undo the Last Action</font></html>");
 		undoAction.putValue(javax.swing.Action.SMALL_ICON, AuthoringToolResources.getIconForString("undo"));
 		applicationActions.add(undoAction);
 
-		redoAction.putValue(javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.Event.CTRL_MASK));
+		redoAction.putValue(javax.swing.Action.ACCELERATOR_KEY,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Y, java.awt.Event.CTRL_MASK));
 		redoAction.putValue(javax.swing.Action.ACTION_COMMAND_KEY, "redo");
 		redoAction.putValue(javax.swing.Action.MNEMONIC_KEY, new Integer('R'));
 		redoAction.putValue(javax.swing.Action.NAME, "Redo");
@@ -480,13 +676,15 @@ public class Actions {
 		// AuthoringToolResources.getIconForString( "onScreenHelp" ) );
 		applicationActions.add(onScreenHelpAction);
 
-		playAction.putValue(javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));// java.awt.Event.CTRL_MASK)
-																																		// );
+		playAction.putValue(javax.swing.Action.ACCELERATOR_KEY,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F5, 0));// java.awt.Event.CTRL_MASK)
+																						// );
 		playAction.putValue(javax.swing.Action.ACTION_COMMAND_KEY, "play");
 		// playAction.putValue( javax.swing.Action.MNEMONIC_KEY, new Integer(
 		// 'P' ) );
 		playAction.putValue(javax.swing.Action.NAME, "Play");
-		playAction.putValue(javax.swing.Action.SHORT_DESCRIPTION, "<html><font face=arial size=-1>Play the world.<p><p>Opens the play window and<p>starts the world running.</font></html>");
+		playAction.putValue(javax.swing.Action.SHORT_DESCRIPTION,
+				"<html><font face=arial size=-1>Play the world.<p><p>Opens the play window and<p>starts the world running.</font></html>");
 		playAction.putValue(javax.swing.Action.SMALL_ICON, AuthoringToolResources.getIconForString("play"));
 		applicationActions.add(playAction);
 
@@ -512,7 +710,8 @@ public class Actions {
 		// add3DTextAction.putValue( javax.swing.Action.SMALL_ICON, );
 		applicationActions.add(add3DTextAction);
 
-		exportMovieAction.putValue(javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
+		exportMovieAction.putValue(javax.swing.Action.ACCELERATOR_KEY,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F6, 0));
 		exportMovieAction.putValue(javax.swing.Action.ACTION_COMMAND_KEY, "exportVideo");
 		exportMovieAction.putValue(javax.swing.Action.NAME, "Export Video...");
 		exportMovieAction.putValue(javax.swing.Action.SHORT_DESCRIPTION, "Export the current world as a video");
@@ -525,7 +724,8 @@ public class Actions {
 		// trashAction.putValue( javax.swing.Action.MNEMONIC_KEY, new Integer(
 		// 'T' ) );
 		// trashAction.putValue( javax.swing.Action.NAME, "Trash" );
-		trashAction.putValue(javax.swing.Action.SHORT_DESCRIPTION, "<html><font face=arial size=-1>Trash<p><p>Drag and drop tiles here to delete them.</font></html>");
+		trashAction.putValue(javax.swing.Action.SHORT_DESCRIPTION,
+				"<html><font face=arial size=-1>Trash<p><p>Drag and drop tiles here to delete them.</font></html>");
 		// trashAction.putValue( javax.swing.Action.SMALL_ICON, );
 		applicationActions.add(trashAction);
 
@@ -550,7 +750,8 @@ public class Actions {
 		// helpAction.putValue( javax.swing.Action.SMALL_ICON, );
 		applicationActions.add(helpAction);
 
-		preferencesAction.putValue(javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0));
+		preferencesAction.putValue(javax.swing.Action.ACCELERATOR_KEY,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F8, 0));
 		preferencesAction.putValue(javax.swing.Action.ACTION_COMMAND_KEY, "preferences");
 		preferencesAction.putValue(javax.swing.Action.MNEMONIC_KEY, new Integer('P'));
 		preferencesAction.putValue(javax.swing.Action.NAME, "Preferences");
@@ -558,7 +759,8 @@ public class Actions {
 		// preferencesAction.putValue( javax.swing.Action.SMALL_ICON, );
 		applicationActions.add(preferencesAction);
 
-		makeBillboardAction.putValue(javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.Event.CTRL_MASK));
+		makeBillboardAction.putValue(javax.swing.Action.ACCELERATOR_KEY,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.Event.CTRL_MASK));
 		makeBillboardAction.putValue(javax.swing.Action.ACTION_COMMAND_KEY, "makeBillboard");
 		makeBillboardAction.putValue(javax.swing.Action.MNEMONIC_KEY, new Integer('B'));
 		makeBillboardAction.putValue(javax.swing.Action.NAME, "Make Billboard...");
@@ -586,7 +788,8 @@ public class Actions {
 		// launchTutorialAction.putValue( javax.swing.Action.SMALL_ICON, );
 		applicationActions.add(launchTutorialAction);
 
-		launchTutorialFileAction.putValue(javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
+		launchTutorialFileAction.putValue(javax.swing.Action.ACCELERATOR_KEY,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
 		launchTutorialFileAction.putValue(javax.swing.Action.ACTION_COMMAND_KEY, "launchTutorialFile");
 		launchTutorialFileAction.putValue(javax.swing.Action.MNEMONIC_KEY, new Integer('T'));
 		launchTutorialFileAction.putValue(javax.swing.Action.NAME, "Tutorial");
@@ -628,17 +831,20 @@ public class Actions {
 		// showStdErrDialogAction.putValue( javax.swing.Action.SMALL_ICON, );
 		applicationActions.add(showStdErrDialogAction);
 
-		showPrintDialogAction.putValue(javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.Event.CTRL_MASK));
+		showPrintDialogAction.putValue(javax.swing.Action.ACCELERATOR_KEY,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.Event.CTRL_MASK));
 		showPrintDialogAction.putValue(javax.swing.Action.ACTION_COMMAND_KEY, "showPrintDialog");
 		// showPrintDialogAction.putValue(
 		// javax.swing.Action.DISPLAYED_MNEMONIC_INDEX_KEY, 16);
 		showPrintDialogAction.putValue(javax.swing.Action.MNEMONIC_KEY, new Integer('P'));
 		showPrintDialogAction.putValue(javax.swing.Action.NAME, "Export Code For Printing...");
-		showPrintDialogAction.putValue(javax.swing.Action.SHORT_DESCRIPTION, "Export user-defined methods and questions for printing");
+		showPrintDialogAction.putValue(javax.swing.Action.SHORT_DESCRIPTION,
+				"Export user-defined methods and questions for printing");
 		// showPrintDialogAction.putValue( javax.swing.Action.SMALL_ICON, );
 		applicationActions.add(showPrintDialogAction);
 
-		pauseWorldAction.putValue(javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PAUSE, 0));
+		pauseWorldAction.putValue(javax.swing.Action.ACCELERATOR_KEY,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PAUSE, 0));
 		pauseWorldAction.putValue(javax.swing.Action.ACTION_COMMAND_KEY, "pauseWorld");
 		// pauseWorldAction.putValue( javax.swing.Action.MNEMONIC_KEY, new
 		// Integer( 'P' ) );
@@ -647,7 +853,8 @@ public class Actions {
 		// pauseWorldAction.putValue( javax.swing.Action.SMALL_ICON, );
 		renderActions.add(pauseWorldAction);
 
-		resumeWorldAction.putValue(javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PAGE_UP, 0));
+		resumeWorldAction.putValue(javax.swing.Action.ACCELERATOR_KEY,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_PAGE_UP, 0));
 		resumeWorldAction.putValue(javax.swing.Action.ACTION_COMMAND_KEY, "resumeWorld");
 		// resumeWorldAction.putValue( javax.swing.Action.MNEMONIC_KEY, new
 		// Integer( 'R' ) );
@@ -656,7 +863,8 @@ public class Actions {
 		// resumeWorldAction.putValue( javax.swing.Action.SMALL_ICON, );
 		renderActions.add(resumeWorldAction);
 
-		restartWorldAction.putValue(javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SPACE, 0));
+		restartWorldAction.putValue(javax.swing.Action.ACCELERATOR_KEY,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SPACE, 0));
 		restartWorldAction.putValue(javax.swing.Action.ACTION_COMMAND_KEY, "restartWorld");
 		// restartWorldAction.putValue( javax.swing.Action.MNEMONIC_KEY, new
 		// Integer( 'T' ) );
@@ -665,7 +873,8 @@ public class Actions {
 		// restartWorldAction.putValue( javax.swing.Action.SMALL_ICON, );
 		renderActions.add(restartWorldAction);
 
-		restartStopWorldAction.putValue(javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SPACE, 0));
+		restartStopWorldAction.putValue(javax.swing.Action.ACCELERATOR_KEY,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_BACK_SPACE, 0));
 		restartStopWorldAction.putValue(javax.swing.Action.ACTION_COMMAND_KEY, "restartWorld");
 		// restartWorldAction.putValue( javax.swing.Action.MNEMONIC_KEY, new
 		// Integer( 'T' ) );
@@ -674,7 +883,8 @@ public class Actions {
 		// restartWorldAction.putValue( javax.swing.Action.SMALL_ICON, );
 		renderActions.add(restartStopWorldAction);
 
-		stopWorldAction.putValue(javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
+		stopWorldAction.putValue(javax.swing.Action.ACCELERATOR_KEY,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_ESCAPE, 0));
 		stopWorldAction.putValue(javax.swing.Action.ACTION_COMMAND_KEY, "stopWorld");
 		// stopWorldAction.putValue( javax.swing.Action.MNEMONIC_KEY, new
 		// Integer( 'S' ) );
@@ -683,12 +893,14 @@ public class Actions {
 		// stopWorldAction.putValue( javax.swing.Action.SMALL_ICON, );
 		renderActions.add(stopWorldAction);
 
-		takePictureAction.putValue(javax.swing.Action.ACCELERATOR_KEY, javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, InputEvent.CTRL_MASK));
+		takePictureAction.putValue(javax.swing.Action.ACCELERATOR_KEY,
+				javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_G, InputEvent.CTRL_MASK));
 		takePictureAction.putValue(javax.swing.Action.ACTION_COMMAND_KEY, "takePicture");
 		// takePictureAction.putValue( javax.swing.Action.MNEMONIC_KEY, new
 		// Integer( 'c' ) );
 		takePictureAction.putValue(javax.swing.Action.NAME, "Take Picture");
-		takePictureAction.putValue(javax.swing.Action.SHORT_DESCRIPTION, "Take a screenshot of the current scene (Ctrl-G)");
+		takePictureAction.putValue(javax.swing.Action.SHORT_DESCRIPTION,
+				"Take a screenshot of the current scene (Ctrl-G)");
 		// takePictureAction.putValue( javax.swing.Action.SMALL_ICON, );
 		renderActions.add(takePictureAction);
 
@@ -698,17 +910,18 @@ public class Actions {
 		javax.swing.KeyStroke keyStroke;
 		String commandKey;
 
-		for (Action action:applicationActions) {
+		for (final Action action : applicationActions) {
 
 			try {
 				keyStroke = (javax.swing.KeyStroke) action.getValue(javax.swing.Action.ACCELERATOR_KEY);
 				commandKey = (String) action.getValue(javax.swing.Action.ACTION_COMMAND_KEY);
-			} catch (ClassCastException e) {
+			} catch (final ClassCastException e) {
 				continue;
 			}
 
 			if (keyStroke != null && commandKey != null) {
-				jAliceFrame.registerKeyboardAction(action, commandKey, keyStroke, javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW);
+				jAliceFrame.registerKeyboardAction(action, commandKey, keyStroke,
+						javax.swing.JComponent.WHEN_IN_FOCUSED_WINDOW);
 				// below is the new way of doing things, but it doesn't seem to
 				// work...
 				// applicationPanel.getInputMap().put( keyStroke, commandKey );

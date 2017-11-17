@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -28,7 +28,7 @@ package edu.cmu.cs.stage3.io;
  * load hierarchical trees of files, either from a filesystem, a network
  * resource, an archive file (i.e. .tar), a compressed archive file (i.e. .zip),
  * or some other storage medium.
- * 
+ *
  * @author Jason Pratt
  */
 public interface DirectoryTreeLoader {
@@ -36,7 +36,7 @@ public interface DirectoryTreeLoader {
 	 * prepares the loader to read a new directory tree from
 	 * <code>pathname</code>. <code>pathname</code> may be a directory,
 	 * filename, URL, or something else, depending on the implementation.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             if <code>pathname</code> is of an incorrect type
 	 * @throws java.io.IOException
@@ -53,7 +53,7 @@ public interface DirectoryTreeLoader {
 	 * sets the current directory. if <code>pathname</code> begins with '/', the
 	 * operation is relative to the root of this tree, otherwise the operation
 	 * is relative to the current directory.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             if <code>pathname</code> is ill-formed or doesn't exist
 	 */
@@ -80,13 +80,13 @@ public interface DirectoryTreeLoader {
 	 * opens a "file" with the given <code>filename</code>. the path will be
 	 * determined by the current directory, and should not be specified in
 	 * <code>filename</code>.
-	 * 
+	 *
 	 * @returns a stream which can be used to read from the file. if
 	 *          <code>readFile</code> is called twice before
 	 *          <code>closeCurrentFile</code> is called,
 	 *          <code>closeCurrentFile</code> will be called automatically, and
 	 *          the stream will become invalid.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             if <code>filename</code> is ill-formed
 	 */
@@ -103,7 +103,7 @@ public interface DirectoryTreeLoader {
 	 * <code>getKeepKey()</code> method, which can be used with
 	 * <code>getKeepKey()</code> and <code>keepFile()</code> on
 	 * DirectoryTreeStorer
-	 * 
+	 *
 	 * @see #keepFile
 	 */
 	public boolean isKeepFileSupported();
@@ -111,13 +111,13 @@ public interface DirectoryTreeLoader {
 	/**
 	 * useful in avoiding the unnecessary storing of unchanged data to the same
 	 * file location as previously loaded or stored.
-	 * 
+	 *
 	 * @throws KeepFileNotSupportedException
 	 *             if <code>getKeepKey()</code> cannot be used with this Loader
-	 * 
+	 *
 	 * @returns a unique string identifier for the given filename in the current
 	 *          directory
-	 * 
+	 *
 	 * @see #isKeepFileSupported
 	 * @see #edu
 	 * @see #edu

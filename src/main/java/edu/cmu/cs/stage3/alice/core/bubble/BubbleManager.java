@@ -26,40 +26,43 @@ package edu.cmu.cs.stage3.alice.core.bubble;
 public class BubbleManager implements edu.cmu.cs.stage3.alice.scenegraph.renderer.event.RenderTargetListener {
 	private Bubble[] m_bubbles;
 	private edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget m_renderTarget;
-	public void setBubbles(Bubble[] bubbles) {
+
+	public void setBubbles(final Bubble[] bubbles) {
 		m_bubbles = bubbles;
 		if (m_renderTarget != null) {
 			m_renderTarget.markDirty();
 		}
 	}
-	private boolean layoutBubbles(edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget rt) {
+
+	private boolean layoutBubbles(final edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget rt) {
 		boolean isPaintRequired = false;
-		java.util.Vector rects = new java.util.Vector();
-		for (Bubble bubbleI : m_bubbles) {
+		final java.util.Vector rects = new java.util.Vector();
+		for (final Bubble bubbleI : m_bubbles) {
 			;
 			if (bubbleI.isShowing()) {
 				bubbleI.calculateBounds(rt);
 				bubbleI.calculateOrigin(rt);
-				java.awt.Point pixelOffset = bubbleI.getPixelOffset();
+				final java.awt.Point pixelOffset = bubbleI.getPixelOffset();
 				if (pixelOffset != null) {
-					java.awt.geom.Rectangle2D rect = bubbleI.getTotalBound();
+					final java.awt.geom.Rectangle2D rect = bubbleI.getTotalBound();
 					if (rect != null) {
-						rects.addElement(new java.awt.geom.Rectangle2D.Double(pixelOffset.x + rect.getX(), pixelOffset.y + rect.getY(), rect.getWidth(), rect.getHeight()));
+						rects.addElement(new java.awt.geom.Rectangle2D.Double(pixelOffset.x + rect.getX(),
+								pixelOffset.y + rect.getY(), rect.getWidth(), rect.getHeight()));
 					}
 				}
 				isPaintRequired = true;
 			}
 		}
 		if (isPaintRequired) {
-			edu.cmu.cs.stage3.alice.scenegraph.Camera[] sgCameras = rt.getCameras();
+			final edu.cmu.cs.stage3.alice.scenegraph.Camera[] sgCameras = rt.getCameras();
 			if (sgCameras.length > 0) {
-				edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera = sgCameras[0];
-				java.awt.Rectangle actualViewport = rt.getActualViewport(sgCamera);
-				for (Bubble bubbleI : m_bubbles) {
+				final edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera = sgCameras[0];
+				final java.awt.Rectangle actualViewport = rt.getActualViewport(sgCamera);
+				for (final Bubble bubbleI : m_bubbles) {
 					;
 					if (bubbleI.isShowing()) {
-						java.awt.Point pixelOffset = bubbleI.getPixelOffset();
-						java.awt.Point origin = bubbleI.getOrigin();
+						final java.awt.Point pixelOffset = bubbleI.getPixelOffset();
+						final java.awt.Point origin = bubbleI.getOrigin();
 						double half;
 						if (origin.x > actualViewport.width / 2) {
 							half = 0.5;
@@ -67,7 +70,7 @@ public class BubbleManager implements edu.cmu.cs.stage3.alice.scenegraph.rendere
 							half = 0.0;
 						}
 						if (pixelOffset == null) {
-							java.awt.geom.Rectangle2D rect = bubbleI.getTotalBound();
+							final java.awt.geom.Rectangle2D rect = bubbleI.getTotalBound();
 							// int x = (int)( ( ( Math.random()* 0.4 ) + 0.05 +
 							// half ) * ( actualViewport.width - rect.getWidth()
 							// ) );
@@ -78,8 +81,10 @@ public class BubbleManager implements edu.cmu.cs.stage3.alice.scenegraph.rendere
 							if (rect != null) {
 								y -= rect.getHeight();
 								final double VIEWPORT_PAD = 64;
-								x = Math.min(Math.max(x, VIEWPORT_PAD), actualViewport.width - rect.getWidth() - VIEWPORT_PAD);
-								y = Math.min(Math.max(y, VIEWPORT_PAD), actualViewport.height - rect.getHeight() - VIEWPORT_PAD);
+								x = Math.min(Math.max(x, VIEWPORT_PAD),
+										actualViewport.width - rect.getWidth() - VIEWPORT_PAD);
+								y = Math.min(Math.max(y, VIEWPORT_PAD),
+										actualViewport.height - rect.getHeight() - VIEWPORT_PAD);
 							}
 							bubbleI.setPixelOffset(new java.awt.Point((int) x, (int) y));
 						}
@@ -89,16 +94,18 @@ public class BubbleManager implements edu.cmu.cs.stage3.alice.scenegraph.rendere
 		}
 		return isPaintRequired;
 	}
+
 	@Override
-	public void cleared(edu.cmu.cs.stage3.alice.scenegraph.renderer.event.RenderTargetEvent ev) {
+	public void cleared(final edu.cmu.cs.stage3.alice.scenegraph.renderer.event.RenderTargetEvent ev) {
 	}
+
 	@Override
-	public void rendered(edu.cmu.cs.stage3.alice.scenegraph.renderer.event.RenderTargetEvent ev) {
+	public void rendered(final edu.cmu.cs.stage3.alice.scenegraph.renderer.event.RenderTargetEvent ev) {
 		m_renderTarget = ev.getRenderTarget();
 		if (layoutBubbles(m_renderTarget)) {
-			java.awt.Graphics g = m_renderTarget.getOffscreenGraphics();
+			final java.awt.Graphics g = m_renderTarget.getOffscreenGraphics();
 			try {
-				for (Bubble bubbleI : m_bubbles) {
+				for (final Bubble bubbleI : m_bubbles) {
 					;
 					bubbleI.paint(g);
 				}

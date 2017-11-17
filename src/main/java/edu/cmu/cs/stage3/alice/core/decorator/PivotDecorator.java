@@ -36,10 +36,12 @@ public class PivotDecorator extends Decorator {
 	protected ReferenceFrame getReferenceFrame() {
 		return getTransformable();
 	}
+
 	public Transformable getTransformable() {
 		return m_transformable;
 	}
-	public void setTransformable(Transformable transformable) {
+
+	public void setTransformable(final Transformable transformable) {
 		if (transformable != m_transformable) {
 			m_transformable = transformable;
 			markDirty();
@@ -50,20 +52,21 @@ public class PivotDecorator extends Decorator {
 	public edu.cmu.cs.stage3.math.Box getOverrideBoundingBox() {
 		return m_overrideBoundingBox;
 	}
-	public void setOverrideBoundingBox(edu.cmu.cs.stage3.math.Box overrideBoundingBox) {
+
+	public void setOverrideBoundingBox(final edu.cmu.cs.stage3.math.Box overrideBoundingBox) {
 		m_overrideBoundingBox = overrideBoundingBox;
 		markDirty();
 	}
 
 	@Override
-	public void internalRelease(int pass) {
+	public void internalRelease(final int pass) {
 		switch (pass) {
-			case 2 :
-				if (m_sgLineArray != null) {
-					m_sgLineArray.release();
-					m_sgLineArray = null;
-				}
-				break;
+		case 2:
+			if (m_sgLineArray != null) {
+				m_sgLineArray.release();
+				m_sgLineArray = null;
+			}
+			break;
 		}
 		super.internalRelease(pass);
 	}
@@ -90,20 +93,26 @@ public class PivotDecorator extends Decorator {
 			requiresVerticesToBeUpdated = true;
 		}
 		if (requiresVerticesToBeUpdated) {
-			javax.vecmath.Vector3d min = box.getMinimum();
-			javax.vecmath.Vector3d max = box.getMaximum();
-			double distanceAcross = edu.cmu.cs.stage3.math.MathUtilities.subtract(max, min).length();
-			double delta = distanceAcross * 0.1;
-			edu.cmu.cs.stage3.alice.scenegraph.Color xColor = edu.cmu.cs.stage3.alice.scenegraph.Color.RED;
-			edu.cmu.cs.stage3.alice.scenegraph.Color yColor = edu.cmu.cs.stage3.alice.scenegraph.Color.GREEN;
-			edu.cmu.cs.stage3.alice.scenegraph.Color zColor = edu.cmu.cs.stage3.alice.scenegraph.Color.BLUE;
-			edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[] vertices = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[6];
-			vertices[0] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(0, 0, 0), null, xColor, null, null);
-			vertices[1] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(max.x + delta, 0, 0), null, xColor, null, null);
-			vertices[2] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(0, 0, 0), null, yColor, null, null);
-			vertices[3] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(0, max.y + delta, 0), null, yColor, null, null);
-			vertices[4] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(0, 0, 0), null, zColor, null, null);
-			vertices[5] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(0, 0, max.z + delta), null, zColor, null, null);
+			final javax.vecmath.Vector3d min = box.getMinimum();
+			final javax.vecmath.Vector3d max = box.getMaximum();
+			final double distanceAcross = edu.cmu.cs.stage3.math.MathUtilities.subtract(max, min).length();
+			final double delta = distanceAcross * 0.1;
+			final edu.cmu.cs.stage3.alice.scenegraph.Color xColor = edu.cmu.cs.stage3.alice.scenegraph.Color.RED;
+			final edu.cmu.cs.stage3.alice.scenegraph.Color yColor = edu.cmu.cs.stage3.alice.scenegraph.Color.GREEN;
+			final edu.cmu.cs.stage3.alice.scenegraph.Color zColor = edu.cmu.cs.stage3.alice.scenegraph.Color.BLUE;
+			final edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[] vertices = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[6];
+			vertices[0] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(0, 0, 0), null,
+					xColor, null, null);
+			vertices[1] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(
+					new javax.vecmath.Point3d(max.x + delta, 0, 0), null, xColor, null, null);
+			vertices[2] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(0, 0, 0), null,
+					yColor, null, null);
+			vertices[3] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(
+					new javax.vecmath.Point3d(0, max.y + delta, 0), null, yColor, null, null);
+			vertices[4] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(new javax.vecmath.Point3d(0, 0, 0), null,
+					zColor, null, null);
+			vertices[5] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(
+					new javax.vecmath.Point3d(0, 0, max.z + delta), null, zColor, null, null);
 			m_sgLineArray.setVertices(vertices);
 		}
 		setIsDirty(false);

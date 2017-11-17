@@ -10,10 +10,12 @@ public class ProjectionViewVolumeDecorator extends ViewVolumeDecorator {
 	protected Camera getCamera() {
 		return getProjectionCamera();
 	}
+
 	public ProjectionCamera getProjectionCamera() {
 		return m_projectionCamera;
 	}
-	public void setProjectionCamera(ProjectionCamera projectionCamera) {
+
+	public void setProjectionCamera(final ProjectionCamera projectionCamera) {
 		if (projectionCamera != m_projectionCamera) {
 			m_projectionCamera = projectionCamera;
 			markDirty();
@@ -22,15 +24,15 @@ public class ProjectionViewVolumeDecorator extends ViewVolumeDecorator {
 	}
 
 	@Override
-	protected double[] getXYNearAndXYFar(double zNear, double zFar) {
+	protected double[] getXYNearAndXYFar(final double zNear, final double zFar) {
 		// todo
-		double angle = 0.5;
-		double aspect = 4.0 / 3.0;
-		double yNear = zNear * Math.tan(angle);
-		double yFar = zFar * Math.tan(angle);
-		double xNear = aspect * yNear;
-		double xFar = aspect * yFar;
-		double[] r = {xNear, yNear, xFar, yFar};
+		final double angle = 0.5;
+		final double aspect = 4.0 / 3.0;
+		final double yNear = zNear * Math.tan(angle);
+		final double yFar = zFar * Math.tan(angle);
+		final double xNear = aspect * yNear;
+		final double xFar = aspect * yFar;
+		final double[] r = { xNear, yNear, xFar, yFar };
 		return r;
 	}
 }

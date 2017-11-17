@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -47,21 +47,26 @@ package edu.cmu.cs.stage3.image.codec;
 /**
  * An instance of <code>ImageEncodeParam</code> for encoding images in the BMP
  * format.
- * 
+ *
  * <p>
  * This class allows for the specification of various parameters while encoding
  * (writing) a BMP format image file. By default, the version used is VERSION_3,
  * no compression is used, and the data layout is bottom_up, such that the
  * pixels are stored in bottom-up order, the first scanline being stored last.
- * 
+ *
  * <p>
  * <b> This class is not a committed part of the JAI API. It may be removed or
  * changed in future releases of JAI.</b>
- * 
+ *
  */
 public class BMPEncodeParam implements ImageEncodeParam {
 
 	// version constants
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -6901995469329194604L;
 
 	/** Constant for BMP version 2. */
 	public static final int VERSION_2 = 0;
@@ -84,7 +89,7 @@ public class BMPEncodeParam implements ImageEncodeParam {
 	}
 
 	/** Sets the BMP version to be used. */
-	public void setVersion(int versionNumber) {
+	public void setVersion(final int versionNumber) {
 		checkVersion(versionNumber);
 		version = versionNumber;
 	}
@@ -95,7 +100,7 @@ public class BMPEncodeParam implements ImageEncodeParam {
 	}
 
 	/** If set, the data will be written out compressed, if possible. */
-	public void setCompressed(boolean compressed) {
+	public void setCompressed(final boolean compressed) {
 		this.compressed = compressed;
 	}
 
@@ -110,7 +115,7 @@ public class BMPEncodeParam implements ImageEncodeParam {
 	 * If set, the data will be written out in a top-down manner, the first
 	 * scanline being written first.
 	 */
-	public void setTopDown(boolean topDown) {
+	public void setTopDown(final boolean topDown) {
 		this.topDown = topDown;
 	}
 
@@ -122,7 +127,7 @@ public class BMPEncodeParam implements ImageEncodeParam {
 	}
 
 	// Method to check whether we can handle the given version.
-	private void checkVersion(int versionNumber) {
+	private void checkVersion(final int versionNumber) {
 		if (!(versionNumber == VERSION_2 || versionNumber == VERSION_3 || versionNumber == VERSION_4)) {
 			throw new RuntimeException(JaiI18N.getString("BMPEncodeParam0"));
 		}

@@ -4,9 +4,9 @@ public class Add extends SetVisualizationWithItemAnimation {
 	public class RuntimeAdd extends RuntimeSetVisualizationWithItemAnimation {
 
 		@Override
-		public void epilogue(double t) {
+		public void epilogue(final double t) {
 			super.epilogue(t);
-			Object item = getItem();
+			final Object item = getItem();
 			if (getCollection().values.contains(item)) {
 				// pass
 			} else {

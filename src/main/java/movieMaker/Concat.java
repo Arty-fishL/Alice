@@ -86,9 +86,9 @@ public class Concat implements ControllerListener, DataSinkListener {
 	/**
 	 * Main program
 	 */
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 
-		Vector inputURL = new Vector();
+		final Vector inputURL = new Vector();
 		String outputURL = null;
 
 		if (args.length == 0) {
@@ -122,7 +122,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 		}
 
 		// Generate the input and output media locators.
-		MediaLocator iml[] = new MediaLocator[inputURL.size()];
+		final MediaLocator iml[] = new MediaLocator[inputURL.size()];
 		MediaLocator oml;
 
 		for (i = 0; i < inputURL.size(); i++) {
@@ -137,7 +137,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 			System.exit(0);
 		}
 
-		Concat concat = new Concat();
+		final Concat concat = new Concat();
 
 		if (!concat.doIt(iml, oml)) {
 			System.err.println("Failed to concatenate the inputs");
@@ -151,7 +151,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 	 * will concatenate the input media files to generate a single concatentated
 	 * output.
 	 */
-	public boolean doIt(MediaLocator inML[], MediaLocator outML) {
+	public boolean doIt(final MediaLocator inML[], final MediaLocator outML) {
 
 		// Guess the output content descriptor from the file extension.
 		ContentDescriptor cd;
@@ -162,7 +162,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 		}
 
 		// Build the ProcInfo data structure for each processor.
-		ProcInfo pInfo[] = new ProcInfo[inML.length];
+		final ProcInfo pInfo[] = new ProcInfo[inML.length];
 
 		for (int i = 0; i < inML.length; i++) {
 			pInfo[i] = new ProcInfo();
@@ -171,7 +171,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 			try {
 				// System.err.println("- Create processor for: " + inML[i]);
 				pInfo[i].p = Manager.createProcessor(inML[i]);
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				System.err.println("Cannot create a processor from the given url: " + e);
 				return false;
 			}
@@ -191,13 +191,13 @@ public class Concat implements ControllerListener, DataSinkListener {
 		}
 
 		// Generate a super glue data source from the processors.
-		SuperGlueDataSource ds = new SuperGlueDataSource(pInfo);
+		final SuperGlueDataSource ds = new SuperGlueDataSource(pInfo);
 
 		// Create the processor to generate the final output.
 		Processor p;
 		try {
 			p = Manager.createProcessor(ds);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			System.err.println("Failed to create a processor to concatenate the inputs.");
 			return false;
 		}
@@ -227,7 +227,8 @@ public class Concat implements ControllerListener, DataSinkListener {
 		// Now, we'll need to create a DataSink.
 		DataSink dsink;
 		while ((dsink = createDataSink(p, outML)) == null) {
-			// System.err.println("Failed to create a DataSink for the given output MediaLocator: "
+			// System.err.println("Failed to create a DataSink for the given
+			// output MediaLocator: "
 			// + outML);
 			// return false;
 		}
@@ -241,7 +242,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 		try {
 			p.start();
 			dsink.start();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			System.err.println("IO error during concatenation");
 			return false;
 		}
@@ -253,7 +254,8 @@ public class Concat implements ControllerListener, DataSinkListener {
 		try {
 			dsink.removeDataSinkListener(this);
 			dsink.close();
-		} catch (Exception e) {}
+		} catch (final Exception e) {
+		}
 		p.removeControllerListener(this);
 
 		for (int ii = 0; ii < inML.length; ii++) {
@@ -265,7 +267,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 		p.close();
 		p.deallocate();
 
-		// System.err.println("  ...done concatenation.");
+		// System.err.println(" ...done concatenation.");
 
 		return true;
 	}
@@ -274,7 +276,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 	 * Try to match all the tracks and find common formats to concatenate the
 	 * tracks. A database of results will be generated.
 	 */
-	public boolean matchTracks(ProcInfo pInfo[], ContentDescriptor cd) {
+	public boolean matchTracks(final ProcInfo pInfo[], final ContentDescriptor cd) {
 
 		TrackControl tcs[];
 
@@ -325,7 +327,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 		// 2-track one. We'll concatenate up to the smallest # of tracks
 		// of all the movies. We'll also need to disable the unused tracks.
 
-		int total[] = new int[MEDIA_TYPES];
+		final int total[] = new int[MEDIA_TYPES];
 
 		for (type = AUDIO; type < MEDIA_TYPES; type++) {
 			total[type] = pInfo[0].numTracksByType[type];
@@ -356,7 +358,8 @@ public class Concat implements ControllerListener, DataSinkListener {
 				for (j = total[type]; j < pInfo[i].numTracksByType[type]; j++) {
 					tInfo = pInfo[i].tracksByType[type][j];
 					disableTrack(pInfo[i], tInfo);
-					System.err.println("- Disable the following track since the other input media do not have a matching type.");
+					System.err.println(
+							"- Disable the following track since the other input media do not have a matching type.");
 					System.err.println("  " + tInfo.tc.getFormat());
 				}
 				pInfo[i].numTracksByType[type] = total[type];
@@ -381,7 +384,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 	/**
 	 * Disable a track.
 	 */
-	void disableTrack(ProcInfo pInfo, TrackInfo remove) {
+	void disableTrack(final ProcInfo pInfo, final TrackInfo remove) {
 		remove.tc.setEnabled(false);
 		remove.disabled = true;
 
@@ -401,9 +404,9 @@ public class Concat implements ControllerListener, DataSinkListener {
 	 * With the given processor info generated from matchTracks, build each of
 	 * the processors.
 	 */
-	public boolean buildTracks(ProcInfo pInfo[]) {
+	public boolean buildTracks(final ProcInfo pInfo[]) {
 
-		ContentDescriptor cd = new ContentDescriptor(ContentDescriptor.RAW);
+		final ContentDescriptor cd = new ContentDescriptor(ContentDescriptor.RAW);
 		Processor p;
 
 		for (int i = 0; i < pInfo.length; i++) {
@@ -445,12 +448,12 @@ public class Concat implements ControllerListener, DataSinkListener {
 	/**
 	 * Try matching the data formats and find common ones for concatenation.
 	 */
-	public boolean tryMatch(ProcInfo pInfo[], int type, int trackID) {
+	public boolean tryMatch(final ProcInfo pInfo[], final int type, final int trackID) {
 
 		TrackControl tc = pInfo[0].tracksByType[type][trackID].tc;
-		Format origFmt = tc.getFormat();
+		final Format origFmt = tc.getFormat();
 		Format newFmt, oldFmt;
-		Format supported[] = tc.getSupportedFormats();
+		final Format supported[] = tc.getSupportedFormats();
 
 		for (int i = 0; i < supported.length; i++) {
 
@@ -458,7 +461,8 @@ public class Concat implements ControllerListener, DataSinkListener {
 				// If it's not the original format, then for audio, we'll
 				// only do linear since it's more accurate to compute the
 				// audio times.
-				if (!supported[i].matches(tc.getFormat()) && !supported[i].getEncoding().equalsIgnoreCase(AudioFormat.LINEAR)) {
+				if (!supported[i].matches(tc.getFormat())
+						&& !supported[i].getEncoding().equalsIgnoreCase(AudioFormat.LINEAR)) {
 					continue;
 				}
 			}
@@ -469,7 +473,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 				// tracks to. We'll set it on the corresponding
 				// TrackControl on each processor.
 
-				for (ProcInfo element : pInfo) {
+				for (final ProcInfo element : pInfo) {
 					tc = element.tracksByType[type][trackID].tc;
 					oldFmt = tc.getFormat();
 					newFmt = supported[i];
@@ -489,8 +493,8 @@ public class Concat implements ControllerListener, DataSinkListener {
 
 					// For video, check if it requires scaling.
 					if (oldFmt instanceof VideoFormat) {
-						Dimension newSize = ((VideoFormat) origFmt).getSize();
-						Dimension oldSize = ((VideoFormat) oldFmt).getSize();
+						final Dimension newSize = ((VideoFormat) origFmt).getSize();
+						final Dimension oldSize = ((VideoFormat) oldFmt).getSize();
 
 						if (oldSize != null && !oldSize.equals(newSize)) {
 							// It requires scaling.
@@ -502,7 +506,8 @@ public class Concat implements ControllerListener, DataSinkListener {
 							System.err.println("- Scaling: " + element.ml);
 							System.err.println("  from: " + oldSize.width + " x " + oldSize.height);
 							System.err.println("  to: " + newSize.width + " x " + newSize.height);
-							newFmt = new VideoFormat(null, newSize, Format.NOT_SPECIFIED, null, Format.NOT_SPECIFIED).intersects(newFmt);
+							newFmt = new VideoFormat(null, newSize, Format.NOT_SPECIFIED, null, Format.NOT_SPECIFIED)
+									.intersects(newFmt);
 						}
 					}
 					tc.setFormat(newFmt);
@@ -519,17 +524,18 @@ public class Concat implements ControllerListener, DataSinkListener {
 	/**
 	 * Try different transcoded formats for concatenation.
 	 */
-	public boolean tryTranscode(ProcInfo pInfo[], int procID, int type, int trackID, Format candidate) {
+	public boolean tryTranscode(final ProcInfo pInfo[], final int procID, final int type, final int trackID,
+			final Format candidate) {
 
 		if (procID >= pInfo.length) {
 			return true;
 		}
 
 		boolean matched = false;
-		TrackControl tc = pInfo[procID].tracksByType[type][trackID].tc;
-		Format supported[] = tc.getSupportedFormats();
+		final TrackControl tc = pInfo[procID].tracksByType[type][trackID].tc;
+		final Format supported[] = tc.getSupportedFormats();
 
-		for (Format element : supported) {
+		for (final Format element : supported) {
 			if (candidate.matches(element) && tryTranscode(pInfo, procID + 1, type, trackID, candidate)) {
 				matched = true;
 				break;
@@ -542,8 +548,8 @@ public class Concat implements ControllerListener, DataSinkListener {
 	/**
 	 * Utility function to check for raw (linear) audio.
 	 */
-	boolean isRawAudio(TrackInfo tInfo) {
-		Format fmt = tInfo.tc.getFormat();
+	boolean isRawAudio(final TrackInfo tInfo) {
+		final Format fmt = tInfo.tc.getFormat();
 		return fmt instanceof AudioFormat && fmt.getEncoding().equalsIgnoreCase(AudioFormat.LINEAR);
 	}
 
@@ -551,24 +557,24 @@ public class Concat implements ControllerListener, DataSinkListener {
 	 * Setting the encoding quality to the specified value on the JPEG encoder.
 	 * 0.5 is a good default.
 	 */
-	void setJPEGQuality(Player p, float val) {
+	void setJPEGQuality(final Player p, final float val) {
 
-		Control cs[] = p.getControls();
+		final Control cs[] = p.getControls();
 		QualityControl qc = null;
-		VideoFormat jpegFmt = new VideoFormat(VideoFormat.JPEG);
+		final VideoFormat jpegFmt = new VideoFormat(VideoFormat.JPEG);
 
 		// Loop through the controls to find the Quality control for
 		// the JPEG encoder.
-		for (Control element : cs) {
+		for (final Control element : cs) {
 
 			if (element instanceof QualityControl && element instanceof Owned) {
-				Object owner = ((Owned) element).getOwner();
+				final Object owner = ((Owned) element).getOwner();
 
 				// Check to see if the owner is a Codec.
 				// Then check for the output format.
 				if (owner instanceof Codec) {
-					Format fmts[] = ((Codec) owner).getSupportedOutputFormats(null);
-					for (Format fmt : fmts) {
+					final Format fmts[] = ((Codec) owner).getSupportedOutputFormats(null);
+					for (final Format fmt : fmts) {
 						if (fmt.matches(jpegFmt)) {
 							qc = (QualityControl) element;
 							qc.setQuality(val);
@@ -592,39 +598,40 @@ public class Concat implements ControllerListener, DataSinkListener {
 		Processor p;
 		boolean error = false;
 
-		StateWaiter(Processor p) {
+		StateWaiter(final Processor p) {
 			this.p = p;
 			p.addControllerListener(this);
 		}
 
-		public synchronized boolean waitForState(int state) {
+		public synchronized boolean waitForState(final int state) {
 
 			switch (state) {
-				case Processor.Configured :
-					p.configure();
-					break;
-				case Controller.Realized :
-					p.realize();
-					break;
-				case Controller.Prefetched :
-					p.prefetch();
-					break;
-				case Controller.Started :
-					p.start();
-					break;
+			case Processor.Configured:
+				p.configure();
+				break;
+			case Controller.Realized:
+				p.realize();
+				break;
+			case Controller.Prefetched:
+				p.prefetch();
+				break;
+			case Controller.Started:
+				p.start();
+				break;
 			}
 
 			while (p.getState() < state && !error) {
 				try {
 					wait(1000);
-				} catch (Exception e) {}
+				} catch (final Exception e) {
+				}
 			}
 			// p.removeControllerListener(this);
 			return !error;
 		}
 
 		@Override
-		public void controllerUpdate(ControllerEvent ce) {
+		public void controllerUpdate(final ControllerEvent ce) {
 			if (ce instanceof ControllerErrorEvent) {
 				error = true;
 			}
@@ -637,7 +644,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 	/**
 	 * Create the DataSink.
 	 */
-	DataSink createDataSink(Processor p, MediaLocator outML) {
+	DataSink createDataSink(final Processor p, final MediaLocator outML) {
 
 		DataSource ds;
 
@@ -651,7 +658,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 		try {
 			// System.err.println("- Create DataSink for: " + outML);
 			dsink = Manager.createDataSink(ds, outML);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			// System.err.println("Cannot create the DataSink: " + e);
 			return null;
 		}
@@ -661,10 +668,10 @@ public class Concat implements ControllerListener, DataSinkListener {
 		}
 		try {
 			dsink.open();
-		} catch (SecurityException e) {
+		} catch (final SecurityException e) {
 			dsink.close();
 			return null;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			dsink.close();
 			return null;
 		}
@@ -676,7 +683,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 	 * Block until the given processor has transitioned to the given state.
 	 * Return false if the transition failed.
 	 */
-	boolean waitForState(Processor p, int state) {
+	boolean waitForState(final Processor p, final int state) {
 		return new StateWaiter(p).waitForState(state);
 	}
 
@@ -684,7 +691,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 	 * Controller Listener.
 	 */
 	@Override
-	public void controllerUpdate(ControllerEvent evt) {
+	public void controllerUpdate(final ControllerEvent evt) {
 
 		if (evt instanceof ControllerErrorEvent) {
 			System.err.println("Failed to concatenate the files.");
@@ -702,14 +709,15 @@ public class Concat implements ControllerListener, DataSinkListener {
 	 * Block until file writing is done.
 	 */
 	boolean waitForFileDone() {
-		// System.err.print("  ");
+		// System.err.print(" ");
 		synchronized (waitFileSync) {
 			try {
 				while (!fileDone) {
 					waitFileSync.wait(1000);
 					// System.err.print(".");
 				}
-			} catch (Exception e) {}
+			} catch (final Exception e) {
+			}
 		}
 		// System.err.println("");
 		return fileSuccess;
@@ -719,7 +727,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 	 * Event handler for the file writer.
 	 */
 	@Override
-	public void dataSinkUpdate(DataSinkEvent evt) {
+	public void dataSinkUpdate(final DataSinkEvent evt) {
 
 		if (evt instanceof EndOfStreamEvent) {
 			synchronized (waitFileSync) {
@@ -739,7 +747,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 	 * Convert a file name to a content type. The extension is parsed to
 	 * determine the content type.
 	 */
-	ContentDescriptor fileExtToCD(String name) {
+	ContentDescriptor fileExtToCD(final String name) {
 
 		String ext;
 		int p;
@@ -771,7 +779,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 	/**
 	 * Create a media locator from the given string.
 	 */
-	static MediaLocator createMediaLocator(String url) {
+	static MediaLocator createMediaLocator(final String url) {
 
 		MediaLocator ml;
 
@@ -784,7 +792,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 				return ml;
 			}
 		} else {
-			String file = "file:" + System.getProperty("user.dir") + File.separator + url;
+			final String file = "file:" + System.getProperty("user.dir") + File.separator + url;
 			if ((ml = new MediaLocator(file)) != null) {
 				return ml;
 			}
@@ -840,7 +848,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 		int current;
 		SuperGlueStream streams[];
 
-		public SuperGlueDataSource(ProcInfo pInfo[]) {
+		public SuperGlueDataSource(final ProcInfo pInfo[]) {
 			this.pInfo = pInfo;
 			streams = new SuperGlueStream[totalTracks];
 			for (int i = 0; i < totalTracks; i++) {
@@ -850,7 +858,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 			setStreams(pInfo[current]);
 		}
 
-		void setStreams(ProcInfo pInfo) {
+		void setStreams(final ProcInfo pInfo) {
 			int j = 0;
 			masterFound = false;
 			for (int type = AUDIO; type < MEDIA_TYPES; type++) {
@@ -885,8 +893,8 @@ public class Concat implements ControllerListener, DataSinkListener {
 		public void stop() throws java.io.IOException {
 		}
 
-		synchronized boolean handleEOM(TrackInfo tInfo) {
-			boolean lastProcessor = current >= pInfo.length - 1;
+		synchronized boolean handleEOM(final TrackInfo tInfo) {
+			final boolean lastProcessor = current >= pInfo.length - 1;
 
 			// Check to see if all the tracks are done for the
 			// current processor.
@@ -903,7 +911,8 @@ public class Concat implements ControllerListener, DataSinkListener {
 			try {
 				pInfo[current].p.stop();
 				pInfo[current].ds.stop();
-			} catch (Exception e) {}
+			} catch (final Exception e) {
+			}
 
 			if (lastProcessor) {
 				// We are done with all processors.
@@ -921,12 +930,13 @@ public class Concat implements ControllerListener, DataSinkListener {
 			setStreams(pInfo[current]);
 			try {
 				start();
-			} catch (Exception e) {}
+			} catch (final Exception e) {
+			}
 			return lastProcessor;
 		}
 
 		@Override
-		public Object getControl(String name) {
+		public Object getControl(final String name) {
 			// No controls
 			return null;
 		}
@@ -957,7 +967,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 		}
 
 		@Override
-		public void setLocator(MediaLocator ml) {
+		public void setLocator(final MediaLocator ml) {
 			System.err.println("Not interested in a media locator");
 		}
 	}
@@ -982,11 +992,11 @@ public class Concat implements ControllerListener, DataSinkListener {
 		long timeStamp = 0;
 		long lastTS = 0;
 
-		public SuperGlueStream(SuperGlueDataSource ds) {
+		public SuperGlueStream(final SuperGlueDataSource ds) {
 			this.ds = ds;
 		}
 
-		public void setStream(TrackInfo tInfo, boolean useAsMaster) {
+		public void setStream(final TrackInfo tInfo, final boolean useAsMaster) {
 			this.tInfo = tInfo;
 			this.useAsMaster = useAsMaster;
 			if (pbs != null) {
@@ -1004,13 +1014,13 @@ public class Concat implements ControllerListener, DataSinkListener {
 		}
 
 		@Override
-		public void read(Buffer buffer) throws IOException {
+		public void read(final Buffer buffer) throws IOException {
 			pbs.read(buffer);
 
 			// Remap the time stamps so it won't wrap around
 			// while changing to a new file.
 			if (buffer.getTimeStamp() != Buffer.TIME_UNKNOWN) {
-				long diff = buffer.getTimeStamp() - lastTS;
+				final long diff = buffer.getTimeStamp() - lastTS;
 				lastTS = buffer.getTimeStamp();
 				if (diff > 0) {
 					timeStamp += diff;
@@ -1022,9 +1032,9 @@ public class Concat implements ControllerListener, DataSinkListener {
 			// we'll need to compute the master time based on this track.
 			if (useAsMaster) {
 				if (buffer.getFormat() instanceof AudioFormat) {
-					AudioFormat af = (AudioFormat) buffer.getFormat();
+					final AudioFormat af = (AudioFormat) buffer.getFormat();
 					masterAudioLen += buffer.getLength();
-					long t = af.computeDuration(masterAudioLen);
+					final long t = af.computeDuration(masterAudioLen);
 					if (t > 0) {
 						masterTime = t;
 					} else {
@@ -1067,12 +1077,12 @@ public class Concat implements ControllerListener, DataSinkListener {
 		}
 
 		@Override
-		public void setTransferHandler(BufferTransferHandler bth) {
+		public void setTransferHandler(final BufferTransferHandler bth) {
 			this.bth = bth;
 		}
 
 		@Override
-		public Object getControl(String name) {
+		public Object getControl(final String name) {
 			// No controls
 			return null;
 		}
@@ -1084,7 +1094,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 		}
 
 		@Override
-		public synchronized void transferData(PushBufferStream pbs) {
+		public synchronized void transferData(final PushBufferStream pbs) {
 			if (bth != null) {
 				bth.transferData(this);
 			}

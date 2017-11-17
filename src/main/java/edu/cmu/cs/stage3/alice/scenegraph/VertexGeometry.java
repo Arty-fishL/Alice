@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -38,14 +38,14 @@ public abstract class VertexGeometry extends Geometry {
 	protected void updateBoundingBox() {
 		if (m_vertices != null && m_vertices.length > 0) {
 			if (m_vertices[0] != null) {
-				javax.vecmath.Point3d min = new javax.vecmath.Point3d();
-				javax.vecmath.Point3d max = new javax.vecmath.Point3d();
+				final javax.vecmath.Point3d min = new javax.vecmath.Point3d();
+				final javax.vecmath.Point3d max = new javax.vecmath.Point3d();
 
-				Vertex3d v0 = m_vertices[0];
+				final Vertex3d v0 = m_vertices[0];
 				min.set(v0.position);
 				max.set(v0.position);
 				for (int i = 1; i < m_vertices.length; i++) {
-					Vertex3d vi = m_vertices[i];
+					final Vertex3d vi = m_vertices[i];
 					min.x = Math.min(vi.position.x, min.x);
 					min.y = Math.min(vi.position.y, min.y);
 					min.z = Math.min(vi.position.z, min.z);
@@ -53,8 +53,8 @@ public abstract class VertexGeometry extends Geometry {
 					max.y = Math.max(vi.position.y, max.y);
 					max.z = Math.max(vi.position.z, max.z);
 				}
-				javax.vecmath.Vector3d minimum = new javax.vecmath.Vector3d(min.x, min.y, min.z);
-				javax.vecmath.Vector3d maximum = new javax.vecmath.Vector3d(max.x, max.y, max.z);
+				final javax.vecmath.Vector3d minimum = new javax.vecmath.Vector3d(min.x, min.y, min.z);
+				final javax.vecmath.Vector3d maximum = new javax.vecmath.Vector3d(max.x, max.y, max.z);
 				m_boundingBox = new edu.cmu.cs.stage3.math.Box(minimum, maximum);
 			} else {
 				throw new RuntimeException(this + " vertex[ 0 ] has somehow become null.");
@@ -64,21 +64,22 @@ public abstract class VertexGeometry extends Geometry {
 			m_boundingBox = null;
 		}
 	}
-	private static double getDistanceSquaredBetween(Vertex3d vertex, javax.vecmath.Vector3d vector) {
-		double dx = vertex.position.x - vector.x;
-		double dy = vertex.position.y - vector.y;
-		double dz = vertex.position.z - vector.z;
+
+	private static double getDistanceSquaredBetween(final Vertex3d vertex, final javax.vecmath.Vector3d vector) {
+		final double dx = vertex.position.x - vector.x;
+		final double dy = vertex.position.y - vector.y;
+		final double dz = vertex.position.z - vector.z;
 		return dx * dx + dy * dy + dz * dz;
 	}
 
 	@Override
 	protected void updateBoundingSphere() {
-		edu.cmu.cs.stage3.math.Box box = getBoundingBox();
+		final edu.cmu.cs.stage3.math.Box box = getBoundingBox();
 		if (box != null) {
-			javax.vecmath.Vector3d center = box.getCenter();
+			final javax.vecmath.Vector3d center = box.getCenter();
 			double distanceSquared = 0;
-			for (Vertex3d m_vertice : m_vertices) {
-				double d2 = getDistanceSquaredBetween(m_vertice, center);
+			for (final Vertex3d m_vertice : m_vertices) {
+				final double d2 = getDistanceSquaredBetween(m_vertice, center);
 				distanceSquared = Math.max(d2, distanceSquared);
 			}
 			m_boundingSphere = new edu.cmu.cs.stage3.math.Sphere(center, Math.sqrt(distanceSquared));
@@ -88,7 +89,8 @@ public abstract class VertexGeometry extends Geometry {
 	public Vertex3d[] getVertices() {
 		return m_vertices;
 	}
-	public void setVertices(Vertex3d[] vertices) {
+
+	public void setVertices(final Vertex3d[] vertices) {
 		m_vertices = vertices;
 		onPropertyChange(VERTICES_PROPERTY);
 		onBoundsChange();
@@ -97,17 +99,20 @@ public abstract class VertexGeometry extends Geometry {
 	public int getVertexLowerBound() {
 		return m_vertexLowerBound;
 	}
-	public void setVertexLowerBound(int vertexLowerBound) {
+
+	public void setVertexLowerBound(final int vertexLowerBound) {
 		if (m_vertexLowerBound != vertexLowerBound) {
 			m_vertexLowerBound = vertexLowerBound;
 			onPropertyChange(VERTEX_LOWER_BOUND_PROPERTY);
 			// onBoundsChange();
 		}
 	}
+
 	public int getVertexUpperBound() {
 		return m_vertexUpperBound;
 	}
-	public void setVertexUpperBound(int vertexUpperBound) {
+
+	public void setVertexUpperBound(final int vertexUpperBound) {
 		if (m_vertexUpperBound != vertexUpperBound) {
 			m_vertexUpperBound = vertexUpperBound;
 			onPropertyChange(VERTEX_UPPER_BOUND_PROPERTY);
@@ -124,24 +129,25 @@ public abstract class VertexGeometry extends Geometry {
 	}
 
 	@Override
-	public void transform(javax.vecmath.Matrix4d trans) {
-		Vertex3d[] vertices = getVertices();
-		for (Vertex3d vertice : vertices) {
+	public void transform(final javax.vecmath.Matrix4d trans) {
+		final Vertex3d[] vertices = getVertices();
+		for (final Vertex3d vertice : vertices) {
 			vertice.transform(trans);
 		}
 		setVertices(vertices);
 	}
 
-	public static Vertex3d[] loadVertices(java.io.InputStream is) throws java.io.IOException {
+	public static Vertex3d[] loadVertices(final java.io.InputStream is) throws java.io.IOException {
 		Vertex3d[] vertices = null;
-		java.io.BufferedInputStream bis = new java.io.BufferedInputStream(is);
-		java.io.DataInputStream dis = new java.io.DataInputStream(bis);
-		int version = dis.readInt();
+		final java.io.BufferedInputStream bis = new java.io.BufferedInputStream(is);
+		final java.io.DataInputStream dis = new java.io.DataInputStream(bis);
+		final int version = dis.readInt();
 		if (version == 1) {
-			int vertexCount = dis.readInt();
+			final int vertexCount = dis.readInt();
 			vertices = new Vertex3d[vertexCount];
 			for (int i = 0; i < vertices.length; i++) {
-				vertices[i] = new Vertex3d(Vertex3d.FORMAT_POSITION | Vertex3d.FORMAT_NORMAL | Vertex3d.FORMAT_TEXTURE_COORDINATE_0);
+				vertices[i] = new Vertex3d(
+						Vertex3d.FORMAT_POSITION | Vertex3d.FORMAT_NORMAL | Vertex3d.FORMAT_TEXTURE_COORDINATE_0);
 				vertices[i].position.x = dis.readDouble();
 				vertices[i].position.y = dis.readDouble();
 				vertices[i].position.z = dis.readDouble();
@@ -152,10 +158,10 @@ public abstract class VertexGeometry extends Geometry {
 				vertices[i].textureCoordinate0.y = (float) dis.readDouble();
 			}
 		} else if (version == 2) {
-			int vertexCount = dis.readInt();
+			final int vertexCount = dis.readInt();
 			vertices = new Vertex3d[vertexCount];
 			for (int i = 0; i < vertices.length; i++) {
-				int format = dis.readInt();
+				final int format = dis.readInt();
 				vertices[i] = new Vertex3d(format);
 				if ((format & Vertex3d.FORMAT_POSITION) != 0) {
 					vertices[i].position.x = dis.readDouble();
@@ -189,10 +195,10 @@ public abstract class VertexGeometry extends Geometry {
 				}
 			}
 		} else if (version == 3) {
-			int vertexCount = dis.readInt();
+			final int vertexCount = dis.readInt();
 			vertices = new Vertex3d[vertexCount];
 			for (int i = 0; i < vertices.length; i++) {
-				int format = dis.readInt();
+				final int format = dis.readInt();
 				vertices[i] = new Vertex3d(format);
 				if ((format & Vertex3d.FORMAT_POSITION) != 0) {
 					vertices[i].position.x = dis.readDouble();
@@ -226,13 +232,15 @@ public abstract class VertexGeometry extends Geometry {
 		}
 		return vertices;
 	}
-	public static void storeVertices(Vertex3d[] vertices, java.io.OutputStream os) throws java.io.IOException {
-		java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream(os);
-		java.io.DataOutputStream dos = new java.io.DataOutputStream(bos);
+
+	public static void storeVertices(final Vertex3d[] vertices, final java.io.OutputStream os)
+			throws java.io.IOException {
+		final java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream(os);
+		final java.io.DataOutputStream dos = new java.io.DataOutputStream(bos);
 		dos.writeInt(3);
 		dos.writeInt(vertices.length);
-		for (Vertex3d vertice : vertices) {
-			int format = vertice.getFormat();
+		for (final Vertex3d vertice : vertices) {
+			final int format = vertice.getFormat();
 			dos.writeInt(format);
 			if ((format & Vertex3d.FORMAT_POSITION) != 0) {
 				dos.writeDouble(vertice.position.x);

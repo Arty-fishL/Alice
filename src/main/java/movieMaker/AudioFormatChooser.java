@@ -26,14 +26,18 @@ import com.sun.media.util.JMFI18N;
 
 public class AudioFormatChooser extends Panel implements ItemListener {
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -210560944276949763L;
 	public static final String ACTION_TRACK_ENABLED = "ACTION_AUDIO_TRACK_ENABLED";
 	public static final String ACTION_TRACK_DISABLED = "ACTION_AUDIO_TRACK_DISABLED";
 
 	private AudioFormat formatOld;
 	private Format arrSupportedFormats[] = null;
 	private Vector vectorContSuppFormats = new Vector();
-	private boolean boolDisplayEnableTrack;
-	private ActionListener listenerEnableTrack;
+	private final boolean boolDisplayEnableTrack;
+	private final ActionListener listenerEnableTrack;
 	private boolean boolEnableTrackSaved = true;
 
 	private Checkbox checkEnableTrack;
@@ -55,18 +59,19 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 	private Checkbox checkEndianLittle;
 	private Checkbox checkSigned;
 
-	private boolean boolEnable16 = false;
+	private final boolean boolEnable16 = false;
 	private boolean boolEnableMono = false;
 	private boolean boolEnableStereo = false;
 	private boolean boolEnableEndianBig = false;
 	private boolean boolEnableEndianLittle = false;
 	private boolean boolEnableSigned = false;
 
-	public AudioFormatChooser(Format arrFormats[], AudioFormat formatDefault) {
+	public AudioFormatChooser(final Format arrFormats[], final AudioFormat formatDefault) {
 		this(arrFormats, formatDefault, false, null);
 	}
 
-	public AudioFormatChooser(Format arrFormats[], AudioFormat formatDefault, boolean boolDisplayEnableTrack, ActionListener listenerEnableTrack) {
+	public AudioFormatChooser(final Format arrFormats[], final AudioFormat formatDefault,
+			final boolean boolDisplayEnableTrack, final ActionListener listenerEnableTrack) {
 		int i;
 		int nCount;
 
@@ -89,13 +94,13 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 
 		try {
 			init();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	@Override
-	public void setEnabled(boolean boolEnable) {
+	public void setEnabled(final boolean boolEnable) {
 		super.setEnabled(boolEnable);
 
 		if (checkEnableTrack != null) {
@@ -188,14 +193,14 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		return formatResult;
 	}
 
-	public void setCurrentFormat(AudioFormat formatDefault) {
+	public void setCurrentFormat(final AudioFormat formatDefault) {
 		if (isFormatSupported(formatDefault)) {
 			formatOld = formatDefault;
 		}
 		updateFields(formatOld);
 	}
 
-	public void setSupportedFormats(Format arrFormats[], AudioFormat formatDefault) {
+	public void setSupportedFormats(final Format arrFormats[], final AudioFormat formatDefault) {
 		int i;
 		int nCount;
 
@@ -216,7 +221,7 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		setSupportedFormats(vectorContSuppFormats);
 	}
 
-	public void setSupportedFormats(Vector vectorContSuppFormats) {
+	public void setSupportedFormats(final Vector vectorContSuppFormats) {
 		this.vectorContSuppFormats = vectorContSuppFormats;
 
 		if (vectorContSuppFormats.isEmpty()) {
@@ -237,7 +242,7 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		updateFields(formatOld);
 	}
 
-	public void setTrackEnabled(boolean boolEnable) {
+	public void setTrackEnabled(final boolean boolEnable) {
 		boolEnableTrackSaved = boolEnable;
 		if (checkEnableTrack == null) {
 			return;
@@ -345,8 +350,8 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		updateFields(formatOld);
 	}
 
-	private void updateFields(AudioFormat formatDefault) {
-		Vector vectorEncoding = new Vector();
+	private void updateFields(final AudioFormat formatDefault) {
+		final Vector vectorEncoding = new Vector();
 		boolean boolEnable;
 
 		boolEnable = comboEncoding.isEnabled();
@@ -361,7 +366,7 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		comboEncoding.setEnabled(boolEnable);
 	}
 
-	private void updateFieldsFromEncoding(AudioFormat formatDefault) {
+	private void updateFieldsFromEncoding(final AudioFormat formatDefault) {
 		int i;
 		int nSize;
 		double dSampleRate;
@@ -369,7 +374,7 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		String strSampleRatePref = null;
 		Object objectFormat;
 		AudioFormat formatAudio;
-		Vector vectorRates = new Vector();
+		final Vector vectorRates = new Vector();
 		boolean boolEnable;
 
 		boolEnable = comboSampleRate.isEnabled();
@@ -410,7 +415,7 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		comboSampleRate.setEnabled(boolEnable);
 	}
 
-	private void updateFieldsFromRate(AudioFormat formatDefault) {
+	private void updateFieldsFromRate(final AudioFormat formatDefault) {
 
 		checkBits16.setEnabled(true);
 		checkBits16.setState(true);
@@ -418,7 +423,7 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		updateFieldsFromBits(formatDefault);
 	}
 
-	private void updateFieldsFromBits(AudioFormat formatDefault) {
+	private void updateFieldsFromBits(final AudioFormat formatDefault) {
 		int i;
 		int nSize;
 		Object objectFormat;
@@ -464,7 +469,8 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		checkMono.setEnabled(boolEnableMono);
 		checkStereo.setEnabled(boolEnableStereo);
 
-		if (formatDefault != null && isFormatGoodForEncoding(formatDefault) && isFormatGoodForSampleRate(formatDefault) && isFormatGoodForBitSize(formatDefault)) {
+		if (formatDefault != null && isFormatGoodForEncoding(formatDefault) && isFormatGoodForSampleRate(formatDefault)
+				&& isFormatGoodForBitSize(formatDefault)) {
 			nChannels = formatDefault.getChannels();
 			if (nChannels == 1) {
 				checkMono.setState(true);
@@ -488,7 +494,7 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		updateFieldsFromChannels(formatDefault);
 	}
 
-	private void updateFieldsFromChannels(AudioFormat formatDefault) {
+	private void updateFieldsFromChannels(final AudioFormat formatDefault) {
 		int i;
 		int nSize;
 		Object objectFormat;
@@ -538,7 +544,8 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		checkEndianBig.setEnabled(boolEnableEndianBig);
 		checkEndianLittle.setEnabled(boolEnableEndianLittle);
 
-		if (formatDefault != null && isFormatGoodForEncoding(formatDefault) && isFormatGoodForSampleRate(formatDefault) && isFormatGoodForBitSize(formatDefault) && isFormatGoodForChannels(formatDefault)) {
+		if (formatDefault != null && isFormatGoodForEncoding(formatDefault) && isFormatGoodForSampleRate(formatDefault)
+				&& isFormatGoodForBitSize(formatDefault) && isFormatGoodForChannels(formatDefault)) {
 			nEndian = formatDefault.getEndian();
 			if (nEndian == AudioFormat.BIG_ENDIAN) {
 				checkEndianBig.setState(true);
@@ -570,7 +577,7 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		updateFieldsFromEndian(formatDefault);
 	}
 
-	private void updateFieldsFromEndian(AudioFormat formatDefault) {
+	private void updateFieldsFromEndian(final AudioFormat formatDefault) {
 		int i;
 		int nSize;
 		Object objectFormat;
@@ -624,7 +631,9 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		boolEnableSigned = boolSigned && boolUnsigned;
 		checkSigned.setEnabled(boolEnableSigned);
 
-		if (formatDefault != null && isFormatGoodForEncoding(formatDefault) && isFormatGoodForSampleRate(formatDefault) && isFormatGoodForBitSize(formatDefault) && isFormatGoodForChannels(formatDefault) && isFormatGoodForEndian(formatDefault)) {
+		if (formatDefault != null && isFormatGoodForEncoding(formatDefault) && isFormatGoodForSampleRate(formatDefault)
+				&& isFormatGoodForBitSize(formatDefault) && isFormatGoodForChannels(formatDefault)
+				&& isFormatGoodForEndian(formatDefault)) {
 			nSigned = formatDefault.getSigned();
 			if (nSigned == AudioFormat.SIGNED) {
 				checkSigned.setState(true);
@@ -648,10 +657,10 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		updateFieldsFromSigned(formatDefault);
 	}
 
-	private void updateFieldsFromSigned(AudioFormat formatDefault) {
+	private void updateFieldsFromSigned(final AudioFormat formatDefault) {
 	}
 
-	private boolean isFormatGoodForEncoding(AudioFormat format) {
+	private boolean isFormatGoodForEncoding(final AudioFormat format) {
 		String strEncoding;
 		boolean boolResult = false;
 
@@ -662,7 +671,7 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		return boolResult;
 	}
 
-	private boolean isFormatGoodForSampleRate(AudioFormat format) {
+	private boolean isFormatGoodForSampleRate(final AudioFormat format) {
 		double dSampleRate;
 		String strSampleRate;
 		boolean boolResult = false;
@@ -679,7 +688,7 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		return boolResult;
 	}
 
-	private boolean isFormatGoodForBitSize(AudioFormat format) {
+	private boolean isFormatGoodForBitSize(final AudioFormat format) {
 		int nBits;
 		boolean boolResult = false;
 
@@ -702,7 +711,7 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		return boolResult;
 	}
 
-	private boolean isFormatGoodForChannels(AudioFormat format) {
+	private boolean isFormatGoodForChannels(final AudioFormat format) {
 		int nChannels;
 		boolean boolResult = false;
 
@@ -725,7 +734,7 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		return boolResult;
 	}
 
-	private boolean isFormatGoodForEndian(AudioFormat format) {
+	private boolean isFormatGoodForEndian(final AudioFormat format) {
 		int nEndian;
 		boolean boolResult = false;
 
@@ -748,7 +757,7 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		return boolResult;
 	}
 
-	private boolean isFormatGoodForSigned(AudioFormat format) {
+	private boolean isFormatGoodForSigned(final AudioFormat format) {
 		int nSigned;
 		boolean boolResult = false;
 
@@ -769,7 +778,7 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		return boolResult;
 	}
 
-	private boolean isFormatSupported(AudioFormat format) {
+	private boolean isFormatSupported(final AudioFormat format) {
 		int i;
 		int nCount;
 		AudioFormat formatAudio;
@@ -790,7 +799,7 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 	}
 
 	@Override
-	public void itemStateChanged(ItemEvent event) {
+	public void itemStateChanged(final ItemEvent event) {
 		Object objectSource;
 
 		objectSource = event.getSource();
@@ -812,7 +821,7 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		}
 	}
 
-	private void onEnableTrack(boolean notifyListener) {
+	private void onEnableTrack(final boolean notifyListener) {
 		boolean boolEnable;
 		ActionEvent event;
 
@@ -829,7 +838,7 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		}
 	}
 
-	private void enableControls(boolean boolEnable) {
+	private void enableControls(final boolean boolEnable) {
 		labelEncoding.setEnabled(boolEnable);
 		comboEncoding.setEnabled(boolEnable);
 		labelSampleRate.setEnabled(boolEnable);

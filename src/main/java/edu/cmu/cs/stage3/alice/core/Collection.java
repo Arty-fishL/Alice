@@ -31,7 +31,7 @@ public abstract class Collection extends Element {
 	public final ClassProperty valueClass = new ClassProperty(this, "valueClass", null);
 
 	@Override
-	protected void propertyChanged(Property property, Object value) {
+	protected void propertyChanged(final Property property, final Object value) {
 		if (property == valueClass) {
 			values.setComponentType((Class) value);
 		} else {
@@ -41,12 +41,13 @@ public abstract class Collection extends Element {
 
 	// for jython
 	/** @depracated */
-	public void append(Object o) {
+	public void append(final Object o) {
 		values.add(o);
 	}
+
 	// for jython
 	/** @depracated */
-	public void insert(Number index, Object o) {
+	public void insert(final Number index, final Object o) {
 		values.add(index.intValue(), o);
 	}
 

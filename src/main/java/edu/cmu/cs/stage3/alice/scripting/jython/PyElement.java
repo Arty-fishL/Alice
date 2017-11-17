@@ -24,18 +24,21 @@
 package edu.cmu.cs.stage3.alice.scripting.jython;
 
 public class PyElement extends org.python.core.PyJavaInstance {
-	private edu.cmu.cs.stage3.alice.core.Element m_element;
-	private Namespace m_namespace;
+	private final edu.cmu.cs.stage3.alice.core.Element m_element;
+	private final Namespace m_namespace;
+
 	// private boolean m_explicit = true;
-	public PyElement(edu.cmu.cs.stage3.alice.core.Element element, Namespace namespace) {
+	public PyElement(final edu.cmu.cs.stage3.alice.core.Element element, final Namespace namespace) {
 		super(element);
 		m_element = element;
 		m_namespace = namespace;
 		// __dict__ = new org.python.core.PyStringMap();
 	}
+
 	protected edu.cmu.cs.stage3.alice.core.Element getElement() {
 		return m_element;
 	}
+
 	protected Namespace getNamespace() {
 		return m_namespace;
 	}
@@ -48,7 +51,7 @@ public class PyElement extends org.python.core.PyJavaInstance {
 	// }
 
 	@Override
-	public org.python.core.PyObject __findattr__(String name) {
+	public org.python.core.PyObject __findattr__(final String name) {
 		edu.cmu.cs.stage3.alice.core.Element descendant = m_element.getChildNamedIgnoreCase(name);
 		if (descendant == null) {
 			edu.cmu.cs.stage3.alice.core.Property property = m_element.getPropertyNamedIgnoreCase(name);
@@ -80,11 +83,11 @@ public class PyElement extends org.python.core.PyJavaInstance {
 	}
 
 	@Override
-	public void __setattr__(String name, org.python.core.PyObject attr) {
+	public void __setattr__(final String name, final org.python.core.PyObject attr) {
 		// if( name.equalsIgnoreCase( "__explicit__" ) ) {
 		// m_explicit = attr.__nonzero__();
 		// } else {
-		edu.cmu.cs.stage3.alice.core.Property property = m_element.getPropertyNamedIgnoreCase(name);
+		final edu.cmu.cs.stage3.alice.core.Property property = m_element.getPropertyNamedIgnoreCase(name);
 		if (property != null) {
 			// todo: handle boolean
 			property.set(attr.__tojava__(property.getValueClass()));

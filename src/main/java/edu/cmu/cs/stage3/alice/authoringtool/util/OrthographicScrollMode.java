@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -48,7 +48,8 @@ public class OrthographicScrollMode extends RenderTargetManipulatorMode {
 		this(null, null);
 	}
 
-	public OrthographicScrollMode(UndoRedoStack undoRedoStack, edu.cmu.cs.stage3.alice.core.Scheduler scheduler) {
+	public OrthographicScrollMode(final UndoRedoStack undoRedoStack,
+			final edu.cmu.cs.stage3.alice.core.Scheduler scheduler) {
 		this.undoRedoStack = undoRedoStack;
 		this.scheduler = scheduler;
 	}
@@ -64,7 +65,9 @@ public class OrthographicScrollMode extends RenderTargetManipulatorMode {
 	}
 
 	@Override
-	public void mousePressed(java.awt.event.MouseEvent ev, edu.cmu.cs.stage3.alice.core.Transformable pickedTransformable, edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pickInfo) {
+	public void mousePressed(final java.awt.event.MouseEvent ev,
+			final edu.cmu.cs.stage3.alice.core.Transformable pickedTransformable,
+			final edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pickInfo) {
 		camera = (edu.cmu.cs.stage3.alice.core.Camera) pickInfo.getSource().getBonus();
 		if (camera instanceof edu.cmu.cs.stage3.alice.core.camera.OrthographicCamera) {
 			world = camera.getWorld();
@@ -75,33 +78,36 @@ public class OrthographicScrollMode extends RenderTargetManipulatorMode {
 	}
 
 	@Override
-	public void mouseReleased(java.awt.event.MouseEvent ev) {
-		if (camera instanceof edu.cmu.cs.stage3.alice.core.camera.OrthographicCamera && undoRedoStack != null && scheduler != null) {
+	public void mouseReleased(final java.awt.event.MouseEvent ev) {
+		if (camera instanceof edu.cmu.cs.stage3.alice.core.camera.OrthographicCamera && undoRedoStack != null
+				&& scheduler != null) {
 			if (!ev.isPopupTrigger()) { // TODO: this is a hack. this method
 										// should never be called if the popup
 										// is triggered
-				undoRedoStack.push(new PointOfViewUndoableRedoable(camera, oldTransformation, camera.getLocalTransformation(), scheduler));
+				undoRedoStack.push(new PointOfViewUndoableRedoable(camera, oldTransformation,
+						camera.getLocalTransformation(), scheduler));
 			}
 		}
 	}
 
 	@Override
-	public void mouseDragged(java.awt.event.MouseEvent ev, int dx, int dy) {
+	public void mouseDragged(final java.awt.event.MouseEvent ev, final int dx, final int dy) {
 		if (camera instanceof edu.cmu.cs.stage3.alice.core.camera.OrthographicCamera) {
-			boolean controlDown = ev.isControlDown();
-			boolean shiftDown = ev.isShiftDown();
+			final boolean controlDown = ev.isControlDown();
+			final boolean shiftDown = ev.isShiftDown();
 
-			edu.cmu.cs.stage3.alice.core.camera.OrthographicCamera orthoCamera = (edu.cmu.cs.stage3.alice.core.camera.OrthographicCamera) camera;
-			double nearClipHeightInScreen = renderTarget.getAWTComponent().getHeight(); // TODO:
-																						// should
-																						// be
-																						// viewport,
-																						// but
-																						// not
-																						// working
-																						// right
-																						// now
-			double nearClipHeightInWorld = orthoCamera.getSceneGraphOrthographicCamera().getPlane()[3] - orthoCamera.getSceneGraphOrthographicCamera().getPlane()[1];
+			final edu.cmu.cs.stage3.alice.core.camera.OrthographicCamera orthoCamera = (edu.cmu.cs.stage3.alice.core.camera.OrthographicCamera) camera;
+			final double nearClipHeightInScreen = renderTarget.getAWTComponent().getHeight(); // TODO:
+			// should
+			// be
+			// viewport,
+			// but
+			// not
+			// working
+			// right
+			// now
+			final double nearClipHeightInWorld = orthoCamera.getSceneGraphOrthographicCamera().getPlane()[3]
+					- orthoCamera.getSceneGraphOrthographicCamera().getPlane()[1];
 			double deltaFactor = nearClipHeightInWorld / nearClipHeightInScreen; // height
 																					// of
 																					// a
@@ -110,9 +116,9 @@ public class OrthographicScrollMode extends RenderTargetManipulatorMode {
 																					// in
 																					// world
 																					// space
-			double offsetDist = Math.min(Math.sqrt(dx * dx + dy * dy), scrollRampUpDistance); // mouse
-																								// offset
-																								// distance
+			final double offsetDist = Math.min(Math.sqrt(dx * dx + dy * dy), scrollRampUpDistance); // mouse
+			// offset
+			// distance
 			// deltaFactor *= minScrollFactor + (maxScrollFactor -
 			// minScrollFactor)*(offsetDist/scrollRampUpDistance); // non-linear
 			// scrolling: faster mouse == more than proportionally faster

@@ -7,15 +7,15 @@ import javax.swing.UIManager;
 public class AikMin {
 	// javax.swing.UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
 	// Integer.parseInt( authoringToolConfig.getValue( "fontSize" ) )
-	public static void setFontSize(int fontSize) {
-		Font fontType = UIManager.getFont("Menu.font");
-		String name = fontType.getName();
-		int style = fontType.getStyle();
-		Font font = new Font(name, style, fontSize);
+	public static void setFontSize(final int fontSize) {
+		final Font fontType = UIManager.getFont("Menu.font");
+		final String name = fontType.getName();
+		final int style = fontType.getStyle();
+		final Font font = new Font(name, style, fontSize);
 		setUI(font);
 	}
 
-	private static void setUI(Font font) {
+	private static void setUI(final Font font) {
 		UIManager.put("Button.font", font);
 		UIManager.put("CheckBox.font", font);
 		UIManager.put("CheckBoxMenuItem.acceleratorFont", font);

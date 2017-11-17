@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -37,7 +37,8 @@ public class FileSystemTreeLoader implements DirectoryTreeLoader {
 	// public void open( Object pathname ) throws IllegalArgumentException,
 	// java.io.IOException {
 	@Override
-	public void open(Object pathname) throws IllegalArgumentException, java.io.FileNotFoundException, java.io.IOException {
+	public void open(final Object pathname)
+			throws IllegalArgumentException, java.io.FileNotFoundException, java.io.IOException {
 		if (root != null) {
 			close();
 		}
@@ -70,7 +71,7 @@ public class FileSystemTreeLoader implements DirectoryTreeLoader {
 	}
 
 	@Override
-	public void setCurrentDirectory(String pathname) throws IllegalArgumentException {
+	public void setCurrentDirectory(final String pathname) throws IllegalArgumentException {
 		java.io.File newCurrentDirectory;
 		if (pathname.length() == 0 || pathname.charAt(0) == '/' || pathname.charAt(0) == '\\') {
 			newCurrentDirectory = new java.io.File(root.getAbsolutePath() + pathname);
@@ -96,10 +97,11 @@ public class FileSystemTreeLoader implements DirectoryTreeLoader {
 	// public java.io.InputStream readFile( String filename ) throws
 	// IllegalArgumentException, java.io.IOException {
 	@Override
-	public java.io.InputStream readFile(String filename) throws java.io.FileNotFoundException, java.io.IOException {
+	public java.io.InputStream readFile(final String filename)
+			throws java.io.FileNotFoundException, java.io.IOException {
 		closeCurrentFile();
 
-		java.io.File file = new java.io.File(currentDirectory, filename);
+		final java.io.File file = new java.io.File(currentDirectory, filename);
 		if (!file.exists()) {
 			// throw new IllegalArgumentException( file + " does not exist" );
 			throw new java.io.FileNotFoundException(file + " does not exist");
@@ -122,14 +124,14 @@ public class FileSystemTreeLoader implements DirectoryTreeLoader {
 
 	@Override
 	public String[] getFilesInCurrentDirectory() {
-		java.io.File[] files = currentDirectory.listFiles(new java.io.FileFilter() {
+		final java.io.File[] files = currentDirectory.listFiles(new java.io.FileFilter() {
 			@Override
-			public boolean accept(java.io.File f) {
+			public boolean accept(final java.io.File f) {
 				return f.isFile();
 			}
 		});
 
-		String[] filenames = new String[files.length];
+		final String[] filenames = new String[files.length];
 		for (int i = 0; i < files.length; i++) {
 			filenames[i] = getRelativePathname(files[i]);
 		}
@@ -139,14 +141,14 @@ public class FileSystemTreeLoader implements DirectoryTreeLoader {
 
 	@Override
 	public String[] getDirectoriesInCurrentDirectory() {
-		java.io.File[] files = currentDirectory.listFiles(new java.io.FileFilter() {
+		final java.io.File[] files = currentDirectory.listFiles(new java.io.FileFilter() {
 			@Override
-			public boolean accept(java.io.File f) {
+			public boolean accept(final java.io.File f) {
 				return f.isDirectory();
 			}
 		});
 
-		String[] filenames = new String[files.length];
+		final String[] filenames = new String[files.length];
 		for (int i = 0; i < files.length; i++) {
 			filenames[i] = getRelativePathname(files[i]);
 		}
@@ -154,8 +156,8 @@ public class FileSystemTreeLoader implements DirectoryTreeLoader {
 		return filenames;
 	}
 
-	protected String getRelativePathname(java.io.File file) {
-		StringBuffer dir = new StringBuffer(file.getAbsolutePath());
+	protected String getRelativePathname(final java.io.File file) {
+		final StringBuffer dir = new StringBuffer(file.getAbsolutePath());
 		dir.delete(0, root.getAbsolutePath().length());
 		return dir.toString();
 	}
@@ -165,12 +167,12 @@ public class FileSystemTreeLoader implements DirectoryTreeLoader {
 		return true;
 	}
 
-	static Object getKeepKey(java.io.File currentDirectory, String filename) {
+	static Object getKeepKey(final java.io.File currentDirectory, final String filename) {
 		return new java.io.File(currentDirectory, filename).getAbsolutePath();
 	}
 
 	@Override
-	public Object getKeepKey(String filename) throws KeepFileNotSupportedException {
+	public Object getKeepKey(final String filename) throws KeepFileNotSupportedException {
 		return getKeepKey(currentDirectory, filename);
 	}
 }

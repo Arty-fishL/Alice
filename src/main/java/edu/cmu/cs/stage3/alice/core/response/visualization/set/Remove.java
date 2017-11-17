@@ -4,7 +4,7 @@ public class Remove extends SetVisualizationWithItemAnimation {
 	public class RuntimeRemove extends RuntimeSetVisualizationWithItemAnimation {
 
 		@Override
-		public void epilogue(double t) {
+		public void epilogue(final double t) {
 			super.epilogue(t);
 			getCollection().values.remove(getItem());
 		}

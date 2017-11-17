@@ -8,19 +8,21 @@ public class SoundHandler implements edu.cmu.cs.stage3.alice.core.event.SoundLis
 	SoundStorage mySS = null;
 	AuthoringTool author = null;
 
-	public SoundHandler(SoundStorage s, AuthoringTool a) {
+	public SoundHandler(final SoundStorage s, final AuthoringTool a) {
 		author = a;
 		mySS = s;
 	}
 
 	@Override
-	public void SoundStarted(SoundEvent soundEvent) {
-		long t = System.currentTimeMillis();
+	public void SoundStarted(final SoundEvent soundEvent) {
+		final long t = System.currentTimeMillis();
 
-		SoundResponse sr = soundEvent.getSoundResponse();
+		final SoundResponse sr = soundEvent.getSoundResponse();
 
 		if (mySS != null) {
-			mySS.add(new Long(t), (Double) soundEvent.getDuration(), (edu.cmu.cs.stage3.media.jmfmedia.DataSource) soundEvent.getDataSource(), sr.toMarker.get(), sr.fromMarker.get(), sr.duration.get(), sr.volumeLevel.get());
+			mySS.add(new Long(t), (Double) soundEvent.getDuration(),
+					(edu.cmu.cs.stage3.media.jmfmedia.DataSource) soundEvent.getDataSource(), sr.toMarker.get(),
+					sr.fromMarker.get(), sr.duration.get(), sr.volumeLevel.get());
 		}
 
 	}

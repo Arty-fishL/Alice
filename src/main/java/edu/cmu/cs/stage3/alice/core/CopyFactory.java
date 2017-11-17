@@ -31,14 +31,15 @@ import edu.cmu.cs.stage3.util.Criterion;
 import edu.cmu.cs.stage3.util.HowMuch;
 
 class CopyReferenceGenerator extends edu.cmu.cs.stage3.alice.core.reference.DefaultReferenceGenerator {
-	private Class[] m_classesToShare;
-	public CopyReferenceGenerator(Element internalRoot, Class[] classesToShare) {
+	private final Class[] m_classesToShare;
+
+	public CopyReferenceGenerator(final Element internalRoot, final Class[] classesToShare) {
 		super(internalRoot);
 		m_classesToShare = classesToShare;
 	}
 
 	@Override
-	protected boolean isExternal(Element element) {
+	protected boolean isExternal(final Element element) {
 		if (element.isAssignableToOneOf(m_classesToShare)) {
 			return true;
 		}
@@ -47,22 +48,26 @@ class CopyReferenceGenerator extends edu.cmu.cs.stage3.alice.core.reference.Defa
 }
 
 class VariableCriterion implements edu.cmu.cs.stage3.util.Criterion {
-	private edu.cmu.cs.stage3.util.Criterion m_wrappedCriterion;
-	private String m_name;
-	public VariableCriterion(String name, edu.cmu.cs.stage3.util.Criterion wrappedCriterion) {
+	private final edu.cmu.cs.stage3.util.Criterion m_wrappedCriterion;
+	private final String m_name;
+
+	public VariableCriterion(final String name, final edu.cmu.cs.stage3.util.Criterion wrappedCriterion) {
 		m_name = name;
 		m_wrappedCriterion = wrappedCriterion;
 	}
+
 	public String getName() {
 		return m_name;
 	}
+
 	public edu.cmu.cs.stage3.util.Criterion getWrappedCriterion() {
 		return m_wrappedCriterion;
 	}
+
 	@Override
-	public boolean accept(Object o) {
+	public boolean accept(final Object o) {
 		if (o instanceof Variable) {
-			Variable variable = (Variable) o;
+			final Variable variable = (Variable) o;
 			if (m_name != null) {
 				return m_name.equalsIgnoreCase(variable.name.getStringValue());
 			} else {
@@ -81,15 +86,15 @@ class VariableCriterion implements edu.cmu.cs.stage3.util.Criterion {
 }
 
 class CodeCopyReferenceGenerator extends CopyReferenceGenerator {
-	public CodeCopyReferenceGenerator(Element internalRoot, Class[] classesToShare) {
+	public CodeCopyReferenceGenerator(final Element internalRoot, final Class[] classesToShare) {
 		super(internalRoot, classesToShare);
 	}
 
 	@Override
-	public edu.cmu.cs.stage3.util.Criterion generateReference(edu.cmu.cs.stage3.alice.core.Element element) {
+	public edu.cmu.cs.stage3.util.Criterion generateReference(final edu.cmu.cs.stage3.alice.core.Element element) {
 		edu.cmu.cs.stage3.util.Criterion criterion = super.generateReference(element);
 		if (element instanceof Variable) {
-			Element parent = element.getParent();
+			final Element parent = element.getParent();
 			if (parent instanceof edu.cmu.cs.stage3.alice.core.Sandbox) {
 				// pass
 			} else {
@@ -99,6 +104,7 @@ class CodeCopyReferenceGenerator extends CopyReferenceGenerator {
 		return criterion;
 	}
 }
+
 // class CodeCopyReferenceResolver extends
 // edu.cmu.cs.stage3.alice.core.reference.DefaultReferenceResolver {
 // private Element m_parentToBe;
@@ -142,14 +148,15 @@ class CodeCopyReferenceGenerator extends CopyReferenceGenerator {
 public class CopyFactory {
 	private class ElementCapsule {
 		private class PropertyCapsule {
-			private String m_name;
+			private final String m_name;
 			private Object m_value;
-			private PropertyCapsule(Property property, ReferenceGenerator referenceGenerator) {
+
+			private PropertyCapsule(final Property property, final ReferenceGenerator referenceGenerator) {
 				m_name = property.getName();
 				if (property instanceof ObjectArrayProperty) {
-					ObjectArrayProperty oap = (ObjectArrayProperty) property;
+					final ObjectArrayProperty oap = (ObjectArrayProperty) property;
 					if (oap.get() != null) {
-						Object[] array = new Object[oap.size()];
+						final Object[] array = new Object[oap.size()];
 						for (int i = 0; i < oap.size(); i++) {
 							array[i] = getValueToTuckAway(oap.get(i), referenceGenerator);
 						}
@@ -161,7 +168,8 @@ public class CopyFactory {
 					m_value = getValueToTuckAway(property.get(), referenceGenerator);
 				}
 			}
-			private Object getCopyIfPossible(Object o) {
+
+			private Object getCopyIfPossible(final Object o) {
 				if (o instanceof Cloneable) {
 					// todo
 					// return o.clone();
@@ -172,14 +180,17 @@ public class CopyFactory {
 					return o;
 				}
 			}
-			private Object getValueToTuckAway(Object value, ReferenceGenerator referenceGenerator) {
+
+			private Object getValueToTuckAway(final Object value, final ReferenceGenerator referenceGenerator) {
 				if (value instanceof Element) {
 					return referenceGenerator.generateReference((Element) value);
 				} else {
 					return getCopyIfPossible(value);
 				}
 			}
-			private Object getValueForCopy(Property property, Object value, java.util.Vector referencesToBeResolved) {
+
+			private Object getValueForCopy(final Property property, final Object value,
+					final java.util.Vector referencesToBeResolved) {
 				if (value instanceof Criterion) {
 					referencesToBeResolved.addElement(new PropertyReference(property, (Criterion) value));
 					return null;
@@ -187,7 +198,9 @@ public class CopyFactory {
 					return getCopyIfPossible(value);
 				}
 			}
-			private Object getValueForCopy(ObjectArrayProperty oap, Object value, int i, java.util.Vector referencesToBeResolved) {
+
+			private Object getValueForCopy(final ObjectArrayProperty oap, final Object value, final int i,
+					final java.util.Vector referencesToBeResolved) {
 				if (value instanceof Criterion) {
 					referencesToBeResolved.addElement(new ObjectArrayPropertyReference(oap, (Criterion) value, i, 0));
 					return null;
@@ -196,13 +209,14 @@ public class CopyFactory {
 				}
 			}
 
-			public void set(Element element, java.util.Vector referencesToBeResolved) {
-				Property property = element.getPropertyNamed(m_name);
+			public void set(final Element element, final java.util.Vector referencesToBeResolved) {
+				final Property property = element.getPropertyNamed(m_name);
 				if (property instanceof ObjectArrayProperty) {
-					ObjectArrayProperty oap = (ObjectArrayProperty) property;
+					final ObjectArrayProperty oap = (ObjectArrayProperty) property;
 					if (m_value != null) {
-						Object[] src = (Object[]) m_value;
-						Object[] dst = (Object[]) java.lang.reflect.Array.newInstance(oap.getComponentType(), src.length);
+						final Object[] src = (Object[]) m_value;
+						final Object[] dst = (Object[]) java.lang.reflect.Array.newInstance(oap.getComponentType(),
+								src.length);
 						for (int i = 0; i < src.length; i++) {
 							dst[i] = getValueForCopy(oap, src[i], i, referencesToBeResolved);
 						}
@@ -215,24 +229,28 @@ public class CopyFactory {
 				}
 			}
 		}
-		private Class m_cls;
-		private PropertyCapsule[] m_propertyCapsules;
-		private ElementCapsule[] m_childCapsules;
-		private ElementCapsule(Element element, ReferenceGenerator referenceGenerator, Class[] classesToShare, HowMuch howMuch) {
+
+		private final Class m_cls;
+		private final PropertyCapsule[] m_propertyCapsules;
+		private final ElementCapsule[] m_childCapsules;
+
+		private ElementCapsule(final Element element, final ReferenceGenerator referenceGenerator,
+				final Class[] classesToShare, final HowMuch howMuch) {
 			m_cls = element.getClass();
 
 			// todo: handle howMuch
-			Element[] elementChildren = element.getChildren();
+			final Element[] elementChildren = element.getChildren();
 			m_childCapsules = new ElementCapsule[elementChildren.length];
 			for (int i = 0; i < m_childCapsules.length; i++) {
 				if (elementChildren[i].isAssignableToOneOf(classesToShare)) {
 					m_childCapsules[i] = null;
 				} else {
-					m_childCapsules[i] = new ElementCapsule(elementChildren[i], referenceGenerator, classesToShare, howMuch);
+					m_childCapsules[i] = new ElementCapsule(elementChildren[i], referenceGenerator, classesToShare,
+							howMuch);
 				}
 			}
 
-			Property[] elementProperties = element.getProperties();
+			final Property[] elementProperties = element.getProperties();
 			m_propertyCapsules = new PropertyCapsule[elementProperties.length];
 			for (int i = 0; i < m_propertyCapsules.length; i++) {
 				m_propertyCapsules[i] = new PropertyCapsule(elementProperties[i], referenceGenerator);
@@ -240,35 +258,36 @@ public class CopyFactory {
 		}
 
 		private String getName() {
-			for (PropertyCapsule propertyCapsule : m_propertyCapsules) {
+			for (final PropertyCapsule propertyCapsule : m_propertyCapsules) {
 				if (propertyCapsule.m_name.equals("name")) {
 					return (String) propertyCapsule.m_value;
 				}
 			}
 			return null;
 		}
-		private Element internalManufacture(java.util.Vector referencesToBeResolved) {
+
+		private Element internalManufacture(final java.util.Vector referencesToBeResolved) {
 			Element element;
 			try {
 				element = (Element) m_cls.newInstance();
-			} catch (Throwable t) {
+			} catch (final Throwable t) {
 				throw new RuntimeException();
 			}
-			for (ElementCapsule m_childCapsule : m_childCapsules) {
+			for (final ElementCapsule m_childCapsule : m_childCapsules) {
 				if (m_childCapsule != null) {
 					element.addChild(m_childCapsule.internalManufacture(referencesToBeResolved));
 				}
 			}
-			for (PropertyCapsule m_propertyCapsule : m_propertyCapsules) {
+			for (final PropertyCapsule m_propertyCapsule : m_propertyCapsules) {
 				m_propertyCapsule.set(element, referencesToBeResolved);
 			}
 			return element;
 		}
 
-		private Element lookup(Element element, VariableCriterion variableCriterion) {
+		private Element lookup(final Element element, final VariableCriterion variableCriterion) {
 			if (element != null) {
 				for (int i = 0; i < element.getChildCount(); i++) {
-					Element child = element.getChildAt(i);
+					final Element child = element.getChildAt(i);
 					if (variableCriterion.accept(child)) {
 						return child;
 					}
@@ -278,31 +297,35 @@ public class CopyFactory {
 				return null;
 			}
 		}
+
 		// todo: update progressObserver
-		private Element manufacture(ReferenceResolver referenceResolver, ProgressObserver progressObserver, Element parentToBe) throws UnresolvablePropertyReferencesException {
-			java.util.Vector referencesToBeResolved = new java.util.Vector();
-			Element element = internalManufacture(referencesToBeResolved);
-			java.util.Vector referencesLeftUnresolved = new java.util.Vector();
+		private Element manufacture(final ReferenceResolver referenceResolver, final ProgressObserver progressObserver,
+				final Element parentToBe) throws UnresolvablePropertyReferencesException {
+			final java.util.Vector referencesToBeResolved = new java.util.Vector();
+			final Element element = internalManufacture(referencesToBeResolved);
+			final java.util.Vector referencesLeftUnresolved = new java.util.Vector();
 			element.setParent(parentToBe);
 			try {
 				if (referenceResolver instanceof edu.cmu.cs.stage3.alice.core.reference.DefaultReferenceResolver) {
-					edu.cmu.cs.stage3.alice.core.reference.DefaultReferenceResolver drr = (edu.cmu.cs.stage3.alice.core.reference.DefaultReferenceResolver) referenceResolver;
+					final edu.cmu.cs.stage3.alice.core.reference.DefaultReferenceResolver drr = (edu.cmu.cs.stage3.alice.core.reference.DefaultReferenceResolver) referenceResolver;
 					if (drr.getInternalRoot() == null) {
 						drr.setInternalRoot(element);
 					}
 				}
-				java.util.Enumeration enum0 = referencesToBeResolved.elements();
+				final java.util.Enumeration enum0 = referencesToBeResolved.elements();
 				while (enum0.hasMoreElements()) {
-					PropertyReference propertyReference = (PropertyReference) enum0.nextElement();
+					final PropertyReference propertyReference = (PropertyReference) enum0.nextElement();
 					try {
-						Criterion criterion = propertyReference.getCriterion();
+						final Criterion criterion = propertyReference.getCriterion();
 						if (criterion instanceof VariableCriterion) {
-							VariableCriterion variableCriterion = (VariableCriterion) criterion;
-							Element variable = lookup(propertyReference.getProperty().getOwner(), variableCriterion);
+							final VariableCriterion variableCriterion = (VariableCriterion) criterion;
+							final Element variable = lookup(propertyReference.getProperty().getOwner(),
+									variableCriterion);
 							if (variable != null) {
 								propertyReference.getProperty().set(variable);
 							} else {
-								// System.err.println("Cannot make a copy of this item. Try again using the clipboard");
+								// System.err.println("Cannot make a copy of
+								// this item. Try again using the clipboard");
 								// throw new
 								// edu.cmu.cs.stage3.alice.core.UnresolvableReferenceException(
 								// variableCriterion,
@@ -312,7 +335,7 @@ public class CopyFactory {
 						} else {
 							propertyReference.resolve(referenceResolver);
 						}
-					} catch (UnresolvableReferenceException ure) {
+					} catch (final UnresolvableReferenceException ure) {
 						referencesLeftUnresolved.addElement(propertyReference);
 					}
 				}
@@ -320,11 +343,11 @@ public class CopyFactory {
 				element.setParent(null);
 			}
 			if (referencesLeftUnresolved.size() > 0) {
-				PropertyReference[] propertyReferences = new PropertyReference[referencesLeftUnresolved.size()];
+				final PropertyReference[] propertyReferences = new PropertyReference[referencesLeftUnresolved.size()];
 				referencesLeftUnresolved.copyInto(propertyReferences);
-				StringBuffer sb = new StringBuffer();
+				final StringBuffer sb = new StringBuffer();
 				sb.append("PropertyReferences: \n");
-				for (PropertyReference propertyReference : propertyReferences) {
+				for (final PropertyReference propertyReference : propertyReferences) {
 					sb.append(propertyReference);
 					sb.append("\n");
 				}
@@ -334,12 +357,15 @@ public class CopyFactory {
 		}
 	}
 
-	private ElementCapsule m_capsule;
-	private Class m_valueClass;
+	private final ElementCapsule m_capsule;
+	private final Class m_valueClass;
 	private Class HACK_m_hackValueClass;
-	public CopyFactory(Element element, Element internalReferenceRoot, Class[] classesToShare, HowMuch howMuch) {
+
+	public CopyFactory(final Element element, final Element internalReferenceRoot, final Class[] classesToShare,
+			final HowMuch howMuch) {
 		ReferenceGenerator referenceGenerator;
-		if (element instanceof Response || element instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.Component) {
+		if (element instanceof Response
+				|| element instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.Component) {
 			referenceGenerator = new CodeCopyReferenceGenerator(internalReferenceRoot, classesToShare);
 		} else {
 			referenceGenerator = new CopyReferenceGenerator(internalReferenceRoot, classesToShare);
@@ -351,21 +377,27 @@ public class CopyFactory {
 			if (element instanceof Expression) {
 				HACK_m_hackValueClass = ((Expression) element).getValueClass();
 			}
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			// pass
 		}
 	}
+
 	public Class getValueClass() {
 		return m_valueClass;
 	}
+
 	public Class HACK_getExpressionValueClass() {
 		return HACK_m_hackValueClass;
 	}
 
-	public Element manufactureCopy(ReferenceResolver referenceResolver, ProgressObserver progressObserver, Element parentToBe) throws UnresolvablePropertyReferencesException {
+	public Element manufactureCopy(final ReferenceResolver referenceResolver, final ProgressObserver progressObserver,
+			final Element parentToBe) throws UnresolvablePropertyReferencesException {
 		return m_capsule.manufacture(referenceResolver, progressObserver, parentToBe);
 	}
-	public Element manufactureCopy(Element externalRoot, Element internalRoot, ProgressObserver progressObserver, Element parentToBe) throws UnresolvablePropertyReferencesException {
+
+	public Element manufactureCopy(final Element externalRoot, final Element internalRoot,
+			final ProgressObserver progressObserver, final Element parentToBe)
+			throws UnresolvablePropertyReferencesException {
 		// ReferenceResolver referenceResolver;
 		// if( Response.class.isAssignableFrom( m_valueClass ) ||
 		// edu.cmu.cs.stage3.alice.core.question.userdefined.Component.class.isAssignableFrom(
@@ -377,15 +409,22 @@ public class CopyFactory {
 		// }
 		// return manufactureCopy( referenceResolver, progressObserver,
 		// parentToBe );
-		return manufactureCopy(new edu.cmu.cs.stage3.alice.core.reference.DefaultReferenceResolver(internalRoot, externalRoot), progressObserver, parentToBe);
+		return manufactureCopy(
+				new edu.cmu.cs.stage3.alice.core.reference.DefaultReferenceResolver(internalRoot, externalRoot),
+				progressObserver, parentToBe);
 	}
-	public Element manufactureCopy(Element externalRoot, Element internalRoot, ProgressObserver progressObserver) throws UnresolvablePropertyReferencesException {
+
+	public Element manufactureCopy(final Element externalRoot, final Element internalRoot,
+			final ProgressObserver progressObserver) throws UnresolvablePropertyReferencesException {
 		return manufactureCopy(externalRoot, internalRoot, progressObserver, null);
 	}
-	public Element manufactureCopy(Element externalRoot, Element internalRoot) throws UnresolvablePropertyReferencesException {
+
+	public Element manufactureCopy(final Element externalRoot, final Element internalRoot)
+			throws UnresolvablePropertyReferencesException {
 		return manufactureCopy(externalRoot, internalRoot, null);
 	}
-	public Element manufactureCopy(Element externalRoot) throws UnresolvablePropertyReferencesException {
+
+	public Element manufactureCopy(final Element externalRoot) throws UnresolvablePropertyReferencesException {
 		return manufactureCopy(externalRoot, (Element) null);
 	}
 

@@ -30,28 +30,33 @@ import edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference;
 
 public class ObjectArrayProperty extends ObjectProperty {
 	private Object[] m_arrayValueIfNull = null;
-	private java.util.Vector m_objectArrayPropertyListeners = new java.util.Vector();
+	private final java.util.Vector m_objectArrayPropertyListeners = new java.util.Vector();
 	private ObjectArrayPropertyListener[] m_objectArrayPropertyListenerArray = null;
-	public ObjectArrayProperty(Element owner, String name, Object[] defaultValue, Class valueClass) {
+
+	public ObjectArrayProperty(final Element owner, final String name, final Object[] defaultValue,
+			final Class valueClass) {
 		super(owner, name, defaultValue, valueClass);
 	}
 
-	public void addObjectArrayPropertyListener(ObjectArrayPropertyListener objectArrayPropertyListener) {
+	public void addObjectArrayPropertyListener(final ObjectArrayPropertyListener objectArrayPropertyListener) {
 		if (m_objectArrayPropertyListeners.contains(objectArrayPropertyListener)) {
 			// edu.cmu.cs.stage3.alice.core.Element.warnln( "WARNING: " + this +
 			// " already has objectArrayPropertyListener " +
 			// objectArrayPropertyListener +
-			// "(class="+objectArrayPropertyListener.getClass()+").  NOT added again."
+			// "(class="+objectArrayPropertyListener.getClass()+"). NOT added
+			// again."
 			// );
 		} else {
 			m_objectArrayPropertyListeners.addElement(objectArrayPropertyListener);
 			m_objectArrayPropertyListenerArray = null;
 		}
 	}
-	public void removeObjectArrayPropertyListener(ObjectArrayPropertyListener objectArrayPropertyListener) {
+
+	public void removeObjectArrayPropertyListener(final ObjectArrayPropertyListener objectArrayPropertyListener) {
 		m_objectArrayPropertyListeners.removeElement(objectArrayPropertyListener);
 		m_objectArrayPropertyListenerArray = null;
 	}
+
 	public ObjectArrayPropertyListener[] getObjectArrayPropertyListeners() {
 		if (m_objectArrayPropertyListenerArray == null) {
 			m_objectArrayPropertyListenerArray = new ObjectArrayPropertyListener[m_objectArrayPropertyListeners.size()];
@@ -63,8 +68,9 @@ public class ObjectArrayProperty extends ObjectProperty {
 	public Class getComponentType() {
 		return getValueClass().getComponentType();
 	}
-	public void setComponentType(Class componentType) {
-		Object value = get();
+
+	public void setComponentType(final Class componentType) {
+		final Object value = get();
 		Object[] prevArray = null;
 		int length = 0;
 		if (value != null) {
@@ -75,15 +81,16 @@ public class ObjectArrayProperty extends ObjectProperty {
 				// todo: handle expressions?
 			}
 		}
-		Object[] currArray = (Object[]) java.lang.reflect.Array.newInstance(componentType, length);
+		final Object[] currArray = (Object[]) java.lang.reflect.Array.newInstance(componentType, length);
 		setValueClass(currArray.getClass());
 		if (value != null) {
 			System.arraycopy(prevArray, 0, currArray, 0, length);
 			set(currArray);
 		}
 	}
+
 	public Object[] getArrayValue() {
-		Object[] value = (Object[]) getValue();
+		final Object[] value = (Object[]) getValue();
 		if (value != null) {
 			return value;
 		} else {
@@ -95,39 +102,46 @@ public class ObjectArrayProperty extends ObjectProperty {
 	}
 
 	@Override
-	protected void decodeObject(org.w3c.dom.Element node, edu.cmu.cs.stage3.io.DirectoryTreeLoader loader, java.util.Vector referencesToBeResolved, double version) throws java.io.IOException {
-		String componentTypeName = node.getAttribute("componentClass");
+	protected void decodeObject(final org.w3c.dom.Element node, final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader,
+			final java.util.Vector referencesToBeResolved, final double version) throws java.io.IOException {
+		final String componentTypeName = node.getAttribute("componentClass");
 		try {
-			Class arrayComponentCls = Class.forName(componentTypeName);
-			org.w3c.dom.NodeList itemNodeList = node.getElementsByTagName("item");
-			Object[] array = (Object[]) java.lang.reflect.Array.newInstance(arrayComponentCls, itemNodeList.getLength());
+			final Class arrayComponentCls = Class.forName(componentTypeName);
+			final org.w3c.dom.NodeList itemNodeList = node.getElementsByTagName("item");
+			final Object[] array = (Object[]) java.lang.reflect.Array.newInstance(arrayComponentCls,
+					itemNodeList.getLength());
 			int precedingReferenceTotal = 0;
 			for (int i = 0; i < array.length; i++) {
-				org.w3c.dom.Element itemNode = (org.w3c.dom.Element) itemNodeList.item(i);
-				String criterionTypeName = itemNode.getAttribute("criterionClass");
+				final org.w3c.dom.Element itemNode = (org.w3c.dom.Element) itemNodeList.item(i);
+				final String criterionTypeName = itemNode.getAttribute("criterionClass");
 				if (criterionTypeName.length() > 0) {
 					try {
-						Class criterionType = Class.forName(criterionTypeName);
-						String text = getNodeText(itemNode);
+						final Class criterionType = Class.forName(criterionTypeName);
+						final String text = getNodeText(itemNode);
 						edu.cmu.cs.stage3.util.Criterion criterion;
-						if (criterionType.isAssignableFrom(edu.cmu.cs.stage3.alice.core.criterion.InternalReferenceKeyedCriterion.class)) {
-							criterion = new edu.cmu.cs.stage3.alice.core.criterion.InternalReferenceKeyedCriterion(text);
-						} else if (criterionType.isAssignableFrom(edu.cmu.cs.stage3.alice.core.criterion.ExternalReferenceKeyedCriterion.class)) {
-							criterion = new edu.cmu.cs.stage3.alice.core.criterion.ExternalReferenceKeyedCriterion(text);
+						if (criterionType.isAssignableFrom(
+								edu.cmu.cs.stage3.alice.core.criterion.InternalReferenceKeyedCriterion.class)) {
+							criterion = new edu.cmu.cs.stage3.alice.core.criterion.InternalReferenceKeyedCriterion(
+									text);
+						} else if (criterionType.isAssignableFrom(
+								edu.cmu.cs.stage3.alice.core.criterion.ExternalReferenceKeyedCriterion.class)) {
+							criterion = new edu.cmu.cs.stage3.alice.core.criterion.ExternalReferenceKeyedCriterion(
+									text);
 						} else {
 							criterion = (edu.cmu.cs.stage3.util.Criterion) getValueOf(criterionType, text);
 						}
-						referencesToBeResolved.addElement(new ObjectArrayPropertyReference(this, criterion, i, precedingReferenceTotal++));
-					} catch (ClassNotFoundException cnfe) {
+						referencesToBeResolved.addElement(
+								new ObjectArrayPropertyReference(this, criterion, i, precedingReferenceTotal++));
+					} catch (final ClassNotFoundException cnfe) {
 						throw new RuntimeException(criterionTypeName);
 					}
 				} else {
-					String itemTypeName = itemNode.getAttribute("class");
+					final String itemTypeName = itemNode.getAttribute("class");
 					if (itemTypeName.length() > 0) {
 						try {
-							Class itemType = Class.forName(itemTypeName);
+							final Class itemType = Class.forName(itemTypeName);
 							array[i] = getValueOf(itemType, getNodeText(itemNode));
-						} catch (ClassNotFoundException cnfe) {
+						} catch (final ClassNotFoundException cnfe) {
 							throw new RuntimeException(itemTypeName);
 						}
 					} else {
@@ -136,13 +150,15 @@ public class ObjectArrayProperty extends ObjectProperty {
 				}
 			}
 			set(array);
-		} catch (ClassNotFoundException cnfe) {
+		} catch (final ClassNotFoundException cnfe) {
 			throw new RuntimeException(componentTypeName);
 		}
 	}
 
 	@Override
-	protected void encodeObject(org.w3c.dom.Document document, org.w3c.dom.Element node, edu.cmu.cs.stage3.io.DirectoryTreeStorer storer, edu.cmu.cs.stage3.alice.core.ReferenceGenerator referenceGenerator) throws java.io.IOException {
+	protected void encodeObject(final org.w3c.dom.Document document, final org.w3c.dom.Element node,
+			final edu.cmu.cs.stage3.io.DirectoryTreeStorer storer,
+			final edu.cmu.cs.stage3.alice.core.ReferenceGenerator referenceGenerator) throws java.io.IOException {
 		if (node == null) {
 			System.err.println("node==null");
 			System.err.println(this);
@@ -152,12 +168,13 @@ public class ObjectArrayProperty extends ObjectProperty {
 			System.err.println(this);
 		}
 		node.setAttribute("componentClass", getComponentType().getName());
-		Object[] array = getArrayValue();
+		final Object[] array = getArrayValue();
 		if (array != null && array.length > 0) {
-			for (Object item : array) {
-				org.w3c.dom.Element itemNode = document.createElement("item");
+			for (final Object item : array) {
+				final org.w3c.dom.Element itemNode = document.createElement("item");
 				if (item instanceof edu.cmu.cs.stage3.alice.core.Element) {
-					encodeReference(document, itemNode, referenceGenerator, (edu.cmu.cs.stage3.alice.core.Element) item);
+					encodeReference(document, itemNode, referenceGenerator,
+							(edu.cmu.cs.stage3.alice.core.Element) item);
 				} else if (item != null) {
 					itemNode.setAttribute("class", item.getClass().getName());
 					itemNode.appendChild(createNodeForString(document, item.toString()));
@@ -168,11 +185,12 @@ public class ObjectArrayProperty extends ObjectProperty {
 		}
 	}
 
-	private void onItemChanging(Object item, int changeType, int oldIndex, int newIndex) {
+	private void onItemChanging(final Object item, final int changeType, final int oldIndex, final int newIndex) {
 		if (!m_objectArrayPropertyListeners.isEmpty()) {
-			ObjectArrayPropertyEvent objectArrayPropertyEvent = new ObjectArrayPropertyEvent(this, item, changeType, oldIndex, newIndex);
-			ObjectArrayPropertyListener[] objectArrayPropertyListeners = getObjectArrayPropertyListeners();
-			for (ObjectArrayPropertyListener objectArrayPropertyListener : objectArrayPropertyListeners) {
+			final ObjectArrayPropertyEvent objectArrayPropertyEvent = new ObjectArrayPropertyEvent(this, item,
+					changeType, oldIndex, newIndex);
+			final ObjectArrayPropertyListener[] objectArrayPropertyListeners = getObjectArrayPropertyListeners();
+			for (final ObjectArrayPropertyListener objectArrayPropertyListener : objectArrayPropertyListeners) {
 				objectArrayPropertyListener.objectArrayPropertyChanging(objectArrayPropertyEvent);
 			}
 			/*
@@ -186,11 +204,13 @@ public class ObjectArrayProperty extends ObjectProperty {
 			 */
 		}
 	}
-	private void onItemChanged(Object item, int changeType, int oldIndex, int newIndex) {
+
+	private void onItemChanged(final Object item, final int changeType, final int oldIndex, final int newIndex) {
 		if (!m_objectArrayPropertyListeners.isEmpty()) {
-			ObjectArrayPropertyEvent objectArrayPropertyEvent = new ObjectArrayPropertyEvent(this, item, changeType, oldIndex, newIndex);
-			ObjectArrayPropertyListener[] objectArrayPropertyListeners = getObjectArrayPropertyListeners();
-			for (ObjectArrayPropertyListener objectArrayPropertyListener : objectArrayPropertyListeners) {
+			final ObjectArrayPropertyEvent objectArrayPropertyEvent = new ObjectArrayPropertyEvent(this, item,
+					changeType, oldIndex, newIndex);
+			final ObjectArrayPropertyListener[] objectArrayPropertyListeners = getObjectArrayPropertyListeners();
+			for (final ObjectArrayPropertyListener objectArrayPropertyListener : objectArrayPropertyListeners) {
 				objectArrayPropertyListener.objectArrayPropertyChanged(objectArrayPropertyEvent);
 			}
 			/*
@@ -205,11 +225,11 @@ public class ObjectArrayProperty extends ObjectProperty {
 		}
 	}
 
-	public void add(int index, Object o) {
+	public void add(final int index, final Object o) {
 		if (index == -1) {
 			add(o);
 		} else {
-			Object[] prev = getArrayValue();
+			final Object[] prev = getArrayValue();
 			Object[] curr;
 			if (prev == null) {
 				if (index == 0) {
@@ -220,7 +240,7 @@ public class ObjectArrayProperty extends ObjectProperty {
 				}
 			} else {
 				onItemChanging(o, ObjectArrayPropertyEvent.ITEM_INSERTED, -1, index);
-				int n = prev.length;
+				final int n = prev.length;
 				curr = (Object[]) java.lang.reflect.Array.newInstance(getComponentType(), n + 1);
 				if (index > 0) {
 					System.arraycopy(prev, 0, curr, 0, index);
@@ -234,11 +254,13 @@ public class ObjectArrayProperty extends ObjectProperty {
 			}
 		}
 	}
-	public void addValue(int index, Object o) {
+
+	public void addValue(final int index, final Object o) {
 		add(index, evaluateIfNecessary(o));
 	}
-	public void add(Object o) {
-		Object[] prev = getArrayValue();
+
+	public void add(final Object o) {
+		final Object[] prev = getArrayValue();
 		Object[] curr;
 		int index;
 		if (prev == null) {
@@ -257,14 +279,16 @@ public class ObjectArrayProperty extends ObjectProperty {
 		set(curr);
 		onItemChanged(o, ObjectArrayPropertyEvent.ITEM_INSERTED, -1, index);
 	}
-	public void addValue(Object o) {
+
+	public void addValue(final Object o) {
 		add(evaluateIfNecessary(o));
 	}
-	public void remove(int index) {
-		Object[] prev = getArrayValue();
+
+	public void remove(final int index) {
+		final Object[] prev = getArrayValue();
 		onItemChanging(prev[index], ObjectArrayPropertyEvent.ITEM_REMOVED, index, -1);
-		int n = prev.length;
-		Object[] curr = (Object[]) java.lang.reflect.Array.newInstance(getComponentType(), n - 1);
+		final int n = prev.length;
+		final Object[] curr = (Object[]) java.lang.reflect.Array.newInstance(getComponentType(), n - 1);
 		if (index > 0) {
 			System.arraycopy(prev, 0, curr, 0, index);
 		}
@@ -274,10 +298,11 @@ public class ObjectArrayProperty extends ObjectProperty {
 		set(curr);
 		onItemChanged(prev[index], ObjectArrayPropertyEvent.ITEM_REMOVED, index, -1);
 	}
-	public void remove(Object o) {
-		Object[] prev = getArrayValue();
+
+	public void remove(final Object o) {
+		final Object[] prev = getArrayValue();
 		if (prev != null) {
-			int n = prev.length;
+			final int n = prev.length;
 			for (int i = 0; i < n; i++) {
 				if (prev[i] == o) {
 					remove(i);
@@ -286,17 +311,19 @@ public class ObjectArrayProperty extends ObjectProperty {
 			}
 		}
 	}
-	public void removeValue(Object o) {
+
+	public void removeValue(final Object o) {
 		remove(evaluateIfNecessary(o));
 	}
-	public void set(int index, Object o) {
+
+	public void set(final int index, Object o) {
 		ensureCapacity(index + 1);
-		int n = size();
+		final int n = size();
 		if (index >= 0 && index < n) {
-			Object[] prev = getArrayValue();
+			final Object[] prev = getArrayValue();
 			onItemChanging(prev[index], ObjectArrayPropertyEvent.ITEM_REMOVED, index, -1);
 			onItemChanging(o, ObjectArrayPropertyEvent.ITEM_INSERTED, -1, index);
-			Object[] curr = (Object[]) java.lang.reflect.Array.newInstance(getComponentType(), n);
+			final Object[] curr = (Object[]) java.lang.reflect.Array.newInstance(getComponentType(), n);
 			System.arraycopy(prev, 0, curr, 0, n);
 			if (o instanceof edu.cmu.cs.stage3.alice.core.Expression) {
 				if (!edu.cmu.cs.stage3.alice.core.Expression.class.isAssignableFrom(getComponentType())) {
@@ -311,11 +338,13 @@ public class ObjectArrayProperty extends ObjectProperty {
 			throw new ArrayIndexOutOfBoundsException("index " + index + " is out of bounds [ 0, " + n + ")");
 		}
 	}
-	public void setValue(int index, Object o) {
+
+	public void setValue(final int index, final Object o) {
 		set(index, evaluateIfNecessary(o));
 	}
+
 	public void clear() {
-		Object[] prev = getArrayValue();
+		final Object[] prev = getArrayValue();
 		for (int i = 0; i < prev.length; i++) {
 			onItemChanging(prev[i], ObjectArrayPropertyEvent.ITEM_REMOVED, i, -1);
 		}
@@ -325,13 +354,13 @@ public class ObjectArrayProperty extends ObjectProperty {
 		}
 	}
 
-	public void shift(int fromIndex, int toIndex) {
+	public void shift(final int fromIndex, final int toIndex) {
 		if (fromIndex != toIndex) {
-			Object[] prev = getArrayValue();
+			final Object[] prev = getArrayValue();
 
 			onItemChanging(prev[fromIndex], ObjectArrayPropertyEvent.ITEM_SHIFTED, fromIndex, toIndex);
 
-			Object[] curr = (Object[]) java.lang.reflect.Array.newInstance(getComponentType(), prev.length);
+			final Object[] curr = (Object[]) java.lang.reflect.Array.newInstance(getComponentType(), prev.length);
 			if (fromIndex < toIndex) {
 				for (int i = 0; i < fromIndex; i++) {
 					curr[i] = prev[i];
@@ -361,23 +390,23 @@ public class ObjectArrayProperty extends ObjectProperty {
 	}
 
 	public Object get(int index) {
-		int n = size();
+		final int n = size();
 		if (index == -1) {
 			index = n;
 		}
 		if (index >= 0 && index < n) {
-			Object[] array = getArrayValue();
+			final Object[] array = getArrayValue();
 			return array[index];
 		} else {
 			return null;
 		}
 	}
 
-	public Object getValue(int index) {
+	public Object getValue(final int index) {
 		return evaluateIfNecessary(get(index));
 	}
 
-	private static boolean areEqual(Object a, Object b, boolean evaluateExpressionIfNecessary) {
+	private static boolean areEqual(final Object a, final Object b, final boolean evaluateExpressionIfNecessary) {
 		if (evaluateExpressionIfNecessary) {
 			if (a == null) {
 				return b == null;
@@ -385,8 +414,8 @@ public class ObjectArrayProperty extends ObjectProperty {
 				if (a.equals(b)) {
 					return true;
 				} else if (a instanceof edu.cmu.cs.stage3.alice.core.Expression) {
-					edu.cmu.cs.stage3.alice.core.Expression e = (edu.cmu.cs.stage3.alice.core.Expression) a;
-					Object v = e.getValue();
+					final edu.cmu.cs.stage3.alice.core.Expression e = (edu.cmu.cs.stage3.alice.core.Expression) a;
+					final Object v = e.getValue();
 					if (v == null) {
 						return b == null;
 					} else {
@@ -400,8 +429,9 @@ public class ObjectArrayProperty extends ObjectProperty {
 			return a == b;
 		}
 	}
-	private int indexOf(Object o, int index, boolean evaluateExpressionIfNecessary) {
-		Object[] array = getArrayValue();
+
+	private int indexOf(final Object o, final int index, final boolean evaluateExpressionIfNecessary) {
+		final Object[] array = getArrayValue();
 		if (array != null) {
 			for (int i = index; i < array.length; i++) {
 				if (areEqual(o, array[i], evaluateExpressionIfNecessary)) {
@@ -411,20 +441,25 @@ public class ObjectArrayProperty extends ObjectProperty {
 		}
 		return -1;
 	}
-	public int indexOf(Object o, int index) {
+
+	public int indexOf(final Object o, final int index) {
 		return indexOf(o, index, false);
 	}
-	public int indexOf(Object o) {
+
+	public int indexOf(final Object o) {
 		return indexOf(o, 0);
 	}
-	public int indexOfValue(Object o, int index) {
+
+	public int indexOfValue(final Object o, final int index) {
 		return indexOf(o, index, true);
 	}
-	public int indexOfValue(Object o) {
+
+	public int indexOfValue(final Object o) {
 		return indexOfValue(o, size() - 1);
 	}
-	private int lastIndexOf(Object o, int index, boolean evaluateExpressionIfNecessary) {
-		Object[] array = getArrayValue();
+
+	private int lastIndexOf(final Object o, final int index, final boolean evaluateExpressionIfNecessary) {
+		final Object[] array = getArrayValue();
 		if (array != null) {
 			for (int i = index; i >= 0; i--) {
 				if (areEqual(o, array[i], evaluateExpressionIfNecessary)) {
@@ -434,41 +469,48 @@ public class ObjectArrayProperty extends ObjectProperty {
 		}
 		return -1;
 	}
-	public int lastIndexOf(Object o, int index) {
+
+	public int lastIndexOf(final Object o, final int index) {
 		return lastIndexOf(o, index, false);
 	}
-	public int lastIndexOf(Object o) {
+
+	public int lastIndexOf(final Object o) {
 		return lastIndexOf(o, size() - 1);
 	}
-	public int lastIndexOfValue(Object o, int index) {
+
+	public int lastIndexOfValue(final Object o, final int index) {
 		return lastIndexOf(o, index, true);
 	}
-	public int lastIndexOfValue(Object o) {
+
+	public int lastIndexOfValue(final Object o) {
 		return lastIndexOfValue(o, size() - 1);
 	}
 
-	public boolean contains(Object o) {
+	public boolean contains(final Object o) {
 		return indexOf(o) != -1;
 	}
-	public boolean containsValue(Object o) {
+
+	public boolean containsValue(final Object o) {
 		return indexOfValue(o) != -1;
 	}
 
 	public boolean isEmpty() {
 		return size() == 0;
 	}
+
 	public int size() {
-		Object[] value = getArrayValue();
+		final Object[] value = getArrayValue();
 		if (value != null) {
 			return value.length;
 		} else {
 			return 0;
 		}
 	}
-	public void ensureCapacity(int minCapacity) {
-		Object[] prev = getArrayValue();
+
+	public void ensureCapacity(final int minCapacity) {
+		final Object[] prev = getArrayValue();
 		if (prev.length < minCapacity) {
-			Object[] curr = (Object[]) java.lang.reflect.Array.newInstance(getComponentType(), minCapacity);
+			final Object[] curr = (Object[]) java.lang.reflect.Array.newInstance(getComponentType(), minCapacity);
 			System.arraycopy(prev, 0, curr, 0, prev.length);
 			set(curr);
 		}

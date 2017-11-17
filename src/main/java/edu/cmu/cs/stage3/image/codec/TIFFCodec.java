@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -70,17 +70,17 @@ public final class TIFFCodec extends ImageCodec {
 	}
 
 	@Override
-	public boolean canEncodeImage(RenderedImage im, ImageEncodeParam param) {
+	public boolean canEncodeImage(final RenderedImage im, final ImageEncodeParam param) {
 		return true;
 	}
 
 	@Override
-	protected ImageEncoder createImageEncoder(OutputStream dst, ImageEncodeParam param) {
+	protected ImageEncoder createImageEncoder(final OutputStream dst, final ImageEncodeParam param) {
 		return new TIFFImageEncoder(dst, param);
 	}
 
 	@Override
-	protected ImageDecoder createImageDecoder(SeekableStream src, ImageDecodeParam param) {
+	protected ImageDecoder createImageDecoder(final SeekableStream src, final ImageDecodeParam param) {
 		return new TIFFImageDecoder(src, param);
 	}
 
@@ -90,7 +90,7 @@ public final class TIFFCodec extends ImageCodec {
 	}
 
 	@Override
-	public boolean isFormatRecognized(byte[] header) {
+	public boolean isFormatRecognized(final byte[] header) {
 		if (header[0] == 0x49 && header[1] == 0x49 && header[2] == 0x2a && header[3] == 0x00) {
 			return true;
 		}

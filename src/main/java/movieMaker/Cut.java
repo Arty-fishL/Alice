@@ -75,13 +75,14 @@ public class Cut implements ControllerListener, DataSinkListener {
 	 * Main program
 	 */
 
-	public static void main(String[] args) {
+	public static void main(final String[] args) {
 
 		String inputURL = null;
 		String outputURL = null;
 		long start[], end[];
-		Vector startV = new Vector(); // start piece (in long form apparently)
-		Vector endV = new Vector();// end piece
+		final Vector startV = new Vector(); // start piece (in long form
+											// apparently)
+		final Vector endV = new Vector();// end piece
 		boolean frameMode = false; // whether specified in frames or seconds
 									// (want seconds) in miliseconds?
 
@@ -202,7 +203,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 		}
 
 		// Trancode with the specified parameters.
-		Cut cut = new Cut();
+		final Cut cut = new Cut();
 
 		if (!cut.doIt(iml, oml, start, end, frameMode)) {
 			System.err.println("Failed to cut the input");
@@ -211,14 +212,14 @@ public class Cut implements ControllerListener, DataSinkListener {
 		System.exit(0);
 	}
 
-	public boolean doCut(String input, String output, Vector startV, Vector endV) {
-		String inputURL = input;
-		String outputURL = output;
+	public boolean doCut(final String input, final String output, final Vector startV, final Vector endV) {
+		final String inputURL = input;
+		final String outputURL = output;
 		MediaLocator iml;
 		MediaLocator oml;
 
-		long[] start = new long[startV.size()];
-		long[] end = new long[startV.size()];
+		final long[] start = new long[startV.size()];
+		final long[] end = new long[startV.size()];
 		long prevEnd = 0;
 
 		// Parse the start and end points.
@@ -228,7 +229,8 @@ public class Cut implements ControllerListener, DataSinkListener {
 			end[j] = ((Long) endV.elementAt(j)).longValue();
 
 			if (prevEnd > start[j]) {
-				// System.err.println("Previous end point cannot be > the next start point.");
+				// System.err.println("Previous end point cannot be > the next
+				// start point.");
 				prUsage();
 			} else if (start[j] >= end[j]) {
 				// System.err.println("Start point cannot be >= end point.");
@@ -269,7 +271,8 @@ public class Cut implements ControllerListener, DataSinkListener {
 	 * Given a source media locator, destination media locator and a start and
 	 * end point, this program cuts the pieces out.
 	 */
-	public boolean doIt(MediaLocator inML, MediaLocator outML, long start[], long end[], boolean frameMode) {
+	public boolean doIt(final MediaLocator inML, final MediaLocator outML, final long start[], final long end[],
+			final boolean frameMode) {
 
 		// Guess the output content descriptor from the file extension.
 		ContentDescriptor cd;
@@ -284,7 +287,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 		try {
 			// System.err.println("- Create processor for: " + inML);
 			p = Manager.createProcessor(inML);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			System.err.println("Cannot create a processor from the given url: " + e);
 			return false;
 		}
@@ -308,7 +311,8 @@ public class Cut implements ControllerListener, DataSinkListener {
 
 		// Translate frame # into time.
 		if (frameMode) {
-			FramePositioningControl fpc = (FramePositioningControl) p.getControl("javax.media.control.FramePositioningControl");
+			FramePositioningControl fpc = (FramePositioningControl) p
+					.getControl("javax.media.control.FramePositioningControl");
 
 			if (fpc != null) {
 				Time t;
@@ -334,18 +338,20 @@ public class Cut implements ControllerListener, DataSinkListener {
 			}
 
 			if (fpc == null) {
-				// em.err.println("Sorry... the given input media type does not support frame positioning.");
+				// em.err.println("Sorry... the given input media type does not
+				// support frame positioning.");
 				return false;
 			}
 		}
 
-		SuperCutDataSource ds = new SuperCutDataSource(p, inML, start, end);
+		final SuperCutDataSource ds = new SuperCutDataSource(p, inML, start, end);
 
 		// Create the processor to generate the final output.
 		try {
 			p = Manager.createProcessor(ds);
-		} catch (Exception e) {
-			// System.err.println("Failed to create a processor to concatenate the inputs.");
+		} catch (final Exception e) {
+			// System.err.println("Failed to create a processor to concatenate
+			// the inputs.");
 			return false;
 		}
 
@@ -374,7 +380,8 @@ public class Cut implements ControllerListener, DataSinkListener {
 		// Now, we'll need to create a DataSink.
 		DataSink dsink;
 		while ((dsink = createDataSink(p, outML)) == null) {
-			// System.err.println("Failed to create a DataSink for the given output MediaLocator: "
+			// System.err.println("Failed to create a DataSink for the given
+			// output MediaLocator: "
 			// + outML);
 			// return false;
 		}
@@ -388,7 +395,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 		try {
 			p.start();
 			dsink.start();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			System.err.println("IO error during concatenation");
 			return false;
 		}
@@ -402,12 +409,13 @@ public class Cut implements ControllerListener, DataSinkListener {
 				dsink.close();
 				dsink.removeDataSinkListener(this);
 			}
-		} catch (Exception e) {}
+		} catch (final Exception e) {
+		}
 		p.removeControllerListener(this);
 
 		p.close();
 		p.deallocate();
-		// System.err.println("  ...done cutting.");
+		// System.err.println(" ...done cutting.");
 
 		return true;
 	}
@@ -416,11 +424,11 @@ public class Cut implements ControllerListener, DataSinkListener {
 	 * Transcode the MPEG audio to linear and video to JPEG so we can do the
 	 * cutting.
 	 */
-	void checkTrackFormats(Processor p) {
+	void checkTrackFormats(final Processor p) {
 
-		TrackControl tc[] = p.getTrackControls();
-		VideoFormat mpgVideo = new VideoFormat(VideoFormat.MPEG);
-		AudioFormat rawAudio = new AudioFormat(AudioFormat.LINEAR);
+		final TrackControl tc[] = p.getTrackControls();
+		final VideoFormat mpgVideo = new VideoFormat(VideoFormat.MPEG);
+		final AudioFormat rawAudio = new AudioFormat(AudioFormat.LINEAR);
 
 		for (int i = 0; i < tc.length; i++) {
 			Format preferred = null;
@@ -432,10 +440,10 @@ public class Cut implements ControllerListener, DataSinkListener {
 			}
 
 			if (preferred != null) {
-				Format supported[] = tc[i].getSupportedFormats();
+				final Format supported[] = tc[i].getSupportedFormats();
 				Format selected = null;
 
-				for (Format element : supported) {
+				for (final Format element : supported) {
 					if (element.matches(preferred)) {
 						selected = element;
 						break;
@@ -456,24 +464,24 @@ public class Cut implements ControllerListener, DataSinkListener {
 	 * Setting the encoding quality to the specified value on the JPEG encoder.
 	 * 0.5 is a good default.
 	 */
-	void setJPEGQuality(Player p, float val) {
+	void setJPEGQuality(final Player p, final float val) {
 
-		Control cs[] = p.getControls();
+		final Control cs[] = p.getControls();
 		QualityControl qc = null;
-		VideoFormat jpegFmt = new VideoFormat(VideoFormat.JPEG);
+		final VideoFormat jpegFmt = new VideoFormat(VideoFormat.JPEG);
 
 		// Loop through the controls to find the Quality control for
 		// the JPEG encoder.
-		for (Control element : cs) {
+		for (final Control element : cs) {
 
 			if (element instanceof QualityControl && element instanceof Owned) {
-				Object owner = ((Owned) element).getOwner();
+				final Object owner = ((Owned) element).getOwner();
 
 				// Check to see if the owner is a Codec.
 				// Then check for the output format.
 				if (owner instanceof Codec) {
-					Format fmts[] = ((Codec) owner).getSupportedOutputFormats(null);
-					for (Format fmt : fmts) {
+					final Format fmts[] = ((Codec) owner).getSupportedOutputFormats(null);
+					for (final Format fmt : fmts) {
 						if (fmt.matches(jpegFmt)) {
 							qc = (QualityControl) element;
 							qc.setQuality(val);
@@ -492,7 +500,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 	/**
 	 * Utility function to check for raw (linear) audio.
 	 */
-	boolean isRawAudio(Format fmt) {
+	boolean isRawAudio(final Format fmt) {
 		return fmt instanceof AudioFormat && fmt.getEncoding().equalsIgnoreCase(AudioFormat.LINEAR);
 	}
 
@@ -504,39 +512,40 @@ public class Cut implements ControllerListener, DataSinkListener {
 		Processor p;
 		boolean error = false;
 
-		StateWaiter(Processor p) {
+		StateWaiter(final Processor p) {
 			this.p = p;
 			p.addControllerListener(this);
 		}
 
-		public synchronized boolean waitForState(int state) {
+		public synchronized boolean waitForState(final int state) {
 
 			switch (state) {
-				case Processor.Configured :
-					p.configure();
-					break;
-				case Controller.Realized :
-					p.realize();
-					break;
-				case Controller.Prefetched :
-					p.prefetch();
-					break;
-				case Controller.Started :
-					p.start();
-					break;
+			case Processor.Configured:
+				p.configure();
+				break;
+			case Controller.Realized:
+				p.realize();
+				break;
+			case Controller.Prefetched:
+				p.prefetch();
+				break;
+			case Controller.Started:
+				p.start();
+				break;
 			}
 
 			while (p.getState() < state && !error) {
 				try {
 					wait(1000);
-				} catch (Exception e) {}
+				} catch (final Exception e) {
+				}
 			}
 			// p.removeControllerListener(this);
 			return !error;
 		}
 
 		@Override
-		public void controllerUpdate(ControllerEvent ce) {
+		public void controllerUpdate(final ControllerEvent ce) {
 			if (ce instanceof ControllerErrorEvent) {
 				error = true;
 			}
@@ -549,7 +558,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 	/**
 	 * Create the DataSink.
 	 */
-	DataSink createDataSink(Processor p, MediaLocator outML) {
+	DataSink createDataSink(final Processor p, final MediaLocator outML) {
 
 		DataSource ds;
 
@@ -564,7 +573,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 			// System.err.println("- Create DataSink for: " + outML);
 			dsink = Manager.createDataSink(ds, outML);
 			dsink.open();
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			// System.err.println("Cannot create the DataSink: " + e);
 			return null;
 		}
@@ -576,7 +585,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 	 * Block until the given processor has transitioned to the given state.
 	 * Return false if the transition failed.
 	 */
-	boolean waitForState(Processor p, int state) {
+	boolean waitForState(final Processor p, final int state) {
 		return new StateWaiter(p).waitForState(state);
 	}
 
@@ -584,7 +593,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 	 * Controller Listener.
 	 */
 	@Override
-	public void controllerUpdate(ControllerEvent evt) {
+	public void controllerUpdate(final ControllerEvent evt) {
 
 		if (evt instanceof ControllerErrorEvent) {
 			System.err.println("Failed to cut the file.");
@@ -602,14 +611,15 @@ public class Cut implements ControllerListener, DataSinkListener {
 	 * Block until file writing is done.
 	 */
 	boolean waitForFileDone() {
-		// System.err.print("  ");
+		// System.err.print(" ");
 		synchronized (waitFileSync) {
 			try {
 				while (!fileDone) {
 					waitFileSync.wait(1000);
 					// System.err.print(".");
 				}
-			} catch (Exception e) {}
+			} catch (final Exception e) {
+			}
 		}
 		// System.err.println("");
 		return fileSuccess;
@@ -619,7 +629,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 	 * Event handler for the file writer.
 	 */
 	@Override
-	public void dataSinkUpdate(DataSinkEvent evt) {
+	public void dataSinkUpdate(final DataSinkEvent evt) {
 
 		if (evt instanceof EndOfStreamEvent) {
 			synchronized (waitFileSync) {
@@ -639,7 +649,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 	 * Convert a file name to a content type. The extension is parsed to
 	 * determine the content type.
 	 */
-	ContentDescriptor fileExtToCD(String name) {
+	ContentDescriptor fileExtToCD(final String name) {
 
 		String ext;
 		int p;
@@ -671,7 +681,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 	/**
 	 * Create a media locator from the given string.
 	 */
-	static MediaLocator createMediaLocator(String url) {
+	static MediaLocator createMediaLocator(final String url) {
 
 		MediaLocator ml;
 
@@ -684,7 +694,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 				return ml;
 			}
 		} else {
-			String file = "file:" + System.getProperty("user.dir") + File.separator + url;
+			final String file = "file:" + System.getProperty("user.dir") + File.separator + url;
 			if ((ml = new MediaLocator(file)) != null) {
 				return ml;
 			}
@@ -694,12 +704,14 @@ public class Cut implements ControllerListener, DataSinkListener {
 	}
 
 	static void prUsage() {
-		// System.err.println("Usage: java Cut -o <output> <input> [-f] -s <startTime> -e <endTime> ...");
-		// System.err.println("     <output>: input URL or file name");
-		// System.err.println("     <input>: output URL or file name");
-		// System.err.println("     <startTime>: start time in milliseconds");
-		// System.err.println("     <endTime>: end time in milliseconds");
-		// System.err.println("     -f: specify the times in video frames instead of milliseconds");
+		// System.err.println("Usage: java Cut -o <output> <input> [-f] -s
+		// <startTime> -e <endTime> ...");
+		// System.err.println(" <output>: input URL or file name");
+		// System.err.println(" <input>: output URL or file name");
+		// System.err.println(" <startTime>: start time in milliseconds");
+		// System.err.println(" <endTime>: end time in milliseconds");
+		// System.err.println(" -f: specify the times in video frames instead of
+		// milliseconds");
 		// System.exit(0);
 	}
 
@@ -718,13 +730,13 @@ public class Cut implements ControllerListener, DataSinkListener {
 		PushBufferDataSource ds;
 		SuperCutStream streams[];
 
-		public SuperCutDataSource(Processor p, MediaLocator ml, long start[], long end[]) {
+		public SuperCutDataSource(final Processor p, final MediaLocator ml, final long start[], final long end[]) {
 			this.p = p;
 			this.ml = ml;
 			ds = (PushBufferDataSource) p.getDataOutput();
 
-			TrackControl tcs[] = p.getTrackControls();
-			PushBufferStream pbs[] = ds.getStreams();
+			final TrackControl tcs[] = p.getTrackControls();
+			final PushBufferStream pbs[] = ds.getStreams();
 
 			streams = new SuperCutStream[pbs.length];
 			for (int i = 0; i < pbs.length; i++) {
@@ -752,7 +764,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 		}
 
 		@Override
-		public Object getControl(String name) {
+		public Object getControl(final String name) {
 			// No controls
 			return null;
 		}
@@ -783,7 +795,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 		}
 
 		@Override
-		public void setLocator(MediaLocator ml) {
+		public void setLocator(final MediaLocator ml) {
 			System.err.println("Not interested in a media locator");
 		}
 	}
@@ -812,7 +824,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 		Buffer buffer;
 		int bufferFilled = 0;
 
-		public SuperCutStream(TrackControl tc, PushBufferStream pbs, long start[], long end[]) {
+		public SuperCutStream(final TrackControl tc, final PushBufferStream pbs, final long start[], final long end[]) {
 			this.tc = tc;
 			this.pbs = pbs;
 			this.start = start;
@@ -836,14 +848,16 @@ public class Cut implements ControllerListener, DataSinkListener {
 				while (bufferFilled == 1) {
 					try {
 						buffer.wait();
-					} catch (Exception e) {}
+					} catch (final Exception e) {
+					}
 				}
 			}
 
 			// Read from the real source.
 			try {
 				pbs.read(buffer);
-			} catch (IOException e) {}
+			} catch (final IOException e) {
+			}
 
 			format = buffer.getFormat();
 
@@ -859,7 +873,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 				eos = true;
 			}
 
-			int len = buffer.getLength();
+			final int len = buffer.getLength();
 
 			// Skip the buffers if it's to be cut.
 			if (checkTimeToSkip(buffer)) {
@@ -891,7 +905,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 		 * This is invoked from the consumer processor to read a frame from me.
 		 */
 		@Override
-		public void read(Buffer rdBuf) throws IOException {
+		public void read(final Buffer rdBuf) throws IOException {
 
 			/**
 			 * Check if there's any buffer in the Q to read.
@@ -900,12 +914,13 @@ public class Cut implements ControllerListener, DataSinkListener {
 				while (bufferFilled == 0) {
 					try {
 						buffer.wait();
-					} catch (Exception e) {}
+					} catch (final Exception e) {
+					}
 				}
 			}
 
 			// Copy the data from the queue.
-			Object oldData = rdBuf.getData();
+			final Object oldData = rdBuf.getData();
 
 			rdBuf.copy(buffer);
 			buffer.setData(oldData);
@@ -917,7 +932,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 				rdBuf.setTimeStamp(computeDuration(audioElapsed, rdBuf.getFormat()));
 				audioElapsed += buffer.getLength();
 			} else if (rdBuf.getTimeStamp() != Buffer.TIME_UNKNOWN) {
-				long diff = rdBuf.getTimeStamp() - lastTS;
+				final long diff = rdBuf.getTimeStamp() - lastTS;
 				lastTS = rdBuf.getTimeStamp();
 				if (diff > 0) {
 					timeStamp += diff;
@@ -935,7 +950,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 		 * Given a buffer, check to see if this should be included or skipped
 		 * based on the start and end times.
 		 */
-		boolean checkTimeToSkip(Buffer buf) {
+		boolean checkTimeToSkip(final Buffer buf) {
 
 			if (idx >= startReached.length) {
 				return false;
@@ -967,11 +982,11 @@ public class Cut implements ControllerListener, DataSinkListener {
 		/**
 		 * Check the buffer against the start time.
 		 */
-		boolean checkStartTime(Buffer buf, long startTS) {
+		boolean checkStartTime(final Buffer buf, final long startTS) {
 			if (isRawAudio(buf.getFormat())) {
-				long ts = computeDuration(audioLen + buf.getLength(), buf.getFormat());
+				final long ts = computeDuration(audioLen + buf.getLength(), buf.getFormat());
 				if (ts > startTS) {
-					int len = computeLength(ts - startTS, buf.getFormat());
+					final int len = computeLength(ts - startTS, buf.getFormat());
 					buf.setOffset(buf.getOffset() + buf.getLength() - len);
 					buf.setLength(len);
 					lastTS = buf.getTimeStamp();
@@ -995,14 +1010,14 @@ public class Cut implements ControllerListener, DataSinkListener {
 		/**
 		 * Check the buffer against the end time.
 		 */
-		boolean checkEndTime(Buffer buf, long endTS) {
+		boolean checkEndTime(final Buffer buf, final long endTS) {
 			if (isRawAudio(buf.getFormat())) {
 				if (computeDuration(audioLen, buf.getFormat()) >= endTS) {
 					return true;
 				} else {
-					long ts = computeDuration(audioLen + buf.getLength(), buf.getFormat());
+					final long ts = computeDuration(audioLen + buf.getLength(), buf.getFormat());
 					if (ts >= endTS) {
-						int len = computeLength(ts - endTS, buf.getFormat());
+						final int len = computeLength(ts - endTS, buf.getFormat());
 						buf.setLength(buf.getLength() - len);
 						// We still need to process this last buffer.
 					}
@@ -1017,7 +1032,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 		/**
 		 * Compute the duration based on the length and format of the audio.
 		 */
-		public long computeDuration(int len, Format fmt) {
+		public long computeDuration(final int len, final Format fmt) {
 			if (!(fmt instanceof AudioFormat)) {
 				return -1;
 			}
@@ -1027,13 +1042,14 @@ public class Cut implements ControllerListener, DataSinkListener {
 		/**
 		 * Compute the length based on the duration and format of the audio.
 		 */
-		public int computeLength(long duration, Format fmt) {
+		public int computeLength(final long duration, final Format fmt) {
 			if (!(fmt instanceof AudioFormat)) {
 				return -1;
 			}
-			AudioFormat af = (AudioFormat) fmt;
+			final AudioFormat af = (AudioFormat) fmt;
 			// Multiplication is done is stages to avoid overflow.
-			return (int) (duration / 1000 * (af.getChannels() * af.getSampleSizeInBits()) / 1000 * af.getSampleRate() / 8000);
+			return (int) (duration / 1000 * (af.getChannels() * af.getSampleSizeInBits()) / 1000 * af.getSampleRate()
+					/ 8000);
 		}
 
 		@Override
@@ -1057,12 +1073,12 @@ public class Cut implements ControllerListener, DataSinkListener {
 		}
 
 		@Override
-		public void setTransferHandler(BufferTransferHandler bth) {
+		public void setTransferHandler(final BufferTransferHandler bth) {
 			this.bth = bth;
 		}
 
 		@Override
-		public Object getControl(String name) {
+		public Object getControl(final String name) {
 			// No controls
 			return null;
 		}
@@ -1074,7 +1090,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 		}
 
 		@Override
-		public synchronized void transferData(PushBufferStream pbs) {
+		public synchronized void transferData(final PushBufferStream pbs) {
 			processData();
 		}
 

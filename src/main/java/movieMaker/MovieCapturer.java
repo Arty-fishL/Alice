@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 /**
  * Class that captures a movie to a series of jpg frames Copyright Georgia
  * Institute of Technology 2007
- * 
+ *
  * @author Barb Ericson ericson@cc.gatech.edu
  */
 public class MovieCapturer implements VideoCapturer {
@@ -27,24 +27,24 @@ public class MovieCapturer implements VideoCapturer {
 
 	/**
 	 * Constructor that takes the directory to write the frames to
-	 * 
+	 *
 	 * @param directory
 	 *            the directory to write to
 	 */
-	public MovieCapturer(String directory) {
+	public MovieCapturer(final String directory) {
 		frameSequencer = new FrameSequencer(directory);
 	}
 
 	/**
 	 * Constructor that takes the directory to write to and the base name to use
 	 * for the files
-	 * 
+	 *
 	 * @param directory
 	 *            the directory to write to
 	 * @param baseName
 	 *            the name to use for the files
 	 */
-	public MovieCapturer(String directory, String baseName) {
+	public MovieCapturer(final String directory, final String baseName) {
 		frameSequencer = new FrameSequencer(directory, baseName);
 	}
 
@@ -52,7 +52,7 @@ public class MovieCapturer implements VideoCapturer {
 
 	/**
 	 * Method to get the current directory
-	 * 
+	 *
 	 * @return the directory name
 	 */
 	@Override
@@ -62,7 +62,7 @@ public class MovieCapturer implements VideoCapturer {
 
 	/**
 	 * Method to get the number of frames per second
-	 * 
+	 *
 	 * @return the number of frames per second
 	 */
 	@Override
@@ -72,18 +72,18 @@ public class MovieCapturer implements VideoCapturer {
 
 	/**
 	 * Method to set the number of frames per second
-	 * 
+	 *
 	 * @param frameRate
 	 *            the number of frames per second
 	 */
 	@Override
-	public void setFramesPerSecond(int frameRate) {
+	public void setFramesPerSecond(final int frameRate) {
 		framesPerSec = frameRate;
 	}
 
 	/**
 	 * Method to get the region to capture
-	 * 
+	 *
 	 * @return the rectangular region to capture
 	 */
 	@Override
@@ -93,21 +93,22 @@ public class MovieCapturer implements VideoCapturer {
 
 	/**
 	 * Method to capture the entire screen
-	 * 
+	 *
 	 * @return the captured buffered image
 	 */
 	@Override
 	public BufferedImage captureScreen() throws Exception {
 
 		// capture the whole screen
-		BufferedImage image = new Robot().createScreenCapture(new java.awt.Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+		final BufferedImage image = new Robot()
+				.createScreenCapture(new java.awt.Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
 
 		return image;
 	}
 
 	/**
 	 * Method to capture a part of the screen
-	 * 
+	 *
 	 * @param x1
 	 *            the top left x
 	 * @param y1
@@ -118,22 +119,23 @@ public class MovieCapturer implements VideoCapturer {
 	 *            the height of the rectangle to capture
 	 * @return the captured buffered image
 	 */
-	public BufferedImage captureRegion(int x1, int y1, int width, int height) throws AWTException {
+	public BufferedImage captureRegion(final int x1, final int y1, final int width, final int height)
+			throws AWTException {
 
 		// capture the whole screen
-		BufferedImage screen = new Robot().createScreenCapture(new java.awt.Rectangle(x1, y1, width, height));
+		final BufferedImage screen = new Robot().createScreenCapture(new java.awt.Rectangle(x1, y1, width, height));
 
 		return screen;
 	}
 
 	/**
 	 * Method to capture a region of the screen
-	 * 
+	 *
 	 * @return the region if there is one else the screen
 	 */
 	public BufferedImage captureRegion() throws Exception {
 		if (region != null) {
-			BufferedImage image = new Robot().createScreenCapture(region);
+			final BufferedImage image = new Robot().createScreenCapture(region);
 			return image;
 		} else {
 			return captureScreen();
@@ -144,11 +146,11 @@ public class MovieCapturer implements VideoCapturer {
 	 * Method to capture a movie until the done flag is set to true
 	 */
 	public void captureMovie() {
-		boolean done = false;
+		final boolean done = false;
 		BufferedImage image = null;
 		long startTime = 0;
 		long endTime = 0;
-		int timeToSleep = 1000 / framesPerSec;
+		final int timeToSleep = 1000 / framesPerSec;
 		while (!done) {
 			try {
 				startTime = System.currentTimeMillis();
@@ -156,7 +158,8 @@ public class MovieCapturer implements VideoCapturer {
 				frameSequencer.addFrame(new Picture(image));
 				endTime = System.currentTimeMillis();
 				Thread.sleep(timeToSleep - (endTime - startTime));
-			} catch (Exception ex) {}
+			} catch (final Exception ex) {
+			}
 		}
 	}
 
@@ -169,13 +172,13 @@ public class MovieCapturer implements VideoCapturer {
 
 	/**
 	 * Method to capture a movie for the passed number of seconds
-	 * 
+	 *
 	 * @param numSeconds
 	 *            the number of seconds to capture
 	 */
-	public void captureMovie(int numSeconds) {
+	public void captureMovie(final int numSeconds) {
 		BufferedImage image = null;
-		int timeToSleep = 1000 / framesPerSec;
+		final int timeToSleep = 1000 / framesPerSec;
 		long startTime = 0;
 		long endTime = 0;
 		for (int i = 0; i < framesPerSec * numSeconds; i++) {
@@ -185,13 +188,14 @@ public class MovieCapturer implements VideoCapturer {
 				frameSequencer.addFrame(new Picture(image));
 				endTime = System.currentTimeMillis();
 				Thread.sleep(timeToSleep - (endTime - startTime));
-			} catch (Exception ex) {}
+			} catch (final Exception ex) {
+			}
 		}
 	}
 
 	/**
 	 * Method to capture a movie until the done flag is set to true
-	 * 
+	 *
 	 * @param x1
 	 *            the top left x value
 	 * @param y1
@@ -201,12 +205,12 @@ public class MovieCapturer implements VideoCapturer {
 	 * @param height
 	 *            the height of the region to capture
 	 */
-	public void captureMovie(int x1, int y1, int width, int height) {
-		boolean done = false;
+	public void captureMovie(final int x1, final int y1, final int width, final int height) {
+		final boolean done = false;
 		long startTime = 0;
 		long endTime = 0;
 		BufferedImage image = null;
-		int timeToSleep = 1000 / framesPerSec;
+		final int timeToSleep = 1000 / framesPerSec;
 		while (!done) {
 			try {
 				startTime = System.currentTimeMillis();
@@ -214,14 +218,15 @@ public class MovieCapturer implements VideoCapturer {
 				frameSequencer.addFrame(new Picture(image));
 				endTime = System.currentTimeMillis();
 				Thread.sleep(timeToSleep - (endTime - startTime));
-			} catch (Exception ex) {}
+			} catch (final Exception ex) {
+			}
 		}
 	}
 
 	/**
 	 * Method to capture a movie in a rectangular region for the passed number
 	 * of seconds
-	 * 
+	 *
 	 * @param x1
 	 *            the top left x value
 	 * @param y1
@@ -233,11 +238,11 @@ public class MovieCapturer implements VideoCapturer {
 	 * @param numSeconds
 	 *            the number of seconds to capture
 	 */
-	public void captureMovie(int x1, int y1, int width, int height, int numSeconds) {
+	public void captureMovie(final int x1, final int y1, final int width, final int height, final int numSeconds) {
 		long startTime = 0;
 		long endTime = 0;
 		BufferedImage image = null;
-		int timeToSleep = 1000 / framesPerSec;
+		final int timeToSleep = 1000 / framesPerSec;
 		for (int i = 0; i < numSeconds * framesPerSec; i++) {
 			try {
 				startTime = System.currentTimeMillis();
@@ -245,7 +250,8 @@ public class MovieCapturer implements VideoCapturer {
 				frameSequencer.addFrame(new Picture(image));
 				endTime = System.currentTimeMillis();
 				Thread.sleep(timeToSleep - (endTime - startTime));
-			} catch (Exception ex) {}
+			} catch (final Exception ex) {
+			}
 		}
 	}
 
@@ -260,15 +266,15 @@ public class MovieCapturer implements VideoCapturer {
 	/**
 	 * Method to set the region to capture (makes sure that the width and height
 	 * is a multiple of 4 for compression later
-	 * 
+	 *
 	 * @param theRegion
 	 *            a rectangle that encloses the region to capture
 	 */
 	@Override
-	public void setRegion(java.awt.Rectangle theRegion) {
+	public void setRegion(final java.awt.Rectangle theRegion) {
 		if (theRegion.getWidth() % 4 != 0 || theRegion.getHeight() % 4 != 0) {
-			int width = (int) theRegion.getWidth() / 4 * 4;
-			int height = (int) theRegion.getHeight() / 4 * 4;
+			final int width = (int) theRegion.getWidth() / 4 * 4;
+			final int height = (int) theRegion.getHeight() / 4 * 4;
 			region = new java.awt.Rectangle((int) theRegion.getX(), (int) theRegion.getY(), width, height);
 		} else {
 			region = theRegion;
@@ -287,12 +293,12 @@ public class MovieCapturer implements VideoCapturer {
 	/**
 	 * Method to start captureing the movie and continue for the passed number
 	 * of seconds
-	 * 
+	 *
 	 * @param numSeconds
 	 *            the number of seconds to capture
 	 */
 	@Override
-	public void startCapture(int numSeconds) {
+	public void startCapture(final int numSeconds) {
 		captureMovie(numSeconds);
 	}
 
@@ -305,8 +311,8 @@ public class MovieCapturer implements VideoCapturer {
 		// this.done = true;
 	}
 
-	public static void main(String args[]) {
-		MovieCapturer capturer = new MovieCapturer("c:/intro-prog-java/mediasources/aliceTest1/", "alice1");
+	public static void main(final String args[]) {
+		final MovieCapturer capturer = new MovieCapturer("c:/intro-prog-java/mediasources/aliceTest1/", "alice1");
 		capturer.captureMovie(0, 0, 810, 674, 1);
 		capturer.playMovie();
 	}

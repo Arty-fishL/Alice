@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -38,20 +38,25 @@ import javax.swing.JToggleButton;
 import javax.swing.border.Border;
 
 public class FontChooser extends javax.swing.JPanel {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -2476967299974666813L;
 	protected java.util.HashSet changeListeners = new java.util.HashSet();
 
-	public FontChooser(boolean sizeVisible, boolean previewVisible) {
+	public FontChooser(final boolean sizeVisible, final boolean previewVisible) {
 		init(sizeVisible, previewVisible);
 	}
 
-	private void init(boolean sizeVisible, boolean previewVisible) {
+	private void init(final boolean sizeVisible, final boolean previewVisible) {
 		jbInit();
 
 		fontSizeCombo.setVisible(sizeVisible);
 		previewScrollPane.setVisible(previewVisible);
 
-		String[] families = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
-		for (String familie : families) {
+		final String[] families = java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment()
+				.getAvailableFontFamilyNames();
+		for (final String familie : families) {
 			fontFaceCombo.addItem(familie);
 		}
 		fontFaceCombo.setSelectedIndex(0);
@@ -74,27 +79,28 @@ public class FontChooser extends javax.swing.JPanel {
 		fontSizeCombo.addItem("72");
 		fontSizeCombo.setSelectedIndex(0);
 		fontSizeCombo.setInputVerifier( // TODO: should be more user-friendly
-		new javax.swing.InputVerifier() {
+				new javax.swing.InputVerifier() {
 
-			@Override
-			public boolean verify(javax.swing.JComponent c) {
-				try {
-					String text = (String) ((javax.swing.JComboBox) c).getSelectedItem();
-					Integer.parseInt(text.trim());
-					return true;
-				} catch (NumberFormatException e) {
-					return false;
-				} catch (Exception e) {
-					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog(e.getMessage(), e);
-					return true; // unexpected error. inform the user and let it
-									// slide.
-				}
-			}
-		});
+					@Override
+					public boolean verify(final javax.swing.JComponent c) {
+						try {
+							final String text = (String) ((javax.swing.JComboBox) c).getSelectedItem();
+							Integer.parseInt(text.trim());
+							return true;
+						} catch (final NumberFormatException e) {
+							return false;
+						} catch (final Exception e) {
+							edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog(e.getMessage(), e);
+							return true; // unexpected error. inform the user
+											// and let it
+											// slide.
+						}
+					}
+				});
 
-		java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
+		final java.awt.event.ActionListener actionListener = new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				FontChooser.this.fireChange(ev.getSource());
 			}
 		};
@@ -106,32 +112,33 @@ public class FontChooser extends javax.swing.JPanel {
 	}
 
 	public java.awt.Font getChosenFont() {
-		String familyName = (String) fontFaceCombo.getSelectedItem();
-		int size = Integer.parseInt(((String) fontSizeCombo.getSelectedItem()).trim());
-		int style = (boldToggle.isSelected() ? java.awt.Font.BOLD : 0) | (italicToggle.isSelected() ? java.awt.Font.ITALIC : 0);
+		final String familyName = (String) fontFaceCombo.getSelectedItem();
+		final int size = Integer.parseInt(((String) fontSizeCombo.getSelectedItem()).trim());
+		final int style = (boldToggle.isSelected() ? java.awt.Font.BOLD : 0)
+				| (italicToggle.isSelected() ? java.awt.Font.ITALIC : 0);
 
 		return new java.awt.Font(familyName, style, size);
 	}
 
-	public void setSizeVisible(boolean sizeVisible) {
+	public void setSizeVisible(final boolean sizeVisible) {
 		fontSizeCombo.setVisible(sizeVisible);
 	}
 
-	public void setPreviewVisible(boolean previewVisible) {
+	public void setPreviewVisible(final boolean previewVisible) {
 		previewScrollPane.setVisible(previewVisible);
 	}
 
-	public void setFontFace(String fontName) {
+	public void setFontFace(final String fontName) {
 		fontFaceCombo.setSelectedItem(fontName);
 		fireChange(fontFaceCombo);
 	}
 
-	public void setFontSize(int size) {
+	public void setFontSize(final int size) {
 		fontSizeCombo.setSelectedItem(Integer.toString(size));
 		fireChange(fontSizeCombo);
 	}
 
-	public void setFontStyle(int bitmask) {
+	public void setFontStyle(final int bitmask) {
 		boolean bold, italic;
 
 		bold = (bitmask & java.awt.Font.BOLD) > 0;
@@ -147,7 +154,7 @@ public class FontChooser extends javax.swing.JPanel {
 		}
 	}
 
-	public void setSampleText(String text) {
+	public void setSampleText(final String text) {
 		if (text != null) {
 			previewTextArea.setText(text);
 		} else {
@@ -155,20 +162,20 @@ public class FontChooser extends javax.swing.JPanel {
 		}
 	}
 
-	public void addChangeListener(javax.swing.event.ChangeListener listener) {
+	public void addChangeListener(final javax.swing.event.ChangeListener listener) {
 		changeListeners.add(listener);
 	}
 
-	public void removeChangeListener(javax.swing.event.ChangeListener listener) {
+	public void removeChangeListener(final javax.swing.event.ChangeListener listener) {
 		changeListeners.remove(listener);
 	}
 
-	protected void fireChange(Object source) {
-		java.awt.Font font = getChosenFont();
+	protected void fireChange(final Object source) {
+		final java.awt.Font font = getChosenFont();
 		previewTextArea.setFont(font);
-		javax.swing.event.ChangeEvent ev = new javax.swing.event.ChangeEvent(source);
+		final javax.swing.event.ChangeEvent ev = new javax.swing.event.ChangeEvent(source);
 
-		for (java.util.Iterator iter = changeListeners.iterator(); iter.hasNext();) {
+		for (final java.util.Iterator iter = changeListeners.iterator(); iter.hasNext();) {
 			((javax.swing.event.ChangeListener) iter.next()).stateChanged(ev);
 		}
 	}
@@ -211,12 +218,18 @@ public class FontChooser extends javax.swing.JPanel {
 		fontSizeCombo.setPreferredSize(new Dimension(60, 26));
 		fontSizeCombo.setEditable(true);
 		previewTextArea.setText("The quick brown fox jumped over the lazy dog\'s back.");
-		this.add(fontFaceCombo, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		this.add(fontSizeCombo, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE, new Insets(0, 4, 0, 0), 0, 0));
-		this.add(boldToggle, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE, new Insets(0, 4, 0, 0), 0, 0));
-		this.add(italicToggle, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0, GridBagConstraints.SOUTHWEST, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-		this.add(component1, new GridBagConstraints(4, 0, 1, 1, 1.0, 0.0, GridBagConstraints.SOUTHWEST, GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
-		this.add(previewScrollPane, new GridBagConstraints(0, 1, 5, 1, 1.0, 1.0, GridBagConstraints.NORTH, GridBagConstraints.BOTH, new Insets(8, 0, 0, 0), 0, 0));
+		this.add(fontFaceCombo, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.SOUTHWEST,
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		this.add(fontSizeCombo, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.SOUTHWEST,
+				GridBagConstraints.NONE, new Insets(0, 4, 0, 0), 0, 0));
+		this.add(boldToggle, new GridBagConstraints(2, 0, 1, 1, 0.0, 0.0, GridBagConstraints.SOUTHWEST,
+				GridBagConstraints.NONE, new Insets(0, 4, 0, 0), 0, 0));
+		this.add(italicToggle, new GridBagConstraints(3, 0, 1, 1, 0.0, 0.0, GridBagConstraints.SOUTHWEST,
+				GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+		this.add(component1, new GridBagConstraints(4, 0, 1, 1, 1.0, 0.0, GridBagConstraints.SOUTHWEST,
+				GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0));
+		this.add(previewScrollPane, new GridBagConstraints(0, 1, 5, 1, 1.0, 1.0, GridBagConstraints.NORTH,
+				GridBagConstraints.BOTH, new Insets(8, 0, 0, 0), 0, 0));
 		previewScrollPane.getViewport().add(previewTextArea, null);
 	}
 }

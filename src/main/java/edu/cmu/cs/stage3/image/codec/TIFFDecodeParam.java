@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -47,14 +47,14 @@ package edu.cmu.cs.stage3.image.codec;
 /**
  * An instance of <code>ImageDecodeParam</code> for decoding images in the TIFF
  * format.
- * 
+ *
  * <p>
  * To determine the number of images present in a TIFF file, use the
  * <code>getNumPages()</code> method on the <code>ImageDecoder</code> object
  * that will be used to perform the decoding. The desired page number may be
  * passed as an argument to the <code>ImageDecoder.decodeAsRaster)()</code> or
  * <code>decodeAsRenderedImage()</code> methods.
- * 
+ *
  * <p>
  * For TIFF Palette color images, the colorMap always has entries of short data
  * type, the color Black being represented by 0,0,0 and White by
@@ -69,7 +69,7 @@ package edu.cmu.cs.stage3.image.codec;
  * </code> If a different algorithm is to be used for the dithering, this class
  * should be subclassed and an appropriate implementation should be provided for
  * the <code>decode16BitsTo8Bits</code> method in the subclass.
- * 
+ *
  * <p>
  * If the palette contains image data that is signed short, as specified by the
  * SampleFormat tag, the dithering is done by calling
@@ -80,20 +80,24 @@ package edu.cmu.cs.stage3.image.codec;
  *       b = (byte)((s + Short.MIN_VALUE) >> 8);
  * </code> In order to use a different algorithm for the dithering, this class
  * should be subclassed and the method overridden.
- * 
+ *
  * <p>
  * If it is desired that the Palette be decoded such that the output image is of
  * short data type and no dithering is performed, the
  * <code>setDecodePaletteAsShorts</code> method should be used.
- * 
+ *
  * <p>
  * <b> This class is not a committed part of the JAI API. It may be removed or
  * changed in future releases of JAI.</b>
- * 
+ *
  * @see TIFFDirectory
  */
 public class TIFFDecodeParam implements ImageDecodeParam {
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 6854234136962764372L;
 	private boolean decodePaletteAsShorts = false;
 
 	/** Constructs a default instance of <code>TIFFDecodeParam</code>. */
@@ -104,7 +108,7 @@ public class TIFFDecodeParam implements ImageDecodeParam {
 	 * If set, the entries in the palette will be decoded as shorts and no short
 	 * to byte lookup will be applied to them.
 	 */
-	public void setDecodePaletteAsShorts(boolean decodePaletteAsShorts) {
+	public void setDecodePaletteAsShorts(final boolean decodePaletteAsShorts) {
 		this.decodePaletteAsShorts = decodePaletteAsShorts;
 	}
 
@@ -125,7 +129,7 @@ public class TIFFDecodeParam implements ImageDecodeParam {
 	 * to this method. The method deals correctly only with 16 bit unsigned
 	 * values.
 	 */
-	public byte decode16BitsTo8Bits(int s) {
+	public byte decode16BitsTo8Bits(final int s) {
 		return (byte) (s >> 8 & 0xffff);
 	}
 
@@ -134,7 +138,7 @@ public class TIFFDecodeParam implements ImageDecodeParam {
 	 * value. This method deals correctly only with values in the 16 bit signed
 	 * range.
 	 */
-	public byte decodeSigned16BitsTo8Bits(short s) {
+	public byte decodeSigned16BitsTo8Bits(final short s) {
 		return (byte) (s + Short.MIN_VALUE >> 8);
 	}
 

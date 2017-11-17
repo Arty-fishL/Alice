@@ -1,6 +1,7 @@
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.directx7renderer;
 
-class OrthographicCameraProxy extends edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.OrthographicCameraProxy {
+class OrthographicCameraProxy
+		extends edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.OrthographicCameraProxy {
 	// from ElementProxy
 
 	@Override
@@ -27,7 +28,8 @@ class OrthographicCameraProxy extends edu.cmu.cs.stage3.alice.scenegraph.rendere
 	protected native void onFarClippingPlaneDistanceChange(double value);
 
 	@Override
-	protected native void onBackgroundChange(edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.BackgroundProxy value);
+	protected native void onBackgroundChange(
+			edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.BackgroundProxy value);
 	// from OrthographicCameraProxy
 
 	@Override

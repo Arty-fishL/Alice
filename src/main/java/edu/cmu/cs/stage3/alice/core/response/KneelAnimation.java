@@ -10,17 +10,18 @@ import edu.cmu.cs.stage3.math.Vector3;
 
 /**
  * @author caitlin
- * 
+ *
  *         To change the template for this generated type comment go to
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class KneelAnimation extends AbstractBodyPositionAnimation {
-	public final edu.cmu.cs.stage3.alice.core.property.BooleanProperty oneKnee = new edu.cmu.cs.stage3.alice.core.property.BooleanProperty(this, "one knee", Boolean.TRUE);
+	public final edu.cmu.cs.stage3.alice.core.property.BooleanProperty oneKnee = new edu.cmu.cs.stage3.alice.core.property.BooleanProperty(
+			this, "one knee", Boolean.TRUE);
 
 	public class RuntimeKneelAnimation extends RuntimeAbstractBodyPositionAnimation {
 
 		@Override
-		public void prologue(double t) {
+		public void prologue(final double t) {
 			super.prologue(t);
 
 			findLegs();
@@ -34,7 +35,7 @@ public class KneelAnimation extends AbstractBodyPositionAnimation {
 		}
 
 		@Override
-		public void update(double t) {
+		public void update(final double t) {
 
 			super.update(t);
 
@@ -78,20 +79,21 @@ public class KneelAnimation extends AbstractBodyPositionAnimation {
 				}
 
 				if (rightUpper != null && rightLower != null) {
-					Vector3 posLower = rightLower.getPosition(rightUpper);
-					edu.cmu.cs.stage3.math.Box boxLower = rightLower.getBoundingBox(rightLower);
+					final Vector3 posLower = rightLower.getPosition(rightUpper);
+					final edu.cmu.cs.stage3.math.Box boxLower = rightLower.getBoundingBox(rightLower);
 
 					lengthSupportLeg = java.lang.Math.abs(posLower.y) + java.lang.Math.abs(boxLower.getMinimum().z);
 
 					double lengthLowerLeg = 0.0;
 					if (leftFoot != null) {
-						lengthLowerLeg = java.lang.Math.abs(leftFoot.getPosition(leftLower).y) + java.lang.Math.abs(leftFoot.getBoundingBox(leftFoot).getMinimum().z);
+						lengthLowerLeg = java.lang.Math.abs(leftFoot.getPosition(leftLower).y)
+								+ java.lang.Math.abs(leftFoot.getBoundingBox(leftFoot).getMinimum().z);
 					} else {
 						lengthLowerLeg = java.lang.Math.abs(leftLower.getBoundingBox(leftLower).getMinimum().y);
 					}
 
-					double diff = lengthSupportLeg - lengthLowerLeg;
-					double angle = java.lang.Math.asin(java.lang.Math.abs(diff) / java.lang.Math.abs(posLower.y));
+					final double diff = lengthSupportLeg - lengthLowerLeg;
+					final double angle = java.lang.Math.asin(java.lang.Math.abs(diff) / java.lang.Math.abs(posLower.y));
 
 					if (lengthSupportLeg * 2.0 < lengthLowerLeg) {
 						leftUpperFinalOrient = new edu.cmu.cs.stage3.math.Matrix33();

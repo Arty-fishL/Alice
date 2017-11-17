@@ -28,63 +28,83 @@ import java.util.Vector;
 
 import edu.cmu.cs.stage3.alice.scenegraph.event.ReleaseEvent;
 
-public abstract class AbstractRenderer implements edu.cmu.cs.stage3.alice.scenegraph.renderer.Renderer, edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationListener, edu.cmu.cs.stage3.alice.scenegraph.event.BoundListener, edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenListener, edu.cmu.cs.stage3.alice.scenegraph.event.HierarchyListener, edu.cmu.cs.stage3.alice.scenegraph.event.PropertyListener, edu.cmu.cs.stage3.alice.scenegraph.event.ReleaseListener {
+public abstract class AbstractRenderer implements edu.cmu.cs.stage3.alice.scenegraph.renderer.Renderer,
+		edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationListener,
+		edu.cmu.cs.stage3.alice.scenegraph.event.BoundListener,
+		edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenListener,
+		edu.cmu.cs.stage3.alice.scenegraph.event.HierarchyListener,
+		edu.cmu.cs.stage3.alice.scenegraph.event.PropertyListener,
+		edu.cmu.cs.stage3.alice.scenegraph.event.ReleaseListener {
 
 	private boolean m_isSoftwareEmulationForced;
-	private Vector<RenderTarget> m_onscreenRenderTargets = new Vector<RenderTarget>();
-	private Vector<RenderTarget> m_offscreenRenderTargets = new Vector<RenderTarget>();
+	private final Vector<RenderTarget> m_onscreenRenderTargets = new Vector<RenderTarget>();
+	private final Vector<RenderTarget> m_offscreenRenderTargets = new Vector<RenderTarget>();
 	private OnscreenRenderTarget[] m_onscreenRenderTargetArray = null;
 	private OffscreenRenderTarget[] m_offscreenRenderTargetArray = null;
 
 	@SuppressWarnings("unused")
-	private Vector<?> m_rendererListeners = new Vector<Object>();
+	private final Vector<?> m_rendererListeners = new Vector<Object>();
 
-	private Vector<EventObject> m_pendingAbsoluteTransformationChanges = new Vector<EventObject>();
-	private Vector<EventObject> m_pendingBoundChanges = new Vector<EventObject>();
-	private Vector<EventObject> m_pendingChildChanges = new Vector<EventObject>();
-	private Vector<EventObject> m_pendingHeirarchyChanges = new Vector<EventObject>();
-	private Vector<EventObject> m_pendingPropertyChanges = new Vector<EventObject>();
-	private Vector<ReleaseEvent> m_pendingReleases = new Vector<ReleaseEvent>();
+	private final Vector<EventObject> m_pendingAbsoluteTransformationChanges = new Vector<EventObject>();
+	private final Vector<EventObject> m_pendingBoundChanges = new Vector<EventObject>();
+	private final Vector<EventObject> m_pendingChildChanges = new Vector<EventObject>();
+	private final Vector<EventObject> m_pendingHeirarchyChanges = new Vector<EventObject>();
+	private final Vector<EventObject> m_pendingPropertyChanges = new Vector<EventObject>();
+	private final Vector<ReleaseEvent> m_pendingReleases = new Vector<ReleaseEvent>();
 
-	protected abstract void dispatchAbsoluteTransformationChange(edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent);
+	protected abstract void dispatchAbsoluteTransformationChange(
+			edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent);
+
 	protected abstract void dispatchBoundChange(edu.cmu.cs.stage3.alice.scenegraph.event.BoundEvent boundEvent);
+
 	protected abstract void dispatchChildAdd(edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent childrenEvent);
+
 	protected abstract void dispatchChildRemove(edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent childrenEvent);
-	protected abstract void dispatchHierarchyChange(edu.cmu.cs.stage3.alice.scenegraph.event.HierarchyEvent hierarchyEvent);
-	protected abstract void dispatchPropertyChange(edu.cmu.cs.stage3.alice.scenegraph.event.PropertyEvent propertyEvent);
+
+	protected abstract void dispatchHierarchyChange(
+			edu.cmu.cs.stage3.alice.scenegraph.event.HierarchyEvent hierarchyEvent);
+
+	protected abstract void dispatchPropertyChange(
+			edu.cmu.cs.stage3.alice.scenegraph.event.PropertyEvent propertyEvent);
+
 	protected abstract void dispatchRelease(edu.cmu.cs.stage3.alice.scenegraph.event.ReleaseEvent releaseEvent);
 
 	protected abstract boolean requiresHierarchyAndAbsoluteTransformationListening();
+
 	protected abstract boolean requiresBoundListening();
 
 	private int m_ignoreCount = 0;
+
 	public void enterIgnore() {
 		m_ignoreCount++;
 	}
+
 	public void leaveIgnore() {
 		m_ignoreCount--;
 	}
+
 	@SuppressWarnings("unused")
 	private boolean ignore() {
 		return m_ignoreCount > 0;
 	}
+
 	public void markAllRenderTargetsDirty() {
 		if (m_ignoreCount > 0) {
 			// pass
 		} else {
 			RenderTarget[] renderTargets;
 			renderTargets = getOffscreenRenderTargets();
-			for (RenderTarget renderTarget : renderTargets) {
+			for (final RenderTarget renderTarget : renderTargets) {
 				renderTarget.markDirty();
 			}
 			renderTargets = getOnscreenRenderTargets();
-			for (RenderTarget renderTarget : renderTargets) {
+			for (final RenderTarget renderTarget : renderTargets) {
 				renderTarget.markDirty();
 			}
 		}
 	}
 
-	public void addListenersToSGElement(edu.cmu.cs.stage3.alice.scenegraph.Element sgElement) {
+	public void addListenersToSGElement(final edu.cmu.cs.stage3.alice.scenegraph.Element sgElement) {
 		if (sgElement instanceof edu.cmu.cs.stage3.alice.scenegraph.Geometry) {
 			if (requiresBoundListening()) {
 				((edu.cmu.cs.stage3.alice.scenegraph.Geometry) sgElement).addBoundListener(this);
@@ -102,7 +122,8 @@ public abstract class AbstractRenderer implements edu.cmu.cs.stage3.alice.sceneg
 		sgElement.addPropertyListener(this);
 		sgElement.addReleaseListener(this);
 	}
-	public void removeListenersFromSGElement(edu.cmu.cs.stage3.alice.scenegraph.Element sgElement) {
+
+	public void removeListenersFromSGElement(final edu.cmu.cs.stage3.alice.scenegraph.Element sgElement) {
 		if (sgElement instanceof edu.cmu.cs.stage3.alice.scenegraph.Geometry) {
 			if (requiresBoundListening()) {
 				((edu.cmu.cs.stage3.alice.scenegraph.Geometry) sgElement).removeBoundListener(this);
@@ -119,13 +140,15 @@ public abstract class AbstractRenderer implements edu.cmu.cs.stage3.alice.sceneg
 		sgElement.removePropertyListener(this);
 		sgElement.removeReleaseListener(this);
 	}
+
 	public void commitAnyPendingChanges() {
 		java.util.Enumeration<EventObject> enum0;
 		if (m_pendingAbsoluteTransformationChanges.size() > 0) {
 			synchronized (m_pendingAbsoluteTransformationChanges) {
 				enum0 = m_pendingAbsoluteTransformationChanges.elements();
 				while (enum0.hasMoreElements()) {
-					dispatchAbsoluteTransformationChange((edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationEvent) enum0.nextElement());
+					dispatchAbsoluteTransformationChange(
+							(edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationEvent) enum0.nextElement());
 				}
 				m_pendingAbsoluteTransformationChanges.clear();
 			}
@@ -143,7 +166,8 @@ public abstract class AbstractRenderer implements edu.cmu.cs.stage3.alice.sceneg
 			synchronized (m_pendingChildChanges) {
 				enum0 = m_pendingChildChanges.elements();
 				while (enum0.hasMoreElements()) {
-					edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent e = (edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent) enum0.nextElement();
+					final edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent e = (edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent) enum0
+							.nextElement();
 					if (e.getID() == edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent.CHILD_ADDED) {
 						dispatchChildAdd(e);
 					} else {
@@ -157,7 +181,8 @@ public abstract class AbstractRenderer implements edu.cmu.cs.stage3.alice.sceneg
 			synchronized (m_pendingHeirarchyChanges) {
 				enum0 = m_pendingHeirarchyChanges.elements();
 				while (enum0.hasMoreElements()) {
-					dispatchHierarchyChange((edu.cmu.cs.stage3.alice.scenegraph.event.HierarchyEvent) enum0.nextElement());
+					dispatchHierarchyChange(
+							(edu.cmu.cs.stage3.alice.scenegraph.event.HierarchyEvent) enum0.nextElement());
 				}
 				m_pendingHeirarchyChanges.clear();
 			}
@@ -166,7 +191,8 @@ public abstract class AbstractRenderer implements edu.cmu.cs.stage3.alice.sceneg
 			synchronized (m_pendingPropertyChanges) {
 				enum0 = m_pendingPropertyChanges.elements();
 				while (enum0.hasMoreElements()) {
-					dispatchPropertyChange((edu.cmu.cs.stage3.alice.scenegraph.event.PropertyEvent) enum0.nextElement());
+					dispatchPropertyChange(
+							(edu.cmu.cs.stage3.alice.scenegraph.event.PropertyEvent) enum0.nextElement());
 				}
 				m_pendingPropertyChanges.clear();
 			}
@@ -176,8 +202,10 @@ public abstract class AbstractRenderer implements edu.cmu.cs.stage3.alice.sceneg
 	private boolean isThreadOK() {
 		return javax.swing.SwingUtilities.isEventDispatchThread();
 	}
+
 	@Override
-	public void absoluteTransformationChanged(edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent) {
+	public void absoluteTransformationChanged(
+			final edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent) {
 		if (isThreadOK()) {
 			dispatchAbsoluteTransformationChange(absoluteTransformationEvent);
 			markAllRenderTargetsDirty();
@@ -185,8 +213,9 @@ public abstract class AbstractRenderer implements edu.cmu.cs.stage3.alice.sceneg
 			m_pendingAbsoluteTransformationChanges.addElement(absoluteTransformationEvent);
 		}
 	}
+
 	@Override
-	public void boundChanged(edu.cmu.cs.stage3.alice.scenegraph.event.BoundEvent boundEvent) {
+	public void boundChanged(final edu.cmu.cs.stage3.alice.scenegraph.event.BoundEvent boundEvent) {
 		if (isThreadOK()) {
 			dispatchBoundChange(boundEvent);
 			markAllRenderTargetsDirty();
@@ -194,8 +223,9 @@ public abstract class AbstractRenderer implements edu.cmu.cs.stage3.alice.sceneg
 			m_pendingBoundChanges.addElement(boundEvent);
 		}
 	}
+
 	@Override
-	public void childAdded(edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent childrenEvent) {
+	public void childAdded(final edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent childrenEvent) {
 		if (isThreadOK()) {
 			dispatchChildAdd(childrenEvent);
 			markAllRenderTargetsDirty();
@@ -203,8 +233,9 @@ public abstract class AbstractRenderer implements edu.cmu.cs.stage3.alice.sceneg
 			m_pendingChildChanges.addElement(childrenEvent);
 		}
 	}
+
 	@Override
-	public void childRemoved(edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent childrenEvent) {
+	public void childRemoved(final edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent childrenEvent) {
 		if (isThreadOK()) {
 			dispatchChildRemove(childrenEvent);
 			markAllRenderTargetsDirty();
@@ -212,8 +243,9 @@ public abstract class AbstractRenderer implements edu.cmu.cs.stage3.alice.sceneg
 			m_pendingChildChanges.addElement(childrenEvent);
 		}
 	}
+
 	@Override
-	public void hierarchyChanged(edu.cmu.cs.stage3.alice.scenegraph.event.HierarchyEvent hierarchyEvent) {
+	public void hierarchyChanged(final edu.cmu.cs.stage3.alice.scenegraph.event.HierarchyEvent hierarchyEvent) {
 		if (isThreadOK()) {
 			dispatchHierarchyChange(hierarchyEvent);
 			markAllRenderTargetsDirty();
@@ -221,8 +253,9 @@ public abstract class AbstractRenderer implements edu.cmu.cs.stage3.alice.sceneg
 			m_pendingHeirarchyChanges.addElement(hierarchyEvent);
 		}
 	}
+
 	@Override
-	public synchronized void changed(edu.cmu.cs.stage3.alice.scenegraph.event.PropertyEvent propertyEvent) {
+	public synchronized void changed(final edu.cmu.cs.stage3.alice.scenegraph.event.PropertyEvent propertyEvent) {
 		if (isThreadOK()) {
 			dispatchPropertyChange(propertyEvent);
 			markAllRenderTargetsDirty();
@@ -230,11 +263,13 @@ public abstract class AbstractRenderer implements edu.cmu.cs.stage3.alice.sceneg
 			m_pendingPropertyChanges.addElement(propertyEvent);
 		}
 	}
+
 	@Override
-	public synchronized void releasing(edu.cmu.cs.stage3.alice.scenegraph.event.ReleaseEvent releaseEvent) {
+	public synchronized void releasing(final edu.cmu.cs.stage3.alice.scenegraph.event.ReleaseEvent releaseEvent) {
 	}
+
 	@Override
-	public synchronized void released(edu.cmu.cs.stage3.alice.scenegraph.event.ReleaseEvent releaseEvent) {
+	public synchronized void released(final edu.cmu.cs.stage3.alice.scenegraph.event.ReleaseEvent releaseEvent) {
 		if (isThreadOK()) {
 			dispatchRelease(releaseEvent);
 			markAllRenderTargetsDirty();
@@ -248,7 +283,8 @@ public abstract class AbstractRenderer implements edu.cmu.cs.stage3.alice.sceneg
 		release();
 		super.finalize();
 	}
-	public boolean addRenderTarget(RenderTarget renderTarget) {
+
+	public boolean addRenderTarget(final RenderTarget renderTarget) {
 		if (renderTarget instanceof OnscreenRenderTarget) {
 			m_onscreenRenderTargetArray = null;
 			m_onscreenRenderTargets.addElement(renderTarget);
@@ -260,7 +296,8 @@ public abstract class AbstractRenderer implements edu.cmu.cs.stage3.alice.sceneg
 		}
 		return true;
 	}
-	public boolean removeRenderTarget(RenderTarget renderTarget) {
+
+	public boolean removeRenderTarget(final RenderTarget renderTarget) {
 		if (renderTarget instanceof OnscreenRenderTarget) {
 			m_onscreenRenderTargetArray = null;
 			return m_onscreenRenderTargets.removeElement(renderTarget);
@@ -280,6 +317,7 @@ public abstract class AbstractRenderer implements edu.cmu.cs.stage3.alice.sceneg
 		}
 		return m_onscreenRenderTargetArray;
 	}
+
 	@Override
 	public OffscreenRenderTarget[] getOffscreenRenderTargets() {
 		if (m_offscreenRenderTargetArray == null) {
@@ -297,8 +335,9 @@ public abstract class AbstractRenderer implements edu.cmu.cs.stage3.alice.sceneg
 	public boolean isSoftwareEmulationForced() {
 		return m_isSoftwareEmulationForced;
 	}
+
 	@Override
-	public void setIsSoftwareEmulationForced(boolean isSoftwareEmulationForced) {
+	public void setIsSoftwareEmulationForced(final boolean isSoftwareEmulationForced) {
 		m_isSoftwareEmulationForced = isSoftwareEmulationForced;
 	}
 }

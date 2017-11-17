@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -27,11 +27,13 @@ public class ImageUtilities {
 	private static java.awt.MediaTracker s_mediaTracker = new java.awt.MediaTracker(new java.awt.Panel());
 	private static java.awt.image.ImageObserver s_imageObserver = new java.awt.image.ImageObserver() {
 		@Override
-		public boolean imageUpdate(java.awt.Image image, int infoflags, int x, int y, int width, int height) {
+		public boolean imageUpdate(final java.awt.Image image, final int infoflags, final int x, final int y,
+				final int width, final int height) {
 			return true;
 		}
 	};
-	private static void waitForImage(java.awt.Image image) throws InterruptedException {
+
+	private static void waitForImage(final java.awt.Image image) throws InterruptedException {
 		s_mediaTracker.addImage(image, 0);
 		try {
 			s_mediaTracker.waitForID(0);
@@ -39,17 +41,22 @@ public class ImageUtilities {
 			s_mediaTracker.removeImage(image);
 		}
 	}
-	public static int getWidth(java.awt.Image image) throws InterruptedException {
+
+	public static int getWidth(final java.awt.Image image) throws InterruptedException {
 		waitForImage(image);
 		return image.getWidth(s_imageObserver);
 	}
-	public static int getHeight(java.awt.Image image) throws InterruptedException {
+
+	public static int getHeight(final java.awt.Image image) throws InterruptedException {
 		waitForImage(image);
 		return image.getHeight(s_imageObserver);
 	}
-	public static int[] getPixels(java.awt.Image image, int width, int height) throws InterruptedException {
-		int[] pixels = new int[width * height];
-		java.awt.image.PixelGrabber pg = new java.awt.image.PixelGrabber(image, 0, 0, width, height, pixels, 0, width);
+
+	public static int[] getPixels(final java.awt.Image image, final int width, final int height)
+			throws InterruptedException {
+		final int[] pixels = new int[width * height];
+		final java.awt.image.PixelGrabber pg = new java.awt.image.PixelGrabber(image, 0, 0, width, height, pixels, 0,
+				width);
 		pg.grabPixels();
 		if ((pg.getStatus() & java.awt.image.ImageObserver.ABORT) != 0) {
 			throw new RuntimeException("image fetch aborted or errored");

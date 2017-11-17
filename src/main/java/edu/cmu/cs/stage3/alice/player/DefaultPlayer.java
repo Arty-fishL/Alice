@@ -27,10 +27,11 @@ import java.awt.Frame;
 import java.util.Vector;
 
 public class DefaultPlayer extends AbstractPlayer {
-	public DefaultPlayer(Class<?> rendererClass) {
+	public DefaultPlayer(final Class<?> rendererClass) {
 		super(rendererClass);
 	}
-	private Vector<Frame> m_frames = new Vector<Frame>();
+
+	private final Vector<Frame> m_frames = new Vector<Frame>();
 
 	@Override
 	protected boolean isPreserveAndRestoreRequired() {
@@ -40,13 +41,14 @@ public class DefaultPlayer extends AbstractPlayer {
 	protected int getDesiredFrameWidth() {
 		return 320;
 	}
+
 	protected int getDesiredFrameHeight() {
 		return 240;
 	}
 
 	@Override
-	protected void handleRenderTarget(edu.cmu.cs.stage3.alice.core.RenderTarget renderTarget) {
-		java.awt.Frame frame = new java.awt.Frame();
+	protected void handleRenderTarget(final edu.cmu.cs.stage3.alice.core.RenderTarget renderTarget) {
+		final java.awt.Frame frame = new java.awt.Frame();
 		frame.setSize(getDesiredFrameWidth(), getDesiredFrameHeight());
 		frame.setLayout(new java.awt.BorderLayout());
 		frame.add(renderTarget.getAWTComponent(), java.awt.BorderLayout.CENTER);
@@ -54,7 +56,7 @@ public class DefaultPlayer extends AbstractPlayer {
 		frame.addWindowListener(new java.awt.event.WindowAdapter() {
 
 			@Override
-			public void windowClosing(java.awt.event.WindowEvent ev) {
+			public void windowClosing(final java.awt.event.WindowEvent ev) {
 				m_frames.removeElement(ev.getSource());
 				if (m_frames.size() == 0) {
 					System.exit(0);
@@ -70,7 +72,7 @@ public class DefaultPlayer extends AbstractPlayer {
 	 * < args.length) { path += args[i]; i++; file = new java.io.File(path); if(
 	 * file.exists() ) { break; } else { path += " "; file = null; } } return
 	 * file; }
-	 * 
+	 *
 	 * public static void main(String[] args) { Class rendererClass = null;
 	 * java.io.File file = null; if( args.length > 0 ) { int startFrom = 1; if
 	 * (args[0].equals("-directx")) { rendererClass =

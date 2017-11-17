@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -53,14 +53,16 @@ class TextureMapProxy extends ElementProxy {
 	private edu.cmu.cs.stage3.alice.scenegraph.TextureMap getSGTexture() {
 		return (edu.cmu.cs.stage3.alice.scenegraph.TextureMap) getSceneGraphElement();
 	}
+
 	public boolean isPotentiallyAlphaBlended() {
 		return false;// getSGTexture().getIsPotentiallyAlphaBlended() ;
 	}
+
 	public boolean isImageSet() {
 		return getSGTexture().getImage() != null;
 	}
 
-	private static int getPowerOf2(int fold) {
+	private static int getPowerOf2(final int fold) {
 		int ret = 2;
 		while (ret < fold) {
 			ret *= 2;
@@ -74,20 +76,26 @@ class TextureMapProxy extends ElementProxy {
 		if (m_isPrepared) {
 			return false;
 		} else {
-			java.awt.Image image = getSGTexture().getImage();
+			final java.awt.Image image = getSGTexture().getImage();
 			if (image != null) {
-				boolean isPotentiallyAlphaBlended = isPotentiallyAlphaBlended();
+				final boolean isPotentiallyAlphaBlended = isPotentiallyAlphaBlended();
 				java.awt.image.ColorModel colorModel;
 				if (isPotentiallyAlphaBlended) {
-					colorModel = new java.awt.image.ComponentColorModel(java.awt.color.ColorSpace.getInstance(java.awt.color.ColorSpace.CS_sRGB), new int[]{8, 8, 8, 8}, true, false, Transparency.TRANSLUCENT, java.awt.image.DataBuffer.TYPE_BYTE);
+					colorModel = new java.awt.image.ComponentColorModel(
+							java.awt.color.ColorSpace.getInstance(java.awt.color.ColorSpace.CS_sRGB),
+							new int[] { 8, 8, 8, 8 }, true, false, Transparency.TRANSLUCENT,
+							java.awt.image.DataBuffer.TYPE_BYTE);
 				} else {
-					colorModel = new java.awt.image.ComponentColorModel(java.awt.color.ColorSpace.getInstance(java.awt.color.ColorSpace.CS_sRGB), new int[]{8, 8, 8, 0}, false, false, Transparency.OPAQUE, java.awt.image.DataBuffer.TYPE_BYTE);
+					colorModel = new java.awt.image.ComponentColorModel(
+							java.awt.color.ColorSpace.getInstance(java.awt.color.ColorSpace.CS_sRGB),
+							new int[] { 8, 8, 8, 0 }, false, false, Transparency.OPAQUE,
+							java.awt.image.DataBuffer.TYPE_BYTE);
 				}
 
 				try {
 					m_width = edu.cmu.cs.stage3.image.ImageUtilities.getWidth(image);
 					m_height = edu.cmu.cs.stage3.image.ImageUtilities.getHeight(image);
-				} catch (InterruptedException ie) {
+				} catch (final InterruptedException ie) {
 					throw new ExceptionWrapper(ie, "");
 				}
 				m_width2 = getPowerOf2(m_width);
@@ -103,13 +111,16 @@ class TextureMapProxy extends ElementProxy {
 					bands = 3;
 				}
 				// System.err.println( bands );
-				java.awt.image.WritableRaster raster = java.awt.image.Raster.createInterleavedRaster(java.awt.image.DataBuffer.TYPE_BYTE, m_width2, m_height2, bands, null);
-				java.awt.image.BufferedImage bufferedImage = new java.awt.image.BufferedImage(colorModel, raster, false, new java.util.Hashtable());
+				final java.awt.image.WritableRaster raster = java.awt.image.Raster
+						.createInterleavedRaster(java.awt.image.DataBuffer.TYPE_BYTE, m_width2, m_height2, bands, null);
+				final java.awt.image.BufferedImage bufferedImage = new java.awt.image.BufferedImage(colorModel, raster,
+						false, new java.util.Hashtable());
 
-				java.awt.Graphics g = bufferedImage.getGraphics();
+				final java.awt.Graphics g = bufferedImage.getGraphics();
 				g.drawImage(image, 0, 0, null);
 
-				byte[] data = ((java.awt.image.DataBufferByte) bufferedImage.getRaster().getDataBuffer()).getData();
+				final byte[] data = ((java.awt.image.DataBufferByte) bufferedImage.getRaster().getDataBuffer())
+						.getData();
 
 				m_byteBuffer = java.nio.ByteBuffer.allocateDirect(data.length);
 				m_byteBuffer.order(java.nio.ByteOrder.nativeOrder());
@@ -129,9 +140,11 @@ class TextureMapProxy extends ElementProxy {
 	public java.nio.ByteBuffer getPixels() {
 		return m_byteBuffer;
 	}
+
 	public int getWidth() {
 		return m_width;
 	}
+
 	public int getWidthPowerOf2() {
 		return m_width2;
 	}
@@ -139,19 +152,21 @@ class TextureMapProxy extends ElementProxy {
 	public int getHeight() {
 		return m_height;
 	}
+
 	public int getHeightPowerOf2() {
 		return m_height2;
 	}
 
-	public float mapU(float u) {
+	public float mapU(final float u) {
 		return u * m_uFactor;
 	}
-	public float mapV(float v) {
+
+	public float mapV(final float v) {
 		return (1 - v) * m_vFactor;
 	}
 
 	@Override
-	protected void changed(edu.cmu.cs.stage3.alice.scenegraph.Property property, Object value) {
+	protected void changed(final edu.cmu.cs.stage3.alice.scenegraph.Property property, final Object value) {
 		// delay to avoid potential extra work if image and
 		// isPotentiallyAlphaBlended both change
 		if (property == edu.cmu.cs.stage3.alice.scenegraph.TextureMap.IMAGE_PROPERTY) {

@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -27,6 +27,10 @@ package edu.cmu.cs.stage3.alice.authoringtool.viewcontroller;
  * @author Jason Pratt
  */
 public class EnumerablePropertyViewController extends PropertyViewController {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 8000514179799163953L;
 	protected javax.swing.JLabel enumerableLabel = new javax.swing.JLabel();
 	protected Class valueClass;
 
@@ -46,11 +50,13 @@ public class EnumerablePropertyViewController extends PropertyViewController {
 	// );
 	// }
 
-	public void set(edu.cmu.cs.stage3.alice.core.Property property, boolean allowExpressions, boolean omitPropertyName, final edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory factory) {
+	public void set(final edu.cmu.cs.stage3.alice.core.Property property, final boolean allowExpressions,
+			final boolean omitPropertyName, final edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory factory) {
 		super.set(property, true, allowExpressions, false, omitPropertyName, factory);
 		valueClass = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.getDesiredValueClass(property);
 		if (!edu.cmu.cs.stage3.util.Enumerable.class.isAssignableFrom(valueClass)) {
-			throw new IllegalArgumentException("valueClass of property " + property + " is not an Enumerable; instead: " + valueClass);
+			throw new IllegalArgumentException(
+					"valueClass of property " + property + " is not an Enumerable; instead: " + valueClass);
 		}
 		setPopupEnabled(true);
 		refreshGUI();
@@ -68,7 +74,8 @@ public class EnumerablePropertyViewController extends PropertyViewController {
 
 	@Override
 	protected void updateNativeComponent() {
-		String text = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(property.get(), property);
+		final String text = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(property.get(),
+				property);
 		enumerableLabel.setText(text);
 	}
 }

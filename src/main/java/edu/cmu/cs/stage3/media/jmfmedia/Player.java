@@ -7,30 +7,31 @@ public class Player extends edu.cmu.cs.stage3.media.AbstractPlayer {
 	private javax.media.Time m_pendingMediaTime;
 	private Float m_pendingVolumeLevel;
 	private Float m_pendingRate;
-	public Player(DataSource dataSource) {
+
+	public Player(final DataSource dataSource) {
 		super(dataSource);
 		try {
 			m_jmfPlayer = javax.media.Manager.createPlayer(dataSource.getJMFDataSource());
 			m_jmfPlayer.addControllerListener(new javax.media.ControllerListener() {
 				@Override
-				public void controllerUpdate(javax.media.ControllerEvent e) {
+				public void controllerUpdate(final javax.media.ControllerEvent e) {
 					if (e instanceof javax.media.TransitionEvent) {
-						javax.media.TransitionEvent te = (javax.media.TransitionEvent) e;
+						final javax.media.TransitionEvent te = (javax.media.TransitionEvent) e;
 						switch (te.getCurrentState()) {
-							case javax.media.Controller.Realized :
-								if (m_pendingMediaTime != null) {
-									m_jmfPlayer.setMediaTime(m_pendingMediaTime);
-									m_pendingMediaTime = null;
-								}
-								if (m_pendingVolumeLevel != null) {
-									updateVolumeLevel(m_pendingVolumeLevel.floatValue());
-									m_pendingVolumeLevel = null;
-								}
-								if (m_pendingRate != null) {
-									updateRate(m_pendingRate.floatValue());
-									m_pendingRate = null;
-								}
-								break;
+						case javax.media.Controller.Realized:
+							if (m_pendingMediaTime != null) {
+								m_jmfPlayer.setMediaTime(m_pendingMediaTime);
+								m_pendingMediaTime = null;
+							}
+							if (m_pendingVolumeLevel != null) {
+								updateVolumeLevel(m_pendingVolumeLevel.floatValue());
+								m_pendingVolumeLevel = null;
+							}
+							if (m_pendingRate != null) {
+								updateRate(m_pendingRate.floatValue());
+								m_pendingRate = null;
+							}
+							break;
 						}
 						fireStateChanged();
 					}
@@ -42,7 +43,7 @@ public class Player extends edu.cmu.cs.stage3.media.AbstractPlayer {
 					}
 				}
 			});
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			t.printStackTrace();
 		}
 	}
@@ -54,9 +55,9 @@ public class Player extends edu.cmu.cs.stage3.media.AbstractPlayer {
 
 	@Override
 	public double getDuration() {
-		javax.media.Time t = m_jmfPlayer.getDuration();
+		final javax.media.Time t = m_jmfPlayer.getDuration();
 		if (t != null) {
-			long nsec = t.getNanoseconds();
+			final long nsec = t.getNanoseconds();
 			if (nsec == Long.MAX_VALUE - 1) {
 				return Double.NaN;
 			} else if (nsec == Long.MAX_VALUE - 1) {
@@ -68,6 +69,7 @@ public class Player extends edu.cmu.cs.stage3.media.AbstractPlayer {
 			return Double.NaN;
 		}
 	}
+
 	@Override
 	public double getCurrentTime() {
 		javax.media.Time t;
@@ -77,7 +79,7 @@ public class Player extends edu.cmu.cs.stage3.media.AbstractPlayer {
 			t = m_jmfPlayer.getMediaTime();
 		}
 		if (t != null) {
-			long nsec = t.getNanoseconds();
+			final long nsec = t.getNanoseconds();
 			if (nsec == Long.MAX_VALUE - 1) {
 				return Double.NaN;
 			} else if (nsec == Long.MAX_VALUE - 1) {
@@ -89,13 +91,15 @@ public class Player extends edu.cmu.cs.stage3.media.AbstractPlayer {
 			return Double.NaN;
 		}
 	}
+
 	private boolean isAtLeastRealized() {
-		int state = getState();
+		final int state = getState();
 		return state != STATE_UNREALIZED && state != STATE_REALIZING;
 	}
+
 	@Override
-	public void setCurrentTime(double currentTime) {
-		javax.media.Time t = new javax.media.Time(currentTime);
+	public void setCurrentTime(final double currentTime) {
+		final javax.media.Time t = new javax.media.Time(currentTime);
 		if (isAtLeastRealized()) {
 			m_jmfPlayer.setMediaTime(t);
 		} else {
@@ -103,16 +107,17 @@ public class Player extends edu.cmu.cs.stage3.media.AbstractPlayer {
 		}
 	}
 
-	private void updateVolumeLevel(float volumeLevel) {
-		javax.media.GainControl gainConrol = m_jmfPlayer.getGainControl();
+	private void updateVolumeLevel(final float volumeLevel) {
+		final javax.media.GainControl gainConrol = m_jmfPlayer.getGainControl();
 		if (gainConrol != null) {
 			gainConrol.setLevel(volumeLevel);
 		} else {
 			// todo: throw exception?
 		}
 	}
+
 	@Override
-	public void setVolumeLevel(float volumeLevel) {
+	public void setVolumeLevel(final float volumeLevel) {
 		if (isAtLeastRealized()) {
 			updateVolumeLevel(volumeLevel);
 		} else {
@@ -120,15 +125,15 @@ public class Player extends edu.cmu.cs.stage3.media.AbstractPlayer {
 		}
 	}
 
-	private void updateRate(float rate) {
-		float actualRate = m_jmfPlayer.setRate(rate);
+	private void updateRate(final float rate) {
+		final float actualRate = m_jmfPlayer.setRate(rate);
 		if (actualRate != rate) {
 			// todo: throw exception?
 		}
 	}
 
 	@Override
-	public void setRate(float rate) {
+	public void setRate(final float rate) {
 		if (isAtLeastRealized()) {
 			updateRate(rate);
 		} else {
@@ -140,7 +145,7 @@ public class Player extends edu.cmu.cs.stage3.media.AbstractPlayer {
 	public void realize() {
 		try {
 			m_jmfPlayer.realize();
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			t.printStackTrace();
 		}
 	}
@@ -149,7 +154,7 @@ public class Player extends edu.cmu.cs.stage3.media.AbstractPlayer {
 	public void prefetch() {
 		try {
 			m_jmfPlayer.prefetch();
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			t.printStackTrace();
 		}
 	}
@@ -158,7 +163,7 @@ public class Player extends edu.cmu.cs.stage3.media.AbstractPlayer {
 	public void start() {
 		try {
 			m_jmfPlayer.start();
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			t.printStackTrace();
 		}
 	}
@@ -169,7 +174,7 @@ public class Player extends edu.cmu.cs.stage3.media.AbstractPlayer {
 			if (m_jmfPlayer.getState() == Controller.Started) {
 				m_jmfPlayer.stop();
 			}
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			t.printStackTrace();
 		}
 	}

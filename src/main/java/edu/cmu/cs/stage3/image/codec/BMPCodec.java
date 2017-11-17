@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -76,10 +76,11 @@ public final class BMPCodec extends ImageCodec {
 	}
 
 	@Override
-	public boolean canEncodeImage(RenderedImage im, ImageEncodeParam param) {
-		SampleModel sampleModel = im.getSampleModel();
-		int dataType = sampleModel.getTransferType();
-		if (dataType == DataBuffer.TYPE_USHORT || dataType == DataBuffer.TYPE_SHORT || dataType == DataBuffer.TYPE_INT || dataType == DataBuffer.TYPE_FLOAT || dataType == DataBuffer.TYPE_DOUBLE) {
+	public boolean canEncodeImage(final RenderedImage im, final ImageEncodeParam param) {
+		final SampleModel sampleModel = im.getSampleModel();
+		final int dataType = sampleModel.getTransferType();
+		if (dataType == DataBuffer.TYPE_USHORT || dataType == DataBuffer.TYPE_SHORT || dataType == DataBuffer.TYPE_INT
+				|| dataType == DataBuffer.TYPE_FLOAT || dataType == DataBuffer.TYPE_DOUBLE) {
 			return false;
 		}
 
@@ -87,9 +88,9 @@ public final class BMPCodec extends ImageCodec {
 			if (!(param instanceof BMPEncodeParam)) {
 				return false;
 			}
-			BMPEncodeParam BMPParam = (BMPEncodeParam) param;
+			final BMPEncodeParam BMPParam = (BMPEncodeParam) param;
 
-			int version = BMPParam.getVersion();
+			final int version = BMPParam.getVersion();
 			if (version == BMPEncodeParam.VERSION_2 || version == BMPEncodeParam.VERSION_4) {
 				return false;
 			}
@@ -99,7 +100,7 @@ public final class BMPCodec extends ImageCodec {
 	}
 
 	@Override
-	protected ImageEncoder createImageEncoder(OutputStream dst, ImageEncodeParam param) {
+	protected ImageEncoder createImageEncoder(final OutputStream dst, final ImageEncodeParam param) {
 		BMPEncodeParam p = null;
 		if (param != null) {
 			p = (BMPEncodeParam) param;
@@ -109,17 +110,17 @@ public final class BMPCodec extends ImageCodec {
 	}
 
 	@Override
-	protected ImageDecoder createImageDecoder(InputStream src, ImageDecodeParam param) {
+	protected ImageDecoder createImageDecoder(final InputStream src, final ImageDecodeParam param) {
 		return new BMPImageDecoder(src, null);
 	}
 
 	@Override
-	protected ImageDecoder createImageDecoder(File src, ImageDecodeParam param) throws IOException {
+	protected ImageDecoder createImageDecoder(final File src, final ImageDecodeParam param) throws IOException {
 		return new BMPImageDecoder(new FileInputStream(src), null);
 	}
 
 	@Override
-	protected ImageDecoder createImageDecoder(SeekableStream src, ImageDecodeParam param) {
+	protected ImageDecoder createImageDecoder(final SeekableStream src, final ImageDecodeParam param) {
 		return new BMPImageDecoder(src, null);
 	}
 
@@ -129,7 +130,7 @@ public final class BMPCodec extends ImageCodec {
 	}
 
 	@Override
-	public boolean isFormatRecognized(byte[] header) {
+	public boolean isFormatRecognized(final byte[] header) {
 		return header[0] == 0x42 && header[1] == 0x4d;
 	}
 }

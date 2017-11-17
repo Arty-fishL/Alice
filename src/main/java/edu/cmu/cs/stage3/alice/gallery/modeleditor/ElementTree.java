@@ -1,13 +1,19 @@
 package edu.cmu.cs.stage3.alice.gallery.modeleditor;
 
 class ElementTree extends javax.swing.JTree {
-	public ElementTree(ElementTreeModel model) {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -8710597801480966663L;
+
+	public ElementTree(final ElementTreeModel model) {
 		super(model);
 	}
 
 	@Override
-	public String convertValueToText(Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-		edu.cmu.cs.stage3.alice.core.Element element = (edu.cmu.cs.stage3.alice.core.Element) value;
+	public String convertValueToText(final Object value, final boolean selected, final boolean expanded,
+			final boolean leaf, final int row, final boolean hasFocus) {
+		final edu.cmu.cs.stage3.alice.core.Element element = (edu.cmu.cs.stage3.alice.core.Element) value;
 		if (element != null) {
 			return element.name.getStringValue();
 		} else {

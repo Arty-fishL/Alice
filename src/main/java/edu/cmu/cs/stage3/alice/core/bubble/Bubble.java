@@ -24,32 +24,40 @@
 package edu.cmu.cs.stage3.alice.core.bubble;
 
 class SubText {
-	public SubText(String text, java.awt.geom.Rectangle2D bound, int yOffset) {
+	public SubText(final String text, final java.awt.geom.Rectangle2D bound, final int yOffset) {
 		m_text = text;
-		m_bound = new java.awt.geom.Rectangle2D.Double(bound.getX(), bound.getY() + yOffset, bound.getWidth(), bound.getHeight());
+		m_bound = new java.awt.geom.Rectangle2D.Double(bound.getX(), bound.getY() + yOffset, bound.getWidth(),
+				bound.getHeight());
 	}
+
 	public String getText() {
 		return m_text;
 	}
+
 	public java.awt.geom.Rectangle2D getBound() {
 		return m_bound;
 	}
+
 	public java.awt.geom.Rectangle2D getSafeBound() {
-		return new java.awt.geom.Rectangle2D.Double(m_bound.getX(), m_bound.getY(), m_bound.getWidth(), m_bound.getHeight());
+		return new java.awt.geom.Rectangle2D.Double(m_bound.getX(), m_bound.getY(), m_bound.getWidth(),
+				m_bound.getHeight());
 	}
 
 	int getPixelX() {
 		return (int) m_bound.getX();
 	}
+
 	int getPixelY() {
 		return (int) m_bound.getY();
 	}
-	private String m_text;
-	private java.awt.geom.Rectangle2D m_bound;
+
+	private final String m_text;
+	private final java.awt.geom.Rectangle2D m_bound;
 
 	@Override
 	public String toString() {
-		return m_text + " " + m_bound.getX() + " " + m_bound.getY() + " " + m_bound.getWidth() + " " + m_bound.getHeight();
+		return m_text + " " + m_bound.getX() + " " + m_bound.getY() + " " + m_bound.getWidth() + " "
+				+ m_bound.getHeight();
 	}
 }
 
@@ -64,60 +72,76 @@ public abstract class Bubble {
 
 	protected java.util.Vector m_subTexts = new java.util.Vector();
 	protected java.awt.Point m_pixelOffset = null;
-	private java.awt.Point m_origin = new java.awt.Point();
+	private final java.awt.Point m_origin = new java.awt.Point();
 
 	private int m_charsPerLine = 32;
 
 	public String getText() {
 		return m_text;
 	}
-	public void setText(String text) {
+
+	public void setText(final String text) {
 		m_text = text;
 		m_subTexts.clear();
 	}
+
 	public java.awt.Color getBackgroundColor() {
 		return m_backgroundColor;
 	}
-	public void setBackgroundColor(java.awt.Color backgroundColor) {
+
+	public void setBackgroundColor(final java.awt.Color backgroundColor) {
 		m_backgroundColor = backgroundColor;
 	}
+
 	public java.awt.Color getForegroundColor() {
 		return m_foregroundColor;
 	}
-	public void setForegroundColor(java.awt.Color foregroundColor) {
+
+	public void setForegroundColor(final java.awt.Color foregroundColor) {
 		m_foregroundColor = foregroundColor;
 	}
+
 	public java.awt.Font getFont() {
 		return m_font;
 	}
-	public void setFont(java.awt.Font font) {
+
+	public void setFont(final java.awt.Font font) {
 		m_font = font;
 	}
-	public void setCharactersPerLine(int charsPerLine) {
+
+	public void setCharactersPerLine(final int charsPerLine) {
 		m_charsPerLine = charsPerLine;
 	}
+
 	public boolean isShowing() {
 		return m_isShowing;
 	}
-	public void setIsShowing(boolean isShowing) {
+
+	public void setIsShowing(final boolean isShowing) {
 		m_isShowing = isShowing;
 	}
+
 	public void show() {
 		setIsShowing(true);
 	}
+
 	public void hide() {
 		setIsShowing(false);
 	}
+
 	public edu.cmu.cs.stage3.alice.core.ReferenceFrame getReferenceFrame() {
 		return m_referenceFrame;
 	}
-	public void setReferenceFrame(edu.cmu.cs.stage3.alice.core.ReferenceFrame referenceFrame) {
+
+	public void setReferenceFrame(final edu.cmu.cs.stage3.alice.core.ReferenceFrame referenceFrame) {
 		m_referenceFrame = referenceFrame;
 	}
+
 	public javax.vecmath.Vector3d getOffsetFromReferenceFrame() {
 		return m_offsetFromReferenceFrame;
 	}
-	public void setOffsetFromReferenceFrame(javax.vecmath.Vector3d offsetFromReferenceFrame) {
+
+	public void setOffsetFromReferenceFrame(final javax.vecmath.Vector3d offsetFromReferenceFrame) {
 		m_offsetFromReferenceFrame = offsetFromReferenceFrame;
 	}
 
@@ -127,19 +151,21 @@ public abstract class Bubble {
 	public java.awt.Point getPixelOffset() {
 		return m_pixelOffset;
 	}
-	public void setPixelOffset(java.awt.Point pixelOffset) {
+
+	public void setPixelOffset(final java.awt.Point pixelOffset) {
 		m_pixelOffset = pixelOffset;
 	}
 
 	protected java.awt.Point getOrigin() {
 		return m_origin;
 	}
+
 	public java.awt.geom.Rectangle2D getTotalBound() {
 		if (m_subTexts.size() > 0) {
-			SubText subText0 = (SubText) m_subTexts.elementAt(0);
-			java.awt.geom.Rectangle2D totalBound = subText0.getSafeBound();
+			final SubText subText0 = (SubText) m_subTexts.elementAt(0);
+			final java.awt.geom.Rectangle2D totalBound = subText0.getSafeBound();
 			for (int i = 1; i < m_subTexts.size(); i++) {
-				SubText subTextI = (SubText) m_subTexts.elementAt(i);
+				final SubText subTextI = (SubText) m_subTexts.elementAt(i);
 				java.awt.geom.Rectangle2D.union(totalBound, subTextI.getBound(), totalBound);
 			}
 			return totalBound;
@@ -148,14 +174,14 @@ public abstract class Bubble {
 		}
 	}
 
-	public void calculateBounds(edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget rt) {
-		java.awt.geom.Rectangle2D totalBound = getTotalBound();
+	public void calculateBounds(final edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget rt) {
+		final java.awt.geom.Rectangle2D totalBound = getTotalBound();
 		if (totalBound == null) {
 			if (m_text != null) {
 				if (m_font != null) {
-					int n = m_charsPerLine;
+					final int n = m_charsPerLine;
 					m_subTexts.clear();
-					java.awt.font.FontRenderContext frc = new java.awt.font.FontRenderContext(null, false, false);
+					final java.awt.font.FontRenderContext frc = new java.awt.font.FontRenderContext(null, false, false);
 					int offsetY = 0;
 					int i = 0;
 					while (i < m_text.length()) {
@@ -168,8 +194,8 @@ public abstract class Bubble {
 								limit = m_text.length();
 							}
 						}
-						String substring = m_text.substring(i, limit);
-						java.awt.geom.Rectangle2D boundI = m_font.getStringBounds(substring, frc);
+						final String substring = m_text.substring(i, limit);
+						final java.awt.geom.Rectangle2D boundI = m_font.getStringBounds(substring, frc);
 						m_subTexts.addElement(new SubText(substring, boundI, offsetY));
 						offsetY += boundI.getHeight();
 						i = limit + 1;
@@ -178,17 +204,21 @@ public abstract class Bubble {
 			}
 		}
 	}
-	public void calculateOrigin(edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget rt) {
+
+	public void calculateOrigin(final edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget rt) {
 		m_origin.x = 300;
 		m_origin.y = 300;
 		if (m_referenceFrame != null) {
-			edu.cmu.cs.stage3.alice.scenegraph.Camera[] sgCameras = rt.getCameras();
+			final edu.cmu.cs.stage3.alice.scenegraph.Camera[] sgCameras = rt.getCameras();
 			if (sgCameras.length > 0) {
-				edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera = sgCameras[0];
-				edu.cmu.cs.stage3.alice.core.Camera camera = (edu.cmu.cs.stage3.alice.core.Camera) sgCamera.getBonus();
+				final edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera = sgCameras[0];
+				final edu.cmu.cs.stage3.alice.core.Camera camera = (edu.cmu.cs.stage3.alice.core.Camera) sgCamera
+						.getBonus();
 				if (camera != null && camera != m_referenceFrame) {
-					javax.vecmath.Vector3d xyzInCamera = m_referenceFrame.transformTo(m_offsetFromReferenceFrame, camera);
-					javax.vecmath.Vector3d xyzInViewport = rt.transformFromCameraToViewport(xyzInCamera, sgCamera);
+					final javax.vecmath.Vector3d xyzInCamera = m_referenceFrame.transformTo(m_offsetFromReferenceFrame,
+							camera);
+					final javax.vecmath.Vector3d xyzInViewport = rt.transformFromCameraToViewport(xyzInCamera,
+							sgCamera);
 					m_origin.x = (int) xyzInViewport.x;
 					m_origin.y = (int) xyzInViewport.y;
 				}
@@ -197,7 +227,8 @@ public abstract class Bubble {
 	}
 
 	protected abstract void paintBackground(java.awt.Graphics g);
-	protected void paint(java.awt.Graphics g) {
+
+	protected void paint(final java.awt.Graphics g) {
 		if (m_isShowing) {
 			paintBackground(g);
 			if (m_text != null) {
@@ -206,14 +237,14 @@ public abstract class Bubble {
 				}
 				g.setColor(m_foregroundColor);
 				if (m_subTexts.size() > 0) {
-					SubText subText0 = (SubText) m_subTexts.elementAt(0);
-					int offsetX = m_pixelOffset.x;
-					int offsetY = m_pixelOffset.y - (int) subText0.getBound().getY();
+					final SubText subText0 = (SubText) m_subTexts.elementAt(0);
+					final int offsetX = m_pixelOffset.x;
+					final int offsetY = m_pixelOffset.y - (int) subText0.getBound().getY();
 					for (int i = 0; i < m_subTexts.size(); i++) {
-						SubText subTextI = (SubText) m_subTexts.elementAt(i);
-						java.awt.geom.Rectangle2D boundI = subTextI.getBound();
-						int x = (int) (offsetX + boundI.getX());
-						int y = (int) (offsetY + boundI.getY());
+						final SubText subTextI = (SubText) m_subTexts.elementAt(i);
+						final java.awt.geom.Rectangle2D boundI = subTextI.getBound();
+						final int x = (int) (offsetX + boundI.getX());
+						final int y = (int) (offsetY + boundI.getY());
 						// g.setColor( java.awt.Color.red );
 						// g.drawRect( x, y, (int)boundI.getWidth(),
 						// (int)boundI.getHeight() );

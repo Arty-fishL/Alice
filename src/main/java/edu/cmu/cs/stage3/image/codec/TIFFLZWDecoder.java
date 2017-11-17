@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -59,9 +59,9 @@ public class TIFFLZWDecoder {
 	int nextData = 0;
 	int nextBits = 0;
 
-	int andTable[] = {511, 1023, 2047, 4095};
+	int andTable[] = { 511, 1023, 2047, 4095 };
 
-	public TIFFLZWDecoder(int w, int predictor, int samplesPerPixel) {
+	public TIFFLZWDecoder(final int w, final int predictor, final int samplesPerPixel) {
 		this.w = w;
 		this.predictor = predictor;
 		this.samplesPerPixel = samplesPerPixel;
@@ -69,7 +69,7 @@ public class TIFFLZWDecoder {
 
 	/**
 	 * Method to decode LZW compressed data.
-	 * 
+	 *
 	 * @param data
 	 *            The compressed data.
 	 * @param uncompData
@@ -77,7 +77,7 @@ public class TIFFLZWDecoder {
 	 * @param h
 	 *            The number of rows the compressed data contains.
 	 */
-	public byte[] decode(byte data[], byte uncompData[], int h) {
+	public byte[] decode(final byte data[], final byte uncompData[], final int h) {
 
 		initializeStringTable();
 
@@ -171,9 +171,9 @@ public class TIFFLZWDecoder {
 	/**
 	 * Write out the string just uncompressed.
 	 */
-	public void writeString(byte string[]) {
+	public void writeString(final byte string[]) {
 
-		for (byte element : string) {
+		for (final byte element : string) {
 			uncompData[dstIndex++] = element;
 		}
 	}
@@ -181,9 +181,9 @@ public class TIFFLZWDecoder {
 	/**
 	 * Add a new string to the string table.
 	 */
-	public void addStringToTable(byte oldString[], byte newString) {
-		int length = oldString.length;
-		byte string[] = new byte[length + 1];
+	public void addStringToTable(final byte oldString[], final byte newString) {
+		final int length = oldString.length;
+		final byte string[] = new byte[length + 1];
 		System.arraycopy(oldString, 0, string, 0, length);
 		string[length] = newString;
 
@@ -202,7 +202,7 @@ public class TIFFLZWDecoder {
 	/**
 	 * Add a new string to the string table.
 	 */
-	public void addStringToTable(byte string[]) {
+	public void addStringToTable(final byte string[]) {
 
 		// Add this new String to the table
 		stringTable[tableIndex++] = string;
@@ -219,9 +219,9 @@ public class TIFFLZWDecoder {
 	/**
 	 * Append <code>newString</code> to the end of <code>oldString</code>.
 	 */
-	public byte[] composeString(byte oldString[], byte newString) {
-		int length = oldString.length;
-		byte string[] = new byte[length + 1];
+	public byte[] composeString(final byte oldString[], final byte newString) {
+		final int length = oldString.length;
+		final byte string[] = new byte[length + 1];
 		System.arraycopy(oldString, 0, string, 0, length);
 		string[length] = newString;
 
@@ -240,7 +240,7 @@ public class TIFFLZWDecoder {
 			nextBits += 8;
 		}
 
-		int code = nextData >> nextBits - bitsToGet & andTable[bitsToGet - 9];
+		final int code = nextData >> nextBits - bitsToGet & andTable[bitsToGet - 9];
 		nextBits -= bitsToGet;
 
 		return code;

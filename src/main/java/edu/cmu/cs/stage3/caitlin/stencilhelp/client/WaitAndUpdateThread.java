@@ -5,7 +5,8 @@ public class WaitAndUpdateThread extends Thread {
 	StencilManager.Stencil stencil = null;
 	LayoutChangeListener obj = null;
 
-	public WaitAndUpdateThread(long millis, StencilManager.Stencil stencil, LayoutChangeListener obj) {
+	public WaitAndUpdateThread(final long millis, final StencilManager.Stencil stencil,
+			final LayoutChangeListener obj) {
 		this.millis = millis;
 		this.stencil = stencil;
 		this.obj = obj;
@@ -16,9 +17,10 @@ public class WaitAndUpdateThread extends Thread {
 
 		try {
 			Thread.sleep(millis);
-		} catch (java.lang.InterruptedException ie) {}
+		} catch (final java.lang.InterruptedException ie) {
+		}
 
-		boolean success = obj.layoutChanged();
+		final boolean success = obj.layoutChanged();
 
 		if (success == false) {
 			// System.out.println("update thread - still missing");

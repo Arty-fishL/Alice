@@ -33,10 +33,11 @@ public class ScriptResponse extends edu.cmu.cs.stage3.alice.core.Response {
 	protected Number getDefaultDuration() {
 		return new Double(0);
 	}
+
 	public class RuntimeScriptResponse extends RuntimeResponse {
 
 		@Override
-		public void update(double t) {
+		public void update(final double t) {
 			super.update(t);
 			exec(script.getCode(edu.cmu.cs.stage3.alice.scripting.CompileType.EXEC_MULTIPLE));
 		}

@@ -7,7 +7,8 @@ public class Item extends edu.cmu.cs.stage3.alice.core.question.ModelQuestion {
 
 	@Override
 	public Object getValue() {
-		edu.cmu.cs.stage3.alice.core.visualization.ModelVisualization modelVisualizationValue = subject.getModelVisualizationValue();
+		final edu.cmu.cs.stage3.alice.core.visualization.ModelVisualization modelVisualizationValue = subject
+				.getModelVisualizationValue();
 		if (modelVisualizationValue != null) {
 			return modelVisualizationValue.getItem();
 		} else {

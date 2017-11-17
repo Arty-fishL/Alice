@@ -5,10 +5,12 @@ import edu.cmu.cs.stage3.alice.core.Element;
 
 public class ItemOfCollectionProperty extends ObjectProperty {
 	private Collection m_collection = null;
-	public ItemOfCollectionProperty(Element owner, String name) {
+
+	public ItemOfCollectionProperty(final Element owner, final String name) {
 		super(owner, name, null, Object.class);
 	}
-	public void setCollection(Collection collection) {
+
+	public void setCollection(final Collection collection) {
 		m_collection = collection;
 	}
 

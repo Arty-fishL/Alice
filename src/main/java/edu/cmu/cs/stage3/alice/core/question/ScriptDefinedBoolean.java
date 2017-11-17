@@ -29,6 +29,7 @@ public class ScriptDefinedBoolean extends AbstractScriptDefinedObject {
 	public Class getValueClass() {
 		return Boolean.class;
 	}
+
 	public Boolean getBooleanValue() {
 		return (Boolean) getValue();
 	}

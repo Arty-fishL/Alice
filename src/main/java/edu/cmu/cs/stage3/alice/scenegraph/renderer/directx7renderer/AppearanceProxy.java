@@ -35,20 +35,26 @@ class AppearanceProxy extends edu.cmu.cs.stage3.alice.scenegraph.renderer.native
 	protected native void onEmissiveColorChange(double r, double g, double b, double a);
 
 	@Override
-	protected native void onDiffuseColorMapChange(edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.TextureMapProxy value);
+	protected native void onDiffuseColorMapChange(
+			edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.TextureMapProxy value);
 
 	@Override
-	protected native void onOpacityMapChange(edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.TextureMapProxy value);
+	protected native void onOpacityMapChange(
+			edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.TextureMapProxy value);
 
 	@Override
-	protected native void onEmissiveColorMapChange(edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.TextureMapProxy value);
+	protected native void onEmissiveColorMapChange(
+			edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.TextureMapProxy value);
 
 	@Override
-	protected native void onSpecularHighlightColorMapChange(edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.TextureMapProxy value);
+	protected native void onSpecularHighlightColorMapChange(
+			edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.TextureMapProxy value);
 
 	@Override
-	protected native void onBumpMapChange(edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.TextureMapProxy value);
+	protected native void onBumpMapChange(
+			edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.TextureMapProxy value);
 
 	@Override
-	protected native void onDetailMapChange(edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.TextureMapProxy value);
+	protected native void onDetailMapChange(
+			edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.TextureMapProxy value);
 }

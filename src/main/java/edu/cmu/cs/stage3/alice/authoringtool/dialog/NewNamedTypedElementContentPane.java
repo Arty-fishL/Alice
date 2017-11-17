@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -31,6 +31,11 @@ import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
  * @author Jason Pratt, Dennis Cosgrove, Dave Culyba
  */
 public abstract class NewNamedTypedElementContentPane extends NewNamedElementContentPane {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1236340588242459286L;
+
 	private static final int INSET = 8;
 
 	private edu.cmu.cs.stage3.alice.authoringtool.util.TypeChooser m_typeChooser;
@@ -61,11 +66,12 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 	}
 
 	@Override
-	protected void initTopComponents(java.awt.GridBagConstraints gbc) {
+	protected void initTopComponents(final java.awt.GridBagConstraints gbc) {
 		super.initTopComponents(gbc);
 		initVariables();
 
-		edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringToolConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration.getLocalConfiguration(AuthoringTool.class.getPackage());
+		final edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringToolConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration
+				.getLocalConfiguration(AuthoringTool.class.getPackage());
 
 		m_typeChooser = new edu.cmu.cs.stage3.alice.authoringtool.util.TypeChooser(getValidityChecker());
 
@@ -90,17 +96,18 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 		objectArrayScrollPane.setPreferredSize(new java.awt.Dimension(1, 150));
 
 		makeCollectionCheckBox = new javax.swing.JCheckBox("make a");
-		int fontSize = Integer.parseInt(authoringToolConfig.getValue("fontSize"));
-		makeCollectionCheckBox.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, (int) (12 * fontSize / 12.0)));
+		final int fontSize = Integer.parseInt(authoringToolConfig.getValue("fontSize"));
+		makeCollectionCheckBox
+				.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, (int) (12 * fontSize / 12.0)));
 		makeCollectionCheckBox.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				refreshValuePanel();
 			}
 		});
 		m_typeChooser.addChangeListener(new javax.swing.event.ChangeListener() {
 			@Override
-			public void stateChanged(javax.swing.event.ChangeEvent ev) {
+			public void stateChanged(final javax.swing.event.ChangeEvent ev) {
 				refreshValuePanel();
 			}
 		});
@@ -110,10 +117,16 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 		collectionTypeCombo.addItem(edu.cmu.cs.stage3.alice.core.Array.class);
 		collectionTypeCombo.setRenderer(new javax.swing.DefaultListCellRenderer() {
 
+			/**
+			 *
+			 */
+			private static final long serialVersionUID = -2371137427167238607L;
+
 			@Override
-			public java.awt.Component getListCellRendererComponent(javax.swing.JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+			public java.awt.Component getListCellRendererComponent(final javax.swing.JList list, Object value,
+					final int index, final boolean isSelected, final boolean cellHasFocus) {
 				if (value instanceof Class) {
-					String className = ((Class) value).getName();
+					final String className = ((Class) value).getName();
 					value = className.substring(className.lastIndexOf(".") + 1);
 				}
 				return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -121,7 +134,7 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 		});
 		collectionTypeCombo.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
 				refreshValuePanel();
 			}
 		});
@@ -142,7 +155,7 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 	}
 
 	@Override
-	public void reset(edu.cmu.cs.stage3.alice.core.Element context) {
+	public void reset(final edu.cmu.cs.stage3.alice.core.Element context) {
 		super.reset(context);
 		this.context = context;
 		m_variable = new edu.cmu.cs.stage3.alice.core.Variable();
@@ -151,7 +164,7 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 	}
 
 	@Override
-	public void preDialogShow(javax.swing.JDialog dialog) {
+	public void preDialogShow(final javax.swing.JDialog dialog) {
 		super.preDialogShow(dialog);
 		if (!getListsOnly()) {
 			makeCollectionCheckBox.setSelected(false);
@@ -159,12 +172,12 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 	}
 
 	@Override
-	public void postDialogShow(javax.swing.JDialog dialog) {
+	public void postDialogShow(final javax.swing.JDialog dialog) {
 		super.postDialogShow(dialog);
 	}
 
 	@Override
-	public boolean isReadyToDispose(int option) {
+	public boolean isReadyToDispose(final int option) {
 		if (option == edu.cmu.cs.stage3.swing.ContentPane.OK_OPTION) {
 			m_typeChooser.addCurrentTypeToList();
 		} else if (option == edu.cmu.cs.stage3.swing.ContentPane.CANCEL_OPTION) {
@@ -184,8 +197,8 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 	}
 
 	private void updateCollection() {
-		Class type = m_typeChooser.getType();
-		Class collectionType = (Class) collectionTypeCombo.getSelectedItem();
+		final Class type = m_typeChooser.getType();
+		final Class collectionType = (Class) collectionTypeCombo.getSelectedItem();
 		edu.cmu.cs.stage3.alice.core.Collection collection = null;
 		if (m_variable.value.get() != null && collectionType.isAssignableFrom(m_variable.value.get().getClass())) {
 			collection = (edu.cmu.cs.stage3.alice.core.Collection) m_variable.value.get();
@@ -196,15 +209,17 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 		} else {
 			try {
 				collection = (edu.cmu.cs.stage3.alice.core.Collection) collectionType.newInstance();
-			} catch (Exception e) {
-				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Could not create a collection of type " + collectionType, e);
+			} catch (final Exception e) {
+				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+						.showErrorDialog("Could not create a collection of type " + collectionType, e);
 				collection = new edu.cmu.cs.stage3.alice.core.List();
 			}
 			collection.valueClass.set(type);
 			// The view controller does not like it when we change the value of
 			// the variable behind the scenes
 			if (valueViewController instanceof edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PropertyViewController) {
-				((edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PropertyViewController) valueViewController).release();
+				((edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PropertyViewController) valueViewController)
+						.release();
 				valueViewController = null;
 			}
 
@@ -217,16 +232,18 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 	}
 
 	private void updateVariableValue() {
-		Class type = m_typeChooser.getType();
-		Object currentValue = m_variable.value.get();
+		final Class type = m_typeChooser.getType();
+		final Object currentValue = m_variable.value.get();
 		if (currentValue == null || !type.isAssignableFrom(currentValue.getClass())) {
 			if (valueViewController instanceof edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PropertyViewController) {
-				((edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PropertyViewController) valueViewController).release();
+				((edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PropertyViewController) valueViewController)
+						.release();
 				valueViewController = null;
 			}
 			m_variable.value.set(null);
 			m_variable.valueClass.set(type);
-			m_variable.value.set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getDefaultValueForClass(type));
+			m_variable.value
+					.set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getDefaultValueForClass(type));
 			// if( Boolean.class.isAssignableFrom( type ) ) {
 			// m_variable.value.set( Boolean.TRUE );
 			// } else if( Double.class.isAssignableFrom( type ) ) {
@@ -249,9 +266,11 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 			// } else {
 			// m_variable.value.set( null );
 			// }
-			valueViewController = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getPropertyViewController(m_variable.value, true, false, true, factory);
+			valueViewController = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
+					.getPropertyViewController(m_variable.value, true, false, true, factory);
 			if (valueViewController instanceof edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.ElementPropertyViewController) {
-				((edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.ElementPropertyViewController) valueViewController).setRoot(context.getRoot());
+				((edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.ElementPropertyViewController) valueViewController)
+						.setRoot(context.getRoot());
 			}
 		}
 
@@ -269,7 +288,7 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 			makeCollectionCheckBox.setEnabled(true);
 			collectionTypeCombo.setEnabled(true);
 		}
-		GridBagConstraints gbcValue = new GridBagConstraints();
+		final GridBagConstraints gbcValue = new GridBagConstraints();
 		gbcValue.fill = GridBagConstraints.BOTH;
 		gbcValue.insets.top = INSET;
 		if (showValue) {
@@ -327,14 +346,14 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 		packDialog();
 	}
 
-	public void setListsOnly(boolean b) {
+	public void setListsOnly(final boolean b) {
 		if (listsOnly != b) {
 			listsOnly = b;
 			layoutValuePanel();
 		}
 	}
 
-	public void setShowValue(boolean showValue) {
+	public void setShowValue(final boolean showValue) {
 		if (this.showValue != showValue) {
 			this.showValue = showValue;
 			layoutValuePanel();
@@ -345,7 +364,8 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 		if (m_variable == null) {
 			return null;
 		}
-		if ((makeCollectionCheckBox.isSelected() || listsOnly) && m_variable.value.get() instanceof edu.cmu.cs.stage3.alice.core.Collection) {
+		if ((makeCollectionCheckBox.isSelected() || listsOnly)
+				&& m_variable.value.get() instanceof edu.cmu.cs.stage3.alice.core.Collection) {
 			m_variable.addChild((edu.cmu.cs.stage3.alice.core.Collection) m_variable.value.get());
 		}
 

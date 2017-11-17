@@ -33,7 +33,8 @@ import edu.cmu.cs.stage3.math.Vector3;
  * @author Dennis Cosgrove
  */
 public class Transformable extends ReferenceFrame {
-	public static final Property LOCAL_TRANSFORMATION_PROPERTY = new Property(Transformable.class, "LOCAL_TRANSFORMATION");
+	public static final Property LOCAL_TRANSFORMATION_PROPERTY = new Property(Transformable.class,
+			"LOCAL_TRANSFORMATION");
 	public static final Property IS_FIRST_CLASS_PROPERTY = new Property(Transformable.class, "IS_FIRST_CLASS");
 	private javax.vecmath.Matrix4d m_localTransformation = null;
 	private boolean m_isFirstClass = true;
@@ -50,7 +51,7 @@ public class Transformable extends ReferenceFrame {
 	}
 	private javax.vecmath.Matrix4d m_absoluteTransformation = null;
 	private javax.vecmath.Matrix4d m_inverseAbsoluteTransformation = null;
-	private Object m_absoluteTransformationLock = new Object();
+	private final Object m_absoluteTransformationLock = new Object();
 	private boolean m_isHelper = false;
 
 	public Transformable() {
@@ -61,26 +62,30 @@ public class Transformable extends ReferenceFrame {
 	public boolean isHelper() {
 		return m_isHelper;
 	}
-	public void setIsHelper(boolean isHelper) {
+
+	public void setIsHelper(final boolean isHelper) {
 		m_isHelper = isHelper;
 	}
 
 	public boolean getIsFirstClass() {
 		return m_isFirstClass;
 	}
-	public void setIsFirstClass(boolean isFirstClass) {
+
+	public void setIsFirstClass(final boolean isFirstClass) {
 		if (m_isFirstClass != isFirstClass) {
 			m_isFirstClass = isFirstClass;
 			onPropertyChange(IS_FIRST_CLASS_PROPERTY);
 		}
 	}
+
 	public javax.vecmath.Matrix4d getLocalTransformation() {
 		if (m_localTransformation == null) {
 			throw new NullPointerException();
 		}
 		return new javax.vecmath.Matrix4d(m_localTransformation);
 	}
-	public void setLocalTransformation(javax.vecmath.Matrix4d localTransformation) {
+
+	public void setLocalTransformation(final javax.vecmath.Matrix4d localTransformation) {
 		if (localTransformation == null) {
 			throw new NullPointerException();
 		}
@@ -101,9 +106,10 @@ public class Transformable extends ReferenceFrame {
 	public javax.vecmath.Matrix4d getAbsoluteTransformation() {
 		synchronized (m_absoluteTransformationLock) {
 			if (m_absoluteTransformation == null) {
-				Container parent = getParent();
+				final Container parent = getParent();
 				if (parent != null) {
-					m_absoluteTransformation = MathUtilities.multiply(m_localTransformation, parent.getAbsoluteTransformation());
+					m_absoluteTransformation = MathUtilities.multiply(m_localTransformation,
+							parent.getAbsoluteTransformation());
 				} else {
 					m_absoluteTransformation = new javax.vecmath.Matrix4d(m_localTransformation);
 				}
@@ -122,7 +128,7 @@ public class Transformable extends ReferenceFrame {
 				m_inverseAbsoluteTransformation = getAbsoluteTransformation();
 				try {
 					m_inverseAbsoluteTransformation.invert();
-				} catch (javax.vecmath.SingularMatrixException sme) {
+				} catch (final javax.vecmath.SingularMatrixException sme) {
 					System.err.println("cannot invert: " + m_inverseAbsoluteTransformation);
 					throw sme;
 				}
@@ -142,7 +148,7 @@ public class Transformable extends ReferenceFrame {
 
 	@Override
 	public Matrix44 getTransformation(ReferenceFrame asSeenBy) {
-		ReferenceFrame vehicle = (ReferenceFrame) getParent();
+		final ReferenceFrame vehicle = (ReferenceFrame) getParent();
 		if (asSeenBy == null) {
 			asSeenBy = vehicle;
 		}
@@ -154,8 +160,9 @@ public class Transformable extends ReferenceFrame {
 		}
 		return super.getTransformation(asSeenBy);
 	}
-	public Matrix44 calculateTransformation(javax.vecmath.Matrix4d m, ReferenceFrame asSeenBy) {
-		ReferenceFrame vehicle = (ReferenceFrame) getParent();
+
+	public Matrix44 calculateTransformation(final javax.vecmath.Matrix4d m, ReferenceFrame asSeenBy) {
+		final ReferenceFrame vehicle = (ReferenceFrame) getParent();
 		if (asSeenBy == null) {
 			asSeenBy = vehicle;
 		}
@@ -172,23 +179,27 @@ public class Transformable extends ReferenceFrame {
 			return Matrix44.multiply(m, Matrix44.multiply(asSeenBy.getAbsoluteTransformation(), vehicleInverse));
 		}
 	}
-	public void setAbsoluteTransformation(javax.vecmath.Matrix4d m) {
-		ReferenceFrame vehicle = (ReferenceFrame) getParent();
+
+	public void setAbsoluteTransformation(final javax.vecmath.Matrix4d m) {
+		final ReferenceFrame vehicle = (ReferenceFrame) getParent();
 		setLocalTransformation(MathUtilities.multiply(m, vehicle.getInverseAbsoluteTransformation()));
 	}
-	public void setTransformation(javax.vecmath.Matrix4d m, ReferenceFrame asSeenBy) {
+
+	public void setTransformation(final javax.vecmath.Matrix4d m, final ReferenceFrame asSeenBy) {
 		setLocalTransformation(calculateTransformation(m, asSeenBy));
 	}
-	public void setPosition(javax.vecmath.Vector3d position, ReferenceFrame asSeenBy) {
-		Matrix33 axes = getAxes(null);
+
+	public void setPosition(final javax.vecmath.Vector3d position, final ReferenceFrame asSeenBy) {
+		final Matrix33 axes = getAxes(null);
 		Matrix44 m = new Matrix44();
 		m.setPosition(position);
 		m = calculateTransformation(m, asSeenBy);
 		m.setAxes(axes);
 		setLocalTransformation(m);
 	}
-	public void setAxes(javax.vecmath.Matrix3d axes, ReferenceFrame asSeenBy) {
-		Vector3 translation = getPosition(null);
+
+	public void setAxes(final javax.vecmath.Matrix3d axes, final ReferenceFrame asSeenBy) {
+		final Vector3 translation = getPosition(null);
 		Matrix44 m = new Matrix44();
 		m.setAxes(axes);
 		m = calculateTransformation(m, asSeenBy);
@@ -196,11 +207,12 @@ public class Transformable extends ReferenceFrame {
 		setLocalTransformation(m);
 	}
 
-	public void setQuaternion(Quaternion quaternion, ReferenceFrame asSeenBy) {
+	public void setQuaternion(final Quaternion quaternion, final ReferenceFrame asSeenBy) {
 		setAxes(quaternion.getMatrix33(), asSeenBy);
 	}
 
-	public Matrix33 calculatePointAt(ReferenceFrame target, javax.vecmath.Vector3d offset, javax.vecmath.Vector3d upGuide, ReferenceFrame asSeenBy, boolean onlyAffectYaw) {
+	public Matrix33 calculatePointAt(final ReferenceFrame target, final javax.vecmath.Vector3d offset,
+			javax.vecmath.Vector3d upGuide, ReferenceFrame asSeenBy, final boolean onlyAffectYaw) {
 		synchronized (s_calculatePointAtHelperOffset) {
 			if (upGuide == null) {
 				upGuide = MathUtilities.getYAxis();
@@ -208,8 +220,8 @@ public class Transformable extends ReferenceFrame {
 			if (asSeenBy == null) {
 				asSeenBy = (ReferenceFrame) getParent();
 			}
-			Matrix44 transform = getTransformation(asSeenBy);
-			Vector3 position = transform.getPosition();
+			final Matrix44 transform = getTransformation(asSeenBy);
+			final Vector3 position = transform.getPosition();
 			// Vector3 position = new Vector3( transform.m30, transform.m31,
 			// transform.m32 );
 
@@ -218,7 +230,7 @@ public class Transformable extends ReferenceFrame {
 				actualTarget = target;
 			} else {
 				s_calculatePointAtHelperOffset.setParent(target);
-				Matrix44 m = new Matrix44();
+				final Matrix44 m = new Matrix44();
 				m.m30 = offset.x;
 				m.m31 = offset.y;
 				m.m32 = offset.z;
@@ -236,8 +248,8 @@ public class Transformable extends ReferenceFrame {
 
 				// calculate the angle of rotation around y of "actualTarget" as
 				// seen by "helperA"
-				Vector3 targetPosition = actualTarget.getPosition(s_calculatePointAtHelperA);
-				double targetTheta = Math.atan2(targetPosition.x, targetPosition.z);
+				final Vector3 targetPosition = actualTarget.getPosition(s_calculatePointAtHelperA);
+				final double targetTheta = Math.atan2(targetPosition.x, targetPosition.z);
 
 				// place "helperB" out in front of "this"
 				s_calculatePointAtHelperB.setParent(this);
@@ -245,14 +257,14 @@ public class Transformable extends ReferenceFrame {
 
 				// calculate the angle of rotation around Y of "helperB" as seen
 				// by "helperA"
-				Vector3 forwardPosition = s_calculatePointAtHelperB.getPosition(s_calculatePointAtHelperA);
-				double forwardTheta = Math.atan2(forwardPosition.x, forwardPosition.z);
+				final Vector3 forwardPosition = s_calculatePointAtHelperB.getPosition(s_calculatePointAtHelperA);
+				final double forwardTheta = Math.atan2(forwardPosition.x, forwardPosition.z);
 
 				// setup "helperB" to have position and orientation of "this"
 				s_calculatePointAtHelperB.setLocalTransformation(new Matrix44());
 
 				// calculate how much to rotate
-				double deltaTheta = targetTheta - forwardTheta;
+				final double deltaTheta = targetTheta - forwardTheta;
 
 				// rotate "helperB" around Y as seen by "helperA"
 				s_calculatePointAtHelperB.rotate(MathUtilities.getYAxis(), deltaTheta, s_calculatePointAtHelperA);
@@ -264,9 +276,11 @@ public class Transformable extends ReferenceFrame {
 				s_calculatePointAtHelperA.setParent(null);
 				s_calculatePointAtHelperB.setParent(null);
 			} else {
-				javax.vecmath.Vector3d targetPosition = actualTarget.getPosition(asSeenBy);
-				javax.vecmath.Vector3d zAxis = MathUtilities.normalizeV(MathUtilities.subtract(targetPosition, position));
-				javax.vecmath.Vector3d xAxis = MathUtilities.normalizeV(MathUtilities.crossProduct(upGuide, zAxis));
+				final javax.vecmath.Vector3d targetPosition = actualTarget.getPosition(asSeenBy);
+				final javax.vecmath.Vector3d zAxis = MathUtilities
+						.normalizeV(MathUtilities.subtract(targetPosition, position));
+				final javax.vecmath.Vector3d xAxis = MathUtilities
+						.normalizeV(MathUtilities.crossProduct(upGuide, zAxis));
 				if (Double.isNaN(xAxis.lengthSquared())) {
 					xAxis.set(0, 0, 0);
 					zAxis.set(0, 0, 0);
@@ -274,7 +288,7 @@ public class Transformable extends ReferenceFrame {
 					// "cannot calculate point at: zAxis=" + zAxis + " upGuide="
 					// + upGuide );
 				}
-				javax.vecmath.Vector3d yAxis = MathUtilities.crossProduct(zAxis, xAxis);
+				final javax.vecmath.Vector3d yAxis = MathUtilities.crossProduct(zAxis, xAxis);
 				result = new Matrix33(xAxis, yAxis, zAxis);
 			}
 
@@ -284,70 +298,81 @@ public class Transformable extends ReferenceFrame {
 			return result;
 		}
 	}
+
 	/** deprecated */
-	public Matrix33 calculatePointAt(ReferenceFrame target, javax.vecmath.Vector3d offset, javax.vecmath.Vector3d upGuide, ReferenceFrame asSeenBy) {
+	public Matrix33 calculatePointAt(final ReferenceFrame target, final javax.vecmath.Vector3d offset,
+			final javax.vecmath.Vector3d upGuide, final ReferenceFrame asSeenBy) {
 		return calculatePointAt(target, offset, upGuide, asSeenBy, false);
 	}
-	public void pointAt(ReferenceFrame target, javax.vecmath.Vector3d offset, javax.vecmath.Vector3d upGuide, ReferenceFrame asSeenBy) {
+
+	public void pointAt(final ReferenceFrame target, final javax.vecmath.Vector3d offset,
+			final javax.vecmath.Vector3d upGuide, final ReferenceFrame asSeenBy) {
 		setAxes(calculatePointAt(target, offset, upGuide, asSeenBy), asSeenBy);
 	}
-	public static Matrix33 calculateOrientation(javax.vecmath.Vector3d forward, javax.vecmath.Vector3d upGuide) {
+
+	public static Matrix33 calculateOrientation(final javax.vecmath.Vector3d forward, javax.vecmath.Vector3d upGuide) {
 		if (upGuide == null) {
 			upGuide = MathUtilities.getYAxis();
 		}
-		javax.vecmath.Vector3d zAxis = MathUtilities.normalizeV(forward);
-		javax.vecmath.Vector3d xAxis = MathUtilities.normalizeV(MathUtilities.crossProduct(upGuide, zAxis));
+		final javax.vecmath.Vector3d zAxis = MathUtilities.normalizeV(forward);
+		final javax.vecmath.Vector3d xAxis = MathUtilities.normalizeV(MathUtilities.crossProduct(upGuide, zAxis));
 		if (Double.isNaN(xAxis.lengthSquared())) {
 			throw new RuntimeException("cannot calculate orientation: forward=" + forward + " upGuide=" + upGuide);
 		}
-		javax.vecmath.Vector3d yAxis = MathUtilities.crossProduct(zAxis, xAxis);
+		final javax.vecmath.Vector3d yAxis = MathUtilities.crossProduct(zAxis, xAxis);
 		return new Matrix33(xAxis, yAxis, zAxis);
 	}
 
-	public void setOrientation(javax.vecmath.Vector3d forward, javax.vecmath.Vector3d upGuide, ReferenceFrame asSeenBy) {
+	public void setOrientation(final javax.vecmath.Vector3d forward, final javax.vecmath.Vector3d upGuide,
+			final ReferenceFrame asSeenBy) {
 		setAxes(calculateOrientation(forward, upGuide), asSeenBy);
 	}
 
-	public Matrix33 calculateStandUp(ReferenceFrame asSeenBy) {
-		Matrix33 axes = getAxes(asSeenBy);
-		javax.vecmath.Vector3d yAxis = MathUtilities.getYAxis();
-		javax.vecmath.Vector3d zAxis = MathUtilities.normalizeV(MathUtilities.crossProduct(axes.getRow(0), yAxis));
-		javax.vecmath.Vector3d xAxis = MathUtilities.crossProduct(yAxis, zAxis);
+	public Matrix33 calculateStandUp(final ReferenceFrame asSeenBy) {
+		final Matrix33 axes = getAxes(asSeenBy);
+		final javax.vecmath.Vector3d yAxis = MathUtilities.getYAxis();
+		final javax.vecmath.Vector3d zAxis = MathUtilities
+				.normalizeV(MathUtilities.crossProduct(axes.getRow(0), yAxis));
+		final javax.vecmath.Vector3d xAxis = MathUtilities.crossProduct(yAxis, zAxis);
 		return new Matrix33(xAxis, yAxis, zAxis);
 	}
 
-	public void standUp(ReferenceFrame asSeenBy) {
+	public void standUp(final ReferenceFrame asSeenBy) {
 		setAxes(calculateStandUp(asSeenBy), asSeenBy);
 	}
-	public void translate(javax.vecmath.Vector3d vector, ReferenceFrame asSeenBy) {
+
+	public void translate(final javax.vecmath.Vector3d vector, ReferenceFrame asSeenBy) {
 		if (asSeenBy == null) {
 			asSeenBy = this;
 		}
-		Matrix44 m = getTransformation(asSeenBy);
+		final Matrix44 m = getTransformation(asSeenBy);
 		m.translate(vector);
 		setTransformation(m, asSeenBy);
 	}
-	public void rotate(javax.vecmath.Vector3d axis, double amount, ReferenceFrame asSeenBy) {
+
+	public void rotate(final javax.vecmath.Vector3d axis, final double amount, ReferenceFrame asSeenBy) {
 		if (asSeenBy == null) {
 			asSeenBy = this;
 		}
-		Matrix44 m = getTransformation(asSeenBy);
+		final Matrix44 m = getTransformation(asSeenBy);
 		m.rotate(axis, amount);
 		setTransformation(m, asSeenBy);
 	}
-	public void scale(javax.vecmath.Vector3d axis, ReferenceFrame asSeenBy) {
+
+	public void scale(final javax.vecmath.Vector3d axis, ReferenceFrame asSeenBy) {
 		if (asSeenBy == null) {
 			asSeenBy = this;
 		}
-		Matrix44 m = getTransformation(asSeenBy);
+		final Matrix44 m = getTransformation(asSeenBy);
 		m.scale(axis);
 		setTransformation(m, asSeenBy);
 	}
-	public void transform(javax.vecmath.Matrix4d trans, ReferenceFrame asSeenBy) {
+
+	public void transform(final javax.vecmath.Matrix4d trans, ReferenceFrame asSeenBy) {
 		if (asSeenBy == null) {
 			asSeenBy = this;
 		}
-		Matrix44 m = getTransformation(asSeenBy);
+		final Matrix44 m = getTransformation(asSeenBy);
 		m.transform(trans);
 		setTransformation(m, asSeenBy);
 	}
@@ -389,12 +414,12 @@ public class Transformable extends ReferenceFrame {
 	 * sphere; }
 	 */
 
-	public void setPivot(ReferenceFrame pivot) {
-		Matrix44 m = getTransformation(pivot);
-		Matrix44 mInverse = Matrix44.invert(m);
+	public void setPivot(final ReferenceFrame pivot) {
+		final Matrix44 m = getTransformation(pivot);
+		final Matrix44 mInverse = Matrix44.invert(m);
 		transform(mInverse, this);
 		for (int i = 0; i < getChildCount(); i++) {
-			Component child = getChildAt(i);
+			final Component child = getChildAt(i);
 			if (child instanceof Transformable) {
 				((Transformable) child).transform(m, this);
 			} else if (child instanceof Visual) {

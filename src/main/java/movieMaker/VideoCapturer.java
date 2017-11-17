@@ -6,7 +6,7 @@ import java.awt.image.BufferedImage;
 /**
  * Interface for working with video capture Copyright Georgia Institute of
  * Technology 2007
- * 
+ *
  * @author Barb Ericson ericson@cc.gatech.edu
  */
 public interface VideoCapturer {
@@ -15,7 +15,7 @@ public interface VideoCapturer {
 
 	/**
 	 * Method that sets a region to capture
-	 * 
+	 *
 	 * @param region
 	 *            the rectangular region to capture
 	 */
@@ -26,7 +26,7 @@ public interface VideoCapturer {
 
 	/**
 	 * Method to start the capture and capture numSeconds of video
-	 * 
+	 *
 	 * @param numSeconds
 	 *            the number of seconds to capture
 	 */
@@ -44,21 +44,21 @@ public interface VideoCapturer {
 
 	/**
 	 * Method to get the frame sequencer
-	 * 
+	 *
 	 * @return the frame sequencer used in the capture
 	 */
 	public FrameSequencer getFrameSequencer();
 
 	/**
 	 * Method to get the region to capture
-	 * 
+	 *
 	 * @returns the region to capture
 	 */
 	public Rectangle getRegion();
 
 	/**
 	 * Method to return the number of frames per second
-	 * 
+	 *
 	 * @return the number of frames per second being captured
 	 */
 	public int getFramesPerSecond();

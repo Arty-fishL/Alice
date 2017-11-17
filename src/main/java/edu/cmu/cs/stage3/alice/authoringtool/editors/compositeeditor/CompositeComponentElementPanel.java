@@ -27,12 +27,18 @@ import edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent;
 
 /**
  * Title: Description: Copyright: Copyright (c) 2001 Company:
- * 
+ *
  * @author
  * @version 1.0
  */
 
-public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel implements edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyListener, javax.swing.event.PopupMenuListener {
+public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel
+		implements edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyListener, javax.swing.event.PopupMenuListener {
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -6122821228973837503L;
 
 	protected final boolean USE_DEPTH = false;
 
@@ -64,7 +70,8 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 	protected java.awt.Insets insets;
 	protected int dropPanelPosition = -2;
 
-	protected static java.awt.Color dndFeedBackColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("dndHighlight2");
+	protected static java.awt.Color dndFeedBackColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+			.getColor("dndHighlight2");
 
 	protected static CompositeComponentElementPanel s_currentComponentPanel;
 	protected static java.awt.Component s_componentPanelMoved;
@@ -87,7 +94,8 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 	public CompositeComponentElementPanel() {
 		insets = new java.awt.Insets(3, 2, 0, 2);
 		panelLayout = new java.awt.GridBagLayout();
-		panelConstraints = new java.awt.GridBagConstraints(0, 0, 1, 1, 1, 0, java.awt.GridBagConstraints.NORTHWEST, java.awt.GridBagConstraints.HORIZONTAL, insets, 0, 0);
+		panelConstraints = new java.awt.GridBagConstraints(0, 0, 1, 1, 1, 0, java.awt.GridBagConstraints.NORTHWEST,
+				java.awt.GridBagConstraints.HORIZONTAL, insets, 0, 0);
 		setOpaque(true);
 		setLayout(panelLayout);
 		this.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, LEFT_INDENT, 0, RIGHT_INDENT));
@@ -96,7 +104,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		insertPanel = new InsertPanel();
 		HACK_timer = new javax.swing.Timer(200, new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				removeDropPanelFromCurrentComponent();
 			}
 		});
@@ -130,7 +138,9 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		}
 	}
 
-	public void set(edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty elements, CompositeComponentOwner owner, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringToolIn) {
+	public void set(final edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty elements,
+			final CompositeComponentOwner owner,
+			final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringToolIn) {
 		clean();
 		authoringTool = authoringToolIn;
 		componentElements = elements;
@@ -140,11 +150,11 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		startListening();
 	}
 
-	public void setAuthoringTool(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringToolIn) {
+	public void setAuthoringTool(final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringToolIn) {
 		authoringTool = authoringToolIn;
 	}
 
-	public void setStrut(int size) {
+	public void setStrut(final int size) {
 		strut = javax.swing.Box.createVerticalStrut(size);
 		clean();
 		updateGUI();
@@ -183,7 +193,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 
 	protected static void stopAllTimers() {
 		for (int i = 0; i < timers.size(); i++) {
-			javax.swing.Timer t = (javax.swing.Timer) timers.elementAt(i);
+			final javax.swing.Timer t = (javax.swing.Timer) timers.elementAt(i);
 			t.stop();
 		}
 		timers.removeAllElements();
@@ -197,8 +207,9 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 				removeAll();
 				resetGUI();
 				for (int i = 0; i < componentElements.size(); i++) {
-					edu.cmu.cs.stage3.alice.core.Element currentElement = (edu.cmu.cs.stage3.alice.core.Element) componentElements.getArrayValue()[i];
-					java.awt.Component toAdd = makeGUI(currentElement);
+					final edu.cmu.cs.stage3.alice.core.Element currentElement = (edu.cmu.cs.stage3.alice.core.Element) componentElements
+							.getArrayValue()[i];
+					final java.awt.Component toAdd = makeGUI(currentElement);
 					if (toAdd != null) {
 						addElementPanel(toAdd, i);
 					}
@@ -218,8 +229,10 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 	protected void resetGUI() {
 		if (getComponentCount() < 2) {
 			removeAll();
-			this.add(strut, new java.awt.GridBagConstraints(0, 1, 1, 1, 0, 0, java.awt.GridBagConstraints.NORTHWEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
-			this.add(glue, new java.awt.GridBagConstraints(0, 2, 1, 1, 1, 1, java.awt.GridBagConstraints.NORTHWEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+			this.add(strut, new java.awt.GridBagConstraints(0, 1, 1, 1, 0, 0, java.awt.GridBagConstraints.NORTHWEST,
+					java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+			this.add(glue, new java.awt.GridBagConstraints(0, 2, 1, 1, 1, 1, java.awt.GridBagConstraints.NORTHWEST,
+					java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
 		}
 	}
 
@@ -228,13 +241,16 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 			removeAll();
 			panelConstraints.gridy = 0;
 			this.add(insertPanel, panelConstraints, 0);
-			this.add(strut, new java.awt.GridBagConstraints(0, 1, 1, 1, 0, 0, java.awt.GridBagConstraints.NORTHWEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
-			this.add(glue, new java.awt.GridBagConstraints(0, 2, 1, 1, 1, 1, java.awt.GridBagConstraints.NORTHWEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+			this.add(strut, new java.awt.GridBagConstraints(0, 1, 1, 1, 0, 0, java.awt.GridBagConstraints.NORTHWEST,
+					java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+			this.add(glue, new java.awt.GridBagConstraints(0, 2, 1, 1, 1, 1, java.awt.GridBagConstraints.NORTHWEST,
+					java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
 		}
 	}
 
 	@Override
-	public void objectArrayPropertyChanging(edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent propertyEvent) {
+	public void objectArrayPropertyChanging(
+			final edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent propertyEvent) {
 		invalidEvent = false;
 		if (propertyEvent.getChangeType() == ObjectArrayPropertyEvent.ITEM_INSERTED) {
 			if (componentElements.get(propertyEvent.getNewIndex()) == propertyEvent.getItem()) {
@@ -260,7 +276,8 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 	protected int getElementComponentCount() {
 		int count = 0;
 		for (int i = 0; i < getComponentCount(); i++) {
-			if (this.getComponent(i) instanceof CompositeElementPanel || this.getComponent(i) instanceof ComponentElementPanel) {
+			if (this.getComponent(i) instanceof CompositeElementPanel
+					|| this.getComponent(i) instanceof ComponentElementPanel) {
 				count++;
 			}
 		}
@@ -268,9 +285,10 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 	}
 
 	protected boolean checkGUI() {
-		java.awt.Component c[] = getComponents();
-		edu.cmu.cs.stage3.alice.core.Element elements[] = (edu.cmu.cs.stage3.alice.core.Element[]) componentElements.get();
-		int elementCount = getElementComponentCount();
+		final java.awt.Component c[] = getComponents();
+		final edu.cmu.cs.stage3.alice.core.Element elements[] = (edu.cmu.cs.stage3.alice.core.Element[]) componentElements
+				.get();
+		final int elementCount = getElementComponentCount();
 		boolean aOkay = elements.length == elementCount;
 		if (aOkay) {
 			// Loops through the components and makes sure that component[i] ==
@@ -304,11 +322,13 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 	}
 
 	@Override
-	public void objectArrayPropertyChanged(edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent propertyEvent) {
+	public void objectArrayPropertyChanged(
+			final edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent propertyEvent) {
 		if (shouldReact && !invalidEvent) {
 			boolean successful = true;
-			edu.cmu.cs.stage3.alice.core.Element eventElement = (edu.cmu.cs.stage3.alice.core.Element) propertyEvent.getItem();
-			int index = propertyEvent.getNewIndex();
+			final edu.cmu.cs.stage3.alice.core.Element eventElement = (edu.cmu.cs.stage3.alice.core.Element) propertyEvent
+					.getItem();
+			final int index = propertyEvent.getNewIndex();
 			if (propertyEvent.getChangeType() == ObjectArrayPropertyEvent.ITEM_INSERTED) {
 				java.awt.Component toInsert = s_componentPanelMoved;
 				s_componentPanelMoved = null;
@@ -338,42 +358,46 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 			if (propertyEvent.getChangeType() == ObjectArrayPropertyEvent.ITEM_REMOVED) {
 				s_componentPanelMoved = getComponent(eventElement);
 				if (s_componentPanelMoved != null) {
-					removeContainerListener(edu.cmu.cs.stage3.alice.authoringtool.util.GUIElementContainerListener.getStaticListener()); // prevent
-																																			// the
-																																			// object
-																																			// being
-																																			// removed
-																																			// from
-																																			// being
-																																			// cleaned
+					removeContainerListener(
+							edu.cmu.cs.stage3.alice.authoringtool.util.GUIElementContainerListener.getStaticListener()); // prevent
+																															// the
+																															// object
+																															// being
+																															// removed
+																															// from
+																															// being
+																															// cleaned
 					this.remove(s_componentPanelMoved);
-					addContainerListener(edu.cmu.cs.stage3.alice.authoringtool.util.GUIElementContainerListener.getStaticListener());
+					addContainerListener(
+							edu.cmu.cs.stage3.alice.authoringtool.util.GUIElementContainerListener.getStaticListener());
 				} else {
 					successful = false;
 				}
 			}
 			if (propertyEvent.getChangeType() == ObjectArrayPropertyEvent.ITEM_SHIFTED) {
 				s_componentPanelMoved = null;
-				java.awt.Component c = getComponent(eventElement);
+				final java.awt.Component c = getComponent(eventElement);
 				if (c != null) {
-					removeContainerListener(edu.cmu.cs.stage3.alice.authoringtool.util.GUIElementContainerListener.getStaticListener()); // prevent
-																																			// the
-																																			// object
-																																			// being
-																																			// removed
-																																			// from
-																																			// being
-																																			// cleaned
+					removeContainerListener(
+							edu.cmu.cs.stage3.alice.authoringtool.util.GUIElementContainerListener.getStaticListener()); // prevent
+																															// the
+																															// object
+																															// being
+																															// removed
+																															// from
+																															// being
+																															// cleaned
 					this.remove(c);
 					addElementPanel(c, index);
-					addContainerListener(edu.cmu.cs.stage3.alice.authoringtool.util.GUIElementContainerListener.getStaticListener()); // prevent
-																																		// the
-																																		// object
-																																		// being
-																																		// removed
-																																		// from
-																																		// being
-																																		// cleaned
+					addContainerListener(
+							edu.cmu.cs.stage3.alice.authoringtool.util.GUIElementContainerListener.getStaticListener()); // prevent
+																															// the
+																															// object
+																															// being
+																															// removed
+																															// from
+																															// being
+																															// cleaned
 				} else {
 					successful = false;
 				}
@@ -390,7 +414,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		}
 	}
 
-	public void addElementPanel(java.awt.Component toAdd, int position) {
+	public void addElementPanel(final java.awt.Component toAdd, int position) {
 		if (getComponentCount() != 0 && this.getComponent(0) == insertPanel) {
 			this.remove(insertPanel);
 		}
@@ -403,8 +427,8 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		doLayout();
 		if (toAdd instanceof javax.swing.JComponent) {
 			if (topLevelScrollPane != null) {
-				java.awt.Rectangle rect = toAdd.getBounds();
-				int horizValue = topLevelScrollPane.getHorizontalScrollBar().getValue();
+				final java.awt.Rectangle rect = toAdd.getBounds();
+				final int horizValue = topLevelScrollPane.getHorizontalScrollBar().getValue();
 				((javax.swing.JComponent) toAdd).scrollRectToVisible(rect);
 				topLevelScrollPane.getHorizontalScrollBar().setValue(horizValue);
 			} else {
@@ -415,15 +439,15 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		revalidate();
 	}
 
-	protected java.awt.Component getComponent(edu.cmu.cs.stage3.alice.core.Element element) {
+	protected java.awt.Component getComponent(final edu.cmu.cs.stage3.alice.core.Element element) {
 		for (int i = 0; i < getComponentCount(); i++) {
 			if (this.getComponent(i) instanceof ComponentElementPanel) {
-				ComponentElementPanel c = (ComponentElementPanel) this.getComponent(i);
+				final ComponentElementPanel c = (ComponentElementPanel) this.getComponent(i);
 				if (c.getElement() == element) {
 					return c;
 				}
 			} else if (this.getComponent(i) instanceof CompositeElementPanel) {
-				CompositeElementPanel c = (CompositeElementPanel) this.getComponent(i);
+				final CompositeElementPanel c = (CompositeElementPanel) this.getComponent(i);
 				if (c.getElement() == element) {
 					return c;
 				}
@@ -432,7 +456,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		return null;
 	}
 
-	protected void bumpDown(int position) {
+	protected void bumpDown(final int position) {
 		for (int i = position; i < getComponentCount(); i++) {
 			panelConstraints.gridy = i + 1;
 			panelLayout.setConstraints(this.getComponent(i), panelConstraints);
@@ -440,7 +464,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 	}
 
 	@Override
-	public void setBackground(java.awt.Color color) {
+	public void setBackground(final java.awt.Color color) {
 		super.setBackground(color);
 		if (insertPanel != null) {
 			insertPanel.setBackground(color);
@@ -449,8 +473,8 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 
 	protected void restoreLayout() {
 		for (int i = 0; i < getComponentCount(); i++) {
-			java.awt.Component current = this.getComponent(i);
-			java.awt.GridBagConstraints c = panelLayout.getConstraints(current);
+			final java.awt.Component current = this.getComponent(i);
+			final java.awt.GridBagConstraints c = panelLayout.getConstraints(current);
 			if (c.gridy != i) {
 				c.gridy = i;
 				panelLayout.setConstraints(current, c);
@@ -459,7 +483,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 	}
 
 	@Override
-	public void remove(java.awt.Component c) {
+	public void remove(final java.awt.Component c) {
 		super.remove(c);
 		if (c instanceof CompositeElementPanel || c instanceof ComponentElementPanel) {
 			if (componentElements != null && componentsIsEmpty()) {
@@ -477,7 +501,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		}
 	}
 
-	public java.awt.Point convertToDropPanelSpace(java.awt.Point p) {
+	public java.awt.Point convertToDropPanelSpace(final java.awt.Point p) {
 		if (insertPanel.isShowing()) {
 			return javax.swing.SwingUtilities.convertPoint(this, p, insertPanel);
 		} else {
@@ -489,11 +513,11 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		return insertPanel;
 	}
 
-	public void setBorder(int top, int left, int bottom, int right) {
+	public void setBorder(final int top, final int left, final int bottom, final int right) {
 		this.setBorder(javax.swing.BorderFactory.createEmptyBorder(top, left, bottom, right));
 	}
 
-	public void setEmptyString(String emptyString) {
+	public void setEmptyString(final String emptyString) {
 		insertPanel.m_doNothingLabel = emptyString;
 		insertPanel.m_label.setText(insertPanel.m_doNothingLabel);
 
@@ -502,7 +526,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 	// ///////////////////////////////// drop handling
 
 	@Override
-	public void dragEnter(java.awt.dnd.DropTargetDragEvent dtde) {
+	public void dragEnter(final java.awt.dnd.DropTargetDragEvent dtde) {
 		if (!m_owner.isExpanded()) {
 			if (m_owner.getParent() instanceof CompositeComponentElementPanel) {
 				((CompositeComponentElementPanel) m_owner.getParent()).dragEnter(dtde);
@@ -510,7 +534,8 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 			}
 		}
 		stopAllTimers(); // TIMER HACK
-		edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.variableReferenceFlavor);
+		edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde,
+				edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.variableReferenceFlavor);
 		dtde.acceptDrag(dtde.getDropAction());
 	}
 
@@ -518,7 +543,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 	public abstract void dragOver(java.awt.dnd.DropTargetDragEvent dtde);
 
 	// We're passed in a non-CompositeComponentElementPanel component
-	protected java.awt.Component getContainingComponentPanel(java.awt.Component c) {
+	protected java.awt.Component getContainingComponentPanel(final java.awt.Component c) {
 		if (c == m_owner.getGrip()) {
 			return c;
 		}
@@ -542,16 +567,16 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		return componentElements;
 	}
 
-	protected boolean checkDropLocation(int i, edu.cmu.cs.stage3.alice.core.Element toDrop) {
+	protected boolean checkDropLocation(final int i, final edu.cmu.cs.stage3.alice.core.Element toDrop) {
 		return true; // need to get this working to check valid drop spaces that
 						// are on same level
 	}
 
-	protected int getInsertLocation(java.awt.Point panelSpacePoint) {
+	protected int getInsertLocation(final java.awt.Point panelSpacePoint) {
 		int position = -1;
 		for (int i = 0; i < componentElements.size(); i++) { // calculate
-			java.awt.Component c = this.getComponent(i);
-			int point = c.getY() + (int) (c.getHeight() / 2.0);
+			final java.awt.Component c = this.getComponent(i);
+			final int point = c.getY() + (int) (c.getHeight() / 2.0);
 			if (panelSpacePoint.getY() < point) {
 				position = i;
 				break;
@@ -562,8 +587,10 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 
 	private static java.awt.Container s_prevContainer;
 	private static java.awt.Rectangle s_prevRect;
-	private static void drawRect(java.awt.Container container, java.awt.Color color, java.awt.Rectangle rect) {
-		java.awt.Graphics g = container.getGraphics();
+
+	private static void drawRect(final java.awt.Container container, final java.awt.Color color,
+			final java.awt.Rectangle rect) {
+		final java.awt.Graphics g = container.getGraphics();
 		if (g != null) {
 			if (color != null) {
 				g.setColor(color);
@@ -573,7 +600,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		}
 	}
 
-	private static void drawFeedback(java.awt.Container container, java.awt.Rectangle rect) {
+	private static void drawFeedback(final java.awt.Container container, final java.awt.Rectangle rect) {
 		if (container != null && container.equals(s_prevContainer)) {
 			if (rect != null && rect.equals(s_prevRect)) {
 				drawRect(container, dndFeedBackColor, rect);
@@ -596,7 +623,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		s_prevRect = rect;
 	}
 
-	protected void paintLine(java.awt.Container toPaint, int location) {
+	protected void paintLine(final java.awt.Container toPaint, final int location) {
 		if (location == -1 || location >= toPaint.getComponentCount()) {
 			int lastSpot = toPaint.getComponentCount() - 1;
 			for (int i = lastSpot; i >= 0; i--) {
@@ -609,18 +636,18 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 			if (lastSpot < 0) {
 				lastSpot = 0;
 			}
-			java.awt.Rectangle bounds = toPaint.getComponent(lastSpot).getBounds();
+			final java.awt.Rectangle bounds = toPaint.getComponent(lastSpot).getBounds();
 			lineLocation = bounds.y + bounds.height;
 		} else {
-			java.awt.Rectangle bounds = toPaint.getComponent(location).getBounds();
+			final java.awt.Rectangle bounds = toPaint.getComponent(location).getBounds();
 			lineLocation = bounds.y - 2;
 		}
-		java.awt.Rectangle toPaintBounds = toPaint.getBounds();
+		final java.awt.Rectangle toPaintBounds = toPaint.getBounds();
 		drawFeedback(toPaint, new java.awt.Rectangle(2, lineLocation, toPaintBounds.width - 4, 2));
 	}
 
 	@Override
-	public void paint(java.awt.Graphics g) {
+	public void paint(final java.awt.Graphics g) {
 		super.paint(g);
 		if (shouldDrawLine) {
 			paintLine(this, insertLocation);
@@ -631,12 +658,12 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		return componentElements.size() == 0;
 	}
 
-	protected void scrollIt(java.awt.Point hoverPoint) {
-		java.awt.Dimension scrollSpace = topLevelScrollPane.getSize();
+	protected void scrollIt(final java.awt.Point hoverPoint) {
+		final java.awt.Dimension scrollSpace = topLevelScrollPane.getSize();
 		int currentValue = topLevelScrollPane.getVerticalScrollBar().getValue();
-		int maxValue = topLevelScrollPane.getVerticalScrollBar().getMaximum();
-		int minValue = topLevelScrollPane.getVerticalScrollBar().getMinimum();
-		int amountToScroll = SCROLL_AMOUNT;
+		final int maxValue = topLevelScrollPane.getVerticalScrollBar().getMaximum();
+		final int minValue = topLevelScrollPane.getVerticalScrollBar().getMinimum();
+		final int amountToScroll = SCROLL_AMOUNT;
 		if (hoverPoint.y < SCROLL_SIZE) {
 			if (currentValue > minValue) {
 				if (currentValue - amountToScroll >= minValue) {
@@ -669,7 +696,8 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 
 	}
 
-	protected boolean isMyParent(edu.cmu.cs.stage3.alice.core.Element currentParent, edu.cmu.cs.stage3.alice.core.Element toSearchFor) {
+	protected boolean isMyParent(final edu.cmu.cs.stage3.alice.core.Element currentParent,
+			final edu.cmu.cs.stage3.alice.core.Element toSearchFor) {
 		if (currentParent == toSearchFor) {
 			return true;
 		}
@@ -684,9 +712,10 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 	// mouse is over a location and this figures out where the drop should occur
 	// s_currentComponentPanel is the CompositeComponentPanel of the current
 	// DropPanel
-	protected void insertDropPanel(java.awt.dnd.DropTargetDragEvent dtde) {
+	protected void insertDropPanel(final java.awt.dnd.DropTargetDragEvent dtde) {
 		java.awt.Component dropComponent = dtde.getDropTargetContext().getComponent();
-		java.awt.datatransfer.Transferable currentTransferable = edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager.getCurrentTransferable();
+		final java.awt.datatransfer.Transferable currentTransferable = edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager
+				.getCurrentTransferable();
 		edu.cmu.cs.stage3.alice.core.Element currentElement = null;
 		java.awt.Point mainSpacePoint;
 
@@ -701,7 +730,8 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		}
 		java.awt.Point panelSpacePoint = dtde.getLocation();
 		if (topLevelScrollPane != null) {
-			mainSpacePoint = javax.swing.SwingUtilities.convertPoint(dtde.getDropTargetContext().getComponent(), panelSpacePoint, topLevelScrollPane);
+			mainSpacePoint = javax.swing.SwingUtilities.convertPoint(dtde.getDropTargetContext().getComponent(),
+					panelSpacePoint, topLevelScrollPane);
 			scrollIt(mainSpacePoint);
 		}
 		if (dropComponent != this) { // sets dropComponent to the basic element
@@ -709,7 +739,8 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 										// ComponentElementPanel,
 										// CompositeElementPanel
 			dropComponent = getContainingComponentPanel(dropComponent);
-			panelSpacePoint = javax.swing.SwingUtilities.convertPoint(dtde.getDropTargetContext().getComponent(), dtde.getLocation(), this);
+			panelSpacePoint = javax.swing.SwingUtilities.convertPoint(dtde.getDropTargetContext().getComponent(),
+					dtde.getLocation(), this);
 		}
 		if (componentsIsEmpty()) {
 			drawFeedback(null, null);
@@ -718,15 +749,17 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		}
 		if (currentTransferable != null) {
 			try {
-				currentElement = (edu.cmu.cs.stage3.alice.core.Element) currentTransferable.getTransferData(edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.elementReferenceFlavor);
-			} catch (Exception e) {}
+				currentElement = (edu.cmu.cs.stage3.alice.core.Element) currentTransferable.getTransferData(
+						edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.elementReferenceFlavor);
+			} catch (final Exception e) {
+			}
 		} else {
 			insertLocation = -1;
 			return;
 		}
 		// dropComponent is now set to this panel or the element in this panel
 		// the mouse is over
-		int position = getInsertLocation(panelSpacePoint);
+		final int position = getInsertLocation(panelSpacePoint);
 		if (checkDropLocation(position, currentElement)) {
 			insertLocation = position;
 			paintLine(this, insertLocation);
@@ -744,36 +777,39 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		}
 	}
 
-	protected void unhook(edu.cmu.cs.stage3.alice.core.Element element) {
+	protected void unhook(final edu.cmu.cs.stage3.alice.core.Element element) {
 		element.removeFromParent();
 	}
 
-	protected void addToElement(edu.cmu.cs.stage3.alice.core.Element toAdd, edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty toAddTo, int location) {
-		String newName = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getNameForNewChild(toAdd.name.getStringValue(), toAddTo.getOwner());
+	protected void addToElement(final edu.cmu.cs.stage3.alice.core.Element toAdd,
+			final edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty toAddTo, final int location) {
+		final String newName = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+				.getNameForNewChild(toAdd.name.getStringValue(), toAddTo.getOwner());
 		toAdd.name.set(newName);
 		toAdd.setParent(toAddTo.getOwner());
 		toAddTo.add(location, toAdd);
 	}
 
 	@Override
-	public void popupMenuCanceled(javax.swing.event.PopupMenuEvent e) {
+	public void popupMenuCanceled(final javax.swing.event.PopupMenuEvent e) {
 		inserting = false;
 		removeDropPanelFromCurrentComponent();
 	}
 
 	@Override
-	public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent e) {
+	public void popupMenuWillBecomeInvisible(final javax.swing.event.PopupMenuEvent e) {
 		inserting = false;
 		removeDropPanelFromCurrentComponent();
 	}
 
 	@Override
-	public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent e) {
+	public void popupMenuWillBecomeVisible(final javax.swing.event.PopupMenuEvent e) {
 	}
 
 	// Searches through toCheck to see if the response represented by this
 	// handler is located within toCheck
-	protected boolean isValidDrop(edu.cmu.cs.stage3.alice.core.Element current, edu.cmu.cs.stage3.alice.core.Element toCheck) {
+	protected boolean isValidDrop(final edu.cmu.cs.stage3.alice.core.Element current,
+			final edu.cmu.cs.stage3.alice.core.Element toCheck) {
 		if (toCheck == current) {
 			return false;
 		}
@@ -790,12 +826,14 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		return componentElements.size();
 	}
 
-	protected boolean isRecursive(edu.cmu.cs.stage3.alice.core.Element toDrop) {
+	protected boolean isRecursive(final edu.cmu.cs.stage3.alice.core.Element toDrop) {
 		edu.cmu.cs.stage3.alice.core.Element potentialParent = null;
 		if (toDrop instanceof edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse) {
-			potentialParent = ((edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse) toDrop).userDefinedResponse.getUserDefinedResponseValue();
+			potentialParent = ((edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse) toDrop).userDefinedResponse
+					.getUserDefinedResponseValue();
 		} else if (toDrop instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion) {
-			potentialParent = ((edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion) toDrop).userDefinedQuestion.getUserDefinedQuestionValue();
+			potentialParent = ((edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion) toDrop).userDefinedQuestion
+					.getUserDefinedQuestionValue();
 		}
 		if (potentialParent != null) {
 			return isMyParent(componentElements.getOwner(), potentialParent);
@@ -803,7 +841,8 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		return false;
 	}
 
-	protected boolean canFindOwner(edu.cmu.cs.stage3.alice.core.Element lookingFor, edu.cmu.cs.stage3.alice.core.Element current) {
+	protected boolean canFindOwner(final edu.cmu.cs.stage3.alice.core.Element lookingFor,
+			final edu.cmu.cs.stage3.alice.core.Element current) {
 		if (current == null) {
 			return false;
 		}
@@ -814,10 +853,11 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		}
 	}
 
-	protected boolean checkLoop(edu.cmu.cs.stage3.alice.core.Element e) {
+	protected boolean checkLoop(final edu.cmu.cs.stage3.alice.core.Element e) {
 		if (e instanceof edu.cmu.cs.stage3.alice.core.Variable) {
-			edu.cmu.cs.stage3.alice.core.Variable v = (edu.cmu.cs.stage3.alice.core.Variable) e;
-			if (v.getParent() instanceof edu.cmu.cs.stage3.alice.core.response.ForEach || v.getParent() instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.ForEach) {
+			final edu.cmu.cs.stage3.alice.core.Variable v = (edu.cmu.cs.stage3.alice.core.Variable) e;
+			if (v.getParent() instanceof edu.cmu.cs.stage3.alice.core.response.ForEach
+					|| v.getParent() instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.ForEach) {
 				if (canFindOwner(v.getParent(), componentElements.getOwner())) {
 					return true;
 				} else {
@@ -828,10 +868,15 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		return true;
 	}
 
-	protected void performDrop(edu.cmu.cs.stage3.alice.core.Element toDrop, java.awt.dnd.DropTargetDropEvent dtde) {
+	protected void performDrop(edu.cmu.cs.stage3.alice.core.Element toDrop,
+			final java.awt.dnd.DropTargetDropEvent dtde) {
 		if (isRecursive(toDrop)) {
-			Object[] options = {"Yes, I understand what I am doing.", "No, I made this call accidentally.",};
-			int recursionReturn = edu.cmu.cs.stage3.swing.DialogManager.showOptionDialog("The code you have just dropped in creates a \"recursive method call\". We recommend that you understand\n" + "what recursion is before making a call like this.  Are you sure you want to do this?", "Recursion Warning", javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.WARNING_MESSAGE, null, options, options[1]);
+			final Object[] options = { "Yes, I understand what I am doing.", "No, I made this call accidentally.", };
+			final int recursionReturn = edu.cmu.cs.stage3.swing.DialogManager.showOptionDialog(
+					"The code you have just dropped in creates a \"recursive method call\". We recommend that you understand\n"
+							+ "what recursion is before making a call like this.  Are you sure you want to do this?",
+					"Recursion Warning", javax.swing.JOptionPane.YES_NO_OPTION, javax.swing.JOptionPane.WARNING_MESSAGE,
+					null, options, options[1]);
 			if (recursionReturn != 0) {
 				return;
 			}
@@ -840,7 +885,8 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 			authoringTool.getUndoRedoStack().startCompound();
 		}
 
-		int dropPanelLocationTemp = getInsertLocation(javax.swing.SwingUtilities.convertPoint(dtde.getDropTargetContext().getComponent(), dtde.getLocation(), this));
+		int dropPanelLocationTemp = getInsertLocation(javax.swing.SwingUtilities
+				.convertPoint(dtde.getDropTargetContext().getComponent(), dtde.getLocation(), this));
 		if (isInverted()) {
 			if (dropPanelLocationTemp == -1) {
 				dropPanelLocationTemp = 0;
@@ -850,7 +896,8 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		}
 		inserting = false;
 		boolean isCopy = false;
-		java.awt.Component sourceComponent = edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager.getCurrentDragComponent();
+		final java.awt.Component sourceComponent = edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager
+				.getCurrentDragComponent();
 		removeDropPanelFromCurrentComponent();
 		if ((dtde.getDropAction() & java.awt.dnd.DnDConstants.ACTION_COPY) > 0) {
 			// toDrop =
@@ -863,7 +910,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		boolean alreadyDone = false;
 		if (!isCopy && componentElements.contains(toDrop)) {
 
-			int oldIndex = componentElements.indexOf(toDrop);
+			final int oldIndex = componentElements.indexOf(toDrop);
 			if (dropPanelLocationTemp <= -1 || dropPanelLocationTemp >= getLastElementLocation()) {
 				if (componentElements.size() == 0) {
 					dropPanelLocationTemp = 0;
@@ -875,7 +922,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 					dropPanelLocationTemp--;
 				}
 			}
-			int dif = Math.abs(oldIndex - dropPanelLocationTemp);
+			final int dif = Math.abs(oldIndex - dropPanelLocationTemp);
 			if (dif > 0) {
 				componentElements.shift(oldIndex, dropPanelLocationTemp);
 			}
@@ -896,12 +943,12 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 	}
 
 	@Override
-	public void dropActionChanged(java.awt.dnd.DropTargetDragEvent dtde) {
+	public void dropActionChanged(final java.awt.dnd.DropTargetDragEvent dtde) {
 		dtde.acceptDrag(dtde.getDropAction());
 	}
 
 	@Override
-	public void dragExit(java.awt.dnd.DropTargetEvent dte) {
+	public void dragExit(final java.awt.dnd.DropTargetEvent dte) {
 		HACK_timer.restart(); // TIMER HACK
 		HACK_timer.start(); // TIMER HACK
 		timers.add(HACK_timer);

@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -54,12 +54,17 @@ import java.util.Vector;
 /**
  * An instance of <code>ImageEncodeParam</code> for encoding images in the PNG
  * format.
- * 
+ *
  * <p>
  * <b> This class is not a committed part of the JAI API. It may be removed or
  * changed in future releases of JAI.</b>
  */
 public abstract class PNGEncodeParam implements ImageEncodeParam {
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -2363621612474429587L;
 
 	/** Constant for use with the sRGB chunk. */
 	public static final int INTENT_PERCEPTUAL = 0;
@@ -92,27 +97,27 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	 * Returns an instance of <code>PNGEncodeParam.Palette</code>,
 	 * <code>PNGEncodeParam.Gray</code>, or <code>PNGEncodeParam.RGB</code>
 	 * appropriate for encoding the given image.
-	 * 
+	 *
 	 * <p>
 	 * If the image has an <code>IndexColorModel</code>, an instance of
 	 * <code>PNGEncodeParam.Palette</code> is returned. Otherwise, if the image
 	 * has 1 or 2 bands an instance of <code>PNGEncodeParam.Gray</code> is
 	 * returned. In all other cases an instance of
 	 * <code>PNGEncodeParam.RGB</code> is returned.
-	 * 
+	 *
 	 * <p>
 	 * Note that this method does not provide any guarantee that the given image
 	 * will be successfully encoded by the PNG encoder, as it only performs a
 	 * very superficial analysis of the image structure.
 	 */
-	public static PNGEncodeParam getDefaultEncodeParam(RenderedImage im) {
-		ColorModel colorModel = im.getColorModel();
+	public static PNGEncodeParam getDefaultEncodeParam(final RenderedImage im) {
+		final ColorModel colorModel = im.getColorModel();
 		if (colorModel instanceof IndexColorModel) {
 			return new PNGEncodeParam.Palette();
 		}
 
-		SampleModel sampleModel = im.getSampleModel();
-		int numBands = sampleModel.getNumBands();
+		final SampleModel sampleModel = im.getSampleModel();
+		final int numBands = sampleModel.getNumBands();
 
 		if (numBands == 1 || numBands == 2) {
 			return new PNGEncodeParam.Gray();
@@ -122,6 +127,11 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	}
 
 	public static class Palette extends PNGEncodeParam {
+
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = -4587648577963622135L;
 
 		/** Constructs an instance of <code>PNGEncodeParam.Palette</code>. */
 		public Palette() {
@@ -156,7 +166,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 		 */
 
 		@Override
-		public void setBitDepth(int bitDepth) {
+		public void setBitDepth(final int bitDepth) {
 			if (bitDepth != 1 && bitDepth != 2 && bitDepth != 4 && bitDepth != 8) {
 				throw new IllegalArgumentException(JaiI18N.getString("PNGEncodeParam2"));
 			}
@@ -174,14 +184,14 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 		 * parameter contains alternating R, G, B values for each color index
 		 * used in the image. The number of elements must be a multiple of 3
 		 * between 3 and 3*256.
-		 * 
+		 *
 		 * <p>
 		 * The 'PLTE' chunk will encode this information.
-		 * 
+		 *
 		 * @param rgb
 		 *            An array of <code>int</code>s.
 		 */
-		public void setPalette(int[] rgb) {
+		public void setPalette(final int[] rgb) {
 			if (rgb.length < 1 * 3 || rgb.length > 256 * 3) {
 				throw new IllegalArgumentException(JaiI18N.getString("PNGEncodeParam0"));
 			}
@@ -195,14 +205,14 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 
 		/**
 		 * Returns the current RGB palette.
-		 * 
+		 *
 		 * <p>
 		 * If the palette has not previously been set, or has been unset, an
 		 * <code>IllegalStateException</code> will be thrown.
-		 * 
+		 *
 		 * @throws IllegalStateException
 		 *             if the palette is not set.
-		 * 
+		 *
 		 * @return An array of <code>int</code>s.
 		 */
 		public int[] getPalette() {
@@ -233,22 +243,22 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 
 		/**
 		 * Sets the palette index of the suggested background color.
-		 * 
+		 *
 		 * <p>
 		 * The 'bKGD' chunk will encode this information.
 		 */
-		public void setBackgroundPaletteIndex(int index) {
+		public void setBackgroundPaletteIndex(final int index) {
 			backgroundPaletteIndex = index;
 			backgroundSet = true;
 		}
 
 		/**
 		 * Returns the palette index of the suggested background color.
-		 * 
+		 *
 		 * <p>
 		 * If the background palette index has not previously been set, or has
 		 * been unset, an <code>IllegalStateException</code> will be thrown.
-		 * 
+		 *
 		 * @throws IllegalStateException
 		 *             if the palette index is not set.
 		 */
@@ -267,11 +277,11 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 		 * Sets the alpha values associated with each palette entry. The
 		 * <code>alpha</code> parameter should have as many entries as there are
 		 * RGB triples in the palette.
-		 * 
+		 *
 		 * <p>
 		 * The 'tRNS' chunk will encode this information.
 		 */
-		public void setPaletteTransparency(byte[] alpha) {
+		public void setPaletteTransparency(final byte[] alpha) {
 			transparency = new int[alpha.length];
 			for (int i = 0; i < alpha.length; i++) {
 				transparency[i] = alpha[i] & 0xff;
@@ -281,11 +291,11 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 
 		/**
 		 * Returns the alpha values associated with each palette entry.
-		 * 
+		 *
 		 * <p>
 		 * If the palette transparency has not previously been set, or has been
 		 * unset, an <code>IllegalStateException</code> will be thrown.
-		 * 
+		 *
 		 * @throws IllegalStateException
 		 *             if the palette transparency is not set.
 		 */
@@ -293,7 +303,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 			if (!transparencySet) {
 				throw new IllegalStateException(JaiI18N.getString("PNGEncodeParam5"));
 			}
-			byte[] alpha = new byte[transparency.length];
+			final byte[] alpha = new byte[transparency.length];
 			for (int i = 0; i < alpha.length; i++) {
 				alpha[i] = (byte) transparency[i];
 			}
@@ -302,6 +312,11 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	}
 
 	public static class Gray extends PNGEncodeParam {
+
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = -346437833152487233L;
 
 		/** Constructs an instance of <code>PNGEncodeParam.Gray</code>. */
 		public Gray() {
@@ -332,7 +347,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 		/**
 		 * Sets the desired bit depth for a grayscale image. The bit depth must
 		 * be one of 1, 2, 4, 8, or 16.
-		 * 
+		 *
 		 * <p>
 		 * When encoding a source image of a greater bit depth, pixel values
 		 * will be clamped to the smaller range after shifting by the value
@@ -342,7 +357,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 		 */
 
 		@Override
-		public void setBitDepth(int bitDepth) {
+		public void setBitDepth(final int bitDepth) {
 			if (bitDepth != 1 && bitDepth != 2 && bitDepth != 4 && bitDepth != 8 && bitDepth != 16) {
 				throw new IllegalArgumentException();
 			}
@@ -356,22 +371,22 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 
 		/**
 		 * Sets the suggested gray level of the background.
-		 * 
+		 *
 		 * <p>
 		 * The 'bKGD' chunk will encode this information.
 		 */
-		public void setBackgroundGray(int gray) {
+		public void setBackgroundGray(final int gray) {
 			backgroundPaletteGray = gray;
 			backgroundSet = true;
 		}
 
 		/**
 		 * Returns the suggested gray level of the background.
-		 * 
+		 *
 		 * <p>
 		 * If the background gray level has not previously been set, or has been
 		 * unset, an <code>IllegalStateException</code> will be thrown.
-		 * 
+		 *
 		 * @throws IllegalStateException
 		 *             if the background gray level is not set.
 		 */
@@ -388,15 +403,15 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 
 		/**
 		 * Sets the gray value to be used to denote transparency.
-		 * 
+		 *
 		 * <p>
 		 * Setting this attribute will cause the alpha channel of the input
 		 * image to be ignored.
-		 * 
+		 *
 		 * <p>
 		 * The 'tRNS' chunk will encode this information.
 		 */
-		public void setTransparentGray(int transparentGray) {
+		public void setTransparentGray(final int transparentGray) {
 			transparency = new int[1];
 			transparency[0] = transparentGray;
 			transparencySet = true;
@@ -404,11 +419,11 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 
 		/**
 		 * Returns the gray value to be used to denote transparency.
-		 * 
+		 *
 		 * <p>
 		 * If the transparent gray value has not previously been set, or has
 		 * been unset, an <code>IllegalStateException</code> will be thrown.
-		 * 
+		 *
 		 * @throws IllegalStateException
 		 *             if the transparent gray value is not set.
 		 */
@@ -416,7 +431,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 			if (!transparencySet) {
 				throw new IllegalStateException(JaiI18N.getString("PNGEncodeParam7"));
 			}
-			int gray = transparency[0];
+			final int gray = transparency[0];
 			return gray;
 		}
 
@@ -428,7 +443,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 		 * source image will be shifted right by the given amount prior to being
 		 * clamped to the maximum value given by the encoded image's bit depth.
 		 */
-		public void setBitShift(int bitShift) {
+		public void setBitShift(final int bitShift) {
 			if (bitShift < 0) {
 				throw new RuntimeException();
 			}
@@ -438,11 +453,11 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 
 		/**
 		 * Returns the desired bit shift for a grayscale image.
-		 * 
+		 *
 		 * <p>
 		 * If the bit shift has not previously been set, or has been unset, an
 		 * <code>IllegalStateException</code> will be thrown.
-		 * 
+		 *
 		 * @throws IllegalStateException
 		 *             if the bit shift is not set.
 		 */
@@ -478,6 +493,11 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 
 	public static class RGB extends PNGEncodeParam {
 
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = -1123438456121602009L;
+
 		/** Constructs an instance of <code>PNGEncodeParam.RGB</code>. */
 		public RGB() {
 		}
@@ -510,7 +530,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 		 */
 
 		@Override
-		public void setBitDepth(int bitDepth) {
+		public void setBitDepth(final int bitDepth) {
 			if (bitDepth != 8 && bitDepth != 16) {
 				throw new RuntimeException();
 			}
@@ -525,11 +545,11 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 		/**
 		 * Sets the RGB value of the suggested background color. The
 		 * <code>rgb</code> parameter should have 3 entries.
-		 * 
+		 *
 		 * <p>
 		 * The 'bKGD' chunk will encode this information.
 		 */
-		public void setBackgroundRGB(int[] rgb) {
+		public void setBackgroundRGB(final int[] rgb) {
 			if (rgb.length != 3) {
 				throw new RuntimeException();
 			}
@@ -539,11 +559,11 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 
 		/**
 		 * Returns the RGB value of the suggested background color.
-		 * 
+		 *
 		 * <p>
 		 * If the background color has not previously been set, or has been
 		 * unset, an <code>IllegalStateException</code> will be thrown.
-		 * 
+		 *
 		 * @throws IllegalStateException
 		 *             if the background color is not set.
 		 */
@@ -560,26 +580,26 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 
 		/**
 		 * Sets the RGB value to be used to denote transparency.
-		 * 
+		 *
 		 * <p>
 		 * Setting this attribute will cause the alpha channel of the input
 		 * image to be ignored.
-		 * 
+		 *
 		 * <p>
 		 * The 'tRNS' chunk will encode this information.
 		 */
-		public void setTransparentRGB(int[] transparentRGB) {
+		public void setTransparentRGB(final int[] transparentRGB) {
 			transparency = transparentRGB.clone();
 			transparencySet = true;
 		}
 
 		/**
 		 * Returns the RGB value to be used to denote transparency.
-		 * 
+		 *
 		 * <p>
 		 * If the transparent color has not previously been set, or has been
 		 * unset, an <code>IllegalStateException</code> will be thrown.
-		 * 
+		 *
 		 * @throws IllegalStateException
 		 *             if the transparent color is not set.
 		 */
@@ -601,11 +621,11 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 
 	/**
 	 * Returns the desired bit depth for a grayscale image.
-	 * 
+	 *
 	 * <p>
 	 * If the bit depth has not previously been set, or has been unset, an
 	 * <code>IllegalStateException</code> will be thrown.
-	 * 
+	 *
 	 * @throws IllegalStateException
 	 *             if the bit depth is not set.
 	 */
@@ -630,7 +650,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	/**
 	 * Turns Adam7 interlacing on or off.
 	 */
-	public void setInterlacing(boolean useInterlacing) {
+	public void setInterlacing(final boolean useInterlacing) {
 		this.useInterlacing = useInterlacing;
 	}
 
@@ -681,16 +701,16 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 
 	/**
 	 * Sets the white point and primary chromaticities in CIE (x, y) space.
-	 * 
+	 *
 	 * <p>
 	 * The <code>chromaticity</code> parameter should be a <code>float</code>
 	 * array of length 8 containing the white point X and Y, red X and Y, green
 	 * X and Y, and blue X and Y values in order.
-	 * 
+	 *
 	 * <p>
 	 * The 'cHRM' chunk will encode this information.
 	 */
-	public void setChromaticity(float[] chromaticity) {
+	public void setChromaticity(final float[] chromaticity) {
 		if (chromaticity.length != 8) {
 			throw new IllegalArgumentException();
 		}
@@ -701,8 +721,9 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	/**
 	 * A convenience method that calls the array version.
 	 */
-	public void setChromaticity(float whitePointX, float whitePointY, float redX, float redY, float greenX, float greenY, float blueX, float blueY) {
-		float[] chroma = new float[8];
+	public void setChromaticity(final float whitePointX, final float whitePointY, final float redX, final float redY,
+			final float greenX, final float greenY, final float blueX, final float blueY) {
+		final float[] chroma = new float[8];
 		chroma[0] = whitePointX;
 		chroma[1] = whitePointY;
 		chroma[2] = redX;
@@ -716,15 +737,15 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 
 	/**
 	 * Returns the white point and primary chromaticities in CIE (x, y) space.
-	 * 
+	 *
 	 * <p>
 	 * See the documentation for the <code>setChromaticity</code> method for the
 	 * format of the returned data.
-	 * 
+	 *
 	 * <p>
 	 * If the chromaticity has not previously been set, or has been unset, an
 	 * <code>IllegalStateException</code> will be thrown.
-	 * 
+	 *
 	 * @throws IllegalStateException
 	 *             if the chromaticity is not set.
 	 */
@@ -757,22 +778,22 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 
 	/**
 	 * Sets the file gamma value for the image.
-	 * 
+	 *
 	 * <p>
 	 * The 'gAMA' chunk will encode this information.
 	 */
-	public void setGamma(float gamma) {
+	public void setGamma(final float gamma) {
 		this.gamma = gamma;
 		gammaSet = true;
 	}
 
 	/**
 	 * Returns the file gamma value for the image.
-	 * 
+	 *
 	 * <p>
 	 * If the file gamma has not previously been set, or has been unset, an
 	 * <code>IllegalStateException</code> will be thrown.
-	 * 
+	 *
 	 * @throws IllegalStateException
 	 *             if the gamma is not set.
 	 */
@@ -805,22 +826,22 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	/**
 	 * Sets the palette histogram to be stored with this image. The histogram
 	 * consists of an array of integers, one per palette entry.
-	 * 
+	 *
 	 * <p>
 	 * The 'hIST' chunk will encode this information.
 	 */
-	public void setPaletteHistogram(int[] paletteHistogram) {
+	public void setPaletteHistogram(final int[] paletteHistogram) {
 		this.paletteHistogram = paletteHistogram.clone();
 		paletteHistogramSet = true;
 	}
 
 	/**
 	 * Returns the palette histogram to be stored with this image.
-	 * 
+	 *
 	 * <p>
 	 * If the histogram has not previously been set, or has been unset, an
 	 * <code>IllegalStateException</code> will be thrown.
-	 * 
+	 *
 	 * @throws IllegalStateException
 	 *             if the histogram is not set.
 	 */
@@ -854,22 +875,22 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	/**
 	 * Sets the ICC profile data to be stored with this image. The profile is
 	 * represented in raw binary form.
-	 * 
+	 *
 	 * <p>
 	 * The 'iCCP' chunk will encode this information.
 	 */
-	public void setICCProfileData(byte[] ICCProfileData) {
+	public void setICCProfileData(final byte[] ICCProfileData) {
 		this.ICCProfileData = ICCProfileData.clone();
 		ICCProfileDataSet = true;
 	}
 
 	/**
 	 * Returns the ICC profile data to be stored with this image.
-	 * 
+	 *
 	 * <p>
 	 * If the ICC profile has not previously been set, or has been unset, an
 	 * <code>IllegalStateException</code> will be thrown.
-	 * 
+	 *
 	 * @throws IllegalStateException
 	 *             if the ICC profile is not set.
 	 */
@@ -906,11 +927,11 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	 * number of pixels per unit in the X direction, the number of pixels per
 	 * unit in the Y direction, and the unit specifier (0 = unknown, 1 =
 	 * meters).
-	 * 
+	 *
 	 * <p>
 	 * The 'pHYS' chunk will encode this information.
 	 */
-	public void setPhysicalDimension(int[] physicalDimension) {
+	public void setPhysicalDimension(final int[] physicalDimension) {
 		this.physicalDimension = physicalDimension.clone();
 		physicalDimensionSet = true;
 	}
@@ -918,8 +939,8 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	/**
 	 * A convenience method that calls the array version.
 	 */
-	public void setPhysicalDimension(int xPixelsPerUnit, int yPixelsPerUnit, int unitSpecifier) {
-		int[] pd = new int[3];
+	public void setPhysicalDimension(final int xPixelsPerUnit, final int yPixelsPerUnit, final int unitSpecifier) {
+		final int[] pd = new int[3];
 		pd[0] = xPixelsPerUnit;
 		pd[1] = yPixelsPerUnit;
 		pd[2] = unitSpecifier;
@@ -929,11 +950,11 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 
 	/**
 	 * Returns the physical dimension information to be stored with this image.
-	 * 
+	 *
 	 * <p>
 	 * If the physical dimension information has not previously been set, or has
 	 * been unset, an <code>IllegalStateException</code> will be thrown.
-	 * 
+	 *
 	 * @throws IllegalStateException
 	 *             if the physical dimension information is not set.
 	 */
@@ -968,22 +989,22 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	 * Sets the suggested palette information to be stored with this image. The
 	 * information is passed to this method as an array of
 	 * <code>PNGSuggestedPaletteEntry</code> objects.
-	 * 
+	 *
 	 * <p>
 	 * The 'sPLT' chunk will encode this information.
 	 */
-	public void setSuggestedPalette(PNGSuggestedPaletteEntry[] palette) {
+	public void setSuggestedPalette(final PNGSuggestedPaletteEntry[] palette) {
 		suggestedPalette = palette.clone();
 		suggestedPaletteSet = true;
 	}
 
 	/**
 	 * Returns the suggested palette information to be stored with this image.
-	 * 
+	 *
 	 * <p>
 	 * If the suggested palette information has not previously been set, or has
 	 * been unset, an <code>IllegalStateException</code> will be thrown.
-	 * 
+	 *
 	 * @throws IllegalStateException
 	 *             if the suggested palette information is not set.
 	 */
@@ -1016,27 +1037,27 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 
 	/**
 	 * Sets the number of significant bits for each band of the image.
-	 * 
+	 *
 	 * <p>
 	 * The number of entries in the <code>significantBits</code> array must be
 	 * equal to the number of output bands in the image: 1 for a gray image, 2
 	 * for gray+alpha, 3 for index or truecolor, and 4 for truecolor+alpha.
-	 * 
+	 *
 	 * <p>
 	 * The 'sBIT' chunk will encode this information.
 	 */
-	public void setSignificantBits(int[] significantBits) {
+	public void setSignificantBits(final int[] significantBits) {
 		this.significantBits = significantBits.clone();
 		significantBitsSet = true;
 	}
 
 	/**
 	 * Returns the number of significant bits for each band of the image.
-	 * 
+	 *
 	 * <p>
 	 * If the significant bits values have not previously been set, or have been
 	 * unset, an <code>IllegalStateException</code> will be thrown.
-	 * 
+	 *
 	 * @throws IllegalStateException
 	 *             if the significant bits values are not set.
 	 */
@@ -1072,22 +1093,22 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	 * values are 0 = Perceptual, 1 = Relative Colorimetric, 2 = Saturation, and
 	 * 3 = Absolute Colorimetric. Refer to the PNG specification for information
 	 * on these values.
-	 * 
+	 *
 	 * <p>
 	 * The 'sRGB' chunk will encode this information.
 	 */
-	public void setSRGBIntent(int SRGBIntent) {
+	public void setSRGBIntent(final int SRGBIntent) {
 		this.SRGBIntent = SRGBIntent;
 		SRGBIntentSet = true;
 	}
 
 	/**
 	 * Returns the sRGB rendering intent to be stored with this image.
-	 * 
+	 *
 	 * <p>
 	 * If the sRGB intent has not previously been set, or has been unset, an
 	 * <code>IllegalStateException</code> will be thrown.
-	 * 
+	 *
 	 * @throws IllegalStateException
 	 *             if the sRGB intent is not set.
 	 */
@@ -1120,11 +1141,11 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	/**
 	 * Sets the textual data to be stored in uncompressed form with this image.
 	 * The data is passed to this method as an array of <code>String</code>s.
-	 * 
+	 *
 	 * <p>
 	 * The 'tEXt' chunk will encode this information.
 	 */
-	public void setText(String[] text) {
+	public void setText(final String[] text) {
 		this.text = text;
 		textSet = true;
 	}
@@ -1132,11 +1153,11 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	/**
 	 * Returns the text strings to be stored in uncompressed form with this
 	 * image as an array of <code>String</code>s.
-	 * 
+	 *
 	 * <p>
 	 * If the text strings have not previously been set, or have been unset, an
 	 * <code>IllegalStateException</code> will be thrown.
-	 * 
+	 *
 	 * @throws IllegalStateException
 	 *             if the text strings are not set.
 	 */
@@ -1171,22 +1192,22 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	 * Sets the modification time, as a <code>Date</code>, to be stored with
 	 * this image. The internal storage format will use UTC regardless of how
 	 * the <code>modificationTime</code> parameter was created.
-	 * 
+	 *
 	 * <p>
 	 * The 'tIME' chunk will encode this information.
 	 */
-	public void setModificationTime(Date modificationTime) {
+	public void setModificationTime(final Date modificationTime) {
 		this.modificationTime = modificationTime;
 		modificationTimeSet = true;
 	}
 
 	/**
 	 * Returns the modification time to be stored with this image.
-	 * 
+	 *
 	 * <p>
 	 * If the bit depth has not previously been set, or has been unset, an
 	 * <code>IllegalStateException</code> will be thrown.
-	 * 
+	 *
 	 * @throws IllegalStateException
 	 *             if the bit depth is not set.
 	 */
@@ -1238,11 +1259,11 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	/**
 	 * Sets the text strings to be stored in compressed form with this image.
 	 * The data is passed to this method as an array of <code>String</code>s.
-	 * 
+	 *
 	 * <p>
 	 * The 'zTXt' chunk will encode this information.
 	 */
-	public void setCompressedText(String[] text) {
+	public void setCompressedText(final String[] text) {
 		zText = text;
 		zTextSet = true;
 	}
@@ -1250,11 +1271,11 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	/**
 	 * Returns the text strings to be stored in compressed form with this image
 	 * as an array of <code>String</code>s.
-	 * 
+	 *
 	 * <p>
 	 * If the compressed text strings have not previously been set, or have been
 	 * unset, an <code>IllegalStateException</code> will be thrown.
-	 * 
+	 *
 	 * @throws IllegalStateException
 	 *             if the compressed text strings are not set.
 	 */
@@ -1288,13 +1309,13 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	/**
 	 * Adds a private chunk, in binary form, to the list of chunks to be stored
 	 * with this image.
-	 * 
+	 *
 	 * @param type
 	 *            a 4-character String giving the chunk type name.
 	 * @param data
 	 *            an array of <code>byte</code>s containing the chunk data.
 	 */
-	public synchronized void addPrivateChunk(String type, byte[] data) {
+	public synchronized void addPrivateChunk(final String type, final byte[] data) {
 		chunkType.add(type);
 		chunkData.add(data.clone());
 	}
@@ -1311,7 +1332,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	 * <code>String</code>. The index must be smaller than the return value of
 	 * <code>getNumPrivateChunks</code>.
 	 */
-	public synchronized String getPrivateChunkType(int index) {
+	public synchronized String getPrivateChunkType(final int index) {
 		return (String) chunkType.elementAt(index);
 	}
 
@@ -1320,7 +1341,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	 * array of <code>byte</code>s. The index must be smaller than the return
 	 * value of <code>getNumPrivateChunks</code>.
 	 */
-	public synchronized byte[] getPrivateChunkData(int index) {
+	public synchronized byte[] getPrivateChunkData(final int index) {
 		return (byte[]) chunkData.elementAt(index);
 	}
 
@@ -1330,13 +1351,13 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	 * images.
 	 */
 	public synchronized void removeUnsafeToCopyPrivateChunks() {
-		Vector newChunkType = new Vector();
-		Vector newChunkData = new Vector();
+		final Vector newChunkType = new Vector();
+		final Vector newChunkData = new Vector();
 
-		int len = getNumPrivateChunks();
+		final int len = getNumPrivateChunks();
 		for (int i = 0; i < len; i++) {
-			String type = getPrivateChunkType(i);
-			char lastChar = type.charAt(3);
+			final String type = getPrivateChunkType(i);
+			final char lastChar = type.charAt(3);
 			if (lastChar >= 'a' && lastChar <= 'z') {
 				newChunkType.add(type);
 				newChunkData.add(getPrivateChunkData(i));
@@ -1358,7 +1379,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	/**
 	 * An abs() function for use by the Paeth predictor.
 	 */
-	private static final int abs(int x) {
+	private static final int abs(final int x) {
 		return x < 0 ? -x : x;
 	}
 
@@ -1367,11 +1388,11 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	 * included as a convenience to subclasses that override the
 	 * <code>filterRow</code> method.
 	 */
-	public static final int paethPredictor(int a, int b, int c) {
-		int p = a + b - c;
-		int pa = abs(p - a);
-		int pb = abs(p - b);
-		int pc = abs(p - c);
+	public static final int paethPredictor(final int a, final int b, final int c) {
+		final int p = a + b - c;
+		final int pa = abs(p - a);
+		final int pb = abs(p - b);
+		final int pc = abs(p - c);
 
 		if (pa <= pb && pa <= pc) {
 			return a;
@@ -1386,29 +1407,29 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	 * Performs filtering on a row of an image. This method may be overridden in
 	 * order to provide a custom algorithm for choosing the filter type for a
 	 * given row.
-	 * 
+	 *
 	 * <p>
 	 * The method is supplied with the current and previous rows of the image.
 	 * For the first row of the image, or of an interlacing pass, the previous
 	 * row array will be filled with zeros as required by the PNG specification.
-	 * 
+	 *
 	 * <p>
 	 * The method is also supplied with five scratch arrays. These arrays may be
 	 * used within the method for any purpose. At method exit, the array at the
 	 * index given by the return value of the method should contain the filtered
 	 * data. The return value will also be used as the filter type.
-	 * 
+	 *
 	 * <p>
 	 * The default implementation of the method performs a trial encoding with
 	 * each of the filter types, and computes the sum of absolute values of the
 	 * differences between the raw bytes of the current row and the predicted
 	 * values. The index of the filter producing the smallest result is
 	 * returned.
-	 * 
+	 *
 	 * <p>
 	 * As an example, to perform only 'sub' filtering, this method could be
 	 * implemented (non-optimally) as follows:
-	 * 
+	 *
 	 * <pre>
 	 * for (int i = bytesPerPixel; i &lt; bytesPerRow + bytesPerPixel; i++) {
 	 * 	int curr = currRow[i] &amp; 0xff;
@@ -1417,7 +1438,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	 * }
 	 * return PNG_FILTER_SUB;
 	 * </pre>
-	 * 
+	 *
 	 * @param currRow
 	 *            The current row as an array of <code>byte</code>s of length at
 	 *            least <code>bytesPerRow + bytesPerPixel</code>. The pixel data
@@ -1442,12 +1463,13 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	 *            The number of bytes representing a single pixel, rounded up to
 	 *            an integer. This is the 'bpp' parameter described in the PNG
 	 *            specification.
-	 * 
+	 *
 	 * @return The filter type to be used. The entry of
 	 *         <code>scratchRows[]</code> at this index holds the filtered data.
 	 */
-	public int filterRow(byte[] currRow, byte[] prevRow, byte[][] scratchRows, int bytesPerRow, int bytesPerPixel) {
-		int[] filterBadness = new int[5];
+	public int filterRow(final byte[] currRow, final byte[] prevRow, final byte[][] scratchRows, final int bytesPerRow,
+			final int bytesPerPixel) {
+		final int[] filterBadness = new int[5];
 		for (int i = 0; i < 5; i++) {
 			filterBadness[i] = Integer.MAX_VALUE;
 		}
@@ -1456,7 +1478,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 			int badness = 0;
 
 			for (int i = bytesPerPixel; i < bytesPerRow + bytesPerPixel; i++) {
-				int curr = currRow[i] & 0xff;
+				final int curr = currRow[i] & 0xff;
 				badness += curr;
 			}
 
@@ -1464,13 +1486,13 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 		}
 
 		{
-			byte[] subFilteredRow = scratchRows[1];
+			final byte[] subFilteredRow = scratchRows[1];
 			int badness = 0;
 
 			for (int i = bytesPerPixel; i < bytesPerRow + bytesPerPixel; i++) {
-				int curr = currRow[i] & 0xff;
-				int left = currRow[i - bytesPerPixel] & 0xff;
-				int difference = curr - left;
+				final int curr = currRow[i] & 0xff;
+				final int left = currRow[i - bytesPerPixel] & 0xff;
+				final int difference = curr - left;
 				subFilteredRow[i] = (byte) difference;
 
 				badness += abs(difference);
@@ -1480,13 +1502,13 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 		}
 
 		{
-			byte[] upFilteredRow = scratchRows[2];
+			final byte[] upFilteredRow = scratchRows[2];
 			int badness = 0;
 
 			for (int i = bytesPerPixel; i < bytesPerRow + bytesPerPixel; i++) {
-				int curr = currRow[i] & 0xff;
-				int up = prevRow[i] & 0xff;
-				int difference = curr - up;
+				final int curr = currRow[i] & 0xff;
+				final int up = prevRow[i] & 0xff;
+				final int difference = curr - up;
 				upFilteredRow[i] = (byte) difference;
 
 				badness += abs(difference);
@@ -1496,14 +1518,15 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 		}
 
 		{
-			byte[] averageFilteredRow = scratchRows[3];
+			final byte[] averageFilteredRow = scratchRows[3];
 			int badness = 0;
 
 			for (int i = bytesPerPixel; i < bytesPerRow + bytesPerPixel; i++) {
-				int curr = currRow[i] & 0xff;
-				int left = currRow[i - bytesPerPixel] & 0xff;
-				int up = prevRow[i] & 0xff;
-				int difference = curr - (left + up) / 2;;
+				final int curr = currRow[i] & 0xff;
+				final int left = currRow[i - bytesPerPixel] & 0xff;
+				final int up = prevRow[i] & 0xff;
+				final int difference = curr - (left + up) / 2;
+				;
 				averageFilteredRow[i] = (byte) difference;
 
 				badness += abs(difference);
@@ -1513,16 +1536,16 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 		}
 
 		{
-			byte[] paethFilteredRow = scratchRows[4];
+			final byte[] paethFilteredRow = scratchRows[4];
 			int badness = 0;
 
 			for (int i = bytesPerPixel; i < bytesPerRow + bytesPerPixel; i++) {
-				int curr = currRow[i] & 0xff;
-				int left = currRow[i - bytesPerPixel] & 0xff;
-				int up = prevRow[i] & 0xff;
-				int upleft = prevRow[i - bytesPerPixel] & 0xff;
-				int predictor = paethPredictor(left, up, upleft);
-				int difference = curr - predictor;
+				final int curr = currRow[i] & 0xff;
+				final int left = currRow[i - bytesPerPixel] & 0xff;
+				final int up = prevRow[i] & 0xff;
+				final int upleft = prevRow[i - bytesPerPixel] & 0xff;
+				final int predictor = paethPredictor(left, up, upleft);
+				final int difference = curr - predictor;
 				paethFilteredRow[i] = (byte) difference;
 
 				badness += abs(difference);

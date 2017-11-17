@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -28,7 +28,12 @@ package edu.cmu.cs.stage3.alice.authoringtool.util;
 /**
  * @author Jason Pratt
  */
-public class EditorPanel extends javax.swing.JPanel implements edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateListener {
+public class EditorPanel extends javax.swing.JPanel
+		implements edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateListener {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 5756362286458797818L;
 	protected edu.cmu.cs.stage3.alice.authoringtool.Editor activeEditor = null;
 	protected java.lang.reflect.Method activeEditorSetMethod = null;
 	protected java.util.HashMap cachedEditors = new java.util.HashMap();
@@ -38,11 +43,13 @@ public class EditorPanel extends javax.swing.JPanel implements edu.cmu.cs.stage3
 
 	protected final edu.cmu.cs.stage3.alice.core.event.ChildrenListener deletionListener = new edu.cmu.cs.stage3.alice.core.event.ChildrenListener() {
 		@Override
-		public void childrenChanging(edu.cmu.cs.stage3.alice.core.event.ChildrenEvent ev) {
+		public void childrenChanging(final edu.cmu.cs.stage3.alice.core.event.ChildrenEvent ev) {
 		}
+
 		@Override
-		public void childrenChanged(edu.cmu.cs.stage3.alice.core.event.ChildrenEvent ev) {
-			if (ev.getChangeType() == edu.cmu.cs.stage3.alice.core.event.ChildrenEvent.CHILD_REMOVED && ev.getChild() == EditorPanel.this.getElementBeingEdited()) {
+		public void childrenChanged(final edu.cmu.cs.stage3.alice.core.event.ChildrenEvent ev) {
+			if (ev.getChangeType() == edu.cmu.cs.stage3.alice.core.event.ChildrenEvent.CHILD_REMOVED
+					&& ev.getChild() == EditorPanel.this.getElementBeingEdited()) {
 				EditorPanel.this.editElement(null);
 				ev.getParent().removeChildrenListener(this);
 			}
@@ -50,20 +57,30 @@ public class EditorPanel extends javax.swing.JPanel implements edu.cmu.cs.stage3
 	};
 
 	public final javax.swing.AbstractAction backAction = new javax.swing.AbstractAction() {
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = 3888131160821465826L;
+
 		@Override
-		public void actionPerformed(java.awt.event.ActionEvent e) {
+		public void actionPerformed(final java.awt.event.ActionEvent e) {
 			EditorPanel.this.back();
 		}
 	};
 
 	public final javax.swing.AbstractAction forwardAction = new javax.swing.AbstractAction() {
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = 3778334131384409523L;
+
 		@Override
-		public void actionPerformed(java.awt.event.ActionEvent e) {
+		public void actionPerformed(final java.awt.event.ActionEvent e) {
 			EditorPanel.this.forward();
 		}
 	};
 
-	public EditorPanel(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
+	public EditorPanel(final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
 		this.authoringTool = authoringTool;
 		setLayout(new java.awt.BorderLayout());
 		actionInit();
@@ -81,15 +98,17 @@ public class EditorPanel extends javax.swing.JPanel implements edu.cmu.cs.stage3
 		forwardAction.setEnabled(false);
 	}
 
-	public void addEditorPanelListener(edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelListener listener) {
+	public void addEditorPanelListener(
+			final edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelListener listener) {
 		listenerSet.add(listener);
 	}
 
-	public void removeEditorPanelListener(edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelListener listener) {
+	public void removeEditorPanelListener(
+			final edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelListener listener) {
 		listenerSet.remove(listener);
 	}
 
-	public edu.cmu.cs.stage3.alice.authoringtool.Editor loadEditor(Class editorClass) {
+	public edu.cmu.cs.stage3.alice.authoringtool.Editor loadEditor(final Class editorClass) {
 		edu.cmu.cs.stage3.alice.authoringtool.Editor editor = null;
 
 		if (editorClass != null) {
@@ -98,14 +117,16 @@ public class EditorPanel extends javax.swing.JPanel implements edu.cmu.cs.stage3
 				try {
 					editor = EditorUtilities.getEditorFromClass(editorClass);
 					if (editor == null) {
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Can't create editor of type " + editorClass.getName(), null);
+						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+								.showErrorDialog("Can't create editor of type " + editorClass.getName(), null);
 					} else {
 						cachedEditors.put(editorClass, editor);
 						authoringTool.addAuthoringToolStateListener(editor);
 						editor.setAuthoringTool(authoringTool);
 					}
-				} catch (Throwable t) {
-					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Error creating editor for type " + editorClass.getName(), t);
+				} catch (final Throwable t) {
+					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+							.showErrorDialog("Error creating editor for type " + editorClass.getName(), t);
 				}
 			}
 		}
@@ -113,42 +134,44 @@ public class EditorPanel extends javax.swing.JPanel implements edu.cmu.cs.stage3
 		return editor;
 	}
 
-	public void editElement(edu.cmu.cs.stage3.alice.core.Element element) {
+	public void editElement(final edu.cmu.cs.stage3.alice.core.Element element) {
 		editElement(element, true);
 	}
 
-	public void editElement(edu.cmu.cs.stage3.alice.core.Element element, Class editorClass) {
+	public void editElement(final edu.cmu.cs.stage3.alice.core.Element element, final Class editorClass) {
 		editElement(element, editorClass, true);
 	}
 
-	protected void editElement(edu.cmu.cs.stage3.alice.core.Element element, boolean performPush) {
+	protected void editElement(final edu.cmu.cs.stage3.alice.core.Element element, final boolean performPush) {
 		if (element == null) {
 			editElement(null, null, performPush);
 		} else {
-			Class bestEditorClass = EditorUtilities.getBestEditor(element.getClass());
+			final Class bestEditorClass = EditorUtilities.getBestEditor(element.getClass());
 			if (bestEditorClass == null) {
-				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("No editor found for " + element.getClass(), null);
+				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+						.showErrorDialog("No editor found for " + element.getClass(), null);
 			}
 			editElement(element, bestEditorClass, performPush);
 		}
 	}
 
-	protected void editElement(edu.cmu.cs.stage3.alice.core.Element element, Class editorClass, boolean performPush) {
+	protected void editElement(final edu.cmu.cs.stage3.alice.core.Element element, final Class editorClass,
+			final boolean performPush) {
 		if (getElementBeingEdited() != null && getElementBeingEdited().getParent() != null) {
 			getElementBeingEdited().getParent().removeChildrenListener(deletionListener);
 		}
 
-		edu.cmu.cs.stage3.alice.authoringtool.Editor editor = loadEditor(editorClass);
+		final edu.cmu.cs.stage3.alice.authoringtool.Editor editor = loadEditor(editorClass);
 
 		// if we have a new editor...
 		if (activeEditor != editor) {
 			// clean up old editor if necessary
 			if (activeEditor != null) {
 				try {
-					activeEditorSetMethod.invoke(activeEditor, new Object[]{null});
-				} catch (java.lang.reflect.InvocationTargetException ite) {
+					activeEditorSetMethod.invoke(activeEditor, new Object[] { null });
+				} catch (final java.lang.reflect.InvocationTargetException ite) {
 					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Error cleaning editor.", ite);
-				} catch (IllegalAccessException iae) {
+				} catch (final IllegalAccessException iae) {
 					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Error cleaning editor.", iae);
 				}
 			}
@@ -161,9 +184,11 @@ public class EditorPanel extends javax.swing.JPanel implements edu.cmu.cs.stage3
 				add(java.awt.BorderLayout.CENTER, activeEditor.getJComponent());
 			} else {
 				activeEditorSetMethod = null;
-				for (java.util.Iterator iter = listenerSet.iterator(); iter.hasNext();) {
-					edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelEvent ev = new edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelEvent(null);
-					((edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelListener) iter.next()).elementChanged(ev);
+				for (final java.util.Iterator iter = listenerSet.iterator(); iter.hasNext();) {
+					final edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelEvent ev = new edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelEvent(
+							null);
+					((edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelListener) iter.next())
+							.elementChanged(ev);
 				}
 			}
 			revalidate();
@@ -173,21 +198,23 @@ public class EditorPanel extends javax.swing.JPanel implements edu.cmu.cs.stage3
 		// if the new editor isn't null, start editing the element
 		if (activeEditor != null && activeEditor.getObject() != element) {
 			try {
-				activeEditorSetMethod.invoke(activeEditor, new Object[]{element});
+				activeEditorSetMethod.invoke(activeEditor, new Object[] { element });
 				if (performPush && element != null) {
 					editStack.push(new EditItem(element, editorClass));
 					updateActions();
 				}
-				for (java.util.Iterator iter = listenerSet.iterator(); iter.hasNext();) {
-					edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelEvent ev = new edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelEvent(element);
-					((edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelListener) iter.next()).elementChanged(ev);
+				for (final java.util.Iterator iter = listenerSet.iterator(); iter.hasNext();) {
+					final edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelEvent ev = new edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelEvent(
+							element);
+					((edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelListener) iter.next())
+							.elementChanged(ev);
 				}
 				if (element != null && element.getParent() != null) {
 					element.getParent().addChildrenListener(deletionListener);
 				}
-			} catch (java.lang.reflect.InvocationTargetException ite) {
+			} catch (final java.lang.reflect.InvocationTargetException ite) {
 				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Error intializing editor.", ite);
-			} catch (IllegalAccessException iae) {
+			} catch (final IllegalAccessException iae) {
 				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Error intializing editor.", iae);
 			}
 		}
@@ -230,10 +257,15 @@ public class EditorPanel extends javax.swing.JPanel implements edu.cmu.cs.stage3
 
 	class EditStack extends DefaultUndoRedoStack {
 
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = -2136443448865489925L;
+
 		@Override
 		public UndoableRedoable undo() {
-			UndoableRedoable ur = super.undo();
-			UndoableRedoable newItem = editStack.getCurrentUndoableRedoable();
+			final UndoableRedoable ur = super.undo();
+			final UndoableRedoable newItem = editStack.getCurrentUndoableRedoable();
 			if (ur != null) {
 				editElement(((EditItem) newItem).getElement(), ((EditItem) newItem).getEditorClass(), false);
 			}
@@ -242,7 +274,7 @@ public class EditorPanel extends javax.swing.JPanel implements edu.cmu.cs.stage3
 
 		@Override
 		public UndoableRedoable redo() {
-			UndoableRedoable ur = super.redo();
+			final UndoableRedoable ur = super.redo();
 			if (ur != null) {
 				editElement(((EditItem) ur).getElement(), ((EditItem) ur).getEditorClass(), false);
 			}
@@ -254,7 +286,7 @@ public class EditorPanel extends javax.swing.JPanel implements edu.cmu.cs.stage3
 		protected edu.cmu.cs.stage3.alice.core.Element element;
 		protected Class editorClass;
 
-		public EditItem(edu.cmu.cs.stage3.alice.core.Element element, Class editorClass) {
+		public EditItem(final edu.cmu.cs.stage3.alice.core.Element element, final Class editorClass) {
 			this.element = element;
 			this.editorClass = editorClass;
 		}
@@ -262,6 +294,7 @@ public class EditorPanel extends javax.swing.JPanel implements edu.cmu.cs.stage3
 		@Override
 		public void undo() {
 		}
+
 		@Override
 		public void redo() {
 		}
@@ -290,47 +323,59 @@ public class EditorPanel extends javax.swing.JPanel implements edu.cmu.cs.stage3
 	// /////////////////////////////////////////////
 
 	@Override
-	public void stateChanging(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
-	}
-	@Override
-	public void worldLoading(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
-	}
-	@Override
-	public void worldUnLoading(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
-	}
-	@Override
-	public void worldStarting(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
-	}
-	@Override
-	public void worldStopping(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
-	}
-	@Override
-	public void worldPausing(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
-	}
-	@Override
-	public void worldSaving(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void stateChanging(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
 
 	@Override
-	public void stateChanged(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldLoading(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldLoaded(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldUnLoading(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldUnLoaded(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldStarting(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	}
+
+	@Override
+	public void worldStopping(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	}
+
+	@Override
+	public void worldPausing(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	}
+
+	@Override
+	public void worldSaving(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	}
+
+	@Override
+	public void stateChanged(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	}
+
+	@Override
+	public void worldLoaded(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	}
+
+	@Override
+	public void worldUnLoaded(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 		editStack.clear();
 	}
+
 	@Override
-	public void worldStarted(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldStarted(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldStopped(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldStopped(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldPaused(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldPaused(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldSaved(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldSaved(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
 }

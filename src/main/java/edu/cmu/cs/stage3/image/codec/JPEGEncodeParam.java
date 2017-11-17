@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -51,30 +51,35 @@ package edu.cmu.cs.stage3.image.codec;
  * needing that additional functionality should use those classes directly,
  * bearing in mind that they are part of an uncommitted non-core interface that
  * may be modified or removed in the future.
- * 
+ *
  * This class makes very simple assumptions about the image colorspaces. Images
  * with a single band are assumed to be grayscale. Images with three bands are
  * assumed to be RGB and are encoded to YCbCr.
- * 
+ *
  * <p>
  * <b> This class is not a committed part of the JAI API. It may be removed or
  * changed in future releases of JAI.</b>
  */
 public class JPEGEncodeParam implements ImageEncodeParam {
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 5107208882834898841L;
+
 	private static int JPEG_MAX_BANDS = 3;
 
-	private int[] hSamp;
-	private int[] vSamp;
-	private int[][] qTab;
-	private int[] qTabSlot;
+	private final int[] hSamp;
+	private final int[] vSamp;
+	private final int[][] qTab;
+	private final int[] qTabSlot;
 	private float qual;
 	private int rstInterval;
 	private boolean writeImageOnly;
 	private boolean writeTablesOnly;
 	private boolean writeJFIFHeader;
 	private boolean qualitySet;
-	private boolean[] qTabSet;
+	private final boolean[] qTabSet;
 
 	/**
 	 * Constructs a JAI JPEGEncodeParam object with default settings.
@@ -120,48 +125,48 @@ public class JPEGEncodeParam implements ImageEncodeParam {
 	/**
 	 * Sets the horizontal subsampling to be applied to an image band. Defaults
 	 * to 1 for grayscale and (1,2,2) for RGB.
-	 * 
+	 *
 	 * @param component
 	 *            The band for which to set horizontal subsampling.
 	 * @param subsample
 	 *            The horizontal subsampling factor.
 	 */
-	public void setHorizontalSubsampling(int component, int subsample) {
+	public void setHorizontalSubsampling(final int component, final int subsample) {
 		hSamp[component] = subsample;
 	}
 
 	/**
 	 * Get the horizontal subsampling factor for a band.
-	 * 
+	 *
 	 * @param component
 	 *            The band of the image for which to retrieve subsampling.
 	 * @return The horizontal subsampling factor to be applied to this band
 	 */
-	public int getHorizontalSubsampling(int component) {
+	public int getHorizontalSubsampling(final int component) {
 		return hSamp[component];
 	}
 
 	/**
 	 * Sets the vertical subsampling to be applied to an image band. Defaults to
 	 * 1 for grayscale and (1,2,2) for RGB.
-	 * 
+	 *
 	 * @param component
 	 *            The band for which to set vertical subsampling.
 	 * @param subsample
 	 *            The vertical subsampling factor.
 	 */
-	public void setVerticalSubsampling(int component, int subsample) {
+	public void setVerticalSubsampling(final int component, final int subsample) {
 		vSamp[component] = subsample;
 	}
 
 	/**
 	 * Get the vertical subsampling factor for a band.
-	 * 
+	 *
 	 * @param component
 	 *            The band of the image for which to retrieve subsampling.
 	 * @return The vertical subsampling factor to be applied to this band
 	 */
-	public int getVerticalSubsampling(int component) {
+	public int getVerticalSubsampling(final int component) {
 		return vSamp[component];
 	}
 
@@ -170,11 +175,11 @@ public class JPEGEncodeParam implements ImageEncodeParam {
 	 * convenience method which explicitly sets the contents of quantization
 	 * table 0. The length of the table must be 64. This disables any quality
 	 * setting.
-	 * 
+	 *
 	 * @param qTable
 	 *            Quantization table values in "zig-zag" order.
 	 */
-	public void setLumaQTable(int[] qTable) {
+	public void setLumaQTable(final int[] qTable) {
 		setQTable(0, 0, qTable);
 		qTabSet[0] = true;
 		qualitySet = false;
@@ -186,11 +191,11 @@ public class JPEGEncodeParam implements ImageEncodeParam {
 	 * table 1. The length of the table must be 64. This method assumes that all
 	 * chroma components will use the same table. This disables any quality
 	 * setting.
-	 * 
+	 *
 	 * @param qTable
 	 *            Quantization table values in "zig-zag" order.
 	 */
-	public void setChromaQTable(int[] qTable) {
+	public void setChromaQTable(final int[] qTable) {
 		setQTable(1, 1, qTable);
 		setQTable(2, 1, qTable);
 		qTabSet[1] = true;
@@ -202,7 +207,7 @@ public class JPEGEncodeParam implements ImageEncodeParam {
 	 * Sets a quantization table to be used for a component. This method allows
 	 * up to four independent tables to be specified. This disables any quality
 	 * setting.
-	 * 
+	 *
 	 * @param component
 	 *            The band to which this table applies.
 	 * @param tableSlot
@@ -210,7 +215,7 @@ public class JPEGEncodeParam implements ImageEncodeParam {
 	 * @param qTable
 	 *            Quantization table values in "zig-zag" order.
 	 */
-	public void setQTable(int component, int tableSlot, int[] qTable) {
+	public void setQTable(final int component, final int tableSlot, final int[] qTable) {
 		qTab[component] = qTable.clone();
 		qTabSlot[component] = tableSlot;
 		qTabSet[component] = true;
@@ -219,23 +224,23 @@ public class JPEGEncodeParam implements ImageEncodeParam {
 
 	/**
 	 * Tests if a Quantization table has been set.
-	 * 
+	 *
 	 * @return Returns true is the specified quantization table has been set.
 	 */
-	public boolean isQTableSet(int component) {
+	public boolean isQTableSet(final int component) {
 		return qTabSet[component];
 	}
 
 	/**
 	 * Retrieve the contents of the quantization table used for a component.
-	 * 
+	 *
 	 * @param component
 	 *            The band to which this table applies.
 	 * @return The contents of the quantization table as a reference.
 	 * @throws IllegalStateException
 	 *             if table has not been previously set for this component.
 	 */
-	public int[] getQTable(int component) {
+	public int[] getQTable(final int component) {
 		if (!qTabSet[component]) {
 			throw new IllegalStateException(JaiI18N.getString("JPEGEncodeParam0"));
 		}
@@ -244,14 +249,14 @@ public class JPEGEncodeParam implements ImageEncodeParam {
 
 	/**
 	 * Retrieve the quantization table slot used for a component.
-	 * 
+	 *
 	 * @param component
 	 *            The band to which this table slot applies.
 	 * @return The table slot used for this band.
 	 * @throws IllegalStateException
 	 *             if table has not been previously set for this component.
 	 */
-	public int getQTableSlot(int component) {
+	public int getQTableSlot(final int component) {
 		if (!qTabSet[component]) {
 			throw new IllegalStateException(JaiI18N.getString("JPEGEncodeParam0"));
 		}
@@ -263,17 +268,17 @@ public class JPEGEncodeParam implements ImageEncodeParam {
 	 * useful in some environments to limit the effect of bitstream errors to a
 	 * single restart interval. The default is zero (no restart interval
 	 * markers).
-	 * 
+	 *
 	 * @param restartInterval
 	 *            Number of MCUs between restart markers.
 	 */
-	public void setRestartInterval(int restartInterval) {
+	public void setRestartInterval(final int restartInterval) {
 		rstInterval = restartInterval;
 	}
 
 	/**
 	 * Gets the restart interval in Minimum Coded Units (MCUs).
-	 * 
+	 *
 	 * @return The restart interval in MCUs (0 if not set).
 	 */
 	public int getRestartInterval() {
@@ -283,31 +288,31 @@ public class JPEGEncodeParam implements ImageEncodeParam {
 	/**
 	 * This creates new quantization tables that replace the currently installed
 	 * quantization tables.
-	 * 
+	 *
 	 * The created quantization table varies from very high compression, very
 	 * low quality, (0.0) to low compression, very high quality (1.0) based on
 	 * the quality parameter.
 	 * <P>
-	 * 
+	 *
 	 * At a quality level of 1.0 the table will be all 1's which will lead to no
 	 * loss of data due to quantization (however chrominace subsampling, if
 	 * used, and roundoff error in the DCT will still degrade the image some
 	 * what).
 	 * <P>
-	 * 
+	 *
 	 * The default setting is 0.75 which provides high quality while insuring a
 	 * good compression ratio.
-	 * 
+	 *
 	 * <pre>
 	 * Some guidelines: 0.75 high quality
 	 *                 0.5  medium quality
 	 *                 0.25 low quality
 	 * </pre>
-	 * 
+	 *
 	 * @param quality
 	 *            0.0-1.0 setting of desired quality level.
 	 */
-	public void setQuality(float quality) {
+	public void setQuality(final float quality) {
 		qual = quality;
 		// Reset custom Q tables
 		for (int i = 0; i < JPEG_MAX_BANDS; i++) {
@@ -318,7 +323,7 @@ public class JPEGEncodeParam implements ImageEncodeParam {
 
 	/**
 	 * Tests if the quality parameter has been set in this JPEGEncodeParam.
-	 * 
+	 *
 	 * @return True/false flag indicating if quality has been set.
 	 */
 	public boolean isQualitySet() {
@@ -328,7 +333,7 @@ public class JPEGEncodeParam implements ImageEncodeParam {
 	/**
 	 * Retrieve the quality setting for this encoding. This is a number between
 	 * 0.0 and 1.0.
-	 * 
+	 *
 	 * @return The specified quality setting (0.75 if not set).
 	 */
 	public float getQuality() {
@@ -339,17 +344,17 @@ public class JPEGEncodeParam implements ImageEncodeParam {
 	 * Instructs the encoder to write only the table data to the output stream.
 	 * This is considered an abbreviated JPEG stream. Defaults to false --
 	 * normally both tables and encoded image data are written.
-	 * 
+	 *
 	 * @param tablesOnly
 	 *            If true, only the tables will be written.
 	 */
-	public void setWriteTablesOnly(boolean tablesOnly) {
+	public void setWriteTablesOnly(final boolean tablesOnly) {
 		writeTablesOnly = tablesOnly;
 	}
 
 	/**
 	 * Retrieve the setting of the writeTablesOnly flag.
-	 * 
+	 *
 	 * @return The setting of the writeTablesOnly flag (false if not set).
 	 */
 	public boolean getWriteTablesOnly() {
@@ -360,17 +365,17 @@ public class JPEGEncodeParam implements ImageEncodeParam {
 	 * Controls whether the encoder writes only the compressed image data to the
 	 * output stream. This is considered an abbreviated JPEG stream. Defaults to
 	 * false -- normally both tables and compressed image data are written.
-	 * 
+	 *
 	 * @param imageOnly
 	 *            If true, only the compressed image will be written.
 	 */
-	public void setWriteImageOnly(boolean imageOnly) {
+	public void setWriteImageOnly(final boolean imageOnly) {
 		writeImageOnly = imageOnly;
 	}
 
 	/**
 	 * Retrieve the setting of the writeImageOnly flag.
-	 * 
+	 *
 	 * @return The setting of the writeImageOnly flag (false if not set).
 	 */
 	public boolean getWriteImageOnly() {
@@ -380,17 +385,17 @@ public class JPEGEncodeParam implements ImageEncodeParam {
 	/**
 	 * Controls whether the encoder writes a JFIF header using the APP0 marker.
 	 * By default an APP0 marker is written to create a JFIF file.
-	 * 
+	 *
 	 * @param writeJFIF
 	 *            If true, writes a JFIF header.
 	 */
-	public void setWriteJFIFHeader(boolean writeJFIF) {
+	public void setWriteJFIFHeader(final boolean writeJFIF) {
 		writeJFIFHeader = writeJFIF;
 	}
 
 	/**
 	 * Retrieve the setting of the writeJFIF flag.
-	 * 
+	 *
 	 * @return The setting of the writeJFIF flag (true if not set).
 	 */
 	public boolean getWriteJFIFHeader() {

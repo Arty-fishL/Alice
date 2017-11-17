@@ -35,12 +35,12 @@ public class Interpreter implements edu.cmu.cs.stage3.alice.scripting.Interprete
 	}
 
 	private ScriptingFactory m_scriptingFactory;
-	private org.python.core.PyModule m_module;
-	private Namespace m_dict;
+	private final org.python.core.PyModule m_module;
+	private final Namespace m_dict;
 
 	private edu.cmu.cs.stage3.alice.core.World m_world;
 
-	public Interpreter(ScriptingFactory scriptingFactory) {
+	public Interpreter(final ScriptingFactory scriptingFactory) {
 		m_scriptingFactory = scriptingFactory;
 
 		m_dict = new Namespace();
@@ -51,11 +51,13 @@ public class Interpreter implements edu.cmu.cs.stage3.alice.scripting.Interprete
 		m_dict.clear();
 		m_dict.setWorld(m_world);
 	}
+
 	@Override
-	public void setWorld(edu.cmu.cs.stage3.alice.core.World world) {
+	public void setWorld(final edu.cmu.cs.stage3.alice.core.World world) {
 		m_world = world;
 		resetNamespace();
 	}
+
 	@Override
 	public void release() {
 		m_scriptingFactory.releaseInterpreter(this);
@@ -66,21 +68,26 @@ public class Interpreter implements edu.cmu.cs.stage3.alice.scripting.Interprete
 	public void start() {
 		resetNamespace();
 	}
+
 	@Override
 	public void stop() {
 	}
 
 	@Override
-	public edu.cmu.cs.stage3.alice.scripting.Code compile(String script, Object source, edu.cmu.cs.stage3.alice.scripting.CompileType compileType) {
-		org.python.core.PyCode pyCode = org.python.core.Py.compile_flags(script, source.toString(), (String) s_map.get(compileType), null);
+	public edu.cmu.cs.stage3.alice.scripting.Code compile(final String script, final Object source,
+			final edu.cmu.cs.stage3.alice.scripting.CompileType compileType) {
+		final org.python.core.PyCode pyCode = org.python.core.Py.compile_flags(script, source.toString(),
+				(String) s_map.get(compileType), null);
 		return new Code(pyCode, compileType);
 	}
+
 	@Override
-	public Object eval(edu.cmu.cs.stage3.alice.scripting.Code code) {
+	public Object eval(final edu.cmu.cs.stage3.alice.scripting.Code code) {
 		return org.python.core.__builtin__.eval(((Code) code).getPyCode(), m_dict, m_dict);
 	}
+
 	@Override
-	public void exec(edu.cmu.cs.stage3.alice.scripting.Code code) {
+	public void exec(final edu.cmu.cs.stage3.alice.scripting.Code code) {
 		org.python.core.Py.exec(((Code) code).getPyCode(), m_dict, m_dict);
 	}
 }

@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -35,7 +35,7 @@ public abstract class Container extends Component {
 	private java.util.Vector m_childrenListeners = new java.util.Vector();
 	private ChildrenListener[] m_childrenListenerArray = null;
 
-	public boolean isAncestorOf(Component component) {
+	public boolean isAncestorOf(final Component component) {
 		if (component == null) {
 			return false;
 		} else {
@@ -45,8 +45,8 @@ public abstract class Container extends Component {
 
 	@Override
 	protected void releasePass1() {
-		Component[] children = getChildren();
-		for (Component element : children) {
+		final Component[] children = getChildren();
+		for (final Component element : children) {
 			warnln("WARNING: released container " + this + " still has child " + element + ".");
 			element.setParent(null);
 		}
@@ -62,16 +62,17 @@ public abstract class Container extends Component {
 
 	@Override
 	protected void releasePass3() {
-		java.util.Enumeration enum0 = m_childrenListeners.elements();
+		final java.util.Enumeration enum0 = m_childrenListeners.elements();
 		while (enum0.hasMoreElements()) {
-			ChildrenListener childrenListener = (ChildrenListener) enum0.nextElement();
+			final ChildrenListener childrenListener = (ChildrenListener) enum0.nextElement();
 			warnln("WARNING: released container " + this + " still has childrenListener " + childrenListener + ".");
 		}
 		m_childrenListeners = null;
 		m_childrenListenerArray = null;
 		super.releasePass3();
 	}
-	protected void onAddChild(Component child) {
+
+	protected void onAddChild(final Component child) {
 		if (isReleased()) {
 			warnln("WARNING: scenegraph addChild " + child + " on already released " + this + ".");
 		} else {
@@ -80,15 +81,16 @@ public abstract class Container extends Component {
 			} else {
 				m_children.addElement(child);
 				m_childArray = null;
-				ChildrenEvent childrenEvent = new ChildrenEvent(this, ChildrenEvent.CHILD_ADDED, child);
-				ChildrenListener[] childrenListeners = getChildrenListeners();
-				for (ChildrenListener childrenListener : childrenListeners) {
+				final ChildrenEvent childrenEvent = new ChildrenEvent(this, ChildrenEvent.CHILD_ADDED, child);
+				final ChildrenListener[] childrenListeners = getChildrenListeners();
+				for (final ChildrenListener childrenListener : childrenListeners) {
 					childrenListener.childAdded(childrenEvent);
 				}
 			}
 		}
 	}
-	protected void onRemoveChild(Component child) {
+
+	protected void onRemoveChild(final Component child) {
 		if (isReleased()) {
 			warnln("WARNING: scenegraph removeChild " + child + " on already released " + this + ".");
 		} else {
@@ -97,14 +99,15 @@ public abstract class Container extends Component {
 			} else {
 				m_children.removeElement(child);
 				m_childArray = null;
-				ChildrenEvent childrenEvent = new ChildrenEvent(this, ChildrenEvent.CHILD_REMOVED, child);
-				ChildrenListener[] childrenListeners = getChildrenListeners();
-				for (ChildrenListener childrenListener : childrenListeners) {
+				final ChildrenEvent childrenEvent = new ChildrenEvent(this, ChildrenEvent.CHILD_REMOVED, child);
+				final ChildrenListener[] childrenListeners = getChildrenListeners();
+				for (final ChildrenListener childrenListener : childrenListeners) {
 					childrenListener.childRemoved(childrenEvent);
 				}
 			}
 		}
 	}
+
 	public Component[] getChildren() {
 		if (m_childArray == null) {
 			m_childArray = new Component[m_children.size()];
@@ -112,20 +115,25 @@ public abstract class Container extends Component {
 		}
 		return m_childArray;
 	}
+
 	public int getChildCount() {
 		return m_children.size();
 	}
-	public Component getChildAt(int i) {
+
+	public Component getChildAt(final int i) {
 		return (Component) m_children.elementAt(i);
 	}
-	public void addChildrenListener(ChildrenListener childrenListener) {
+
+	public void addChildrenListener(final ChildrenListener childrenListener) {
 		m_childrenListeners.addElement(childrenListener);
 		m_childrenListenerArray = null;
 	}
-	public void removeChildrenListener(ChildrenListener childrenListener) {
+
+	public void removeChildrenListener(final ChildrenListener childrenListener) {
 		m_childrenListeners.removeElement(childrenListener);
 		m_childrenListenerArray = null;
 	}
+
 	public ChildrenListener[] getChildrenListeners() {
 		if (m_childrenListenerArray == null) {
 			m_childrenListenerArray = new ChildrenListener[m_childrenListeners.size()];
@@ -137,8 +145,8 @@ public abstract class Container extends Component {
 	@Override
 	protected void onAbsoluteTransformationChange() {
 		super.onAbsoluteTransformationChange();
-		Component[] children = getChildren();
-		for (Component element : children) {
+		final Component[] children = getChildren();
+		for (final Component element : children) {
 			element.onAbsoluteTransformationChange();
 		}
 	}
@@ -146,8 +154,8 @@ public abstract class Container extends Component {
 	@Override
 	protected void onHierarchyChange() {
 		super.onHierarchyChange();
-		Component[] children = getChildren();
-		for (Component element : children) {
+		final Component[] children = getChildren();
+		for (final Component element : children) {
 			element.onHierarchyChange();
 		}
 	}

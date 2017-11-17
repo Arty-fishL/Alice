@@ -26,10 +26,12 @@ public class GoldenRatio {
 	// }
 	// }
 	public static double PHI = 1.6180339887;
-	public static int getShorterSideLength(int longerSideLength) {
+
+	public static int getShorterSideLength(final int longerSideLength) {
 		return (int) (longerSideLength / PHI);
 	}
-	public static int getLongerSideLength(int shorterSideLength) {
+
+	public static int getLongerSideLength(final int shorterSideLength) {
 		return (int) (shorterSideLength * PHI);
 	}
 

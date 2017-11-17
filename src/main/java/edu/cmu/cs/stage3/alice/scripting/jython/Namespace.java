@@ -24,17 +24,22 @@
 package edu.cmu.cs.stage3.alice.scripting.jython;
 
 public class Namespace extends org.python.core.PyStringMap {
-	private java.util.Hashtable m_map = new java.util.Hashtable();
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 5601665909748681996L;
+	private final java.util.Hashtable m_map = new java.util.Hashtable();
 	private edu.cmu.cs.stage3.alice.core.World m_world = null;
 	private PyElement m_pyWorld = null;
 
-	public void setWorld(edu.cmu.cs.stage3.alice.core.World world) {
+	public void setWorld(final edu.cmu.cs.stage3.alice.core.World world) {
 		m_world = world;
 		m_pyWorld = getPyElement(m_world);
 		m_map.clear();
 		clear();
 	}
-	/* package protected */PyElement getPyElement(edu.cmu.cs.stage3.alice.core.Element element) {
+
+	/* package protected */PyElement getPyElement(final edu.cmu.cs.stage3.alice.core.Element element) {
 		PyElement pyElement = (PyElement) m_map.get(element);
 		if (pyElement == null) {
 			if (element instanceof edu.cmu.cs.stage3.alice.core.Sandbox) {
@@ -46,7 +51,8 @@ public class Namespace extends org.python.core.PyStringMap {
 		}
 		return pyElement;
 	}
-	/* package protected */org.python.core.PyObject java2py(Object o) {
+
+	/* package protected */org.python.core.PyObject java2py(final Object o) {
 		if (o instanceof edu.cmu.cs.stage3.alice.core.Element) {
 			return getPyElement((edu.cmu.cs.stage3.alice.core.Element) o);
 		} else {
@@ -55,15 +61,15 @@ public class Namespace extends org.python.core.PyStringMap {
 	}
 
 	@Override
-	public synchronized org.python.core.PyObject __finditem__(String key) {
-		org.python.core.PyObject py = super.__finditem__(key);
+	public synchronized org.python.core.PyObject __finditem__(final String key) {
+		final org.python.core.PyObject py = super.__finditem__(key);
 		if (py != null) {
 			return py;
 		} else {
 			if (key.equalsIgnoreCase(m_world.name.getStringValue())) {
 				return m_pyWorld;
 			}
-			edu.cmu.cs.stage3.alice.core.Expression expression = m_world.lookup(key);
+			final edu.cmu.cs.stage3.alice.core.Expression expression = m_world.lookup(key);
 			if (expression != null) {
 				return java2py(expression.getValue());
 			} else {

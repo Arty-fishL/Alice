@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -67,7 +67,7 @@ public class FPXImage extends SimpleRenderedImage {
 	private static final int SUBIMAGE_COLOR_SPACE_MONOCHROME = 0;
 	private static final int SUBIMAGE_COLOR_SPACE_PHOTOYCC = 0;
 	private static final int SUBIMAGE_COLOR_SPACE_NIFRGB = 0;
-	private static final String[] COLORSPACE_NAME = {"Colorless", "Monochrome", "PhotoYCC", "NIF RGB"};
+	private static final String[] COLORSPACE_NAME = { "Colorless", "Monochrome", "PhotoYCC", "NIF RGB" };
 
 	StructuredStorage storage;
 
@@ -115,12 +115,14 @@ public class FPXImage extends SimpleRenderedImage {
 	// Derived values
 	int tilesAcross;
 
-	int[] bandOffsets = {0, 1, 2};
+	int[] bandOffsets = { 0, 1, 2 };
 
-	private static final int[] RGBBits8 = {8, 8, 8};
-	private static final ComponentColorModel colorModelRGB8 = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_LINEAR_RGB), RGBBits8, false, false, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
+	private static final int[] RGBBits8 = { 8, 8, 8 };
+	private static final ComponentColorModel colorModelRGB8 = new ComponentColorModel(
+			ColorSpace.getInstance(ColorSpace.CS_LINEAR_RGB), RGBBits8, false, false, Transparency.OPAQUE,
+			DataBuffer.TYPE_BYTE);
 
-	public FPXImage(SeekableStream stream, FPXDecodeParam param) throws IOException {
+	public FPXImage(final SeekableStream stream, FPXDecodeParam param) throws IOException {
 
 		storage = new StructuredStorage(stream);
 
@@ -139,16 +141,17 @@ public class FPXImage extends SimpleRenderedImage {
 		minX = 0;
 		minY = 0;
 
-		sampleModel = RasterFactory.createPixelInterleavedSampleModel(DataBuffer.TYPE_BYTE, tileWidth, tileHeight, numChannels, numChannels * tileWidth, bandOffsets);
+		sampleModel = RasterFactory.createPixelInterleavedSampleModel(DataBuffer.TYPE_BYTE, tileWidth, tileHeight,
+				numChannels, numChannels * tileWidth, bandOffsets);
 		colorModel = ImageCodec.createComponentColorModel(sampleModel);
 	}
 
 	private void readImageContents() throws IOException {
 		storage.changeDirectoryToRoot();
 		storage.changeDirectory("Data Object Store 000001");
-		SeekableStream imageContents = storage.getStream("Image Contents");
+		final SeekableStream imageContents = storage.getStream("Image Contents");
 
-		PropertySet icps = new PropertySet(imageContents);
+		final PropertySet icps = new PropertySet(imageContents);
 		numResolutions = (int) icps.getUI4(0x01000000);
 		highestResWidth = (int) icps.getUI4(0x01000002);
 		highestResHeight = (int) icps.getUI4(0x01000003);
@@ -175,7 +178,7 @@ public class FPXImage extends SimpleRenderedImage {
 		// subimage ICC profile
 
 		for (int i = 0; i < numResolutions; i++) {
-			int index = i << 16;
+			final int index = i << 16;
 			if (!icps.hasProperty(0x02000000 | index)) {
 				break;
 			}
@@ -184,37 +187,37 @@ public class FPXImage extends SimpleRenderedImage {
 			subimageValid[i] = true;
 			subimageWidth[i] = (int) icps.getUI4(0x02000000 | index);
 			subimageHeight[i] = (int) icps.getUI4(0x02000001 | index);
-			byte[] subimageColorBlob = icps.getBlob(0x02000002 | index);
+			final byte[] subimageColorBlob = icps.getBlob(0x02000002 | index);
 			decimationMethod[i] = icps.getI4(0x02000004 | index);
 			// decimationPrefilterWidth[i] = icps.getR4(0x02000005 | index);
 
-			int numSubImages = FPXUtils.getIntLE(subimageColorBlob, 0);
-			int numChannels = FPXUtils.getIntLE(subimageColorBlob, 4);
+			final int numSubImages = FPXUtils.getIntLE(subimageColorBlob, 0);
+			final int numChannels = FPXUtils.getIntLE(subimageColorBlob, 4);
 
-			// System.out.println("  subimageWidth[" + i + "] = " +
+			// System.out.println(" subimageWidth[" + i + "] = " +
 			// subimageWidth[i]);
-			// System.out.println("  subimageHeight[" + i + "] = " +
+			// System.out.println(" subimageHeight[" + i + "] = " +
 			// subimageHeight[i]);
-			// System.out.println("  subimageColor[" + i + "] = ");
-			// System.out.println("    numSubimages = " + numSubImages);
+			// System.out.println(" subimageColor[" + i + "] = ");
+			// System.out.println(" numSubimages = " + numSubImages);
 
 			subimageColor[i] = new int[numChannels];
 			for (int c = 0; c < numChannels; c++) {
-				int color = FPXUtils.getIntLE(subimageColorBlob, 8 + 4 * c);
+				final int color = FPXUtils.getIntLE(subimageColorBlob, 8 + 4 * c);
 				subimageColor[i][c] = color;
-				// System.out.println("    channel " + c + " color space " +
+				// System.out.println(" channel " + c + " color space " +
 				// (color >> 16) +
 				// " (" + COLORSPACE_NAME[color >> 16] +")");
 
-				// System.out.println("    channel " + c + " color type " +
+				// System.out.println(" channel " + c + " color type " +
 				// (color & 0x7fff));
 				// if ((color & 0x8000) != 0) {
-				// System.out.println("    channel " + c +
+				// System.out.println(" channel " + c +
 				// " has premultiplied opacity");
 				// }
 			}
 
-			// System.out.println("  decimationMethod[" + i + "] = " +
+			// System.out.println(" decimationMethod[" + i + "] = " +
 			// decimationMethod[i]);
 			// System.out.println();
 		}
@@ -223,7 +226,7 @@ public class FPXImage extends SimpleRenderedImage {
 		// System.out.println("maxJPEGTableIndex = " + maxJPEGTableIndex);
 		JPEGTable = new byte[maxJPEGTableIndex + 1][];
 		for (int i = 0; i <= maxJPEGTableIndex; i++) {
-			int index = i << 16;
+			final int index = i << 16;
 			if (icps.hasProperty(0x03000001 | index)) {
 				// System.out.println("Found a table at index " + i);
 				JPEGTable[i] = icps.getBlob(0x03000001 | index);
@@ -247,10 +250,10 @@ public class FPXImage extends SimpleRenderedImage {
 
 		subimageHeaderStream = storage.getStream("Subimage 0000 Header");
 		subimageHeaderStream.skip(28);
-		int headerLength = subimageHeaderStream.readIntLE();
+		final int headerLength = subimageHeaderStream.readIntLE();
 		width = subimageHeaderStream.readIntLE();
 		height = subimageHeaderStream.readIntLE();
-		int numTiles = subimageHeaderStream.readIntLE();
+		final int numTiles = subimageHeaderStream.readIntLE();
 		tileWidth = subimageHeaderStream.readIntLE();
 		tileHeight = subimageHeaderStream.readIntLE();
 		numChannels = subimageHeaderStream.readIntLE();
@@ -259,16 +262,16 @@ public class FPXImage extends SimpleRenderedImage {
 
 		// System.out.println("\nResolution 000" + resolution + "\n");
 		// System.out.println("Subimage 0000 Header:\n");
-		// System.out.println("  headerLength = " + headerLength);
-		// System.out.println("  width = " + width);
-		// System.out.println("  height = " + height);
-		// System.out.println("  numTiles = " + numTiles);
-		// System.out.println("  tileWidth = " + tileWidth);
-		// System.out.println("  tileHeight = " + tileHeight);
-		// System.out.println("  numChannels = " + numChannels);
-		// System.out.println("  tileHeaderTableOffset = " +
+		// System.out.println(" headerLength = " + headerLength);
+		// System.out.println(" width = " + width);
+		// System.out.println(" height = " + height);
+		// System.out.println(" numTiles = " + numTiles);
+		// System.out.println(" tileWidth = " + tileWidth);
+		// System.out.println(" tileHeight = " + tileHeight);
+		// System.out.println(" numChannels = " + numChannels);
+		// System.out.println(" tileHeaderTableOffset = " +
 		// tileHeaderTableOffset);
-		// System.out.println("  tileHeaderEntryLength = " +
+		// System.out.println(" tileHeaderEntryLength = " +
 		// tileHeaderEntryLength);
 
 		subimageDataStream = storage.getStream("Subimage 0000 Data");
@@ -277,96 +280,130 @@ public class FPXImage extends SimpleRenderedImage {
 		tilesAcross = (width + tileWidth - 1) / tileWidth;
 	}
 
-	private int getTileOffset(int tileIndex) throws IOException {
+	private int getTileOffset(final int tileIndex) throws IOException {
 		// return tileOffset[tileIndex];
 
 		subimageHeaderStream.seek(tileHeaderTableOffset + 16 * tileIndex);
 		return subimageHeaderStream.readIntLE() + 28;
 	}
 
-	private int getTileSize(int tileIndex) throws IOException {
+	private int getTileSize(final int tileIndex) throws IOException {
 		// return tileSize[tileIndex];
 
 		subimageHeaderStream.seek(tileHeaderTableOffset + 16 * tileIndex + 4);
 		return subimageHeaderStream.readIntLE();
 	}
 
-	private int getCompressionType(int tileIndex) throws IOException {
+	private int getCompressionType(final int tileIndex) throws IOException {
 		// return compressionType[tileIndex];
 
 		subimageHeaderStream.seek(tileHeaderTableOffset + 16 * tileIndex + 8);
 		return subimageHeaderStream.readIntLE();
 	}
 
-	private int getCompressionSubtype(int tileIndex) throws IOException {
+	private int getCompressionSubtype(final int tileIndex) throws IOException {
 		// return compressionSubtype[tileIndex];
 
 		subimageHeaderStream.seek(tileHeaderTableOffset + 16 * tileIndex + 12);
 		return subimageHeaderStream.readIntLE();
 	}
 
-	private static final byte[] PhotoYCCToRGBLUT = {(byte) 0, (byte) 1, (byte) 1, (byte) 2, (byte) 2, (byte) 3, (byte) 4, (byte) 5, (byte) 6, (byte) 7, (byte) 8, (byte) 9, (byte) 10, (byte) 11, (byte) 12, (byte) 13, (byte) 14, (byte) 15, (byte) 16, (byte) 17, (byte) 18, (byte) 19, (byte) 20, (byte) 22, (byte) 23, (byte) 24, (byte) 25, (byte) 26, (byte) 28, (byte) 29, (byte) 30, (byte) 31,
+	private static final byte[] PhotoYCCToRGBLUT = { (byte) 0, (byte) 1, (byte) 1, (byte) 2, (byte) 2, (byte) 3,
+			(byte) 4, (byte) 5, (byte) 6, (byte) 7, (byte) 8, (byte) 9, (byte) 10, (byte) 11, (byte) 12, (byte) 13,
+			(byte) 14, (byte) 15, (byte) 16, (byte) 17, (byte) 18, (byte) 19, (byte) 20, (byte) 22, (byte) 23,
+			(byte) 24, (byte) 25, (byte) 26, (byte) 28, (byte) 29, (byte) 30, (byte) 31,
 
-	(byte) 33, (byte) 34, (byte) 35, (byte) 36, (byte) 38, (byte) 39, (byte) 40, (byte) 41, (byte) 43, (byte) 44, (byte) 45, (byte) 47, (byte) 48, (byte) 49, (byte) 51, (byte) 52, (byte) 53, (byte) 55, (byte) 56, (byte) 57, (byte) 59, (byte) 60, (byte) 61, (byte) 63, (byte) 64, (byte) 65, (byte) 67, (byte) 68, (byte) 70, (byte) 71, (byte) 72, (byte) 74,
+			(byte) 33, (byte) 34, (byte) 35, (byte) 36, (byte) 38, (byte) 39, (byte) 40, (byte) 41, (byte) 43,
+			(byte) 44, (byte) 45, (byte) 47, (byte) 48, (byte) 49, (byte) 51, (byte) 52, (byte) 53, (byte) 55,
+			(byte) 56, (byte) 57, (byte) 59, (byte) 60, (byte) 61, (byte) 63, (byte) 64, (byte) 65, (byte) 67,
+			(byte) 68, (byte) 70, (byte) 71, (byte) 72, (byte) 74,
 
-	(byte) 75, (byte) 76, (byte) 78, (byte) 79, (byte) 81, (byte) 82, (byte) 83, (byte) 85, (byte) 86, (byte) 88, (byte) 89, (byte) 91, (byte) 92, (byte) 93, (byte) 95, (byte) 96, (byte) 98, (byte) 99, (byte) 101, (byte) 102, (byte) 103, (byte) 105, (byte) 106, (byte) 108, (byte) 109, (byte) 111, (byte) 112, (byte) 113, (byte) 115, (byte) 116, (byte) 118, (byte) 119,
+			(byte) 75, (byte) 76, (byte) 78, (byte) 79, (byte) 81, (byte) 82, (byte) 83, (byte) 85, (byte) 86,
+			(byte) 88, (byte) 89, (byte) 91, (byte) 92, (byte) 93, (byte) 95, (byte) 96, (byte) 98, (byte) 99,
+			(byte) 101, (byte) 102, (byte) 103, (byte) 105, (byte) 106, (byte) 108, (byte) 109, (byte) 111, (byte) 112,
+			(byte) 113, (byte) 115, (byte) 116, (byte) 118, (byte) 119,
 
-	(byte) 121, (byte) 122, (byte) 123, (byte) 125, (byte) 126, (byte) 128, (byte) 129, (byte) 130, (byte) 132, (byte) 133, (byte) 134, (byte) 136, (byte) 137, (byte) 138, (byte) 140, (byte) 141, (byte) 142, (byte) 144, (byte) 145, (byte) 146, (byte) 148, (byte) 149, (byte) 150, (byte) 152, (byte) 153, (byte) 154, (byte) 155, (byte) 157, (byte) 158, (byte) 159, (byte) 160, (byte) 162,
+			(byte) 121, (byte) 122, (byte) 123, (byte) 125, (byte) 126, (byte) 128, (byte) 129, (byte) 130, (byte) 132,
+			(byte) 133, (byte) 134, (byte) 136, (byte) 137, (byte) 138, (byte) 140, (byte) 141, (byte) 142, (byte) 144,
+			(byte) 145, (byte) 146, (byte) 148, (byte) 149, (byte) 150, (byte) 152, (byte) 153, (byte) 154, (byte) 155,
+			(byte) 157, (byte) 158, (byte) 159, (byte) 160, (byte) 162,
 
-	(byte) 163, (byte) 164, (byte) 165, (byte) 166, (byte) 168, (byte) 169, (byte) 170, (byte) 171, (byte) 172, (byte) 174, (byte) 175, (byte) 176, (byte) 177, (byte) 178, (byte) 179, (byte) 180, (byte) 182, (byte) 183, (byte) 184, (byte) 185, (byte) 186, (byte) 187, (byte) 188, (byte) 189, (byte) 190, (byte) 191, (byte) 192, (byte) 194, (byte) 195, (byte) 196, (byte) 197, (byte) 198,
+			(byte) 163, (byte) 164, (byte) 165, (byte) 166, (byte) 168, (byte) 169, (byte) 170, (byte) 171, (byte) 172,
+			(byte) 174, (byte) 175, (byte) 176, (byte) 177, (byte) 178, (byte) 179, (byte) 180, (byte) 182, (byte) 183,
+			(byte) 184, (byte) 185, (byte) 186, (byte) 187, (byte) 188, (byte) 189, (byte) 190, (byte) 191, (byte) 192,
+			(byte) 194, (byte) 195, (byte) 196, (byte) 197, (byte) 198,
 
-	(byte) 199, (byte) 200, (byte) 201, (byte) 202, (byte) 203, (byte) 204, (byte) 204, (byte) 205, (byte) 206, (byte) 207, (byte) 208, (byte) 209, (byte) 210, (byte) 211, (byte) 212, (byte) 213, (byte) 213, (byte) 214, (byte) 215, (byte) 216, (byte) 217, (byte) 217, (byte) 218, (byte) 219, (byte) 220, (byte) 221, (byte) 221, (byte) 222, (byte) 223, (byte) 223, (byte) 224, (byte) 225,
+			(byte) 199, (byte) 200, (byte) 201, (byte) 202, (byte) 203, (byte) 204, (byte) 204, (byte) 205, (byte) 206,
+			(byte) 207, (byte) 208, (byte) 209, (byte) 210, (byte) 211, (byte) 212, (byte) 213, (byte) 213, (byte) 214,
+			(byte) 215, (byte) 216, (byte) 217, (byte) 217, (byte) 218, (byte) 219, (byte) 220, (byte) 221, (byte) 221,
+			(byte) 222, (byte) 223, (byte) 223, (byte) 224, (byte) 225,
 
-	(byte) 225, (byte) 226, (byte) 227, (byte) 227, (byte) 228, (byte) 229, (byte) 229, (byte) 230, (byte) 230, (byte) 231, (byte) 231, (byte) 232, (byte) 233, (byte) 233, (byte) 234, (byte) 234, (byte) 235, (byte) 235, (byte) 236, (byte) 236, (byte) 236, (byte) 237, (byte) 237, (byte) 238, (byte) 238, (byte) 238, (byte) 239, (byte) 239, (byte) 240, (byte) 240, (byte) 240, (byte) 241,
+			(byte) 225, (byte) 226, (byte) 227, (byte) 227, (byte) 228, (byte) 229, (byte) 229, (byte) 230, (byte) 230,
+			(byte) 231, (byte) 231, (byte) 232, (byte) 233, (byte) 233, (byte) 234, (byte) 234, (byte) 235, (byte) 235,
+			(byte) 236, (byte) 236, (byte) 236, (byte) 237, (byte) 237, (byte) 238, (byte) 238, (byte) 238, (byte) 239,
+			(byte) 239, (byte) 240, (byte) 240, (byte) 240, (byte) 241,
 
-	(byte) 241, (byte) 241, (byte) 242, (byte) 242, (byte) 242, (byte) 242, (byte) 243, (byte) 243, (byte) 243, (byte) 244, (byte) 244, (byte) 244, (byte) 244, (byte) 245, (byte) 245, (byte) 245, (byte) 245, (byte) 245, (byte) 246, (byte) 246, (byte) 246, (byte) 246, (byte) 246, (byte) 247, (byte) 247, (byte) 247, (byte) 247, (byte) 247, (byte) 247, (byte) 248, (byte) 248, (byte) 248,
+			(byte) 241, (byte) 241, (byte) 242, (byte) 242, (byte) 242, (byte) 242, (byte) 243, (byte) 243, (byte) 243,
+			(byte) 244, (byte) 244, (byte) 244, (byte) 244, (byte) 245, (byte) 245, (byte) 245, (byte) 245, (byte) 245,
+			(byte) 246, (byte) 246, (byte) 246, (byte) 246, (byte) 246, (byte) 247, (byte) 247, (byte) 247, (byte) 247,
+			(byte) 247, (byte) 247, (byte) 248, (byte) 248, (byte) 248,
 
-	(byte) 248, (byte) 248, (byte) 248, (byte) 249, (byte) 249, (byte) 249, (byte) 249, (byte) 249, (byte) 249, (byte) 249, (byte) 249, (byte) 249, (byte) 250, (byte) 250, (byte) 250, (byte) 250, (byte) 250, (byte) 250, (byte) 250, (byte) 250, (byte) 250, (byte) 250, (byte) 251, (byte) 251, (byte) 251, (byte) 251, (byte) 251, (byte) 251, (byte) 251, (byte) 251, (byte) 251, (byte) 251,
+			(byte) 248, (byte) 248, (byte) 248, (byte) 249, (byte) 249, (byte) 249, (byte) 249, (byte) 249, (byte) 249,
+			(byte) 249, (byte) 249, (byte) 249, (byte) 250, (byte) 250, (byte) 250, (byte) 250, (byte) 250, (byte) 250,
+			(byte) 250, (byte) 250, (byte) 250, (byte) 250, (byte) 251, (byte) 251, (byte) 251, (byte) 251, (byte) 251,
+			(byte) 251, (byte) 251, (byte) 251, (byte) 251, (byte) 251,
 
-	(byte) 251, (byte) 251, (byte) 251, (byte) 251, (byte) 252, (byte) 252, (byte) 252, (byte) 252, (byte) 252, (byte) 252, (byte) 252, (byte) 252, (byte) 252, (byte) 252, (byte) 252, (byte) 252, (byte) 252, (byte) 252, (byte) 252, (byte) 252, (byte) 252, (byte) 253, (byte) 253, (byte) 253, (byte) 253, (byte) 253, (byte) 253, (byte) 253, (byte) 253, (byte) 253, (byte) 253, (byte) 253,
+			(byte) 251, (byte) 251, (byte) 251, (byte) 251, (byte) 252, (byte) 252, (byte) 252, (byte) 252, (byte) 252,
+			(byte) 252, (byte) 252, (byte) 252, (byte) 252, (byte) 252, (byte) 252, (byte) 252, (byte) 252, (byte) 252,
+			(byte) 252, (byte) 252, (byte) 252, (byte) 253, (byte) 253, (byte) 253, (byte) 253, (byte) 253, (byte) 253,
+			(byte) 253, (byte) 253, (byte) 253, (byte) 253, (byte) 253,
 
-	(byte) 253, (byte) 253, (byte) 253, (byte) 253, (byte) 253, (byte) 253, (byte) 253, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 255, (byte) 255, (byte) 255, (byte) 255, (byte) 255, (byte) 255, (byte) 255, (byte) 255, (byte) 255, (byte) 255,
+			(byte) 253, (byte) 253, (byte) 253, (byte) 253, (byte) 253, (byte) 253, (byte) 253, (byte) 254, (byte) 254,
+			(byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 254,
+			(byte) 254, (byte) 254, (byte) 254, (byte) 254, (byte) 255, (byte) 255, (byte) 255, (byte) 255, (byte) 255,
+			(byte) 255, (byte) 255, (byte) 255, (byte) 255, (byte) 255,
 
-	(byte) 255, (byte) 255, (byte) 255, (byte) 255, (byte) 255, (byte) 255, (byte) 255, (byte) 255, (byte) 255};
+			(byte) 255, (byte) 255, (byte) 255, (byte) 255, (byte) 255, (byte) 255, (byte) 255, (byte) 255,
+			(byte) 255 };
 
-	private final byte PhotoYCCToNIFRed(float scaledY, float Cb, float Cr) {
-		float red = scaledY + 1.8215F * Cr - 249.55F;
+	private final byte PhotoYCCToNIFRed(final float scaledY, final float Cb, final float Cr) {
+		final float red = scaledY + 1.8215F * Cr - 249.55F;
 		if (red < 0.0F) {
 			return (byte) 0;
 		} else if (red > 360.0F) {
 			return (byte) 255;
 		} else {
-			byte r = PhotoYCCToRGBLUT[(int) red];
+			final byte r = PhotoYCCToRGBLUT[(int) red];
 			return r;
 		}
 	}
 
-	private final byte PhotoYCCToNIFGreen(float scaledY, float Cb, float Cr) {
-		float green = scaledY - .43031F * Cb - .9271F * Cr + 194.14F;
+	private final byte PhotoYCCToNIFGreen(final float scaledY, final float Cb, final float Cr) {
+		final float green = scaledY - .43031F * Cb - .9271F * Cr + 194.14F;
 		if (green < 0.0F) {
 			return (byte) 0;
 		} else if (green > 360.0F) {
 			return (byte) 255;
 		} else {
-			byte g = PhotoYCCToRGBLUT[(int) green];
+			final byte g = PhotoYCCToRGBLUT[(int) green];
 			return g;
 		}
 	}
 
-	private final byte PhotoYCCToNIFBlue(float scaledY, float Cb, float Cr) {
-		float blue = scaledY + 2.2179F * Cb - 345.99F;
+	private final byte PhotoYCCToNIFBlue(final float scaledY, final float Cb, final float Cr) {
+		final float blue = scaledY + 2.2179F * Cb - 345.99F;
 		if (blue < 0.0F) {
 			return (byte) 0;
 		} else if (blue > 360.0F) {
 			return (byte) 255;
 		} else {
-			byte b = PhotoYCCToRGBLUT[(int) blue];
+			final byte b = PhotoYCCToRGBLUT[(int) blue];
 			return b;
 		}
 	}
 
-	private final byte YCCToNIFRed(float Y, float Cb, float Cr) {
-		float red = Y + 1.402F * Cr - 255.0F * .701F;
+	private final byte YCCToNIFRed(final float Y, final float Cb, final float Cr) {
+		final float red = Y + 1.402F * Cr - 255.0F * .701F;
 		if (red < 0.0F) {
 			return (byte) 0;
 		} else if (red > 255.0F) {
@@ -376,8 +413,8 @@ public class FPXImage extends SimpleRenderedImage {
 		}
 	}
 
-	private final byte YCCToNIFGreen(float Y, float Cb, float Cr) {
-		float green = Y - .34414F * Cb - .71414F * Cr + 255.0F * .52914F;
+	private final byte YCCToNIFGreen(final float Y, final float Cb, final float Cr) {
+		final float green = Y - .34414F * Cb - .71414F * Cr + 255.0F * .52914F;
 		if (green < 0.0F) {
 			return (byte) 0;
 		} else if (green > 255.0F) {
@@ -387,8 +424,8 @@ public class FPXImage extends SimpleRenderedImage {
 		}
 	}
 
-	private final byte YCCToNIFBlue(float Y, float Cb, float Cr) {
-		float blue = Y + 1.772F * Cb - 255.0F * .886F;
+	private final byte YCCToNIFBlue(final float Y, final float Cb, final float Cr) {
+		final float blue = Y + 1.772F * Cb - 255.0F * .886F;
 		if (blue < 0.0F) {
 			return (byte) 0;
 		} else if (blue > 255.0F) {
@@ -398,31 +435,32 @@ public class FPXImage extends SimpleRenderedImage {
 		}
 	}
 
-	private Raster getUncompressedTile(int tileX, int tileY) throws IOException {
-		int tx = tileXToX(tileX);
-		int ty = tileYToY(tileY);
-		Raster ras = RasterFactory.createInterleavedRaster(DataBuffer.TYPE_BYTE, tileWidth, tileHeight, numChannels * tileWidth, numChannels, bandOffsets, new Point(tx, ty));
+	private Raster getUncompressedTile(final int tileX, final int tileY) throws IOException {
+		final int tx = tileXToX(tileX);
+		final int ty = tileYToY(tileY);
+		final Raster ras = RasterFactory.createInterleavedRaster(DataBuffer.TYPE_BYTE, tileWidth, tileHeight,
+				numChannels * tileWidth, numChannels, bandOffsets, new Point(tx, ty));
 		// System.out.println("Uncompressed tile.");
 
-		DataBufferByte dataBuffer = (DataBufferByte) ras.getDataBuffer();
-		byte[] data = dataBuffer.getData();
+		final DataBufferByte dataBuffer = (DataBufferByte) ras.getDataBuffer();
+		final byte[] data = dataBuffer.getData();
 
-		int tileIndex = tileY * tilesAcross + tileX;
+		final int tileIndex = tileY * tilesAcross + tileX;
 		subimageDataStream.seek(getTileOffset(tileIndex));
 		subimageDataStream.readFully(data, 0, numChannels * tileWidth * tileHeight);
 
 		// Color convert if subimage is in PhotoYCC format
 		if (subimageColor[resolution][0] >> 16 == 2) {
-			int size = tileWidth * tileHeight;
+			final int size = tileWidth * tileHeight;
 			for (int i = 0; i < size; i++) {
-				float Y = data[3 * i] & 0xff;
-				float Cb = data[3 * i + 1] & 0xff;
-				float Cr = data[3 * i + 2] & 0xff;
+				final float Y = data[3 * i] & 0xff;
+				final float Cb = data[3 * i + 1] & 0xff;
+				final float Cr = data[3 * i + 2] & 0xff;
 
-				float scaledY = Y * 1.3584F;
-				byte red = PhotoYCCToNIFRed(scaledY, Cb, Cr);
-				byte green = PhotoYCCToNIFGreen(scaledY, Cb, Cr);
-				byte blue = PhotoYCCToNIFBlue(scaledY, Cb, Cr);
+				final float scaledY = Y * 1.3584F;
+				final byte red = PhotoYCCToNIFRed(scaledY, Cb, Cr);
+				final byte green = PhotoYCCToNIFGreen(scaledY, Cb, Cr);
+				final byte blue = PhotoYCCToNIFBlue(scaledY, Cb, Cr);
 
 				data[3 * i] = red;
 				data[3 * i + 1] = green;
@@ -433,34 +471,35 @@ public class FPXImage extends SimpleRenderedImage {
 		return ras;
 	}
 
-	private Raster getSingleColorCompressedTile(int tileX, int tileY) throws IOException {
+	private Raster getSingleColorCompressedTile(final int tileX, final int tileY) throws IOException {
 		// System.out.println("Single color compressed tile.");
 
-		int tx = tileXToX(tileX);
-		int ty = tileYToY(tileY);
-		Raster ras = RasterFactory.createInterleavedRaster(DataBuffer.TYPE_BYTE, tileWidth, tileHeight, numChannels * tileWidth, numChannels, bandOffsets, new Point(tx, ty));
+		final int tx = tileXToX(tileX);
+		final int ty = tileYToY(tileY);
+		final Raster ras = RasterFactory.createInterleavedRaster(DataBuffer.TYPE_BYTE, tileWidth, tileHeight,
+				numChannels * tileWidth, numChannels, bandOffsets, new Point(tx, ty));
 
-		int subimageColorType = subimageColor[resolution][0] >> 16;
+		final int subimageColorType = subimageColor[resolution][0] >> 16;
 
-		DataBufferByte dataBuffer = (DataBufferByte) ras.getDataBuffer();
-		byte[] data = dataBuffer.getData();
+		final DataBufferByte dataBuffer = (DataBufferByte) ras.getDataBuffer();
+		final byte[] data = dataBuffer.getData();
 
-		int tileIndex = tileY * tilesAcross + tileX;
-		int color = getCompressionSubtype(tileIndex);
-		byte c0 = (byte) (color >> 0 & 0xff);
-		byte c1 = (byte) (color >> 8 & 0xff);
-		byte c2 = (byte) (color >> 16 & 0xff);
-		byte alpha = (byte) (color >> 24 & 0xff);
+		final int tileIndex = tileY * tilesAcross + tileX;
+		final int color = getCompressionSubtype(tileIndex);
+		final byte c0 = (byte) (color >> 0 & 0xff);
+		final byte c1 = (byte) (color >> 8 & 0xff);
+		final byte c2 = (byte) (color >> 16 & 0xff);
+		final byte alpha = (byte) (color >> 24 & 0xff);
 
 		byte red, green, blue;
 
 		// Color convert if subimage is in PhotoYCC format
 		if (subimageColor[resolution][0] >> 16 == 2) {
-			float Y = c0 & 0xff;
-			float Cb = c1 & 0xff;
-			float Cr = c2 & 0xff;
+			final float Y = c0 & 0xff;
+			final float Cb = c1 & 0xff;
+			final float Cr = c2 & 0xff;
 
-			float scaledY = Y * 1.3584F;
+			final float scaledY = Y * 1.3584F;
 			red = PhotoYCCToNIFRed(scaledY, Cb, Cr);
 			green = PhotoYCCToNIFGreen(scaledY, Cb, Cr);
 			blue = PhotoYCCToNIFBlue(scaledY, Cb, Cr);
@@ -471,9 +510,11 @@ public class FPXImage extends SimpleRenderedImage {
 		}
 
 		int index = 0;
-		int pixels = tileWidth * tileHeight;
+		final int pixels = tileWidth * tileHeight;
 
-		if (numChannels == 1) {} else if (numChannels == 2) {} else if (numChannels == 3) {
+		if (numChannels == 1) {
+		} else if (numChannels == 2) {
+		} else if (numChannels == 3) {
 			for (int i = 0; i < pixels; i++) {
 				data[index + 0] = red;
 				data[index + 1] = green;
@@ -495,27 +536,27 @@ public class FPXImage extends SimpleRenderedImage {
 		return ras;
 	}
 
-	private Raster getJPEGCompressedTile(int tileX, int tileY) throws IOException {
+	private Raster getJPEGCompressedTile(final int tileX, final int tileY) throws IOException {
 		// System.out.println("JPEG compressed tile.");
 
-		int tileIndex = tileY * tilesAcross + tileX;
+		final int tileIndex = tileY * tilesAcross + tileX;
 
-		int tx = tileXToX(tileX);
-		int ty = tileYToY(tileY);
+		final int tx = tileXToX(tileX);
+		final int ty = tileYToY(tileY);
 
-		int subtype = getCompressionSubtype(tileIndex);
-		int interleave = subtype >> 0 & 0xff;
-		int chroma = subtype >> 8 & 0xff;
-		int conversion = subtype >> 16 & 0xff;
-		int table = subtype >> 24 & 0xff;
+		final int subtype = getCompressionSubtype(tileIndex);
+		final int interleave = subtype >> 0 & 0xff;
+		final int chroma = subtype >> 8 & 0xff;
+		final int conversion = subtype >> 16 & 0xff;
+		final int table = subtype >> 24 & 0xff;
 
 		JPEGImageDecoder dec;
 		JPEGDecodeParam param = null;
 
 		if (table != 0) {
-			InputStream tableStream = new ByteArrayInputStream(JPEGTable[table]);
+			final InputStream tableStream = new ByteArrayInputStream(JPEGTable[table]);
 			dec = JPEGCodec.createJPEGDecoder(tableStream);
-			Raster junk = dec.decodeAsRaster();
+			final Raster junk = dec.decodeAsRaster();
 			param = dec.getJPEGDecodeParam();
 		}
 
@@ -525,26 +566,26 @@ public class FPXImage extends SimpleRenderedImage {
 		} else {
 			dec = JPEGCodec.createJPEGDecoder(subimageDataStream);
 		}
-		Raster ras = dec.decodeAsRaster().createTranslatedChild(tx, ty);
+		final Raster ras = dec.decodeAsRaster().createTranslatedChild(tx, ty);
 
-		DataBufferByte dataBuffer = (DataBufferByte) ras.getDataBuffer();
-		byte[] data = dataBuffer.getData();
+		final DataBufferByte dataBuffer = (DataBufferByte) ras.getDataBuffer();
+		final byte[] data = dataBuffer.getData();
 
-		int subimageColorType = subimageColor[resolution][0] >> 16;
+		final int subimageColorType = subimageColor[resolution][0] >> 16;
 
-		int size = tileWidth * tileHeight;
+		final int size = tileWidth * tileHeight;
 		if (conversion == 0 && subimageColorType == 2) {
 			// System.out.println("Converting PhotoYCC to NIFRGB");
 			int offset = 0;
 			for (int i = 0; i < size; i++) {
-				float Y = data[offset] & 0xff;
-				float Cb = data[offset + 1] & 0xff;
-				float Cr = data[offset + 2] & 0xff;
+				final float Y = data[offset] & 0xff;
+				final float Cb = data[offset + 1] & 0xff;
+				final float Cr = data[offset + 2] & 0xff;
 
-				float scaledY = Y * 1.3584F;
-				byte red = PhotoYCCToNIFRed(scaledY, Cb, Cr);
-				byte green = PhotoYCCToNIFGreen(scaledY, Cb, Cr);
-				byte blue = PhotoYCCToNIFBlue(scaledY, Cb, Cr);
+				final float scaledY = Y * 1.3584F;
+				final byte red = PhotoYCCToNIFRed(scaledY, Cb, Cr);
+				final byte green = PhotoYCCToNIFGreen(scaledY, Cb, Cr);
+				final byte blue = PhotoYCCToNIFBlue(scaledY, Cb, Cr);
 
 				data[offset] = red;
 				data[offset + 1] = green;
@@ -556,13 +597,13 @@ public class FPXImage extends SimpleRenderedImage {
 			// System.out.println("Converting YCC to NIFRGB");
 			int offset = 0;
 			for (int i = 0; i < size; i++) {
-				float Y = data[offset] & 0xff;
-				float Cb = data[offset + 1] & 0xff;
-				float Cr = data[offset + 2] & 0xff;
+				final float Y = data[offset] & 0xff;
+				final float Cb = data[offset + 1] & 0xff;
+				final float Cr = data[offset + 2] & 0xff;
 
-				byte red = YCCToNIFRed(Y, Cb, Cr);
-				byte green = YCCToNIFGreen(Y, Cb, Cr);
-				byte blue = YCCToNIFBlue(Y, Cb, Cr);
+				final byte red = YCCToNIFRed(Y, Cb, Cr);
+				final byte green = YCCToNIFGreen(Y, Cb, Cr);
+				final byte blue = YCCToNIFBlue(Y, Cb, Cr);
 
 				data[offset] = red;
 				data[offset + 1] = green;
@@ -592,11 +633,11 @@ public class FPXImage extends SimpleRenderedImage {
 	}
 
 	@Override
-	public Raster getTile(int tileX, int tileY) {
-		int tileIndex = tileY * tilesAcross + tileX;
+	public Raster getTile(final int tileX, final int tileY) {
+		final int tileIndex = tileY * tilesAcross + tileX;
 
 		try {
-			int ctype = getCompressionType(tileIndex);
+			final int ctype = getCompressionType(tileIndex);
 			if (ctype == 0) {
 				return getUncompressedTile(tileX, tileY);
 			} else if (ctype == 1) {
@@ -605,7 +646,7 @@ public class FPXImage extends SimpleRenderedImage {
 				return getJPEGCompressedTile(tileX, tileY);
 			}
 			return null;
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 			return null;
 		}
@@ -613,23 +654,23 @@ public class FPXImage extends SimpleRenderedImage {
 
 	Hashtable properties = null;
 
-	private void addLPSTRProperty(String name, PropertySet ps, int id) {
-		String s = ps.getLPSTR(id);
+	private void addLPSTRProperty(final String name, final PropertySet ps, final int id) {
+		final String s = ps.getLPSTR(id);
 		if (s != null) {
 			properties.put(name.toLowerCase(), s);
 		}
 	}
 
-	private void addLPWSTRProperty(String name, PropertySet ps, int id) {
-		String s = ps.getLPWSTR(id);
+	private void addLPWSTRProperty(final String name, final PropertySet ps, final int id) {
+		final String s = ps.getLPWSTR(id);
 		if (s != null) {
 			properties.put(name.toLowerCase(), s);
 		}
 	}
 
-	private void addUI4Property(String name, PropertySet ps, int id) {
+	private void addUI4Property(final String name, final PropertySet ps, final int id) {
 		if (ps.hasProperty(id)) {
-			long i = ps.getUI4(id);
+			final long i = ps.getUI4(id);
 			properties.put(name.toLowerCase(), new Integer((int) i));
 		}
 	}
@@ -641,7 +682,7 @@ public class FPXImage extends SimpleRenderedImage {
 			storage.changeDirectoryToRoot();
 			summaryInformation = storage.getStream("SummaryInformation");
 			sips = new PropertySet(summaryInformation);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 			return;
 		}
@@ -666,7 +707,7 @@ public class FPXImage extends SimpleRenderedImage {
 				return;
 			}
 			iips = new PropertySet(imageInfo);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 			return;
 		}
@@ -701,9 +742,9 @@ public class FPXImage extends SimpleRenderedImage {
 	public String[] getPropertyNames() {
 		getProperties();
 
-		int len = properties.size();
-		String[] names = new String[len];
-		Enumeration enum0 = properties.keys();
+		final int len = properties.size();
+		final String[] names = new String[len];
+		final Enumeration enum0 = properties.keys();
 
 		int count = 0;
 		while (enum0.hasMoreElements()) {
@@ -714,7 +755,7 @@ public class FPXImage extends SimpleRenderedImage {
 	}
 
 	@Override
-	public Object getProperty(String name) {
+	public Object getProperty(final String name) {
 		getProperties();
 		return properties.get(name.toLowerCase());
 	}

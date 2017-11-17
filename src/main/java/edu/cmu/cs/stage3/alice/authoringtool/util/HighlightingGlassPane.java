@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -27,6 +27,10 @@ package edu.cmu.cs.stage3.alice.authoringtool.util;
  * @author pratt
  */
 public class HighlightingGlassPane extends javax.swing.JPanel {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -2165682285418066165L;
 	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
 	protected java.awt.Component savedGlassPane;
 	protected String highlightID;
@@ -34,7 +38,7 @@ public class HighlightingGlassPane extends javax.swing.JPanel {
 	protected java.awt.Color highlightColor = java.awt.Color.red;
 	protected MousePassThroughListener mousePassThroughListener = new MousePassThroughListener();
 
-	public HighlightingGlassPane(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
+	public HighlightingGlassPane(final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
 		this.authoringTool = authoringTool;
 
 		setOpaque(false);
@@ -43,10 +47,11 @@ public class HighlightingGlassPane extends javax.swing.JPanel {
 
 		blinkTimer = new javax.swing.Timer(10, new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent ev) {
-				java.awt.Rectangle r = HighlightingGlassPane.this.getHighlightRect();
+			public void actionPerformed(final java.awt.event.ActionEvent ev) {
+				final java.awt.Rectangle r = HighlightingGlassPane.this.getHighlightRect();
 				if (r != null) {
-					highlightColor = new java.awt.Color(1.0f, 0.0f, 0.0f, (float) (.5 * Math.sin(System.currentTimeMillis() / 400.0) + .5));
+					highlightColor = new java.awt.Color(1.0f, 0.0f, 0.0f,
+							(float) (.5 * Math.sin(System.currentTimeMillis() / 400.0) + .5));
 					r.x -= 4;
 					r.y -= 4;
 					r.width += 8;
@@ -57,8 +62,8 @@ public class HighlightingGlassPane extends javax.swing.JPanel {
 		});
 	}
 
-	public void setHighlightID(String highlightID) {
-		boolean oldEnabled = blinkTimer.isRunning();
+	public void setHighlightID(final String highlightID) {
+		final boolean oldEnabled = blinkTimer.isRunning();
 		setHighlightingEnabled(false);
 		this.highlightID = highlightID;
 		if (oldEnabled) {
@@ -67,7 +72,7 @@ public class HighlightingGlassPane extends javax.swing.JPanel {
 
 	}
 
-	public void setHighlightingEnabled(boolean enabled) {
+	public void setHighlightingEnabled(final boolean enabled) {
 		if (enabled) {
 			if (authoringTool.getJAliceFrame().getGlassPane() != this) {
 				savedGlassPane = authoringTool.getJAliceFrame().getGlassPane();
@@ -105,7 +110,7 @@ public class HighlightingGlassPane extends javax.swing.JPanel {
 					r.width += 4;
 					r.height += 4;
 				}
-			} catch (edu.cmu.cs.stage3.caitlin.stencilhelp.application.IDDoesNotExistException e) {
+			} catch (final edu.cmu.cs.stage3.caitlin.stencilhelp.application.IDDoesNotExistException e) {
 				// do nothing
 			}
 		}
@@ -114,10 +119,10 @@ public class HighlightingGlassPane extends javax.swing.JPanel {
 	}
 
 	@Override
-	protected void paintComponent(java.awt.Graphics g) {
+	protected void paintComponent(final java.awt.Graphics g) {
 		super.paintComponent(g);
 
-		java.awt.Rectangle r = getHighlightRect();
+		final java.awt.Rectangle r = getHighlightRect();
 		if (r != null && !r.isEmpty()) {
 			g.setColor(highlightColor);
 
@@ -130,41 +135,41 @@ public class HighlightingGlassPane extends javax.swing.JPanel {
 	class MousePassThroughListener extends javax.swing.event.MouseInputAdapter {
 
 		@Override
-		public void mouseMoved(java.awt.event.MouseEvent ev) {
+		public void mouseMoved(final java.awt.event.MouseEvent ev) {
 			redispatchMouseEvent(ev);
 		}
 
 		@Override
-		public void mouseDragged(java.awt.event.MouseEvent ev) {
+		public void mouseDragged(final java.awt.event.MouseEvent ev) {
 			redispatchMouseEvent(ev);
 		}
 
 		@Override
-		public void mouseClicked(java.awt.event.MouseEvent ev) {
+		public void mouseClicked(final java.awt.event.MouseEvent ev) {
 			redispatchMouseEvent(ev);
 		}
 
 		@Override
-		public void mouseEntered(java.awt.event.MouseEvent ev) {
+		public void mouseEntered(final java.awt.event.MouseEvent ev) {
 			redispatchMouseEvent(ev);
 		}
 
 		@Override
-		public void mouseExited(java.awt.event.MouseEvent ev) {
+		public void mouseExited(final java.awt.event.MouseEvent ev) {
 			redispatchMouseEvent(ev);
 		}
 
 		@Override
-		public void mousePressed(java.awt.event.MouseEvent ev) {
+		public void mousePressed(final java.awt.event.MouseEvent ev) {
 			redispatchMouseEvent(ev);
 		}
 
 		@Override
-		public void mouseReleased(java.awt.event.MouseEvent ev) {
+		public void mouseReleased(final java.awt.event.MouseEvent ev) {
 			redispatchMouseEvent(ev);
 		}
 
-		private void redispatchMouseEvent(java.awt.event.MouseEvent ev) {
+		private void redispatchMouseEvent(final java.awt.event.MouseEvent ev) {
 			authoringTool.handleMouseEvent(ev);
 		}
 	}

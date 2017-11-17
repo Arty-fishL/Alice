@@ -11,12 +11,13 @@ import edu.cmu.cs.stage3.alice.core.property.SpatialRelationProperty;
 
 /**
  * @author caitlin
- * 
+ *
  *         To change the template for this generated type comment go to
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class BetterPlaceAnimation extends PointOfViewAnimation {
-	public final SpatialRelationProperty spatialRelation = new SpatialRelationProperty(this, "spatialRelation", edu.cmu.cs.stage3.alice.core.SpatialRelation.IN_FRONT_OF);
+	public final SpatialRelationProperty spatialRelation = new SpatialRelationProperty(this, "spatialRelation",
+			edu.cmu.cs.stage3.alice.core.SpatialRelation.IN_FRONT_OF);
 	public final NumberProperty amount = new NumberProperty(this, "amount", new Double(0));
 	// public final ReferenceFrameProperty target = new ReferenceFrameProperty(
 	// this, "target", null );
@@ -33,23 +34,26 @@ public class BetterPlaceAnimation extends PointOfViewAnimation {
 				m_subjectBoundingBox = m_subject.getBoundingBox();
 
 				if (m_subjectBoundingBox.getMaximum() == null) {
-					m_subjectBoundingBox = new edu.cmu.cs.stage3.math.Box(m_subject.getPosition(m_subject), m_subject.getPosition(m_subject));
+					m_subjectBoundingBox = new edu.cmu.cs.stage3.math.Box(m_subject.getPosition(m_subject),
+							m_subject.getPosition(m_subject));
 				}
 			}
 			if (m_asSeenByBoundingBox == null) {
 				m_asSeenByBoundingBox = m_asSeenBy.getBoundingBox();
 
 				if (m_asSeenByBoundingBox.getMaximum() == null) {
-					m_asSeenByBoundingBox = new edu.cmu.cs.stage3.math.Box(m_asSeenBy.getPosition(m_asSeenBy), m_asSeenBy.getPosition(m_asSeenBy));
+					m_asSeenByBoundingBox = new edu.cmu.cs.stage3.math.Box(m_asSeenBy.getPosition(m_asSeenBy),
+							m_asSeenBy.getPosition(m_asSeenBy));
 				}
 			}
-			edu.cmu.cs.stage3.alice.core.SpatialRelation sv = spatialRelation.getSpatialRelationValue();
-			javax.vecmath.Vector3d v = sv.getPlaceVector(amount.doubleValue(), m_subjectBoundingBox, m_asSeenByBoundingBox);
+			final edu.cmu.cs.stage3.alice.core.SpatialRelation sv = spatialRelation.getSpatialRelationValue();
+			final javax.vecmath.Vector3d v = sv.getPlaceVector(amount.doubleValue(), m_subjectBoundingBox,
+					m_asSeenByBoundingBox);
 			return v;
 		}
 
 		@Override
-		public void prologue(double t) {
+		public void prologue(final double t) {
 
 			beginEqualsEnd = false;
 
@@ -57,22 +61,29 @@ public class BetterPlaceAnimation extends PointOfViewAnimation {
 			m_asSeenBy = BetterPlaceAnimation.this.asSeenBy.getReferenceFrameValue();
 
 			if (m_asSeenBy == null) {
-				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException(m_subject.name.getStringValue() + " needs something or someone to move to.", null, BetterPlaceAnimation.this.asSeenBy);
+				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException(
+						m_subject.name.getStringValue() + " needs something or someone to move to.", null,
+						BetterPlaceAnimation.this.asSeenBy);
 			}
 			if (m_subject == m_asSeenBy) {
-				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException(m_subject.name.getStringValue() + " can't move to " + m_subject.name.getStringValue() + ".", getCurrentStack(), BetterPlaceAnimation.this.asSeenBy);
+				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException(
+						m_subject.name.getStringValue() + " can't move to " + m_subject.name.getStringValue() + ".",
+						getCurrentStack(), BetterPlaceAnimation.this.asSeenBy);
 			}
 
 			if (m_subject.isAncestorOf(m_asSeenBy)) {
-				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException(m_subject.name.getStringValue() + " can't move to a part of itself", getCurrentStack(), BetterPlaceAnimation.this.asSeenBy);
+				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException(
+						m_subject.name.getStringValue() + " can't move to a part of itself", getCurrentStack(),
+						BetterPlaceAnimation.this.asSeenBy);
 			}
 
-			javax.vecmath.Matrix4d pov = asSeenBy.getReferenceFrameValue().getPointOfView();
+			final javax.vecmath.Matrix4d pov = asSeenBy.getReferenceFrameValue().getPointOfView();
 
-			javax.vecmath.Vector3d posAbs = getPositionEnd();
-			javax.vecmath.Vector3d curPos = m_subject.getPosition();
+			final javax.vecmath.Vector3d posAbs = getPositionEnd();
+			final javax.vecmath.Vector3d curPos = m_subject.getPosition();
 			m_subject.setPositionRightNow(posAbs, m_asSeenBy);
-			javax.vecmath.Matrix3d paMatrix = m_subject.calculatePointAt(m_asSeenBy, null, new javax.vecmath.Vector3d(0, 1, 0), null, true);
+			final javax.vecmath.Matrix3d paMatrix = m_subject.calculatePointAt(m_asSeenBy, null,
+					new javax.vecmath.Vector3d(0, 1, 0), null, true);
 			m_subject.setPositionRightNow(curPos);
 
 			pov.set(paMatrix);
@@ -88,7 +99,7 @@ public class BetterPlaceAnimation extends PointOfViewAnimation {
 		}
 
 		@Override
-		public void update(double t) {
+		public void update(final double t) {
 			if (!beginEqualsEnd) {
 				super.update(t);
 			}

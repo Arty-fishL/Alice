@@ -25,16 +25,18 @@ package edu.cmu.cs.stage3.alice.core.behavior;
 
 import edu.cmu.cs.stage3.alice.core.property.VariableProperty;
 
-public class VariableChangeBehavior extends TriggerBehavior implements edu.cmu.cs.stage3.alice.core.event.ExpressionListener {
+public class VariableChangeBehavior extends TriggerBehavior
+		implements edu.cmu.cs.stage3.alice.core.event.ExpressionListener {
 	public final VariableProperty variable = new VariableProperty(this, "variable", null);
 	private edu.cmu.cs.stage3.alice.core.Expression m_expressionValue;
+
 	@Override
-	public void expressionChanged(edu.cmu.cs.stage3.alice.core.event.ExpressionEvent expressionEvent) {
+	public void expressionChanged(final edu.cmu.cs.stage3.alice.core.event.ExpressionEvent expressionEvent) {
 		trigger(System.currentTimeMillis() * 0.001);
 	}
 
 	@Override
-	protected void started(edu.cmu.cs.stage3.alice.core.World world, double time) {
+	protected void started(final edu.cmu.cs.stage3.alice.core.World world, final double time) {
 		super.started(world, time);
 		m_expressionValue = (edu.cmu.cs.stage3.alice.core.Expression) variable.get();
 		if (m_expressionValue != null) {
@@ -43,7 +45,7 @@ public class VariableChangeBehavior extends TriggerBehavior implements edu.cmu.c
 	}
 
 	@Override
-	protected void stopped(edu.cmu.cs.stage3.alice.core.World world, double time) {
+	protected void stopped(final edu.cmu.cs.stage3.alice.core.World world, final double time) {
 		super.stopped(world, time);
 		if (m_expressionValue != null) {
 			m_expressionValue.removeExpressionListener(this);

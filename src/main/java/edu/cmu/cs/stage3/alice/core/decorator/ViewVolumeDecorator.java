@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -37,42 +37,44 @@ public abstract class ViewVolumeDecorator extends Decorator {
 	protected ReferenceFrame getReferenceFrame() {
 		return getCamera();
 	}
+
 	protected abstract Camera getCamera();
 
 	@Override
-	public void internalRelease(int pass) {
+	public void internalRelease(final int pass) {
 		switch (pass) {
-			case 1 :
-				if (m_sgVisualLines != null) {
-					m_sgVisualLines.setFrontFacingAppearance(null);
-					m_sgVisualLines.setGeometry(null);
-				}
-				if (m_sgVisualFaces != null) {
-					m_sgVisualFaces.setFrontFacingAppearance(null);
-					m_sgVisualFaces.setGeometry(null);
-				}
-				break;
-			case 2 :
-				if (m_sgVisualLines != null) {
-					m_sgVisualLines.release();
-					m_sgVisualLines = null;
-				}
-				if (m_sgLineArray != null) {
-					m_sgLineArray.release();
-					m_sgLineArray = null;
-				}
-				if (m_sgVisualFaces != null) {
-					m_sgVisualFaces.release();
-					m_sgVisualFaces = null;
-				}
-				if (m_sgITA != null) {
-					m_sgITA.release();
-					m_sgITA = null;
-				}
-				break;
+		case 1:
+			if (m_sgVisualLines != null) {
+				m_sgVisualLines.setFrontFacingAppearance(null);
+				m_sgVisualLines.setGeometry(null);
+			}
+			if (m_sgVisualFaces != null) {
+				m_sgVisualFaces.setFrontFacingAppearance(null);
+				m_sgVisualFaces.setGeometry(null);
+			}
+			break;
+		case 2:
+			if (m_sgVisualLines != null) {
+				m_sgVisualLines.release();
+				m_sgVisualLines = null;
+			}
+			if (m_sgLineArray != null) {
+				m_sgLineArray.release();
+				m_sgLineArray = null;
+			}
+			if (m_sgVisualFaces != null) {
+				m_sgVisualFaces.release();
+				m_sgVisualFaces = null;
+			}
+			if (m_sgITA != null) {
+				m_sgITA.release();
+				m_sgITA = null;
+			}
+			break;
 		}
 		super.internalRelease(pass);
 	}
+
 	protected abstract double[] getXYNearAndXYFar(double zNear, double zFar);
 
 	@Override
@@ -84,7 +86,9 @@ public abstract class ViewVolumeDecorator extends Decorator {
 			requiresVerticesToBeUpdated = true;
 		}
 		if (m_sgITA == null) {
-			int[] indices = {0, 1, 2, 2, 3, 0, 5, 6, 2, 2, 1, 5, 6, 7, 3, 3, 2, 6, 7, 4, 0, 0, 3, 7, 4, 5, 1, 1, 0, 4, 7, 6, 5, 5, 4, 7, 3, 2, 1, 1, 0, 3, 1, 2, 6, 6, 5, 1, 2, 3, 7, 7, 6, 2, 3, 0, 4, 4, 7, 3, 0, 1, 5, 5, 4, 0, 4, 5, 6, 6, 7, 4};
+			final int[] indices = { 0, 1, 2, 2, 3, 0, 5, 6, 2, 2, 1, 5, 6, 7, 3, 3, 2, 6, 7, 4, 0, 0, 3, 7, 4, 5, 1, 1,
+					0, 4, 7, 6, 5, 5, 4, 7, 3, 2, 1, 1, 0, 3, 1, 2, 6, 6, 5, 1, 2, 3, 7, 7, 6, 2, 3, 0, 4, 4, 7, 3, 0,
+					1, 5, 5, 4, 0, 4, 5, 6, 6, 7, 4 };
 			m_sgITA = new edu.cmu.cs.stage3.alice.scenegraph.IndexedTriangleArray();
 			m_sgITA.setIndices(indices);
 			requiresVerticesToBeUpdated = true;
@@ -112,15 +116,15 @@ public abstract class ViewVolumeDecorator extends Decorator {
 		}
 
 		if (requiresVerticesToBeUpdated) {
-			edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[] vertices = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[24];
-			double zNear = getCamera().nearClippingPlaneDistance.doubleValue();
-			double zFar = getCamera().farClippingPlaneDistance.doubleValue();
-			double[] array = getXYNearAndXYFar(zNear, zFar);
-			double xNear = array[0];
-			double yNear = array[1];
-			double xFar = array[2];
-			double yFar = array[3];
-			edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[] vs = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[8];
+			final edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[] vertices = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[24];
+			final double zNear = getCamera().nearClippingPlaneDistance.doubleValue();
+			final double zFar = getCamera().farClippingPlaneDistance.doubleValue();
+			final double[] array = getXYNearAndXYFar(zNear, zFar);
+			final double xNear = array[0];
+			final double yNear = array[1];
+			final double xFar = array[2];
+			final double yFar = array[3];
+			final edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[] vs = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[8];
 			vs[0] = edu.cmu.cs.stage3.alice.scenegraph.Vertex3d.createXYZIJKUV(+xNear, +yNear, zNear, 0, 1, 0, 0, 0);
 			vs[1] = edu.cmu.cs.stage3.alice.scenegraph.Vertex3d.createXYZIJKUV(-xNear, +yNear, zNear, 0, 1, 0, 0, 0);
 			vs[2] = edu.cmu.cs.stage3.alice.scenegraph.Vertex3d.createXYZIJKUV(-xNear, -yNear, zNear, 0, 1, 0, 0, 0);

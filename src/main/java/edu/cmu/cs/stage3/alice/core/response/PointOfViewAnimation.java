@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -48,7 +48,7 @@ public class PointOfViewAnimation extends OrientationAnimation {
 		private HermiteCubic m_zHermite;
 
 		@Override
-		public void prologue(double t) {
+		public void prologue(final double t) {
 			m_affectPosition = affectPosition.booleanValue();
 			m_affectQuaternion = affectQuaternion.booleanValue();
 			super.prologue(t);
@@ -57,14 +57,17 @@ public class PointOfViewAnimation extends OrientationAnimation {
 				m_transformationBegin = m_subject.getTransformation(m_asSeenBy);
 				m_transformationEnd = pointOfView.getMatrix44Value();
 				if (m_followHermiteCubic) {
-					double dx = m_transformationBegin.m30 - m_transformationEnd.m30;
-					double dy = m_transformationBegin.m31 - m_transformationEnd.m31;
-					double dz = m_transformationBegin.m32 - m_transformationEnd.m32;
-					double distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
-					double s = distance / 2;
-					m_xHermite = new HermiteCubic(m_transformationBegin.m30, m_transformationEnd.m30, m_transformationBegin.m20 * s, m_transformationEnd.m20 * s);
-					m_yHermite = new HermiteCubic(m_transformationBegin.m31, m_transformationEnd.m31, m_transformationBegin.m21 * s, m_transformationEnd.m21 * s);
-					m_zHermite = new HermiteCubic(m_transformationBegin.m32, m_transformationEnd.m32, m_transformationBegin.m22 * s, m_transformationEnd.m22 * s);
+					final double dx = m_transformationBegin.m30 - m_transformationEnd.m30;
+					final double dy = m_transformationBegin.m31 - m_transformationEnd.m31;
+					final double dz = m_transformationBegin.m32 - m_transformationEnd.m32;
+					final double distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
+					final double s = distance / 2;
+					m_xHermite = new HermiteCubic(m_transformationBegin.m30, m_transformationEnd.m30,
+							m_transformationBegin.m20 * s, m_transformationEnd.m20 * s);
+					m_yHermite = new HermiteCubic(m_transformationBegin.m31, m_transformationEnd.m31,
+							m_transformationBegin.m21 * s, m_transformationEnd.m21 * s);
+					m_zHermite = new HermiteCubic(m_transformationBegin.m32, m_transformationEnd.m32,
+							m_transformationBegin.m22 * s, m_transformationEnd.m22 * s);
 				}
 			}
 		}
@@ -80,9 +83,9 @@ public class PointOfViewAnimation extends OrientationAnimation {
 		}
 
 		@Override
-		public void update(double t) {
+		public void update(final double t) {
 			if (m_affectPosition) {
-				double portion = getPortion(t);
+				final double portion = getPortion(t);
 				double x;
 				double y;
 				double z;
@@ -101,9 +104,10 @@ public class PointOfViewAnimation extends OrientationAnimation {
 		}
 
 		@Override
-		public void epilogue(double t) {
+		public void epilogue(final double t) {
 			if (m_affectPosition) {
-				m_subject.setPositionRightNow(m_transformationEnd.m30, m_transformationEnd.m31, m_transformationEnd.m32, m_asSeenBy);
+				m_subject.setPositionRightNow(m_transformationEnd.m30, m_transformationEnd.m31, m_transformationEnd.m32,
+						m_asSeenBy);
 			}
 			super.epilogue(t);
 		}

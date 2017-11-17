@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -61,7 +61,8 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 	// protected ASEOptionsDialog optionsDialog = new ASEOptionsDialog();
 	protected ProgressDialog progressDialog;
 
-	protected static edu.cmu.cs.stage3.alice.authoringtool.util.Configuration importersConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration.getLocalConfiguration(ASEImporter.class.getPackage());
+	protected static edu.cmu.cs.stage3.alice.authoringtool.util.Configuration importersConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration
+			.getLocalConfiguration(ASEImporter.class.getPackage());
 
 	// config init
 	static {
@@ -84,15 +85,17 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 
 	@Override
 	public Map<String, String> getExtensionMap() {
-		Map<String, String> map = new HashMap<String, String>();
+		final Map<String, String> map = new HashMap<String, String>();
 		map.put("ASE", "3D Studio ascii export");
 		return map;
 	}
 
 	@Override
-	protected edu.cmu.cs.stage3.alice.core.Element load(java.io.InputStream is, String ext) throws java.io.IOException {
-		edu.cmu.cs.stage3.alice.authoringtool.util.BackslashConverterFilterInputStream bcfis = new edu.cmu.cs.stage3.alice.authoringtool.util.BackslashConverterFilterInputStream(is);
-		java.io.BufferedReader br = new java.io.BufferedReader(new java.io.InputStreamReader(bcfis));
+	protected edu.cmu.cs.stage3.alice.core.Element load(final java.io.InputStream is, final String ext)
+			throws java.io.IOException {
+		final edu.cmu.cs.stage3.alice.authoringtool.util.BackslashConverterFilterInputStream bcfis = new edu.cmu.cs.stage3.alice.authoringtool.util.BackslashConverterFilterInputStream(
+				is);
+		final java.io.BufferedReader br = new java.io.BufferedReader(new java.io.InputStreamReader(bcfis));
 		tokenizer = new java.io.StreamTokenizer(br);
 
 		tokenizer.eolIsSignificant(false);
@@ -138,26 +141,31 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 					break;
 				}
 			}
-		} catch (java.io.IOException e) {
-			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Error parsing ASE: IOException caught at line " + tokenizer.lineno(), e);
+		} catch (final java.io.IOException e) {
+			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+					.showErrorDialog("Error parsing ASE: IOException caught at line " + tokenizer.lineno(), e);
 			return null;
-		} catch (InvalidFormatError e) {
-			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Error parsing ASE: Invalid Format: " + e.getMessage() + "; at line " + tokenizer.lineno(), e, false);
+		} catch (final InvalidFormatError e) {
+			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog(
+					"Error parsing ASE: Invalid Format: " + e.getMessage() + "; at line " + tokenizer.lineno(), e,
+					false);
 			return null;
 		}
 
 		edu.cmu.cs.stage3.alice.core.Element element = null;
 		try {
-			List<Transformable> rootModels = new ArrayList<Transformable>();
-			for (Transformable model : rootModels) {
-				String parentString = modelsToParentStrings.get(model);
+			final List<Transformable> rootModels = new ArrayList<Transformable>();
+			for (final Transformable model : rootModels) {
+				final String parentString = modelsToParentStrings.get(model);
 				if (parentString == null) {
 					rootModels.add(model);
 					model.isFirstClass.set(Boolean.TRUE);
 				} else {
-					edu.cmu.cs.stage3.alice.core.Transformable parent = namesToModels.get(parentString);
+					final edu.cmu.cs.stage3.alice.core.Transformable parent = namesToModels.get(parentString);
 					if (parent == null) {
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog(model.name.getValue() + "'s parent (" + parentString + ") does not exist;  putting it at the top level...", null);
+						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog(model.name.getValue()
+								+ "'s parent (" + parentString + ") does not exist;  putting it at the top level...",
+								null);
 						rootModels.add(model);
 						model.isFirstClass.set(Boolean.TRUE);
 					} else {
@@ -176,7 +184,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 					element = new edu.cmu.cs.stage3.alice.core.Model();
 					element.name.set(null);
 					element.isFirstClass.set(Boolean.TRUE);
-					for (Transformable model : rootModels) {
+					for (final Transformable model : rootModels) {
 						element.addChild(model);
 						((edu.cmu.cs.stage3.alice.core.Model) element).parts.add(model);
 						model.vehicle.set(element);
@@ -185,7 +193,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 				} else {
 					element = new edu.cmu.cs.stage3.alice.core.Module();
 					element.name.set(null);
-					for (Transformable model : rootModels) {
+					for (final Transformable model : rootModels) {
 						element.addChild(model);
 						model.isFirstClass.set(Boolean.TRUE);
 					}
@@ -194,16 +202,16 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 				return null;
 			}
 
-			String currentName = (String) element.name.getValue();
+			final String currentName = (String) element.name.getValue();
 			if (currentName == null) {
 				element.name.set(plainName);
 			} else if (!currentName.equalsIgnoreCase(plainName)) {
 				element.name.set(plainName + "_" + currentName);
 			}
 
-			edu.cmu.cs.stage3.alice.core.Transformable dummyScene = new edu.cmu.cs.stage3.alice.core.Transformable();
+			final edu.cmu.cs.stage3.alice.core.Transformable dummyScene = new edu.cmu.cs.stage3.alice.core.Transformable();
 			if (element instanceof edu.cmu.cs.stage3.alice.core.Model) {
-				edu.cmu.cs.stage3.alice.core.Transformable trans = (edu.cmu.cs.stage3.alice.core.Transformable) element;
+				final edu.cmu.cs.stage3.alice.core.Transformable trans = (edu.cmu.cs.stage3.alice.core.Transformable) element;
 				trans.vehicle.set(dummyScene);
 				currentObject = (String) trans.name.getValue();
 				currentlyLoading = "fixing transformations";
@@ -215,9 +223,9 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 				trans.vehicle.set(null);
 				trans.localTransformation.set(edu.cmu.cs.stage3.math.MathUtilities.createIdentityMatrix4d());
 			} else {
-				edu.cmu.cs.stage3.alice.core.Element[] children = element.getChildren();
-				for (Element element2 : children) {
-					edu.cmu.cs.stage3.alice.core.Transformable trans = (edu.cmu.cs.stage3.alice.core.Transformable) element2;
+				final edu.cmu.cs.stage3.alice.core.Element[] children = element.getChildren();
+				for (final Element element2 : children) {
+					final edu.cmu.cs.stage3.alice.core.Transformable trans = (edu.cmu.cs.stage3.alice.core.Transformable) element2;
 					trans.vehicle.set(dummyScene);
 					currentObject = (String) trans.name.getValue();
 					currentlyLoading = "fixing transformations";
@@ -230,22 +238,23 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 				}
 			}
 
-			for (Transformable trans : models) {
+			for (final Transformable trans : models) {
 				if (trans instanceof edu.cmu.cs.stage3.alice.core.Model) {
-					edu.cmu.cs.stage3.alice.core.Model model = (edu.cmu.cs.stage3.alice.core.Model) trans;
+					final edu.cmu.cs.stage3.alice.core.Model model = (edu.cmu.cs.stage3.alice.core.Model) trans;
 					// TODO make better
 					int materialIndex;
 					try {
 						materialIndex = modelsToMaterialIndices.get(model).intValue();
-					} catch (NullPointerException e) {
+					} catch (final NullPointerException e) {
 						materialIndex = -1;
 					}
 					if (materialIndex >= 0 && materialIndex < materials.length) {
-						Material material = materials[materialIndex];
+						final Material material = materials[materialIndex];
 						if (material != null) {
 							// edu.cmu.cs.stage3.alice.scenegraph.Visual
 							// sgVisual = model.getSceneGraphVisual();
-							if (material.diffuseTexture != null && importersConfig.getValue("aseImporter.colorToWhiteWhenTextured").equalsIgnoreCase("true")) {
+							if (material.diffuseTexture != null && importersConfig
+									.getValue("aseImporter.colorToWhiteWhenTextured").equalsIgnoreCase("true")) {
 								model.ambientColor.set(edu.cmu.cs.stage3.alice.scenegraph.Color.WHITE);
 								model.color.set(edu.cmu.cs.stage3.alice.scenegraph.Color.WHITE);
 								// sgVisual.getFrontFacingAppearance().setAmbientColor(
@@ -289,7 +298,10 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 							model.bumpMap.set(material.bumpTexture);
 						}
 					} else if (materialIndex != -1) {
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog(model.name.getValue() + " referenced a material index out of range.  no material properties assigned.", null);
+						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog(
+								model.name.getValue()
+										+ " referenced a material index out of range.  no material properties assigned.",
+								null);
 					}
 				}
 			}
@@ -305,14 +317,14 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 						// or something better. In the implementation below, it
 						// just uses the root model of the first
 						// model that uses the material.
-						for (Transformable trans : models) {
+						for (final Transformable trans : models) {
 							try {
-								int materialIndex = modelsToMaterialIndices.get(trans).intValue();
+								final int materialIndex = modelsToMaterialIndices.get(trans).intValue();
 								if (materialIndex == i) {
 									materialOwner = getRootModel(trans);
 									break;
 								}
-							} catch (NullPointerException e) {
+							} catch (final NullPointerException e) {
 								continue;
 							}
 						}
@@ -336,28 +348,30 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 							materialOwner.textureMaps.add(materials[i].bumpTexture);
 						}
 					} else {
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("ASEImporter Error: no materialOwner to attach textures to.", null);
+						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+								.showErrorDialog("ASEImporter Error: no materialOwner to attach textures to.", null);
 					}
 				}
 			}
 
 			// Keyframe Animation
 
-			for (Transformable root : rootModels) {
+			for (final Transformable root : rootModels) {
 				// System.out.println( "root: " + root );
-				edu.cmu.cs.stage3.alice.core.response.DoTogether rootAnim = new edu.cmu.cs.stage3.alice.core.response.DoTogether();
+				final edu.cmu.cs.stage3.alice.core.response.DoTogether rootAnim = new edu.cmu.cs.stage3.alice.core.response.DoTogether();
 				rootAnim.name.set("keyframeAnimation");
-				for (Transformable trans : models) {
+				for (final Transformable trans : models) {
 					// System.out.println( "trans: " + trans );
 					if (trans.isDescendantOf(root) || trans.equals(root)) {
-						List<KeyframeResponse> anims = modelsToKeyframeAnims.get(trans);
+						final List<KeyframeResponse> anims = modelsToKeyframeAnims.get(trans);
 						if (anims != null) {
 							// System.out.println( trans + " has anims" );
-							String prefix = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(trans);
+							String prefix = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+									.getReprForValue(trans);
 							prefix = prefix.replace('.', '_');
-							for (KeyframeResponse anim : anims) {
+							for (final KeyframeResponse anim : anims) {
 								anim.duration.set(null);
-								String baseName = anim.name.getStringValue();
+								final String baseName = anim.name.getStringValue();
 								anim.name.set(prefix + "_" + baseName);
 								anim.subject.set(trans);
 								rootAnim.addChild(anim);
@@ -372,8 +386,9 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 					root.responses.add(rootAnim);
 				}
 			}
-		} catch (Throwable t) {
-			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("An unexpected error occured while loading an ASE.", t);
+		} catch (final Throwable t) {
+			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+					.showErrorDialog("An unexpected error occured while loading an ASE.", t);
 		}
 
 		progressDialog.stop();
@@ -392,8 +407,9 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		return element;
 	}
 
-	protected edu.cmu.cs.stage3.alice.core.Transformable getRootModel(edu.cmu.cs.stage3.alice.core.Transformable trans) {
-		edu.cmu.cs.stage3.alice.core.Element parent = trans.getParent();
+	protected edu.cmu.cs.stage3.alice.core.Transformable getRootModel(
+			final edu.cmu.cs.stage3.alice.core.Transformable trans) {
+		final edu.cmu.cs.stage3.alice.core.Element parent = trans.getParent();
 		if (!(parent instanceof edu.cmu.cs.stage3.alice.core.Transformable)) {
 			return trans;
 		} else {
@@ -403,7 +419,8 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 
 	// all coordinates in ASEs are in world space, so everything has to be fixed
 	// once we have the hierarchy...
-	protected void fixTransformations(edu.cmu.cs.stage3.alice.core.Transformable root, edu.cmu.cs.stage3.alice.core.Transformable scene) {
+	protected void fixTransformations(final edu.cmu.cs.stage3.alice.core.Transformable root,
+			final edu.cmu.cs.stage3.alice.core.Transformable scene) {
 		root.setTransformationRightNow(root.getLocalTransformation(), scene);
 		/*
 		 * root.setLocalTransformation(
@@ -415,27 +432,32 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		 * ) );
 		 */
 
-		edu.cmu.cs.stage3.alice.core.Element[] children = root.getChildren();
-		for (Element element : children) {
+		final edu.cmu.cs.stage3.alice.core.Element[] children = root.getChildren();
+		for (final Element element : children) {
 			if (element instanceof edu.cmu.cs.stage3.alice.core.Transformable) {
 				fixTransformations((edu.cmu.cs.stage3.alice.core.Transformable) element, scene);
 			}
 		}
 	}
 
-	protected void fixVertices(edu.cmu.cs.stage3.alice.core.Transformable root) {
+	protected void fixVertices(final edu.cmu.cs.stage3.alice.core.Transformable root) {
 		currentObject = (String) root.name.getValue();
 		if (root instanceof edu.cmu.cs.stage3.alice.core.Model) {
-			if (((edu.cmu.cs.stage3.alice.core.Model) root).geometry.getValue() instanceof edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray) {
-				edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray geom = (edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray) ((edu.cmu.cs.stage3.alice.core.Model) root).geometry.getValue();
-				edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[] vertices = (edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[]) geom.vertices.getValue();
+			if (((edu.cmu.cs.stage3.alice.core.Model) root).geometry
+					.getValue() instanceof edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray) {
+				final edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray geom = (edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray) ((edu.cmu.cs.stage3.alice.core.Model) root).geometry
+						.getValue();
+				final edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[] vertices = (edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[]) geom.vertices
+						.getValue();
 				if (vertices != null) {
 					progressDialog.setMax(vertices.length - 1);
 					currentProgress = 0;
 					for (int i = 0; i < vertices.length; i++) {
 						currentProgress = i;
-						edu.cmu.cs.stage3.math.Vector4 v = new edu.cmu.cs.stage3.math.Vector4(vertices[i].position.x, vertices[i].position.y, vertices[i].position.z, 1.0);
-						edu.cmu.cs.stage3.math.Vector4 vprime = edu.cmu.cs.stage3.math.Vector4.multiply(v, root.getSceneGraphReferenceFrame().getInverseAbsoluteTransformation());
+						final edu.cmu.cs.stage3.math.Vector4 v = new edu.cmu.cs.stage3.math.Vector4(
+								vertices[i].position.x, vertices[i].position.y, vertices[i].position.z, 1.0);
+						final edu.cmu.cs.stage3.math.Vector4 vprime = edu.cmu.cs.stage3.math.Vector4.multiply(v,
+								root.getSceneGraphReferenceFrame().getInverseAbsoluteTransformation());
 						vertices[i].position.set(vprime.x, vprime.y, vprime.z);
 					}
 					geom.vertices.set(vertices);
@@ -443,8 +465,8 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 			}
 		}
 
-		edu.cmu.cs.stage3.alice.core.Element[] children = root.getChildren();
-		for (Element element : children) {
+		final edu.cmu.cs.stage3.alice.core.Element[] children = root.getChildren();
+		for (final Element element : children) {
 			if (element instanceof edu.cmu.cs.stage3.alice.core.Transformable) {
 				fixVertices((edu.cmu.cs.stage3.alice.core.Transformable) element);
 			}
@@ -531,7 +553,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 			} else if (tokenizer.ttype == '}') {
 				try {
 					timeScaleFactor = 1.0 / ticksPerFrame * (1.0 / frameSpeed);
-				} catch (Exception e) {
+				} catch (final Exception e) {
 					timeScaleFactor = 1.0;
 				}
 				return;
@@ -572,9 +594,9 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 	}
 
 	protected void parseMaterial() throws InvalidFormatError, java.io.IOException {
-		Material material = new Material();
+		final Material material = new Material();
 
-		int index = parseInt();
+		final int index = parseInt();
 
 		tokenizer.nextToken();
 		if (tokenizer.ttype != '{') {
@@ -589,11 +611,14 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 				namesToMaterials.put(material.name, material);
 				currentObject = material.name;
 			} else if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*MATERIAL_AMBIENT")) {
-				material.ambient = new edu.cmu.cs.stage3.alice.scenegraph.Color(parseDouble(), parseDouble(), parseDouble());
+				material.ambient = new edu.cmu.cs.stage3.alice.scenegraph.Color(parseDouble(), parseDouble(),
+						parseDouble());
 			} else if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*MATERIAL_DIFFUSE")) {
-				material.diffuse = new edu.cmu.cs.stage3.alice.scenegraph.Color(parseDouble(), parseDouble(), parseDouble());
+				material.diffuse = new edu.cmu.cs.stage3.alice.scenegraph.Color(parseDouble(), parseDouble(),
+						parseDouble());
 			} else if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*MATERIAL_SPECULAR")) {
-				material.specular = new edu.cmu.cs.stage3.alice.scenegraph.Color(parseDouble(), parseDouble(), parseDouble());
+				material.specular = new edu.cmu.cs.stage3.alice.scenegraph.Color(parseDouble(), parseDouble(),
+						parseDouble());
 			} else if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*MATERIAL_SHINE")) {
 				material.shine = parseDouble();
 			} else if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*MATERIAL_SHINESTRENGTH")) {
@@ -644,23 +669,25 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 			tokenizer.nextToken();
 
 			if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*BITMAP")) {
-				String filename = parseString();
+				final String filename = parseString();
 				currentObject = filename;
 
 				java.io.File imageFile = new java.io.File(filename);
-				String justName = imageFile.getName();
-				String extension = justName.substring(justName.lastIndexOf('.') + 1);
+				final String justName = imageFile.getName();
+				final String extension = justName.substring(justName.lastIndexOf('.') + 1);
 				java.io.BufferedInputStream bis = null;
 
 				if (imageFile.exists()) {
 					if (imageFile.canRead()) {
 						bis = new java.io.BufferedInputStream(new java.io.FileInputStream(imageFile));
 					} else {
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Cannot read from file \"" + filename + "\" specified on line " + tokenizer.lineno(), null, false);
+						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog(
+								"Cannot read from file \"" + filename + "\" specified on line " + tokenizer.lineno(),
+								null, false);
 						continue;
 					}
 				} else {
-					Object location = getLocation();
+					final Object location = getLocation();
 					if (location instanceof java.io.File) {
 						imageFile = new java.io.File((java.io.File) location, filename);
 						if (!imageFile.exists()) {
@@ -670,19 +697,23 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 							if (imageFile.canRead()) {
 								bis = new java.io.BufferedInputStream(new java.io.FileInputStream(imageFile));
 							} else {
-								edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Cannot read from file \"" + filename + "\" specified on line " + tokenizer.lineno(), null, false);
+								edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+										.showErrorDialog("Cannot read from file \"" + filename + "\" specified on line "
+												+ tokenizer.lineno(), null, false);
 								continue;
 							}
 						} else {
-							edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Unable to find file \"" + filename + "\" specified on line " + tokenizer.lineno(), null, false);
+							edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog(
+									"Unable to find file \"" + filename + "\" specified on line " + tokenizer.lineno(),
+									null, false);
 							continue;
 						}
 					} else if (location instanceof java.net.URL) {
 						// escape necessary characters
-						StringBuffer name = new StringBuffer();
-						char[] chars = new char[justName.length()];
+						final StringBuffer name = new StringBuffer();
+						final char[] chars = new char[justName.length()];
 						justName.getChars(0, justName.length(), chars, 0);
-						for (char c : chars) {
+						for (final char c : chars) {
 							if (c == ' ') {
 								name.append("%20");
 							} else if (c == '#') {
@@ -725,31 +756,35 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 						url = new java.net.URL(url.toExternalForm() + name.toString());
 						bis = new java.io.BufferedInputStream(url.openStream());
 					} else {
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("location is not a File or URL: " + location, null, false);
+						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+								.showErrorDialog("location is not a File or URL: " + location, null, false);
 					}
 				}
 				if (bis == null) {
-					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("BufferedInputStream is null for " + filename, null);
+					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+							.showErrorDialog("BufferedInputStream is null for " + filename, null);
 					continue;
 				}
 
-				String codec = edu.cmu.cs.stage3.image.ImageIO.mapExtensionToCodecName(extension);
+				final String codec = edu.cmu.cs.stage3.image.ImageIO.mapExtensionToCodecName(extension);
 				if (codec == null) {
-					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Can't find appropriate codec for " + filename, null);
+					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+							.showErrorDialog("Can't find appropriate codec for " + filename, null);
 					continue;
 				}
 
-				java.awt.Image image = edu.cmu.cs.stage3.image.ImageIO.load(codec, bis);
+				final java.awt.Image image = edu.cmu.cs.stage3.image.ImageIO.load(codec, bis);
 				if (image == null) {
-					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Image loaded is null for " + filename, null);
+					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+							.showErrorDialog("Image loaded is null for " + filename, null);
 					continue;
 				}
 
-				String textureName = justName.substring(0, justName.indexOf('.'));
+				final String textureName = justName.substring(0, justName.indexOf('.'));
 				texture = new edu.cmu.cs.stage3.alice.core.TextureMap();
 
 				if (image instanceof java.awt.image.BufferedImage) {
-					java.awt.image.BufferedImage bi = (java.awt.image.BufferedImage) image;
+					final java.awt.image.BufferedImage bi = (java.awt.image.BufferedImage) image;
 					if (bi.getColorModel().hasAlpha()) {
 						texture.format.set(new Integer(edu.cmu.cs.stage3.alice.scenegraph.TextureMap.RGBA));
 					}
@@ -766,7 +801,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 	}
 
 	protected void parseHelperObject() throws java.io.IOException {
-		edu.cmu.cs.stage3.alice.core.Model helper = new edu.cmu.cs.stage3.alice.core.Model();
+		final edu.cmu.cs.stage3.alice.core.Model helper = new edu.cmu.cs.stage3.alice.core.Model();
 		helper.isFirstClass.set(Boolean.FALSE);
 		models.add(helper);
 
@@ -791,7 +826,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 				currentProgress = 0;
 				currentlyLoading = "<none>";
 			} else if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*TM_ANIMATION")) {
-				List<KeyframeResponse> anims = parseAnimationNode();
+				final List<KeyframeResponse> anims = parseAnimationNode();
 				modelsToKeyframeAnims.put(helper, anims);
 			} else if (tokenizer.ttype == '{') {
 				parseUnknownBlock();
@@ -804,7 +839,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 	}
 
 	protected void parseGeomObject() throws java.io.IOException {
-		edu.cmu.cs.stage3.alice.core.Model model = new edu.cmu.cs.stage3.alice.core.Model();
+		final edu.cmu.cs.stage3.alice.core.Model model = new edu.cmu.cs.stage3.alice.core.Model();
 		model.isFirstClass.set(Boolean.FALSE);
 		models.add(model);
 
@@ -833,7 +868,8 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 				currentProgress = 0;
 				model.geometry.set(parseMesh());
 				model.geometry.getElementValue().setParent(model);
-				model.geometry.getElementValue().name.set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getNameForNewChild("__ita__", model));
+				model.geometry.getElementValue().name.set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+						.getNameForNewChild("__ita__", model));
 				currentProgress = 0;
 				currentlyLoading = "<none>";
 			} else if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*PROP_CASTSHADOW")) {
@@ -843,7 +879,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 			} else if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*MATERIAL_REF")) {
 				modelsToMaterialIndices.put(model, new Integer(parseInt()));
 			} else if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*TM_ANIMATION")) {
-				List<KeyframeResponse> anims = parseAnimationNode();
+				final List<KeyframeResponse> anims = parseAnimationNode();
 				modelsToKeyframeAnims.put(model, anims);
 			} else if (tokenizer.ttype == '{') {
 				parseUnknownBlock();
@@ -856,8 +892,8 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 	}
 
 	protected edu.cmu.cs.stage3.math.Matrix44 parseTransformation() throws InvalidFormatError, java.io.IOException {
-		edu.cmu.cs.stage3.math.Matrix44 m = new edu.cmu.cs.stage3.math.Matrix44();
-		edu.cmu.cs.stage3.math.Matrix33 rot = new edu.cmu.cs.stage3.math.Matrix33();
+		final edu.cmu.cs.stage3.math.Matrix44 m = new edu.cmu.cs.stage3.math.Matrix44();
+		final edu.cmu.cs.stage3.math.Matrix33 rot = new edu.cmu.cs.stage3.math.Matrix33();
 
 		tokenizer.nextToken();
 		if (tokenizer.ttype != '{') {
@@ -891,7 +927,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 				 * Transforming a rotation matrix from MAX space (right-handed,
 				 * x-left, y-back, z-up) to Alice space (left-handed, x-right,
 				 * y-up, z-forward):
-				 * 
+				 *
 				 * [ a b c ] [-a -b -c ] [ a -c b ] [ d e f ] --> [ g h i ] -->
 				 * [-g i -h ] [ g h i ] [-d -e -f ] [ d -f e ]
 				 */
@@ -914,15 +950,16 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		}
 	}
 
-	protected edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray parseMesh() throws InvalidFormatError, java.io.IOException {
-		edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray geometry = new edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray();
+	protected edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray parseMesh()
+			throws InvalidFormatError, java.io.IOException {
+		final edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray geometry = new edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray();
 		edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[] verts = null;
 		int[] coordIndices = null;
 		int[] uvIndices = null;
 		double[] coordinates = null;
 		double[] normals = null;
 		float[] uvs = null;
-		double[] colors = null;
+		final double[] colors = null;
 		int numVerts = -1;
 		int numUVs = -1;
 		int numFaces = -1;
@@ -946,7 +983,8 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 				numUVs = parseInt();
 			} else if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*MESH_VERTEX_LIST")) {
 				if (numVerts < 0) {
-					throw new InvalidFormatError("illegal number of vertices defined or coordinates declared before number of vertices defined");
+					throw new InvalidFormatError(
+							"illegal number of vertices defined or coordinates declared before number of vertices defined");
 				}
 				coordinates = new double[numVerts * 3];
 
@@ -1001,10 +1039,12 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 					if (coordinates != null) {
 						vertexFormat |= edu.cmu.cs.stage3.alice.scenegraph.Vertex3d.FORMAT_POSITION;
 					}
-					if (normals != null || importersConfig.getValue("aseImporter.createNormalsIfNoneExist").equalsIgnoreCase("true")) {
+					if (normals != null || importersConfig.getValue("aseImporter.createNormalsIfNoneExist")
+							.equalsIgnoreCase("true")) {
 						vertexFormat |= edu.cmu.cs.stage3.alice.scenegraph.Vertex3d.FORMAT_NORMAL;
 					}
-					if (uvs != null || importersConfig.getValue("aseImporter.createUVsIfNoneExist").equalsIgnoreCase("true")) {
+					if (uvs != null
+							|| importersConfig.getValue("aseImporter.createUVsIfNoneExist").equalsIgnoreCase("true")) {
 						vertexFormat |= edu.cmu.cs.stage3.alice.scenegraph.Vertex3d.FORMAT_TEXTURE_COORDINATE_0;
 					}
 					if (colors != null) {
@@ -1016,7 +1056,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 						verts[i] = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d(vertexFormat);
 					}
 
-					int[] indices = new int[numFaces * 3];
+					final int[] indices = new int[numFaces * 3];
 					for (int i = 0; i < numFaces * 3; i++) {
 						indices[i] = i;
 					}
@@ -1044,7 +1084,8 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 					geometry.vertices.set(verts);
 					geometry.indices.set(indices);
 
-					if (normals == null && importersConfig.getValue("aseImporter.createNormalsIfNoneExist").equalsIgnoreCase("true")) {
+					if (normals == null && importersConfig.getValue("aseImporter.createNormalsIfNoneExist")
+							.equalsIgnoreCase("true")) {
 						edu.cmu.cs.stage3.alice.gallery.ModelFixer.calculateNormals(geometry);
 					}
 				}
@@ -1056,7 +1097,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		}
 	}
 
-	protected void parseVertexList(double[] coordinates) throws InvalidFormatError, java.io.IOException {
+	protected void parseVertexList(final double[] coordinates) throws InvalidFormatError, java.io.IOException {
 		tokenizer.nextToken();
 		if (tokenizer.ttype != '{') {
 			throw new InvalidFormatError("Block expected after *MESH_VERTEX_LIST");
@@ -1067,7 +1108,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 			tokenizer.nextToken();
 
 			if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*MESH_VERTEX")) {
-				int index = parseInt();
+				final int index = parseInt();
 				// X = -X, Y = Z, Z = -Y
 				coordinates[index * 3 + 0] = -parseDouble();
 				coordinates[index * 3 + 2] = -parseDouble();
@@ -1081,7 +1122,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		}
 	}
 
-	protected void parseUVList(float[] uvs) throws InvalidFormatError, java.io.IOException {
+	protected void parseUVList(final float[] uvs) throws InvalidFormatError, java.io.IOException {
 		tokenizer.nextToken();
 		if (tokenizer.ttype != '{') {
 			throw new InvalidFormatError("Block expected after *MESH_TVERTLIST");
@@ -1092,7 +1133,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 			tokenizer.nextToken();
 
 			if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*MESH_TVERT")) {
-				int index = parseInt();
+				final int index = parseInt();
 				uvs[index * 2 + 0] = parseFloat();
 				uvs[index * 2 + 1] = parseFloat();
 				currentProgress++;
@@ -1104,7 +1145,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		}
 	}
 
-	protected void parseNormals(double[] normals) throws InvalidFormatError, java.io.IOException {
+	protected void parseNormals(final double[] normals) throws InvalidFormatError, java.io.IOException {
 		tokenizer.nextToken();
 		if (tokenizer.ttype != '{') {
 			throw new InvalidFormatError("Block expected after *MESH_NORMALS");
@@ -1119,7 +1160,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 
 			if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*MESH_VERTEXNORMAL")) {
 				@SuppressWarnings("unused")
-				int index = parseInt();
+				final int index = parseInt();
 				int realv = v;
 				// reverse face order
 				if (v == 1) {
@@ -1146,11 +1187,11 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		}
 	}
 
-	protected void parseVertexColors(double[] colors) {
+	protected void parseVertexColors(final double[] colors) {
 		// TODO
 	}
 
-	protected void parseFaceList(int[] indices) throws InvalidFormatError, java.io.IOException {
+	protected void parseFaceList(final int[] indices) throws InvalidFormatError, java.io.IOException {
 		tokenizer.nextToken();
 		if (tokenizer.ttype != '{') {
 			throw new InvalidFormatError("Block expected after *MESH_FACE_LIST");
@@ -1171,8 +1212,8 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		}
 	}
 
-	protected void parseMeshFace(int[] indices) throws InvalidFormatError, java.io.IOException {
-		int index = parseInt();
+	protected void parseMeshFace(final int[] indices) throws InvalidFormatError, java.io.IOException {
+		final int index = parseInt();
 
 		while (true) {
 			tokenizer.nextToken();
@@ -1196,7 +1237,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		}
 	}
 
-	protected void parseUVFaceList(int[] indices) throws InvalidFormatError, java.io.IOException {
+	protected void parseUVFaceList(final int[] indices) throws InvalidFormatError, java.io.IOException {
 		tokenizer.nextToken();
 		if (tokenizer.ttype != '{') {
 			throw new InvalidFormatError("Block expected after *MESH_TFACELIST");
@@ -1208,7 +1249,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 
 			// reverse face order
 			if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*MESH_TFACE")) {
-				int index = parseInt();
+				final int index = parseInt();
 				indices[index * 3 + 0] = parseInt();
 				indices[index * 3 + 2] = parseInt();
 				indices[index * 3 + 1] = parseInt();
@@ -1222,7 +1263,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 	}
 
 	protected List<KeyframeResponse> parseAnimationNode() throws InvalidFormatError, java.io.IOException {
-		List<KeyframeResponse> anims = new ArrayList<KeyframeResponse>();
+		final List<KeyframeResponse> anims = new ArrayList<KeyframeResponse>();
 
 		tokenizer.nextToken();
 		if (tokenizer.ttype != '{') {
@@ -1285,10 +1326,11 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		}
 	}
 
-	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseLinearPositionAnimation() throws InvalidFormatError, java.io.IOException {
-		edu.cmu.cs.stage3.pratt.maxkeyframing.PositionKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.PositionKeyframeResponse();
+	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseLinearPositionAnimation()
+			throws InvalidFormatError, java.io.IOException {
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.PositionKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.PositionKeyframeResponse();
 		keyframeResponse.name.set("linearPositionKeyframeAnim");
-		edu.cmu.cs.stage3.pratt.maxkeyframing.LinearSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.LinearSpline();
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.LinearSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.LinearSpline();
 		keyframeResponse.spline.set(spline);
 
 		tokenizer.nextToken();
@@ -1300,13 +1342,14 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 			tokenizer.nextToken();
 
 			if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*CONTROL_POS_KEY")) {
-				double time = parseDouble() * timeScaleFactor;
+				final double time = parseDouble() * timeScaleFactor;
 				// don't forget to convert MAX's coordinate system...
 				// X = -X, Y = Z, Z = -Y
-				double x = -parseDouble();
-				double z = -parseDouble();
-				double y = parseDouble();
-				spline.addKey(new edu.cmu.cs.stage3.pratt.maxkeyframing.Vector3SimpleKey(time, new javax.vecmath.Vector3d(x, y, z)));
+				final double x = -parseDouble();
+				final double z = -parseDouble();
+				final double y = parseDouble();
+				spline.addKey(new edu.cmu.cs.stage3.pratt.maxkeyframing.Vector3SimpleKey(time,
+						new javax.vecmath.Vector3d(x, y, z)));
 			} else if (tokenizer.ttype == '}') {
 				return keyframeResponse;
 			} else if (tokenizer.ttype == java.io.StreamTokenizer.TT_EOF) {
@@ -1315,10 +1358,11 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		}
 	}
 
-	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseBezierPositionAnimation() throws InvalidFormatError, java.io.IOException {
-		edu.cmu.cs.stage3.pratt.maxkeyframing.PositionKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.PositionKeyframeResponse();
+	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseBezierPositionAnimation()
+			throws InvalidFormatError, java.io.IOException {
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.PositionKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.PositionKeyframeResponse();
 		keyframeResponse.name.set("bezierPositionKeyframeAnim");
-		edu.cmu.cs.stage3.pratt.maxkeyframing.BezierSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.BezierSpline();
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.BezierSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.BezierSpline();
 		keyframeResponse.spline.set(spline);
 
 		tokenizer.nextToken();
@@ -1330,19 +1374,21 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 			tokenizer.nextToken();
 
 			if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*CONTROL_BEZIER_POS_KEY")) {
-				double time = parseDouble() * timeScaleFactor;
+				final double time = parseDouble() * timeScaleFactor;
 				// don't forget to convert MAX's coordinate system...
 				// X = -X, Y = Z, Z = -Y
-				double x = -parseDouble();
-				double z = -parseDouble();
-				double y = parseDouble();
-				double intan_x = -parseDouble();
-				double intan_z = -parseDouble();
-				double intan_y = parseDouble();
-				double outtan_x = -parseDouble();
-				double outtan_z = -parseDouble();
-				double outtan_y = parseDouble();
-				spline.addKey(new edu.cmu.cs.stage3.pratt.maxkeyframing.Vector3BezierKey(time, new javax.vecmath.Vector3d(x, y, z), new javax.vecmath.Vector3d(intan_x, intan_y, intan_z), new javax.vecmath.Vector3d(outtan_x, outtan_y, outtan_z)));
+				final double x = -parseDouble();
+				final double z = -parseDouble();
+				final double y = parseDouble();
+				final double intan_x = -parseDouble();
+				final double intan_z = -parseDouble();
+				final double intan_y = parseDouble();
+				final double outtan_x = -parseDouble();
+				final double outtan_z = -parseDouble();
+				final double outtan_y = parseDouble();
+				spline.addKey(new edu.cmu.cs.stage3.pratt.maxkeyframing.Vector3BezierKey(time,
+						new javax.vecmath.Vector3d(x, y, z), new javax.vecmath.Vector3d(intan_x, intan_y, intan_z),
+						new javax.vecmath.Vector3d(outtan_x, outtan_y, outtan_z)));
 			} else if (tokenizer.ttype == '}') {
 				spline.convertMAXTangentsToBezierTangents(timeScaleFactor);
 				return keyframeResponse;
@@ -1352,10 +1398,11 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		}
 	}
 
-	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseTCBPositionAnimation() throws InvalidFormatError, java.io.IOException {
-		edu.cmu.cs.stage3.pratt.maxkeyframing.PositionKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.PositionKeyframeResponse();
+	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseTCBPositionAnimation()
+			throws InvalidFormatError, java.io.IOException {
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.PositionKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.PositionKeyframeResponse();
 		keyframeResponse.name.set("tcbPositionKeyframeAnim");
-		edu.cmu.cs.stage3.pratt.maxkeyframing.TCBSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.TCBSpline();
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.TCBSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.TCBSpline();
 		keyframeResponse.spline.set(spline);
 
 		tokenizer.nextToken();
@@ -1367,20 +1414,21 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 			tokenizer.nextToken();
 
 			if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*CONTROL_TCB_POS_KEY")) {
-				double time = parseDouble() * timeScaleFactor;
+				final double time = parseDouble() * timeScaleFactor;
 				// don't forget to convert MAX's coordinate system...
 				// X = -X, Y = Z, Z = -Y
-				double x = -parseDouble();
-				double z = -parseDouble();
-				double y = parseDouble();
-				double tension = parseDouble();
-				double continuity = parseDouble();
-				double bias = parseDouble();
+				final double x = -parseDouble();
+				final double z = -parseDouble();
+				final double y = parseDouble();
+				final double tension = parseDouble();
+				final double continuity = parseDouble();
+				final double bias = parseDouble();
 				@SuppressWarnings("unused")
-				double easeIn = parseDouble(); // NOT USED AT THE MOMENT
+				final double easeIn = parseDouble(); // NOT USED AT THE MOMENT
 				@SuppressWarnings("unused")
-				double easeOut = parseDouble(); // NOT USED AT THE MOMENT
-				spline.addKey(new edu.cmu.cs.stage3.pratt.maxkeyframing.Vector3TCBKey(time, new javax.vecmath.Vector3d(x, y, z), tension, continuity, bias));
+				final double easeOut = parseDouble(); // NOT USED AT THE MOMENT
+				spline.addKey(new edu.cmu.cs.stage3.pratt.maxkeyframing.Vector3TCBKey(time,
+						new javax.vecmath.Vector3d(x, y, z), tension, continuity, bias));
 			} else if (tokenizer.ttype == '}') {
 				return keyframeResponse;
 			} else if (tokenizer.ttype == java.io.StreamTokenizer.TT_EOF) {
@@ -1389,10 +1437,11 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		}
 	}
 
-	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseLinearQuaternionAnimation() throws InvalidFormatError, java.io.IOException {
-		edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKeyframeResponse();
+	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseLinearQuaternionAnimation()
+			throws InvalidFormatError, java.io.IOException {
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKeyframeResponse();
 		keyframeResponse.name.set("quaternionKeyframeAnim");
-		edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionSlerpSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionSlerpSpline();
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionSlerpSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionSlerpSpline();
 		keyframeResponse.spline.set(spline);
 
 		tokenizer.nextToken();
@@ -1404,14 +1453,16 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 			tokenizer.nextToken();
 
 			if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*CONTROL_ROT_KEY")) {
-				double time = parseDouble() * timeScaleFactor;
+				final double time = parseDouble() * timeScaleFactor;
 				// don't forget to convert MAX's coordinate system...
 				// X = -X, Y = Z, Z = -Y
-				double axis_x = -parseDouble();
-				double axis_z = -parseDouble();
-				double axis_y = parseDouble();
-				double angle = -parseDouble();
-				spline.addKey(new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKey(time, new edu.cmu.cs.stage3.math.Quaternion(new edu.cmu.cs.stage3.math.AxisAngle(axis_x, axis_y, axis_z, angle))));
+				final double axis_x = -parseDouble();
+				final double axis_z = -parseDouble();
+				final double axis_y = parseDouble();
+				final double angle = -parseDouble();
+				spline.addKey(new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKey(time,
+						new edu.cmu.cs.stage3.math.Quaternion(
+								new edu.cmu.cs.stage3.math.AxisAngle(axis_x, axis_y, axis_z, angle))));
 			} else if (tokenizer.ttype == '}') {
 				return keyframeResponse;
 			} else if (tokenizer.ttype == java.io.StreamTokenizer.TT_EOF) {
@@ -1420,10 +1471,11 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		}
 	}
 
-	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseBezierQuaternionAnimation() throws InvalidFormatError, java.io.IOException {
-		edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKeyframeResponse();
+	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseBezierQuaternionAnimation()
+			throws InvalidFormatError, java.io.IOException {
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKeyframeResponse();
 		keyframeResponse.name.set("quaternionKeyframeAnim");
-		edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionSlerpSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionSlerpSpline();
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionSlerpSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionSlerpSpline();
 		keyframeResponse.spline.set(spline);
 
 		tokenizer.nextToken();
@@ -1435,14 +1487,16 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 			tokenizer.nextToken();
 
 			if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*CONTROL_ROT_KEY")) {
-				double time = parseDouble() * timeScaleFactor;
+				final double time = parseDouble() * timeScaleFactor;
 				// don't forget to convert MAX's coordinate system...
 				// X = -X, Y = Z, Z = -Y
-				double axis_x = -parseDouble();
-				double axis_z = -parseDouble();
-				double axis_y = parseDouble();
-				double angle = -parseDouble();
-				spline.addKey(new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKey(time, new edu.cmu.cs.stage3.math.Quaternion(new edu.cmu.cs.stage3.math.AxisAngle(axis_x, axis_y, axis_z, angle))));
+				final double axis_x = -parseDouble();
+				final double axis_z = -parseDouble();
+				final double axis_y = parseDouble();
+				final double angle = -parseDouble();
+				spline.addKey(new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKey(time,
+						new edu.cmu.cs.stage3.math.Quaternion(
+								new edu.cmu.cs.stage3.math.AxisAngle(axis_x, axis_y, axis_z, angle))));
 			} else if (tokenizer.ttype == '}') {
 				return keyframeResponse;
 			} else if (tokenizer.ttype == java.io.StreamTokenizer.TT_EOF) {
@@ -1451,10 +1505,11 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		}
 	}
 
-	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseTCBQuaternionAnimation() throws InvalidFormatError, java.io.IOException {
-		edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKeyframeResponse();
+	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseTCBQuaternionAnimation()
+			throws InvalidFormatError, java.io.IOException {
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKeyframeResponse();
 		keyframeResponse.name.set("tcbQuaternionKeyframeAnim");
-		edu.cmu.cs.stage3.pratt.maxkeyframing.TCBSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.TCBSpline();
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.TCBSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.TCBSpline();
 		keyframeResponse.spline.set(spline);
 
 		tokenizer.nextToken();
@@ -1466,23 +1521,28 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 			tokenizer.nextToken();
 
 			if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*CONTROL_TCB_ROT_KEY")) {
-				double time = parseDouble() * timeScaleFactor;
+				final double time = parseDouble() * timeScaleFactor;
 				// don't forget to convert MAX's coordinate system...
 				// X = -X, Y = Z, Z = -Y
-				double axis_x = -parseDouble();
-				double axis_z = -parseDouble();
-				double axis_y = parseDouble();
-				double angle = -parseDouble();
-				double tension = parseDouble(); // NOT USED IN QUATERNION
-												// ANIMATION
-				double continuity = parseDouble(); // NOT USED IN QUATERNION
+				final double axis_x = -parseDouble();
+				final double axis_z = -parseDouble();
+				final double axis_y = parseDouble();
+				final double angle = -parseDouble();
+				final double tension = parseDouble(); // NOT USED IN QUATERNION
+				// ANIMATION
+				final double continuity = parseDouble(); // NOT USED IN
+															// QUATERNION
+				// ANIMATION
+				final double bias = parseDouble(); // NOT USED IN QUATERNION
 													// ANIMATION
-				double bias = parseDouble(); // NOT USED IN QUATERNION ANIMATION
 				@SuppressWarnings("unused")
-				double easeIn = parseDouble(); // NOT USED AT THE MOMENT
+				final double easeIn = parseDouble(); // NOT USED AT THE MOMENT
 				@SuppressWarnings("unused")
-				double easeOut = parseDouble(); // NOT USED AT THE MOMENT
-				spline.addKey(new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionTCBKey(time, new edu.cmu.cs.stage3.math.Quaternion(new edu.cmu.cs.stage3.math.AxisAngle(axis_x, axis_y, axis_z, angle)), tension, continuity, bias));
+				final double easeOut = parseDouble(); // NOT USED AT THE MOMENT
+				spline.addKey(new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionTCBKey(time,
+						new edu.cmu.cs.stage3.math.Quaternion(
+								new edu.cmu.cs.stage3.math.AxisAngle(axis_x, axis_y, axis_z, angle)),
+						tension, continuity, bias));
 			} else if (tokenizer.ttype == '}') {
 				spline.correctForMAXRelativeKeys();
 				return keyframeResponse;
@@ -1492,10 +1552,11 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		}
 	}
 
-	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseLinearScaleAnimation() throws InvalidFormatError, java.io.IOException {
-		edu.cmu.cs.stage3.pratt.maxkeyframing.ScaleKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.ScaleKeyframeResponse();
+	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseLinearScaleAnimation()
+			throws InvalidFormatError, java.io.IOException {
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.ScaleKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.ScaleKeyframeResponse();
 		keyframeResponse.name.set("linearScaleKeyframeAnim");
-		edu.cmu.cs.stage3.pratt.maxkeyframing.LinearSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.LinearSpline();
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.LinearSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.LinearSpline();
 		keyframeResponse.spline.set(spline);
 
 		tokenizer.nextToken();
@@ -1516,10 +1577,11 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		}
 	}
 
-	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseBezierScaleAnimation() throws InvalidFormatError, java.io.IOException {
-		edu.cmu.cs.stage3.pratt.maxkeyframing.ScaleKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.ScaleKeyframeResponse();
+	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseBezierScaleAnimation()
+			throws InvalidFormatError, java.io.IOException {
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.ScaleKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.ScaleKeyframeResponse();
 		keyframeResponse.name.set("bezierScaleKeyframeAnim");
-		edu.cmu.cs.stage3.pratt.maxkeyframing.BezierSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.BezierSpline();
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.BezierSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.BezierSpline();
 		keyframeResponse.spline.set(spline);
 
 		tokenizer.nextToken();
@@ -1541,10 +1603,11 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		}
 	}
 
-	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseTCBScaleAnimation() throws InvalidFormatError, java.io.IOException {
-		edu.cmu.cs.stage3.pratt.maxkeyframing.ScaleKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.ScaleKeyframeResponse();
+	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseTCBScaleAnimation()
+			throws InvalidFormatError, java.io.IOException {
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.ScaleKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.ScaleKeyframeResponse();
 		keyframeResponse.name.set("tcbScaleKeyframeAnim");
-		edu.cmu.cs.stage3.pratt.maxkeyframing.TCBSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.TCBSpline();
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.TCBSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.TCBSpline();
 		keyframeResponse.spline.set(spline);
 
 		tokenizer.nextToken();
@@ -1565,10 +1628,11 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		}
 	}
 
-	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseSampledPositionAnimation() throws InvalidFormatError, java.io.IOException {
-		edu.cmu.cs.stage3.pratt.maxkeyframing.PositionKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.PositionKeyframeResponse();
+	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseSampledPositionAnimation()
+			throws InvalidFormatError, java.io.IOException {
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.PositionKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.PositionKeyframeResponse();
 		keyframeResponse.name.set("sampledPositionAnim");
-		edu.cmu.cs.stage3.pratt.maxkeyframing.CatmullRomSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.CatmullRomSpline();
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.CatmullRomSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.CatmullRomSpline();
 		keyframeResponse.spline.set(spline);
 
 		tokenizer.nextToken();
@@ -1580,13 +1644,14 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 			tokenizer.nextToken();
 
 			if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*CONTROL_POS_SAMPLE")) {
-				double time = parseDouble() * timeScaleFactor;
+				final double time = parseDouble() * timeScaleFactor;
 				// don't forget to convert MAX's coordinate system...
 				// X = -X, Y = Z, Z = -Y
-				double x = -parseDouble();
-				double z = -parseDouble();
-				double y = parseDouble();
-				spline.addKey(new edu.cmu.cs.stage3.pratt.maxkeyframing.Vector3SimpleKey(time, new javax.vecmath.Vector3d(x, y, z)));
+				final double x = -parseDouble();
+				final double z = -parseDouble();
+				final double y = parseDouble();
+				spline.addKey(new edu.cmu.cs.stage3.pratt.maxkeyframing.Vector3SimpleKey(time,
+						new javax.vecmath.Vector3d(x, y, z)));
 			} else if (tokenizer.ttype == '}') {
 				return keyframeResponse;
 			} else if (tokenizer.ttype == java.io.StreamTokenizer.TT_EOF) {
@@ -1595,10 +1660,11 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		}
 	}
 
-	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseSampledQuaternionAnimation() throws InvalidFormatError, java.io.IOException {
-		edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKeyframeResponse();
+	protected edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse parseSampledQuaternionAnimation()
+			throws InvalidFormatError, java.io.IOException {
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKeyframeResponse keyframeResponse = new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKeyframeResponse();
 		keyframeResponse.name.set("sampledQuaternionAnim");
-		edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionSlerpSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionSlerpSpline();
+		final edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionSlerpSpline spline = new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionSlerpSpline();
 		keyframeResponse.spline.set(spline);
 
 		tokenizer.nextToken();
@@ -1610,14 +1676,16 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 			tokenizer.nextToken();
 
 			if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*CONTROL_ROT_SAMPLE")) {
-				double time = parseDouble() * timeScaleFactor;
+				final double time = parseDouble() * timeScaleFactor;
 				// don't forget to convert MAX's coordinate system...
 				// X = -X, Y = Z, Z = -Y
-				double axis_x = -parseDouble();
-				double axis_z = -parseDouble();
-				double axis_y = parseDouble();
-				double angle = -parseDouble();
-				spline.addKey(new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKey(time, new edu.cmu.cs.stage3.math.Quaternion(new edu.cmu.cs.stage3.math.AxisAngle(axis_x, axis_y, axis_z, angle))));
+				final double axis_x = -parseDouble();
+				final double axis_z = -parseDouble();
+				final double axis_y = parseDouble();
+				final double angle = -parseDouble();
+				spline.addKey(new edu.cmu.cs.stage3.pratt.maxkeyframing.QuaternionKey(time,
+						new edu.cmu.cs.stage3.math.Quaternion(
+								new edu.cmu.cs.stage3.math.AxisAngle(axis_x, axis_y, axis_z, angle))));
 			} else if (tokenizer.ttype == '}') {
 				spline.correctForMAXRelativeKeys();
 				return keyframeResponse;
@@ -1629,18 +1697,18 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 
 	class InvalidFormatError extends Error {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 
-		public InvalidFormatError(String s) {
+		public InvalidFormatError(final String s) {
 			super(s);
 		}
 	}
 
 	class ProgressDialog extends javax.swing.JDialog {
 		/**
-		 * 
+		 *
 		 */
 		private static final long serialVersionUID = 1L;
 		protected javax.swing.JLabel linesLabel = new javax.swing.JLabel("Lines read: 0");
@@ -1671,7 +1739,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 
 			timer = new javax.swing.Timer(100, new java.awt.event.ActionListener() {
 				@Override
-				public void actionPerformed(java.awt.event.ActionEvent ev) {
+				public void actionPerformed(final java.awt.event.ActionEvent ev) {
 					linesLabel.setText("Lines read: " + tokenizer.lineno());
 					objectLabel.setText("Object: " + currentObject);
 					progressLabel.setText("Loading " + currentlyLoading + ": ");
@@ -1724,13 +1792,13 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 	 * javax.swing.JCheckBox diffuseToWhiteCheckBox = new javax.swing.JCheckBox(
 	 * "Set diffuse color to white for textured objects", diffuseToWhite );
 	 * javax.swing.JButton okayButton = new javax.swing.JButton( "Okay" );
-	 * 
+	 *
 	 * public ASEOptionsDialog() { super( (javax.swing.JFrame)null );
-	 * 
+	 *
 	 * setTitle( "ASE importing options" ); setModal( true );
 	 * setDefaultCloseOperation( javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE
 	 * );
-	 * 
+	 *
 	 * java.awt.event.ItemListener checkBoxListener = new
 	 * java.awt.event.ItemListener() { public void itemStateChanged(
 	 * java.awt.event.ItemEvent ev ) { javax.swing.JCheckBox source =
@@ -1742,13 +1810,13 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 	 * diffuseToWhiteCheckBox.addItemListener( checkBoxListener );
 	 * useSpecularCheckBox.setAlignmentX( 0.0f );
 	 * diffuseToWhiteCheckBox.setAlignmentX( 0.0f );
-	 * 
+	 *
 	 * java.awt.event.ActionListener okayListener = new
 	 * java.awt.event.ActionListener() { public void actionPerformed(
 	 * java.awt.event.ActionEvent ev ) { hide(); } };
 	 * okayButton.addActionListener( okayListener ); okayButton.setAlignmentX(
 	 * 0.5f );
-	 * 
+	 *
 	 * javax.swing.border.Border padding =
 	 * javax.swing.BorderFactory.createEmptyBorder( 10, 10, 10, 10 );
 	 * javax.swing.JPanel optionsPanel = new javax.swing.JPanel();
@@ -1763,7 +1831,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 	 * javax.swing.Box.createVerticalGlue() ); mainPanel.add( okayButton );
 	 * getContentPane().setLayout( new java.awt.BorderLayout() );
 	 * getContentPane().add( mainPanel, java.awt.BorderLayout.CENTER );
-	 * 
+	 *
 	 * pack(); } }
 	 */
 }

@@ -4,7 +4,7 @@ public class Dequeue extends QueueVisualizationAnimation {
 	public class RuntimeDequeue extends RuntimeQueueVisualizationAnimation {
 
 		@Override
-		public void epilogue(double t) {
+		public void epilogue(final double t) {
 			super.epilogue(t);
 			getCollection().values.remove(0);
 		}

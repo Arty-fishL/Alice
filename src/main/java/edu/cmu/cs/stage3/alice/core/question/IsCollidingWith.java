@@ -11,14 +11,15 @@ public class IsCollidingWith extends SubjectObjectQuestion {
 	}
 
 	@Override
-	protected Object getValue(edu.cmu.cs.stage3.alice.core.Transformable subjectValue, edu.cmu.cs.stage3.alice.core.Transformable objectValue) {
-		edu.cmu.cs.stage3.alice.core.World world = subjectValue.getWorld();
-		edu.cmu.cs.stage3.alice.scenegraph.Visual[] subjectSGVisuals = subjectValue.getAllSceneGraphVisuals();
-		edu.cmu.cs.stage3.alice.scenegraph.Visual[] objectSGVisuals = subjectValue.getAllSceneGraphVisuals();
-		edu.cmu.cs.stage3.alice.scenegraph.Visual[][] collisions = world.getCollisions();
-		for (Visual[] pair : collisions) {
-			Object a = ((edu.cmu.cs.stage3.alice.core.Model) pair[0].getBonus()).getSandbox();
-			Object b = ((edu.cmu.cs.stage3.alice.core.Model) pair[1].getBonus()).getSandbox();
+	protected Object getValue(final edu.cmu.cs.stage3.alice.core.Transformable subjectValue,
+			final edu.cmu.cs.stage3.alice.core.Transformable objectValue) {
+		final edu.cmu.cs.stage3.alice.core.World world = subjectValue.getWorld();
+		final edu.cmu.cs.stage3.alice.scenegraph.Visual[] subjectSGVisuals = subjectValue.getAllSceneGraphVisuals();
+		final edu.cmu.cs.stage3.alice.scenegraph.Visual[] objectSGVisuals = subjectValue.getAllSceneGraphVisuals();
+		final edu.cmu.cs.stage3.alice.scenegraph.Visual[][] collisions = world.getCollisions();
+		for (final Visual[] pair : collisions) {
+			final Object a = ((edu.cmu.cs.stage3.alice.core.Model) pair[0].getBonus()).getSandbox();
+			final Object b = ((edu.cmu.cs.stage3.alice.core.Model) pair[1].getBonus()).getSandbox();
 			if (a == subjectValue) {
 				if (b == objectValue) {
 					return Boolean.TRUE;
@@ -33,7 +34,7 @@ public class IsCollidingWith extends SubjectObjectQuestion {
 	}
 
 	@Override
-	protected void started(edu.cmu.cs.stage3.alice.core.World world, double time) {
+	protected void started(final edu.cmu.cs.stage3.alice.core.World world, final double time) {
 		super.started(world, time);
 		m_world = world;
 		m_world.addCollisionManagementFor(subject.getTransformableValue());
@@ -41,7 +42,7 @@ public class IsCollidingWith extends SubjectObjectQuestion {
 	}
 
 	@Override
-	protected void stopped(edu.cmu.cs.stage3.alice.core.World world, double time) {
+	protected void stopped(final edu.cmu.cs.stage3.alice.core.World world, final double time) {
 		super.stopped(world, time);
 		if (m_world != world) {
 			throw new Error();

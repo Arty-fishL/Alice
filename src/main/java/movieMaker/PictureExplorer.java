@@ -32,18 +32,19 @@ import javax.swing.JTextField;
 import javax.swing.JViewport;
 import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
+
 /**
  * Displays a picture and lets you explore the picture by displaying the x, y,
  * red, green, and blue values of the pixel at the cursor when you click a mouse
  * button or press and hold a mouse button while moving the cursor. It also lets
  * you zoom in or out. You can also type in a x and y value to see the color at
  * that location.
- * 
+ *
  * Originally created for the Jython Environment for Students (JES). Modified to
  * work with DrJava by Barbara Ericson
- * 
+ *
  * Copyright Georgia Institute of Technology 2004
- * 
+ *
  * @author Keith McDermottt, gte047w@cc.gatech.edu
  * @author Barb Ericson ericson@cc.gatech.edu
  */
@@ -84,7 +85,7 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 	private JMenuItem fiveHundred;
 
 	/** The picture being explored */
-	private DigitalPicture picture;
+	private final DigitalPicture picture;
 
 	/** The image icon used to display the picture */
 	private ImageIcon scrollImageIcon;
@@ -95,16 +96,18 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 	/** the zoom factor (amount to zoom) */
 	private double zoomFactor;
 
-	/** the number system to use, 0 means starting at 0, 1 means starting at 1 */
+	/**
+	 * the number system to use, 0 means starting at 0, 1 means starting at 1
+	 */
 	private int numberBase = 0;
 
 	/**
 	 * Public constructor
-	 * 
+	 *
 	 * @param picture
 	 *            the picture to explore
 	 */
-	public PictureExplorer(DigitalPicture picture) {
+	public PictureExplorer(final DigitalPicture picture) {
 		// set the fields
 		this.picture = picture;
 		zoomFactor = 1;
@@ -122,11 +125,11 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 
 	/**
 	 * Set the title of the frame
-	 * 
+	 *
 	 * @param title
 	 *            the title to use in the JFrame
 	 */
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		pictureFrame.setTitle(title);
 	}
 
@@ -143,7 +146,7 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 																					// close
 																					// stop
 		pictureFrame.setTitle(picture.getTitle());
-		PictureExplorerFocusTraversalPolicy newPolicy = new PictureExplorerFocusTraversalPolicy();
+		final PictureExplorerFocusTraversalPolicy newPolicy = new PictureExplorerFocusTraversalPolicy();
 		pictureFrame.setFocusTraversalPolicy(newPolicy);
 
 	}
@@ -193,7 +196,7 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 	private void createAndInitScrollingImage() {
 		scrollPane = new JScrollPane();
 
-		BufferedImage bimg = picture.getBufferedImage();
+		final BufferedImage bimg = picture.getBufferedImage();
 		imageDisplay = new ImageDisplay(bimg);
 		imageDisplay.addMouseMotionListener(this);
 		imageDisplay.addMouseListener(this);
@@ -229,8 +232,8 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 	 */
 	private void setUpNextAndPreviousButtons() {
 		// create the image icons for the buttons
-		Icon prevIcon = new ImageIcon(SoundExplorer.class.getResource("leftArrow.gif"), "previous index");
-		Icon nextIcon = new ImageIcon(SoundExplorer.class.getResource("rightArrow.gif"), "next index");
+		final Icon prevIcon = new ImageIcon(SoundExplorer.class.getResource("leftArrow.gif"), "previous index");
+		final Icon nextIcon = new ImageIcon(SoundExplorer.class.getResource("rightArrow.gif"), "next index");
 		// create the arrow buttons
 		xPrevButton = new JButton(prevIcon);
 		xNextButton = new JButton(nextIcon);
@@ -244,12 +247,12 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 		yPrevButton.setToolTipText("Click to go to the previous y value");
 
 		// set the sizes of the buttons
-		int prevWidth = prevIcon.getIconWidth() + 2;
-		int nextWidth = nextIcon.getIconWidth() + 2;
-		int prevHeight = prevIcon.getIconHeight() + 2;
-		int nextHeight = nextIcon.getIconHeight() + 2;
-		Dimension prevDimension = new Dimension(prevWidth, prevHeight);
-		Dimension nextDimension = new Dimension(nextWidth, nextHeight);
+		final int prevWidth = prevIcon.getIconWidth() + 2;
+		final int nextWidth = nextIcon.getIconWidth() + 2;
+		final int prevHeight = prevIcon.getIconHeight() + 2;
+		final int nextHeight = nextIcon.getIconHeight() + 2;
+		final Dimension prevDimension = new Dimension(prevWidth, prevHeight);
+		final Dimension nextDimension = new Dimension(nextWidth, nextHeight);
 		xPrevButton.setPreferredSize(prevDimension);
 		yPrevButton.setPreferredSize(prevDimension);
 		xNextButton.setPreferredSize(nextDimension);
@@ -258,7 +261,7 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 		// handle previous x button press
 		xPrevButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent evt) {
+			public void actionPerformed(final ActionEvent evt) {
 				xIndex--;
 				if (xIndex < 0) {
 					xIndex = 0;
@@ -270,7 +273,7 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 		// handle previous y button press
 		yPrevButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent evt) {
+			public void actionPerformed(final ActionEvent evt) {
 				yIndex--;
 				if (yIndex < 0) {
 					yIndex = 0;
@@ -282,7 +285,7 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 		// handle next x button press
 		xNextButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent evt) {
+			public void actionPerformed(final ActionEvent evt) {
 				xIndex++;
 				if (xIndex >= picture.getWidth()) {
 					xIndex = picture.getWidth() - 1;
@@ -294,7 +297,7 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 		// handle next y button press
 		yNextButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent evt) {
+			public void actionPerformed(final ActionEvent evt) {
 				yIndex++;
 				if (yIndex >= picture.getHeight()) {
 					yIndex = picture.getHeight() - 1;
@@ -306,17 +309,17 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 
 	/**
 	 * Create the pixel location panel
-	 * 
+	 *
 	 * @param labelFont
 	 *            the font for the labels
 	 * @return the location panel
 	 */
-	public JPanel createLocationPanel(Font labelFont) {
+	public JPanel createLocationPanel(final Font labelFont) {
 
 		// create a location panel
-		JPanel locationPanel = new JPanel();
+		final JPanel locationPanel = new JPanel();
 		locationPanel.setLayout(new FlowLayout());
-		Box hBox = Box.createHorizontalBox();
+		final Box hBox = Box.createHorizontalBox();
 
 		// create the labels
 		xLabel = new JLabel("X:");
@@ -326,14 +329,14 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 		xValue = new JTextField(Integer.toString(xIndex + numberBase), 6);
 		xValue.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				displayPixelInformation(xValue.getText(), yValue.getText());
 			}
 		});
 		yValue = new JTextField(Integer.toString(yIndex + numberBase), 6);
 		yValue.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				displayPixelInformation(xValue.getText(), yValue.getText());
 			}
 		});
@@ -366,18 +369,18 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 
 	/**
 	 * Create the color information panel
-	 * 
+	 *
 	 * @param labelFont
 	 *            the font to use for labels
 	 * @return the color information panel
 	 */
-	private JPanel createColorInfoPanel(Font labelFont) {
+	private JPanel createColorInfoPanel(final Font labelFont) {
 		// create a color info panel
-		JPanel colorInfoPanel = new JPanel();
+		final JPanel colorInfoPanel = new JPanel();
 		colorInfoPanel.setLayout(new FlowLayout());
 
 		// get the pixel at the x and y
-		Pixel pixel = new Pixel(picture, xIndex, yIndex);
+		final Pixel pixel = new Pixel(picture, xIndex, yIndex);
 
 		// create the labels
 		rValue = new JLabel("R: " + pixel.getRed());
@@ -415,17 +418,17 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 	 */
 	private void createInfoPanel() {
 		// create the info panel and set the layout
-		JPanel infoPanel = new JPanel();
+		final JPanel infoPanel = new JPanel();
 		infoPanel.setLayout(new BorderLayout());
 
 		// create the font
-		Font largerFont = new Font(infoPanel.getFont().getName(), infoPanel.getFont().getStyle(), 14);
+		final Font largerFont = new Font(infoPanel.getFont().getName(), infoPanel.getFont().getStyle(), 14);
 
 		// create the pixel location panel
-		JPanel locationPanel = createLocationPanel(largerFont);
+		final JPanel locationPanel = createLocationPanel(largerFont);
 
 		// create the color informaiton panel
-		JPanel colorInfoPanel = createColorInfoPanel(largerFont);
+		final JPanel colorInfoPanel = createColorInfoPanel(largerFont);
 
 		// add the panels to the info panel
 		infoPanel.add(BorderLayout.NORTH, locationPanel);
@@ -441,25 +444,25 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 	 */
 	public void checkScroll() {
 		// get the x and y position in pixels
-		int xPos = (int) (xIndex * zoomFactor);
-		int yPos = (int) (yIndex * zoomFactor);
+		final int xPos = (int) (xIndex * zoomFactor);
+		final int yPos = (int) (yIndex * zoomFactor);
 
 		// only do this if the image is larger than normal
 		if (zoomFactor > 1) {
 
 			// get the rectangle that defines the current view
-			JViewport viewport = scrollPane.getViewport();
-			Rectangle rect = viewport.getViewRect();
-			int rectMinX = (int) rect.getX();
-			int rectWidth = (int) rect.getWidth();
-			int rectMaxX = rectMinX + rectWidth - 1;
-			int rectMinY = (int) rect.getY();
-			int rectHeight = (int) rect.getHeight();
-			int rectMaxY = rectMinY + rectHeight - 1;
+			final JViewport viewport = scrollPane.getViewport();
+			final Rectangle rect = viewport.getViewRect();
+			final int rectMinX = (int) rect.getX();
+			final int rectWidth = (int) rect.getWidth();
+			final int rectMaxX = rectMinX + rectWidth - 1;
+			final int rectMinY = (int) rect.getY();
+			final int rectHeight = (int) rect.getHeight();
+			final int rectMaxY = rectMinY + rectHeight - 1;
 
 			// get the maximum possible x and y index
-			int maxIndexX = (int) (picture.getWidth() * zoomFactor) - rectWidth - 1;
-			int maxIndexY = (int) (picture.getHeight() * zoomFactor) - rectHeight - 1;
+			final int maxIndexX = (int) (picture.getWidth() * zoomFactor) - rectWidth - 1;
+			final int maxIndexY = (int) (picture.getHeight() * zoomFactor) - rectHeight - 1;
 
 			// calculate how to position the current position in the middle of
 			// the viewing
@@ -487,18 +490,18 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 	/**
 	 * Zooms in the on picture by scaling the image. It is extremely memory
 	 * intensive.
-	 * 
+	 *
 	 * @param factor
 	 *            the amount to zoom by
 	 */
-	public void zoom(double factor) {
+	public void zoom(final double factor) {
 		// save the current zoom factor
 		zoomFactor = factor;
 
 		// calculate the new width and height and get an image that size
-		int width = (int) (picture.getWidth() * zoomFactor);
-		int height = (int) (picture.getHeight() * zoomFactor);
-		BufferedImage bimg = picture.getBufferedImage();
+		final int width = (int) (picture.getWidth() * zoomFactor);
+		final int height = (int) (picture.getHeight() * zoomFactor);
+		final BufferedImage bimg = picture.getBufferedImage();
 
 		// set the scroll image icon to the new image
 		imageDisplay.setImage(bimg.getScaledInstance(width, height, Image.SCALE_DEFAULT));
@@ -521,25 +524,25 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 
 	/**
 	 * Called when the mouse is dragged (button held down and moved)
-	 * 
+	 *
 	 * @param e
 	 *            the mouse event
 	 */
 	@Override
-	public void mouseDragged(MouseEvent e) {
+	public void mouseDragged(final MouseEvent e) {
 		displayPixelInformation(e);
 	}
 
 	/**
 	 * Method to check if the given x and y are in the picture
-	 * 
+	 *
 	 * @param x
 	 *            the horiztonal value
 	 * @param y
 	 *            the vertical value
 	 * @return true if the x and y are in the picture and false otherwise
 	 */
-	private boolean isLocationInPicture(int x, int y) {
+	private boolean isLocationInPicture(final int x, final int y) {
 		boolean result = false; // the default is false
 		if (x >= 0 && x < picture.getWidth() && y >= 0 && y < picture.getHeight()) {
 			result = true;
@@ -551,13 +554,13 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 	/**
 	 * Method to display the pixel information from the passed x and y but also
 	 * converts x and y from strings
-	 * 
+	 *
 	 * @param xString
 	 *            the x value as a string from the user
 	 * @param yString
 	 *            the y value as a string from the user
 	 */
-	public void displayPixelInformation(String xString, String yString) {
+	public void displayPixelInformation(final String xString, final String yString) {
 		int x = -1;
 		int y = -1;
 		try {
@@ -565,7 +568,8 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 			x = x - numberBase;
 			y = Integer.parseInt(yString);
 			y = y - numberBase;
-		} catch (Exception ex) {}
+		} catch (final Exception ex) {
+		}
 
 		if (x >= 0 && y >= 0) {
 			displayPixelInformation(x, y);
@@ -574,13 +578,13 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 
 	/**
 	 * Method to display pixel information for the passed x and y
-	 * 
+	 *
 	 * @param pictureX
 	 *            the x value in the picture
 	 * @param pictureY
 	 *            the y value in the picture
 	 */
-	private void displayPixelInformation(int pictureX, int pictureY) {
+	private void displayPixelInformation(final int pictureX, final int pictureY) {
 		// check that this x and y is in range
 		if (isLocationInPicture(pictureX, pictureY)) {
 			// save the current x and y index
@@ -588,7 +592,7 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 			yIndex = pictureY;
 
 			// get the pixel at the x and y
-			Pixel pixel = new Pixel(picture, xIndex, yIndex);
+			final Pixel pixel = new Pixel(picture, xIndex, yIndex);
 
 			// set the values based on the pixel
 			xValue.setText(Integer.toString(xIndex + numberBase));
@@ -609,19 +613,19 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 
 	/**
 	 * Method to display pixel information based on a mouse event
-	 * 
+	 *
 	 * @param e
 	 *            a mouse event
 	 */
-	private void displayPixelInformation(MouseEvent e) {
+	private void displayPixelInformation(final MouseEvent e) {
 
 		// get the cursor x and y
-		int cursorX = e.getX();
-		int cursorY = e.getY();
+		final int cursorX = e.getX();
+		final int cursorY = e.getY();
 
 		// get the x and y in the original (not scaled image)
-		int pictureX = (int) (cursorX / zoomFactor + numberBase);
-		int pictureY = (int) (cursorY / zoomFactor + numberBase);
+		final int pictureX = (int) (cursorX / zoomFactor + numberBase);
+		final int pictureY = (int) (cursorY / zoomFactor + numberBase);
 
 		// display the information for this x and y
 		displayPixelInformation(pictureX, pictureY);
@@ -645,64 +649,64 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 
 	/**
 	 * Method called when the mouse is moved with no buttons down
-	 * 
+	 *
 	 * @param e
 	 *            the mouse event
 	 */
 	@Override
-	public void mouseMoved(MouseEvent e) {
+	public void mouseMoved(final MouseEvent e) {
 	}
 
 	/**
 	 * Method called when the mouse is clicked
-	 * 
+	 *
 	 * @param e
 	 *            the mouse event
 	 */
 	@Override
-	public void mouseClicked(MouseEvent e) {
+	public void mouseClicked(final MouseEvent e) {
 		displayPixelInformation(e);
 	}
 
 	/**
 	 * Method called when the mouse button is pushed down
-	 * 
+	 *
 	 * @param e
 	 *            the mouse event
 	 */
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public void mousePressed(final MouseEvent e) {
 		displayPixelInformation(e);
 	}
 
 	/**
 	 * Method called when the mouse button is released
-	 * 
+	 *
 	 * @param e
 	 *            the mouse event
 	 */
 	@Override
-	public void mouseReleased(MouseEvent e) {
+	public void mouseReleased(final MouseEvent e) {
 	}
 
 	/**
 	 * Method called when the component is entered (mouse moves over it)
-	 * 
+	 *
 	 * @param e
 	 *            the mouse event
 	 */
 	@Override
-	public void mouseEntered(MouseEvent e) {
+	public void mouseEntered(final MouseEvent e) {
 	}
 
 	/**
 	 * Method called when the mouse moves over the component
-	 * 
+	 *
 	 * @param e
 	 *            the mouse event
 	 */
 	@Override
-	public void mouseExited(MouseEvent e) {
+	public void mouseExited(final MouseEvent e) {
 	}
 
 	/**
@@ -720,12 +724,12 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 
 	/**
 	 * Controls the zoom menu bar
-	 * 
+	 *
 	 * @param a
 	 *            the ActionEvent
 	 */
 	@Override
-	public void actionPerformed(ActionEvent a) {
+	public void actionPerformed(final ActionEvent a) {
 
 		if (a.getActionCommand().equals("Update")) {
 			repaint();
@@ -777,9 +781,9 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 	/**
 	 * Test Main. It will ask you to pick a file and then show it
 	 */
-	public static void main(String args[]) {
-		Picture p = new Picture(FileChooser.pickAFile());
-		PictureExplorer test = new PictureExplorer(p);
+	public static void main(final String args[]) {
+		final Picture p = new Picture(FileChooser.pickAFile());
+		final PictureExplorer test = new PictureExplorer(p);
 
 	}
 
@@ -793,7 +797,7 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 		 */
 
 		@Override
-		public Component getComponentAfter(Container focusCycleRoot, Component aComponent) {
+		public Component getComponentAfter(final Container focusCycleRoot, final Component aComponent) {
 			if (aComponent.equals(xValue)) {
 				return yValue;
 			} else {
@@ -806,7 +810,7 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 		 */
 
 		@Override
-		public Component getComponentBefore(Container focusCycleRoot, Component aComponent) {
+		public Component getComponentBefore(final Container focusCycleRoot, final Component aComponent) {
 			if (aComponent.equals(xValue)) {
 				return yValue;
 			} else {
@@ -815,17 +819,17 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 		}
 
 		@Override
-		public Component getDefaultComponent(Container focusCycleRoot) {
+		public Component getDefaultComponent(final Container focusCycleRoot) {
 			return xValue;
 		}
 
 		@Override
-		public Component getLastComponent(Container focusCycleRoot) {
+		public Component getLastComponent(final Container focusCycleRoot) {
 			return yValue;
 		}
 
 		@Override
-		public Component getFirstComponent(Container focusCycleRoot) {
+		public Component getFirstComponent(final Container focusCycleRoot) {
 			return xValue;
 		}
 	}

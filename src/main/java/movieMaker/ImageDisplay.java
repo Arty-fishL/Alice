@@ -11,16 +11,20 @@ import javax.swing.Scrollable;
 
 /**
  * Class to display an image and the current location with a + sign
- * 
+ *
  * Copyright Georgia Institute of Technology 2004
- * 
+ *
  * @author Barb Ericson ericson@cc.gatech.edu
  */
 public class ImageDisplay extends JPanel implements Scrollable {
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -7177564639477278234L;
 	// ///////////////////////// fields (attributes ///////////////////////////
 	private Image image; // the image to draw
-	private Dimension prefSize; // the preferred size of the display
+	private final Dimension prefSize; // the preferred size of the display
 	private int currentX = 0; // the current x index
 	private int currentY = 0; // the current y index
 
@@ -28,11 +32,11 @@ public class ImageDisplay extends JPanel implements Scrollable {
 
 	/**
 	 * Constructor that takes the image to display
-	 * 
+	 *
 	 * @param theImage
 	 *            the image to display
 	 */
-	public ImageDisplay(Image theImage) {
+	public ImageDisplay(final Image theImage) {
 		image = theImage;
 		prefSize = new Dimension(image.getWidth(this), image.getHeight(this));
 		setPreferredSize(prefSize);
@@ -41,7 +45,7 @@ public class ImageDisplay extends JPanel implements Scrollable {
 
 	/**
 	 * Constructor that takes the image and current x and y
-	 * 
+	 *
 	 * @param theImage
 	 *            the image to display
 	 * @param x
@@ -49,7 +53,7 @@ public class ImageDisplay extends JPanel implements Scrollable {
 	 * @param y
 	 *            the current y value to use
 	 */
-	public ImageDisplay(Image theImage, int x, int y) {
+	public ImageDisplay(final Image theImage, final int x, final int y) {
 		this(theImage);
 		currentX = x;
 		currentY = y;
@@ -60,7 +64,7 @@ public class ImageDisplay extends JPanel implements Scrollable {
 
 	/**
 	 * Method to get the image
-	 * 
+	 *
 	 * @return the image
 	 */
 	public Image getImage() {
@@ -69,7 +73,7 @@ public class ImageDisplay extends JPanel implements Scrollable {
 
 	/**
 	 * Method to get the current x
-	 * 
+	 *
 	 * @return the current x value
 	 */
 	public int getCurrentX() {
@@ -78,7 +82,7 @@ public class ImageDisplay extends JPanel implements Scrollable {
 
 	/**
 	 * Method to get the current y
-	 * 
+	 *
 	 * @return the current y value
 	 */
 	public int getCurrentY() {
@@ -87,33 +91,33 @@ public class ImageDisplay extends JPanel implements Scrollable {
 
 	/**
 	 * Method to set the current x
-	 * 
+	 *
 	 * @param x
 	 *            the x value to use
 	 */
-	public void setCurrentX(int x) {
+	public void setCurrentX(final int x) {
 		currentX = x;
 		repaint();
 	}
 
 	/**
 	 * Method to set the current y
-	 * 
+	 *
 	 * @param y
 	 *            the y value to use
 	 */
-	public void setCurrentY(int y) {
+	public void setCurrentY(final int y) {
 		currentY = y;
 		repaint();
 	}
 
 	/**
 	 * Method to set the image
-	 * 
+	 *
 	 * @param theImage
 	 *            the new image to use
 	 */
-	public void setImage(Image theImage) {
+	public void setImage(final Image theImage) {
 		image = theImage;
 		setPreferredSize(new Dimension(image.getWidth(this), image.getHeight(this)));
 		repaint();
@@ -121,7 +125,7 @@ public class ImageDisplay extends JPanel implements Scrollable {
 
 	/**
 	 * Method to return the preferred size
-	 * 
+	 *
 	 * @return the preferred size of this component
 	 */
 	@Override
@@ -131,7 +135,7 @@ public class ImageDisplay extends JPanel implements Scrollable {
 
 	/**
 	 * Method to return the unit increment for scrolling
-	 * 
+	 *
 	 * @param visibleRect
 	 *            the visible rectangle
 	 * @param orientation
@@ -141,13 +145,13 @@ public class ImageDisplay extends JPanel implements Scrollable {
 	 * @return the unit increment for arrow clicks
 	 */
 	@Override
-	public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
+	public int getScrollableUnitIncrement(final Rectangle visibleRect, final int orientation, final int direction) {
 		return 1;
 	}
 
 	/**
 	 * Method to return the block increment for scrolling
-	 * 
+	 *
 	 * @param visibleRect
 	 *            the visible rectangle
 	 * @param orientation
@@ -157,13 +161,13 @@ public class ImageDisplay extends JPanel implements Scrollable {
 	 * @return the block increment for clicking in scroll area
 	 */
 	@Override
-	public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
+	public int getScrollableBlockIncrement(final Rectangle visibleRect, final int orientation, final int direction) {
 		return 10;
 	}
 
 	/**
 	 * Method to check if the viewport width is the source width
-	 * 
+	 *
 	 * @return true if viewport and source have same width
 	 */
 	@Override
@@ -173,7 +177,7 @@ public class ImageDisplay extends JPanel implements Scrollable {
 
 	/**
 	 * Method to check if the viewport height is the source height
-	 * 
+	 *
 	 * @return true if viewport and soure have same height
 	 */
 	@Override
@@ -183,23 +187,23 @@ public class ImageDisplay extends JPanel implements Scrollable {
 
 	/**
 	 * Method to handle displaying this object
-	 * 
+	 *
 	 * @param g
 	 *            the graphics object for drawing with
 	 */
 
 	@Override
-	public void paintComponent(Graphics g) {
+	public void paintComponent(final Graphics g) {
 		super.paintComponent(g);
-		int num = 3;
+		final int num = 3;
 		int xStart = currentX - num;
 		int xEnd = currentX + num;
 		int yStart = currentY - num;
 		int yEnd = currentY + num;
-		int width = image.getWidth(this);
-		int maxX = width - 1;
-		int height = image.getHeight(this);
-		int maxY = height - 1;
+		final int width = image.getWidth(this);
+		final int maxX = width - 1;
+		final int height = image.getHeight(this);
+		final int maxY = height - 1;
 
 		// draw the image
 		g.drawImage(image, 0, 0, this);
@@ -228,10 +232,10 @@ public class ImageDisplay extends JPanel implements Scrollable {
 			g.setColor(Color.black);
 
 			// outline the cross in black so that it shows up better
-			int leftX = currentX - 1;
-			int rightX = currentX + 1;
-			int upY = currentY - 1;
-			int downY = currentY + 1;
+			final int leftX = currentX - 1;
+			final int rightX = currentX + 1;
+			final int upY = currentY - 1;
+			final int downY = currentY + 1;
 			if (xStart <= leftX && upY >= 0) {
 				g.drawLine(xStart, upY, leftX, upY);
 			}

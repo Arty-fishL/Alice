@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -27,15 +27,15 @@ package edu.cmu.cs.stage3.alice.authoringtool.util;
  * @author Jason Pratt
  */
 public class LightenDarkenFilter extends java.awt.image.RGBImageFilter {
-	private int percent;
+	private final int percent;
 
 	/**
 	 * positive percent value lightens, negative percent value darkens
 	 */
-	public static java.awt.Image createLightenedOrDarkenedImage(java.awt.Image i, int percent) {
-		LightenDarkenFilter filter = new LightenDarkenFilter(percent);
-		java.awt.image.ImageProducer prod = new java.awt.image.FilteredImageSource(i.getSource(), filter);
-		java.awt.Image filteredImage = java.awt.Toolkit.getDefaultToolkit().createImage(prod);
+	public static java.awt.Image createLightenedOrDarkenedImage(final java.awt.Image i, final int percent) {
+		final LightenDarkenFilter filter = new LightenDarkenFilter(percent);
+		final java.awt.image.ImageProducer prod = new java.awt.image.FilteredImageSource(i.getSource(), filter);
+		final java.awt.Image filteredImage = java.awt.Toolkit.getDefaultToolkit().createImage(prod);
 
 		return filteredImage;
 	}
@@ -43,14 +43,14 @@ public class LightenDarkenFilter extends java.awt.image.RGBImageFilter {
 	/**
 	 * positive percent value lightens, negative percent value darkens
 	 */
-	public LightenDarkenFilter(int p) {
+	public LightenDarkenFilter(final int p) {
 		percent = p;
 
 		canFilterIndexColorModel = true;
 	}
 
 	@Override
-	public int filterRGB(int x, int y, int rgb) {
+	public int filterRGB(final int x, final int y, final int rgb) {
 		int r = rgb >> 16 & 0xff;
 		int g = rgb >> 8 & 0xff;
 		int b = rgb >> 0 & 0xff;

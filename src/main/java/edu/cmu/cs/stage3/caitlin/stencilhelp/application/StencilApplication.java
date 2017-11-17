@@ -27,7 +27,7 @@ import java.awt.Dimension;
 
 /**
  * Title: Show Me Description: Copyright: Copyright (c) 2001 Company:
- * 
+ *
  * @author Caitlin Kelleher
  * @version 1.0
  */
@@ -35,25 +35,33 @@ import java.awt.Dimension;
 public interface StencilApplication {
 
 	public void setGlassPane(java.awt.Component c);
+
 	public void setVisible(boolean visible); // setStencilVisible
 
 	public String getIDForPoint(java.awt.Point p, boolean dropSite);
+
 	public java.awt.Rectangle getBoxForID(String ID) throws IDDoesNotExistException;
 
 	public boolean isIDVisible(String ID) throws IDDoesNotExistException;
+
 	public void makeIDVisible(String ID) throws IDDoesNotExistException;
 
 	public void makeWayPoint();
+
 	public void goToPreviousWayPoint();
+
 	public void clearWayPoints();
 
 	public StateCapsule getCurrentState();
+
 	public StateCapsule getStateCapsuleFromString(String capsuleString);
+
 	public boolean doesStateMatch(StateCapsule stateCapsule);
 
 	public void performTask(String taskString);
 
 	public void handleMouseEvent(java.awt.event.MouseEvent e);
+
 	public void deFocus();
 
 	public Dimension getScreenSize();

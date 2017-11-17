@@ -14,6 +14,10 @@ import java.util.Vector;
 import javax.swing.JPanel;
 
 public class StencilPanel extends JPanel implements MouseEventListener, ReadWriteListener {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -1506713176778750356L;
 	protected StencilManager stencilManager = null;
 	protected boolean isDrawing = false;
 	protected Vector holes = new Vector();
@@ -33,27 +37,29 @@ public class StencilPanel extends JPanel implements MouseEventListener, ReadWrit
 	protected java.awt.MediaTracker mTracker = null;
 	protected java.awt.TexturePaint tPaint = null;
 
-	public StencilPanel(StencilManager stencilManager) {
+	public StencilPanel(final StencilManager stencilManager) {
 		this.stencilManager = stencilManager;
-		java.awt.Toolkit toolKit = getToolkit();
+		final java.awt.Toolkit toolKit = getToolkit();
 		img = toolKit.getImage("blue2.png");
 		mTracker = new java.awt.MediaTracker(this);
 		mTracker.addImage(img, 1);
 	}
 
-	public void setIsDrawing(boolean isDrawing) {
+	public void setIsDrawing(final boolean isDrawing) {
 		this.isDrawing = isDrawing;
 		setVisible(isDrawing);
 	}
+
 	public boolean getIsDrawing() {
 		return isDrawing;
 	}
+
 	public void redraw() {
 		// categorizeShapes(shapes, clearRegions);
 		this.repaint();
 	}
 
-	protected void categorizeShapes(Vector shapes, Vector allRegions) {
+	protected void categorizeShapes(final Vector shapes, final Vector allRegions) {
 		// if (nothingToDraw) {
 		holes = new Vector();
 		filledShapes = new Vector();
@@ -64,7 +70,7 @@ public class StencilPanel extends JPanel implements MouseEventListener, ReadWrit
 		// }
 
 		for (int i = 0; i < shapes.size(); i++) {
-			ScreenShape currentShape = (ScreenShape) shapes.elementAt(i);
+			final ScreenShape currentShape = (ScreenShape) shapes.elementAt(i);
 			if (currentShape.getColor() == null) { // this is a hole
 				holes.addElement(currentShape);
 				if (currentShape.getIndex() == 0) {
@@ -72,7 +78,7 @@ public class StencilPanel extends JPanel implements MouseEventListener, ReadWrit
 				}
 			} else {
 				if (currentShape.getIndex() == 0 && allRegions.size() > 0) {
-					java.awt.Rectangle r = (java.awt.Rectangle) allRegions.remove(0);
+					final java.awt.Rectangle r = (java.awt.Rectangle) allRegions.remove(0);
 					clearRegions.addElement(r);
 				}
 				if (currentShape.getIsFilled() == true) {
@@ -92,24 +98,25 @@ public class StencilPanel extends JPanel implements MouseEventListener, ReadWrit
 	}
 
 	@Override
-	public void paint(Graphics g) {
+	public void paint(final Graphics g) {
 		super.paint(g);
 
 		if (screenBuffer == null || screenBuffer.getWidth() != getWidth() || screenBuffer.getHeight() != getHeight()) {
-			screenBuffer = new java.awt.image.BufferedImage(getWidth(), getHeight(), java.awt.image.BufferedImage.TYPE_INT_ARGB);
+			screenBuffer = new java.awt.image.BufferedImage(getWidth(), getHeight(),
+					java.awt.image.BufferedImage.TYPE_INT_ARGB);
 
-			Graphics graphics = screenBuffer.getGraphics();
+			final Graphics graphics = screenBuffer.getGraphics();
 			graphics.setColor(bgColor);
 			graphics.fillRect(0, 0, getWidth(), getHeight());
 		}
 
-		Vector allShapes = stencilManager.getUpdateShapes();
-		Vector allRegions = stencilManager.getClearRegions();
+		final Vector allShapes = stencilManager.getUpdateShapes();
+		final Vector allRegions = stencilManager.getClearRegions();
 		categorizeShapes(allShapes, allRegions);
 
-		Graphics2D bg2 = (Graphics2D) screenBuffer.getGraphics();
+		final Graphics2D bg2 = (Graphics2D) screenBuffer.getGraphics();
 		bg2.setBackground(new Color(255, 255, 255, 0));
-		Graphics2D g2 = (Graphics2D) g;
+		final Graphics2D g2 = (Graphics2D) g;
 
 		/*
 		 * if ((mTracker.checkID(1, true)) && (bImg == null) ){ bImg = new
@@ -125,12 +132,14 @@ public class StencilPanel extends JPanel implements MouseEventListener, ReadWrit
 			Object oldAntialiasing = null;
 			if (g instanceof java.awt.Graphics2D) {
 				oldAntialiasing = ((java.awt.Graphics2D) g).getRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING);
-				((java.awt.Graphics2D) g).addRenderingHints(new java.awt.RenderingHints(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON));
-				bg2.addRenderingHints(new java.awt.RenderingHints(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON));
+				((java.awt.Graphics2D) g).addRenderingHints(new java.awt.RenderingHints(
+						java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON));
+				bg2.addRenderingHints(new java.awt.RenderingHints(java.awt.RenderingHints.KEY_ANTIALIASING,
+						java.awt.RenderingHints.VALUE_ANTIALIAS_ON));
 			}
 
 			Area outside = null;
-			Color outsideColor = bgColor;
+			final Color outsideColor = bgColor;
 			if (tPaint != null) {
 				bg2.setPaint(tPaint);
 			} else {
@@ -139,33 +148,35 @@ public class StencilPanel extends JPanel implements MouseEventListener, ReadWrit
 
 			// clear out all the appropriate regions and refill them
 			for (int i = 0; i < clearRegions.size(); i++) {
-				java.awt.Rectangle r = (java.awt.Rectangle) clearRegions.elementAt(i);
+				final java.awt.Rectangle r = (java.awt.Rectangle) clearRegions.elementAt(i);
 				bg2.clearRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(), (int) r.getHeight());
 				bg2.fillRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(), (int) r.getHeight());
 			}
 
 			// now make the holes
 			for (int i = 0; i < holeRegions.size(); i++) {
-				java.awt.Rectangle r = (java.awt.Rectangle) holeRegions.elementAt(i);
+				final java.awt.Rectangle r = (java.awt.Rectangle) holeRegions.elementAt(i);
 				bg2.clearRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(), (int) r.getHeight());
 			}
 
 			// subtract out the holes
 			for (int i = 0; i < holes.size(); i++) {
 				outside = new Area((java.awt.Rectangle) holeRegions.elementAt(i));
-				ScreenShape scrShape = (ScreenShape) holes.elementAt(i);
+				final ScreenShape scrShape = (ScreenShape) holes.elementAt(i);
 
-				RoundRectangle2D.Double r = (RoundRectangle2D.Double) scrShape.getShape();
-				RoundRectangle2D.Double upperShadow = new RoundRectangle2D.Double(r.x - 2, r.y - 2, r.width + 2, r.height + 2, r.arcwidth, r.archeight);
-				RoundRectangle2D.Double lowerShadow = new RoundRectangle2D.Double(r.x, r.y, r.width + 2, r.height + 2, r.arcwidth, r.archeight);
+				final RoundRectangle2D.Double r = (RoundRectangle2D.Double) scrShape.getShape();
+				final RoundRectangle2D.Double upperShadow = new RoundRectangle2D.Double(r.x - 2, r.y - 2, r.width + 2,
+						r.height + 2, r.arcwidth, r.archeight);
+				final RoundRectangle2D.Double lowerShadow = new RoundRectangle2D.Double(r.x, r.y, r.width + 2,
+						r.height + 2, r.arcwidth, r.archeight);
 
-				Area upperBorder = new Area(upperShadow);
-				Area currentArea = new Area(r);
+				final Area upperBorder = new Area(upperShadow);
+				final Area currentArea = new Area(r);
 				upperBorder.subtract(currentArea);
 				bg2.setColor(Color.darkGray);
 				bg2.fill(upperBorder);
 
-				Area lowerBorder = new Area(lowerShadow);
+				final Area lowerBorder = new Area(lowerShadow);
 				lowerBorder.subtract(currentArea);
 				bg2.setColor(Color.lightGray);
 				bg2.fill(lowerBorder);
@@ -178,7 +189,7 @@ public class StencilPanel extends JPanel implements MouseEventListener, ReadWrit
 			bg2.setColor(outsideColor);
 
 			for (int i = 0; i < filledShapes.size(); i++) {
-				ScreenShape currentShape = (ScreenShape) filledShapes.elementAt(i);
+				final ScreenShape currentShape = (ScreenShape) filledShapes.elementAt(i);
 				if (currentShape.shape instanceof Line2D) {
 					bg2.setColor(currentShape.color);
 					bg2.draw(currentShape.shape);
@@ -189,7 +200,7 @@ public class StencilPanel extends JPanel implements MouseEventListener, ReadWrit
 			}
 
 			for (int i = 0; i < unfilledShapes.size(); i++) {
-				ScreenShape currentShape = (ScreenShape) unfilledShapes.elementAt(i);
+				final ScreenShape currentShape = (ScreenShape) unfilledShapes.elementAt(i);
 				bg2.setColor(currentShape.color);
 				bg2.draw(currentShape.shape);
 
@@ -198,7 +209,8 @@ public class StencilPanel extends JPanel implements MouseEventListener, ReadWrit
 			g2.drawImage(screenBuffer, null, null);
 
 			if (g instanceof java.awt.Graphics2D) {
-				((java.awt.Graphics2D) g).addRenderingHints(new java.awt.RenderingHints(java.awt.RenderingHints.KEY_ANTIALIASING, oldAntialiasing));
+				((java.awt.Graphics2D) g).addRenderingHints(
+						new java.awt.RenderingHints(java.awt.RenderingHints.KEY_ANTIALIASING, oldAntialiasing));
 			}
 		}
 
@@ -206,18 +218,22 @@ public class StencilPanel extends JPanel implements MouseEventListener, ReadWrit
 	}
 
 	// StencilPanelMessageListener stuff
-	public void addMessageListener(StencilPanelMessageListener spmListener) {
+	public void addMessageListener(final StencilPanelMessageListener spmListener) {
 		stencilPanelMessageListeners.addElement(spmListener);
 	}
-	public void removeMessageListener(StencilPanelMessageListener spmListener) {
+
+	public void removeMessageListener(final StencilPanelMessageListener spmListener) {
 		stencilPanelMessageListeners.remove(spmListener);
 	}
+
 	public void removeAllMessageListeners() {
 		stencilPanelMessageListeners.removeAllElements();
 	}
-	protected void broadCastMessage(int messageID, Object data) {
+
+	protected void broadCastMessage(final int messageID, final Object data) {
 		for (int i = 0; i < stencilPanelMessageListeners.size(); i++) {
-			StencilPanelMessageListener spmListener = (StencilPanelMessageListener) stencilPanelMessageListeners.elementAt(i);
+			final StencilPanelMessageListener spmListener = (StencilPanelMessageListener) stencilPanelMessageListeners
+					.elementAt(i);
 			spmListener.messageReceived(messageID, data);
 		}
 	}
@@ -225,19 +241,22 @@ public class StencilPanel extends JPanel implements MouseEventListener, ReadWrit
 	// MouseEventListener interface
 
 	@Override
-	public boolean contains(Point point) {
+	public boolean contains(final Point point) {
 		return true;
 	}
+
 	@Override
-	public boolean mousePressed(MouseEvent e) {
+	public boolean mousePressed(final MouseEvent e) {
 		return false;
 	}
+
 	@Override
-	public boolean mouseReleased(MouseEvent e) {
+	public boolean mouseReleased(final MouseEvent e) {
 		return false;
 	}
+
 	@Override
-	public boolean mouseClicked(MouseEvent e) {
+	public boolean mouseClicked(final MouseEvent e) {
 		if (e.getModifiers() == InputEvent.BUTTON3_MASK) {
 			broadCastMessage(StencilPanelMessageListener.SHOW_MENU, e.getPoint());
 			// Vector shapes = stencilManager.getShapesToDraw();
@@ -251,26 +270,30 @@ public class StencilPanel extends JPanel implements MouseEventListener, ReadWrit
 		}
 		return false;
 	}
+
 	@Override
-	public boolean mouseEntered(MouseEvent e) {
+	public boolean mouseEntered(final MouseEvent e) {
 		return false;
 	}
+
 	@Override
-	public boolean mouseExited(MouseEvent e) {
+	public boolean mouseExited(final MouseEvent e) {
 		return false;
 	}
+
 	@Override
-	public boolean mouseMoved(MouseEvent e) {
+	public boolean mouseMoved(final MouseEvent e) {
 		return false;
 	}
+
 	@Override
-	public boolean mouseDragged(MouseEvent e) {
+	public boolean mouseDragged(final MouseEvent e) {
 		return false;
 	}
 
 	/* readwrite listener */
 	@Override
-	public void setWriteEnabled(boolean enabled) {
+	public void setWriteEnabled(final boolean enabled) {
 		writeEnabled = enabled;
 	}
 

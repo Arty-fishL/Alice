@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -31,7 +31,8 @@ import edu.cmu.cs.stage3.alice.core.property.ReferenceFrameProperty;
 import edu.cmu.cs.stage3.alice.core.property.TransformableProperty;
 import edu.cmu.cs.stage3.alice.core.property.Vector3Property;
 
-public class BillboardBehavior extends InternalResponseBehavior implements edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationListener {
+public class BillboardBehavior extends InternalResponseBehavior
+		implements edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationListener {
 	public final TransformableProperty subject = new TransformableProperty(this, "subject", null);
 	public final TransformableProperty target = new TransformableProperty(this, "target", null);
 	public final Vector3Property offset = new Vector3Property(this, "offset", null);
@@ -49,7 +50,7 @@ public class BillboardBehavior extends InternalResponseBehavior implements edu.c
 	private boolean m_isDirty = false;
 
 	@Override
-	protected void propertyChanging(edu.cmu.cs.stage3.alice.core.Property property, Object value) {
+	protected void propertyChanging(final edu.cmu.cs.stage3.alice.core.Property property, final Object value) {
 		if (property == target) {
 			if (value == subject.get()) {
 				throw new IllegalArgumentException("billboard cannot point at self");
@@ -60,7 +61,7 @@ public class BillboardBehavior extends InternalResponseBehavior implements edu.c
 	}
 
 	@Override
-	protected void propertyChanged(edu.cmu.cs.stage3.alice.core.Property property, Object value) {
+	protected void propertyChanged(final edu.cmu.cs.stage3.alice.core.Property property, final Object value) {
 		if (property == target) {
 			// todo
 		} else {
@@ -69,12 +70,13 @@ public class BillboardBehavior extends InternalResponseBehavior implements edu.c
 	}
 
 	@Override
-	public void absoluteTransformationChanged(edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent) {
+	public void absoluteTransformationChanged(
+			final edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent) {
 		m_isDirty = true;
 	}
 
 	@Override
-	public void internalSchedule(double time, double dt) {
+	public void internalSchedule(final double time, final double dt) {
 		if (m_isDirty) {
 			if (m_subject != null && m_target != null) {
 				m_subject.pointAtRightNow(m_target, m_offset, m_upGuide, m_asSeenBy, m_onlyAffectYaw);
@@ -84,7 +86,7 @@ public class BillboardBehavior extends InternalResponseBehavior implements edu.c
 	}
 
 	@Override
-	public void started(World world, double time) {
+	public void started(final World world, final double time) {
 		super.started(world, time);
 		m_subject = subject.getTransformableValue();
 		m_target = target.getTransformableValue();
@@ -102,7 +104,7 @@ public class BillboardBehavior extends InternalResponseBehavior implements edu.c
 	}
 
 	@Override
-	public void stopped(World world, double time) {
+	public void stopped(final World world, final double time) {
 		if (m_subject != null) {
 			m_subject.removeAbsoluteTransformationListener(this);
 		}

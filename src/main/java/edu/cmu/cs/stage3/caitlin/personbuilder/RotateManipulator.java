@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -43,19 +43,20 @@ public class RotateManipulator extends edu.cmu.cs.stage3.alice.authoringtool.uti
 
 	protected edu.cmu.cs.stage3.alice.core.Scheduler scheduler;
 
-	private edu.cmu.cs.stage3.alice.authoringtool.util.Configuration orbitConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration.getLocalConfiguration(RenderTargetOrbitManipulator.class.getPackage());
+	private final edu.cmu.cs.stage3.alice.authoringtool.util.Configuration orbitConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration
+			.getLocalConfiguration(RenderTargetOrbitManipulator.class.getPackage());
 
-	public RotateManipulator(edu.cmu.cs.stage3.alice.scenegraph.renderer.OnscreenRenderTarget renderTarget) {
+	public RotateManipulator(final edu.cmu.cs.stage3.alice.scenegraph.renderer.OnscreenRenderTarget renderTarget) {
 		super(renderTarget);
 		helper.setName("helper");
 		configInit();
 	}
 
-	public void setTransformableToRotate(edu.cmu.cs.stage3.alice.core.Transformable toRotate) {
+	public void setTransformableToRotate(final edu.cmu.cs.stage3.alice.core.Transformable toRotate) {
 		this.toRotate = toRotate;
 	}
 
-	public void setClippingPlaneAdjustmentEnabled(boolean enabled) {
+	public void setClippingPlaneAdjustmentEnabled(final boolean enabled) {
 		clippingPlaneAdjustmentEnabled = enabled;
 	}
 
@@ -69,12 +70,13 @@ public class RotateManipulator extends edu.cmu.cs.stage3.alice.authoringtool.uti
 	}
 
 	@Override
-	public void mousePressed(java.awt.event.MouseEvent ev) {
+	public void mousePressed(final java.awt.event.MouseEvent ev) {
 		// DEBUG System.out.println( "mousePressed" );
 		if (enabled) {
 			super.mousePressed(ev);
 
-			orbitRotationFactor = Double.parseDouble(orbitConfig.getValue("renderTargetOrbitManipulator.orbitRotationFactor"));
+			orbitRotationFactor = Double
+					.parseDouble(orbitConfig.getValue("renderTargetOrbitManipulator.orbitRotationFactor"));
 			orbitZoomFactor = Double.parseDouble(orbitConfig.getValue("renderTargetOrbitManipulator.orbitZoomFactor"));
 
 			mouseIsDown = true;
@@ -102,14 +104,14 @@ public class RotateManipulator extends edu.cmu.cs.stage3.alice.authoringtool.uti
 	}
 
 	@Override
-	public void mouseReleased(java.awt.event.MouseEvent ev) {
+	public void mouseReleased(final java.awt.event.MouseEvent ev) {
 		// DEBUG System.out.println( "mouseReleased" );
 
 		super.mouseReleased(ev);
 	}
 
 	@Override
-	public void mouseDragged(java.awt.event.MouseEvent ev) {
+	public void mouseDragged(final java.awt.event.MouseEvent ev) {
 		// DEBUG System.out.println( "mouseDragged" );
 		if (enabled) {
 			super.mouseDragged(ev);
@@ -121,17 +123,17 @@ public class RotateManipulator extends edu.cmu.cs.stage3.alice.authoringtool.uti
 					// sgPickedTransformable );
 
 					if (clippingPlaneAdjustmentEnabled) {
-						double objectRadius = ePickedTransformable.getBoundingSphere().getRadius();
-						double objectDist = sgPickedTransformable.getPosition(sgCameraTransformable).getLength();
-						double farDist = Math.max(objectDist * 3, objectDist + objectRadius);
-						double nearDist = Math.max((objectDist - objectRadius) * .01, .0001);
+						final double objectRadius = ePickedTransformable.getBoundingSphere().getRadius();
+						final double objectDist = sgPickedTransformable.getPosition(sgCameraTransformable).getLength();
+						final double farDist = Math.max(objectDist * 3, objectDist + objectRadius);
+						final double nearDist = Math.max((objectDist - objectRadius) * .01, .0001);
 						// System.out.println( "farDist: " + farDist +
-						// ",  nearDist: " + nearDist );
+						// ", nearDist: " + nearDist );
 						sgCamera.setFarClippingPlaneDistance(farDist);
 					}
 
-					boolean controlDown = ev.isControlDown();
-					boolean shiftDown = ev.isShiftDown();
+					final boolean controlDown = ev.isControlDown();
+					final boolean shiftDown = ev.isShiftDown();
 
 					tempVec.x = 0.0;
 					tempVec.y = 0.0;
@@ -153,15 +155,18 @@ public class RotateManipulator extends edu.cmu.cs.stage3.alice.authoringtool.uti
 
 					// TODO: avoid singularities
 					if (shiftDown) {
-						sgCameraTransformable.rotate(edu.cmu.cs.stage3.math.MathUtilities.getYAxis(), dx * orbitRotationFactor, helper);
-						sgCameraTransformable.rotate(edu.cmu.cs.stage3.math.MathUtilities.getXAxis(), -dy * orbitRotationFactor, helper);
+						sgCameraTransformable.rotate(edu.cmu.cs.stage3.math.MathUtilities.getYAxis(),
+								dx * orbitRotationFactor, helper);
+						sgCameraTransformable.rotate(edu.cmu.cs.stage3.math.MathUtilities.getXAxis(),
+								-dy * orbitRotationFactor, helper);
 					} else {
 						// sgCameraTransformable.translate(
 						// edu.cmu.cs.stage3.math.Vector3.multiply(
 						// edu.cmu.cs.stage3.math.Vector3.Z_AXIS,
 						// dy*orbitZoomFactor*sizeFactor ),
 						// sgCameraTransformable );
-						sgCameraTransformable.rotate(edu.cmu.cs.stage3.math.MathUtilities.getYAxis(), dx * orbitRotationFactor, helper);
+						sgCameraTransformable.rotate(edu.cmu.cs.stage3.math.MathUtilities.getYAxis(),
+								dx * orbitRotationFactor, helper);
 					}
 
 					if (eCameraTransformable != null) {

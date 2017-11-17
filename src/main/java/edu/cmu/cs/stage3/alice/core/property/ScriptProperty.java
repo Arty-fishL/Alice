@@ -27,17 +27,20 @@ import edu.cmu.cs.stage3.alice.core.Element;
 
 public class ScriptProperty extends StringProperty {
 	private edu.cmu.cs.stage3.alice.scripting.Code m_code = null;
-	public ScriptProperty(Element owner, String name, String defaultValue) {
+
+	public ScriptProperty(final Element owner, final String name, final String defaultValue) {
 		super(owner, name, defaultValue);
 	}
 
 	@Override
-	protected void onSet(Object value) {
+	protected void onSet(final Object value) {
 		super.onSet(value);
 		m_code = null;
 	}
-	public edu.cmu.cs.stage3.alice.scripting.Code getCode(edu.cmu.cs.stage3.alice.scripting.CompileType compileType) {
-		String script = getStringValue();
+
+	public edu.cmu.cs.stage3.alice.scripting.Code getCode(
+			final edu.cmu.cs.stage3.alice.scripting.CompileType compileType) {
+		final String script = getStringValue();
 		if (script != null && script.length() > 0) {
 			if (m_code == null) {
 				m_code = getOwner().compile(script, this, compileType);
@@ -47,11 +50,13 @@ public class ScriptProperty extends StringProperty {
 		}
 		return m_code;
 	}
-	private String loadScript(java.io.InputStream is) throws java.io.IOException {
-		java.io.BufferedReader br = new java.io.BufferedReader(new java.io.InputStreamReader(new java.io.BufferedInputStream(is)));
-		StringBuffer sb = new StringBuffer();
+
+	private String loadScript(final java.io.InputStream is) throws java.io.IOException {
+		final java.io.BufferedReader br = new java.io.BufferedReader(
+				new java.io.InputStreamReader(new java.io.BufferedInputStream(is)));
+		final StringBuffer sb = new StringBuffer();
 		while (true) {
-			String s = br.readLine();
+			final String s = br.readLine();
 			if (s != null) {
 				sb.append(s);
 				sb.append('\n');
@@ -65,9 +70,10 @@ public class ScriptProperty extends StringProperty {
 			return "";
 		}
 	}
-	private void storeScript(java.io.OutputStream os) throws java.io.IOException {
-		java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream(os);
-		String script = getStringValue();
+
+	private void storeScript(final java.io.OutputStream os) throws java.io.IOException {
+		final java.io.BufferedOutputStream bos = new java.io.BufferedOutputStream(os);
+		final String script = getStringValue();
 		if (script != null) {
 			bos.write(script.getBytes());
 		}
@@ -75,45 +81,48 @@ public class ScriptProperty extends StringProperty {
 	}
 
 	@Override
-	protected void decodeObject(org.w3c.dom.Element node, edu.cmu.cs.stage3.io.DirectoryTreeLoader loader, java.util.Vector referencesToBeResolved, double version) throws java.io.IOException {
+	protected void decodeObject(final org.w3c.dom.Element node, final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader,
+			final java.util.Vector referencesToBeResolved, final double version) throws java.io.IOException {
 		m_associatedFileKey = null;
-		String filename = getFilename(getNodeText(node));
-		java.io.InputStream is = loader.readFile(filename);
+		final String filename = getFilename(getNodeText(node));
+		final java.io.InputStream is = loader.readFile(filename);
 		set(loadScript(is));
 		loader.closeCurrentFile();
 		try {
 			m_associatedFileKey = loader.getKeepKey(filename);
-		} catch (edu.cmu.cs.stage3.io.KeepFileNotSupportedException kfnse) {
+		} catch (final edu.cmu.cs.stage3.io.KeepFileNotSupportedException kfnse) {
 			m_associatedFileKey = null;
 		}
 	}
 
 	@Override
-	protected void encodeObject(org.w3c.dom.Document document, org.w3c.dom.Element node, edu.cmu.cs.stage3.io.DirectoryTreeStorer storer, edu.cmu.cs.stage3.alice.core.ReferenceGenerator referenceGenerator) throws java.io.IOException {
-		String filename = getName() + ".py";
+	protected void encodeObject(final org.w3c.dom.Document document, final org.w3c.dom.Element node,
+			final edu.cmu.cs.stage3.io.DirectoryTreeStorer storer,
+			final edu.cmu.cs.stage3.alice.core.ReferenceGenerator referenceGenerator) throws java.io.IOException {
+		final String filename = getName() + ".py";
 		Object associatedFileKey;
 		try {
 			associatedFileKey = storer.getKeepKey(filename);
-		} catch (edu.cmu.cs.stage3.io.KeepFileNotSupportedException kfnse) {
+		} catch (final edu.cmu.cs.stage3.io.KeepFileNotSupportedException kfnse) {
 			associatedFileKey = null;
 		}
 		if (m_associatedFileKey == null || !m_associatedFileKey.equals(associatedFileKey)) {
 			m_associatedFileKey = null;
-			java.io.OutputStream os = storer.createFile(filename, true);
+			final java.io.OutputStream os = storer.createFile(filename, true);
 			storeScript(os);
 			storer.closeCurrentFile();
 			try {
 				m_associatedFileKey = storer.getKeepKey(filename);
-			} catch (edu.cmu.cs.stage3.io.KeepFileNotSupportedException kfnse) {
+			} catch (final edu.cmu.cs.stage3.io.KeepFileNotSupportedException kfnse) {
 				m_associatedFileKey = null;
 			}
 		} else {
 			if (storer.isKeepFileSupported()) {
 				try {
 					storer.keepFile(filename);
-				} catch (edu.cmu.cs.stage3.io.KeepFileNotSupportedException kfnse) {
+				} catch (final edu.cmu.cs.stage3.io.KeepFileNotSupportedException kfnse) {
 					throw new Error(storer + " returns true for isKeepFileSupported(), but then throws " + kfnse);
-				} catch (edu.cmu.cs.stage3.io.KeepFileDoesNotExistException kfdne) {
+				} catch (final edu.cmu.cs.stage3.io.KeepFileDoesNotExistException kfdne) {
 					throw new edu.cmu.cs.stage3.alice.core.ExceptionWrapper(kfdne, filename);
 				}
 			}
@@ -122,9 +131,11 @@ public class ScriptProperty extends StringProperty {
 	}
 
 	@Override
-	public void keepAnyAssociatedFiles(edu.cmu.cs.stage3.io.DirectoryTreeStorer storer) throws edu.cmu.cs.stage3.io.KeepFileNotSupportedException, edu.cmu.cs.stage3.io.KeepFileDoesNotExistException {
+	public void keepAnyAssociatedFiles(final edu.cmu.cs.stage3.io.DirectoryTreeStorer storer)
+			throws edu.cmu.cs.stage3.io.KeepFileNotSupportedException,
+			edu.cmu.cs.stage3.io.KeepFileDoesNotExistException {
 		super.keepAnyAssociatedFiles(storer);
-		String filename = getName() + ".py";
+		final String filename = getName() + ".py";
 		storer.keepFile(filename);
 	}
 }

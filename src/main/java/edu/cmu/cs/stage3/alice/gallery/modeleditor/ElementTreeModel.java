@@ -2,10 +2,10 @@ package edu.cmu.cs.stage3.alice.gallery.modeleditor;
 
 class ElementTreeModel implements javax.swing.tree.TreeModel {
 	private edu.cmu.cs.stage3.alice.core.Element m_root;
-	private java.util.Vector m_treeModelListeners = new java.util.Vector();
+	private final java.util.Vector m_treeModelListeners = new java.util.Vector();
 
 	private Object[] getPath(edu.cmu.cs.stage3.alice.core.Element element) {
-		java.util.Vector v = new java.util.Vector();
+		final java.util.Vector v = new java.util.Vector();
 		while (element != m_root.getParent()) {
 			v.insertElementAt(element, 0);
 			element = element.getParent();
@@ -13,7 +13,7 @@ class ElementTreeModel implements javax.swing.tree.TreeModel {
 		return v.toArray();
 	}
 
-	private boolean isAccepted(edu.cmu.cs.stage3.alice.core.Element e) {
+	private boolean isAccepted(final edu.cmu.cs.stage3.alice.core.Element e) {
 		if (e instanceof edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray) {
 			return false;
 		} else if (e instanceof edu.cmu.cs.stage3.alice.core.Response) {
@@ -24,33 +24,38 @@ class ElementTreeModel implements javax.swing.tree.TreeModel {
 			return true;
 		}
 	}
-	private void fireTreeStructureChanged(Object[] path) {
-		javax.swing.event.TreeModelEvent e = new javax.swing.event.TreeModelEvent(this, path);
-		java.util.Enumeration enum0 = m_treeModelListeners.elements();
+
+	private void fireTreeStructureChanged(final Object[] path) {
+		final javax.swing.event.TreeModelEvent e = new javax.swing.event.TreeModelEvent(this, path);
+		final java.util.Enumeration enum0 = m_treeModelListeners.elements();
 		while (enum0.hasMoreElements()) {
-			javax.swing.event.TreeModelListener l = (javax.swing.event.TreeModelListener) enum0.nextElement();
+			final javax.swing.event.TreeModelListener l = (javax.swing.event.TreeModelListener) enum0.nextElement();
 			l.treeStructureChanged(e);
 		}
 	}
-	public void setRoot(edu.cmu.cs.stage3.alice.core.Element root) {
+
+	public void setRoot(final edu.cmu.cs.stage3.alice.core.Element root) {
 		m_root = root;
 		fireTreeStructureChanged(getPath(m_root));
 	}
+
 	@Override
-	public void addTreeModelListener(javax.swing.event.TreeModelListener l) {
+	public void addTreeModelListener(final javax.swing.event.TreeModelListener l) {
 		m_treeModelListeners.addElement(l);
 	}
+
 	@Override
-	public void removeTreeModelListener(javax.swing.event.TreeModelListener l) {
+	public void removeTreeModelListener(final javax.swing.event.TreeModelListener l) {
 		m_treeModelListeners.removeElement(l);
 	}
+
 	@Override
-	public Object getChild(Object parent, int index) {
-		edu.cmu.cs.stage3.alice.core.Element parentElement = (edu.cmu.cs.stage3.alice.core.Element) parent;
+	public Object getChild(final Object parent, final int index) {
+		final edu.cmu.cs.stage3.alice.core.Element parentElement = (edu.cmu.cs.stage3.alice.core.Element) parent;
 		// return parentElement.getChildAt( index );
 		int i = 0;
 		for (int lcv = 0; lcv < parentElement.getChildCount(); lcv++) {
-			edu.cmu.cs.stage3.alice.core.Element childAtLCV = parentElement.getChildAt(lcv);
+			final edu.cmu.cs.stage3.alice.core.Element childAtLCV = parentElement.getChildAt(lcv);
 			if (isAccepted(childAtLCV)) {
 				if (i == index) {
 					return childAtLCV;
@@ -60,27 +65,29 @@ class ElementTreeModel implements javax.swing.tree.TreeModel {
 		}
 		return null;
 	}
+
 	@Override
-	public int getChildCount(Object parent) {
-		edu.cmu.cs.stage3.alice.core.Element parentElement = (edu.cmu.cs.stage3.alice.core.Element) parent;
+	public int getChildCount(final Object parent) {
+		final edu.cmu.cs.stage3.alice.core.Element parentElement = (edu.cmu.cs.stage3.alice.core.Element) parent;
 		// return parentElement.getChildCount();
 		int i = 0;
 		for (int lcv = 0; lcv < parentElement.getChildCount(); lcv++) {
-			edu.cmu.cs.stage3.alice.core.Element childAtLCV = parentElement.getChildAt(lcv);
+			final edu.cmu.cs.stage3.alice.core.Element childAtLCV = parentElement.getChildAt(lcv);
 			if (isAccepted(childAtLCV)) {
 				i++;
 			}
 		}
 		return i;
 	}
+
 	@Override
-	public int getIndexOfChild(Object parent, Object child) {
-		edu.cmu.cs.stage3.alice.core.Element parentElement = (edu.cmu.cs.stage3.alice.core.Element) parent;
+	public int getIndexOfChild(final Object parent, final Object child) {
+		final edu.cmu.cs.stage3.alice.core.Element parentElement = (edu.cmu.cs.stage3.alice.core.Element) parent;
 		// return parentElement.getIndexOfChild(
 		// (edu.cmu.cs.stage3.alice.core.Element)child );
 		int i = 0;
 		for (int lcv = 0; lcv < parentElement.getChildCount(); lcv++) {
-			edu.cmu.cs.stage3.alice.core.Element childAtLCV = parentElement.getChildAt(lcv);
+			final edu.cmu.cs.stage3.alice.core.Element childAtLCV = parentElement.getChildAt(lcv);
 			if (childAtLCV == child) {
 				return i;
 			}
@@ -90,22 +97,25 @@ class ElementTreeModel implements javax.swing.tree.TreeModel {
 		}
 		return -1;
 	}
+
 	@Override
 	public Object getRoot() {
 		return m_root;
 	}
+
 	@Override
-	public boolean isLeaf(Object node) {
+	public boolean isLeaf(final Object node) {
 		return getChildCount(node) == 0;
 	}
+
 	@Override
-	public void valueForPathChanged(javax.swing.tree.TreePath path, Object newValue) {
+	public void valueForPathChanged(final javax.swing.tree.TreePath path, final Object newValue) {
 		// System.out.println( "*** valueForPathChanged : " + path + " --> " +
 		// newValue );
 	}
 
-	public void removeDescendant(edu.cmu.cs.stage3.alice.core.Element descendant) {
-		Object[] path = getPath(descendant.getParent());
+	public void removeDescendant(final edu.cmu.cs.stage3.alice.core.Element descendant) {
+		final Object[] path = getPath(descendant.getParent());
 		descendant.removeFromParent();
 		fireTreeStructureChanged(path);
 	}

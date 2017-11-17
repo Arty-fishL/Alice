@@ -7,32 +7,39 @@ import edu.cmu.cs.stage3.alice.core.Variable;
 public class ModelVisualization extends edu.cmu.cs.stage3.alice.core.Visualization {
 
 	@Override
-	public void unhook(Model model) {
+	public void unhook(final Model model) {
 		if (getItem() == model) {
 			setItem(null);
 		}
 	}
+
 	private TextureMap getEmptyTextureMap() {
 		return (TextureMap) getChildNamed("EmptyTexture");
 	}
+
 	private TextureMap getFilledTextureMap() {
 		return (TextureMap) getChildNamed("FilledTexture");
 	}
+
 	private Variable m_itemVariable = null;
+
 	private Variable getItemVariable() {
 		if (m_itemVariable == null) {
 			m_itemVariable = (Variable) getChildNamed("Item");
 		}
 		return m_itemVariable;
 	}
+
 	public Model getItem() {
 		return (Model) getItemVariable().value.getValue();
 	}
-	public void setItem(Model value) {
+
+	public void setItem(final Model value) {
 		getItemVariable().value.set(value);
 	}
-	private void synchronize(Model curr) {
-		Model prev = getItem();
+
+	private void synchronize(final Model curr) {
+		final Model prev = getItem();
 		if (prev != null && prev != curr) {
 			prev.visualization.set(null);
 		}
@@ -49,24 +56,26 @@ public class ModelVisualization extends edu.cmu.cs.stage3.alice.core.Visualizati
 	@Override
 	protected void loadCompleted() {
 		super.loadCompleted();
-		Variable item = getItemVariable();
+		final Variable item = getItemVariable();
 		item.value.addPropertyListener(new edu.cmu.cs.stage3.alice.core.event.PropertyListener() {
 			@Override
-			public void propertyChanging(edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
+			public void propertyChanging(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
 			}
+
 			@Override
-			public void propertyChanged(edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
+			public void propertyChanged(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
 				ModelVisualization.this.synchronize((Model) propertyEvent.getValue());
 			}
 		});
 		synchronize(getItem());
 	}
-	public javax.vecmath.Matrix4d getTransformationFor(edu.cmu.cs.stage3.alice.core.Model model) {
-		javax.vecmath.Matrix4d m = new javax.vecmath.Matrix4d();
+
+	public javax.vecmath.Matrix4d getTransformationFor(final edu.cmu.cs.stage3.alice.core.Model model) {
+		final javax.vecmath.Matrix4d m = new javax.vecmath.Matrix4d();
 		m.setIdentity();
 		if (model != null) {
-			edu.cmu.cs.stage3.math.Box box = model.getBoundingBox();
-			javax.vecmath.Vector3d v = box.getCenterOfBottomFace();
+			final edu.cmu.cs.stage3.math.Box box = model.getBoundingBox();
+			final javax.vecmath.Vector3d v = box.getCenterOfBottomFace();
 			if (v != null) {
 				v.negate();
 				m.m30 = v.x;

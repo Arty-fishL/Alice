@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -33,20 +33,22 @@ public class PropertyUndoableRedoable implements ContextAssignableUndoableRedoab
 	 * @deprecated please use other constructor
 	 */
 	@Deprecated
-	public PropertyUndoableRedoable(edu.cmu.cs.stage3.alice.core.Property property, Object oldValue, Object newValue, Object context) {
+	public PropertyUndoableRedoable(final edu.cmu.cs.stage3.alice.core.Property property, final Object oldValue,
+			final Object newValue, final Object context) {
 		this.property = property;
 		this.oldValue = oldValue;
 		this.newValue = newValue;
 	}
 
-	public PropertyUndoableRedoable(edu.cmu.cs.stage3.alice.core.Property property, Object oldValue, Object newValue) {
+	public PropertyUndoableRedoable(final edu.cmu.cs.stage3.alice.core.Property property, final Object oldValue,
+			final Object newValue) {
 		this.property = property;
 		this.oldValue = oldValue;
 		this.newValue = newValue;
 	}
 
 	@Override
-	public void setContext(Object context) {
+	public void setContext(final Object context) {
 		this.context = context;
 	}
 
@@ -72,7 +74,7 @@ public class PropertyUndoableRedoable implements ContextAssignableUndoableRedoab
 
 	@Override
 	public String toString() {
-		StringBuffer s = new StringBuffer();
+		final StringBuffer s = new StringBuffer();
 		s.append("edu.cmu.cs.stage3.alice.authoringtool.util.PropertyUndoableRedoable[ ");
 		s.append("property=" + property + "; ");
 		s.append("oldValue=" + oldValue + "; ");

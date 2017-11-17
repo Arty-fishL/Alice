@@ -31,8 +31,10 @@ import edu.cmu.cs.stage3.alice.core.property.TransformableProperty;
 public abstract class AbstractBubbleAnimation extends edu.cmu.cs.stage3.alice.core.Response {
 	public final TransformableProperty subject = new TransformableProperty(this, "subject", null);
 	public final StringProperty what = new StringProperty(this, "what", "hello");
-	public final ColorProperty bubbleColor = new ColorProperty(this, "bubbleColor", edu.cmu.cs.stage3.alice.scenegraph.Color.WHITE);
-	public final ColorProperty textColor = new ColorProperty(this, "textColor", edu.cmu.cs.stage3.alice.scenegraph.Color.BLACK);
+	public final ColorProperty bubbleColor = new ColorProperty(this, "bubbleColor",
+			edu.cmu.cs.stage3.alice.scenegraph.Color.WHITE);
+	public final ColorProperty textColor = new ColorProperty(this, "textColor",
+			edu.cmu.cs.stage3.alice.scenegraph.Color.BLACK);
 	public final NumberProperty fontSize = new NumberProperty(this, "fontSize", new Integer(20));
 	public final StringProperty fontName = new StringProperty(this, "fontName", "Arial");
 
@@ -41,18 +43,21 @@ public abstract class AbstractBubbleAnimation extends edu.cmu.cs.stage3.alice.co
 	public abstract class RuntimeAbstractBubbleAnimation extends RuntimeResponse {
 		private edu.cmu.cs.stage3.alice.core.World m_world;
 		private edu.cmu.cs.stage3.alice.core.bubble.Bubble m_bubble;
+
 		protected abstract edu.cmu.cs.stage3.alice.core.bubble.Bubble createBubble();
 
 		@Override
-		public void prologue(double t) {
+		public void prologue(final double t) {
 			super.prologue(t);
-			edu.cmu.cs.stage3.alice.core.Transformable subjectValue = subject.getTransformableValue();
+			final edu.cmu.cs.stage3.alice.core.Transformable subjectValue = subject.getTransformableValue();
 			if (subjectValue == null) {
-				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException("subject must not be null.", getCurrentStack(), subject);
+				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException("subject must not be null.",
+						getCurrentStack(), subject);
 			}
-			String whatValue = what.getStringValue();
+			final String whatValue = what.getStringValue();
 			if (whatValue == null || whatValue.length() == 0) {
-				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException("what must not be null.", getCurrentStack(), what);
+				throw new edu.cmu.cs.stage3.alice.core.SimulationPropertyException("what must not be null.",
+						getCurrentStack(), what);
 			}
 
 			if (m_bubble == null) {
@@ -74,10 +79,10 @@ public abstract class AbstractBubbleAnimation extends edu.cmu.cs.stage3.alice.co
 			 * m_character =
 			 * AbstractBubbleAnimation.this.subject.getTransformableValue();
 			 * m_what = AbstractBubbleAnimation.this.what.getStringValue();
-			 * 
+			 *
 			 * if (m_character != null) { javax.vecmath.Vector3d top = null;
 			 * bubble.message.set( m_what );
-			 * 
+			 *
 			 * bubble.bubbleColor.set(AbstractBubbleAnimation.this.bubbleColor.
 			 * getColorValue());
 			 * bubble.textColor.set(AbstractBubbleAnimation.this
@@ -86,7 +91,7 @@ public abstract class AbstractBubbleAnimation extends edu.cmu.cs.stage3.alice.co
 			 * .this.fontSize.getNumberValue());
 			 * bubble.fontName.set(AbstractBubbleAnimation
 			 * .this.fontName.getStringValue());
-			 * 
+			 *
 			 * bubble.drawBubble(); bubble.vehicle.set( m_character ); if
 			 * (headTransformable != null) { top =
 			 * headTransformable.getBoundingBox().getMaximum();
@@ -99,7 +104,7 @@ public abstract class AbstractBubbleAnimation extends edu.cmu.cs.stage3.alice.co
 		}
 
 		@Override
-		public void epilogue(double t) {
+		public void epilogue(final double t) {
 			if (m_bubble != null) {
 				m_bubble.setIsShowing(false);
 				if (m_world != null) {

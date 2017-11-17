@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -24,16 +24,18 @@
 package edu.cmu.cs.stage3.image;
 
 public class ImageIO {
-	private static final String[] s_codecNames = {"png", "jpeg", "tiff", "bmp", "gif"};
-	private static final String[] s_pngExtensions = {"png"};
-	private static final String[] s_jpegExtensions = {"jpeg", "jpg"};
-	private static final String[] s_tiffExtensions = {"tiff", "tif"};
-	private static final String[] s_bmpExtensions = {"bmp"};
-	private static final String[] s_gifExtensions = {"gif"};
+	private static final String[] s_codecNames = { "png", "jpeg", "tiff", "bmp", "gif" };
+	private static final String[] s_pngExtensions = { "png" };
+	private static final String[] s_jpegExtensions = { "jpeg", "jpg" };
+	private static final String[] s_tiffExtensions = { "tiff", "tif" };
+	private static final String[] s_bmpExtensions = { "bmp" };
+	private static final String[] s_gifExtensions = { "gif" };
+
 	public static String[] getCodecNames() {
 		return s_codecNames;
 	}
-	public static String[] getExtensionsForCodec(String codecName) {
+
+	public static String[] getExtensionsForCodec(final String codecName) {
 		if (codecName.equals("png")) {
 			return s_pngExtensions;
 		} else if (codecName.equals("jpeg")) {
@@ -48,11 +50,12 @@ public class ImageIO {
 			return null;
 		}
 	}
-	public static String mapExtensionToCodecName(String extension) {
-		String[] codecNames = ImageIO.getCodecNames();
-		for (String codecName : codecNames) {
-			String[] extensions = getExtensionsForCodec(codecName);
-			for (String extension2 : extensions) {
+
+	public static String mapExtensionToCodecName(final String extension) {
+		final String[] codecNames = ImageIO.getCodecNames();
+		for (final String codecName : codecNames) {
+			final String[] extensions = getExtensionsForCodec(codecName);
+			for (final String extension2 : extensions) {
 				if (extension2.equalsIgnoreCase(extension)) {
 					return codecName;
 				}
@@ -61,29 +64,33 @@ public class ImageIO {
 		return null;
 	}
 
-	public static java.awt.Image load(String codecName, java.io.InputStream inputStream) throws java.io.IOException {
+	public static java.awt.Image load(final String codecName, final java.io.InputStream inputStream)
+			throws java.io.IOException {
 		return load(codecName, inputStream, null);
 	}
-	public static java.awt.Image load(String codecName, java.io.InputStream inputStream, edu.cmu.cs.stage3.image.codec.ImageDecodeParam imageDecodeParam) throws java.io.IOException {
+
+	public static java.awt.Image load(final String codecName, final java.io.InputStream inputStream,
+			final edu.cmu.cs.stage3.image.codec.ImageDecodeParam imageDecodeParam) throws java.io.IOException {
 		java.io.BufferedInputStream bufferedInputStream;
 		if (inputStream instanceof java.io.BufferedInputStream) {
 			bufferedInputStream = (java.io.BufferedInputStream) inputStream;
 		} else {
 			bufferedInputStream = new java.io.BufferedInputStream(inputStream);
 		}
-		edu.cmu.cs.stage3.image.codec.ImageDecoder imageDecoder = edu.cmu.cs.stage3.image.codec.ImageCodec.createImageDecoder(codecName, bufferedInputStream, imageDecodeParam);
-		java.awt.image.RenderedImage renderedImage = imageDecoder.decodeAsRenderedImage();
+		final edu.cmu.cs.stage3.image.codec.ImageDecoder imageDecoder = edu.cmu.cs.stage3.image.codec.ImageCodec
+				.createImageDecoder(codecName, bufferedInputStream, imageDecodeParam);
+		final java.awt.image.RenderedImage renderedImage = imageDecoder.decodeAsRenderedImage();
 
 		if (renderedImage instanceof java.awt.Image) {
 			return (java.awt.Image) renderedImage;
 		} else {
-			java.awt.image.Raster raster = renderedImage.getData();
-			java.awt.image.ColorModel colorModel = renderedImage.getColorModel();
+			final java.awt.image.Raster raster = renderedImage.getData();
+			final java.awt.image.ColorModel colorModel = renderedImage.getColorModel();
 			java.util.Hashtable properties = null;
-			String[] propertyNames = renderedImage.getPropertyNames();
+			final String[] propertyNames = renderedImage.getPropertyNames();
 			if (propertyNames != null) {
 				properties = new java.util.Hashtable();
-				for (String propertyName : propertyNames) {
+				for (final String propertyName : propertyNames) {
 					properties.put(propertyName, renderedImage.getProperty(propertyName));
 				}
 			}
@@ -93,26 +100,33 @@ public class ImageIO {
 			} else {
 				writableRaster = raster.createCompatibleWritableRaster();
 			}
-			java.awt.image.BufferedImage bufferedImage = new java.awt.image.BufferedImage(renderedImage.getColorModel(), writableRaster, colorModel.isAlphaPremultiplied(), properties);
+			final java.awt.image.BufferedImage bufferedImage = new java.awt.image.BufferedImage(
+					renderedImage.getColorModel(), writableRaster, colorModel.isAlphaPremultiplied(), properties);
 			return bufferedImage;
 		}
 	}
-	public static void store(String codecName, java.io.OutputStream outputStream, java.awt.Image image) throws InterruptedException, java.io.IOException {
+
+	public static void store(final String codecName, final java.io.OutputStream outputStream,
+			final java.awt.Image image) throws InterruptedException, java.io.IOException {
 		store(codecName, outputStream, image, null);
 	}
-	public static void store(String codecName, java.io.OutputStream outputStream, java.awt.Image image, edu.cmu.cs.stage3.image.codec.ImageEncodeParam imageEncodeParam) throws InterruptedException, java.io.IOException {
-		int width = ImageUtilities.getWidth(image);
-		int height = ImageUtilities.getHeight(image);
+
+	public static void store(final String codecName, final java.io.OutputStream outputStream, java.awt.Image image,
+			edu.cmu.cs.stage3.image.codec.ImageEncodeParam imageEncodeParam)
+			throws InterruptedException, java.io.IOException {
+		final int width = ImageUtilities.getWidth(image);
+		final int height = ImageUtilities.getHeight(image);
 
 		java.awt.image.RenderedImage renderedImage;
 
 		if (codecName.equals("jpeg")) {
-			java.awt.Image originalImage = image;
+			final java.awt.Image originalImage = image;
 			image = new java.awt.image.BufferedImage(width, height, java.awt.image.BufferedImage.TYPE_3BYTE_BGR);
-			java.awt.Graphics g = image.getGraphics();
+			final java.awt.Graphics g = image.getGraphics();
 			g.drawImage(originalImage, 0, 0, new java.awt.image.ImageObserver() {
 				@Override
-				public boolean imageUpdate(java.awt.Image image, int infoflags, int x, int y, int width, int height) {
+				public boolean imageUpdate(final java.awt.Image image, final int infoflags, final int x, final int y,
+						final int width, final int height) {
 					return true;
 				}
 			});
@@ -122,8 +136,9 @@ public class ImageIO {
 		if (image instanceof java.awt.image.RenderedImage) {
 			renderedImage = (java.awt.image.RenderedImage) image;
 		} else {
-			int[] pixels = ImageUtilities.getPixels(image, width, height);
-			java.awt.image.BufferedImage bufferedImage = new java.awt.image.BufferedImage(width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB);
+			final int[] pixels = ImageUtilities.getPixels(image, width, height);
+			final java.awt.image.BufferedImage bufferedImage = new java.awt.image.BufferedImage(width, height,
+					java.awt.image.BufferedImage.TYPE_INT_ARGB);
 			bufferedImage.setRGB(0, 0, width, height, pixels, 0, width);
 			renderedImage = bufferedImage;
 		}
@@ -139,7 +154,8 @@ public class ImageIO {
 			bufferedOutputStream = new java.io.BufferedOutputStream(outputStream);
 		}
 
-		edu.cmu.cs.stage3.image.codec.ImageEncoder imageEncoder = edu.cmu.cs.stage3.image.codec.ImageCodec.createImageEncoder(codecName, bufferedOutputStream, imageEncodeParam);
+		final edu.cmu.cs.stage3.image.codec.ImageEncoder imageEncoder = edu.cmu.cs.stage3.image.codec.ImageCodec
+				.createImageEncoder(codecName, bufferedOutputStream, imageEncodeParam);
 		imageEncoder.encode(renderedImage);
 		bufferedOutputStream.flush();
 	}

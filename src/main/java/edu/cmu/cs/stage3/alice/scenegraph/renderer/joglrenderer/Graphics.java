@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -37,7 +37,7 @@ public class Graphics extends java.awt.Graphics {
 			s_cosines = new double[SINE_AND_COSINE_CACHE_LENGTH];
 			s_sines = new double[SINE_AND_COSINE_CACHE_LENGTH];
 			double theta = 0;
-			double dtheta = Math.PI / 2.0 / s_cosines.length;
+			final double dtheta = Math.PI / 2.0 / s_cosines.length;
 			for (int i = 0; i < s_cosines.length; i++) {
 				s_cosines[i] = Math.cos(theta);
 				s_sines[i] = Math.sin(theta);
@@ -45,12 +45,13 @@ public class Graphics extends java.awt.Graphics {
 			}
 		}
 	}
-	protected Graphics(RenderContext renderContext) {
+
+	protected Graphics(final RenderContext renderContext) {
 		m_renderContext = renderContext;
 		setColor(m_color);
 
-		int width = m_renderContext.getWidth();
-		int height = m_renderContext.getHeight();
+		final int width = m_renderContext.getWidth();
+		final int height = m_renderContext.getHeight();
 		m_renderContext.gl.glMatrixMode(GL.GL_PROJECTION);
 		m_renderContext.gl.glLoadIdentity();
 		m_renderContext.gl.glOrtho(0, width - 1, height - 1, 0, -1, 1);
@@ -77,7 +78,7 @@ public class Graphics extends java.awt.Graphics {
 	}
 
 	@Override
-	public void translate(int x, int y) {
+	public void translate(final int x, final int y) {
 		m_renderContext.gl.glTranslatef(x, y, 0);
 	}
 
@@ -87,7 +88,7 @@ public class Graphics extends java.awt.Graphics {
 	}
 
 	@Override
-	public void setColor(java.awt.Color c) {
+	public void setColor(final java.awt.Color c) {
 		m_color = c;
 		m_renderContext.gl.glColor3ub((byte) m_color.getRed(), (byte) m_color.getGreen(), (byte) m_color.getBlue());
 	}
@@ -98,7 +99,7 @@ public class Graphics extends java.awt.Graphics {
 	}
 
 	@Override
-	public void setXORMode(java.awt.Color c1) {
+	public void setXORMode(final java.awt.Color c1) {
 		// todo
 	}
 
@@ -110,12 +111,12 @@ public class Graphics extends java.awt.Graphics {
 	}
 
 	@Override
-	public void setFont(java.awt.Font font) {
+	public void setFont(final java.awt.Font font) {
 		m_font = font;
 	}
 
 	@Override
-	public java.awt.FontMetrics getFontMetrics(java.awt.Font f) {
+	public java.awt.FontMetrics getFontMetrics(final java.awt.Font f) {
 		return java.awt.Toolkit.getDefaultToolkit().getFontMetrics(f);
 	}
 
@@ -125,12 +126,12 @@ public class Graphics extends java.awt.Graphics {
 	}
 
 	@Override
-	public void clipRect(int x, int y, int width, int height) {
+	public void clipRect(final int x, final int y, final int width, final int height) {
 		throw new RuntimeException("not implemented");
 	}
 
 	@Override
-	public void setClip(int x, int y, int width, int height) {
+	public void setClip(final int x, final int y, final int width, final int height) {
 		throw new RuntimeException("not implemented");
 	}
 
@@ -140,17 +141,17 @@ public class Graphics extends java.awt.Graphics {
 	}
 
 	@Override
-	public void setClip(java.awt.Shape clip) {
+	public void setClip(final java.awt.Shape clip) {
 		throw new RuntimeException("not implemented");
 	}
 
 	@Override
-	public void copyArea(int x, int y, int width, int height, int dx, int dy) {
+	public void copyArea(final int x, final int y, final int width, final int height, final int dx, final int dy) {
 		throw new RuntimeException("not implemented");
 	}
 
 	@Override
-	public void drawLine(int x1, int y1, int x2, int y2) {
+	public void drawLine(final int x1, final int y1, final int x2, final int y2) {
 		m_renderContext.gl.glBegin(GL.GL_LINES);
 		m_renderContext.gl.glVertex2i(x1, y1);
 		m_renderContext.gl.glVertex2i(x2, y2);
@@ -158,7 +159,7 @@ public class Graphics extends java.awt.Graphics {
 	}
 
 	@Override
-	public void fillRect(int x, int y, int width, int height) {
+	public void fillRect(final int x, final int y, final int width, final int height) {
 		m_renderContext.gl.glBegin(GL.GL_POLYGON);
 		m_renderContext.gl.glVertex2i(x, y);
 		m_renderContext.gl.glVertex2i(x + width, y);
@@ -168,51 +169,53 @@ public class Graphics extends java.awt.Graphics {
 	}
 
 	@Override
-	public void clearRect(int x, int y, int width, int height) {
+	public void clearRect(final int x, final int y, final int width, final int height) {
 		throw new RuntimeException("not implemented");
 	}
 
-	private void glQuarterOval(double centerX, double centerY, double radiusX, double radiusY, int whichQuarter) {
-		int n = s_cosines.length;
-		int max = n - 1;
+	private void glQuarterOval(final double centerX, final double centerY, final double radiusX, final double radiusY,
+			final int whichQuarter) {
+		final int n = s_cosines.length;
+		final int max = n - 1;
 		for (int i = 0; i < n; i++) {
 			double cos;
 			double sin;
 			switch (whichQuarter) {
-				case 0 :
-					cos = s_cosines[i];
-					sin = s_sines[i];
-					break;
-				case 1 :
-					cos = -s_cosines[max - i];
-					sin = s_sines[max - i];
-					break;
-				case 2 :
-					cos = -s_cosines[i];
-					sin = -s_sines[i];
-					break;
-				case 3 :
-					cos = s_cosines[max - i];
-					sin = -s_sines[max - i];
-					break;
-				default :
-					throw new IllegalArgumentException();
+			case 0:
+				cos = s_cosines[i];
+				sin = s_sines[i];
+				break;
+			case 1:
+				cos = -s_cosines[max - i];
+				sin = s_sines[max - i];
+				break;
+			case 2:
+				cos = -s_cosines[i];
+				sin = -s_sines[i];
+				break;
+			case 3:
+				cos = s_cosines[max - i];
+				sin = -s_sines[max - i];
+				break;
+			default:
+				throw new IllegalArgumentException();
 			}
 			m_renderContext.gl.glVertex2d(centerX + cos * radiusX, centerY + sin * radiusY);
 		}
 	}
 
-	private void glRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
+	private void glRoundRect(final int x, final int y, final int width, final int height, final int arcWidth,
+			final int arcHeight) {
 		cacheSinesAndCosinesIfNecessary();
 
 		// int x0 = x;
-		int x1 = x + arcWidth;
-		int x2 = x + width - arcWidth;
+		final int x1 = x + arcWidth;
+		final int x2 = x + width - arcWidth;
 		// int x3 = x+width;
 
 		// int y0 = y;
-		int y1 = y + arcHeight;
-		int y2 = y + height - arcHeight;
+		final int y1 = y + arcHeight;
+		final int y2 = y + height - arcHeight;
 		// int y3 = y+height;
 
 		glQuarterOval(x1, y1, arcWidth, arcHeight, 2);
@@ -226,24 +229,26 @@ public class Graphics extends java.awt.Graphics {
 	}
 
 	@Override
-	public void drawRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
+	public void drawRoundRect(final int x, final int y, final int width, final int height, final int arcWidth,
+			final int arcHeight) {
 		m_renderContext.gl.glBegin(GL.GL_LINE_LOOP);
 		glRoundRect(x, y, width, height, arcWidth, arcHeight);
 		m_renderContext.gl.glEnd();
 	}
 
 	@Override
-	public void fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight) {
+	public void fillRoundRect(final int x, final int y, final int width, final int height, final int arcWidth,
+			final int arcHeight) {
 		m_renderContext.gl.glBegin(GL.GL_TRIANGLE_FAN);
 		glRoundRect(x, y, width, height, arcWidth, arcHeight);
 		m_renderContext.gl.glEnd();
 	}
 
-	private void glOval(int x, int y, int width, int height) {
-		double radiusX = width * 0.5;
-		double radiusY = height * 0.5;
-		double centerX = x + radiusX;
-		double centerY = y + radiusY;
+	private void glOval(final int x, final int y, final int width, final int height) {
+		final double radiusX = width * 0.5;
+		final double radiusY = height * 0.5;
+		final double centerX = x + radiusX;
+		final double centerY = y + radiusY;
 		cacheSinesAndCosinesIfNecessary();
 		glQuarterOval(centerX, centerY, radiusX, radiusY, 0);
 		glQuarterOval(centerX, centerY, radiusX, radiusY, 1);
@@ -252,58 +257,61 @@ public class Graphics extends java.awt.Graphics {
 	}
 
 	@Override
-	public void drawOval(int x, int y, int width, int height) {
+	public void drawOval(final int x, final int y, final int width, final int height) {
 		m_renderContext.gl.glBegin(GL.GL_LINE_LOOP);
 		glOval(x, y, width, height);
 		m_renderContext.gl.glEnd();
 	}
 
 	@Override
-	public void fillOval(int x, int y, int width, int height) {
+	public void fillOval(final int x, final int y, final int width, final int height) {
 		m_renderContext.gl.glBegin(GL.GL_TRIANGLE_FAN);
 		glOval(x, y, width, height);
 		m_renderContext.gl.glEnd();
 	}
 
 	@Override
-	public void drawArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
+	public void drawArc(final int x, final int y, final int width, final int height, final int startAngle,
+			final int arcAngle) {
 		throw new RuntimeException("not implemented");
 	}
 
 	@Override
-	public void fillArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
+	public void fillArc(final int x, final int y, final int width, final int height, final int startAngle,
+			final int arcAngle) {
 		throw new RuntimeException("not implemented");
 	}
-	private void glPoly(int xPoints[], int yPoints[], int nPoints) {
+
+	private void glPoly(final int xPoints[], final int yPoints[], final int nPoints) {
 		for (int i = 0; i < nPoints; i++) {
 			m_renderContext.gl.glVertex2i(xPoints[i], yPoints[i]);
 		}
 	}
 
 	@Override
-	public void drawPolyline(int xPoints[], int yPoints[], int nPoints) {
+	public void drawPolyline(final int xPoints[], final int yPoints[], final int nPoints) {
 		m_renderContext.gl.glBegin(GL.GL_LINE_STRIP);
 		glPoly(xPoints, yPoints, nPoints);
 		m_renderContext.gl.glEnd();
 	}
 
 	@Override
-	public void drawPolygon(int xPoints[], int yPoints[], int nPoints) {
+	public void drawPolygon(final int xPoints[], final int yPoints[], final int nPoints) {
 		m_renderContext.gl.glBegin(GL.GL_LINE_LOOP);
 		glPoly(xPoints, yPoints, nPoints);
 		m_renderContext.gl.glEnd();
 	}
 
 	@Override
-	public void fillPolygon(int xPoints[], int yPoints[], int nPoints) {
+	public void fillPolygon(final int xPoints[], final int yPoints[], final int nPoints) {
 		m_renderContext.gl.glBegin(GL.GL_POLYGON);
 		glPoly(xPoints, yPoints, nPoints);
 		m_renderContext.gl.glEnd();
 	}
 
 	@Override
-	public void drawString(String str, int x, int y) {
-		float scale = m_font.getSize() / 170.0f;
+	public void drawString(final String str, final int x, final int y) {
+		final float scale = m_font.getSize() / 170.0f;
 		m_renderContext.gl.glPushMatrix();
 		m_renderContext.gl.glTranslatef(x, y, 0);
 		m_renderContext.gl.glScalef(scale, -scale, 1.0f);
@@ -312,47 +320,54 @@ public class Graphics extends java.awt.Graphics {
 	}
 
 	@Override
-	public void drawString(java.text.AttributedCharacterIterator iterator, int x, int y) {
+	public void drawString(final java.text.AttributedCharacterIterator iterator, final int x, final int y) {
 		throw new RuntimeException("not implemented");
 	}
 
 	@Override
-	public void drawChars(char[] data, int offset, int length, int x, int y) {
+	public void drawChars(final char[] data, final int offset, final int length, final int x, final int y) {
 		throw new RuntimeException("not implemented");
 	}
 
 	@Override
-	public void drawBytes(byte[] data, int offset, int length, int x, int y) {
+	public void drawBytes(final byte[] data, final int offset, final int length, final int x, final int y) {
 		throw new RuntimeException("not implemented");
 	}
 
 	@Override
-	public boolean drawImage(java.awt.Image img, int x, int y, java.awt.image.ImageObserver observer) {
+	public boolean drawImage(final java.awt.Image img, final int x, final int y,
+			final java.awt.image.ImageObserver observer) {
 		throw new RuntimeException("not implemented");
 	}
 
 	@Override
-	public boolean drawImage(java.awt.Image img, int x, int y, int width, int height, java.awt.image.ImageObserver observer) {
+	public boolean drawImage(final java.awt.Image img, final int x, final int y, final int width, final int height,
+			final java.awt.image.ImageObserver observer) {
 		throw new RuntimeException("not implemented");
 	}
 
 	@Override
-	public boolean drawImage(java.awt.Image img, int x, int y, java.awt.Color bgcolor, java.awt.image.ImageObserver observer) {
+	public boolean drawImage(final java.awt.Image img, final int x, final int y, final java.awt.Color bgcolor,
+			final java.awt.image.ImageObserver observer) {
 		throw new RuntimeException("not implemented");
 	}
 
 	@Override
-	public boolean drawImage(java.awt.Image img, int x, int y, int width, int height, java.awt.Color bgcolor, java.awt.image.ImageObserver observer) {
+	public boolean drawImage(final java.awt.Image img, final int x, final int y, final int width, final int height,
+			final java.awt.Color bgcolor, final java.awt.image.ImageObserver observer) {
 		throw new RuntimeException("not implemented");
 	}
 
 	@Override
-	public boolean drawImage(java.awt.Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, java.awt.image.ImageObserver observer) {
+	public boolean drawImage(final java.awt.Image img, final int dx1, final int dy1, final int dx2, final int dy2,
+			final int sx1, final int sy1, final int sx2, final int sy2, final java.awt.image.ImageObserver observer) {
 		throw new RuntimeException("not implemented");
 	}
 
 	@Override
-	public boolean drawImage(java.awt.Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, java.awt.Color bgcolor, java.awt.image.ImageObserver observer) {
+	public boolean drawImage(final java.awt.Image img, final int dx1, final int dy1, final int dx2, final int dy2,
+			final int sx1, final int sy1, final int sx2, final int sy2, final java.awt.Color bgcolor,
+			final java.awt.image.ImageObserver observer) {
 		throw new RuntimeException("not implemented");
 	}
 }

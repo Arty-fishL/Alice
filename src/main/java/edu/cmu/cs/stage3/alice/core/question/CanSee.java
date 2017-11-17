@@ -11,8 +11,8 @@ public class CanSee extends BooleanQuestion {
 
 	@Override
 	public Object getValue() {
-		edu.cmu.cs.stage3.alice.core.Camera cameraValue = camera.getCameraValue();
-		edu.cmu.cs.stage3.alice.core.Model objectValue = object.getModelValue();
+		final edu.cmu.cs.stage3.alice.core.Camera cameraValue = camera.getCameraValue();
+		final edu.cmu.cs.stage3.alice.core.Model objectValue = object.getModelValue();
 		if (cameraValue.canSee(objectValue, checkForOcclusion.booleanValue())) {
 			return Boolean.TRUE;
 		} else {

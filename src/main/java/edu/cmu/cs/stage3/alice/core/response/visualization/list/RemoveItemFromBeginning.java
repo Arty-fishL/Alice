@@ -4,7 +4,7 @@ public class RemoveItemFromBeginning extends ListVisualizationAnimation {
 	public class RuntimeRemoveItemFromBeginning extends RuntimeListVisualizationAnimation {
 
 		@Override
-		public void epilogue(double t) {
+		public void epilogue(final double t) {
 			super.epilogue(t);
 			getCollection().values.remove(0);
 		}

@@ -2,8 +2,14 @@ package edu.cmu.cs.stage3.alice.scenegraph.renderer.directx7renderer;
 
 class RenderCanvas extends edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.RenderCanvas {
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 2092683606119630989L;
+
 	@Override
-	protected native void createNativeInstance(edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.RenderTargetAdapter renderTargetAdapter);
+	protected native void createNativeInstance(
+			edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.RenderTargetAdapter renderTargetAdapter);
 
 	@Override
 	protected native void releaseNativeInstance();
@@ -17,7 +23,8 @@ class RenderCanvas extends edu.cmu.cs.stage3.alice.scenegraph.renderer.nativeren
 	@Override
 	protected synchronized native void swapBuffers();
 
-	RenderCanvas(edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.OnscreenRenderTarget onscreenRenderTarget) {
+	RenderCanvas(
+			final edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.OnscreenRenderTarget onscreenRenderTarget) {
 		super(onscreenRenderTarget);
 	}
 }

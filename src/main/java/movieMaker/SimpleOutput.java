@@ -6,16 +6,16 @@ import javax.swing.JOptionPane;
 
 /**
  * Class to make it easy to do output to the user using JOptionPane
- * 
+ *
  * Copyright Georgia Institute of Technology 2004
- * 
+ *
  * @author Barb Ericson ericson@cc.gatech.edu
  */
 public class SimpleOutput {
 
 	/**
 	 * Method to show a warning to a user
-	 * 
+	 *
 	 * @param message
 	 *            the message to display
 	 */
@@ -26,7 +26,7 @@ public class SimpleOutput {
 
 	/**
 	 * Method to show an error to a user
-	 * 
+	 *
 	 * @param message
 	 *            the message to display
 	 */
@@ -37,7 +37,7 @@ public class SimpleOutput {
 
 	/**
 	 * Method to show information to the user
-	 * 
+	 *
 	 * @param message
 	 *            the message to display
 	 */
@@ -48,13 +48,13 @@ public class SimpleOutput {
 
 	/**
 	 * Method to add new line character if the message is too long
-	 * 
+	 *
 	 * @param message
 	 *            the input message
 	 * @return the message with new lines added if needed
 	 */
-	public static String addNewLines(String message) {
-		BreakIterator boundary = BreakIterator.getLineInstance();
+	public static String addNewLines(final String message) {
+		final BreakIterator boundary = BreakIterator.getLineInstance();
 		boundary.setText(message);
 		int start = boundary.first();
 		String result = "";

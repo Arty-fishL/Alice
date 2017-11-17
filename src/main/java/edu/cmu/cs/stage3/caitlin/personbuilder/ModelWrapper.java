@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -57,45 +57,52 @@ public class ModelWrapper {
 	protected Vector propertyDescList = new Vector();
 	protected Vector itemChoosersWithAlts = new Vector();
 
-	public ModelWrapper(Node root) {
+	public ModelWrapper(final Node root) {
 		worldInit();
 		try {
 			loadInitModel(root);
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 		makeNewPerson();
 	}
 
-	public void registerItemChooserWithAlt(ItemChooser itemChooser) {
+	public void registerItemChooserWithAlt(final ItemChooser itemChooser) {
 		itemChoosersWithAlts.addElement(itemChooser);
 	}
 
-	protected void replaceModel(String modelName, Model model) {
+	protected void replaceModel(final String modelName, final Model model) {
 		if (model != null) {
 			if (model.name.getStringValue().equals(modelName)) {
 				if (person != null) {
-					edu.cmu.cs.stage3.alice.core.criterion.ElementNamedCriterion nameCriterion = new edu.cmu.cs.stage3.alice.core.criterion.ElementNamedCriterion(modelName);
-					Element[] parts = person.search(nameCriterion, edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
+					final edu.cmu.cs.stage3.alice.core.criterion.ElementNamedCriterion nameCriterion = new edu.cmu.cs.stage3.alice.core.criterion.ElementNamedCriterion(
+							modelName);
+					final Element[] parts = person.search(nameCriterion,
+							edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
 					model.isFirstClass.set(false);
 					if (parts.length > 0) {
 						Element part = null;
 						part = parts[0];
 						if (part != null) {
-							edu.cmu.cs.stage3.math.Vector3 posToParent = ((Model) part).getPosition((edu.cmu.cs.stage3.alice.core.ReferenceFrame) part.getParent());
-							edu.cmu.cs.stage3.math.Matrix33 orientToParent = ((Model) part).getOrientationAsAxes((edu.cmu.cs.stage3.alice.core.ReferenceFrame) part.getParent());
+							final edu.cmu.cs.stage3.math.Vector3 posToParent = ((Model) part)
+									.getPosition((edu.cmu.cs.stage3.alice.core.ReferenceFrame) part.getParent());
+							final edu.cmu.cs.stage3.math.Matrix33 orientToParent = ((Model) part).getOrientationAsAxes(
+									(edu.cmu.cs.stage3.alice.core.ReferenceFrame) part.getParent());
 							part.replaceWith(model);
 							if (part instanceof Model) {
 								model.vehicle.set(((Model) part).vehicle.get());
 								((Model) part).vehicle.set(null);
 								if (posToParent != null) {
-									model.setPositionRightNow(posToParent, (edu.cmu.cs.stage3.alice.core.ReferenceFrame) model.getParent());
+									model.setPositionRightNow(posToParent,
+											(edu.cmu.cs.stage3.alice.core.ReferenceFrame) model.getParent());
 								}
 								if (orientToParent != null) {
-									model.setOrientationRightNow(orientToParent, (edu.cmu.cs.stage3.alice.core.ReferenceFrame) model.getParent());
+									model.setOrientationRightNow(orientToParent,
+											(edu.cmu.cs.stage3.alice.core.ReferenceFrame) model.getParent());
 								}
 
-								edu.cmu.cs.stage3.alice.core.TextureMap tMap = person.diffuseColorMap.getTextureMapValue();
+								final edu.cmu.cs.stage3.alice.core.TextureMap tMap = person.diffuseColorMap
+										.getTextureMapValue();
 								person.diffuseColorMap.set(tMap, edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_PARTS);
 							}
 						}
@@ -108,19 +115,19 @@ public class ModelWrapper {
 		}
 	}
 
-	public void switchToAltModel(String modelName) {
+	public void switchToAltModel(final String modelName) {
 		for (int i = 0; i < itemChoosersWithAlts.size(); i++) {
-			ItemChooser itemChooser = (ItemChooser) itemChoosersWithAlts.elementAt(i);
-			edu.cmu.cs.stage3.alice.core.Model model = itemChooser.getAltModel();
+			final ItemChooser itemChooser = (ItemChooser) itemChoosersWithAlts.elementAt(i);
+			final edu.cmu.cs.stage3.alice.core.Model model = itemChooser.getAltModel();
 			replaceModel(modelName, model);
 
 		}
 	}
 
-	public void switchToOrigModel(String modelName) {
+	public void switchToOrigModel(final String modelName) {
 		for (int i = 0; i < itemChoosersWithAlts.size(); i++) {
-			ItemChooser itemChooser = (ItemChooser) itemChoosersWithAlts.elementAt(i);
-			edu.cmu.cs.stage3.alice.core.Model model = itemChooser.getOriginalModel();
+			final ItemChooser itemChooser = (ItemChooser) itemChoosersWithAlts.elementAt(i);
+			final edu.cmu.cs.stage3.alice.core.Model model = itemChooser.getOriginalModel();
 			replaceModel(modelName, model);
 
 		}
@@ -146,7 +153,7 @@ public class ModelWrapper {
 		directionalLight.turnRightNow(edu.cmu.cs.stage3.alice.core.Direction.LEFT, .075);
 		directionalLight.color.set(edu.cmu.cs.stage3.alice.scenegraph.Color.WHITE);
 
-		java.awt.Color dkBlue = new java.awt.Color(12, 36, 106);
+		final java.awt.Color dkBlue = new java.awt.Color(12, 36, 106);
 		miniWorld.atmosphereColor.set(new edu.cmu.cs.stage3.alice.scenegraph.Color(dkBlue));
 		miniWorld.ambientLightColor.set(edu.cmu.cs.stage3.alice.scenegraph.Color.DARK_GRAY);
 	}
@@ -155,43 +162,44 @@ public class ModelWrapper {
 		if (personFactory == null) {
 			try {
 				personFactory = template.createCopyFactory();
-			} catch (Exception e) {
+			} catch (final Exception e) {
 				e.printStackTrace();
 			}
 		}
 		try {
 			person = (Model) personFactory.manufactureCopy(null);
 			addModelToWorld(person, "none", null);
-		} catch (edu.cmu.cs.stage3.alice.core.UnresolvablePropertyReferencesException upre) {
+		} catch (final edu.cmu.cs.stage3.alice.core.UnresolvablePropertyReferencesException upre) {
 			throw new edu.cmu.cs.stage3.alice.core.ExceptionWrapper(upre, "UnresolvablePropertyReferencesException");
 		}
 	}
 
-	protected void loadInitModel(Node root) {
-		Vector modelURLs = XMLDirectoryUtilities.getModelURLs(root);
+	protected void loadInitModel(final Node root) {
+		final Vector modelURLs = XMLDirectoryUtilities.getModelURLs(root);
 		for (int i = 0; i < modelURLs.size(); i++) {
 			url = (java.net.URL) modelURLs.elementAt(i);
 			try {
 				template = (Model) Element.load(url, null);
-			} catch (java.io.IOException ioe) {
+			} catch (final java.io.IOException ioe) {
 				ioe.printStackTrace();
-			} catch (edu.cmu.cs.stage3.alice.core.UnresolvablePropertyReferencesException upre) {
+			} catch (final edu.cmu.cs.stage3.alice.core.UnresolvablePropertyReferencesException upre) {
 				upre.printStackTrace();
 			}
 		}
 	}
 
-	private void initializeModels(Model part, String parentName, edu.cmu.cs.stage3.math.Vector3 position) {
+	private void initializeModels(final Model part, final String parentName,
+			final edu.cmu.cs.stage3.math.Vector3 position) {
 		// check to see if anything should be parented to this
-		Model partsToAttach = (Model) partsTable.get(part.getKey());
+		final Model partsToAttach = (Model) partsTable.get(part.getKey());
 		if (partsToAttach != null && partsToAttach.getParent() == null) {
 			addChildToModel(part, partsToAttach, position);
 		}
 	}
 
-	private Element[] removeModelFromWorld(Model model) {
+	private Element[] removeModelFromWorld(final Model model) {
 		if (model != null) {
-			Element[] kids = model.getChildren();
+			final Element[] kids = model.getChildren();
 			model.removeFromParent();
 			model.vehicle.set(null);
 			return kids;
@@ -199,13 +207,13 @@ public class ModelWrapper {
 		return null;
 	}
 
-	private void removeAllKids(Model parent) {
+	private void removeAllKids(final Model parent) {
 		if (parent.getChildCount() > 0) {
-			Element[] oldKids = parent.getChildren();
-			for (Element oldKid : oldKids) {
+			final Element[] oldKids = parent.getChildren();
+			for (final Element oldKid : oldKids) {
 				if (oldKid instanceof Model) {
 					oldKid.removeFromParent();
-					Model oldModel = (Model) oldKid;
+					final Model oldModel = (Model) oldKid;
 					oldModel.vehicle.set(null);
 					parent.removeChild(oldModel);
 				}
@@ -213,20 +221,20 @@ public class ModelWrapper {
 		}
 	}
 
-	private void addKidsToModel(Model newParent, Element[] kids) {
+	private void addKidsToModel(final Model newParent, final Element[] kids) {
 		// remove any old kids the newParent might already have
 		removeAllKids(newParent);
 		if (newParent != null && kids != null) {
-			for (Element kid : kids) {
+			for (final Element kid : kids) {
 				if (kid instanceof Model) {
-					Model kidModel = (Model) kid;
+					final Model kidModel = (Model) kid;
 					addChildToModel(newParent, kidModel, null);
 				}
 			}
 		}
 	}
 
-	private void addChildToModel(Model parent, Model child, edu.cmu.cs.stage3.math.Vector3 position) {
+	private void addChildToModel(final Model parent, final Model child, final edu.cmu.cs.stage3.math.Vector3 position) {
 		parent.addChild(child);
 		parent.parts.add(child);
 		child.setParent(parent);
@@ -237,7 +245,8 @@ public class ModelWrapper {
 		}
 	}
 
-	private void addModelToWorld(Model model, String parent, edu.cmu.cs.stage3.math.Vector3 position) {
+	private void addModelToWorld(final Model model, final String parent,
+			final edu.cmu.cs.stage3.math.Vector3 position) {
 		if (parent.equals("none")) {
 			person = model;
 			regenerateTexture();
@@ -284,12 +293,13 @@ public class ModelWrapper {
 
 		for (int i = 0; i < textureLayers.length; i++) {
 			if (textureLayers[0] == null) {
-				java.awt.Image im = person.diffuseColorMap.getTextureMapValue().image.getImageValue();
+				final java.awt.Image im = person.diffuseColorMap.getTextureMapValue().image.getImageValue();
 				textureLayers[0] = im;
 			}
 			if (textureLayers[i] != null) {
 				if (finalTexture == null) {
-					finalTexture = new java.awt.image.BufferedImage(textureLayers[i].getHeight(null), textureLayers[i].getWidth(null), java.awt.image.BufferedImage.TYPE_4BYTE_ABGR);
+					finalTexture = new java.awt.image.BufferedImage(textureLayers[i].getHeight(null),
+							textureLayers[i].getWidth(null), java.awt.image.BufferedImage.TYPE_4BYTE_ABGR);
 					g2 = finalTexture.createGraphics();
 				}
 				g2.drawImage(textureLayers[i], 0, 0, null);
@@ -302,19 +312,22 @@ public class ModelWrapper {
 		}
 	}
 
-	public void addTexture(java.awt.Image texture, int level) {
+	public void addTexture(final java.awt.Image texture, final int level) {
 		textureLayers[level] = texture;
 		regenerateTexture();
 	}
 
-	public void clearLevel(int level) {
+	public void clearLevel(final int level) {
 		textureLayers[level] = null;
 	}
 
-	public void addModel(Model modelToAdd, String parentName, edu.cmu.cs.stage3.math.Vector3 position) {
+	public void addModel(final Model modelToAdd, final String parentName,
+			final edu.cmu.cs.stage3.math.Vector3 position) {
 		if (person != null) {
-			edu.cmu.cs.stage3.alice.core.criterion.ElementNamedCriterion nameCriterion = new edu.cmu.cs.stage3.alice.core.criterion.ElementNamedCriterion(parentName);
-			Element[] parents = person.search(nameCriterion, edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
+			final edu.cmu.cs.stage3.alice.core.criterion.ElementNamedCriterion nameCriterion = new edu.cmu.cs.stage3.alice.core.criterion.ElementNamedCriterion(
+					parentName);
+			final Element[] parents = person.search(nameCriterion,
+					edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
 			if (parents.length > 0) {
 				modelToAdd.setParent(parents[0]);
 				((edu.cmu.cs.stage3.alice.core.Model) parents[0]).parts.add(modelToAdd);
@@ -324,21 +337,23 @@ public class ModelWrapper {
 				modelToAdd.setPositionRightNow(position, (edu.cmu.cs.stage3.alice.core.ReferenceFrame) parents[0]);
 			}
 		}
-		edu.cmu.cs.stage3.alice.core.TextureMap tMap = person.diffuseColorMap.getTextureMapValue();
+		final edu.cmu.cs.stage3.alice.core.TextureMap tMap = person.diffuseColorMap.getTextureMapValue();
 		modelToAdd.diffuseColorMap.set(tMap, edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_PARTS);
 		person.diffuseColorMap.set(tMap, edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_PARTS);
 	}
 
-	public void removeModel(String modelName) {
+	public void removeModel(final String modelName) {
 		if (person != null) {
-			edu.cmu.cs.stage3.alice.core.criterion.ElementNamedCriterion nameCriterion = new edu.cmu.cs.stage3.alice.core.criterion.ElementNamedCriterion(modelName);
-			Element[] models = person.search(nameCriterion, edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
+			final edu.cmu.cs.stage3.alice.core.criterion.ElementNamedCriterion nameCriterion = new edu.cmu.cs.stage3.alice.core.criterion.ElementNamedCriterion(
+					modelName);
+			final Element[] models = person.search(nameCriterion,
+					edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
 			if (models.length > 0) {
 				models[0].getParent().removeChild(models[0]);
 				((edu.cmu.cs.stage3.alice.core.Model) models[0]).vehicle.set(null);
 			}
 		}
-		edu.cmu.cs.stage3.alice.core.TextureMap tMap = person.diffuseColorMap.getTextureMapValue();
+		final edu.cmu.cs.stage3.alice.core.TextureMap tMap = person.diffuseColorMap.getTextureMapValue();
 		person.diffuseColorMap.set(tMap, edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_PARTS);
 	}
 
@@ -346,9 +361,9 @@ public class ModelWrapper {
 		regenerateTexture();
 
 		for (int i = 0; i < propertyNameList.size(); i++) {
-			String propName = (String) propertyNameList.elementAt(i);
-			String propValue = (String) propertyValueList.elementAt(i);
-			String propDesc = (String) propertyDescList.elementAt(i);
+			final String propName = (String) propertyNameList.elementAt(i);
+			final String propValue = (String) propertyValueList.elementAt(i);
+			final String propDesc = (String) propertyDescList.elementAt(i);
 
 			setPropertyValue(propName, propValue, propDesc);
 		}
@@ -363,22 +378,27 @@ public class ModelWrapper {
 		}
 	}
 
-	public void setModel(Model part, String parentName) {
-		if (parentName.equals("none") && person == null) {} else {
+	public void setModel(final Model part, final String parentName) {
+		if (parentName.equals("none") && person == null) {
+		} else {
 			if (person != null) {
-				edu.cmu.cs.stage3.alice.core.criterion.ElementNamedCriterion nameCriterion = new edu.cmu.cs.stage3.alice.core.criterion.ElementNamedCriterion(parentName);
-				Element[] parents = person.search(nameCriterion, edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
+				final edu.cmu.cs.stage3.alice.core.criterion.ElementNamedCriterion nameCriterion = new edu.cmu.cs.stage3.alice.core.criterion.ElementNamedCriterion(
+						parentName);
+				final Element[] parents = person.search(nameCriterion,
+						edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
 				if (parents.length > 0) {
-					Element child = parents[0].getChildNamed(part.name.getStringValue());
+					final Element child = parents[0].getChildNamed(part.name.getStringValue());
 					if (child != null) {
 						part.isFirstClass.set(false);
-						edu.cmu.cs.stage3.math.Vector3 posToParent = ((Model) child).getPosition((edu.cmu.cs.stage3.alice.core.ReferenceFrame) parents[0]);
+						final edu.cmu.cs.stage3.math.Vector3 posToParent = ((Model) child)
+								.getPosition((edu.cmu.cs.stage3.alice.core.ReferenceFrame) parents[0]);
 						child.replaceWith(part);
 						if (child instanceof Model) {
 							part.vehicle.set(((Model) child).vehicle.get());
 							((Model) child).vehicle.set(null);
 							if (posToParent != null) {
-								part.setPositionRightNow(posToParent, (edu.cmu.cs.stage3.alice.core.ReferenceFrame) part.getParent());
+								part.setPositionRightNow(posToParent,
+										(edu.cmu.cs.stage3.alice.core.ReferenceFrame) part.getParent());
 							}
 						}
 					}
@@ -387,22 +407,24 @@ public class ModelWrapper {
 					System.out.println(part.name.getStringValue() + " is not found");
 				}
 			}
-			edu.cmu.cs.stage3.alice.core.TextureMap tMap = person.diffuseColorMap.getTextureMapValue();
+			final edu.cmu.cs.stage3.alice.core.TextureMap tMap = person.diffuseColorMap.getTextureMapValue();
 			person.diffuseColorMap.set(tMap, edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_PARTS);
 		}
 	}
 
-	private void setPropertyValue(String propertyName, String propertyValue, String propertyDescription) {
-		edu.cmu.cs.stage3.alice.core.Property property = person.getPropertyNamed(propertyName);
+	private void setPropertyValue(final String propertyName, final String propertyValue,
+			final String propertyDescription) {
+		final edu.cmu.cs.stage3.alice.core.Property property = person.getPropertyNamed(propertyName);
 		if (property != null && property instanceof edu.cmu.cs.stage3.alice.core.property.StringProperty) {
 			property.set(propertyValue);
 		} else if (property != null && property instanceof edu.cmu.cs.stage3.alice.core.property.DictionaryProperty) {
-			((edu.cmu.cs.stage3.alice.core.property.DictionaryProperty) property).put(propertyDescription, propertyValue);
+			((edu.cmu.cs.stage3.alice.core.property.DictionaryProperty) property).put(propertyDescription,
+					propertyValue);
 		}
 	}
 
-	public void setProperty(String propertyName, String propertyValue, String propertyDesc) {
-		int propertyIndex = propertyNameList.indexOf(propertyName);
+	public void setProperty(final String propertyName, final String propertyValue, final String propertyDesc) {
+		final int propertyIndex = propertyNameList.indexOf(propertyName);
 
 		// we already have this property in the list
 		if (propertyIndex != -1) {
@@ -425,9 +447,10 @@ public class ModelWrapper {
 		setPropertyValue(propertyName, propertyValue, propertyDesc);
 	}
 
-	public void setColor(java.awt.Color color) {
-		java.awt.image.BufferedImage baseColor = new java.awt.image.BufferedImage(512, 512, java.awt.image.BufferedImage.TYPE_INT_ARGB);
-		java.awt.Graphics2D g = (java.awt.Graphics2D) baseColor.getGraphics();
+	public void setColor(final java.awt.Color color) {
+		final java.awt.image.BufferedImage baseColor = new java.awt.image.BufferedImage(512, 512,
+				java.awt.image.BufferedImage.TYPE_INT_ARGB);
+		final java.awt.Graphics2D g = (java.awt.Graphics2D) baseColor.getGraphics();
 		g.setColor(color);
 		g.fillRect(0, 0, 512, 512);
 		addTexture(baseColor, 0);

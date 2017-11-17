@@ -28,11 +28,12 @@ import edu.cmu.cs.stage3.alice.core.property.ScriptProperty;
 
 public class ScriptDefinedResponse extends Response {
 	public final ScriptProperty script = new ScriptProperty(this, "script", "");
+
 	public class RuntimeScriptDefinedResponse extends RuntimeResponse {
 		RuntimeResponse m_actual = null;
 
 		@Override
-		public double getTimeRemaining(double t) {
+		public double getTimeRemaining(final double t) {
 			if (m_actual != null) {
 				return m_actual.getTimeRemaining(t);
 			} else {
@@ -41,10 +42,10 @@ public class ScriptDefinedResponse extends Response {
 		}
 
 		@Override
-		public void prologue(double t) {
+		public void prologue(final double t) {
 			super.prologue(t);
 			m_actual = null;
-			Object o = eval(script.getCode(edu.cmu.cs.stage3.alice.scripting.CompileType.EVAL));
+			final Object o = eval(script.getCode(edu.cmu.cs.stage3.alice.scripting.CompileType.EVAL));
 			if (o instanceof edu.cmu.cs.stage3.alice.core.Response) {
 				m_actual = ((edu.cmu.cs.stage3.alice.core.Response) o).manufactureRuntimeResponse();
 				if (m_actual != null) {
@@ -58,7 +59,7 @@ public class ScriptDefinedResponse extends Response {
 		}
 
 		@Override
-		public void update(double t) {
+		public void update(final double t) {
 			super.update(t);
 			if (m_actual != null) {
 				m_actual.update(t);
@@ -68,7 +69,7 @@ public class ScriptDefinedResponse extends Response {
 		}
 
 		@Override
-		public void epilogue(double t) {
+		public void epilogue(final double t) {
 			super.epilogue(t);
 			if (m_actual != null) {
 				m_actual.epilogue(t);

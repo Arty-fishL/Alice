@@ -21,15 +21,15 @@ import javazoom.jl.converter.Converter;
  * This class allows for easy playback, and manipulation of AU, AIFF, and WAV
  * files.
  * <p>
- * 
+ *
  * Code & ideas for this class related to playing and viewing the sound were
  * borrowed from the Java Sound Demo:
  * http://java.sun.com/products/java-media/sound/ samples/JavaSoundDemo/
- * 
+ *
  * Also, some code borrowed from Tritonus as noted.
- * 
+ *
  * Copyright Georgia Institute of Technology 2004
- * 
+ *
  * @author Ellie Harmon, ellie@cc.gatech.edu
  * @author Barbara Ericson ericson@mindspring.com
  */
@@ -71,7 +71,7 @@ public class SimpleSound {
 	/**
 	 * Contains information about this sound such as its length, format, and
 	 * type.
-	 * 
+	 *
 	 * @see AudioFormat
 	 */
 	private AudioFileFormat audioFileFormat = null;
@@ -84,7 +84,7 @@ public class SimpleSound {
 	/**
 	 * The explorer for this sound, if it exists. If it exists, this becomes the
 	 * LineListener for output lines in the Playback class.
-	 * 
+	 *
 	 * @see Playback
 	 */
 	private SoundExplorer soundExplorer = null;
@@ -92,7 +92,7 @@ public class SimpleSound {
 	/**
 	 * The name of the file from which this sound was created. Gets updated
 	 * every time load from file is called.
-	 * 
+	 *
 	 * @see #loadFromFile
 	 */
 	private String fileName = null;
@@ -122,27 +122,27 @@ public class SimpleSound {
 	 * a buffer and the AudioFileFormat. If a file is desired, then the method
 	 * <code>writeToFile(String filename)
 	 * </code> must be called on this newly created sound.
-	 * 
+	 *
 	 * @param numFrames
 	 *            the number of samples in the sound
 	 * @see SimpleSound#write(String filename)
 	 */
-	public SimpleSound(int numFrames) {
-		int numChannels = 1; // the number of channels in the sound
-		int bytesPerSample = NUM_BITS_PER_SAMPLE / 8;
+	public SimpleSound(final int numFrames) {
+		final int numChannels = 1; // the number of channels in the sound
+		final int bytesPerSample = NUM_BITS_PER_SAMPLE / 8;
 
 		/*
 		 * Make a new sound with the default sampling rate, 16 bits, 1
 		 * channel(==1 sample/frame), signed, smallEndian
 		 */
-		AudioFormat audioFormat = new AudioFormat(SAMPLE_RATE, NUM_BITS_PER_SAMPLE, numChannels, true, false);
+		final AudioFormat audioFormat = new AudioFormat(SAMPLE_RATE, NUM_BITS_PER_SAMPLE, numChannels, true, false);
 
 		/*
 		 * The length in bytes is the number of channels times the number of
 		 * frames and times the number of bytes per sample (2 bytes per sample)
 		 */
-		int lengthInFrames = numChannels * numFrames;
-		int lengthInBytes = lengthInFrames * bytesPerSample;
+		final int lengthInFrames = numChannels * numFrames;
+		final int lengthInBytes = lengthInFrames * bytesPerSample;
 
 		/*
 		 * Make a new WAV file format, with the AudioFormat described above
@@ -154,21 +154,22 @@ public class SimpleSound {
 
 	}
 
-	public SimpleSound(double seconds, SimpleSound sound) {
+	public SimpleSound(final double seconds, final SimpleSound sound) {
 		// this.audioFileFormat = sound.audioFileFormat;
 
-		AudioFormat audioFormat = sound.audioFileFormat.getFormat();
-		int numChannels = audioFormat.getChannels(); // the number of channels
-														// in the sound
-		int bytesPerSample = audioFormat.getSampleSizeInBits() / 8;
-		int numFrames = (int) (audioFormat.getFrameRate() * seconds);
+		final AudioFormat audioFormat = sound.audioFileFormat.getFormat();
+		final int numChannels = audioFormat.getChannels(); // the number of
+															// channels
+															// in the sound
+		final int bytesPerSample = audioFormat.getSampleSizeInBits() / 8;
+		final int numFrames = (int) (audioFormat.getFrameRate() * seconds);
 
 		/*
 		 * The length in bytes is the number of channels times the number of
 		 * frames and times the number of bytes per sample (2 bytes per sample)
 		 */
-		int lengthInFrames = numChannels * numFrames;
-		int lengthInBytes = lengthInFrames * bytesPerSample;
+		final int lengthInFrames = numChannels * numFrames;
+		final int lengthInBytes = lengthInFrames * bytesPerSample;
 
 		/*
 		 * Make a new WAV file format, with the AudioFormat described above
@@ -196,27 +197,27 @@ public class SimpleSound {
 	 * a buffer and the AudioFileFormat. If a file is desired, then the method
 	 * <code>writeToFile(String filename)
 	 * </code> must be called on this newly created sound.
-	 * 
+	 *
 	 * @param numFrames
 	 *            the number of samples in the sound
 	 * @see SimpleSound#write(String filename)
 	 */
-	public SimpleSound(int numFrames, int sampleRate) {
-		int numChannels = 1; // the number of channels in the sound
-		int bytesPerSample = NUM_BITS_PER_SAMPLE / 8;
+	public SimpleSound(final int numFrames, final int sampleRate) {
+		final int numChannels = 1; // the number of channels in the sound
+		final int bytesPerSample = NUM_BITS_PER_SAMPLE / 8;
 
 		/*
 		 * Make a new sound with the default sampling rate, 16 bits, 1
 		 * channel(==1 sample/frame), signed, smallEndian
 		 */
-		AudioFormat audioFormat = new AudioFormat(sampleRate, NUM_BITS_PER_SAMPLE, numChannels, true, false);
+		final AudioFormat audioFormat = new AudioFormat(sampleRate, NUM_BITS_PER_SAMPLE, numChannels, true, false);
 
 		/*
 		 * The length in bytes is the number of channels times the number of
 		 * frames and times the number of bytes per sample (2 bytes per sample)
 		 */
-		int lengthInFrames = numChannels * numFrames;
-		int lengthInBytes = lengthInFrames * bytesPerSample;
+		final int lengthInFrames = numChannels * numFrames;
+		final int lengthInBytes = lengthInFrames * bytesPerSample;
 
 		/*
 		 * Make a new WAV file format, with the AudioFormat described above
@@ -232,20 +233,22 @@ public class SimpleSound {
 	 * Constructs a simple sound with the given sample size in bits and type of
 	 * endian (big or little)
 	 */
-	public SimpleSound(int sampleSizeInBits, boolean isBigEndian) {
+	public SimpleSound(final int sampleSizeInBits, final boolean isBigEndian) {
 		// calculate the number of bytes in the sample
-		int numBytesInSample = sampleSizeInBits / 8;
-		int numberOfChannels = 2;
-		boolean signedFlag = true;
+		final int numBytesInSample = sampleSizeInBits / 8;
+		final int numberOfChannels = 2;
+		final boolean signedFlag = true;
 
 		// create the audio format
-		AudioFormat audioFormat = new AudioFormat(SAMPLE_RATE, sampleSizeInBits, numberOfChannels, signedFlag, isBigEndian);
+		final AudioFormat audioFormat = new AudioFormat(SAMPLE_RATE, sampleSizeInBits, numberOfChannels, signedFlag,
+				isBigEndian);
 
 		// compute the length of the byte array
-		int lengthInBytes = SAMPLE_RATE * numberOfChannels * 5 * numBytesInSample;
+		final int lengthInBytes = SAMPLE_RATE * numberOfChannels * 5 * numBytesInSample;
 
 		// create the audio file format
-		audioFileFormat = new AudioFileFormat(AudioFileFormat.Type.WAVE, audioFormat, lengthInBytes / (numBytesInSample * numberOfChannels));
+		audioFileFormat = new AudioFileFormat(AudioFileFormat.Type.WAVE, audioFormat,
+				lengthInBytes / (numBytesInSample * numberOfChannels));
 
 		// create the buffer
 		buffer = new byte[lengthInBytes];
@@ -253,16 +256,16 @@ public class SimpleSound {
 
 	/**
 	 * Constructs a new SimpleSound from the given file.
-	 * 
+	 *
 	 * @param fileName
 	 *            The File from which to create this sound.
 	 * @see SimpleSound#loadFromFile(String filename)
 	 */
-	public SimpleSound(String fileName) {
+	public SimpleSound(final String fileName) {
 		try {
 			// load the sound from the file
 			loadFromFile(fileName);
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			printError("Exception during load of file " + fileName);
 		}
 	}
@@ -270,11 +273,11 @@ public class SimpleSound {
 	/**
 	 * Constructor that creates a new SimpleSound by copying a passed
 	 * SimpleSound
-	 * 
+	 *
 	 * @param sound
 	 *            the sound to copy
 	 */
-	public SimpleSound(SimpleSound sound) {
+	public SimpleSound(final SimpleSound sound) {
 		audioFileFormat = sound.audioFileFormat;
 		fileName = sound.fileName;
 		playbacks = new Vector();
@@ -292,7 +295,7 @@ public class SimpleSound {
 
 	/**
 	 * Method that returns the byte array representation of this simple sound.
-	 * 
+	 *
 	 * @return the sound represented as a byte array
 	 */
 	public byte[] getBuffer() {
@@ -301,7 +304,7 @@ public class SimpleSound {
 
 	/**
 	 * Method that returns the AudioFileFormat describing this simple sound.
-	 * 
+	 *
 	 * @return the AudioFileFormat describing this sound
 	 * @see AudioFileFormat
 	 */
@@ -311,7 +314,7 @@ public class SimpleSound {
 
 	/**
 	 * Method to get the sampling rate of this sound
-	 * 
+	 *
 	 * @return the sampling rate in number of samples per second
 	 */
 	public double getSamplingRate() {
@@ -320,7 +323,7 @@ public class SimpleSound {
 
 	/**
 	 * Method that returns the SoundExplorer
-	 * 
+	 *
 	 * @return the sound explorer
 	 */
 	public SoundExplorer getSoundExplorer() {
@@ -329,7 +332,7 @@ public class SimpleSound {
 
 	/**
 	 * Method to return the byte array
-	 * 
+	 *
 	 * @return an array of bytes which represents the simple sound
 	 * @see SimpleSound#getBuffer
 	 */
@@ -340,7 +343,7 @@ public class SimpleSound {
 	/**
 	 * Method that returns the vector of playback threads currently active on
 	 * this sound.
-	 * 
+	 *
 	 * @return the vector of playback threads for this simple sound
 	 */
 	public Vector getPlaybacks() {
@@ -350,7 +353,7 @@ public class SimpleSound {
 	/**
 	 * Method that returns the name of the file this sound came from. If this
 	 * sound did not originate with a file, this value will be null.
-	 * 
+	 *
 	 * @return the file name associated with this sound or null
 	 * @see #loadFromFile(String fileName)
 	 */
@@ -360,7 +363,7 @@ public class SimpleSound {
 
 	/**
 	 * Method to get the value of the debug flag
-	 * 
+	 *
 	 * @return true if in debug mode else false
 	 */
 	public boolean getDEBUG() {
@@ -371,34 +374,34 @@ public class SimpleSound {
 
 	/**
 	 * Changes the byte array that represents this sound.
-	 * 
+	 *
 	 * @param newBuffer
 	 *            a byte array representation of the new sound we want this to
 	 *            represent.
 	 */
-	public void setBuffer(byte[] newBuffer) {
+	public void setBuffer(final byte[] newBuffer) {
 		buffer = newBuffer;
 	}
 
 	/**
 	 * Changes the AudioFileFormat of this sound.
-	 * 
+	 *
 	 * @param newAudioFileFormat
 	 *            the new audioFileFormat that describes this sound.
 	 * @see AudioFileFormat
 	 */
-	public void setAudioFileFormat(AudioFileFormat newAudioFileFormat) {
+	public void setAudioFileFormat(final AudioFileFormat newAudioFileFormat) {
 		audioFileFormat = newAudioFileFormat;
 	}
 
 	/**
 	 * Changes the explorer of this object.
-	 * 
+	 *
 	 * @param soundExplorer
 	 *            the new SoundExplorer to use
 	 * @see SoundExplorer
 	 */
-	public void setSoundExplorer(SoundExplorer soundExplorer) {
+	public void setSoundExplorer(final SoundExplorer soundExplorer) {
 		this.soundExplorer = soundExplorer;
 	}
 
@@ -407,28 +410,29 @@ public class SimpleSound {
 	/**
 	 * Creates an <code>AudioInputStream</code> for this sound from the
 	 * <code>buffer</code> and the <code>audioFileFormat</code>.
-	 * 
+	 *
 	 * @return an AudioInputStream representing this sound.
 	 * @see AudioInputStream
 	 */
 	public AudioInputStream makeAIS() {
-		AudioFileFormat.Type fileType = audioFileFormat.getType();
-		ByteArrayInputStream bais = new ByteArrayInputStream(buffer);
-		int frameSize = audioFileFormat.getFormat().getFrameSize();
+		final AudioFileFormat.Type fileType = audioFileFormat.getType();
+		final ByteArrayInputStream bais = new ByteArrayInputStream(buffer);
+		final int frameSize = audioFileFormat.getFormat().getFrameSize();
 
-		AudioInputStream audioInputStream = new AudioInputStream(bais, audioFileFormat.getFormat(), buffer.length / frameSize);
+		final AudioInputStream audioInputStream = new AudioInputStream(bais, audioFileFormat.getFormat(),
+				buffer.length / frameSize);
 		return audioInputStream;
 	}
 
 	/**
 	 * Invokes <code>printError(message, null)</code>
-	 * 
+	 *
 	 * @see SimpleSound#printError(String message, Exception e)
 	 * @throws SoundException
 	 *             Will throw under every circumstance. This way we can catch
 	 *             the exception in JES.
 	 */
-	public void printError(String message) // throws SoundException
+	public void printError(final String message) // throws SoundException
 	{
 		printError(message, null);
 	}
@@ -438,7 +442,7 @@ public class SimpleSound {
 	 * prints a stack trace on the exception, and then exits the program. If the
 	 * String is null, then nothing happens, the method just returns. If the
 	 * Exception is null, then it prints the String and then exits the program.
-	 * 
+	 *
 	 * @param message
 	 *            A description of the error
 	 * @param e
@@ -447,7 +451,8 @@ public class SimpleSound {
 	 *             Will throw under every circumstance. This way we can catch
 	 *             the exception in JES.
 	 */
-	public void printError(String message, Exception e) // throws SoundException
+	public void printError(final String message, final Exception e) // throws
+																	// SoundException
 	{
 		if (message != null) {
 			SimpleOutput.showError(message);
@@ -462,7 +467,7 @@ public class SimpleSound {
 
 	/**
 	 * Method to check if a sound is stereo (2 channels) or not
-	 * 
+	 *
 	 * @return true if in stereo else false
 	 */
 	public boolean isStereo() {
@@ -477,14 +482,14 @@ public class SimpleSound {
 
 	/**
 	 * Method to write this sound to a file
-	 * 
+	 *
 	 * @param fileName
 	 *            the name of the file to write to
 	 */
-	public void write(String fileName) {
+	public void write(final String fileName) {
 		try {
 			writeToFile(fileName);
-		} catch (SoundException ex) {
+		} catch (final SoundException ex) {
 			printError("Couldn't write file to " + fileName);
 		}
 	}
@@ -495,39 +500,40 @@ public class SimpleSound {
 	 * created. If a file already exists, then it is overwritten. This does not
 	 * check the extension of the fileName passed in to make sure it agrees with
 	 * the <code>AudioFileFormat.Type</code> of this sound.
-	 * 
+	 *
 	 * @param outFileName
 	 *            The name of the file to write this sound to
 	 * @throws SoundException
 	 *             if any error is encountered while writing to the file.
 	 */
-	public void writeToFile(String outFileName) throws SoundException {
+	public void writeToFile(final String outFileName) throws SoundException {
 
 		/*
 		 * get an audioInputStream that represents this sound. then, we will
 		 * write from the stream to the file
 		 */
-		AudioInputStream audioInputStream = makeAIS();
-		AudioFileFormat.Type type = audioFileFormat.getType();
+		final AudioInputStream audioInputStream = makeAIS();
+		final AudioFileFormat.Type type = audioFileFormat.getType();
 
 		try {
 			audioInputStream.reset();
-		}// try reset audioInputStream
-		catch (Exception e) {
+		} // try reset audioInputStream
+		catch (final Exception e) {
 			printError("Unable to reset the Audio stream.  Please " + "try again.", e);
-		}// catch
+		} // catch
 
 		// get the file to write to
-		File file = new File(outFileName);
+		final File file = new File(outFileName);
 		if (!file.exists()) {
 			// if the file doesn't exist, make one
 			try {
 				file.createNewFile();
-			}// try
-			catch (IOException e) {
-				printError("That file does not already exist, and" + "there were problems creating a new file" + "of that name.  Are you sure the path" + "to: " + outFileName + "exists?", e);
-			}// catch
-		}// if
+			} // try
+			catch (final IOException e) {
+				printError("That file does not already exist, and" + "there were problems creating a new file"
+						+ "of that name.  Are you sure the path" + "to: " + outFileName + "exists?", e);
+			} // catch
+		} // if
 
 		// write to the file
 		try {
@@ -540,20 +546,23 @@ public class SimpleSound {
 			else {
 				fileName = outFileName;
 			}
-		}// try
-		catch (FileNotFoundException e) {
-			printError("The file you specified did not already exist " + "so we tried to create a new one, but were unable" + "to do so.  Please try again.  If problems " + "persit see your TA.", e);
-		} catch (Exception e) {
+		} // try
+		catch (final FileNotFoundException e) {
+			printError(
+					"The file you specified did not already exist " + "so we tried to create a new one, but were unable"
+							+ "to do so.  Please try again.  If problems " + "persit see your TA.",
+					e);
+		} catch (final Exception e) {
 			printError("Problems writing to file: " + outFileName, e);
-		}// catch
+		} // catch
 
 		// close the input stream, we're done writing
 		try {
 			audioInputStream.close();
-		}// try
-		catch (Exception e) {
+		} // try
+		catch (final Exception e) {
 			printError("Unable to close the Audio stream.");
-		}// catch
+		} // catch
 
 	}// writeToFile(String outFileName)
 
@@ -561,13 +570,13 @@ public class SimpleSound {
 	 * Resets the fields of this sound so that it now represents the sound in
 	 * the specified file. If successful, the fileName ariable is updated such
 	 * that it is equivalent to <code>inFileName</code>.
-	 * 
+	 *
 	 * @param inFileName
 	 *            the path and filename of the sound we want to represent.
 	 * @throws SoundException
 	 *             if any problem is encountered while reading in from the file.
 	 */
-	public void loadFromFile(String inFileName) throws SoundException {
+	public void loadFromFile(final String inFileName) throws SoundException {
 
 		// try to prevent a null pointer exception
 		if (inFileName == null) {
@@ -578,7 +587,7 @@ public class SimpleSound {
 		 * get the File object representing the file named inFileName and make
 		 * sure it exists
 		 */
-		File file = new File(inFileName);
+		final File file = new File(inFileName);
 		if (!file.exists()) {
 			printError("The file: " + inFileName + " doesn't exist");
 		}
@@ -588,10 +597,12 @@ public class SimpleSound {
 		AudioInputStream audioInputStream;
 		try {
 			audioInputStream = AudioSystem.getAudioInputStream(file);
-		} catch (Exception e) {
-			printError("Unable to read from file " + inFileName + ".  The file type is unsupported.  " + "Are you sure you're using a WAV, AU, or " + "AIFF file (some .wav files are encoded " + "using gsm, sbc, mp3, celp, ulaw, or adpcm)?", e);
+		} catch (final Exception e) {
+			printError("Unable to read from file " + inFileName + ".  The file type is unsupported.  "
+					+ "Are you sure you're using a WAV, AU, or " + "AIFF file (some .wav files are encoded "
+					+ "using gsm, sbc, mp3, celp, ulaw, or adpcm)?", e);
 			return;
-		}// catch
+		} // catch
 
 		/*
 		 * We need to make an array representing this sound, so the number of
@@ -604,7 +615,7 @@ public class SimpleSound {
 			printError("The sound in file: " + inFileName + " is too long." + "  Try using a shorter sound.");
 		}
 
-		int bufferSize = (int) audioInputStream.getFrameLength() * audioInputStream.getFormat().getFrameSize();
+		final int bufferSize = (int) audioInputStream.getFrameLength() * audioInputStream.getFormat().getFrameSize();
 
 		buffer = new byte[bufferSize];
 
@@ -620,22 +631,27 @@ public class SimpleSound {
 				} else {
 					offset += numBytesRead;
 				}
-			} catch (Exception e) {
-				printError("Problems reading the input stream.  " + "You might want to try again using this " + " file: " + inFileName + "or a different" + " file.  If problems persist, ask your TA.", e);
-			}// catch
-		}// while
+			} catch (final Exception e) {
+				printError("Problems reading the input stream.  " + "You might want to try again using this "
+						+ " file: " + inFileName + "or a different" + " file.  If problems persist, ask your TA.", e);
+			} // catch
+		} // while
 
 		/*
 		 * set the format of the file, assuming that the extension is correct
 		 */
 		if (inFileName.toLowerCase().endsWith(".wav")) {
-			audioFileFormat = new AudioFileFormat(AudioFileFormat.Type.WAVE, audioInputStream.getFormat(), (int) audioInputStream.getFrameLength());
+			audioFileFormat = new AudioFileFormat(AudioFileFormat.Type.WAVE, audioInputStream.getFormat(),
+					(int) audioInputStream.getFrameLength());
 		} else if (inFileName.toLowerCase().endsWith(".au")) {
-			audioFileFormat = new AudioFileFormat(AudioFileFormat.Type.AU, audioInputStream.getFormat(), (int) audioInputStream.getFrameLength());
+			audioFileFormat = new AudioFileFormat(AudioFileFormat.Type.AU, audioInputStream.getFormat(),
+					(int) audioInputStream.getFrameLength());
 		} else if (inFileName.toLowerCase().endsWith(".aif") || inFileName.toLowerCase().endsWith(".aiff")) {
-			audioFileFormat = new AudioFileFormat(AudioFileFormat.Type.AIFF, audioInputStream.getFormat(), (int) audioInputStream.getFrameLength());
+			audioFileFormat = new AudioFileFormat(AudioFileFormat.Type.AIFF, audioInputStream.getFormat(),
+					(int) audioInputStream.getFrameLength());
 		} else {
-			printError("Unsupported file type.  Please try again with a " + "file that ends in .wav, .au, .aif, or .aiff");
+			printError(
+					"Unsupported file type.  Please try again with a " + "file that ends in .wav, .au, .aif, or .aiff");
 		}
 
 		if (DEBUG) {
@@ -647,7 +663,7 @@ public class SimpleSound {
 		fileName = inFileName;
 		try {
 			audioInputStream.close();
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -664,12 +680,12 @@ public class SimpleSound {
 	 * done. This method does not block, however. So, if you invoke
 	 * <code>play()</code> multiple times in a row, sounds will simply play on
 	 * top of eachother - "accidental mixing"
-	 * 
+	 *
 	 * @see Playback
 	 */
 	public void play() {
 		// create the thread, add it to the Vector, and start it
-		Playback playback = new Playback(this);
+		final Playback playback = new Playback(this);
 		playbacks.add(playback);
 		playback.start();
 	}
@@ -678,7 +694,7 @@ public class SimpleSound {
 	 * Creates a new Playback thread, starts it, then waits for the entire sound
 	 * to finish playing before it returns. This method is guarranteed to play
 	 * the entire sound, and does not allow for any "accidental mixing"
-	 * 
+	 *
 	 * @see Playback
 	 */
 	public void blockingPlayOld() {
@@ -686,7 +702,7 @@ public class SimpleSound {
 		 * create the thread, add it to the Vector, start it, and wait until its
 		 * done playing to return
 		 */
-		Playback playback = new Playback(this);
+		final Playback playback = new Playback(this);
 		playbacks.add(playback);
 		playback.start();
 		// wait until the sound is done playing
@@ -701,9 +717,9 @@ public class SimpleSound {
 	public void blockingPlay() {
 		play();
 		try {
-			double timeToSleep = 1000 * (getLength() / getSamplingRate());
+			final double timeToSleep = 1000 * (getLength() / getSamplingRate());
 			Thread.sleep((int) timeToSleep);
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			System.out.println("Exception occurred: " + ex);
 		}
 	}
@@ -713,7 +729,7 @@ public class SimpleSound {
 	 * Integer.MAX_VALUE to guarrantee safe casting. Also checks the value of
 	 * rate to make sure that it is not larger than Float.MAX_VALUE before
 	 * casting.
-	 * 
+	 *
 	 * @param rate
 	 *            a double representing the change in sampleRate (==frameRate)
 	 *            for playing back this sound
@@ -724,12 +740,14 @@ public class SimpleSound {
 	 * @throws SoundException
 	 *             if there are problems playing the sound.
 	 */
-	public void playAtRateDur(double rate, double durInFrames) throws SoundException {
+	public void playAtRateDur(final double rate, final double durInFrames) throws SoundException {
 		if (durInFrames > getLengthInFrames()) {
-			printError("The given duration in frames, " + durInFrames + " is out of the playable range.  Try something " + "between 1 and " + getLengthInFrames());
+			printError("The given duration in frames, " + durInFrames + " is out of the playable range.  Try something "
+					+ "between 1 and " + getLengthInFrames());
 		}
 		if (rate > Float.MAX_VALUE) {
-			printError("The new sample rate, " + rate + "is out of the " + "playable range.  Try something between " + "0 and " + Float.MAX_VALUE);
+			printError("The new sample rate, " + rate + "is out of the " + "playable range.  Try something between "
+					+ "0 and " + Float.MAX_VALUE);
 		}
 		playAtRateInRange((float) rate, 0, (int) durInFrames - 1, false);
 	}
@@ -739,7 +757,7 @@ public class SimpleSound {
 	 * than Integer.MAX_VALUE to guarrantee safe casting. Simmilarly, checks the
 	 * value of rate to make sure that it is not larger than FLoat.MAX_VALUE
 	 * before casting.
-	 * 
+	 *
 	 * @param rate
 	 *            a double representing the change in sampleRate (==frameRate)
 	 *            for playing back this sound
@@ -750,12 +768,14 @@ public class SimpleSound {
 	 * @throws SoundException
 	 *             if there are problems playing the sound.
 	 */
-	public void blockingPlayAtRateDur(double rate, double durInFrames) throws SoundException {
+	public void blockingPlayAtRateDur(final double rate, final double durInFrames) throws SoundException {
 		if (durInFrames > getLengthInFrames()) {
-			printError("The given duration in frames, " + durInFrames + " is out of the playable range.  Try something " + "between 1 and " + getLengthInFrames());
+			printError("The given duration in frames, " + durInFrames + " is out of the playable range.  Try something "
+					+ "between 1 and " + getLengthInFrames());
 		}
 		if (rate > Float.MAX_VALUE) {
-			printError("The new sample rate, " + rate + "is out of the " + "playable range.  Try something between " + "0 and " + Float.MAX_VALUE);
+			printError("The new sample rate, " + rate + "is out of the " + "playable range.  Try something between "
+					+ "0 and " + Float.MAX_VALUE);
 		}
 
 		playAtRateInRange((float) rate, 0, (int) durInFrames - 1, true);
@@ -763,9 +783,9 @@ public class SimpleSound {
 	}
 
 	/**
-	 * Calls <code>playAtRateInRange(rate, startFrame, endFrame, 
+	 * Calls <code>playAtRateInRange(rate, startFrame, endFrame,
 	 * false) </code>.
-	 * 
+	 *
 	 * @param rate
 	 *            a float representing the change in sampleRate (==frameRate)
 	 *            for playing back this sound
@@ -780,14 +800,14 @@ public class SimpleSound {
 	 * @throws SoundException
 	 *             if there are problems playing the sound.
 	 */
-	public void playAtRateInRange(float rate, int startFrame, int endFrame) throws SoundException {
+	public void playAtRateInRange(final float rate, final int startFrame, final int endFrame) throws SoundException {
 		playAtRateInRange(rate, startFrame, endFrame, false);
 	}
 
 	/**
 	 * Calls <code>playAtRateInRange(rate, startFrame, endFrame, true)
 	 * </code>.
-	 * 
+	 *
 	 * @param rate
 	 *            a float representing the change in sampleRate (==frameRate)
 	 *            for playing back this sound
@@ -802,7 +822,8 @@ public class SimpleSound {
 	 * @throws SoundException
 	 *             if there are problems playing the sound.
 	 */
-	public void blockingPlayAtRateInRange(float rate, int startFrame, int endFrame) throws SoundException {
+	public void blockingPlayAtRateInRange(final float rate, final int startFrame, final int endFrame)
+			throws SoundException {
 		playAtRateInRange(rate, startFrame, endFrame, true);
 	}
 
@@ -814,7 +835,7 @@ public class SimpleSound {
 	 * modified values) and starts the thread. The values for buffer and
 	 * audioFileFormat are restored to their original values before the method
 	 * returns.
-	 * 
+	 *
 	 * @param rate
 	 *            The change in the sampleRate (==frameRate) for playing back
 	 *            this sound. The old SampleRate is multiplied by this value.
@@ -832,7 +853,8 @@ public class SimpleSound {
 	 * @throws SoundException
 	 *             if there are any problems playing the sound.
 	 */
-	public void playAtRateInRange(float rate, int startFrame, int endFrame, boolean isBlocking) throws SoundException {
+	public void playAtRateInRange(final float rate, final int startFrame, final int endFrame, final boolean isBlocking)
+			throws SoundException {
 
 		/*
 		 * before we get started, lets try to check for some obvious errors.
@@ -840,44 +862,50 @@ public class SimpleSound {
 		 * exceptions.
 		 */
 		if (endFrame >= getAudioFileFormat().getFrameLength()) {
-			printError("You are trying to play to index: " + (endFrame + 1) + ".  The sound only has " + getAudioFileFormat().getFrameLength() + " samples total.");
+			printError("You are trying to play to index: " + (endFrame + 1) + ".  The sound only has "
+					+ getAudioFileFormat().getFrameLength() + " samples total.");
 		}
 		if (startFrame < 0) {
-			printError("You cannot start playing at index " + (startFrame + 1) + ".  Choose 1 to start at the begining.");
+			printError(
+					"You cannot start playing at index " + (startFrame + 1) + ".  Choose 1 to start at the begining.");
 		}
 		if (endFrame < startFrame) {
-			printError("You cannot start playing at index " + (startFrame + 1) + " and stop playing at index " + (endFrame + 1) + ".  The start index must be before" + "the stop index.");
+			printError("You cannot start playing at index " + (startFrame + 1) + " and stop playing at index "
+					+ (endFrame + 1) + ".  The start index must be before" + "the stop index.");
 		}
 
 		/*
 		 * we want to save the current buffer and audioFileFormat so we can
 		 * return to them when we're finished.
 		 */
-		byte[] oldBuffer = buffer;
-		AudioFileFormat oldAFF = getAudioFileFormat();
+		final byte[] oldBuffer = buffer;
+		final AudioFileFormat oldAFF = getAudioFileFormat();
 
 		// just to make the code easier to read
-		int frameSize = getAudioFileFormat().getFormat().getFrameSize();
-		int durInFrames = endFrame - startFrame + 1;
+		final int frameSize = getAudioFileFormat().getFormat().getFrameSize();
+		final int durInFrames = endFrame - startFrame + 1;
 		if (DEBUG) {
 			System.out.println("\tnew durInFrames = " + durInFrames);
 		}
 
 		// we want to make a new buffer, only as long as we need
-		int newBufferSize = durInFrames * frameSize;
+		final int newBufferSize = durInFrames * frameSize;
 
-		byte[] newBuffer = new byte[newBufferSize];
+		final byte[] newBuffer = new byte[newBufferSize];
 		for (int i = 0; i < newBufferSize; i++) {
 			newBuffer[i] = oldBuffer[startFrame * frameSize + i];
 		}
 
 		// now we want to make a new audioFormat with the same information
 		// except a different rate
-		AudioFormat newAF = new AudioFormat(oldAFF.getFormat().getEncoding(), oldAFF.getFormat().getSampleRate() * rate, oldAFF.getFormat().getSampleSizeInBits(), oldAFF.getFormat().getChannels(), oldAFF.getFormat().getFrameSize(), oldAFF.getFormat().getFrameRate() * rate, oldAFF.getFormat().isBigEndian());
+		final AudioFormat newAF = new AudioFormat(oldAFF.getFormat().getEncoding(),
+				oldAFF.getFormat().getSampleRate() * rate, oldAFF.getFormat().getSampleSizeInBits(),
+				oldAFF.getFormat().getChannels(), oldAFF.getFormat().getFrameSize(),
+				oldAFF.getFormat().getFrameRate() * rate, oldAFF.getFormat().isBigEndian());
 
 		// now put that new AudioFormat into a new AudioFileFormat with
 		// the changed duration in frames
-		AudioFileFormat newAFF = new AudioFileFormat(oldAFF.getType(), newAF, durInFrames);
+		final AudioFileFormat newAFF = new AudioFileFormat(oldAFF.getType(), newAF, durInFrames);
 
 		/*
 		 * change the values in this Sound
@@ -885,21 +913,22 @@ public class SimpleSound {
 		setBuffer(newBuffer);
 		setAudioFileFormat(newAFF);
 		if (DEBUG) {
-			System.out.println("playAtRateInRange(" + rate + ", " + startFrame + ", " + endFrame + ", " + isBlocking + ")");
+			System.out.println(
+					"playAtRateInRange(" + rate + ", " + startFrame + ", " + endFrame + ", " + isBlocking + ")");
 			System.out.println("\t(length of sound = " + getAudioFileFormat().getFrameLength() + ")");
 		}
 
 		/*
 		 * play the modified sound
 		 */
-		Playback playback = new Playback(this);
+		final Playback playback = new Playback(this);
 		playbacks.add(playback);
 		playback.start();
 
 		if (isBlocking) {
 			while (playback.isAlive()) {
 				;
-			}// wait until the thread exits
+			} // wait until the thread exits
 		}
 
 		/*
@@ -918,7 +947,7 @@ public class SimpleSound {
 	/**
 	 * Deletes the specified playback object from the Vector. This should only
 	 * be called from within the run() method of an individual playback thread.
-	 * 
+	 *
 	 * @see Playback#run()
 	 */
 	public void removePlayback(Playback playbackToRemove) {
@@ -932,7 +961,7 @@ public class SimpleSound {
 
 	/**
 	 * Returns an array containing all of the bytes in the specified frame.
-	 * 
+	 *
 	 * @param frameNum
 	 *            the index of the frame to access
 	 * @return the array containing all of the bytes in frame
@@ -940,13 +969,14 @@ public class SimpleSound {
 	 * @throws SoundException
 	 *             if the frame number is invalid.
 	 */
-	public byte[] getFrame(int frameNum) throws SoundException {
+	public byte[] getFrame(final int frameNum) throws SoundException {
 		if (frameNum >= getAudioFileFormat().getFrameLength()) {
-			printError("That index " + frameNum + ", does not exist. " + "The last valid index is " + (getAudioFileFormat().getFrameLength() - 1));
+			printError("That index " + frameNum + ", does not exist. " + "The last valid index is "
+					+ (getAudioFileFormat().getFrameLength() - 1));
 		}
 
-		int frameSize = getAudioFileFormat().getFormat().getFrameSize();
-		byte[] theFrame = new byte[frameSize];
+		final int frameSize = getAudioFileFormat().getFormat().getFrameSize();
+		final byte[] theFrame = new byte[frameSize];
 		for (int i = 0; i < frameSize; i++) {
 			theFrame[i] = buffer[frameNum * frameSize + i];
 		}
@@ -956,7 +986,7 @@ public class SimpleSound {
 	/**
 	 * Obtains the length of the audio data contained in the file, expressed in
 	 * sample frames.
-	 * 
+	 *
 	 * @return the number of sample frames of audio data in the file
 	 */
 	public int getLengthInFrames() {
@@ -965,7 +995,7 @@ public class SimpleSound {
 
 	/**
 	 * Returns the number of samples in this sound
-	 * 
+	 *
 	 * @return the number of sample frames
 	 */
 	public int getNumSamples() {
@@ -975,21 +1005,21 @@ public class SimpleSound {
 	/**
 	 * Method to create and return a SoundSample object for the given frame
 	 * number
-	 * 
+	 *
 	 * @return a SoundSample object for this frame number
 	 */
-	public SoundSample getSample(int frameNum) {
+	public SoundSample getSample(final int frameNum) {
 		return new SoundSample(this, frameNum);
 	}
 
 	/**
 	 * Method to create and return an array of SoundSample objects
-	 * 
+	 *
 	 * @return the array of SoundSample objects
 	 */
 	public SoundSample[] getSamples() {
-		int numSamples = getLengthInFrames();
-		SoundSample[] samples = new SoundSample[numSamples];
+		final int numSamples = getLengthInFrames();
+		final SoundSample[] samples = new SoundSample[numSamples];
 		for (int i = 0; i < numSamples; i++) {
 			samples[i] = new SoundSample(this, i);
 		}
@@ -999,24 +1029,24 @@ public class SimpleSound {
 	/**
 	 * Method to report an index exception for this sound
 	 */
-	private void reportIndexException(int index, Exception ex) {
+	private void reportIndexException(final int index, final Exception ex) {
 		System.out.println("The index " + index + " isn't valid for this sound");
 	}
 
 	/**
 	 * Method to get the sample at the passed index and handle any
 	 * SoundExceptions
-	 * 
+	 *
 	 * @param index
 	 *            the desired index
 	 * @return the sample value
 	 */
-	public int getSampleValueAt(int index) {
+	public int getSampleValueAt(final int index) {
 		int value = 0;
 
 		try {
 			value = getSampleValue(index);
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			reportIndexException(index, ex);
 		}
 		return value;
@@ -1026,7 +1056,7 @@ public class SimpleSound {
 	 * If this is a mono sound, obtains the single sample contained within this
 	 * frame, else obtains the first (left) sample contained in the specified
 	 * frame.
-	 * 
+	 *
 	 * @param frameNum
 	 *            the index of the frame to access
 	 * @return an integer representation of the bytes contained within the
@@ -1034,19 +1064,22 @@ public class SimpleSound {
 	 * @throws SoundException
 	 *             if the frame number is invalid.
 	 */
-	public int getSampleValue(int frameNum) throws SoundException {
+	public int getSampleValue(final int frameNum) throws SoundException {
 		// Before we get started, lets make sure that frame exists
 		if (frameNum >= getAudioFileFormat().getFrameLength()) {
-			printError("You are trying to access the sample at index: " + frameNum + ", but the last valid index is at " + (getAudioFileFormat().getFrameLength() - 1));
+			printError("You are trying to access the sample at index: " + frameNum + ", but the last valid index is at "
+					+ (getAudioFileFormat().getFrameLength() - 1));
 		} else if (frameNum < 0) {
-			printError("You asked for the sample at index: " + frameNum + ".  This number is less than zero.  Please try" + "again using an index in the range [0," + (getAudioFileFormat().getFrameLength() - 1) + "]");
+			printError("You asked for the sample at index: " + frameNum
+					+ ".  This number is less than zero.  Please try" + "again using an index in the range [0,"
+					+ (getAudioFileFormat().getFrameLength() - 1) + "]");
 		}
 
-		AudioFormat format = getAudioFileFormat().getFormat();
-		int sampleSizeInBits = format.getSampleSizeInBits();
-		boolean isBigEndian = format.isBigEndian();
+		final AudioFormat format = getAudioFileFormat().getFormat();
+		final int sampleSizeInBits = format.getSampleSizeInBits();
+		final boolean isBigEndian = format.isBigEndian();
 
-		byte[] theFrame = getFrame(frameNum);
+		final byte[] theFrame = getFrame(frameNum);
 
 		if (format.getEncoding().equals(AudioFormat.Encoding.PCM_SIGNED)) {
 			// since we're always returning the left sample,
@@ -1061,7 +1094,8 @@ public class SimpleSound {
 			} else if (sampleSizeInBits == 32) {
 				return TConversionTool.bytesToInt32(theFrame, 0, isBigEndian);
 			} else {
-				printError("Unsupported audio encoding.  The sample " + "size is not recognized as a standard " + "format.");
+				printError("Unsupported audio encoding.  The sample " + "size is not recognized as a standard "
+						+ "format.");
 				return -1;
 			}
 		} else if (format.getEncoding().equals(AudioFormat.Encoding.PCM_UNSIGNED)) {
@@ -1074,7 +1108,8 @@ public class SimpleSound {
 			} else if (sampleSizeInBits == 32) {
 				return TConversionTool.unsignedByteToInt32(theFrame, 0, isBigEndian) - (int) Math.pow(2, 31);
 			} else {
-				printError("Unsupported audio encoding.  The sample " + "size is not recognized as a standard " + "format.");
+				printError("Unsupported audio encoding.  The sample " + "size is not recognized as a standard "
+						+ "format.");
 				return -1;
 			}
 		} else if (format.getEncoding().equals(AudioFormat.Encoding.ALAW)) {
@@ -1082,7 +1117,8 @@ public class SimpleSound {
 		} else if (format.getEncoding().equals(AudioFormat.Encoding.ULAW)) {
 			return TConversionTool.ulaw2linear(buffer[0]);
 		} else {
-			printError("unsupported audio encoding: " + format.getEncoding() + ".  Currently only PCM, " + "ALAW and ULAW are supported.  Please try again" + "with a different file.");
+			printError("unsupported audio encoding: " + format.getEncoding() + ".  Currently only PCM, "
+					+ "ALAW and ULAW are supported.  Please try again" + "with a different file.");
 			return -1;
 		}
 	}// getSample(int)
@@ -1090,7 +1126,7 @@ public class SimpleSound {
 	/**
 	 * Obtains the left sample of the audio data contained at the specified
 	 * frame.
-	 * 
+	 *
 	 * @param frameNum
 	 *            the index of the frame to access
 	 * @return an int representation of the bytes contained in the specified
@@ -1098,7 +1134,7 @@ public class SimpleSound {
 	 * @throws SoundException
 	 *             if the frameNumber is invalid
 	 */
-	public int getLeftSample(int frameNum) throws SoundException {
+	public int getLeftSample(final int frameNum) throws SoundException {
 		// default is to getLeftSample
 
 		return getSampleValue(frameNum);
@@ -1108,7 +1144,7 @@ public class SimpleSound {
 	/**
 	 * Obtains the right sample of the audio data contained at the specified
 	 * frame.
-	 * 
+	 *
 	 * @param frameNum
 	 *            the index of the frame to access
 	 * @return an int representation of the bytes contained in the specified
@@ -1117,24 +1153,28 @@ public class SimpleSound {
 	 *             if the frameNumber is invalid, or the encoding isn't
 	 *             supported.
 	 */
-	public int getRightSample(int frameNum) throws SoundException {
+	public int getRightSample(final int frameNum) throws SoundException {
 		// Before we get started, lets make sure that frame exists
 		if (frameNum >= getAudioFileFormat().getFrameLength()) {
-			printError("You are trying to access the sample at index: " + frameNum + ", but the last valid index is at " + (getAudioFileFormat().getFrameLength() - 1));
+			printError("You are trying to access the sample at index: " + frameNum + ", but the last valid index is at "
+					+ (getAudioFileFormat().getFrameLength() - 1));
 		} else if (frameNum < 0) {
-			printError("You asked for the sample at index: " + (frameNum + 1) + ".  This number is less than zero.  Please try" + " again using an index in the range [0," + (getAudioFileFormat().getFrameLength() - 1) + "].");
+			printError("You asked for the sample at index: " + (frameNum + 1)
+					+ ".  This number is less than zero.  Please try" + " again using an index in the range [0,"
+					+ (getAudioFileFormat().getFrameLength() - 1) + "].");
 		}
 
-		AudioFormat format = getAudioFileFormat().getFormat();
+		final AudioFormat format = getAudioFileFormat().getFormat();
 		int channels;
 		if ((channels = format.getChannels()) == 1) {
-			printError("Only stereo sounds have different right and left" + " samples.  You are using a mono sound, try " + "getSample(" + frameNum + ") instead");
+			printError("Only stereo sounds have different right and left"
+					+ " samples.  You are using a mono sound, try " + "getSample(" + frameNum + ") instead");
 			return -1;
 		}
-		int sampleSizeInBits = format.getSampleSizeInBits();
-		boolean isBigEndian = format.isBigEndian();
+		final int sampleSizeInBits = format.getSampleSizeInBits();
+		final boolean isBigEndian = format.isBigEndian();
 
-		byte[] theFrame = getFrame(frameNum);
+		final byte[] theFrame = getFrame(frameNum);
 
 		if (format.getEncoding().equals(AudioFormat.Encoding.PCM_SIGNED)) {
 			if (sampleSizeInBits == 8) {
@@ -1146,7 +1186,8 @@ public class SimpleSound {
 			} else if (sampleSizeInBits == 32) {
 				return TConversionTool.bytesToInt32(theFrame, 4, isBigEndian);
 			} else {
-				printError("Unsupported audio encoding.  The sample" + " size is not recognized as a standard" + " format.");
+				printError("Unsupported audio encoding.  The sample" + " size is not recognized as a standard"
+						+ " format.");
 				return -1;
 			}
 		} else if (format.getEncoding().equals(AudioFormat.Encoding.PCM_UNSIGNED)) {
@@ -1159,7 +1200,8 @@ public class SimpleSound {
 			} else if (sampleSizeInBits == 32) {
 				return TConversionTool.unsignedByteToInt32(theFrame, 4, isBigEndian);
 			} else {
-				printError("Unsupported audio encoding.  The sample" + " size is not recognized as a standard" + " format.");
+				printError("Unsupported audio encoding.  The sample" + " size is not recognized as a standard"
+						+ " format.");
 				return -1;
 			}
 		} else if (format.getEncoding().equals(AudioFormat.Encoding.ALAW)) {
@@ -1167,7 +1209,8 @@ public class SimpleSound {
 		} else if (format.getEncoding().equals(AudioFormat.Encoding.ULAW)) {
 			return TConversionTool.ulaw2linear(buffer[1]);
 		} else {
-			printError("unsupported audio encoding: " + format.getEncoding() + ".  Currently only PCM, " + "ALAW and ULAW are supported.  Please try again" + "with a different file.");
+			printError("unsupported audio encoding: " + format.getEncoding() + ".  Currently only PCM, "
+					+ "ALAW and ULAW are supported.  Please try again" + "with a different file.");
 			return -1;
 		}
 	}
@@ -1175,7 +1218,7 @@ public class SimpleSound {
 	/**
 	 * Obtains the length of this sound in bytes. Note, that this number is not
 	 * neccessarily the same as the length of this sound's file in bytes.
-	 * 
+	 *
 	 * @return the sound length in bytes
 	 */
 	public int getLengthInBytes() {
@@ -1184,7 +1227,7 @@ public class SimpleSound {
 
 	/**
 	 * Method to return the length of the sound as the number of samples
-	 * 
+	 *
 	 * @return the length of the sound as the number of samples
 	 */
 	public int getLength() {
@@ -1193,7 +1236,7 @@ public class SimpleSound {
 
 	/**
 	 * Obtains the number of channels of this sound.
-	 * 
+	 *
 	 * @return the number of channels (1 for mono, 2 for stereo), or
 	 *         <code>AudioSystem.NOT_SPECIFIED</code>
 	 * @see AudioSystem#NOT_SPECIFIED
@@ -1208,7 +1251,7 @@ public class SimpleSound {
 
 	/**
 	 * Changes the value of each byte of the specified frame.
-	 * 
+	 *
 	 * @param frameNum
 	 *            the index of the frame to change
 	 * @param theFrame
@@ -1217,13 +1260,15 @@ public class SimpleSound {
 	 * @throws SoundException
 	 *             if the frameNumber is invalid.
 	 */
-	public void setFrame(int frameNum, byte[] theFrame) throws SoundException {
+	public void setFrame(final int frameNum, final byte[] theFrame) throws SoundException {
 		if (frameNum >= getAudioFileFormat().getFrameLength()) {
-			printError("That frame, number " + frameNum + ", does not exist. " + "The last valid frame number is " + (getAudioFileFormat().getFrameLength() - 1));
+			printError("That frame, number " + frameNum + ", does not exist. " + "The last valid frame number is "
+					+ (getAudioFileFormat().getFrameLength() - 1));
 		}
-		int frameSize = getAudioFileFormat().getFormat().getFrameSize();
+		final int frameSize = getAudioFileFormat().getFormat().getFrameSize();
 		if (frameSize != theFrame.length) {
-			printError("Frame size doesn't match, line 383.  This should" + " never happen.  Please report the problem to a TA.");
+			printError("Frame size doesn't match, line 383.  This should"
+					+ " never happen.  Please report the problem to a TA.");
 		}
 		for (int i = 0; i < frameSize; i++) {
 			buffer[frameNum * frameSize + i] = theFrame[i];
@@ -1232,16 +1277,16 @@ public class SimpleSound {
 
 	/**
 	 * Method to set the sample value at the passed index to the passed value
-	 * 
+	 *
 	 * @param index
 	 *            the index
 	 * @param value
 	 *            the new value
 	 */
-	public void setSampleValueAt(int index, int value) {
+	public void setSampleValueAt(final int index, final int value) {
 		try {
 			setSampleValue(index, value);
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			reportIndexException(index, ex);
 		}
 	}
@@ -1250,7 +1295,7 @@ public class SimpleSound {
 	 * Changes the value of the sample found at the specified frame. If this
 	 * sound has more than one channel, then this defaults to setting only the
 	 * first (left) sample.
-	 * 
+	 *
 	 * @param frameNum
 	 *            the index of the frame where the sample should be changed
 	 * @param sample
@@ -1260,12 +1305,12 @@ public class SimpleSound {
 	 *             if the frameNumber is invalid, or another problem is
 	 *             encountered
 	 */
-	public void setSampleValue(int frameNum, int sample) throws SoundException {
-		AudioFormat format = getAudioFileFormat().getFormat();
-		int sampleSizeInBits = format.getSampleSizeInBits();
-		boolean isBigEndian = format.isBigEndian();
+	public void setSampleValue(final int frameNum, final int sample) throws SoundException {
+		final AudioFormat format = getAudioFileFormat().getFormat();
+		final int sampleSizeInBits = format.getSampleSizeInBits();
+		final boolean isBigEndian = format.isBigEndian();
 
-		byte[] theFrame = getFrame(frameNum);
+		final byte[] theFrame = getFrame(frameNum);
 
 		if (format.getEncoding().equals(AudioFormat.Encoding.PCM_SIGNED)) {
 			if (sampleSizeInBits == 8)// 8 bits = 1 byte = first cell in array
@@ -1285,7 +1330,7 @@ public class SimpleSound {
 			} else {
 				printError("Unsupported audio encoding.  The sample" + "size is not recognized as a standard format");
 			}
-		}// if format == PCM_SIGNED
+		} // if format == PCM_SIGNED
 		else if (format.getEncoding().equals(AudioFormat.Encoding.PCM_UNSIGNED)) {
 			if (sampleSizeInBits == 8) {
 				theFrame[0] = TConversionTool.intToUnsignedByte(sample);
@@ -1302,40 +1347,46 @@ public class SimpleSound {
 			}
 
 			else {
-				printError("Unsupported audio encoding.  The sample" + " size is not recognized as a standard " + "format.");
+				printError("Unsupported audio encoding.  The sample" + " size is not recognized as a standard "
+						+ "format.");
 			}
 		} else if (format.getEncoding().equals(AudioFormat.Encoding.ALAW)) {
 			if (sample > Short.MAX_VALUE || sample < Short.MIN_VALUE) {
-				printError("You are trying to set the sample value to: " + sample + ", but the maximum value for a sample" + " in this format is: " + Short.MAX_VALUE + ", and the minimum value is: " + Short.MIN_VALUE + ".  Please choose a value in that range.");
+				printError("You are trying to set the sample value to: " + sample
+						+ ", but the maximum value for a sample" + " in this format is: " + Short.MAX_VALUE
+						+ ", and the minimum value is: " + Short.MIN_VALUE + ".  Please choose a value in that range.");
 			}
 			theFrame[0] = TConversionTool.linear2alaw((short) sample);
 			setFrame(frameNum, theFrame);
 		} else if (format.getEncoding().equals(AudioFormat.Encoding.ULAW)) {
 
 			if (sample > Short.MAX_VALUE || sample < Short.MIN_VALUE) {
-				printError("You are trying to set the sample value to: " + sample + ", but the maximum value for a sample" + " in this format is: " + Short.MAX_VALUE + ", and the minimum value is: " + Short.MIN_VALUE + ".  Please choose a value in that range.");
+				printError("You are trying to set the sample value to: " + sample
+						+ ", but the maximum value for a sample" + " in this format is: " + Short.MAX_VALUE
+						+ ", and the minimum value is: " + Short.MIN_VALUE + ".  Please choose a value in that range.");
 			}
 			theFrame[0] = TConversionTool.linear2ulaw((short) sample);
 			setFrame(frameNum, theFrame);
 		} else {
-			printError("unsupported audio encoding: " + format.getEncoding() + ".  Currently only PCM, " + "ALAW and ULAW are supported.  Please try again" + "with a different file.");
+			printError("unsupported audio encoding: " + format.getEncoding() + ".  Currently only PCM, "
+					+ "ALAW and ULAW are supported.  Please try again" + "with a different file.");
 		}
 	}// setSample(int, int)
 
-	public void setLeftSample(int frameNum, int sample) throws SoundException {
+	public void setLeftSample(final int frameNum, final int sample) throws SoundException {
 		setSampleValue(frameNum, sample);
 	}
 
-	public void setRightSample(int frameNum, int sample) throws SoundException {
-		AudioFormat format = getAudioFileFormat().getFormat();
-		int sampleSizeInBits = format.getSampleSizeInBits();
-		boolean isBigEndian = format.isBigEndian();
+	public void setRightSample(final int frameNum, final int sample) throws SoundException {
+		final AudioFormat format = getAudioFileFormat().getFormat();
+		final int sampleSizeInBits = format.getSampleSizeInBits();
+		final boolean isBigEndian = format.isBigEndian();
 
 		if (format.getChannels() == 1) {
 			printError("this is a mono sound.  only stereo sounds have" + " different left and right samples.");
 		}
 
-		byte[] theFrame = getFrame(frameNum);
+		final byte[] theFrame = getFrame(frameNum);
 
 		if (format.getEncoding().equals(AudioFormat.Encoding.PCM_SIGNED)) {
 			// right will always be the second in the frame
@@ -1354,7 +1405,7 @@ public class SimpleSound {
 			} else {
 				printError("Unsupported audio encoding.  The sample" + "size is not recognized as a standard format");
 			}
-		}// if format == PCM_SIGNED
+		} // if format == PCM_SIGNED
 		else if (format.getEncoding().equals(AudioFormat.Encoding.PCM_UNSIGNED)) {
 			if (sampleSizeInBits == 8) {
 				theFrame[1] = TConversionTool.intToUnsignedByte(sample);
@@ -1369,22 +1420,28 @@ public class SimpleSound {
 				TConversionTool.intToUnsignedBytes32(sample, theFrame, 4, isBigEndian);
 				setFrame(frameNum, theFrame);
 			} else {
-				printError("Unsupported audio encoding.  The sample" + " size is not recognized as a standard" + " format");
+				printError("Unsupported audio encoding.  The sample" + " size is not recognized as a standard"
+						+ " format");
 			}
 		} else if (format.getEncoding().equals(AudioFormat.Encoding.ALAW)) {
 			if (sample > Short.MAX_VALUE || sample < Short.MIN_VALUE) {
-				printError("You are trying to set the sample value to: " + sample + ", but the maximum value for a sample" + " in this format is: " + Short.MAX_VALUE + ", and the minimum value is: " + Short.MIN_VALUE + ".  Please choose a value in that range.");
+				printError("You are trying to set the sample value to: " + sample
+						+ ", but the maximum value for a sample" + " in this format is: " + Short.MAX_VALUE
+						+ ", and the minimum value is: " + Short.MIN_VALUE + ".  Please choose a value in that range.");
 			}
 			theFrame[1] = TConversionTool.linear2alaw((short) sample);
 			setFrame(frameNum, theFrame);
 		} else if (format.getEncoding().equals(AudioFormat.Encoding.ULAW)) {
 			if (sample > Short.MAX_VALUE || sample < Short.MIN_VALUE) {
-				printError("You are trying to set the sample value to: " + sample + ", but the maximum value for a sample" + " in this format is: " + Short.MAX_VALUE + ", and the minimum value is: " + Short.MIN_VALUE + ".  Please choose a value in that range.");
+				printError("You are trying to set the sample value to: " + sample
+						+ ", but the maximum value for a sample" + " in this format is: " + Short.MAX_VALUE
+						+ ", and the minimum value is: " + Short.MIN_VALUE + ".  Please choose a value in that range.");
 			}
 			theFrame[1] = TConversionTool.linear2ulaw((short) sample);
 			setFrame(frameNum, theFrame);
 		} else {
-			printError("unsupported audio encoding: " + format.getEncoding() + ".  Currently only PCM, " + "ALAW and ULAW are supported.  Please try again" + "with a different file.");
+			printError("unsupported audio encoding: " + format.getEncoding() + ".  Currently only PCM, "
+					+ "ALAW and ULAW are supported.  Please try again" + "with a different file.");
 		}
 	}// setRightSample(int, int)
 
@@ -1392,13 +1449,13 @@ public class SimpleSound {
 	 * Method to open a sound viewer on a copy of this sound
 	 */
 	public void explore() {
-		SimpleSound sound = new SimpleSound(this);
+		final SimpleSound sound = new SimpleSound(this);
 		new SoundExplorer(sound, isStereo());
 	}
 
 	/**
 	 * Method to play a note using MIDI
-	 * 
+	 *
 	 * @param key
 	 *            the piano key to play
 	 * @param duration
@@ -1406,20 +1463,20 @@ public class SimpleSound {
 	 * @param intensity
 	 *            how hard to strike the note from (0-127)
 	 */
-	public static void playNote(int key, int duration, int intensity) {
+	public static void playNote(final int key, final int duration, final int intensity) {
 	}
 
 	/**
 	 * Method to convert a mp3 sound into a wav sound
-	 * 
+	 *
 	 * @param mp3File
 	 * @param wavFile
 	 */
-	public static void convert(String mp3File, String wavFile) {
+	public static void convert(final String mp3File, final String wavFile) {
 		try {
-			Converter converter = new Converter();
+			final Converter converter = new Converter();
 			converter.convert(mp3File, wavFile);
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			SimpleOutput.showError("Couldn't covert the file " + mp3File);
 		}
 	}
@@ -1428,7 +1485,7 @@ public class SimpleSound {
 
 	/**
 	 * Obtains a string representation of this JavaSound.
-	 * 
+	 *
 	 * @return a String representation of this JavaSound.
 	 */
 	@Override

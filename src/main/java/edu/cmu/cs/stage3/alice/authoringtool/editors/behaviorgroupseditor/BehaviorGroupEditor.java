@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -25,13 +25,19 @@ package edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor;
 
 /**
  * Title: Description: Copyright: Copyright (c) 2001 Company:
- * 
+ *
  * @author
  * @version 1.0
  */
 
-public class BehaviorGroupEditor extends edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel implements edu.cmu.cs.stage3.alice.core.event.PropertyListener, edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement, edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeComponentOwner {
+public class BehaviorGroupEditor extends edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel implements
+		edu.cmu.cs.stage3.alice.core.event.PropertyListener, edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement,
+		edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeComponentOwner {
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 4413417189143637757L;
 	protected edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeComponentElementPanel componentElementPanel;
 	protected edu.cmu.cs.stage3.alice.core.Element m_element;
 	protected edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty m_components;
@@ -55,7 +61,7 @@ public class BehaviorGroupEditor extends edu.cmu.cs.stage3.alice.authoringtool.u
 	public BehaviorGroupEditor() {
 		actionListener = new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				if (isExpanded) {
 					reduceComponentElementPanel();
 				} else {
@@ -67,7 +73,8 @@ public class BehaviorGroupEditor extends edu.cmu.cs.stage3.alice.authoringtool.u
 		generateGUI();
 	}
 
-	public void set(edu.cmu.cs.stage3.alice.core.Element element, edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringToolIn) {
+	public void set(final edu.cmu.cs.stage3.alice.core.Element element,
+			final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringToolIn) {
 		clean();
 		m_element = element;
 		authoringTool = authoringToolIn;
@@ -79,7 +86,7 @@ public class BehaviorGroupEditor extends edu.cmu.cs.stage3.alice.authoringtool.u
 	}
 
 	public java.util.Vector getBehaviorComponents() {
-		java.util.Vector toReturn = new java.util.Vector();
+		final java.util.Vector toReturn = new java.util.Vector();
 		for (int i = 0; i < componentElementPanel.getComponentCount(); i++) {
 			if (componentElementPanel.getComponent(i) instanceof BasicBehaviorPanel) {
 				toReturn.add(componentElementPanel.getComponent(i));
@@ -88,7 +95,7 @@ public class BehaviorGroupEditor extends edu.cmu.cs.stage3.alice.authoringtool.u
 		return toReturn;
 	}
 
-	public void setAuthoringTool(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
+	public void setAuthoringTool(final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
 		this.authoringTool = authoringTool;
 		if (componentElementPanel != null) {
 			componentElementPanel.setAuthoringTool(authoringTool);
@@ -96,7 +103,7 @@ public class BehaviorGroupEditor extends edu.cmu.cs.stage3.alice.authoringtool.u
 
 	}
 
-	public void setEmptyString(String emptyString) {
+	public void setEmptyString(final String emptyString) {
 		if (componentElementPanel != null) {
 			componentElementPanel.setEmptyString(emptyString);
 		}
@@ -112,13 +119,13 @@ public class BehaviorGroupEditor extends edu.cmu.cs.stage3.alice.authoringtool.u
 	}
 
 	protected void variableInit() {
-		Object isExpandedValue = m_element.data.get(IS_EXPANDED_KEY);
+		final Object isExpandedValue = m_element.data.get(IS_EXPANDED_KEY);
 		headerText = m_element.name.getStringValue();
 		if (isExpandedValue instanceof Boolean) {
 			isExpanded = ((Boolean) isExpandedValue).booleanValue();
 		}
 		if (m_element instanceof edu.cmu.cs.stage3.alice.core.Sandbox) {
-			edu.cmu.cs.stage3.alice.core.Sandbox proxy = (edu.cmu.cs.stage3.alice.core.Sandbox) m_element;
+			final edu.cmu.cs.stage3.alice.core.Sandbox proxy = (edu.cmu.cs.stage3.alice.core.Sandbox) m_element;
 			m_components = proxy.behaviors;
 			componentElementPanel = new edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor.CompositeComponentBehaviorPanel();
 			componentElementPanel.set(m_components, this, authoringTool);
@@ -196,15 +203,15 @@ public class BehaviorGroupEditor extends edu.cmu.cs.stage3.alice.authoringtool.u
 		removeAllListening();
 	}
 
-	public void prePropertyChange(edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
+	public void prePropertyChange(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
 	}
 
 	@Override
-	public void propertyChanging(edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
+	public void propertyChanging(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
 	}
 
 	@Override
-	public void propertyChanged(edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
+	public void propertyChanged(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
 		if (propertyEvent.getProperty() == m_element.name) {
 			headerText = m_element.name.getStringValue();
 			headerLabel.setText(headerText);
@@ -214,7 +221,7 @@ public class BehaviorGroupEditor extends edu.cmu.cs.stage3.alice.authoringtool.u
 	}
 
 	@Override
-	public void setBackground(java.awt.Color color) {
+	public void setBackground(final java.awt.Color color) {
 		super.setBackground(color);
 		if (containingPanel != null) {
 			containingPanel.setBackground(backgroundColor);
@@ -233,8 +240,12 @@ public class BehaviorGroupEditor extends edu.cmu.cs.stage3.alice.authoringtool.u
 	protected void generateGUI() {
 		setOpaque(false);
 		setLayout(new java.awt.GridBagLayout());
-		plus = new javax.swing.ImageIcon(edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeElementPanel.class.getResource("images/plus.gif"));
-		minus = new javax.swing.ImageIcon(edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeElementPanel.class.getResource("images/minus.gif"));
+		plus = new javax.swing.ImageIcon(
+				edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeElementPanel.class
+						.getResource("images/plus.gif"));
+		minus = new javax.swing.ImageIcon(
+				edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor.CompositeElementPanel.class
+						.getResource("images/minus.gif"));
 		expandButton = new javax.swing.JButton();
 		expandButton.setContentAreaFilled(false);
 		expandButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
@@ -286,16 +297,22 @@ public class BehaviorGroupEditor extends edu.cmu.cs.stage3.alice.authoringtool.u
 			expandButton.setIcon(plus);
 		}
 		headerLabel.setText(headerText);
-		headerPanel.add(expandButton, new java.awt.GridBagConstraints(0, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.NORTHWEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
-		headerPanel.add(headerLabel, new java.awt.GridBagConstraints(1, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.NORTHWEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 4, 0, 2), 0, 0));
-		headerPanel.add(glue, new java.awt.GridBagConstraints(2, 0, 1, 1, 1, 1, java.awt.GridBagConstraints.NORTHWEST, java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+		headerPanel.add(expandButton,
+				new java.awt.GridBagConstraints(0, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.NORTHWEST,
+						java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+		headerPanel.add(headerLabel,
+				new java.awt.GridBagConstraints(1, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.NORTHWEST,
+						java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 4, 0, 2), 0, 0));
+		headerPanel.add(glue, new java.awt.GridBagConstraints(2, 0, 1, 1, 1, 1, java.awt.GridBagConstraints.NORTHWEST,
+				java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0, 0, 0, 0), 0, 0));
 		if (shouldShowLabel) {
 			containingPanel.add(headerPanel, java.awt.BorderLayout.NORTH);
 		}
 		if (isExpanded) {
 			containingPanel.add(componentElementPanel, java.awt.BorderLayout.CENTER);
 		}
-		this.add(containingPanel, new java.awt.GridBagConstraints(1, 0, 1, 1, 1, 1, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+		this.add(containingPanel, new java.awt.GridBagConstraints(1, 0, 1, 1, 1, 1, java.awt.GridBagConstraints.CENTER,
+				java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0, 0, 0, 0), 0, 0));
 		setBackground(backgroundColor);
 	}
 
@@ -340,7 +357,7 @@ public class BehaviorGroupEditor extends edu.cmu.cs.stage3.alice.authoringtool.u
 		return componentElementPanel;
 	}
 
-	public void addResponsePanel(javax.swing.JComponent toAdd, int position) {
+	public void addResponsePanel(final javax.swing.JComponent toAdd, final int position) {
 		componentElementPanel.addElementPanel(toAdd, position);
 	}
 

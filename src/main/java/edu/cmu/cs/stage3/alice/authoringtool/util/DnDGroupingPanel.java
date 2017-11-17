@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -23,11 +23,14 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
-
 /**
  * @author Jason Pratt
  */
 public class DnDGroupingPanel extends GroupingPanel {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 8684521384894381417L;
 	protected java.awt.datatransfer.Transferable transferable;
 	protected DnDGrip grip = new DnDGrip();
 	protected java.awt.dnd.DragSource dragSource = new java.awt.dnd.DragSource();
@@ -43,10 +46,12 @@ public class DnDGroupingPanel extends GroupingPanel {
 	protected boolean dragEnabled = true;
 	protected boolean drawFaded = false;
 	protected java.awt.Composite defaultComposite = java.awt.AlphaComposite.SrcOver;
-	protected java.awt.AlphaComposite alphaComposite = java.awt.AlphaComposite.getInstance(java.awt.AlphaComposite.SRC_OVER, .5f);
+	protected java.awt.AlphaComposite alphaComposite = java.awt.AlphaComposite
+			.getInstance(java.awt.AlphaComposite.SRC_OVER, .5f);
 	protected boolean isSystemDefined = false;
 
-	protected static edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringToolConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration.getLocalConfiguration(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.class.getPackage());
+	protected static edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringToolConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration
+			.getLocalConfiguration(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.class.getPackage());
 
 	public DnDGroupingPanel() {
 		setLayout(new java.awt.BorderLayout(2, 2));
@@ -68,16 +73,29 @@ public class DnDGroupingPanel extends GroupingPanel {
 		return transferable;
 	}
 
-	public void setTransferable(java.awt.datatransfer.Transferable transferable) {
+	public void setTransferable(final java.awt.datatransfer.Transferable transferable) {
 		this.transferable = transferable;
 		if (transferable != null) {
-			if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.PropertyReferenceTransferable.propertyReferenceFlavor)) {
+			if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable,
+					edu.cmu.cs.stage3.alice.authoringtool.datatransfer.PropertyReferenceTransferable.propertyReferenceFlavor)) {
 				isSystemDefined = true;
-			} else if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ResponsePrototypeReferenceTransferable.responsePrototypeReferenceFlavor) && !edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedResponsePrototypeReferenceTransferable.callToUserDefinedResponsePrototypeReferenceFlavor)) {
+			} else if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(
+					transferable,
+					edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ResponsePrototypeReferenceTransferable.responsePrototypeReferenceFlavor)
+					&& !edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(
+							transferable,
+							edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedResponsePrototypeReferenceTransferable.callToUserDefinedResponsePrototypeReferenceFlavor)) {
 				isSystemDefined = true;
-			} else if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.QuestionPrototypeReferenceTransferable.questionPrototypeReferenceFlavor) && !edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedQuestionPrototypeReferenceTransferable.callToUserDefinedQuestionPrototypeReferenceFlavor)) {
+			} else if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(
+					transferable,
+					edu.cmu.cs.stage3.alice.authoringtool.datatransfer.QuestionPrototypeReferenceTransferable.questionPrototypeReferenceFlavor)
+					&& !edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(
+							transferable,
+							edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CallToUserDefinedQuestionPrototypeReferenceTransferable.callToUserDefinedQuestionPrototypeReferenceFlavor)) {
 				isSystemDefined = true;
-			} else if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CommonMathQuestionsTransferable.commonMathQuestionsFlavor)) {
+			} else if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(
+					transferable,
+					edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CommonMathQuestionsTransferable.commonMathQuestionsFlavor)) {
 				isSystemDefined = true;
 			} else {
 				isSystemDefined = false;
@@ -89,27 +107,29 @@ public class DnDGroupingPanel extends GroupingPanel {
 		return dragEnabled;
 	}
 
-	public void setDragEnabled(boolean b) {
+	public void setDragEnabled(final boolean b) {
 		dragEnabled = b;
 	}
 
-	public void addDragSourceComponent(java.awt.Component component) {
-		for (java.util.Iterator iter = dragGestureRecognizers.iterator(); iter.hasNext();) {
-			java.awt.dnd.DragGestureRecognizer dgr = (java.awt.dnd.DragGestureRecognizer) iter.next();
+	public void addDragSourceComponent(final java.awt.Component component) {
+		for (final java.util.Iterator iter = dragGestureRecognizers.iterator(); iter.hasNext();) {
+			final java.awt.dnd.DragGestureRecognizer dgr = (java.awt.dnd.DragGestureRecognizer) iter.next();
 			if (dgr.getComponent() == component) {
 				return; // HACK
 			}
 		}
 		if (dragSource != null) {
-			dragGestureRecognizers.add(dragSource.createDefaultDragGestureRecognizer(component, java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE | java.awt.dnd.DnDConstants.ACTION_LINK, dragGestureListener));
+			dragGestureRecognizers.add(dragSource.createDefaultDragGestureRecognizer(component,
+					java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE | java.awt.dnd.DnDConstants.ACTION_LINK,
+					dragGestureListener));
 		} else {
 			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("dragSource is null", null);
 		}
 	}
 
-	public void removeDragSourceComponent(java.awt.Component component) {
-		for (java.util.ListIterator iter = dragGestureRecognizers.listIterator(); iter.hasNext();) {
-			java.awt.dnd.DragGestureRecognizer dgr = (java.awt.dnd.DragGestureRecognizer) iter.next();
+	public void removeDragSourceComponent(final java.awt.Component component) {
+		for (final java.util.ListIterator iter = dragGestureRecognizers.listIterator(); iter.hasNext();) {
+			final java.awt.dnd.DragGestureRecognizer dgr = (java.awt.dnd.DragGestureRecognizer) iter.next();
 			if (dgr.getComponent() == component) {
 				dgr.removeDragGestureListener(dragGestureListener);
 				dgr.setComponent(null);
@@ -146,8 +166,8 @@ public class DnDGroupingPanel extends GroupingPanel {
 		// dragWindow2.hide();
 		// }
 		// dragWindow2 = null;
-		for (java.util.Iterator iter = dragGestureRecognizers.listIterator(); iter.hasNext();) { // MEMFIX
-			java.awt.dnd.DragGestureRecognizer dgr = (java.awt.dnd.DragGestureRecognizer) iter.next();
+		for (final java.util.Iterator iter = dragGestureRecognizers.listIterator(); iter.hasNext();) { // MEMFIX
+			final java.awt.dnd.DragGestureRecognizer dgr = (java.awt.dnd.DragGestureRecognizer) iter.next();
 			if (dragGestureListener != null) {
 				dgr.removeDragGestureListener(dragGestureListener);
 				iter.remove();
@@ -162,15 +182,16 @@ public class DnDGroupingPanel extends GroupingPanel {
 	}
 
 	public java.awt.Image getImage() {
-		java.awt.Rectangle bounds = getBounds();
-		java.awt.image.BufferedImage image = new java.awt.image.BufferedImage(bounds.width, bounds.height, java.awt.image.BufferedImage.TYPE_INT_ARGB);
-		java.awt.Graphics2D g = image.createGraphics();
+		final java.awt.Rectangle bounds = getBounds();
+		final java.awt.image.BufferedImage image = new java.awt.image.BufferedImage(bounds.width, bounds.height,
+				java.awt.image.BufferedImage.TYPE_INT_ARGB);
+		final java.awt.Graphics2D g = image.createGraphics();
 		paintAll(g);
 		return image;
 	}
 
 	@Override
-	public void paintComponent(java.awt.Graphics g) {
+	public void paintComponent(final java.awt.Graphics g) {
 		// if( g instanceof java.awt.Graphics2D ) {
 		// if( drawFaded ) {
 		// ((java.awt.Graphics2D)g).setComposite( alphaComposite );
@@ -181,9 +202,10 @@ public class DnDGroupingPanel extends GroupingPanel {
 		Object oldAntialiasing = null;
 		if (g instanceof java.awt.Graphics2D) {
 			oldAntialiasing = ((java.awt.Graphics2D) g).getRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING);
-			((java.awt.Graphics2D) g).addRenderingHints(new java.awt.RenderingHints(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON));
+			((java.awt.Graphics2D) g).addRenderingHints(new java.awt.RenderingHints(
+					java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON));
 		}
-		java.awt.Rectangle bounds = getBounds();
+		final java.awt.Rectangle bounds = getBounds();
 
 		g.setColor(getBackground());
 		g.fillRoundRect(0, 0, bounds.width, bounds.height, arcWidth, arcHeight);
@@ -191,25 +213,26 @@ public class DnDGroupingPanel extends GroupingPanel {
 		g.drawRoundRect(0, 0, bounds.width - 1, bounds.height - 1, arcWidth, arcHeight);
 
 		if (g instanceof java.awt.Graphics2D) {
-			((java.awt.Graphics2D) g).addRenderingHints(new java.awt.RenderingHints(java.awt.RenderingHints.KEY_ANTIALIASING, oldAntialiasing));
+			((java.awt.Graphics2D) g).addRenderingHints(
+					new java.awt.RenderingHints(java.awt.RenderingHints.KEY_ANTIALIASING, oldAntialiasing));
 		}
 	}
 
 	@Override
-	public void paintForeground(java.awt.Graphics g) {
+	public void paintForeground(final java.awt.Graphics g) {
 		super.paintForeground(g);
 
 		/*
 		 * if( isSystemDefined && false ) { java.awt.Rectangle bounds =
 		 * getBounds();
-		 * 
+		 *
 		 * Object oldAntialiasing = null; if( g instanceof java.awt.Graphics2D )
 		 * { oldAntialiasing = ((java.awt.Graphics2D)g).getRenderingHint(
 		 * java.awt.RenderingHints.KEY_ANTIALIASING );
 		 * ((java.awt.Graphics2D)g).addRenderingHints( new
 		 * java.awt.RenderingHints( java.awt.RenderingHints.KEY_ANTIALIASING,
 		 * java.awt.RenderingHints.VALUE_ANTIALIAS_ON ) ); }
-		 * 
+		 *
 		 * int w = bounds.width; int h = bounds.height; int s = 7; g.setColor(
 		 * new java.awt.Color( 220, 220, 220 ) ); g.fillPolygon( new int[] { 0,
 		 * 0, s }, new int[] { s, 0, 0 }, 3 ); // upper left g.fillPolygon( new
@@ -223,7 +246,7 @@ public class DnDGroupingPanel extends GroupingPanel {
 		 * g.drawPolygon( new int[] { 0, 0, s }, new int[] { h - s, h, h }, 3 );
 		 * // lower left g.drawPolygon( new int[] { w, w, w - s }, new int[] { h
 		 * - s, h, h }, 3 ); // lower right
-		 * 
+		 *
 		 * if( g instanceof java.awt.Graphics2D ) {
 		 * ((java.awt.Graphics2D)g).addRenderingHints( new
 		 * java.awt.RenderingHints( java.awt.RenderingHints.KEY_ANTIALIASING,
@@ -239,20 +262,22 @@ public class DnDGroupingPanel extends GroupingPanel {
 	// }
 
 	@Override
-	public void printComponent(java.awt.Graphics g) {
+	public void printComponent(final java.awt.Graphics g) {
 		if (!authoringToolConfig.getValue("printing.fillBackground").equalsIgnoreCase("true")) {
 			Object oldAntialiasing = null;
 			if (g instanceof java.awt.Graphics2D) {
 				oldAntialiasing = ((java.awt.Graphics2D) g).getRenderingHint(java.awt.RenderingHints.KEY_ANTIALIASING);
-				((java.awt.Graphics2D) g).addRenderingHints(new java.awt.RenderingHints(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON));
+				((java.awt.Graphics2D) g).addRenderingHints(new java.awt.RenderingHints(
+						java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON));
 			}
-			java.awt.Rectangle bounds = getBounds();
+			final java.awt.Rectangle bounds = getBounds();
 
 			g.setColor(java.awt.Color.lightGray);
 			g.drawRoundRect(0, 0, bounds.width - 1, bounds.height - 1, arcWidth, arcHeight);
 
 			if (g instanceof java.awt.Graphics2D) {
-				((java.awt.Graphics2D) g).addRenderingHints(new java.awt.RenderingHints(java.awt.RenderingHints.KEY_ANTIALIASING, oldAntialiasing));
+				((java.awt.Graphics2D) g).addRenderingHints(
+						new java.awt.RenderingHints(java.awt.RenderingHints.KEY_ANTIALIASING, oldAntialiasing));
 			}
 		} else {
 			super.printComponent(g);
@@ -263,7 +288,7 @@ public class DnDGroupingPanel extends GroupingPanel {
 		protected class DragListener extends java.awt.event.MouseAdapter implements java.awt.event.MouseMotionListener {
 
 			@Override
-			public void mouseReleased(java.awt.event.MouseEvent ev) {
+			public void mouseReleased(final java.awt.event.MouseEvent ev) {
 				drawFaded = false;
 				DnDGroupingPanel.this.repaint();
 				if (authoringToolConfig.getValue("gui.useAlphaTiles").equalsIgnoreCase("true") && dragWindow2 != null) {
@@ -278,8 +303,8 @@ public class DnDGroupingPanel extends GroupingPanel {
 			}
 
 			@Override
-			public void mouseDragged(java.awt.event.MouseEvent ev) {
-				java.awt.Point p = ev.getPoint();
+			public void mouseDragged(final java.awt.event.MouseEvent ev) {
+				final java.awt.Point p = ev.getPoint();
 				p.x += 5; // -= dragOffset.x; Aik Min commented this. Mouse
 							// cursor (arrow) is now at the top left of a tile.
 				p.y += 5; // -= dragOffset.y;
@@ -302,70 +327,84 @@ public class DnDGroupingPanel extends GroupingPanel {
 			}
 
 			@Override
-			public void mouseMoved(java.awt.event.MouseEvent ev) {
+			public void mouseMoved(final java.awt.event.MouseEvent ev) {
 			}
 		}
+
 		protected DragListener dragListener = new DragListener();
 
-		protected class DragSourceListener implements edu.cmu.cs.stage3.alice.authoringtool.util.event.DnDManagerListener {
+		protected class DragSourceListener
+				implements edu.cmu.cs.stage3.alice.authoringtool.util.event.DnDManagerListener {
 			@Override
-			public void dragEnter(java.awt.dnd.DragSourceDragEvent ev) {
+			public void dragEnter(final java.awt.dnd.DragSourceDragEvent ev) {
 				updateImages(true);
 			}
 
 			@Override
-			public void dragExit(java.awt.dnd.DragSourceEvent ev) {
+			public void dragExit(final java.awt.dnd.DragSourceEvent ev) {
 				updateImages(false);
 			}
 
 			@Override
-			public void dragDropEnd(java.awt.dnd.DragSourceDropEvent ev) {
+			public void dragDropEnd(final java.awt.dnd.DragSourceDropEvent ev) {
 			}
+
 			@Override
-			public void dragOver(java.awt.dnd.DragSourceDragEvent ev) {
+			public void dragOver(final java.awt.dnd.DragSourceDragEvent ev) {
 			}
+
 			@Override
-			public void dropActionChanged(java.awt.dnd.DragSourceDragEvent ev) {
+			public void dropActionChanged(final java.awt.dnd.DragSourceDragEvent ev) {
 			}
+
 			@Override
-			public void dragGestureRecognized(java.awt.dnd.DragGestureEvent ev) {
+			public void dragGestureRecognized(final java.awt.dnd.DragGestureEvent ev) {
 			}
+
 			@Override
 			public void dragStarted() {
 			}
 		}
+
 		protected DragSourceListener dragSourceListener = new DragSourceListener();
 
 		@Override
-		public void dragGestureRecognized(java.awt.dnd.DragGestureEvent dge) {
+		public void dragGestureRecognized(final java.awt.dnd.DragGestureEvent dge) {
 			if (transferable != null) {
 				DnDManager.fireDragGestureRecognized(dge);
 				try {
 					if (dragEnabled) {
-						dge.startDrag(java.awt.dnd.DragSource.DefaultCopyDrop, transferable, DnDManager.getInternalListener());
+						dge.startDrag(java.awt.dnd.DragSource.DefaultCopyDrop, transferable,
+								DnDManager.getInternalListener());
 						DnDManager.fireDragStarted(transferable, DnDGroupingPanel.this);
 
-						if (authoringToolConfig.getValue("gui.pickUpTiles").equalsIgnoreCase("true") && edu.cmu.cs.stage3.awt.AWTUtilities.mouseListenersAreSupported() && edu.cmu.cs.stage3.awt.AWTUtilities.mouseMotionListenersAreSupported()) {
-							if (authoringToolConfig.getValue("gui.useAlphaTiles").equalsIgnoreCase("true") && edu.cmu.cs.stage3.awt.SemitransparentWindow.isSupported()) {
+						if (authoringToolConfig.getValue("gui.pickUpTiles").equalsIgnoreCase("true")
+								&& edu.cmu.cs.stage3.awt.AWTUtilities.mouseListenersAreSupported()
+								&& edu.cmu.cs.stage3.awt.AWTUtilities.mouseMotionListenersAreSupported()) {
+							if (authoringToolConfig.getValue("gui.useAlphaTiles").equalsIgnoreCase("true")
+									&& edu.cmu.cs.stage3.awt.SemitransparentWindow.isSupported()) {
 								if (dragWindow2 == null) {
 									dragWindow2 = new edu.cmu.cs.stage3.awt.SemitransparentWindow();
 								}
 								dragWindow2.show();
 							} else {
 								if (dragWindow == null) {
-									dragWindow = new edu.cmu.cs.stage3.alice.authoringtool.util.DragWindow(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getJAliceFrame());
+									dragWindow = new edu.cmu.cs.stage3.alice.authoringtool.util.DragWindow(
+											edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack()
+													.getJAliceFrame());
 								}
 								dragWindow.setLocation(-10000, -10000); // hack
 								dragWindow.setVisible(true);
 							}
 
-							boolean scaledAndCropped = updateImages(false);
+							final boolean scaledAndCropped = updateImages(false);
 
 							if (scaledAndCropped) {
 								dragOffset = new java.awt.Point(3, 3);
 							} else {
 								dragOffset = dge.getDragOrigin();
-								dragOffset = javax.swing.SwingUtilities.convertPoint(dge.getComponent(), dragOffset, DnDGroupingPanel.this);
+								dragOffset = javax.swing.SwingUtilities.convertPoint(dge.getComponent(), dragOffset,
+										DnDGroupingPanel.this);
 							}
 							edu.cmu.cs.stage3.awt.AWTUtilities.addMouseListener(dragListener);
 							edu.cmu.cs.stage3.awt.AWTUtilities.addMouseMotionListener(dragListener);
@@ -375,19 +414,25 @@ public class DnDGroupingPanel extends GroupingPanel {
 						drawFaded = true;
 						DnDGroupingPanel.this.repaint();
 					}
-				} catch (Throwable t) {
-					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Error initiating drag of tile.", t);
+				} catch (final Throwable t) {
+					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+							.showErrorDialog("Error initiating drag of tile.", t);
 				}
 			}
 		}
 
-		private boolean updateImages(boolean valid) {
+		private boolean updateImages(final boolean valid) {
 			java.awt.Image tileImage = getImage();
 			boolean scaledAndCropped = false;
 
-			if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable, edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.responseReferenceFlavor) || edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReferenceFlavorForClass(edu.cmu.cs.stage3.alice.core.question.userdefined.Component.class))) {
-				int width = tileImage.getWidth(GUIEffects.sizeObserver);
-				int height = tileImage.getHeight(GUIEffects.sizeObserver);
+			if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable,
+					edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.responseReferenceFlavor)
+					|| edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(
+							transferable,
+							edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReferenceFlavorForClass(
+									edu.cmu.cs.stage3.alice.core.question.userdefined.Component.class))) {
+				final int width = tileImage.getWidth(GUIEffects.sizeObserver);
+				final int height = tileImage.getHeight(GUIEffects.sizeObserver);
 
 				if (width > 64 || height > 64) {
 					double scaleFactor = 1.0;
@@ -418,16 +463,18 @@ public class DnDGroupingPanel extends GroupingPanel {
 			}
 
 			if (valid) {
-				tileImage = GUIEffects.getImageWithColoredBorder(tileImage, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("dndHighlight2"));
+				tileImage = GUIEffects.getImageWithColoredBorder(tileImage,
+						edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("dndHighlight2"));
 			} else {
-				tileImage = GUIEffects.getImageWithColoredBorder(tileImage, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("dndHighlight3"));
+				tileImage = GUIEffects.getImageWithColoredBorder(tileImage,
+						edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("dndHighlight3"));
 			}
 
 			if (authoringToolConfig.getValue("gui.useAlphaTiles").equalsIgnoreCase("true") && dragWindow2 != null) {
-				java.awt.Image image = GUIEffects.getImageWithDropShadow(tileImage, 8, 8, arcWidth, arcHeight);
+				final java.awt.Image image = GUIEffects.getImageWithDropShadow(tileImage, 8, 8, arcWidth, arcHeight);
 				try {
 					dragWindow2.setImage(image);
-				} catch (InterruptedException ie) {
+				} catch (final InterruptedException ie) {
 					throw new RuntimeException();
 				}
 			} else if (dragWindow != null) {
@@ -439,6 +486,10 @@ public class DnDGroupingPanel extends GroupingPanel {
 	}
 
 	public class DnDGrip extends javax.swing.JComponent {
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = -5558865858606608579L;
 		protected java.awt.Color highlightColor = javax.swing.plaf.metal.MetalLookAndFeel.getControlHighlight();
 		protected java.awt.Color shadowColor = javax.swing.plaf.metal.MetalLookAndFeel.getControlDarkShadow();
 
@@ -449,13 +500,13 @@ public class DnDGroupingPanel extends GroupingPanel {
 		}
 
 		@Override
-		protected void printComponent(java.awt.Graphics g) {
+		protected void printComponent(final java.awt.Graphics g) {
 			// do nothing
 		}
 
 		@Override
-		protected void paintComponent(java.awt.Graphics g) {
-			java.awt.Dimension size = getSize();
+		protected void paintComponent(final java.awt.Graphics g) {
+			final java.awt.Dimension size = getSize();
 
 			g.setColor(highlightColor);
 			for (int x = 0; x < size.width; x += 4) {

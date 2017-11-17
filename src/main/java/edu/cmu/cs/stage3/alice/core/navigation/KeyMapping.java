@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -25,7 +25,7 @@ package edu.cmu.cs.stage3.alice.core.navigation;
 
 /**
  * Title: Description: Copyright: Copyright (c) 2001 Company: Stage3
- * 
+ *
  * @author Ben Buchwald
  * @version 1.0
  */
@@ -52,7 +52,8 @@ public class KeyMapping extends edu.cmu.cs.stage3.alice.core.Element implements 
 	public static final int NAV_HEADSUP = 65536;
 	public static final int NAV_STRAFE_MODIFIER = -1;
 
-	public edu.cmu.cs.stage3.alice.core.property.IntArrayProperty keyFunction = new edu.cmu.cs.stage3.alice.core.property.IntArrayProperty(this, "keyFunction", new int[java.awt.event.KeyEvent.KEY_LAST]);
+	public edu.cmu.cs.stage3.alice.core.property.IntArrayProperty keyFunction = new edu.cmu.cs.stage3.alice.core.property.IntArrayProperty(
+			this, "keyFunction", new int[java.awt.event.KeyEvent.KEY_LAST]);
 
 	private boolean[] keyState;
 	private boolean strafing;
@@ -75,8 +76,8 @@ public class KeyMapping extends edu.cmu.cs.stage3.alice.core.Element implements 
 		// setFunction(java.awt.event.KeyEvent.VK_PAGE_DOWN,NAV_MOVEDOWN);
 	}
 
-	public void setFunction(int key, int function) {
-		int[] functions = keyFunction.getIntArrayValue();
+	public void setFunction(final int key, final int function) {
+		final int[] functions = keyFunction.getIntArrayValue();
 		functions[key] = function;
 		keyFunction.set(functions);
 	}
@@ -105,7 +106,7 @@ public class KeyMapping extends edu.cmu.cs.stage3.alice.core.Element implements 
 	}
 
 	@Override
-	public void keyPressed(java.awt.event.KeyEvent keyEvent) {
+	public void keyPressed(final java.awt.event.KeyEvent keyEvent) {
 		if (keyFunction.getIntArrayValue()[keyEvent.getKeyCode()] == NAV_STRAFE_MODIFIER) {
 			strafing = true;
 		} else {
@@ -114,7 +115,7 @@ public class KeyMapping extends edu.cmu.cs.stage3.alice.core.Element implements 
 	}
 
 	@Override
-	public void keyReleased(java.awt.event.KeyEvent keyEvent) {
+	public void keyReleased(final java.awt.event.KeyEvent keyEvent) {
 		if (keyFunction.getIntArrayValue()[keyEvent.getKeyCode()] == NAV_STRAFE_MODIFIER) {
 			strafing = false;
 		}
@@ -122,7 +123,7 @@ public class KeyMapping extends edu.cmu.cs.stage3.alice.core.Element implements 
 	}
 
 	@Override
-	public void keyTyped(java.awt.event.KeyEvent keyEvent) {
+	public void keyTyped(final java.awt.event.KeyEvent keyEvent) {
 	}
 
 	public void cleanState() {

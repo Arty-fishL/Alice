@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -31,7 +31,7 @@ import java.util.Vector;
  * Utilities for Editors. This Class keeps the master list of which Editors are
  * available, as well as providing a bunch of static methods for manipulating
  * and getting information from Editors.
- * 
+ *
  * @author Jason Pratt
  * @see edu.cmu.cs.stage3.alice.authoringtool.Editor
  */
@@ -59,19 +59,19 @@ public final class EditorUtilities {
 	/**
 	 * Returns all of the Editors that are able to view the specified Object
 	 * type.
-	 * 
+	 *
 	 * TODO: CACHING...
 	 */
-	public static Class[] getEditorsForClass(Class objectClass) {
-		Vector editors = new Vector();
+	public static Class[] getEditorsForClass(final Class objectClass) {
+		final Vector editors = new Vector();
 		if (!Object.class.isAssignableFrom(objectClass)) {
 			return null;
 		}
 		if (allEditors == null) {
 			return null;
 		}
-		for (Class allEditor : allEditors) {
-			Class acceptedClass = getObjectParameter(allEditor);
+		for (final Class allEditor : allEditors) {
+			final Class acceptedClass = getObjectParameter(allEditor);
 			if (acceptedClass.isAssignableFrom(objectClass)) {
 				editors.addElement(allEditor);
 			}
@@ -79,7 +79,7 @@ public final class EditorUtilities {
 
 		sort(editors, objectClass);
 
-		Class[] cvs = new Class[editors.size()];
+		final Class[] cvs = new Class[editors.size()];
 		for (int i = 0; i < cvs.length; i++) {
 			cvs[i] = (Class) editors.elementAt(i);
 		}
@@ -90,11 +90,11 @@ public final class EditorUtilities {
 	 * returns true if potentialEditor is in the current list of all known
 	 * Editors.
 	 */
-	public static boolean isInAllEditors(Class potentialEditor) {
+	public static boolean isInAllEditors(final Class potentialEditor) {
 		if (allEditors == null) {
 			return false;
 		}
-		for (Class allEditor : allEditors) {
+		for (final Class allEditor : allEditors) {
 			if (potentialEditor == allEditor) {
 				return true;
 			}
@@ -105,20 +105,21 @@ public final class EditorUtilities {
 	/**
 	 * Returns a new Editor instance of the specified Class
 	 */
-	public static edu.cmu.cs.stage3.alice.authoringtool.Editor getEditorFromClass(Class editorClass) {
+	public static edu.cmu.cs.stage3.alice.authoringtool.Editor getEditorFromClass(final Class editorClass) {
 		try {
 			return (edu.cmu.cs.stage3.alice.authoringtool.Editor) editorClass.newInstance();
-		} catch (Throwable t) {
-			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Error creating new editor of type " + editorClass, t);
+		} catch (final Throwable t) {
+			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+					.showErrorDialog("Error creating new editor of type " + editorClass, t);
 		}
 		return null;
 	}
 
-	public static java.lang.reflect.Method getSetMethodFromClass(Class editorClass) {
-		java.lang.reflect.Method[] methods = editorClass.getMethods();
-		for (Method potentialMethod : methods) {
+	public static java.lang.reflect.Method getSetMethodFromClass(final Class editorClass) {
+		final java.lang.reflect.Method[] methods = editorClass.getMethods();
+		for (final Method potentialMethod : methods) {
 			if (potentialMethod.getName().equals("setObject")) {
-				Class[] parameterTypes = potentialMethod.getParameterTypes();
+				final Class[] parameterTypes = potentialMethod.getParameterTypes();
 				if (parameterTypes.length == 1) {
 					if (Object.class.isAssignableFrom(parameterTypes[0])) {
 						return potentialMethod;
@@ -130,8 +131,8 @@ public final class EditorUtilities {
 		return null;
 	}
 
-	public static Class getObjectParameter(Class editorClass) {
-		java.lang.reflect.Method setObject = getSetMethodFromClass(editorClass);
+	public static Class getObjectParameter(final Class editorClass) {
+		final java.lang.reflect.Method setObject = getSetMethodFromClass(editorClass);
 		if (setObject != null) {
 			return setObject.getParameterTypes()[0];
 		}
@@ -145,17 +146,17 @@ public final class EditorUtilities {
 	 * between the given objectClass and the actual type that each Editor's
 	 * setObject method accepts.
 	 */
-	public static Class getBestEditor(Class objectClass) {
+	public static Class getBestEditor(final Class objectClass) {
 		// DEBUG System.out.println( "objectClass: " + objectClass );
 		Class bestEditor = null;
 		int bestDepth = Integer.MAX_VALUE;
-		for (Class editorClass : allEditors) {
+		for (final Class editorClass : allEditors) {
 			// DEBUG System.out.println( "editorClass: " + editorClass );
-			java.lang.reflect.Method setObject = getSetMethodFromClass(editorClass);
+			final java.lang.reflect.Method setObject = getSetMethodFromClass(editorClass);
 			if (setObject != null) {
-				Class[] parameterTypes = setObject.getParameterTypes();
+				final Class[] parameterTypes = setObject.getParameterTypes();
 				if (parameterTypes.length == 1) {
-					int depth = getObjectClassDepth(parameterTypes[0], objectClass);
+					final int depth = getObjectClassDepth(parameterTypes[0], objectClass);
 					// DEBUG System.out.println( "getObjectClassDepth( " +
 					// parameterTypes[0] + ", " + objectClass + " ): " + depth
 					// );
@@ -173,31 +174,31 @@ public final class EditorUtilities {
 		return bestEditor;
 	}
 
-	public static void editObject(edu.cmu.cs.stage3.alice.authoringtool.Editor editor, Object object) {
-		java.lang.reflect.Method setObject = getSetMethodFromClass(editor.getClass());
+	public static void editObject(final edu.cmu.cs.stage3.alice.authoringtool.Editor editor, final Object object) {
+		final java.lang.reflect.Method setObject = getSetMethodFromClass(editor.getClass());
 		try {
-			setObject.invoke(editor, new Object[]{object});
-		} catch (Exception e) {
+			setObject.invoke(editor, new Object[] { object });
+		} catch (final Exception e) {
 			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Error editing object: " + object, e);
 		}
 	}
 
 	/**
 	 * This method <bold>defines</bold> what it means to be a valid Editor.
-	 * 
+	 *
 	 * To be valid, a Class must: -implement Editor -have an constructor that
 	 * takes no arguments -have a method called setObject that takes a single
 	 * argument
 	 */
-	private static boolean isValidEditor(Class editorClass) {
+	private static boolean isValidEditor(final Class editorClass) {
 		if (!edu.cmu.cs.stage3.alice.authoringtool.Editor.class.isAssignableFrom(editorClass)) {
 			return false;
 		}
 
 		boolean constructorFound = false;
-		java.lang.reflect.Constructor[] editorConstructors = editorClass.getConstructors();
-		for (Constructor editorConstructor : editorConstructors) {
-			Class[] parameterTypes = editorConstructor.getParameterTypes();
+		final java.lang.reflect.Constructor[] editorConstructors = editorClass.getConstructors();
+		for (final Constructor editorConstructor : editorConstructors) {
+			final Class[] parameterTypes = editorConstructor.getParameterTypes();
 			if (parameterTypes.length == 0) {
 				constructorFound = true;
 				break;
@@ -213,11 +214,11 @@ public final class EditorUtilities {
 
 	/**
 	 * Determines how close a subclass is to a superclass
-	 * 
+	 *
 	 * @returns the depth of the class hierarchy between the given superclass
 	 *          and subclass
 	 */
-	private static int getObjectClassDepth(Class superclass, Class subclass) {
+	private static int getObjectClassDepth(final Class superclass, final Class subclass) {
 		if (!superclass.isAssignableFrom(subclass)) {
 			return -1;
 		}
@@ -235,8 +236,8 @@ public final class EditorUtilities {
 	/**
 	 * Swaps elements a and b in Vector v
 	 */
-	private static void swap(Vector v, int a, int b) {
-		Object t = v.elementAt(a);
+	private static void swap(final Vector v, final int a, final int b) {
+		final Object t = v.elementAt(a);
 		v.setElementAt(v.elementAt(b), a);
 		v.setElementAt(t, b);
 	}
@@ -244,13 +245,13 @@ public final class EditorUtilities {
 	/**
 	 * Compares two EditorClasses based on how close their setObject's Object
 	 * parameter is to the given objectClass.
-	 * 
+	 *
 	 * returns -1 if a is closer returns 1 if b is closer returns 0 if they are
 	 * equally close
 	 */
-	private static int compare(Class a, Class b, Class objectClass) {
-		int aDist = getObjectClassDepth(getObjectParameter(a), objectClass);
-		int bDist = getObjectClassDepth(getObjectParameter(b), objectClass);
+	private static int compare(final Class a, final Class b, final Class objectClass) {
+		final int aDist = getObjectClassDepth(getObjectParameter(a), objectClass);
+		final int bDist = getObjectClassDepth(getObjectParameter(b), objectClass);
 		if (aDist < bDist) {
 			return -1;
 		} else if (bDist < aDist) {
@@ -263,13 +264,14 @@ public final class EditorUtilities {
 	/**
 	 * Sorts a Vector of Editor Classes based on how fit they are to view the
 	 * given objectClass
-	 * 
+	 *
 	 * This is going to be used on small vectors, so I'm just using Insertion
 	 * sort.
 	 */
-	private static void sort(Vector v, Class objectClass) {
+	private static void sort(final Vector v, final Class objectClass) {
 		for (int i = 0; i < v.size(); i++) {
-			for (int j = i; j > 0 && compare((Class) v.elementAt(j - 1), (Class) v.elementAt(j), objectClass) > 0; j--) {
+			for (int j = i; j > 0
+					&& compare((Class) v.elementAt(j - 1), (Class) v.elementAt(j), objectClass) > 0; j--) {
 				swap(v, j, j - 1);
 			}
 		}

@@ -29,48 +29,53 @@ import java.util.List;
 public class DefaultRenderTargetFactory implements RenderTargetFactory {
 
 	public static List<Class<? extends edu.cmu.cs.stage3.alice.scenegraph.renderer.AbstractRenderer>> getPotentialRendererClasses() {
-		List<Class<? extends edu.cmu.cs.stage3.alice.scenegraph.renderer.AbstractRenderer>> renderers = new ArrayList<Class<? extends edu.cmu.cs.stage3.alice.scenegraph.renderer.AbstractRenderer>>();
+		final List<Class<? extends edu.cmu.cs.stage3.alice.scenegraph.renderer.AbstractRenderer>> renderers = new ArrayList<Class<? extends edu.cmu.cs.stage3.alice.scenegraph.renderer.AbstractRenderer>>();
 
 		if (System.getProperty("os.name").startsWith("Win")) {
 			try {
 				if (edu.cmu.cs.stage3.alice.scenegraph.renderer.util.DirectXVersion.getVersion() >= 7.0) {
 					renderers.add(edu.cmu.cs.stage3.alice.scenegraph.renderer.directx7renderer.Renderer.class);
 				}
-			} catch (Throwable t) {
+			} catch (final Throwable t) {
 				// pass
 			}
 		}
 
 		try {
 			renderers.add(edu.cmu.cs.stage3.alice.scenegraph.renderer.joglrenderer.Renderer.class);
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			// pass
 		}
 
 		try {
 			renderers.add(edu.cmu.cs.stage3.alice.scenegraph.renderer.nullrenderer.Renderer.class);
-		} catch (Throwable t) {
+		} catch (final Throwable t) {
 			// pass
 		}
 		return renderers;
 	}
-	private Class<?> m_rendererClass;
+
+	private final Class<?> m_rendererClass;
 	private Renderer m_renderer;
+
 	public DefaultRenderTargetFactory() {
 		this(null);
 	}
+
 	public DefaultRenderTargetFactory(Class<?> rendererClass) {
 		if (rendererClass == null) {
 			rendererClass = getPotentialRendererClasses().get(0);
 		}
 		m_rendererClass = rendererClass;
 	}
+
 	@Override
 	public boolean isSoftwareEmulationForced() {
 		return getRenderer().isSoftwareEmulationForced();
 	}
+
 	@Override
-	public void setIsSoftwareEmulationForced(boolean isSoftwareEmulationForced) {
+	public void setIsSoftwareEmulationForced(final boolean isSoftwareEmulationForced) {
 		getRenderer().setIsSoftwareEmulationForced(isSoftwareEmulationForced);
 	}
 
@@ -78,7 +83,7 @@ public class DefaultRenderTargetFactory implements RenderTargetFactory {
 		if (m_renderer == null) {
 			try {
 				m_renderer = (Renderer) m_rendererClass.newInstance();
-			} catch (Throwable t) {
+			} catch (final Throwable t) {
 				t.printStackTrace();
 			}
 		}
@@ -89,17 +94,19 @@ public class DefaultRenderTargetFactory implements RenderTargetFactory {
 	public OffscreenRenderTarget createOffscreenRenderTarget() {
 		return getRenderer().createOffscreenRenderTarget();
 	}
+
 	@Override
 	public OnscreenRenderTarget createOnscreenRenderTarget() {
 		return getRenderer().createOnscreenRenderTarget();
 	}
 
 	@Override
-	public void releaseOffscreenRenderTarget(OffscreenRenderTarget offscreenRenderTarget) {
+	public void releaseOffscreenRenderTarget(final OffscreenRenderTarget offscreenRenderTarget) {
 		offscreenRenderTarget.release();
 	}
+
 	@Override
-	public void releaseOnscreenRenderTarget(OnscreenRenderTarget onscreenRenderTarget) {
+	public void releaseOnscreenRenderTarget(final OnscreenRenderTarget onscreenRenderTarget) {
 		onscreenRenderTarget.release();
 	}
 

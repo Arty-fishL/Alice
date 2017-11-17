@@ -26,23 +26,26 @@ package edu.cmu.cs.stage3.alice.core.property;
 import edu.cmu.cs.stage3.alice.core.Element;
 
 public class ElementArrayProperty extends ObjectArrayProperty {
-	public ElementArrayProperty(Element owner, String name, Object[] defaultValue, Class valueClass) {
+	public ElementArrayProperty(final Element owner, final String name, final Object[] defaultValue,
+			final Class valueClass) {
 		super(owner, name, defaultValue, valueClass);
 	}
+
 	public Element[] getElementArrayValue() {
 		return (Element[]) getArrayValue();
 	}
+
 	private void sortByName(final boolean ignoreCase) {
-		Element[] src = getElementArrayValue();
-		Element[] dst = (Element[]) java.lang.reflect.Array.newInstance(getComponentType(), src.length);
+		final Element[] src = getElementArrayValue();
+		final Element[] dst = (Element[]) java.lang.reflect.Array.newInstance(getComponentType(), src.length);
 		System.arraycopy(src, 0, dst, 0, dst.length);
 		java.util.Arrays.sort(dst, new java.util.Comparator() {
 			@Override
-			public int compare(Object o1, Object o2) {
-				Element e1 = (Element) o1;
-				Element e2 = (Element) o2;
-				String n1 = e1.name.getStringValue();
-				String n2 = e2.name.getStringValue();
+			public int compare(final Object o1, final Object o2) {
+				final Element e1 = (Element) o1;
+				final Element e2 = (Element) o2;
+				final String n1 = e1.name.getStringValue();
+				final String n2 = e2.name.getStringValue();
 				if (n1 != null) {
 					if (n2 != null) {
 						if (ignoreCase) {
@@ -63,7 +66,7 @@ public class ElementArrayProperty extends ObjectArrayProperty {
 			}
 
 			@Override
-			public boolean equals(Object obj) {
+			public boolean equals(final Object obj) {
 				return super.equals(obj);
 
 			}
@@ -74,6 +77,7 @@ public class ElementArrayProperty extends ObjectArrayProperty {
 	public void sortByName() {
 		sortByName(false);
 	}
+
 	public void sortByNameIgnoreCase() {
 		sortByName(true);
 	}

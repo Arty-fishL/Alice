@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -46,21 +46,21 @@ package edu.cmu.cs.stage3.image.codec;
 
 /**
  * A class representing a field in a TIFF 6.0 Image File Directory.
- * 
+ *
  * <p>
  * The TIFF file format is described in more detail in the comments for the
  * TIFFDescriptor class.
- * 
+ *
  * <p>
  * A field in a TIFF Image File Directory (IFD). A field is defined as a
  * sequence of values of identical data type. TIFF 6.0 defines 12 data types,
  * which are mapped internally onto the Java datatypes byte, int, long, float,
  * and double.
- * 
+ *
  * <p>
  * <b> This class is not a committed part of the JAI API. It may be removed or
  * changed in future releases of JAI.</b>
- * 
+ *
  * @see javax.media.jai.operator.TIFFDescriptor
  * @see TIFFDirectory
  */
@@ -123,7 +123,7 @@ public class TIFFField extends Object {
 	 * array of a Java type appropriate for the type of the TIFF field. Since
 	 * there is no available 32-bit unsigned datatype, long is used. The mapping
 	 * between types is as follows:
-	 * 
+	 *
 	 * <table border=1>
 	 * <tr>
 	 * <th>TIFF type</th>
@@ -166,7 +166,7 @@ public class TIFFField extends Object {
 	 * <td><tt>double</tt></td>
 	 * </table>
 	 */
-	public TIFFField(int tag, int type, int count, Object data) {
+	public TIFFField(final int tag, final int type, final int count, final Object data) {
 		this.tag = tag;
 		this.type = type;
 		this.count = count;
@@ -184,7 +184,7 @@ public class TIFFField extends Object {
 	 * Returns the type of the data stored in the IFD. For a TIFF6.0 file, the
 	 * value will equal one of the TIFF_ constants defined in this class. For
 	 * future revisions of TIFF, higher values are possible.
-	 * 
+	 *
 	 */
 	public int getType() {
 		return type;
@@ -200,11 +200,11 @@ public class TIFFField extends Object {
 	/**
 	 * Returns the data as an uninterpreted array of bytes. The type of the
 	 * field must be one of TIFF_BYTE, TIFF_SBYTE, or TIFF_UNDEFINED;
-	 * 
+	 *
 	 * <p>
 	 * For data in TIFF_BYTE format, the application must take care when
 	 * promoting the data to longer integral types to avoid sign extension.
-	 * 
+	 *
 	 * <p>
 	 * A ClassCastException will be thrown if the field is not of type
 	 * TIFF_BYTE, TIFF_SBYTE, or TIFF_UNDEFINED.
@@ -215,7 +215,7 @@ public class TIFFField extends Object {
 
 	/**
 	 * Returns TIFF_SHORT data as an array of chars (unsigned 16-bit integers).
-	 * 
+	 *
 	 * <p>
 	 * A ClassCastException will be thrown if the field is not of type
 	 * TIFF_SHORT.
@@ -226,7 +226,7 @@ public class TIFFField extends Object {
 
 	/**
 	 * Returns TIFF_SSHORT data as an array of shorts (signed 16-bit integers).
-	 * 
+	 *
 	 * <p>
 	 * A ClassCastException will be thrown if the field is not of type
 	 * TIFF_SSHORT.
@@ -237,7 +237,7 @@ public class TIFFField extends Object {
 
 	/**
 	 * Returns TIFF_SLONG data as an array of ints (signed 32-bit integers).
-	 * 
+	 *
 	 * <p>
 	 * A ClassCastException will be thrown if the field is not of type
 	 * TIFF_SLONG.
@@ -248,7 +248,7 @@ public class TIFFField extends Object {
 
 	/**
 	 * Returns TIFF_LONG data as an array of longs (signed 64-bit integers).
-	 * 
+	 *
 	 * <p>
 	 * A ClassCastException will be thrown if the field is not of type
 	 * TIFF_LONG.
@@ -259,7 +259,7 @@ public class TIFFField extends Object {
 
 	/**
 	 * Returns TIFF_FLOAT data as an array of floats.
-	 * 
+	 *
 	 * <p>
 	 * A ClassCastException will be thrown if the field is not of type
 	 * TIFF_FLOAT.
@@ -270,7 +270,7 @@ public class TIFFField extends Object {
 
 	/**
 	 * Returns TIFF_DOUBLE data as an array of doubles.
-	 * 
+	 *
 	 * <p>
 	 * A ClassCastException will be thrown if the field is not of type
 	 * TIFF_DOUBLE.
@@ -281,7 +281,7 @@ public class TIFFField extends Object {
 
 	/**
 	 * Returns TIFF_SRATIONAL data as an array of 2-element arrays of ints.
-	 * 
+	 *
 	 * <p>
 	 * A ClassCastException will be thrown if the field is not of type
 	 * TIFF_SRATIONAL.
@@ -292,7 +292,7 @@ public class TIFFField extends Object {
 
 	/**
 	 * Returns TIFF_RATIONAL data as an array of 2-element arrays of longs.
-	 * 
+	 *
 	 * <p>
 	 * A ClassCastException will be thrown if the field is not of type
 	 * TIFF_RATTIONAL.
@@ -304,68 +304,68 @@ public class TIFFField extends Object {
 	/**
 	 * Returns data in TIFF_BYTE, TIFF_SBYTE, TIFF_UNDEFINED, TIFF_SHORT,
 	 * TIFF_SSHORT, or TIFF_SLONG format as an int.
-	 * 
+	 *
 	 * <p>
 	 * TIFF_BYTE and TIFF_UNDEFINED data are treated as unsigned; that is, no
 	 * sign extension will take place and the returned value will be in the
 	 * range [0, 255]. TIFF_SBYTE data will be returned in the range [-128,
 	 * 127].
-	 * 
+	 *
 	 * <p>
 	 * A ClassCastException will be thrown if the field is not of type
 	 * TIFF_BYTE, TIFF_SBYTE, TIFF_UNDEFINED, TIFF_SHORT, TIFF_SSHORT, or
 	 * TIFF_SLONG.
 	 */
-	public int getAsInt(int index) {
+	public int getAsInt(final int index) {
 		switch (type) {
-			case TIFF_BYTE :
-			case TIFF_UNDEFINED :
-				return ((byte[]) data)[index] & 0xff;
-			case TIFF_SBYTE :
-				return ((byte[]) data)[index];
-			case TIFF_SHORT :
-				return ((char[]) data)[index] & 0xffff;
-			case TIFF_SSHORT :
-				return ((short[]) data)[index];
-			case TIFF_SLONG :
-				return ((int[]) data)[index];
-			default :
-				throw new ClassCastException();
+		case TIFF_BYTE:
+		case TIFF_UNDEFINED:
+			return ((byte[]) data)[index] & 0xff;
+		case TIFF_SBYTE:
+			return ((byte[]) data)[index];
+		case TIFF_SHORT:
+			return ((char[]) data)[index] & 0xffff;
+		case TIFF_SSHORT:
+			return ((short[]) data)[index];
+		case TIFF_SLONG:
+			return ((int[]) data)[index];
+		default:
+			throw new ClassCastException();
 		}
 	}
 
 	/**
 	 * Returns data in TIFF_BYTE, TIFF_SBYTE, TIFF_UNDEFINED, TIFF_SHORT,
 	 * TIFF_SSHORT, TIFF_SLONG, or TIFF_LONG format as a long.
-	 * 
+	 *
 	 * <p>
 	 * TIFF_BYTE and TIFF_UNDEFINED data are treated as unsigned; that is, no
 	 * sign extension will take place and the returned value will be in the
 	 * range [0, 255]. TIFF_SBYTE data will be returned in the range [-128,
 	 * 127].
-	 * 
+	 *
 	 * <p>
 	 * A ClassCastException will be thrown if the field is not of type
 	 * TIFF_BYTE, TIFF_SBYTE, TIFF_UNDEFINED, TIFF_SHORT, TIFF_SSHORT,
 	 * TIFF_SLONG, or TIFF_LONG.
 	 */
-	public long getAsLong(int index) {
+	public long getAsLong(final int index) {
 		switch (type) {
-			case TIFF_BYTE :
-			case TIFF_UNDEFINED :
-				return ((byte[]) data)[index] & 0xff;
-			case TIFF_SBYTE :
-				return ((byte[]) data)[index];
-			case TIFF_SHORT :
-				return ((char[]) data)[index] & 0xffff;
-			case TIFF_SSHORT :
-				return ((short[]) data)[index];
-			case TIFF_SLONG :
-				return ((int[]) data)[index];
-			case TIFF_LONG :
-				return ((long[]) data)[index];
-			default :
-				throw new ClassCastException();
+		case TIFF_BYTE:
+		case TIFF_UNDEFINED:
+			return ((byte[]) data)[index] & 0xff;
+		case TIFF_SBYTE:
+			return ((byte[]) data)[index];
+		case TIFF_SHORT:
+			return ((char[]) data)[index] & 0xffff;
+		case TIFF_SSHORT:
+			return ((short[]) data)[index];
+		case TIFF_SLONG:
+			return ((int[]) data)[index];
+		case TIFF_LONG:
+			return ((long[]) data)[index];
+		default:
+			throw new ClassCastException();
 		}
 	}
 
@@ -375,37 +375,37 @@ public class TIFFField extends Object {
 	 * denominator using double-precision arithmetic and then truncating to
 	 * single precision. Data in TIFF_SLONG, TIFF_LONG, or TIFF_DOUBLE format
 	 * may suffer from truncation.
-	 * 
+	 *
 	 * <p>
 	 * A ClassCastException will be thrown if the field is of type
 	 * TIFF_UNDEFINED or TIFF_ASCII.
 	 */
-	public float getAsFloat(int index) {
+	public float getAsFloat(final int index) {
 		switch (type) {
-			case TIFF_BYTE :
-				return ((byte[]) data)[index] & 0xff;
-			case TIFF_SBYTE :
-				return ((byte[]) data)[index];
-			case TIFF_SHORT :
-				return ((char[]) data)[index] & 0xffff;
-			case TIFF_SSHORT :
-				return ((short[]) data)[index];
-			case TIFF_SLONG :
-				return ((int[]) data)[index];
-			case TIFF_LONG :
-				return ((long[]) data)[index];
-			case TIFF_FLOAT :
-				return ((float[]) data)[index];
-			case TIFF_DOUBLE :
-				return (float) ((double[]) data)[index];
-			case TIFF_SRATIONAL :
-				int[] ivalue = getAsSRational(index);
-				return (float) ((double) ivalue[0] / ivalue[1]);
-			case TIFF_RATIONAL :
-				long[] lvalue = getAsRational(index);
-				return (float) ((double) lvalue[0] / lvalue[1]);
-			default :
-				throw new ClassCastException();
+		case TIFF_BYTE:
+			return ((byte[]) data)[index] & 0xff;
+		case TIFF_SBYTE:
+			return ((byte[]) data)[index];
+		case TIFF_SHORT:
+			return ((char[]) data)[index] & 0xffff;
+		case TIFF_SSHORT:
+			return ((short[]) data)[index];
+		case TIFF_SLONG:
+			return ((int[]) data)[index];
+		case TIFF_LONG:
+			return ((long[]) data)[index];
+		case TIFF_FLOAT:
+			return ((float[]) data)[index];
+		case TIFF_DOUBLE:
+			return (float) ((double[]) data)[index];
+		case TIFF_SRATIONAL:
+			final int[] ivalue = getAsSRational(index);
+			return (float) ((double) ivalue[0] / ivalue[1]);
+		case TIFF_RATIONAL:
+			final long[] lvalue = getAsRational(index);
+			return (float) ((double) lvalue[0] / lvalue[1]);
+		default:
+			throw new ClassCastException();
 		}
 	}
 
@@ -413,70 +413,70 @@ public class TIFFField extends Object {
 	 * Returns data in any numerical format as a float. Data in TIFF_SRATIONAL
 	 * or TIFF_RATIONAL format are evaluated by dividing the numerator into the
 	 * denominator using double-precision arithmetic.
-	 * 
+	 *
 	 * <p>
 	 * A ClassCastException will be thrown if the field is of type
 	 * TIFF_UNDEFINED or TIFF_ASCII.
 	 */
-	public double getAsDouble(int index) {
+	public double getAsDouble(final int index) {
 		switch (type) {
-			case TIFF_BYTE :
-				return ((byte[]) data)[index] & 0xff;
-			case TIFF_SBYTE :
-				return ((byte[]) data)[index];
-			case TIFF_SHORT :
-				return ((char[]) data)[index] & 0xffff;
-			case TIFF_SSHORT :
-				return ((short[]) data)[index];
-			case TIFF_SLONG :
-				return ((int[]) data)[index];
-			case TIFF_LONG :
-				return ((long[]) data)[index];
-			case TIFF_FLOAT :
-				return ((float[]) data)[index];
-			case TIFF_DOUBLE :
-				return ((double[]) data)[index];
-			case TIFF_SRATIONAL :
-				int[] ivalue = getAsSRational(index);
-				return (double) ivalue[0] / ivalue[1];
-			case TIFF_RATIONAL :
-				long[] lvalue = getAsRational(index);
-				return (double) lvalue[0] / lvalue[1];
-			default :
-				throw new ClassCastException();
+		case TIFF_BYTE:
+			return ((byte[]) data)[index] & 0xff;
+		case TIFF_SBYTE:
+			return ((byte[]) data)[index];
+		case TIFF_SHORT:
+			return ((char[]) data)[index] & 0xffff;
+		case TIFF_SSHORT:
+			return ((short[]) data)[index];
+		case TIFF_SLONG:
+			return ((int[]) data)[index];
+		case TIFF_LONG:
+			return ((long[]) data)[index];
+		case TIFF_FLOAT:
+			return ((float[]) data)[index];
+		case TIFF_DOUBLE:
+			return ((double[]) data)[index];
+		case TIFF_SRATIONAL:
+			final int[] ivalue = getAsSRational(index);
+			return (double) ivalue[0] / ivalue[1];
+		case TIFF_RATIONAL:
+			final long[] lvalue = getAsRational(index);
+			return (double) lvalue[0] / lvalue[1];
+		default:
+			throw new ClassCastException();
 		}
 	}
 
 	/**
 	 * Returns a TIFF_ASCII data item as a String.
-	 * 
+	 *
 	 * <p>
 	 * A ClassCastException will be thrown if the field is not of type
 	 * TIFF_ASCII.
 	 */
-	public String getAsString(int index) {
+	public String getAsString(final int index) {
 		return ((String[]) data)[index];
 	}
 
 	/**
 	 * Returns a TIFF_SRATIONAL data item as a two-element array of ints.
-	 * 
+	 *
 	 * <p>
 	 * A ClassCastException will be thrown if the field is not of type
 	 * TIFF_SRATIONAL.
 	 */
-	public int[] getAsSRational(int index) {
+	public int[] getAsSRational(final int index) {
 		return ((int[][]) data)[index];
 	}
 
 	/**
 	 * Returns a TIFF_RATIONAL data item as a two-element array of ints.
-	 * 
+	 *
 	 * <p>
 	 * A ClassCastException will be thrown if the field is not of type
 	 * TIFF_RATIONAL.
 	 */
-	public long[] getAsRational(int index) {
+	public long[] getAsRational(final int index) {
 		return ((long[][]) data)[index];
 	}
 }

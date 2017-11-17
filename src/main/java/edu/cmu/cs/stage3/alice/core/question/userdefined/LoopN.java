@@ -36,7 +36,7 @@ public class LoopN extends Composite {
 	public final NumberProperty increment = new NumberProperty(this, "increment", new Double(1));
 
 	@Override
-	protected void internalFindAccessibleExpressions(Class cls, java.util.Vector v) {
+	protected void internalFindAccessibleExpressions(final Class cls, final java.util.Vector v) {
 		internalAddExpressionIfAssignableTo((edu.cmu.cs.stage3.alice.core.Expression) index.get(), cls, v);
 		super.internalFindAccessibleExpressions(cls, v);
 	}
@@ -52,11 +52,11 @@ public class LoopN extends Composite {
 		if (index.get() == null) {
 			throw new NullPointerException();
 		}
-		edu.cmu.cs.stage3.alice.core.Variable indexVariable = index.getVariableValue();
+		final edu.cmu.cs.stage3.alice.core.Variable indexVariable = index.getVariableValue();
 		double lcv = start.doubleValue();
 		while (lcv < end.doubleValue()) {
 			indexVariable.value.set(new Double(lcv));
-			Object[] value = super.execute();
+			final Object[] value = super.execute();
 			lcv += increment.doubleValue(1);
 			if (value != null) {
 				return value;

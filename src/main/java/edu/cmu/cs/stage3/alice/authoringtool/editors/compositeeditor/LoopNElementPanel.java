@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -36,13 +36,18 @@ package edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor;
  * <p>
  * Company:
  * </p>
- * 
+ *
  * @author David Culyba
  * @version 1.0
  */
 
-public abstract class LoopNElementPanel extends CompositeElementPanel implements edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyListener {
+public abstract class LoopNElementPanel extends CompositeElementPanel
+		implements edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyListener {
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 6091296517346062448L;
 	private javax.swing.JLabel timesLabel;
 	protected javax.swing.JComponent endInput;
 	protected javax.swing.JComponent countInput;
@@ -72,7 +77,7 @@ public abstract class LoopNElementPanel extends CompositeElementPanel implements
 		backgroundColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("LoopNInOrder");
 	}
 
-	protected int countPreviousInstances(java.awt.Component parent, Object toCheck) {
+	protected int countPreviousInstances(final java.awt.Component parent, final Object toCheck) {
 		if (parent == null) {
 			return 0;
 		}
@@ -84,7 +89,7 @@ public abstract class LoopNElementPanel extends CompositeElementPanel implements
 
 	protected String getIndexName() {
 		String toReturn = "index";
-		int count = countPreviousInstances(getParent(), this);
+		final int count = countPreviousInstances(getParent(), this);
 		if (count > 0) {
 			toReturn += String.valueOf(count);
 		}
@@ -95,21 +100,21 @@ public abstract class LoopNElementPanel extends CompositeElementPanel implements
 	protected void variableInit() {
 		super.variableInit();
 		if (m_element instanceof edu.cmu.cs.stage3.alice.core.response.LoopNInOrder) {
-			edu.cmu.cs.stage3.alice.core.response.LoopNInOrder proxy = (edu.cmu.cs.stage3.alice.core.response.LoopNInOrder) m_element;
+			final edu.cmu.cs.stage3.alice.core.response.LoopNInOrder proxy = (edu.cmu.cs.stage3.alice.core.response.LoopNInOrder) m_element;
 			m_end = proxy.end;
 			m_start = proxy.start;
 			m_increment = proxy.increment;
 			m_index = proxy.index;
-			edu.cmu.cs.stage3.alice.core.Variable v = (edu.cmu.cs.stage3.alice.core.Variable) m_index.getValue();
+			final edu.cmu.cs.stage3.alice.core.Variable v = (edu.cmu.cs.stage3.alice.core.Variable) m_index.getValue();
 			v.name.set(getIndexName());
 		} else if (m_element instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.LoopN) {
-			edu.cmu.cs.stage3.alice.core.question.userdefined.LoopN proxy = (edu.cmu.cs.stage3.alice.core.question.userdefined.LoopN) m_element;
+			final edu.cmu.cs.stage3.alice.core.question.userdefined.LoopN proxy = (edu.cmu.cs.stage3.alice.core.question.userdefined.LoopN) m_element;
 			m_end = proxy.end;
 			m_start = proxy.start;
 			m_increment = proxy.increment;
 			m_index = proxy.index;
 		}
-		Object isComplicatedValue = m_element.data.get(IS_COMPLICATED_LOOP_KEY);
+		final Object isComplicatedValue = m_element.data.get(IS_COMPLICATED_LOOP_KEY);
 		if (isComplicatedValue instanceof Boolean) {
 			isComplicated = ((Boolean) isComplicatedValue).booleanValue();
 		}
@@ -138,31 +143,35 @@ public abstract class LoopNElementPanel extends CompositeElementPanel implements
 		stopListenToChildren(m_components);
 	}
 
-	protected void listenToChildren(edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty components) {
+	protected void listenToChildren(final edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty components) {
 		if (components != null) {
 			components.addObjectArrayPropertyListener(this);
 			for (int i = 0; i < components.size(); i++) {
 				if (components.get(i) instanceof edu.cmu.cs.stage3.alice.core.response.CompositeResponse) {
-					edu.cmu.cs.stage3.alice.core.response.CompositeResponse current = (edu.cmu.cs.stage3.alice.core.response.CompositeResponse) components.get(i);
+					final edu.cmu.cs.stage3.alice.core.response.CompositeResponse current = (edu.cmu.cs.stage3.alice.core.response.CompositeResponse) components
+							.get(i);
 					listenToChildren(current.componentResponses);
 				} else if (components.get(i) instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.Composite) {
-					edu.cmu.cs.stage3.alice.core.question.userdefined.Composite current = (edu.cmu.cs.stage3.alice.core.question.userdefined.Composite) components.get(i);
+					final edu.cmu.cs.stage3.alice.core.question.userdefined.Composite current = (edu.cmu.cs.stage3.alice.core.question.userdefined.Composite) components
+							.get(i);
 					listenToChildren(current.components);
 				}
 			}
 		}
 	}
 
-	protected void stopListenToChildren(edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty components) {
+	protected void stopListenToChildren(final edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty components) {
 		if (components != null) {
 			components.removeObjectArrayPropertyListener(this);
 
 			for (int i = 0; i < components.size(); i++) {
 				if (components.get(i) instanceof edu.cmu.cs.stage3.alice.core.response.CompositeResponse) {
-					edu.cmu.cs.stage3.alice.core.response.CompositeResponse current = (edu.cmu.cs.stage3.alice.core.response.CompositeResponse) components.get(i);
+					final edu.cmu.cs.stage3.alice.core.response.CompositeResponse current = (edu.cmu.cs.stage3.alice.core.response.CompositeResponse) components
+							.get(i);
 					stopListenToChildren(current.componentResponses);
 				} else if (components.get(i) instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.Composite) {
-					edu.cmu.cs.stage3.alice.core.question.userdefined.Composite current = (edu.cmu.cs.stage3.alice.core.question.userdefined.Composite) components.get(i);
+					final edu.cmu.cs.stage3.alice.core.question.userdefined.Composite current = (edu.cmu.cs.stage3.alice.core.question.userdefined.Composite) components
+							.get(i);
 					stopListenToChildren(current.components);
 				}
 			}
@@ -212,7 +221,7 @@ public abstract class LoopNElementPanel extends CompositeElementPanel implements
 			}
 		}
 		if (timesLabel != null) {
-			Number number = m_end.getNumberValue();
+			final Number number = m_end.getNumberValue();
 			if (number != null && number.intValue() <= 1) {
 				timesLabel.setText("time");
 			} else {
@@ -293,7 +302,7 @@ public abstract class LoopNElementPanel extends CompositeElementPanel implements
 		switchButton.setOpaque(true);
 		switchButton.addActionListener(new java.awt.event.ActionListener() {
 			@Override
-			public void actionPerformed(java.awt.event.ActionEvent e) {
+			public void actionPerformed(final java.awt.event.ActionEvent e) {
 				if (isComplicated) {
 					isComplicated = false;
 					switchButton.setText(toComplicatedString);
@@ -321,14 +330,17 @@ public abstract class LoopNElementPanel extends CompositeElementPanel implements
 	}
 
 	protected void updateName() {
-		edu.cmu.cs.stage3.alice.core.Variable v = (edu.cmu.cs.stage3.alice.core.Variable) m_index.getValue();
+		final edu.cmu.cs.stage3.alice.core.Variable v = (edu.cmu.cs.stage3.alice.core.Variable) m_index.getValue();
 		v.name.set(getIndexName());
 		complicatedPanel.remove(indexTile);
-		indexTile = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getVariableDnDPanel((edu.cmu.cs.stage3.alice.core.Variable) m_index.get());
-		complicatedPanel.add(indexTile, new java.awt.GridBagConstraints(0, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
+		indexTile = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
+				.getVariableDnDPanel((edu.cmu.cs.stage3.alice.core.Variable) m_index.get());
+		complicatedPanel.add(indexTile,
+				new java.awt.GridBagConstraints(0, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST,
+						java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
 	}
 
-	protected boolean isTopOccurrance(edu.cmu.cs.stage3.alice.core.Element parent) {
+	protected boolean isTopOccurrance(final edu.cmu.cs.stage3.alice.core.Element parent) {
 		if (parent == null) {
 			return true;
 		}
@@ -342,36 +354,43 @@ public abstract class LoopNElementPanel extends CompositeElementPanel implements
 	}
 
 	@Override
-	public void objectArrayPropertyChanging(edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent objectArrayPropertyEvent) {
+	public void objectArrayPropertyChanging(
+			final edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent objectArrayPropertyEvent) {
 
 	}
 
-	protected void setAllNames(edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty currentContainer, int currentLevel) {
-		String baseName = "index";
+	protected void setAllNames(final edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty currentContainer,
+			final int currentLevel) {
+		final String baseName = "index";
 		for (int i = 0; i < currentContainer.size(); i++) {
 			edu.cmu.cs.stage3.alice.core.Element var = null;
 			if (currentContainer.get(i) instanceof edu.cmu.cs.stage3.alice.core.response.LoopNInOrder) {
-				var = (edu.cmu.cs.stage3.alice.core.Element) ((edu.cmu.cs.stage3.alice.core.response.LoopNInOrder) currentContainer.get(i)).index.get();
+				var = (edu.cmu.cs.stage3.alice.core.Element) ((edu.cmu.cs.stage3.alice.core.response.LoopNInOrder) currentContainer
+						.get(i)).index.get();
 			} else if (currentContainer.get(i) instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.LoopN) {
-				var = (edu.cmu.cs.stage3.alice.core.Element) ((edu.cmu.cs.stage3.alice.core.question.userdefined.LoopN) currentContainer.get(i)).index.get();
+				var = (edu.cmu.cs.stage3.alice.core.Element) ((edu.cmu.cs.stage3.alice.core.question.userdefined.LoopN) currentContainer
+						.get(i)).index.get();
 			}
 			if (var != null) {
 				var.name.set(baseName + "_#" + currentLevel);
 			}
 			if (currentContainer.get(i) instanceof edu.cmu.cs.stage3.alice.core.response.CompositeResponse) {
-				setAllNames(((edu.cmu.cs.stage3.alice.core.response.CompositeResponse) currentContainer.get(i)).componentResponses, currentLevel + 1);
+				setAllNames(((edu.cmu.cs.stage3.alice.core.response.CompositeResponse) currentContainer
+						.get(i)).componentResponses, currentLevel + 1);
 			} else if (currentContainer.get(i) instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.Composite) {
-				setAllNames(((edu.cmu.cs.stage3.alice.core.question.userdefined.Composite) currentContainer.get(i)).components, currentLevel + 1);
+				setAllNames(((edu.cmu.cs.stage3.alice.core.question.userdefined.Composite) currentContainer
+						.get(i)).components, currentLevel + 1);
 			}
 		}
 	}
 
 	@Override
-	public void objectArrayPropertyChanged(edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent objectArrayPropertyEvent) {
+	public void objectArrayPropertyChanged(
+			final edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent objectArrayPropertyEvent) {
 		stopListening();
 		startListening();
 		if (isTopOccurrance(m_element.getParent())) {
-			edu.cmu.cs.stage3.alice.core.Variable v = (edu.cmu.cs.stage3.alice.core.Variable) m_index.getValue();
+			final edu.cmu.cs.stage3.alice.core.Variable v = (edu.cmu.cs.stage3.alice.core.Variable) m_index.getValue();
 			v.name.set("index");
 			setAllNames(m_components, 2);
 		}
@@ -381,42 +400,80 @@ public abstract class LoopNElementPanel extends CompositeElementPanel implements
 	protected void updateGUI() {
 		super.updateGUI();
 
-		edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory pifCount = new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(m_end);
-		countInput = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getPropertyViewController(m_end, true, true, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitPropertyName(m_end), pifCount);
-		edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory pifstart = new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(m_start);
-		startInput = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getPropertyViewController(m_start, true, true, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitPropertyName(m_start), pifstart);
+		final edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory pifCount = new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(
+				m_end);
+		countInput = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getPropertyViewController(m_end, true, true,
+				edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitPropertyName(m_end),
+				pifCount);
+		final edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory pifstart = new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(
+				m_start);
+		startInput = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getPropertyViewController(m_start, true,
+				true, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitPropertyName(m_start),
+				pifstart);
 
-		edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory pifInc = new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(m_increment);
-		incrementInput = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getPropertyViewController(m_increment, true, true, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitPropertyName(m_increment), pifInc);
+		final edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory pifInc = new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(
+				m_increment);
+		incrementInput = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getPropertyViewController(m_increment,
+				true, true,
+				edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitPropertyName(m_increment),
+				pifInc);
 
-		edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory pifEnd = new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(m_end);
-		endInput = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getPropertyViewController(m_end, true, true, edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitPropertyName(m_end), pifEnd);
+		final edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory pifEnd = new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(
+				m_end);
+		endInput = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getPropertyViewController(m_end, true, true,
+				edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitPropertyName(m_end), pifEnd);
 
-		indexTile = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getVariableDnDPanel((edu.cmu.cs.stage3.alice.core.Variable) m_index.get());
+		indexTile = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
+				.getVariableDnDPanel((edu.cmu.cs.stage3.alice.core.Variable) m_index.get());
 		setHeaderLabel();
 		complicatedPanel.removeAll();
-		complicatedPanel.add(indexTile, new java.awt.GridBagConstraints(0, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
-		complicatedPanel.add(fromLabel, new java.awt.GridBagConstraints(1, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
-		complicatedPanel.add(startInput, new java.awt.GridBagConstraints(2, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
-		complicatedPanel.add(upToLabel, new java.awt.GridBagConstraints(3, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
-		complicatedPanel.add(endInput, new java.awt.GridBagConstraints(4, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
-		complicatedPanel.add(incrementLabel, new java.awt.GridBagConstraints(5, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
-		complicatedPanel.add(incrementInput, new java.awt.GridBagConstraints(6, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
-		complicatedPanel.add(complicatedEndBrace, new java.awt.GridBagConstraints(7, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
+		complicatedPanel.add(indexTile,
+				new java.awt.GridBagConstraints(0, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST,
+						java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
+		complicatedPanel.add(fromLabel,
+				new java.awt.GridBagConstraints(1, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST,
+						java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
+		complicatedPanel.add(startInput,
+				new java.awt.GridBagConstraints(2, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST,
+						java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
+		complicatedPanel.add(upToLabel,
+				new java.awt.GridBagConstraints(3, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST,
+						java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
+		complicatedPanel.add(endInput,
+				new java.awt.GridBagConstraints(4, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST,
+						java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
+		complicatedPanel.add(incrementLabel,
+				new java.awt.GridBagConstraints(5, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST,
+						java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
+		complicatedPanel.add(incrementInput,
+				new java.awt.GridBagConstraints(6, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST,
+						java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
+		complicatedPanel.add(complicatedEndBrace,
+				new java.awt.GridBagConstraints(7, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST,
+						java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
 
 		simplePanel.removeAll();
-		simplePanel.add(countInput, new java.awt.GridBagConstraints(0, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
-		simplePanel.add(timesLabel, new java.awt.GridBagConstraints(1, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
+		simplePanel.add(countInput, new java.awt.GridBagConstraints(0, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST,
+				java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
+		simplePanel.add(timesLabel, new java.awt.GridBagConstraints(1, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.WEST,
+				java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
 
 		headerPanel.remove(glue);
 		if (isComplicated) {
-			headerPanel.add(complicatedPanel, new java.awt.GridBagConstraints(3, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
+			headerPanel.add(complicatedPanel,
+					new java.awt.GridBagConstraints(3, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.CENTER,
+							java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
 		} else {
-			headerPanel.add(simplePanel, new java.awt.GridBagConstraints(3, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
+			headerPanel.add(simplePanel,
+					new java.awt.GridBagConstraints(3, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.CENTER,
+							java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 2, 0, 2), 0, 0));
 		}
 
-		headerPanel.add(switchButton, new java.awt.GridBagConstraints(4, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 8, 0, 2), 0, 0));
-		headerPanel.add(glue, new java.awt.GridBagConstraints(5, 0, 1, 1, 1, 0, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0, 0, 0, 0), 0, 0));
+		headerPanel.add(switchButton,
+				new java.awt.GridBagConstraints(4, 0, 1, 1, 0, 0, java.awt.GridBagConstraints.CENTER,
+						java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 8, 0, 2), 0, 0));
+		headerPanel.add(glue, new java.awt.GridBagConstraints(5, 0, 1, 1, 1, 0, java.awt.GridBagConstraints.CENTER,
+				java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0, 0, 0, 0), 0, 0));
 	}
 
 	// Texture stuff
@@ -424,11 +481,13 @@ public abstract class LoopNElementPanel extends CompositeElementPanel implements
 	protected static java.awt.image.BufferedImage countLoopBackgroundImage;
 	protected static java.awt.Dimension countLoopBackgroundImageSize = new java.awt.Dimension(-1, -1);
 
-	protected void createBackgroundImage(int width, int height) {
+	protected void createBackgroundImage(final int width, final int height) {
 		countLoopBackgroundImageSize.setSize(width, height);
-		countLoopBackgroundImage = new java.awt.image.BufferedImage(width, height, java.awt.image.BufferedImage.TYPE_INT_ARGB);
-		java.awt.Graphics2D g = (java.awt.Graphics2D) countLoopBackgroundImage.getGraphics();
-		g.addRenderingHints(new java.awt.RenderingHints(java.awt.RenderingHints.KEY_ANTIALIASING, java.awt.RenderingHints.VALUE_ANTIALIAS_ON));
+		countLoopBackgroundImage = new java.awt.image.BufferedImage(width, height,
+				java.awt.image.BufferedImage.TYPE_INT_ARGB);
+		final java.awt.Graphics2D g = (java.awt.Graphics2D) countLoopBackgroundImage.getGraphics();
+		g.addRenderingHints(new java.awt.RenderingHints(java.awt.RenderingHints.KEY_ANTIALIASING,
+				java.awt.RenderingHints.VALUE_ANTIALIAS_ON));
 		g.setColor(backgroundColor);
 		g.fillRect(0, 0, width, height);
 		/*
@@ -437,7 +496,7 @@ public abstract class LoopNElementPanel extends CompositeElementPanel implements
 		 */
 	}
 
-	protected void paintTextureEffect(java.awt.Graphics g, java.awt.Rectangle bounds) {
+	protected void paintTextureEffect(final java.awt.Graphics g, final java.awt.Rectangle bounds) {
 		if (bounds.width > countLoopBackgroundImageSize.width || bounds.height > countLoopBackgroundImageSize.height) {
 			createBackgroundImage(bounds.width, bounds.height);
 		}

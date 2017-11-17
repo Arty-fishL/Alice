@@ -38,13 +38,17 @@ import edu.cmu.cs.stage3.caitlin.stencilhelp.client.StencilManager;
 
 /**
  * Title: Show Me Description: Copyright: Copyright (c) 2001 Company:
- * 
+ *
  * @author Caitlin Kelleher
  * @version 1.0
  */
 
 public class StencilAppPanel extends JPanel implements StencilApplication {
 
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = -1996084991154196394L;
 	Hashtable nameToComp = new Hashtable();
 	Hashtable compToName = new Hashtable();
 
@@ -54,7 +58,7 @@ public class StencilAppPanel extends JPanel implements StencilApplication {
 
 	long lastEventTime = -1;
 
-	public StencilAppPanel(JFrame frame) {
+	public StencilAppPanel(final JFrame frame) {
 		this.frame = frame;
 	}
 
@@ -67,7 +71,7 @@ public class StencilAppPanel extends JPanel implements StencilApplication {
 	}
 
 	@Override
-	public void setGlassPane(java.awt.Component c) {
+	public void setGlassPane(final java.awt.Component c) {
 
 		stencilComponent = (JPanel) c;
 		stencilComponent.setOpaque(false);
@@ -86,7 +90,7 @@ public class StencilAppPanel extends JPanel implements StencilApplication {
 	}
 
 	@Override
-	public String getIDForPoint(java.awt.Point p, boolean dropSite) {
+	public String getIDForPoint(final java.awt.Point p, final boolean dropSite) {
 		Component c = getComponentAtPoint(p);
 		// System.out.println( "Deepest" + c );
 		// System.out.println( "Parent" + c.getParent() );
@@ -110,13 +114,14 @@ public class StencilAppPanel extends JPanel implements StencilApplication {
 		}
 		return null;
 	}
+
 	@Override
-	public java.awt.Rectangle getBoxForID(String ID) {
-		Component c = (Component) nameToComp.get(ID);
+	public java.awt.Rectangle getBoxForID(final String ID) {
+		final Component c = (Component) nameToComp.get(ID);
 		if (c != null) {
-			Point corner = c.getLocationOnScreen();
+			final Point corner = c.getLocationOnScreen();
 			javax.swing.SwingUtilities.convertPointFromScreen(corner, getRootPane());
-			Rectangle rect = new Rectangle(corner, c.getSize());
+			final Rectangle rect = new Rectangle(corner, c.getSize());
 			return rect;
 		} else {
 			return null;
@@ -124,84 +129,90 @@ public class StencilAppPanel extends JPanel implements StencilApplication {
 	}
 
 	@Override
-	public boolean isIDVisible(String ID) {
+	public boolean isIDVisible(final String ID) {
 		return true;
 	}
+
 	@Override
-	public void makeIDVisible(String ID) {
+	public void makeIDVisible(final String ID) {
 	}
 
 	@Override
 	public void makeWayPoint() {
 	}
+
 	@Override
 	public void goToPreviousWayPoint() {
 	}
+
 	@Override
 	public void clearWayPoints() {
 	}
 
 	@Override
-	public boolean doesStateMatch(StateCapsule stateCapsule) {
+	public boolean doesStateMatch(final StateCapsule stateCapsule) {
 		return true;
 	}
+
 	@Override
 	public StateCapsule getCurrentState() {
 		return null;
 	}
+
 	@Override
-	public StateCapsule getStateCapsuleFromString(String capsuleString) {
+	public StateCapsule getStateCapsuleFromString(final String capsuleString) {
 		return null;
 	}
 
 	@Override
-	public void performTask(String taskString) {
+	public void performTask(final String taskString) {
 	}
 
 	@Override
-	public void handleMouseEvent(java.awt.event.MouseEvent e) {
-		Point stencilComponentPoint = e.getPoint();
+	public void handleMouseEvent(final java.awt.event.MouseEvent e) {
+		final Point stencilComponentPoint = e.getPoint();
 		if (e.getWhen() == lastEventTime) {
 			// System.out.println("repeat event");
 		} else {
 			lastEventTime = e.getWhen();
-			Point containerPoint = SwingUtilities.convertPoint(stencilComponent, stencilComponentPoint, this);
+			final Point containerPoint = SwingUtilities.convertPoint(stencilComponent, stencilComponentPoint, this);
 
-			Component component = SwingUtilities.getDeepestComponentAt(this, containerPoint.x, containerPoint.y);
+			final Component component = SwingUtilities.getDeepestComponentAt(this, containerPoint.x, containerPoint.y);
 
 			/*
 			 * while ((component != null) &&(compToName.get(component) == null))
 			 * { component = component.getParent(); }
 			 */
 
-			Point componentPoint = SwingUtilities.convertPoint(stencilComponent, // this,
+			final Point componentPoint = SwingUtilities.convertPoint(stencilComponent, // this,
 					stencilComponentPoint, component);
 
 			// if (e.getID() == e.MOUSE_CLICKED) System.out.println( e.getWhen()
 			// + " " + component );
 
 			if (component != null) {
-				component.dispatchEvent(new MouseEvent(component, e.getID(), e.getWhen(), e.getModifiers(), componentPoint.x, componentPoint.y, e.getClickCount(), e.isPopupTrigger()));
+				component.dispatchEvent(new MouseEvent(component, e.getID(), e.getWhen(), e.getModifiers(),
+						componentPoint.x, componentPoint.y, e.getClickCount(), e.isPopupTrigger()));
 			}
 		}
 	}
 
-	private Component getComponentAtPoint(Point stencilComponentPoint) {
+	private Component getComponentAtPoint(final Point stencilComponentPoint) {
 
-		Point containerPoint = SwingUtilities.convertPoint(stencilComponent, stencilComponentPoint, this);
+		final Point containerPoint = SwingUtilities.convertPoint(stencilComponent, stencilComponentPoint, this);
 
-		Component component = SwingUtilities.getDeepestComponentAt(this, containerPoint.x, containerPoint.y);
+		final Component component = SwingUtilities.getDeepestComponentAt(this, containerPoint.x, containerPoint.y);
 
 		return component;
 	}
 
-	public void addToTable(String name, Component c) {
+	public void addToTable(final String name, final Component c) {
 		nameToComp.put(name, c);
 		compToName.put(c, name);
 	}
 
-	public void replaceTable(String name, Component c) {
-		Component old = (Component) nameToComp.remove(name);
+	public void replaceTable(final String name, final Component c) {
+		final Component old = (Component) nameToComp.remove(name);
 		nameToComp.put(name, c);
 
 		if (old != null) {

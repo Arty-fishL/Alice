@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -31,7 +31,8 @@ public class ObjectArrayPropertyUndoableRedoable implements ContextAssignableUnd
 	protected Object value;
 	protected Object context;
 
-	public ObjectArrayPropertyUndoableRedoable(edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty property, int changeType, int oldIndex, int newIndex, Object value) {
+	public ObjectArrayPropertyUndoableRedoable(final edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty property,
+			final int changeType, final int oldIndex, final int newIndex, final Object value) {
 		this.property = property;
 		this.changeType = changeType;
 		this.oldIndex = oldIndex;
@@ -40,7 +41,7 @@ public class ObjectArrayPropertyUndoableRedoable implements ContextAssignableUnd
 	}
 
 	@Override
-	public void setContext(Object context) {
+	public void setContext(final Object context) {
 		this.context = context;
 	}
 
@@ -78,7 +79,7 @@ public class ObjectArrayPropertyUndoableRedoable implements ContextAssignableUnd
 
 	@Override
 	public String toString() {
-		StringBuffer s = new StringBuffer();
+		final StringBuffer s = new StringBuffer();
 		s.append("edu.cmu.cs.stage3.alice.authoringtool.util.ObjectArrayPropertyUndoableRedoable[ ");
 		s.append("property=" + property + "; ");
 		s.append("changeType=" + changeType + "; ");

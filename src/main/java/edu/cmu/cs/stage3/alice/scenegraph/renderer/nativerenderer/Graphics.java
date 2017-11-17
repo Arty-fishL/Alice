@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -24,20 +24,25 @@
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer;
 
 public abstract class Graphics extends java.awt.Graphics {
-	private int m_nativeInstance = 0;
+	private final int m_nativeInstance = 0;
+
 	protected abstract void createNativeInstance(RenderTargetAdapter renderTargetAdapter);
-	protected abstract void createNativeInstance(RenderTargetAdapter renderTargetAdapter, TextureMapProxy textureMapProxy);
+
+	protected abstract void createNativeInstance(RenderTargetAdapter renderTargetAdapter,
+			TextureMapProxy textureMapProxy);
+
 	protected abstract void releaseNativeInstance();
 
-	private RenderTarget m_renderTarget;
-	private TextureMapProxy m_textureMapProxy;
+	private final RenderTarget m_renderTarget;
+	private final TextureMapProxy m_textureMapProxy;
 
-	protected Graphics(RenderTarget renderTarget) {
+	protected Graphics(final RenderTarget renderTarget) {
 		createNativeInstance(renderTarget.getAdapter());
 		m_renderTarget = renderTarget;
 		m_textureMapProxy = null;
 	}
-	protected Graphics(RenderTarget renderTarget, TextureMapProxy textureMapProxy) {
+
+	protected Graphics(final RenderTarget renderTarget, final TextureMapProxy textureMapProxy) {
 		createNativeInstance(renderTarget.getAdapter(), textureMapProxy);
 		m_renderTarget = renderTarget;
 		m_textureMapProxy = textureMapProxy;
@@ -75,6 +80,7 @@ public abstract class Graphics extends java.awt.Graphics {
 	public abstract void setXORMode(java.awt.Color c1);
 
 	private java.awt.Font m_font = null;
+
 	protected abstract void setFont(String family, String name, boolean isBold, boolean isItalic, int size);
 
 	@Override
@@ -83,16 +89,16 @@ public abstract class Graphics extends java.awt.Graphics {
 	}
 
 	@Override
-	public void setFont(java.awt.Font font) {
+	public void setFont(final java.awt.Font font) {
 		m_font = font;
-		int style = m_font.getStyle();
-		boolean isBold = (style & java.awt.Font.BOLD) != 0;
-		boolean isItalic = (style & java.awt.Font.ITALIC) != 0;
+		final int style = m_font.getStyle();
+		final boolean isBold = (style & java.awt.Font.BOLD) != 0;
+		final boolean isItalic = (style & java.awt.Font.ITALIC) != 0;
 		setFont(m_font.getFamily(), m_font.getName(), isBold, isItalic, m_font.getSize());
 	}
 
 	@Override
-	public java.awt.FontMetrics getFontMetrics(java.awt.Font f) {
+	public java.awt.FontMetrics getFontMetrics(final java.awt.Font f) {
 		throw new RuntimeException("not implemented");
 	}
 
@@ -102,12 +108,12 @@ public abstract class Graphics extends java.awt.Graphics {
 	}
 
 	@Override
-	public void clipRect(int x, int y, int width, int height) {
+	public void clipRect(final int x, final int y, final int width, final int height) {
 		throw new RuntimeException("not implemented");
 	}
 
 	@Override
-	public void setClip(int x, int y, int width, int height) {
+	public void setClip(final int x, final int y, final int width, final int height) {
 		throw new RuntimeException("not implemented");
 	}
 
@@ -117,7 +123,7 @@ public abstract class Graphics extends java.awt.Graphics {
 	}
 
 	@Override
-	public void setClip(java.awt.Shape clip) {
+	public void setClip(final java.awt.Shape clip) {
 		throw new RuntimeException("not implemented");
 	}
 
@@ -164,7 +170,7 @@ public abstract class Graphics extends java.awt.Graphics {
 	public abstract void drawString(String str, int x, int y);
 
 	@Override
-	public void drawString(java.text.AttributedCharacterIterator iterator, int x, int y) {
+	public void drawString(final java.text.AttributedCharacterIterator iterator, final int x, final int y) {
 		throw new RuntimeException("not implemented");
 	}
 
@@ -175,32 +181,39 @@ public abstract class Graphics extends java.awt.Graphics {
 	public abstract void drawBytes(byte[] data, int offset, int length, int x, int y);
 
 	@Override
-	public boolean drawImage(java.awt.Image img, int x, int y, java.awt.image.ImageObserver observer) {
+	public boolean drawImage(final java.awt.Image img, final int x, final int y,
+			final java.awt.image.ImageObserver observer) {
 		throw new RuntimeException("not implemented");
 	}
 
 	@Override
-	public boolean drawImage(java.awt.Image img, int x, int y, int width, int height, java.awt.image.ImageObserver observer) {
+	public boolean drawImage(final java.awt.Image img, final int x, final int y, final int width, final int height,
+			final java.awt.image.ImageObserver observer) {
 		throw new RuntimeException("not implemented");
 	}
 
 	@Override
-	public boolean drawImage(java.awt.Image img, int x, int y, java.awt.Color bgcolor, java.awt.image.ImageObserver observer) {
+	public boolean drawImage(final java.awt.Image img, final int x, final int y, final java.awt.Color bgcolor,
+			final java.awt.image.ImageObserver observer) {
 		throw new RuntimeException("not implemented");
 	}
 
 	@Override
-	public boolean drawImage(java.awt.Image img, int x, int y, int width, int height, java.awt.Color bgcolor, java.awt.image.ImageObserver observer) {
+	public boolean drawImage(final java.awt.Image img, final int x, final int y, final int width, final int height,
+			final java.awt.Color bgcolor, final java.awt.image.ImageObserver observer) {
 		throw new RuntimeException("not implemented");
 	}
 
 	@Override
-	public boolean drawImage(java.awt.Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, java.awt.image.ImageObserver observer) {
+	public boolean drawImage(final java.awt.Image img, final int dx1, final int dy1, final int dx2, final int dy2,
+			final int sx1, final int sy1, final int sx2, final int sy2, final java.awt.image.ImageObserver observer) {
 		throw new RuntimeException("not implemented");
 	}
 
 	@Override
-	public boolean drawImage(java.awt.Image img, int dx1, int dy1, int dx2, int dy2, int sx1, int sy1, int sx2, int sy2, java.awt.Color bgcolor, java.awt.image.ImageObserver observer) {
+	public boolean drawImage(final java.awt.Image img, final int dx1, final int dy1, final int dx2, final int dy2,
+			final int sx1, final int sy1, final int sx2, final int sy2, final java.awt.Color bgcolor,
+			final java.awt.image.ImageObserver observer) {
 		throw new RuntimeException("not implemented");
 	}
 }

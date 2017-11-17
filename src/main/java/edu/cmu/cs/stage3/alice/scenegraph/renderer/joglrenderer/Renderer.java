@@ -34,59 +34,72 @@ public class Renderer extends edu.cmu.cs.stage3.alice.scenegraph.renderer.Abstra
 	protected boolean requiresBoundListening() {
 		return false;
 	}
+
 	@Override
 	public edu.cmu.cs.stage3.alice.scenegraph.renderer.OffscreenRenderTarget createOffscreenRenderTarget() {
 		return new OffscreenRenderTarget(this);
 	}
+
 	@Override
 	public edu.cmu.cs.stage3.alice.scenegraph.renderer.OnscreenRenderTarget createOnscreenRenderTarget() {
 		return new OnscreenRenderTarget(this);
 	}
 
 	@Override
-	protected void dispatchAbsoluteTransformationChange(edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent) {
-		edu.cmu.cs.stage3.alice.scenegraph.Component sgComponent = (edu.cmu.cs.stage3.alice.scenegraph.Component) absoluteTransformationEvent.getSource();
-		ComponentProxy componentProxy = (ComponentProxy) getProxyFor(sgComponent);
+	protected void dispatchAbsoluteTransformationChange(
+			final edu.cmu.cs.stage3.alice.scenegraph.event.AbsoluteTransformationEvent absoluteTransformationEvent) {
+		final edu.cmu.cs.stage3.alice.scenegraph.Component sgComponent = (edu.cmu.cs.stage3.alice.scenegraph.Component) absoluteTransformationEvent
+				.getSource();
+		final ComponentProxy componentProxy = (ComponentProxy) getProxyFor(sgComponent);
 		componentProxy.handleAbsoluteTransformationChange();
 	}
 
 	@Override
-	protected void dispatchBoundChange(edu.cmu.cs.stage3.alice.scenegraph.event.BoundEvent boundEvent) {
+	protected void dispatchBoundChange(final edu.cmu.cs.stage3.alice.scenegraph.event.BoundEvent boundEvent) {
 	}
 
 	@Override
-	public void dispatchChildAdd(edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent childrenEvent) {
-		edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer = (edu.cmu.cs.stage3.alice.scenegraph.Container) childrenEvent.getSource();
-		ContainerProxy containerProxy = (ContainerProxy) getProxyFor(sgContainer);
-		ComponentProxy childProxy = (ComponentProxy) getProxyFor(childrenEvent.getChild());
+	public void dispatchChildAdd(final edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent childrenEvent) {
+		final edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer = (edu.cmu.cs.stage3.alice.scenegraph.Container) childrenEvent
+				.getSource();
+		final ContainerProxy containerProxy = (ContainerProxy) getProxyFor(sgContainer);
+		final ComponentProxy childProxy = (ComponentProxy) getProxyFor(childrenEvent.getChild());
 		containerProxy.handleChildAdd(childProxy);
 	}
 
 	@Override
-	public void dispatchChildRemove(edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent childrenEvent) {
-		edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer = (edu.cmu.cs.stage3.alice.scenegraph.Container) childrenEvent.getSource();
-		ContainerProxy containerProxy = (ContainerProxy) getProxyFor(sgContainer);
-		ComponentProxy childProxy = (ComponentProxy) getProxyFor(childrenEvent.getChild());
+	public void dispatchChildRemove(final edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenEvent childrenEvent) {
+		final edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer = (edu.cmu.cs.stage3.alice.scenegraph.Container) childrenEvent
+				.getSource();
+		final ContainerProxy containerProxy = (ContainerProxy) getProxyFor(sgContainer);
+		final ComponentProxy childProxy = (ComponentProxy) getProxyFor(childrenEvent.getChild());
 		containerProxy.handleChildRemove(childProxy);
 	}
 
 	@Override
-	protected void dispatchHierarchyChange(edu.cmu.cs.stage3.alice.scenegraph.event.HierarchyEvent hierarchyEvent) {
+	protected void dispatchHierarchyChange(
+			final edu.cmu.cs.stage3.alice.scenegraph.event.HierarchyEvent hierarchyEvent) {
 	}
 
 	@Override
-	public edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pick(edu.cmu.cs.stage3.alice.scenegraph.Component sgComponent, javax.vecmath.Vector3d v, double planeMinX, double planeMinY, double planeMaxX, double planeMaxY, double nearClippingPlaneDistance, double farClippingPlaneDistance, boolean isSubElementRequired, boolean isOnlyFrontMostRequired) {
+	public edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pick(
+			final edu.cmu.cs.stage3.alice.scenegraph.Component sgComponent, final javax.vecmath.Vector3d v,
+			final double planeMinX, final double planeMinY, final double planeMaxX, final double planeMaxY,
+			final double nearClippingPlaneDistance, final double farClippingPlaneDistance,
+			final boolean isSubElementRequired, final boolean isOnlyFrontMostRequired) {
 		return null;
 	}
+
 	private static final String RENDERER_PACKAGE_NAME = "edu.cmu.cs.stage3.alice.scenegraph.renderer.joglrenderer.";
 	private static final String SCENEGRAPH_PACKAGE_NAME = "edu.cmu.cs.stage3.alice.scenegraph.";
 	private static final int SCENEGRAPH_PACKAGE_NAME_COUNT = SCENEGRAPH_PACKAGE_NAME.length();
 
 	@Override
-	protected edu.cmu.cs.stage3.alice.scenegraph.renderer.AbstractProxy createProxyFor(edu.cmu.cs.stage3.alice.scenegraph.Element sgElement) {
+	protected edu.cmu.cs.stage3.alice.scenegraph.renderer.AbstractProxy createProxyFor(
+			final edu.cmu.cs.stage3.alice.scenegraph.Element sgElement) {
 		Class sgClass = sgElement.getClass();
 		while (sgClass != null) {
-			String className = sgClass.getName();
+			final String className = sgClass.getName();
 			if (className.startsWith(SCENEGRAPH_PACKAGE_NAME)) {
 				break;
 			} else {
@@ -94,13 +107,14 @@ public class Renderer extends edu.cmu.cs.stage3.alice.scenegraph.renderer.Abstra
 			}
 		}
 		try {
-			Class proxyClass = Class.forName(RENDERER_PACKAGE_NAME + sgClass.getName().substring(SCENEGRAPH_PACKAGE_NAME_COUNT) + "Proxy");
+			final Class proxyClass = Class.forName(
+					RENDERER_PACKAGE_NAME + sgClass.getName().substring(SCENEGRAPH_PACKAGE_NAME_COUNT) + "Proxy");
 			return (edu.cmu.cs.stage3.alice.scenegraph.renderer.AbstractProxy) proxyClass.newInstance();
-		} catch (ClassNotFoundException cnfe) {
+		} catch (final ClassNotFoundException cnfe) {
 			cnfe.printStackTrace();
-		} catch (IllegalAccessException iae) {
+		} catch (final IllegalAccessException iae) {
 			iae.printStackTrace();
-		} catch (InstantiationException ie) {
+		} catch (final InstantiationException ie) {
 			ie.printStackTrace();
 		}
 		return null;

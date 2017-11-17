@@ -24,18 +24,20 @@
 package edu.cmu.cs.stage3.alice.scripting.jython;
 
 public class PySandbox extends PyElement {
-	public PySandbox(edu.cmu.cs.stage3.alice.core.Sandbox sandbox, Namespace namespace) {
+	public PySandbox(final edu.cmu.cs.stage3.alice.core.Sandbox sandbox, final Namespace namespace) {
 		super(sandbox, namespace);
 	}
+
 	private edu.cmu.cs.stage3.alice.core.Sandbox getSandbox() {
 		return (edu.cmu.cs.stage3.alice.core.Sandbox) getElement();
 	}
 
 	@Override
-	public void __setattr__(String name, org.python.core.PyObject attr) {
+	public void __setattr__(final String name, final org.python.core.PyObject attr) {
 		// todo: this should be made thread safe
 		for (int i = 0; i < getSandbox().variables.size(); i++) {
-			edu.cmu.cs.stage3.alice.core.Variable variable = (edu.cmu.cs.stage3.alice.core.Variable) getSandbox().variables.get(i);
+			final edu.cmu.cs.stage3.alice.core.Variable variable = (edu.cmu.cs.stage3.alice.core.Variable) getSandbox().variables
+					.get(i);
 			if (name.equalsIgnoreCase(variable.name.getStringValue())) {
 				// todo: handle boolean
 				variable.value.set(attr.__tojava__(variable.getValueClass()));

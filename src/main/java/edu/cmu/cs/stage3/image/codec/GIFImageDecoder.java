@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -63,7 +63,7 @@ class GIFImageSource extends FileImageSource {
 
 	InputStream is;
 
-	public GIFImageSource(InputStream is) {
+	public GIFImageSource(final InputStream is) {
 		super("junk"); // security?
 
 		if (is instanceof BufferedInputStream) {
@@ -85,20 +85,20 @@ public class GIFImageDecoder extends ImageDecoderImpl {
 
 	BufferedImage bufferedImage = null;
 
-	public GIFImageDecoder(InputStream input, ImageDecodeParam param) {
+	public GIFImageDecoder(final InputStream input, final ImageDecodeParam param) {
 		super(input, param);
 	}
 
 	private synchronized RenderedImage decode() throws IOException {
 		if (bufferedImage == null) {
-			InputStreamImageSource source = new GIFImageSource(input);
-			Image image = Toolkit.getDefaultToolkit().createImage(source);
+			final InputStreamImageSource source = new GIFImageSource(input);
+			final Image image = Toolkit.getDefaultToolkit().createImage(source);
 
-			MediaTracker tracker = new MediaTracker(new Canvas());
+			final MediaTracker tracker = new MediaTracker(new Canvas());
 			tracker.addImage(image, 0);
 			try {
 				tracker.waitForID(0);
-			} catch (InterruptedException e) {
+			} catch (final InterruptedException e) {
 				throw new RuntimeException(JaiI18N.getString("GIFImageDecoder0"));
 			}
 			if (tracker.isErrorID(0)) { // not standard file format
@@ -107,11 +107,11 @@ public class GIFImageDecoder extends ImageDecoderImpl {
 			tracker.removeImage(image);
 
 			/* Ignore width and height from ImageLayout. */
-			int width = image.getWidth(null);
-			int height = image.getHeight(null);
+			final int width = image.getWidth(null);
+			final int height = image.getHeight(null);
 
 			bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_3BYTE_BGR);
-			Graphics g = bufferedImage.getGraphics();
+			final Graphics g = bufferedImage.getGraphics();
 			g.drawImage(image, 0, 0, null);
 		}
 
@@ -119,7 +119,7 @@ public class GIFImageDecoder extends ImageDecoderImpl {
 	}
 
 	@Override
-	public RenderedImage decodeAsRenderedImage(int page) throws IOException {
+	public RenderedImage decodeAsRenderedImage(final int page) throws IOException {
 		if (page != 0) {
 			throw new IOException(JaiI18N.getString("GIFImageDecoder2"));
 		}

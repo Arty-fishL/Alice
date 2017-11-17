@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -26,8 +26,8 @@ package edu.cmu.cs.stage3.alice.core.manipulator;
 public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseListener {
 	static java.awt.Cursor s_invisibleCursor;
 	static {
-		java.awt.Toolkit toolkit = java.awt.Toolkit.getDefaultToolkit();
-		java.awt.Image image = toolkit.createImage(new java.awt.image.MemoryImageSource(0, 0, null, 0, 0));
+		final java.awt.Toolkit toolkit = java.awt.Toolkit.getDefaultToolkit();
+		final java.awt.Image image = toolkit.createImage(new java.awt.image.MemoryImageSource(0, 0, null, 0, 0));
 		s_invisibleCursor = toolkit.createCustomCursor(image, new java.awt.Point(0, 0), "invisible cursor");
 	}
 
@@ -52,11 +52,12 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 	protected boolean ascendTreeEnabled = true;
 	protected edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pickInfo;
 
-	public RenderTargetPickManipulator(edu.cmu.cs.stage3.alice.scenegraph.renderer.OnscreenRenderTarget renderTarget) {
+	public RenderTargetPickManipulator(
+			final edu.cmu.cs.stage3.alice.scenegraph.renderer.OnscreenRenderTarget renderTarget) {
 		setRenderTarget(renderTarget);
 	}
 
-	public void setEnabled(boolean b) {
+	public void setEnabled(final boolean b) {
 		enabled = b;
 	}
 
@@ -64,7 +65,7 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 		return enabled;
 	}
 
-	public void setPickAllForOneObjectOfInterestEnabled(boolean b) {
+	public void setPickAllForOneObjectOfInterestEnabled(final boolean b) {
 		pickAllForOneObjectOfInterest = b;
 	}
 
@@ -72,7 +73,7 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 		return pickAllForOneObjectOfInterest;
 	}
 
-	public void setRenderTarget(edu.cmu.cs.stage3.alice.scenegraph.renderer.OnscreenRenderTarget renderTarget) {
+	public void setRenderTarget(final edu.cmu.cs.stage3.alice.scenegraph.renderer.OnscreenRenderTarget renderTarget) {
 		if (this.renderTarget != null) {
 			this.renderTarget.getAWTComponent().removeMouseListener(this);
 			// if( popupEnabled ) {
@@ -103,13 +104,15 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 		return sgPickedTransformable;
 	}
 
-	public void addRenderTargetPickManipulatorListener(edu.cmu.cs.stage3.alice.core.event.RenderTargetPickManipulatorListener listener) {
+	public void addRenderTargetPickManipulatorListener(
+			final edu.cmu.cs.stage3.alice.core.event.RenderTargetPickManipulatorListener listener) {
 		if (listener != null) {
 			listeners.add(listener);
 		}
 	}
 
-	public void removeRenderTargetPickManipulatorListener(edu.cmu.cs.stage3.alice.core.event.RenderTargetPickManipulatorListener listener) {
+	public void removeRenderTargetPickManipulatorListener(
+			final edu.cmu.cs.stage3.alice.core.event.RenderTargetPickManipulatorListener listener) {
 		if (listener != null) {
 			listeners.remove(listener);
 		}
@@ -122,7 +125,7 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 	 * only occur if an objectOfInterest is picked only firstClass objects will
 	 * be considered
 	 */
-	public boolean addObjectOfInterest(edu.cmu.cs.stage3.alice.core.Transformable trans) {
+	public boolean addObjectOfInterest(final edu.cmu.cs.stage3.alice.core.Transformable trans) {
 		return objectsOfInterest.add(trans);
 	}
 
@@ -133,7 +136,7 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 	 * only occur if an objectOfInterest is picked only firstClass objects will
 	 * be considered
 	 */
-	public boolean removeObjectOfInterest(edu.cmu.cs.stage3.alice.core.Transformable trans) {
+	public boolean removeObjectOfInterest(final edu.cmu.cs.stage3.alice.core.Transformable trans) {
 		return objectsOfInterest.remove(trans);
 	}
 
@@ -145,11 +148,11 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 		return hideCursorOnDrag;
 	}
 
-	public void setHideCursorOnDrag(boolean b) {
+	public void setHideCursorOnDrag(final boolean b) {
 		hideCursorOnDrag = b;
 	}
 
-	public void setAscendTreeEnabled(boolean b) {
+	public void setAscendTreeEnabled(final boolean b) {
 		ascendTreeEnabled = b;
 	}
 
@@ -160,7 +163,7 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 	// commented out by dennisc
 	/*
 	 * public boolean isPopupEnabled() { return popupEnabled; }
-	 * 
+	 *
 	 * public synchronized void setPopupEnabled( boolean b ) { if( renderTarget
 	 * != null ) { if( b && (! popupEnabled) ) {
 	 * renderTarget.getAWTComponent().addMouseListener( popupMouseListener ); }
@@ -170,7 +173,7 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 	 */
 
 	@Override
-	public void mousePressed(java.awt.event.MouseEvent ev) {
+	public void mousePressed(final java.awt.event.MouseEvent ev) {
 		if (enabled) {
 			super.mousePressed(ev);
 
@@ -193,23 +196,33 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 				// }
 				// }
 
-				pickInfo = renderTarget.pick(ev.getX(), ev.getY(), edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget.SUB_ELEMENT_IS_NOT_REQUIRED, edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget.ONLY_FRONT_MOST_VISUAL_IS_REQUIRED);
+				pickInfo = renderTarget.pick(ev.getX(), ev.getY(),
+						edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget.SUB_ELEMENT_IS_NOT_REQUIRED,
+						edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget.ONLY_FRONT_MOST_VISUAL_IS_REQUIRED);
 
 				if (pickInfo != null) {
-					edu.cmu.cs.stage3.alice.scenegraph.Visual[] visuals = pickInfo.getVisuals();
+					final edu.cmu.cs.stage3.alice.scenegraph.Visual[] visuals = pickInfo.getVisuals();
 					if (visuals != null && visuals.length >= 1) {
 
 						ePickedTransformable = (edu.cmu.cs.stage3.alice.core.Transformable) visuals[0].getBonus();
 						if (ePickedTransformable == null) {
-							sgPickedTransformable = (edu.cmu.cs.stage3.alice.scenegraph.Transformable) visuals[0].getParent();
-							ePickedTransformable = (edu.cmu.cs.stage3.alice.core.Transformable) sgPickedTransformable.getBonus();
+							sgPickedTransformable = (edu.cmu.cs.stage3.alice.scenegraph.Transformable) visuals[0]
+									.getParent();
+							ePickedTransformable = (edu.cmu.cs.stage3.alice.core.Transformable) sgPickedTransformable
+									.getBonus();
 						} else {
 							sgPickedTransformable = ePickedTransformable.getSceneGraphTransformable();
 						}
 						if (ascendTreeEnabled) {
-							while (ePickedTransformable != null && ePickedTransformable.getParent() instanceof edu.cmu.cs.stage3.alice.core.Transformable && !ePickedTransformable.doEventsStopAscending() && !objectsOfInterest.contains(ePickedTransformable)) {
-								sgPickedTransformable = ((edu.cmu.cs.stage3.alice.core.Transformable) ePickedTransformable.getParent()).getSceneGraphTransformable();
-								ePickedTransformable = (edu.cmu.cs.stage3.alice.core.Transformable) sgPickedTransformable.getBonus();
+							while (ePickedTransformable != null
+									&& ePickedTransformable
+											.getParent() instanceof edu.cmu.cs.stage3.alice.core.Transformable
+									&& !ePickedTransformable.doEventsStopAscending()
+									&& !objectsOfInterest.contains(ePickedTransformable)) {
+								sgPickedTransformable = ((edu.cmu.cs.stage3.alice.core.Transformable) ePickedTransformable
+										.getParent()).getSceneGraphTransformable();
+								ePickedTransformable = (edu.cmu.cs.stage3.alice.core.Transformable) sgPickedTransformable
+										.getBonus();
 							}
 						}
 
@@ -228,7 +241,8 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 			firePostPick(pickInfo);
 
 			originalMousePoint = ev.getPoint();
-			if (!isActionAborted() && hideCursorOnDrag && doWrap && !ev.getComponent().getCursor().equals(invisibleCursor)) {
+			if (!isActionAborted() && hideCursorOnDrag && doWrap
+					&& !ev.getComponent().getCursor().equals(invisibleCursor)) {
 				savedCursor = ev.getComponent().getCursor();
 				ev.getComponent().setCursor(invisibleCursor);
 			}
@@ -236,12 +250,12 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 	}
 
 	@Override
-	public void mouseReleased(java.awt.event.MouseEvent ev) {
+	public void mouseReleased(final java.awt.event.MouseEvent ev) {
 		if (!isActionAborted() && hideCursorOnDrag && doWrap) {
 			ev.getComponent().setCursor(savedCursor);
 			// TODO: position mouse based on object of interest's position in
 			// the picture plane; for now, it does a rough approximation
-			java.awt.Point tempPoint = ev.getPoint();
+			final java.awt.Point tempPoint = ev.getPoint();
 			javax.swing.SwingUtilities.convertPointToScreen(tempPoint, ev.getComponent());
 			javax.swing.SwingUtilities.convertPointToScreen(originalMousePoint, ev.getComponent());
 			edu.cmu.cs.stage3.awt.AWTUtilities.setCursorLocation(tempPoint.x, originalMousePoint.y);
@@ -274,15 +288,17 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 	}
 
 	protected void firePrePick() {
-		edu.cmu.cs.stage3.alice.core.event.RenderTargetPickManipulatorEvent ev = new edu.cmu.cs.stage3.alice.core.event.RenderTargetPickManipulatorEvent(renderTarget, null);
-		for (java.util.Iterator iter = listeners.iterator(); iter.hasNext();) {
+		final edu.cmu.cs.stage3.alice.core.event.RenderTargetPickManipulatorEvent ev = new edu.cmu.cs.stage3.alice.core.event.RenderTargetPickManipulatorEvent(
+				renderTarget, null);
+		for (final java.util.Iterator iter = listeners.iterator(); iter.hasNext();) {
 			((edu.cmu.cs.stage3.alice.core.event.RenderTargetPickManipulatorListener) iter.next()).prePick(ev);
 		}
 	}
 
-	protected void firePostPick(edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pickInfo) {
-		edu.cmu.cs.stage3.alice.core.event.RenderTargetPickManipulatorEvent ev = new edu.cmu.cs.stage3.alice.core.event.RenderTargetPickManipulatorEvent(renderTarget, pickInfo);
-		for (java.util.Iterator iter = listeners.iterator(); iter.hasNext();) {
+	protected void firePostPick(final edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pickInfo) {
+		final edu.cmu.cs.stage3.alice.core.event.RenderTargetPickManipulatorEvent ev = new edu.cmu.cs.stage3.alice.core.event.RenderTargetPickManipulatorEvent(
+				renderTarget, pickInfo);
+		for (final java.util.Iterator iter = listeners.iterator(); iter.hasNext();) {
 			((edu.cmu.cs.stage3.alice.core.event.RenderTargetPickManipulatorListener) iter.next()).postPick(ev);
 		}
 	}
@@ -293,13 +309,13 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 	 * java.awt.event.MouseListener popupMouseListener = new
 	 * edu.cmu.cs.stage3.alice.authoringtool.util.CustomMouseAdapter() {
 	 * Runnable emptyRunnable = new Runnable() { public void run() {} };
-	 * 
+	 *
 	 * protected void popupResponse( java.awt.event.MouseEvent e ) { if(
 	 * lastEPickedTransformable != null ) { javax.swing.JPopupMenu popup =
 	 * createPopup( lastEPickedTransformable ); popup.show( e.getComponent(),
 	 * e.getX(), e.getY() ); PopupMenuUtilities.ensurePopupIsOnScreen( popup );
 	 * } }
-	 * 
+	 *
 	 * private javax.swing.JPopupMenu createPopup(
 	 * edu.cmu.cs.stage3.alice.core.Element element ) { java.util.Vector
 	 * popupStructure = ElementPopupUtilities.getDefaultStructure( element );

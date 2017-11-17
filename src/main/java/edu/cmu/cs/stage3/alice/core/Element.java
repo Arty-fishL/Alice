@@ -43,26 +43,41 @@ public abstract class Element {
 		// edu.cmu.cs.stage3.alice.core.behavior.tracking.SpacePadBehavior.class
 		// );
 
-		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.ConditionalLoopSequentialResponse", edu.cmu.cs.stage3.alice.core.response.WhileLoopInOrder.class);
-		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.ConditionalSequentialResponse", edu.cmu.cs.stage3.alice.core.response.IfElseInOrder.class);
-		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.CountLoopSequentialResponse", edu.cmu.cs.stage3.alice.core.response.LoopNInOrder.class);
-		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.ForEachInListSequentialResponse", edu.cmu.cs.stage3.alice.core.response.ForEach.class);
-		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.OrientationAnimation", edu.cmu.cs.stage3.alice.core.response.ForwardVectorAnimation.class);
-		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.ParallelForEachInListSequentialResponse", edu.cmu.cs.stage3.alice.core.response.ForEachTogether.class);
-		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.ParallelResponse", edu.cmu.cs.stage3.alice.core.response.DoTogether.class);
-		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.ProxyForScriptDefinedResponse", edu.cmu.cs.stage3.alice.core.response.ScriptDefinedResponse.class);
-		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.SequentialForEachInListSequentialResponse", edu.cmu.cs.stage3.alice.core.response.ForEachInOrder.class);
-		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.SequentialResponse", edu.cmu.cs.stage3.alice.core.response.DoInOrder.class);
+		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.ConditionalLoopSequentialResponse",
+				edu.cmu.cs.stage3.alice.core.response.WhileLoopInOrder.class);
+		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.ConditionalSequentialResponse",
+				edu.cmu.cs.stage3.alice.core.response.IfElseInOrder.class);
+		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.CountLoopSequentialResponse",
+				edu.cmu.cs.stage3.alice.core.response.LoopNInOrder.class);
+		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.ForEachInListSequentialResponse",
+				edu.cmu.cs.stage3.alice.core.response.ForEach.class);
+		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.OrientationAnimation",
+				edu.cmu.cs.stage3.alice.core.response.ForwardVectorAnimation.class);
+		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.ParallelForEachInListSequentialResponse",
+				edu.cmu.cs.stage3.alice.core.response.ForEachTogether.class);
+		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.ParallelResponse",
+				edu.cmu.cs.stage3.alice.core.response.DoTogether.class);
+		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.ProxyForScriptDefinedResponse",
+				edu.cmu.cs.stage3.alice.core.response.ScriptDefinedResponse.class);
+		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.SequentialForEachInListSequentialResponse",
+				edu.cmu.cs.stage3.alice.core.response.ForEachInOrder.class);
+		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.SequentialResponse",
+				edu.cmu.cs.stage3.alice.core.response.DoInOrder.class);
 
-		s_classnameMap.put("edu.cmu.cs.stage3.bb2.navigation.KeyboardNavigationBehavior", edu.cmu.cs.stage3.alice.core.behavior.KeyboardNavigationBehavior.class);
-		s_classnameMap.put("edu.cmu.cs.stage3.bb2.navigation.MouseNavigationBehavior", edu.cmu.cs.stage3.alice.core.behavior.MouseLookingBehavior.class);
+		s_classnameMap.put("edu.cmu.cs.stage3.bb2.navigation.KeyboardNavigationBehavior",
+				edu.cmu.cs.stage3.alice.core.behavior.KeyboardNavigationBehavior.class);
+		s_classnameMap.put("edu.cmu.cs.stage3.bb2.navigation.MouseNavigationBehavior",
+				edu.cmu.cs.stage3.alice.core.behavior.MouseLookingBehavior.class);
 
 		s_classnameMap.put("edu.cmu.cs.stage3.pratt.pose.Pose", edu.cmu.cs.stage3.alice.core.Pose.class);
-		s_classnameMap.put("edu.cmu.cs.stage3.pratt.pose.PoseAnimation", edu.cmu.cs.stage3.alice.core.response.PoseAnimation.class);
+		s_classnameMap.put("edu.cmu.cs.stage3.pratt.pose.PoseAnimation",
+				edu.cmu.cs.stage3.alice.core.response.PoseAnimation.class);
 
-		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.MetaResponse", edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse.class);
+		s_classnameMap.put("edu.cmu.cs.stage3.alice.core.response.MetaResponse",
+				edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse.class);
 
-		s_classnameMap.put("edu.cmu.cs.stage3.bb2.navigation.KeyMapping", edu.cmu.cs.stage3.alice.core.navigation.KeyMapping.class);
+		s_classnameMap.put("edu.cmu.cs.stage3.bb2.navigation.KeyMapping",
+				edu.cmu.cs.stage3.alice.core.navigation.KeyMapping.class);
 	}
 
 	public static final double VERSION = 2.001;
@@ -76,9 +91,9 @@ public abstract class Element {
 	public final DictionaryProperty data = new DictionaryProperty(this, "data", null);
 
 	private Element m_parent = null;
-	private java.util.Vector m_children = new java.util.Vector();
+	private final java.util.Vector m_children = new java.util.Vector();
 	private Element[] m_childArray = null;
-	private java.util.Vector m_childrenListeners = new java.util.Vector();
+	private final java.util.Vector m_childrenListeners = new java.util.Vector();
 	private edu.cmu.cs.stage3.alice.core.event.ChildrenListener[] m_childrenListenerArray = null;
 
 	private Object m_xmlFileKeepKey = null;
@@ -96,20 +111,23 @@ public abstract class Element {
 	private Property[] m_propertyArray = null;
 
 	private boolean m_isReleased = false;
-	private boolean m_updateParentsChildren = true;
+	private final boolean m_updateParentsChildren = true;
 
-	public edu.cmu.cs.stage3.alice.scripting.Code compile(String script, Object source, edu.cmu.cs.stage3.alice.scripting.CompileType compileType) {
+	public edu.cmu.cs.stage3.alice.scripting.Code compile(final String script, final Object source,
+			final edu.cmu.cs.stage3.alice.scripting.CompileType compileType) {
 		return getWorld().compile(script, source, compileType);
 	}
-	public Object eval(edu.cmu.cs.stage3.alice.scripting.Code code) {
+
+	public Object eval(final edu.cmu.cs.stage3.alice.scripting.Code code) {
 		return getWorld().eval(code);
 	}
-	public void exec(edu.cmu.cs.stage3.alice.scripting.Code code) {
+
+	public void exec(final edu.cmu.cs.stage3.alice.scripting.Code code) {
 		getWorld().exec(code);
 	}
 
-	private static boolean isPropertyField(java.lang.reflect.Field field) {
-		int modifiers = field.getModifiers();
+	private static boolean isPropertyField(final java.lang.reflect.Field field) {
+		final int modifiers = field.getModifiers();
 		if (java.lang.reflect.Modifier.isPublic(modifiers)) {
 			if (Property.class.isAssignableFrom(field.getType())) {
 				return true;
@@ -118,24 +136,27 @@ public abstract class Element {
 		return false;
 	}
 
-	private static final char[] ILLEGAL_NAME_CHARACTERS = {'\t', '\n', '\\', '/', ':', '*', '?', '"', '<', '>', '|', SEPARATOR};
+	private static final char[] ILLEGAL_NAME_CHARACTERS = { '\t', '\n', '\\', '/', ':', '*', '?', '"', '<', '>', '|',
+			SEPARATOR };
 
-	private static boolean isIllegal(char c) {
-		for (char element : ILLEGAL_NAME_CHARACTERS) {
+	private static boolean isIllegal(final char c) {
+		for (final char element : ILLEGAL_NAME_CHARACTERS) {
 			if (c == element) {
 				return true;
 			}
 		}
 		return false;
 	}
-	private static boolean is8Bit(char c) {
-		int n = c;
+
+	private static boolean is8Bit(final char c) {
+		final int n = c;
 		return (n & 0xFF) == n;
 	}
-	public static String generateValidName(String invalidName) {
-		byte[] bytes = invalidName.trim().getBytes();
-		StringBuffer sb = new StringBuffer(bytes.length);
-		for (byte b : bytes) {
+
+	public static String generateValidName(final String invalidName) {
+		final byte[] bytes = invalidName.trim().getBytes();
+		final StringBuffer sb = new StringBuffer(bytes.length);
+		for (final byte b : bytes) {
 			char c = (char) b;
 			if (is8Bit(c)) {
 				if (isIllegal(c)) {
@@ -153,7 +174,8 @@ public abstract class Element {
 		}
 		return sb.toString();
 	}
-	public static boolean isPotentialNameValid(String nameValue) {
+
+	public static boolean isPotentialNameValid(final String nameValue) {
 		if (nameValue == null) {
 			return false;
 		}
@@ -163,9 +185,9 @@ public abstract class Element {
 		if (nameValue.trim().length() != nameValue.length()) {
 			return false;
 		}
-		byte[] bytes = nameValue.getBytes();
-		for (byte b : bytes) {
-			char c = (char) b;
+		final byte[] bytes = nameValue.getBytes();
+		for (final byte b : bytes) {
+			final char c = (char) b;
 			if (is8Bit(c)) {
 				if (isIllegal(c)) {
 					return false;
@@ -176,30 +198,35 @@ public abstract class Element {
 		}
 		return true;
 	}
-	private void checkForInvalidName(String nameValue) {
+
+	private void checkForInvalidName(final String nameValue) {
 		if (nameValue == null) {
 			// pass
 		} else {
-			String trimmedNameValue = nameValue.trim();
+			final String trimmedNameValue = nameValue.trim();
 			if (trimmedNameValue.length() != nameValue.length()) {
 				// throw new IllegalNameValueException( nameValue,
 				// "an element's name cannot begin or end with whitespace." );
-				throw new IllegalNameValueException(nameValue, "We're sorry, but names in Alice may not have spaces at the beginning or end.");
+				throw new IllegalNameValueException(nameValue,
+						"We're sorry, but names in Alice may not have spaces at the beginning or end.");
 			}
 			if (nameValue.length() == 0) {
 				throw new IllegalNameValueException(nameValue, "We're sorry, but names in Alice may not be empty.");
 			}
-			char[] illegalCharacters = {'\t', '\n', '\\', '/', ':', '*', '?', '"', '<', '>', '|', SEPARATOR};
-			for (char illegalCharacter : illegalCharacters) {
+			final char[] illegalCharacters = { '\t', '\n', '\\', '/', ':', '*', '?', '"', '<', '>', '|', SEPARATOR };
+			for (final char illegalCharacter : illegalCharacters) {
 				if (nameValue.indexOf(illegalCharacter) != -1) {
 					// throw new IllegalNameValueException( nameValue,
-					// "an element's name cannot contain any of the following characters: "
+					// "an element's name cannot contain any of the following
+					// characters: "
 					// + new String( illegalCharacters ) );
-					throw new IllegalNameValueException(nameValue, "We're sorry, but names in Alice may only contain letters and numbers.  The character \"" + illegalCharacter + "\" can not be used in a name.");
+					throw new IllegalNameValueException(nameValue,
+							"We're sorry, but names in Alice may only contain letters and numbers.  The character \""
+									+ illegalCharacter + "\" can not be used in a name.");
 				}
 			}
 
-			byte[] bytes = nameValue.getBytes();
+			final byte[] bytes = nameValue.getBytes();
 			for (int i = 0; i < bytes.length; i++) {
 				if (is8Bit((char) bytes[i])) {
 					// pass
@@ -207,66 +234,77 @@ public abstract class Element {
 					char c;
 					try {
 						c = nameValue.charAt(i);
-					} catch (Throwable t) {
+					} catch (final Throwable t) {
 						c = (char) bytes[i];
 					}
-					throw new IllegalNameValueException(nameValue, "We're sorry, but names in Alice may only contain letters and numbers.  The character \"" + c + "\" can not be used in a name.");
+					throw new IllegalNameValueException(nameValue,
+							"We're sorry, but names in Alice may only contain letters and numbers.  The character \""
+									+ c + "\" can not be used in a name.");
 				}
 			}
 		}
 	}
-	private void checkForNameCollision(Element parentValue, String nameValue) {
+
+	private void checkForNameCollision(final Element parentValue, final String nameValue) {
 		if (parentValue == null || nameValue == null) {
 			// pass
 		} else {
-			Element siblingToBe = parentValue.getChildNamedIgnoreCase(nameValue);
+			final Element siblingToBe = parentValue.getChildNamedIgnoreCase(nameValue);
 			// System.out.println("\n\n"+nameValue+", "+parentValue.hashCode());
 			// Thread.dumpStack();
 			if (siblingToBe != null && siblingToBe != this) {
-				throw new IllegalNameValueException(nameValue, "Unfortunately, something else in this world is already named \"" + nameValue + ",\" so you can't use that name here.");
+				throw new IllegalNameValueException(nameValue,
+						"Unfortunately, something else in this world is already named \"" + nameValue
+								+ ",\" so you can't use that name here.");
 			}
 		}
 	}
 
 	public void HACK_nameChanged() {
 		markKeepKeyDirty();
-		Element[] children = getChildren();
-		for (Element element : children) {
+		final Element[] children = getChildren();
+		for (final Element element : children) {
 			element.HACK_nameChanged();
 		}
 	}
 
-	protected void nameValueChanging(String nameValueToBe) {
+	protected void nameValueChanging(final String nameValueToBe) {
 		checkForInvalidName(nameValueToBe);
 		checkForNameCollision(m_parent, nameValueToBe);
 	}
-	protected void nameValueChanged(String value) {
-		PropertyReference[] propertyReferences = getExternalPropertyReferences(HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
-		for (PropertyReference propertyReference : propertyReferences) {
+
+	protected void nameValueChanged(final String value) {
+		final PropertyReference[] propertyReferences = getExternalPropertyReferences(
+				HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
+		for (final PropertyReference propertyReference : propertyReferences) {
 			propertyReference.getProperty().getOwner().markKeepKeyDirty();
 		}
 	}
 
-	public void propertyCreated(Property property) {
+	public void propertyCreated(final Property property) {
 		markKeepKeyDirty();
 	}
-	protected void propertyChanging(Property property, Object value) {
+
+	protected void propertyChanging(final Property property, final Object value) {
 		if (property == name) {
 			nameValueChanging((String) value);
 		}
 	}
-	protected void propertyChanged(Property property, Object value) {
+
+	protected void propertyChanged(final Property property, final Object value) {
 		if (property == name) {
 			nameValueChanged((String) value);
 		}
 	}
-	public final void propertyChanging(edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
+
+	public final void propertyChanging(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
 		if (isReleased()) {
 			throw new RuntimeException("property change attempted on released element: " + propertyEvent.getProperty());
 		}
 		propertyChanging(propertyEvent.getProperty(), propertyEvent.getValue());
 	}
-	public final void propertyChanged(edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
+
+	public final void propertyChanged(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
 		if (isReleased()) {
 			throw new RuntimeException("property changed on released element" + propertyEvent.getProperty());
 		}
@@ -276,13 +314,14 @@ public abstract class Element {
 		}
 	}
 
-	protected void internalRelease(int pass) {
+	protected void internalRelease(final int pass) {
 		m_isReleased = true;
-		Element[] children = getChildren();
-		for (Element element : children) {
+		final Element[] children = getChildren();
+		for (final Element element : children) {
 			element.internalRelease(pass);
 		}
 	}
+
 	public final void release() {
 		if (!m_isReleased) {
 			for (int pass = 0; pass < 3; pass++) {
@@ -290,9 +329,11 @@ public abstract class Element {
 			}
 		}
 	}
+
 	public boolean isReleased() {
 		return m_isReleased;
 	}
+
 	@Override
 	protected void finalize() throws Throwable {
 		if (!isReleased()) {
@@ -302,54 +343,64 @@ public abstract class Element {
 	}
 
 	private class Property_Value {
-		private Property m_property;
-		private Element m_value;
-		public Property_Value(Property property, Element value) {
+		private final Property m_property;
+		private final Element m_value;
+
+		public Property_Value(final Property property, final Element value) {
 			m_property = property;
 			m_value = value;
 		}
-		public Property getProperty(Element[] originals, Element[] replacements) {
-			Element propertyOwner = m_property.getOwner();
-			int index = propertyOwner.indexIn(originals);
+
+		public Property getProperty(final Element[] originals, final Element[] replacements) {
+			final Element propertyOwner = m_property.getOwner();
+			final int index = propertyOwner.indexIn(originals);
 			if (index != -1) {
 				return replacements[index].getPropertyNamed(m_property.getName());
 			} else {
 				return m_property;
 			}
 		}
-		public Element getValue(Element[] originals, Element[] replacements) {
+
+		public Element getValue(final Element[] originals, final Element[] replacements) {
 			if (m_value instanceof Element) {
-				int index = m_value.indexIn(originals);
+				final int index = m_value.indexIn(originals);
 				if (index != -1) {
 					return replacements[index];
 				}
 			}
 			return m_value;
 		}
+
 		@Override
 		public String toString() {
 			return m_property + " " + m_value;
 		}
 	}
+
 	private class ObjectArrayProperty_Value_Index extends Property_Value {
-		private int m_index;
-		public ObjectArrayProperty_Value_Index(ObjectArrayProperty objectArrayProperty, Element value, int index) {
+		private final int m_index;
+
+		public ObjectArrayProperty_Value_Index(final ObjectArrayProperty objectArrayProperty, final Element value,
+				final int index) {
 			super(objectArrayProperty, value);
 			m_index = index;
 		}
-		public ObjectArrayProperty getObjectArrayProperty(Element[] originals, Element[] replacements) {
+
+		public ObjectArrayProperty getObjectArrayProperty(final Element[] originals, final Element[] replacements) {
 			return (ObjectArrayProperty) getProperty(originals, replacements);
 		}
+
 		public int getIndex() {
 			return m_index;
 		}
+
 		@Override
 		public String toString() {
 			return super.toString() + " " + m_index;
 		}
 	}
 
-	private int indexIn(Element[] array) {
+	private int indexIn(final Element[] array) {
 		for (int i = 0; i < array.length; i++) {
 			if (this == array[i]) {
 				return i;
@@ -357,18 +408,20 @@ public abstract class Element {
 		}
 		return -1;
 	}
-	private void clearAllReferences(Element[] originals, Element[] replacements, Element[] childrenWithNoReplacements, java.util.Vector toBeResolved) {
-		Element root = getRoot();
-		Element[] descendants = root.getDescendants(Element.class, HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
-		for (Element descendant : descendants) {
-			Property[] properties = descendant.getProperties();
-			for (Property property : properties) {
+
+	private void clearAllReferences(final Element[] originals, final Element[] replacements,
+			final Element[] childrenWithNoReplacements, final java.util.Vector toBeResolved) {
+		final Element root = getRoot();
+		final Element[] descendants = root.getDescendants(Element.class, HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
+		for (final Element descendant : descendants) {
+			final Property[] properties = descendant.getProperties();
+			for (final Property property : properties) {
 				if (property instanceof ObjectArrayProperty) {
-					ObjectArrayProperty oap = (ObjectArrayProperty) property;
+					final ObjectArrayProperty oap = (ObjectArrayProperty) property;
 					for (int k = 0; k < oap.size(); k++) {
-						Object valueK = oap.get(k);
+						final Object valueK = oap.get(k);
 						if (valueK instanceof Element) {
-							Element elementK = (Element) valueK;
+							final Element elementK = (Element) valueK;
 							ObjectArrayProperty_Value_Index oap_v_i = null;
 							int index = elementK.indexIn(originals);
 							if (index != -1) {
@@ -376,7 +429,8 @@ public abstract class Element {
 							} else {
 								index = elementK.indexIn(childrenWithNoReplacements);
 								if (index != -1) {
-									oap_v_i = new ObjectArrayProperty_Value_Index(oap, childrenWithNoReplacements[index], k);
+									oap_v_i = new ObjectArrayProperty_Value_Index(oap,
+											childrenWithNoReplacements[index], k);
 								}
 							}
 							if (oap_v_i != null) {
@@ -386,9 +440,9 @@ public abstract class Element {
 						}
 					}
 				} else {
-					Object value = property.get();
+					final Object value = property.get();
 					if (value instanceof Element) {
-						Element element = (Element) value;
+						final Element element = (Element) value;
 						Property_Value p_v = null;
 						int index = element.indexIn(originals);
 						if (index != -1) {
@@ -409,10 +463,10 @@ public abstract class Element {
 		}
 	}
 
-	private void replace(Element[] originals, Element[] replacements) {
+	private void replace(final Element[] originals, final Element[] replacements) {
 		for (int i = 0; i < originals.length; i++) {
-			Element original = originals[i];
-			Element replacement = replacements[i];
+			final Element original = originals[i];
+			final Element replacement = replacements[i];
 			Element parent;
 			if (original != null) {
 				parent = original.getParent();
@@ -423,7 +477,7 @@ public abstract class Element {
 				parent = null;
 			}
 			if (parent != null) {
-				int index = parent.indexIn(originals);
+				final int index = parent.indexIn(originals);
 				if (index != -1) {
 					parent = replacements[index];
 				}
@@ -432,27 +486,28 @@ public abstract class Element {
 		}
 	}
 
-	private Element[] getChildrenThatHaveNoReplacements(Element[] originals, Element[] replacements) {
-		java.util.Vector vector = new java.util.Vector();
+	private Element[] getChildrenThatHaveNoReplacements(final Element[] originals, final Element[] replacements) {
+		final java.util.Vector vector = new java.util.Vector();
 		for (int i = 0; i < originals.length; i++) {
-			Element original = originals[i];
-			Element replacement = replacements[i];
+			final Element original = originals[i];
+			final Element replacement = replacements[i];
 			if (original != null) {
 				for (int j = 0; j < original.getChildCount(); j++) {
-					Element childJ = original.getChildAt(j);
-					int index = childJ.indexIn(originals);
+					final Element childJ = original.getChildAt(j);
+					final int index = childJ.indexIn(originals);
 					if (index == -1) {
 						vector.addElement(childJ);
 					}
 				}
 			}
 		}
-		Element[] array = new Element[vector.size()];
+		final Element[] array = new Element[vector.size()];
 		vector.copyInto(array);
 		return array;
 	}
 
-	private void addChildrenThatHaveNoReplacement(Element[] originals, Element[] replacements, Element[] childrenThatHaveNoReplacements) {
+	private void addChildrenThatHaveNoReplacement(final Element[] originals, final Element[] replacements,
+			final Element[] childrenThatHaveNoReplacements) {
 		/*
 		 * for( int i=0; i<childrenThatHaveNoReplacements.length; i++ ) {
 		 * Element childThatHasNoReplacement = childrenThatHaveNoReplacements[ i
@@ -461,12 +516,12 @@ public abstract class Element {
 		 * replacementParent = replacements[ index ]; } }
 		 */
 		for (int i = 0; i < originals.length; i++) {
-			Element original = originals[i];
-			Element replacement = replacements[i];
+			final Element original = originals[i];
+			final Element replacement = replacements[i];
 			if (original != null) {
 				for (int j = 0; j < original.getChildCount(); j++) {
-					Element childJ = original.getChildAt(j);
-					int index = childJ.indexIn(originals);
+					final Element childJ = original.getChildAt(j);
+					final int index = childJ.indexIn(originals);
 					if (index == -1) {
 						childJ.setParent(replacement);
 					}
@@ -475,16 +530,16 @@ public abstract class Element {
 		}
 	}
 
-	public void replaceWith(Element replacement) {
-		Element[] replacements = replacement.getDescendants(Element.class, HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
-		Element[] originals = new Element[replacements.length];
+	public void replaceWith(final Element replacement) {
+		final Element[] replacements = replacement.getDescendants(Element.class, HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
+		final Element[] originals = new Element[replacements.length];
 		for (int i = 0; i < replacements.length; i++) {
-			String replacementKey = replacements[i].getKey(replacement);
+			final String replacementKey = replacements[i].getKey(replacement);
 			originals[i] = getDescendantKeyed(replacementKey);
 		}
 
-		Element[] childrenThatHaveNoReplacements = getChildrenThatHaveNoReplacements(originals, replacements);
-		java.util.Vector toBeResolved = new java.util.Vector();
+		final Element[] childrenThatHaveNoReplacements = getChildrenThatHaveNoReplacements(originals, replacements);
+		final java.util.Vector toBeResolved = new java.util.Vector();
 		clearAllReferences(originals, replacements, childrenThatHaveNoReplacements, toBeResolved);
 
 		replace(originals, replacements);
@@ -492,40 +547,45 @@ public abstract class Element {
 		addChildrenThatHaveNoReplacement(originals, replacements, childrenThatHaveNoReplacements);
 
 		for (int i = 0; i < toBeResolved.size(); i++) {
-			Property_Value p_v = (Property_Value) toBeResolved.elementAt(i);
+			final Property_Value p_v = (Property_Value) toBeResolved.elementAt(i);
 			if (p_v instanceof ObjectArrayProperty_Value_Index) {
-				ObjectArrayProperty_Value_Index oap_v_i = (ObjectArrayProperty_Value_Index) p_v;
-				oap_v_i.getObjectArrayProperty(originals, replacements).set(oap_v_i.getIndex(), oap_v_i.getValue(originals, replacements));
+				final ObjectArrayProperty_Value_Index oap_v_i = (ObjectArrayProperty_Value_Index) p_v;
+				oap_v_i.getObjectArrayProperty(originals, replacements).set(oap_v_i.getIndex(),
+						oap_v_i.getValue(originals, replacements));
 			} else {
 				p_v.getProperty(originals, replacements).set(p_v.getValue(originals, replacements));
 			}
 		}
 	}
+
 	public Class[] getSupportedCoercionClasses() {
 		return null;
 	}
+
 	public boolean isCoercionSupported() {
-		Class[] classes = getSupportedCoercionClasses();
+		final Class[] classes = getSupportedCoercionClasses();
 		return classes != null && classes.length > 0;
 	}
-	public Element coerceTo(Class cls) {
-		World world = getWorld();
+
+	public Element coerceTo(final Class cls) {
+		final World world = getWorld();
 		PropertyReference[] propertyReferences = {};
 		String[] keys = {};
 		if (world != null) {
-			propertyReferences = world.getPropertyReferencesTo(this, HowMuch.INSTANCE_AND_ALL_DESCENDANTS, false, false);
+			propertyReferences = world.getPropertyReferencesTo(this, HowMuch.INSTANCE_AND_ALL_DESCENDANTS, false,
+					false);
 			keys = new String[propertyReferences.length];
 		}
 		for (int i = 0; i < propertyReferences.length; i++) {
-			PropertyReference propertyReference = propertyReferences[i];
-			Element reference = propertyReference.getReference();
+			final PropertyReference propertyReference = propertyReferences[i];
+			final Element reference = propertyReference.getReference();
 			keys[i] = reference.getKey(world);
 			if (propertyReference instanceof ObjectArrayPropertyReference) {
-				ObjectArrayPropertyReference objectArrayPropertyReference = (ObjectArrayPropertyReference) propertyReference;
-				ObjectArrayProperty objectArrayProperty = objectArrayPropertyReference.getObjectArrayProperty();
+				final ObjectArrayPropertyReference objectArrayPropertyReference = (ObjectArrayPropertyReference) propertyReference;
+				final ObjectArrayProperty objectArrayProperty = objectArrayPropertyReference.getObjectArrayProperty();
 				objectArrayProperty.set(objectArrayPropertyReference.getIndex(), null);
 			} else {
-				Property property = propertyReference.getProperty();
+				final Property property = propertyReference.getProperty();
 				property.set(null);
 				// System.out.println( "null->"+property );
 			}
@@ -533,40 +593,40 @@ public abstract class Element {
 		Element coercedElement;
 		try {
 			coercedElement = (Element) cls.newInstance();
-		} catch (IllegalAccessException iae) {
+		} catch (final IllegalAccessException iae) {
 			throw new ExceptionWrapper(iae, cls.toString());
-		} catch (InstantiationException ie) {
+		} catch (final InstantiationException ie) {
 			throw new ExceptionWrapper(ie, cls.toString());
 		}
-		Element parentValue = getParent();
+		final Element parentValue = getParent();
 		if (parentValue != null) {
-			int indexOfChild = parentValue.getIndexOfChild(this);
+			final int indexOfChild = parentValue.getIndexOfChild(this);
 			setParent(null);
 			parentValue.insertChildAt(coercedElement, indexOfChild);
 		}
 
-		Element[] children = getChildren();
-		for (Element element : children) {
+		final Element[] children = getChildren();
+		for (final Element element : children) {
 			element.setParent(coercedElement);
 		}
-		Property[] properties = getProperties();
-		for (Property property : properties) {
-			Property cProperty = coercedElement.getPropertyNamed(property.getName());
+		final Property[] properties = getProperties();
+		for (final Property property : properties) {
+			final Property cProperty = coercedElement.getPropertyNamed(property.getName());
 			if (cProperty != null) {
 				cProperty.set(property.get());
 			}
 		}
 		for (int i = 0; i < propertyReferences.length; i++) {
-			PropertyReference propertyReference = propertyReferences[i];
-			String key = keys[i];
-			Element reference = world.getDescendantKeyed(key);
+			final PropertyReference propertyReference = propertyReferences[i];
+			final String key = keys[i];
+			final Element reference = world.getDescendantKeyed(key);
 			Property property = propertyReference.getProperty();
 			if (property.getOwner() == this) {
 				property = coercedElement.getPropertyNamed(property.getName());
 			}
 			if (property != null) {
 				if (propertyReference instanceof ObjectArrayPropertyReference) {
-					ObjectArrayProperty objectArrayProperty = (ObjectArrayProperty) property;
+					final ObjectArrayProperty objectArrayProperty = (ObjectArrayProperty) property;
 					objectArrayProperty.set(((ObjectArrayPropertyReference) propertyReference).getIndex(), reference);
 				} else {
 					property.set(reference);
@@ -575,15 +635,16 @@ public abstract class Element {
 		}
 		return coercedElement;
 	}
+
 	public Property[] getProperties() {
 		if (m_propertyArray == null) {
-			Class cls = getClass();
-			java.util.Vector properties = new java.util.Vector();
-			java.lang.reflect.Field[] fields = cls.getFields();
-			for (Field field : fields) {
+			final Class cls = getClass();
+			final java.util.Vector properties = new java.util.Vector();
+			final java.lang.reflect.Field[] fields = cls.getFields();
+			for (final Field field : fields) {
 				if (isPropertyField(field)) {
 					try {
-						Property property = (Property) field.get(this);
+						final Property property = (Property) field.get(this);
 						if (property != null) {
 							if (property.isDeprecated()) {
 								// pass
@@ -593,7 +654,7 @@ public abstract class Element {
 						} else {
 							debugln("warning: cannot find property field: " + field.getName());
 						}
-					} catch (IllegalAccessException iae) {
+					} catch (final IllegalAccessException iae) {
 						iae.printStackTrace();
 					}
 				}
@@ -605,9 +666,9 @@ public abstract class Element {
 		return m_propertyArray;
 	}
 
-	public Property getPropertyNamed(String name) {
-		Property[] properties = getProperties();
-		for (Property property : properties) {
+	public Property getPropertyNamed(final String name) {
+		final Property[] properties = getProperties();
+		for (final Property property : properties) {
 			if (property.getName().equals(name)) {
 				return property;
 			}
@@ -615,9 +676,10 @@ public abstract class Element {
 		return null;
 		// throw new RuntimeException( "no property named " + name );
 	}
-	public Property getPropertyNamedIgnoreCase(String name) {
-		Property[] properties = getProperties();
-		for (Property property : properties) {
+
+	public Property getPropertyNamedIgnoreCase(final String name) {
+		final Property[] properties = getProperties();
+		for (final Property property : properties) {
 			if (property.getName().equals(name)) {
 				return property;
 			}
@@ -630,7 +692,7 @@ public abstract class Element {
 		return m_parent;
 	}
 
-	public void setParent(Element parentValue) {
+	public void setParent(final Element parentValue) {
 		if (parentValue != m_parent) {
 			if (m_parent != null) {
 				// m_parent.removeChild( this );
@@ -644,15 +706,16 @@ public abstract class Element {
 	}
 
 	private void checkAllPropertiesForBadReferences() {
-		Property[] properties = getProperties();
-		for (Property property : properties) {
+		final Property[] properties = getProperties();
+		for (final Property property : properties) {
 			property.checkForBadReferences(property.get());
 		}
 		for (int i = 0; i < getChildCount(); i++) {
 			getChildAt(i).checkAllPropertiesForBadReferences();
 		}
 	}
-	protected void internalSetParent(Element parentValue) {
+
+	protected void internalSetParent(final Element parentValue) {
 		// if( m_parent != null ) {
 		// World oldWorld = m_parent.getWorld();
 		// if( oldWorld != null ) {
@@ -673,7 +736,7 @@ public abstract class Element {
 		// sb.append( propertyReferences[ i ] );
 		// }
 		// throw new RuntimeException( this + "cannot set its parent to " +
-		// parentValue + ".  It has references pointing to it. " + sb.toString()
+		// parentValue + ". It has references pointing to it. " + sb.toString()
 		// );
 		// }
 		// }
@@ -688,11 +751,11 @@ public abstract class Element {
 				throw new RuntimeException(this + " cannot have descendant " + parentValue + " as its parent.");
 			}
 		}
-		Element prevParent = m_parent;
+		final Element prevParent = m_parent;
 		m_parent = parentValue;
 		try {
 			checkAllPropertiesForBadReferences();
-		} catch (RuntimeException re) {
+		} catch (final RuntimeException re) {
 			m_parent = prevParent;
 			throw re;
 		}
@@ -707,13 +770,14 @@ public abstract class Element {
 	}
 
 	public World getWorld() {
-		Element root = getRoot();
+		final Element root = getRoot();
 		if (root instanceof World) {
 			return (World) root;
 		} else {
 			return null;
 		}
 	}
+
 	public Sandbox getSandbox() {
 		if (this instanceof Sandbox) {
 			if (this instanceof World) {
@@ -728,7 +792,8 @@ public abstract class Element {
 			return m_parent.getSandbox();
 		}
 	}
-	public boolean isDescendantOf(Element element) {
+
+	public boolean isDescendantOf(final Element element) {
 		Element parentValue = getParent();
 		while (parentValue != null) {
 			if (parentValue == element) {
@@ -738,7 +803,8 @@ public abstract class Element {
 		}
 		return false;
 	}
-	public boolean isAncestorOf(Element element) {
+
+	public boolean isAncestorOf(final Element element) {
 		if (element != null) {
 			return element.isDescendantOf(this);
 		} else {
@@ -746,7 +812,7 @@ public abstract class Element {
 		}
 	}
 
-	private void buildDetailedPath(StringBuffer sb) {
+	private void buildDetailedPath(final StringBuffer sb) {
 		if (m_parent != null) {
 			m_parent.buildDetailedPath(sb);
 		}
@@ -756,8 +822,10 @@ public abstract class Element {
 		sb.append(getClass());
 		sb.append("\n");
 	}
-	private String getInternalGetKeyExceptionDescription(Element ancestor, Element self, StringBuffer sbKey) {
-		StringBuffer sb = new StringBuffer();
+
+	private String getInternalGetKeyExceptionDescription(final Element ancestor, final Element self,
+			final StringBuffer sbKey) {
+		final StringBuffer sb = new StringBuffer();
 		sb.append("Could not find ancestor: ");
 		if (ancestor != null) {
 			sb.append(ancestor.name.getStringValue());
@@ -773,7 +841,7 @@ public abstract class Element {
 		return sb.toString();
 	}
 
-	private void internalGetKey(Element ancestor, Element self, StringBuffer sb) {
+	private void internalGetKey(final Element ancestor, final Element self, final StringBuffer sb) {
 		if (m_parent == ancestor) {
 			// pass
 		} else {
@@ -795,11 +863,13 @@ public abstract class Element {
 			sb.append(SEPARATOR);
 		}
 	}
-	public String getKey(Element ancestor) {
-		StringBuffer sb = new StringBuffer();
+
+	public String getKey(final Element ancestor) {
+		final StringBuffer sb = new StringBuffer();
 		internalGetKey(ancestor, this, sb);
 		return new String(sb);
 	}
+
 	public String getKey() {
 		return getKey(null);
 	}
@@ -813,39 +883,47 @@ public abstract class Element {
 	}
 
 	// convenience method
-	public void addPropertyListenerToAllProperties(edu.cmu.cs.stage3.alice.core.event.PropertyListener propertyListener) {
-		Property[] properties = getProperties();
-		for (Property property : properties) {
+	public void addPropertyListenerToAllProperties(
+			final edu.cmu.cs.stage3.alice.core.event.PropertyListener propertyListener) {
+		final Property[] properties = getProperties();
+		for (final Property property : properties) {
 			property.addPropertyListener(propertyListener);
 		}
 	}
+
 	// convenience method
-	public void removePropertyListenerFromAllProperties(edu.cmu.cs.stage3.alice.core.event.PropertyListener propertyListener) {
-		Property[] properties = getProperties();
-		for (Property property : properties) {
+	public void removePropertyListenerFromAllProperties(
+			final edu.cmu.cs.stage3.alice.core.event.PropertyListener propertyListener) {
+		final Property[] properties = getProperties();
+		for (final Property property : properties) {
 			property.removePropertyListener(propertyListener);
 		}
 	}
+
 	public int getChildCount() {
 		return m_children.size();
 	}
-	public Element getChildAt(int index) {
+
+	public Element getChildAt(final int index) {
 		if (index >= m_children.size()) {
 			warnln(this + ".getChildAt( " + index + " ) is out of range [0," + m_children.size() + ").");
 			return null;
 		}
 		return (Element) m_children.elementAt(index);
 	}
-	public int getIndexOfChild(Element child) {
+
+	public int getIndexOfChild(final Element child) {
 		return m_children.indexOf(child);
 	}
-	public boolean hasChild(Element child) {
+
+	public boolean hasChild(final Element child) {
 		return m_children.contains(child);
 	}
-	private Element internalGetChildNamed(String nameValue, boolean ignoreCase) {
+
+	private Element internalGetChildNamed(final String nameValue, final boolean ignoreCase) {
 		if (nameValue != null) {
 			if (nameValue.startsWith("__Unnamed") && nameValue.endsWith("__")) {
-				Element child = getChildAt(Integer.parseInt(nameValue.substring(9, nameValue.length() - 2)));
+				final Element child = getChildAt(Integer.parseInt(nameValue.substring(9, nameValue.length() - 2)));
 				if (child != null) {
 					if (child.name.get() == null) {
 						return child;
@@ -857,7 +935,7 @@ public abstract class Element {
 				}
 			} else {
 				for (int i = 0; i < getChildCount(); i++) {
-					Element child = getChildAt(i);
+					final Element child = getChildAt(i);
 					if (nameValue != null) {
 						boolean found;
 						if (ignoreCase) {
@@ -880,23 +958,26 @@ public abstract class Element {
 			return null;
 		}
 	}
-	public Element getChildNamed(String nameValue) {
+
+	public Element getChildNamed(final String nameValue) {
 		return internalGetChildNamed(nameValue, false);
 	}
-	public Element getChildNamedIgnoreCase(String nameValue) {
+
+	public Element getChildNamedIgnoreCase(final String nameValue) {
 		return internalGetChildNamed(nameValue, true);
 	}
-	private Element internalGetDescendantKeyed(String key, int fromIndex, boolean ignoreCase) {
+
+	private Element internalGetDescendantKeyed(final String key, final int fromIndex, final boolean ignoreCase) {
 		if (key.equals("")) {
 			return this;
 		} else {
-			int toIndex = key.indexOf(SEPARATOR, fromIndex);
+			final int toIndex = key.indexOf(SEPARATOR, fromIndex);
 			if (toIndex == -1) {
-				String childName = key.substring(fromIndex);
+				final String childName = key.substring(fromIndex);
 				return internalGetChildNamed(childName, ignoreCase);
 			} else {
-				String childName = key.substring(fromIndex, toIndex);
-				Element child = internalGetChildNamed(childName, ignoreCase);
+				final String childName = key.substring(fromIndex, toIndex);
+				final Element child = internalGetChildNamed(childName, ignoreCase);
 				if (child != null) {
 					return child.internalGetDescendantKeyed(key, toIndex + 1, ignoreCase);
 				} else {
@@ -905,12 +986,15 @@ public abstract class Element {
 			}
 		}
 	}
-	public Element getDescendantKeyed(String key) {
+
+	public Element getDescendantKeyed(final String key) {
 		return internalGetDescendantKeyed(key, 0, false);
 	}
-	public Element getDescendantKeyedIgnoreCase(String key) {
+
+	public Element getDescendantKeyedIgnoreCase(final String key) {
 		return internalGetDescendantKeyed(key, 0, true);
 	}
+
 	public Element[] getChildren() {
 		if (m_childArray == null) {
 			m_childArray = new Element[m_children.size()];
@@ -918,20 +1002,21 @@ public abstract class Element {
 		}
 		return m_childArray;
 	}
-	public Element[] getChildren(Class cls) {
-		java.util.Vector v = new java.util.Vector();
+
+	public Element[] getChildren(final Class cls) {
+		final java.util.Vector v = new java.util.Vector();
 		for (int i = 0; i < m_children.size(); i++) {
-			Object child = m_children.elementAt(i);
+			final Object child = m_children.elementAt(i);
 			if (cls.isAssignableFrom(child.getClass())) {
 				v.addElement(child);
 			}
 		}
-		Element[] array = new Element[v.size()];
+		final Element[] array = new Element[v.size()];
 		v.copyInto(array);
 		return array;
 	}
 
-	protected int internalGetElementCount(Class cls, HowMuch howMuch, int count) {
+	protected int internalGetElementCount(final Class cls, final HowMuch howMuch, int count) {
 		if (cls.isAssignableFrom(getClass())) {
 			count++;
 		}
@@ -940,17 +1025,20 @@ public abstract class Element {
 		}
 		return count;
 	}
-	public int getElementCount(Class cls, HowMuch howMuch) {
+
+	public int getElementCount(final Class cls, final HowMuch howMuch) {
 		return internalGetElementCount(cls, howMuch, 0);
 	}
-	public int getElementCount(Class cls) {
+
+	public int getElementCount(final Class cls) {
 		return getElementCount(cls, HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
 	}
+
 	public int getElementCount() {
 		return getElementCount(Element.class);
 	}
 
-	public void internalSearch(Criterion criterion, HowMuch howMuch, java.util.Vector v) {
+	public void internalSearch(final Criterion criterion, final HowMuch howMuch, final java.util.Vector v) {
 		if (criterion.accept(this)) {
 			v.addElement(this);
 		}
@@ -958,69 +1046,79 @@ public abstract class Element {
 			getChildAt(i).internalSearch(criterion, howMuch, v);
 		}
 	}
-	public Element[] search(Criterion criterion, HowMuch howMuch) {
-		java.util.Vector v = new java.util.Vector();
+
+	public Element[] search(final Criterion criterion, final HowMuch howMuch) {
+		final java.util.Vector v = new java.util.Vector();
 		internalSearch(criterion, howMuch, v);
-		Element[] array = new Element[v.size()];
+		final Element[] array = new Element[v.size()];
 		v.copyInto(array);
 		return array;
 	}
-	public Element[] search(Criterion criterion) {
+
+	public Element[] search(final Criterion criterion) {
 		return search(criterion, HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
 	}
 
-	public Element[] getDescendants(Class cls, HowMuch howMuch) {
-		Element[] elements = search(new edu.cmu.cs.stage3.util.criterion.InstanceOfCriterion(cls), howMuch);
+	public Element[] getDescendants(final Class cls, final HowMuch howMuch) {
+		final Element[] elements = search(new edu.cmu.cs.stage3.util.criterion.InstanceOfCriterion(cls), howMuch);
 		if (cls == Element.class) {
 			return elements;
 		} else {
-			Object array = java.lang.reflect.Array.newInstance(cls, elements.length);
+			final Object array = java.lang.reflect.Array.newInstance(cls, elements.length);
 			System.arraycopy(elements, 0, array, 0, elements.length);
 			return (Element[]) array;
 		}
 	}
-	public Element[] getDescendants(Class cls) {
+
+	public Element[] getDescendants(final Class cls) {
 		return getDescendants(cls, HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
 	}
+
 	public Element[] getDescendants() {
 		return getDescendants(Element.class);
 	}
 
-	public void setPropertyNamed(String name, Object value, HowMuch howMuch) {
-		Property property = getPropertyNamed(name);
+	public void setPropertyNamed(final String name, final Object value, final HowMuch howMuch) {
+		final Property property = getPropertyNamed(name);
 		if (property != null) {
 			property.set(value, howMuch);
 		} else {
 			for (int i = 0; i < m_children.size(); i++) {
-				Element child = getChildAt(i);
+				final Element child = getChildAt(i);
 				child.setPropertyNamed(name, value, howMuch);
 			}
 		}
 	}
-	public void setPropertyNamed(String name, Object value) {
+
+	public void setPropertyNamed(final String name, final Object value) {
 		setPropertyNamed(name, value, HowMuch.INSTANCE_AND_PARTS);
 	}
 
-	private void onChildrenChanging(edu.cmu.cs.stage3.alice.core.event.ChildrenEvent childrenEvent) {
-		java.util.Enumeration enum0 = m_childrenListeners.elements();
+	private void onChildrenChanging(final edu.cmu.cs.stage3.alice.core.event.ChildrenEvent childrenEvent) {
+		final java.util.Enumeration enum0 = m_childrenListeners.elements();
 		while (enum0.hasMoreElements()) {
-			edu.cmu.cs.stage3.alice.core.event.ChildrenListener childrenListener = (edu.cmu.cs.stage3.alice.core.event.ChildrenListener) enum0.nextElement();
+			final edu.cmu.cs.stage3.alice.core.event.ChildrenListener childrenListener = (edu.cmu.cs.stage3.alice.core.event.ChildrenListener) enum0
+					.nextElement();
 			childrenListener.childrenChanging(childrenEvent);
 		}
 	}
-	private void onChildrenChange(edu.cmu.cs.stage3.alice.core.event.ChildrenEvent childrenEvent) {
+
+	private void onChildrenChange(final edu.cmu.cs.stage3.alice.core.event.ChildrenEvent childrenEvent) {
 		m_childArray = null;
 		markKeepKeyDirty();
-		java.util.Enumeration enum0 = m_childrenListeners.elements();
+		final java.util.Enumeration enum0 = m_childrenListeners.elements();
 		while (enum0.hasMoreElements()) {
-			edu.cmu.cs.stage3.alice.core.event.ChildrenListener childrenListener = (edu.cmu.cs.stage3.alice.core.event.ChildrenListener) enum0.nextElement();
+			final edu.cmu.cs.stage3.alice.core.event.ChildrenListener childrenListener = (edu.cmu.cs.stage3.alice.core.event.ChildrenListener) enum0
+					.nextElement();
 			childrenListener.childrenChanged(childrenEvent);
 		}
 	}
-	private boolean internalRemoveChild(Element child) {
-		int oldIndex = m_children.indexOf(child);
+
+	private boolean internalRemoveChild(final Element child) {
+		final int oldIndex = m_children.indexOf(child);
 		if (oldIndex != -1) {
-			edu.cmu.cs.stage3.alice.core.event.ChildrenEvent childrenEvent = new edu.cmu.cs.stage3.alice.core.event.ChildrenEvent(this, child, edu.cmu.cs.stage3.alice.core.event.ChildrenEvent.CHILD_REMOVED, oldIndex, -1);
+			final edu.cmu.cs.stage3.alice.core.event.ChildrenEvent childrenEvent = new edu.cmu.cs.stage3.alice.core.event.ChildrenEvent(
+					this, child, edu.cmu.cs.stage3.alice.core.event.ChildrenEvent.CHILD_REMOVED, oldIndex, -1);
 			onChildrenChanging(childrenEvent);
 			m_children.removeElementAt(oldIndex);
 			onChildrenChange(childrenEvent);
@@ -1029,11 +1127,13 @@ public abstract class Element {
 			return false;
 		}
 	}
-	public void insertChildAt(Element child, int index) {
+
+	public void insertChildAt(final Element child, int index) {
 		if (child.getParent() == this) {
-			int oldIndex = m_children.indexOf(child);
+			final int oldIndex = m_children.indexOf(child);
 			if (index != oldIndex) {
-				edu.cmu.cs.stage3.alice.core.event.ChildrenEvent childrenEvent = new edu.cmu.cs.stage3.alice.core.event.ChildrenEvent(this, child, edu.cmu.cs.stage3.alice.core.event.ChildrenEvent.CHILD_SHIFTED, oldIndex, index);
+				final edu.cmu.cs.stage3.alice.core.event.ChildrenEvent childrenEvent = new edu.cmu.cs.stage3.alice.core.event.ChildrenEvent(
+						this, child, edu.cmu.cs.stage3.alice.core.event.ChildrenEvent.CHILD_SHIFTED, oldIndex, index);
 				onChildrenChanging(childrenEvent);
 				m_children.removeElementAt(oldIndex);
 				if (index == -1) {
@@ -1052,43 +1152,50 @@ public abstract class Element {
 				throw new RuntimeException(child + " is already a child of " + this);
 			}
 			child.internalSetParent(this);
-			edu.cmu.cs.stage3.alice.core.event.ChildrenEvent childrenEvent = new edu.cmu.cs.stage3.alice.core.event.ChildrenEvent(this, child, edu.cmu.cs.stage3.alice.core.event.ChildrenEvent.CHILD_INSERTED, -1, index);
+			final edu.cmu.cs.stage3.alice.core.event.ChildrenEvent childrenEvent = new edu.cmu.cs.stage3.alice.core.event.ChildrenEvent(
+					this, child, edu.cmu.cs.stage3.alice.core.event.ChildrenEvent.CHILD_INSERTED, -1, index);
 			onChildrenChanging(childrenEvent);
 			m_children.insertElementAt(child, index);
 			onChildrenChange(childrenEvent);
 		}
 	}
-	public void addChild(Element child) {
+
+	public void addChild(final Element child) {
 		insertChildAt(child, -1);
 	}
-	public void removeChild(Element child) {
+
+	public void removeChild(final Element child) {
 		if (internalRemoveChild(child)) {
 			child.internalSetParent(null);
 		} else {
 			warnln("WARNING: could not remove child " + child + ".  it is not a child of " + this);
 		}
 	}
-	public void addChildrenListener(edu.cmu.cs.stage3.alice.core.event.ChildrenListener childrenListener) {
+
+	public void addChildrenListener(final edu.cmu.cs.stage3.alice.core.event.ChildrenListener childrenListener) {
 		m_childrenListeners.addElement(childrenListener);
 		m_childrenListenerArray = null;
 	}
-	public void removeChildrenListener(edu.cmu.cs.stage3.alice.core.event.ChildrenListener childrenListener) {
+
+	public void removeChildrenListener(final edu.cmu.cs.stage3.alice.core.event.ChildrenListener childrenListener) {
 		m_childrenListeners.removeElement(childrenListener);
 		m_childrenListenerArray = null;
 	}
+
 	public edu.cmu.cs.stage3.alice.core.event.ChildrenListener[] getChildrenListeners() {
 		if (m_childrenListenerArray == null) {
-			m_childrenListenerArray = new edu.cmu.cs.stage3.alice.core.event.ChildrenListener[m_childrenListeners.size()];
+			m_childrenListenerArray = new edu.cmu.cs.stage3.alice.core.event.ChildrenListener[m_childrenListeners
+					.size()];
 			m_childrenListeners.copyInto(m_childrenListenerArray);
 		}
 		return m_childrenListenerArray;
 	}
 
-	public void visit(edu.cmu.cs.stage3.util.VisitListener visitListener, HowMuch howMuch) {
+	public void visit(final edu.cmu.cs.stage3.util.VisitListener visitListener, final HowMuch howMuch) {
 		visitListener.visited(this);
 		if (howMuch.getDescend()) {
 			for (int i = 0; i < getChildCount(); i++) {
-				Element child = getChildAt(i);
+				final Element child = getChildAt(i);
 				if (howMuch.getRespectDescendant() && child.isFirstClass.booleanValue()) {
 					// pass
 				} else {
@@ -1098,29 +1205,32 @@ public abstract class Element {
 		}
 	}
 
-	public boolean isReferenceInternalTo(Element whom) {
+	public boolean isReferenceInternalTo(final Element whom) {
 		return this == whom || isDescendantOf(whom);
 	}
-	public boolean isReferenceExternalFrom(Element whom) {
+
+	public boolean isReferenceExternalFrom(final Element whom) {
 		return !isReferenceInternalTo(whom);
 	}
 
-	protected void internalGetExternalPropertyReferences(Element whom, HowMuch howMuch, java.util.Vector references) {
-		Property[] properties = getProperties();
-		for (Property propertie : properties) {
+	protected void internalGetExternalPropertyReferences(final Element whom, final HowMuch howMuch,
+			final java.util.Vector references) {
+		final Property[] properties = getProperties();
+		for (final Property propertie : properties) {
 			if (propertie instanceof ObjectArrayProperty) {
-				ObjectArrayProperty objectArrayProperty = (ObjectArrayProperty) propertie;
+				final ObjectArrayProperty objectArrayProperty = (ObjectArrayProperty) propertie;
 				int precedingTotal = 0;
 				for (int j = 0; j < objectArrayProperty.size(); j++) {
-					Object o = objectArrayProperty.get(j);
+					final Object o = objectArrayProperty.get(j);
 					if (o instanceof Element) {
 						if (((Element) o).isReferenceExternalFrom(whom)) {
-							references.addElement(new ObjectArrayPropertyReference(objectArrayProperty, null, j, precedingTotal++));
+							references.addElement(
+									new ObjectArrayPropertyReference(objectArrayProperty, null, j, precedingTotal++));
 						}
 					}
 				}
 			} else {
-				Object o = propertie.get();
+				final Object o = propertie.get();
 				if (o instanceof Element) {
 					if (((Element) o).isReferenceExternalFrom(whom)) {
 						references.addElement(new PropertyReference(propertie, null));
@@ -1130,7 +1240,7 @@ public abstract class Element {
 		}
 		if (howMuch.getDescend()) {
 			for (int i = 0; i < getChildCount(); i++) {
-				Element child = getChildAt(i);
+				final Element child = getChildAt(i);
 				if (child.isFirstClass.booleanValue() && howMuch.getRespectDescendant()) {
 					// pass
 				} else {
@@ -1140,38 +1250,42 @@ public abstract class Element {
 		}
 	}
 
-	public PropertyReference[] getExternalPropertyReferences(HowMuch howMuch) {
-		java.util.Vector references = new java.util.Vector();
+	public PropertyReference[] getExternalPropertyReferences(final HowMuch howMuch) {
+		final java.util.Vector references = new java.util.Vector();
 		internalGetExternalPropertyReferences(this, howMuch, references);
-		PropertyReference[] referencesArray = new PropertyReference[references.size()];
+		final PropertyReference[] referencesArray = new PropertyReference[references.size()];
 		references.copyInto(referencesArray);
 		return referencesArray;
 	}
+
 	public PropertyReference[] getExternalPropertyReferences() {
 		return getExternalPropertyReferences(HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
 	}
 
-	protected void internalGetPropertyReferencesTo(Element whom, HowMuch howMuch, boolean excludeWhomsParent, boolean excludeWhomAndItsDescendants, java.util.Vector references) {
+	protected void internalGetPropertyReferencesTo(final Element whom, final HowMuch howMuch,
+			final boolean excludeWhomsParent, final boolean excludeWhomAndItsDescendants,
+			final java.util.Vector references) {
 		if (excludeWhomAndItsDescendants && (this == whom || isDescendantOf(whom))) {
 			return;
 		} else if (this == whom.getParent() && excludeWhomsParent) {
 			// pass
 		} else {
-			Property[] properties = getProperties();
-			for (Property propertie : properties) {
+			final Property[] properties = getProperties();
+			for (final Property propertie : properties) {
 				if (propertie instanceof ObjectArrayProperty) {
-					ObjectArrayProperty objectArrayProperty = (ObjectArrayProperty) propertie;
+					final ObjectArrayProperty objectArrayProperty = (ObjectArrayProperty) propertie;
 					int precedingTotal = 0;
 					for (int j = 0; j < objectArrayProperty.size(); j++) {
-						Object o = objectArrayProperty.get(j);
+						final Object o = objectArrayProperty.get(j);
 						if (o instanceof Element) {
 							if (((Element) o).isReferenceInternalTo(whom)) {
-								references.addElement(new ObjectArrayPropertyReference(objectArrayProperty, null, j, precedingTotal++));
+								references.addElement(new ObjectArrayPropertyReference(objectArrayProperty, null, j,
+										precedingTotal++));
 							}
 						}
 					}
 				} else {
-					Object o = propertie.get();
+					final Object o = propertie.get();
 					if (o instanceof Element) {
 						if (((Element) o).isReferenceInternalTo(whom)) {
 							references.addElement(new PropertyReference(propertie, null));
@@ -1182,45 +1296,57 @@ public abstract class Element {
 		}
 		if (howMuch.getDescend()) {
 			for (int i = 0; i < getChildCount(); i++) {
-				Element child = getChildAt(i);
+				final Element child = getChildAt(i);
 				if (child.isFirstClass.booleanValue() && howMuch.getRespectDescendant()) {
 					// pass
 				} else {
-					child.internalGetPropertyReferencesTo(whom, howMuch, excludeWhomsParent, excludeWhomAndItsDescendants, references);
+					child.internalGetPropertyReferencesTo(whom, howMuch, excludeWhomsParent,
+							excludeWhomAndItsDescendants, references);
 				}
 			}
 		}
 	}
 
-	public PropertyReference[] getPropertyReferencesTo(Element whom, HowMuch howMuch, boolean excludeWhomsParent, boolean excludeWhomAndItsDescendants) {
-		java.util.Vector references = new java.util.Vector();
+	public PropertyReference[] getPropertyReferencesTo(final Element whom, final HowMuch howMuch,
+			final boolean excludeWhomsParent, final boolean excludeWhomAndItsDescendants) {
+		final java.util.Vector references = new java.util.Vector();
 		internalGetPropertyReferencesTo(whom, howMuch, excludeWhomsParent, excludeWhomAndItsDescendants, references);
-		PropertyReference[] referencesArray = new PropertyReference[references.size()];
+		final PropertyReference[] referencesArray = new PropertyReference[references.size()];
 		references.copyInto(referencesArray);
 		return referencesArray;
 	}
-	public PropertyReference[] getPropertyReferencesTo(Element whom, HowMuch howMuch, boolean excludeWhomsParent) {
+
+	public PropertyReference[] getPropertyReferencesTo(final Element whom, final HowMuch howMuch,
+			final boolean excludeWhomsParent) {
 		return getPropertyReferencesTo(whom, howMuch, excludeWhomsParent, true);
 	}
-	public PropertyReference[] getPropertyReferencesTo(Element whom, HowMuch howMuch) {
+
+	public PropertyReference[] getPropertyReferencesTo(final Element whom, final HowMuch howMuch) {
 		return getPropertyReferencesTo(whom, howMuch, true);
 	}
-	public PropertyReference[] getPropertyReferencesTo(Element whom) {
+
+	public PropertyReference[] getPropertyReferencesTo(final Element whom) {
 		return getPropertyReferencesTo(whom, HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
 	}
 
-	public PropertyReference[] getPropertyReferencesToMe(Element fromWhom, HowMuch howMuch, boolean excludeMyParent, boolean excludeMeAndMyDescendants) {
+	public PropertyReference[] getPropertyReferencesToMe(final Element fromWhom, final HowMuch howMuch,
+			final boolean excludeMyParent, final boolean excludeMeAndMyDescendants) {
 		return fromWhom.getPropertyReferencesTo(this, howMuch, excludeMyParent, excludeMeAndMyDescendants);
 	}
-	public PropertyReference[] getPropertyReferencesToMe(Element fromWhom, HowMuch howMuch, boolean excludeMyParent) {
+
+	public PropertyReference[] getPropertyReferencesToMe(final Element fromWhom, final HowMuch howMuch,
+			final boolean excludeMyParent) {
 		return getPropertyReferencesToMe(fromWhom, howMuch, excludeMyParent, true);
 	}
-	public PropertyReference[] getPropertyReferencesToMe(Element fromWhom, HowMuch howMuch) {
+
+	public PropertyReference[] getPropertyReferencesToMe(final Element fromWhom, final HowMuch howMuch) {
 		return getPropertyReferencesToMe(fromWhom, howMuch, true);
 	}
-	public PropertyReference[] getPropertyReferencesToMe(Element fromWhom) {
+
+	public PropertyReference[] getPropertyReferencesToMe(final Element fromWhom) {
 		return getPropertyReferencesToMe(fromWhom, HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
 	}
+
 	public PropertyReference[] getPropertyReferencesToMe() {
 		return getPropertyReferencesToMe(getRoot());
 	}
@@ -1235,12 +1361,13 @@ public abstract class Element {
 
 	public void removeFromParentsProperties() { // throws
 												// ExternalReferenceException {
-		Element parentValue = getParent();
+		final Element parentValue = getParent();
 		if (parentValue != null) {
-			PropertyReference[] parentReferences = parentValue.getPropertyReferencesTo(this, HowMuch.INSTANCE, false, true);
-			for (PropertyReference parentReference : parentReferences) {
+			final PropertyReference[] parentReferences = parentValue.getPropertyReferencesTo(this, HowMuch.INSTANCE,
+					false, true);
+			for (final PropertyReference parentReference : parentReferences) {
 				if (parentReference instanceof ObjectArrayPropertyReference) {
-					ObjectArrayPropertyReference oapr = (ObjectArrayPropertyReference) parentReference;
+					final ObjectArrayPropertyReference oapr = (ObjectArrayPropertyReference) parentReference;
 					oapr.getObjectArrayProperty().remove(oapr.getIndex() - oapr.getPrecedingTotal());
 				} else {
 					parentReference.getProperty().set(null);
@@ -1250,12 +1377,13 @@ public abstract class Element {
 	}
 
 	public void removeFromParent() { // throws ExternalReferenceException {
-		Element root = getRoot();
-		PropertyReference[] externalReferences = root.getPropertyReferencesTo(this, HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true, true);
+		final Element root = getRoot();
+		final PropertyReference[] externalReferences = root.getPropertyReferencesTo(this,
+				HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true, true);
 		if (externalReferences.length > 0) {
-			StringBuffer sb = new StringBuffer();
+			final StringBuffer sb = new StringBuffer();
 			sb.append("ExternalReferenceException:\n");
-			for (PropertyReference externalReference : externalReferences) {
+			for (final PropertyReference externalReference : externalReferences) {
 				sb.append(externalReference);
 				sb.append("\n");
 			}
@@ -1270,10 +1398,10 @@ public abstract class Element {
 		setParent(null);
 	}
 
-	public boolean isAssignableToOneOf(Class[] classes) {
+	public boolean isAssignableToOneOf(final Class[] classes) {
 		if (classes != null) {
-			Class cls = getClass();
-			for (Class classe : classes) {
+			final Class cls = getClass();
+			for (final Class classe : classes) {
 				if (classe.isAssignableFrom(cls)) {
 					return true;
 				}
@@ -1281,23 +1409,29 @@ public abstract class Element {
 		}
 		return false;
 	}
-	private CopyFactory createCopyFactory(Class[] classesToShare, HowMuch howMuch, Element internalReferenceRoot) {
+
+	private CopyFactory createCopyFactory(final Class[] classesToShare, final HowMuch howMuch,
+			final Element internalReferenceRoot) {
 		return new CopyFactory(this, internalReferenceRoot, classesToShare, howMuch);
 	}
-	public CopyFactory createCopyFactory(Class[] classesToShare, HowMuch howMuch) {
+
+	public CopyFactory createCopyFactory(final Class[] classesToShare, final HowMuch howMuch) {
 		return createCopyFactory(classesToShare, HowMuch.INSTANCE_AND_ALL_DESCENDANTS, this);
 	}
-	public CopyFactory createCopyFactory(Class[] classesToShare) {
+
+	public CopyFactory createCopyFactory(final Class[] classesToShare) {
 		return createCopyFactory(classesToShare, HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
 	}
+
 	public CopyFactory createCopyFactory() {
 		return createCopyFactory(null);
 	}
 
-	public Element HACK_createCopy(String name, Element parent, int index, Class[] classesToShare, Element parentToBe) {
-		CopyFactory copyFactory = createCopyFactory(classesToShare);
+	public Element HACK_createCopy(final String name, final Element parent, final int index,
+			final Class[] classesToShare, final Element parentToBe) {
+		final CopyFactory copyFactory = createCopyFactory(classesToShare);
 		try {
-			Element dst = copyFactory.manufactureCopy(getRoot(), null, null, parentToBe);
+			final Element dst = copyFactory.manufactureCopy(getRoot(), null, null, parentToBe);
 			dst.name.set(name);
 			if (parent != null) {
 				parent.insertChildAt(dst, index);
@@ -1305,34 +1439,37 @@ public abstract class Element {
 				// dst.addToParent( parent, index );
 			}
 			return dst;
-		} catch (UnresolvablePropertyReferencesException upre) {
+		} catch (final UnresolvablePropertyReferencesException upre) {
 			upre.printStackTrace();
 			throw new ExceptionWrapper(upre, "UnresolvablePropertyReferencesException");
 		}
 	}
 
-	public Element createCopyNamed(String name, Class[] classesToShare) {
-		CopyFactory copyFactory = createCopyFactory(classesToShare);
+	public Element createCopyNamed(final String name, final Class[] classesToShare) {
+		final CopyFactory copyFactory = createCopyFactory(classesToShare);
 		try {
-			Element dst = copyFactory.manufactureCopy(getRoot());
+			final Element dst = copyFactory.manufactureCopy(getRoot());
 			dst.name.set(name);
 			return dst;
-		} catch (UnresolvablePropertyReferencesException upre) {
+		} catch (final UnresolvablePropertyReferencesException upre) {
 			upre.printStackTrace();
 			throw new ExceptionWrapper(upre, "UnresolvablePropertyReferencesException");
 		}
 	}
-	public Element createCopyNamed(String name) {
+
+	public Element createCopyNamed(final String name) {
 		return createCopyNamed(name, null);
 	}
 
-	protected void internalCopyOver(Element dst, boolean isTopLevel, java.util.Dictionary childCopyFactoryToParentMap) {
-		Element[] children = getChildren();
-		for (Element child : children) {
-			String childName = child.name.getStringValue();
+	protected void internalCopyOver(final Element dst, final boolean isTopLevel,
+			final java.util.Dictionary childCopyFactoryToParentMap) {
+		final Element[] children = getChildren();
+		for (final Element child : children) {
+			final String childName = child.name.getStringValue();
 			Element dstChild = null;
 			if (childName == null || childName.equals("__ita__")) {
-				Element[] itas = dst.getChildren(edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray.class);
+				final Element[] itas = dst
+						.getChildren(edu.cmu.cs.stage3.alice.core.geometry.IndexedTriangleArray.class);
 				if (itas.length > 0) {
 					dstChild = itas[0];
 				}
@@ -1342,15 +1479,16 @@ public abstract class Element {
 			if (dstChild != null) {
 				child.internalCopyOver(dstChild, false, childCopyFactoryToParentMap);
 			} else {
-				CopyFactory childCopyFactory = child.createCopyFactory(null, HowMuch.INSTANCE_AND_ALL_DESCENDANTS, this);
+				final CopyFactory childCopyFactory = child.createCopyFactory(null, HowMuch.INSTANCE_AND_ALL_DESCENDANTS,
+						this);
 				childCopyFactoryToParentMap.put(childCopyFactory, dst);
 			}
 		}
-		Property[] properties = getProperties();
-		for (Property propertie : properties) {
-			Property property = propertie;
+		final Property[] properties = getProperties();
+		for (final Property propertie : properties) {
+			final Property property = propertie;
 			if (isTopLevel) {
-				String propertyName = property.getName();
+				final String propertyName = property.getName();
 				if (propertyName.equals("name")) {
 					continue;
 				}
@@ -1361,14 +1499,15 @@ public abstract class Element {
 					continue;
 				}
 			}
-			if (property instanceof ObjectArrayProperty && !(property instanceof edu.cmu.cs.stage3.alice.core.property.VertexArrayProperty)) {
+			if (property instanceof ObjectArrayProperty
+					&& !(property instanceof edu.cmu.cs.stage3.alice.core.property.VertexArrayProperty)) {
 				// pass
 			} else {
-				Object value = property.get();
+				final Object value = property.get();
 				if (value instanceof Element) {
 					// pass
 				} else {
-					Property dstProperty = dst.getPropertyNamed(property.getName());
+					final Property dstProperty = dst.getPropertyNamed(property.getName());
 					if (dstProperty != null) {
 						dstProperty.set(value);
 					} else {
@@ -1378,39 +1517,42 @@ public abstract class Element {
 			}
 		}
 	}
-	protected void HACK_copyOverTextureMapReferences(Element dst, java.util.Dictionary srcTextureMapToDstTextureMapMap) {
-		Element[] children = getChildren();
-		for (Element child : children) {
-			Element dstChild = dst.getChildNamedIgnoreCase(child.name.getStringValue());
+
+	protected void HACK_copyOverTextureMapReferences(final Element dst,
+			final java.util.Dictionary srcTextureMapToDstTextureMapMap) {
+		final Element[] children = getChildren();
+		for (final Element child : children) {
+			final Element dstChild = dst.getChildNamedIgnoreCase(child.name.getStringValue());
 			if (dstChild != null) {
 				child.HACK_copyOverTextureMapReferences(dstChild, srcTextureMapToDstTextureMapMap);
 			}
 		}
 	}
-	public void copyOver(Element dst) {
-		java.util.Dictionary childCopyFactoryToParentMap = new java.util.Hashtable();
+
+	public void copyOver(final Element dst) {
+		final java.util.Dictionary childCopyFactoryToParentMap = new java.util.Hashtable();
 		internalCopyOver(dst, true, childCopyFactoryToParentMap);
-		java.util.Enumeration enum0 = childCopyFactoryToParentMap.keys();
+		final java.util.Enumeration enum0 = childCopyFactoryToParentMap.keys();
 		while (enum0.hasMoreElements()) {
-			CopyFactory childCopyFactory = (CopyFactory) enum0.nextElement();
-			Element parent = (Element) childCopyFactoryToParentMap.get(childCopyFactory);
+			final CopyFactory childCopyFactory = (CopyFactory) enum0.nextElement();
+			final Element parent = (Element) childCopyFactoryToParentMap.get(childCopyFactory);
 			try {
-				Element child = childCopyFactory.manufactureCopy(getRoot(), parent, null, parent);
+				final Element child = childCopyFactory.manufactureCopy(getRoot(), parent, null, parent);
 				// todo?
 				// child.addToParent( parent );
 				child.setParent(parent);
-			} catch (UnresolvablePropertyReferencesException upre) {
+			} catch (final UnresolvablePropertyReferencesException upre) {
 				throw new ExceptionWrapper(upre, "UnresolvablePropertyReferencesException");
 			}
 		}
 		if (this instanceof Sandbox && dst instanceof Sandbox) {
-			TextureMap[] srcTMs = (TextureMap[]) ((Sandbox) this).textureMaps.getArrayValue();
-			TextureMap[] dstTMs = (TextureMap[]) ((Sandbox) dst).textureMaps.getArrayValue();
-			java.util.Dictionary srcTextureMapToDstTextureMapMap = new java.util.Hashtable();
+			final TextureMap[] srcTMs = (TextureMap[]) ((Sandbox) this).textureMaps.getArrayValue();
+			final TextureMap[] dstTMs = (TextureMap[]) ((Sandbox) dst).textureMaps.getArrayValue();
+			final java.util.Dictionary srcTextureMapToDstTextureMapMap = new java.util.Hashtable();
 			for (int i = 0; i < srcTMs.length; i++) {
-				TextureMap srcTM = srcTMs[i];
-				for (TextureMap srcTM2 : srcTMs) {
-					TextureMap dstTM = dstTMs[i];
+				final TextureMap srcTM = srcTMs[i];
+				for (final TextureMap srcTM2 : srcTMs) {
+					final TextureMap dstTM = dstTMs[i];
 					if (srcTM.name.getStringValue().equals(dstTM.name.getStringValue())) {
 						srcTextureMapToDstTextureMapMap.put(srcTM, dstTM);
 						break;
@@ -1426,24 +1568,28 @@ public abstract class Element {
 			getChildAt(i).loadCompleted();
 		}
 	}
-	protected static Element load(javax.xml.parsers.DocumentBuilder builder, edu.cmu.cs.stage3.io.DirectoryTreeLoader loader, java.util.Vector referencesToBeResolved, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
-		String currentDirectory = loader.getCurrentDirectory();
+
+	protected static Element load(final javax.xml.parsers.DocumentBuilder builder,
+			final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader, final java.util.Vector referencesToBeResolved,
+			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver)
+			throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
+		final String currentDirectory = loader.getCurrentDirectory();
 		try {
-			java.io.InputStream is = loader.readFile(XML_FILENAME);
-			org.w3c.dom.Document document = builder.parse(is);
-			org.w3c.dom.Element elementNode = document.getDocumentElement();
+			final java.io.InputStream is = loader.readFile(XML_FILENAME);
+			final org.w3c.dom.Document document = builder.parse(is);
+			final org.w3c.dom.Element elementNode = document.getDocumentElement();
 			elementNode.normalize();
 
-			String classname = elementNode.getAttribute("class");
-			double version = Double.parseDouble(elementNode.getAttribute("version"));
-			String nameValue = elementNode.getAttribute("name");
+			final String classname = elementNode.getAttribute("class");
+			final double version = Double.parseDouble(elementNode.getAttribute("version"));
+			final String nameValue = elementNode.getAttribute("name");
 
 			try {
-				Class cls = Class.forName(classname);
-				Element element = (Element) cls.newInstance();
+				final Class cls = Class.forName(classname);
+				final Element element = (Element) cls.newInstance();
 				try {
 					element.m_xmlFileKeepKey = loader.getKeepKey(XML_FILENAME);
-				} catch (edu.cmu.cs.stage3.io.KeepFileNotSupportedException kfnse) {
+				} catch (final edu.cmu.cs.stage3.io.KeepFileNotSupportedException kfnse) {
 					element.m_xmlFileKeepKey = null;
 				}
 
@@ -1451,11 +1597,11 @@ public abstract class Element {
 					element.name.set(nameValue);
 				}
 				// s_loadDetail = "attempting directory " + currentDirectory;
-				org.w3c.dom.NodeList propertyNodeList = elementNode.getElementsByTagName("property");
+				final org.w3c.dom.NodeList propertyNodeList = elementNode.getElementsByTagName("property");
 				for (int i = 0; i < propertyNodeList.getLength(); i++) {
-					org.w3c.dom.Element propertyNode = (org.w3c.dom.Element) propertyNodeList.item(i);
-					String propertyName = propertyNode.getAttribute("name").trim();
-					Property property = element.getPropertyNamed(propertyName);
+					final org.w3c.dom.Element propertyNode = (org.w3c.dom.Element) propertyNodeList.item(i);
+					final String propertyName = propertyNode.getAttribute("name").trim();
+					final Property property = element.getPropertyNamed(propertyName);
 					if (property != null) {
 						property.decode(propertyNode, loader, referencesToBeResolved, version);
 					} else {
@@ -1472,13 +1618,13 @@ public abstract class Element {
 																									// key...
 				}
 
-				org.w3c.dom.NodeList childNodeList = elementNode.getElementsByTagName("child");
+				final org.w3c.dom.NodeList childNodeList = elementNode.getElementsByTagName("child");
 				for (int i = 0; i < childNodeList.getLength(); i++) {
-					org.w3c.dom.Element childNode = (org.w3c.dom.Element) childNodeList.item(i);
-					String filename = childNode.getAttribute("filename").trim();
+					final org.w3c.dom.Element childNode = (org.w3c.dom.Element) childNodeList.item(i);
+					final String filename = childNode.getAttribute("filename").trim();
 					loader.setCurrentDirectory(filename);
 					Element child = load(builder, loader, referencesToBeResolved, progressObserver);
-					String childName = child.name.getStringValue();
+					final String childName = child.name.getStringValue();
 					if (childName != null) {
 						if (element.getChildNamed(childName) != null) {
 							child = null;
@@ -1491,29 +1637,33 @@ public abstract class Element {
 					loader.setCurrentDirectory(currentDirectory);
 				}
 				return element;
-			} catch (ClassNotFoundException cnfe) {
+			} catch (final ClassNotFoundException cnfe) {
 				throw new ExceptionWrapper(cnfe, "ClassNotFoundException: " + classname);
-			} catch (InstantiationException ie) {
+			} catch (final InstantiationException ie) {
 				throw new ExceptionWrapper(ie, "InstantiationException: " + classname);
-			} catch (IllegalAccessException iae) {
+			} catch (final IllegalAccessException iae) {
 				throw new ExceptionWrapper(iae, "IllegalAccessException: " + classname);
 			}
-		} catch (org.xml.sax.SAXException saxe) {
+		} catch (final org.xml.sax.SAXException saxe) {
 			throw new ExceptionWrapper(saxe, "org.xml.sax.SAXException");
 		}
 	}
-	public static Element load(edu.cmu.cs.stage3.io.DirectoryTreeLoader loader, Element externalRoot, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException, UnresolvablePropertyReferencesException {
-		java.util.Vector referencesToBeResolved = new java.util.Vector();
-		java.util.Vector referencesLeftUnresolved = new java.util.Vector();
+
+	public static Element load(final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader, final Element externalRoot,
+			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws java.io.IOException,
+			edu.cmu.cs.stage3.progress.ProgressCancelException, UnresolvablePropertyReferencesException {
+		final java.util.Vector referencesToBeResolved = new java.util.Vector();
+		final java.util.Vector referencesLeftUnresolved = new java.util.Vector();
 		Element element;
 		try {
 			s_isLoading = true;
 			int elementCount = edu.cmu.cs.stage3.progress.ProgressObserver.UNKNOWN_TOTAL;
 			try {
-				java.io.BufferedReader br = new java.io.BufferedReader(new java.io.InputStreamReader(new java.io.BufferedInputStream(loader.readFile("elementCountHint.txt"))));
+				final java.io.BufferedReader br = new java.io.BufferedReader(new java.io.InputStreamReader(
+						new java.io.BufferedInputStream(loader.readFile("elementCountHint.txt"))));
 				elementCount = Integer.parseInt(br.readLine());
 				loader.closeCurrentFile();
-			} catch (java.io.FileNotFoundException fnfe) {
+			} catch (final java.io.FileNotFoundException fnfe) {
 				// pass
 			}
 
@@ -1523,25 +1673,27 @@ public abstract class Element {
 			}
 
 			try {
-				javax.xml.parsers.DocumentBuilderFactory factory = javax.xml.parsers.DocumentBuilderFactory.newInstance();
-				javax.xml.parsers.DocumentBuilder builder = factory.newDocumentBuilder();
+				final javax.xml.parsers.DocumentBuilderFactory factory = javax.xml.parsers.DocumentBuilderFactory
+						.newInstance();
+				final javax.xml.parsers.DocumentBuilder builder = factory.newDocumentBuilder();
 				element = load(builder, loader, referencesToBeResolved, progressObserver);
 
-				ReferenceResolver referenceResolver = new edu.cmu.cs.stage3.alice.core.reference.DefaultReferenceResolver(element, externalRoot);
-				java.util.Enumeration enum0 = referencesToBeResolved.elements();
+				final ReferenceResolver referenceResolver = new edu.cmu.cs.stage3.alice.core.reference.DefaultReferenceResolver(
+						element, externalRoot);
+				final java.util.Enumeration enum0 = referencesToBeResolved.elements();
 				while (enum0.hasMoreElements()) {
-					PropertyReference propertyReference = (PropertyReference) enum0.nextElement();
+					final PropertyReference propertyReference = (PropertyReference) enum0.nextElement();
 					try {
 						propertyReference.resolve(referenceResolver);
-					} catch (UnresolvableReferenceException ure) {
+					} catch (final UnresolvableReferenceException ure) {
 						referencesLeftUnresolved.add(propertyReference);
-					} catch (Throwable t) {
+					} catch (final Throwable t) {
 						System.err.println(propertyReference);
 						t.printStackTrace();
 						// referencesLeftUnresolved.add( propertyReference );
 					}
 				}
-			} catch (javax.xml.parsers.ParserConfigurationException pce) {
+			} catch (final javax.xml.parsers.ParserConfigurationException pce) {
 				throw new ExceptionWrapper(pce, "loader: " + loader + "; externalRoot: " + externalRoot);
 			}
 		} finally {
@@ -1554,22 +1706,27 @@ public abstract class Element {
 			element.loadCompleted();
 			return element;
 		} else {
-			PropertyReference[] propertyReferences = new PropertyReference[referencesLeftUnresolved.size()];
+			final PropertyReference[] propertyReferences = new PropertyReference[referencesLeftUnresolved.size()];
 			referencesLeftUnresolved.copyInto(propertyReferences);
-			throw new UnresolvablePropertyReferencesException(propertyReferences, element, "loader: " + loader + "; externalRoot: " + externalRoot);
+			throw new UnresolvablePropertyReferencesException(propertyReferences, element,
+					"loader: " + loader + "; externalRoot: " + externalRoot);
 		}
 	}
-	public static Element load(java.io.File file, Element externalRoot, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException, UnresolvablePropertyReferencesException {
+
+	public static Element load(final java.io.File file, final Element externalRoot,
+			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws java.io.IOException,
+			edu.cmu.cs.stage3.progress.ProgressCancelException, UnresolvablePropertyReferencesException {
 		edu.cmu.cs.stage3.io.DirectoryTreeLoader loader = null;
 		if (file.isDirectory()) {
 			loader = new edu.cmu.cs.stage3.io.FileSystemTreeLoader();
 		} else {
-			String pathname = file.getAbsolutePath();
+			final String pathname = file.getAbsolutePath();
 			if (pathname.endsWith(".a2w") || pathname.endsWith(".a2c") || pathname.endsWith(".zip")) {
 				loader = new edu.cmu.cs.stage3.io.ZipFileTreeLoader();
 			} else {
 				// too restrictive?
-				throw new IllegalArgumentException(file + " must be a directory or end in \".a2w\", \".a2c\", or \".zip\".");
+				throw new IllegalArgumentException(
+						file + " must be a directory or end in \".a2w\", \".a2c\", or \".zip\".");
 			}
 		}
 		loader.open(file);
@@ -1581,8 +1738,11 @@ public abstract class Element {
 		}
 		return element;
 	}
-	public static Element load(java.net.URL url, Element externalRoot, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException, UnresolvablePropertyReferencesException {
-		edu.cmu.cs.stage3.io.ZipTreeLoader loader = new edu.cmu.cs.stage3.io.ZipTreeLoader();
+
+	public static Element load(final java.net.URL url, final Element externalRoot,
+			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws java.io.IOException,
+			edu.cmu.cs.stage3.progress.ProgressCancelException, UnresolvablePropertyReferencesException {
+		final edu.cmu.cs.stage3.io.ZipTreeLoader loader = new edu.cmu.cs.stage3.io.ZipTreeLoader();
 		loader.open(url);
 		Element element = null;
 		try {
@@ -1592,8 +1752,11 @@ public abstract class Element {
 		}
 		return element;
 	}
-	public static Element load(java.io.InputStream is, Element externalRoot, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException, UnresolvablePropertyReferencesException {
-		edu.cmu.cs.stage3.io.ZipTreeLoader loader = new edu.cmu.cs.stage3.io.ZipTreeLoader();
+
+	public static Element load(final java.io.InputStream is, final Element externalRoot,
+			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws java.io.IOException,
+			edu.cmu.cs.stage3.progress.ProgressCancelException, UnresolvablePropertyReferencesException {
+		final edu.cmu.cs.stage3.io.ZipTreeLoader loader = new edu.cmu.cs.stage3.io.ZipTreeLoader();
 		loader.open(is);
 		Element element = null;
 		try {
@@ -1603,35 +1766,45 @@ public abstract class Element {
 		}
 		return element;
 	}
-	public static Element load(java.io.InputStream is, Element externalRoot) throws java.io.IOException, UnresolvablePropertyReferencesException {
+
+	public static Element load(final java.io.InputStream is, final Element externalRoot)
+			throws java.io.IOException, UnresolvablePropertyReferencesException {
 		try {
 			return load(is, externalRoot, null);
-		} catch (edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
-			throw new Error();
-		}
-	}
-	public static Element load(java.io.File file, Element externalRoot) throws java.io.IOException, UnresolvablePropertyReferencesException {
-		try {
-			return load(file, externalRoot, null);
-		} catch (edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
-			throw new Error();
-		}
-	}
-	public static Element load(java.net.URL url, Element externalRoot) throws java.io.IOException, UnresolvablePropertyReferencesException {
-		try {
-			return load(url, externalRoot, null);
-		} catch (edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
+		} catch (final edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
 			throw new Error();
 		}
 	}
 
-	private void writeXMLDocument(org.w3c.dom.Document xmlDocument, DirectoryTreeStorer storer, String filename) throws java.io.IOException {
-		java.io.OutputStream os = storer.createFile(filename, true);
+	public static Element load(final java.io.File file, final Element externalRoot)
+			throws java.io.IOException, UnresolvablePropertyReferencesException {
+		try {
+			return load(file, externalRoot, null);
+		} catch (final edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
+			throw new Error();
+		}
+	}
+
+	public static Element load(final java.net.URL url, final Element externalRoot)
+			throws java.io.IOException, UnresolvablePropertyReferencesException {
+		try {
+			return load(url, externalRoot, null);
+		} catch (final edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
+			throw new Error();
+		}
+	}
+
+	private void writeXMLDocument(final org.w3c.dom.Document xmlDocument, final DirectoryTreeStorer storer,
+			final String filename) throws java.io.IOException {
+		final java.io.OutputStream os = storer.createFile(filename, true);
 		edu.cmu.cs.stage3.xml.Encoder.write(xmlDocument, os);
 		storer.closeCurrentFile();
 	}
 
-	protected int internalStore(javax.xml.parsers.DocumentBuilder builder, DirectoryTreeStorer storer, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver, HowMuch howMuch, ReferenceGenerator referenceGenerator, int count) throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
+	protected int internalStore(final javax.xml.parsers.DocumentBuilder builder, final DirectoryTreeStorer storer,
+			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver, final HowMuch howMuch,
+			final ReferenceGenerator referenceGenerator, int count)
+			throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
 		count++;
 		if (progressObserver != null) {
 			progressObserver.progressUpdate(count, getKey());
@@ -1639,36 +1812,36 @@ public abstract class Element {
 		Object xmlFileKeepKey;
 		try {
 			xmlFileKeepKey = storer.getKeepKey(XML_FILENAME);
-		} catch (edu.cmu.cs.stage3.io.KeepFileNotSupportedException kfnse) {
+		} catch (final edu.cmu.cs.stage3.io.KeepFileNotSupportedException kfnse) {
 			xmlFileKeepKey = null;
 		}
 		if (m_xmlFileKeepKey == null || !m_xmlFileKeepKey.equals(xmlFileKeepKey)) {
-			org.w3c.dom.Document document = builder.newDocument();
+			final org.w3c.dom.Document document = builder.newDocument();
 
-			org.w3c.dom.Element elementNode = document.createElement("element");
+			final org.w3c.dom.Element elementNode = document.createElement("element");
 			elementNode.setAttribute("class", getClass().getName());
 			elementNode.setAttribute("version", Double.toString(VERSION));
 
 			document.appendChild(elementNode);
 
 			for (int i = 0; i < getChildCount(); i++) {
-				org.w3c.dom.Element childNode = document.createElement("child");
+				final org.w3c.dom.Element childNode = document.createElement("child");
 				// childNode.setAttribute( "index", Integer.toString( i ) );
 				childNode.setAttribute("filename", getChildAt(i).getRepr(i));
 
 				elementNode.appendChild(childNode);
 			}
 
-			Property[] properties = getProperties();
-			for (Property propertie : properties) {
-				String propertyName = propertie.getName();
+			final Property[] properties = getProperties();
+			for (final Property propertie : properties) {
+				final String propertyName = propertie.getName();
 				if (propertyName.equals("name")) {
-					String nameValue = name.getStringValue();
+					final String nameValue = name.getStringValue();
 					if (nameValue != null) {
 						elementNode.setAttribute("name", nameValue);
 					}
 				} else {
-					org.w3c.dom.Element propertyNode = document.createElement("property");
+					final org.w3c.dom.Element propertyNode = document.createElement("property");
 					propertyNode.setAttribute("name", propertie.getName());
 					propertie.encode(document, propertyNode, storer, referenceGenerator);
 					elementNode.appendChild(propertyNode);
@@ -1700,29 +1873,29 @@ public abstract class Element {
 			writeXMLDocument(document, storer, XML_FILENAME);
 			try {
 				m_xmlFileKeepKey = storer.getKeepKey(XML_FILENAME);
-			} catch (edu.cmu.cs.stage3.io.KeepFileNotSupportedException kfnse) {
+			} catch (final edu.cmu.cs.stage3.io.KeepFileNotSupportedException kfnse) {
 				m_xmlFileKeepKey = null;
 			}
 		} else {
 			try {
 				storer.keepFile(XML_FILENAME);
-				Property[] properties = getProperties();
-				for (Property propertie : properties) {
+				final Property[] properties = getProperties();
+				for (final Property propertie : properties) {
 					if (propertie.get() != null) {
 						propertie.keepAnyAssociatedFiles(storer);
 					}
 				}
-			} catch (edu.cmu.cs.stage3.io.KeepFileNotSupportedException kfnse) {
+			} catch (final edu.cmu.cs.stage3.io.KeepFileNotSupportedException kfnse) {
 				kfnse.printStackTrace();
-			} catch (edu.cmu.cs.stage3.io.KeepFileDoesNotExistException kfdne) {
+			} catch (final edu.cmu.cs.stage3.io.KeepFileDoesNotExistException kfdne) {
 				kfdne.printStackTrace();
 			}
 		}
 
-		String thisDirectory = storer.getCurrentDirectory();
+		final String thisDirectory = storer.getCurrentDirectory();
 		for (int i = 0; i < getChildCount(); i++) {
-			Element child = getChildAt(i);
-			String name = child.getRepr(i);
+			final Element child = getChildAt(i);
+			final String name = child.getRepr(i);
 			storer.createDirectory(name);
 			storer.setCurrentDirectory(name);
 			count = child.internalStore(builder, storer, progressObserver, howMuch, referenceGenerator, count);
@@ -1748,13 +1921,18 @@ public abstract class Element {
 	// }
 	// }
 
-	public void store(final DirectoryTreeStorer storer, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver, java.util.Dictionary filnameToByteArrayMap, HowMuch howMuch, ReferenceGenerator referenceGenerator) throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
-		int elementCount = getElementCount(Element.class, howMuch);
+	public void store(final DirectoryTreeStorer storer,
+			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver,
+			final java.util.Dictionary filnameToByteArrayMap, final HowMuch howMuch,
+			final ReferenceGenerator referenceGenerator)
+			throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
+		final int elementCount = getElementCount(Element.class, howMuch);
 		if (progressObserver != null) {
 			progressObserver.progressBegin(elementCount);
 		}
 
-		java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.OutputStreamWriter(new java.io.BufferedOutputStream(storer.createFile("elementCountHint.txt", true))));
+		final java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.OutputStreamWriter(
+				new java.io.BufferedOutputStream(storer.createFile("elementCountHint.txt", true))));
 		writer.write(Integer.toString(elementCount));
 		writer.newLine();
 		writer.flush();
@@ -1762,11 +1940,11 @@ public abstract class Element {
 
 		if (filnameToByteArrayMap != null) {
 			if (filnameToByteArrayMap.size() > 0) {
-				java.util.Enumeration enum0 = filnameToByteArrayMap.keys();
+				final java.util.Enumeration enum0 = filnameToByteArrayMap.keys();
 				while (enum0.hasMoreElements()) {
-					String filename = (String) enum0.nextElement();
-					byte[] byteArray = (byte[]) filnameToByteArrayMap.get(filename);
-					java.io.OutputStream os = storer.createFile(filename, false);
+					final String filename = (String) enum0.nextElement();
+					final byte[] byteArray = (byte[]) filnameToByteArrayMap.get(filename);
+					final java.io.OutputStream os = storer.createFile(filename, false);
 					os.write(byteArray);
 					os.flush();
 					storer.closeCurrentFile();
@@ -1774,13 +1952,14 @@ public abstract class Element {
 			}
 		}
 		try {
-			javax.xml.parsers.DocumentBuilderFactory factory = javax.xml.parsers.DocumentBuilderFactory.newInstance();
-			javax.xml.parsers.DocumentBuilder builder = factory.newDocumentBuilder();
-			int storeCount = internalStore(builder, storer, progressObserver, howMuch, referenceGenerator, 0);
+			final javax.xml.parsers.DocumentBuilderFactory factory = javax.xml.parsers.DocumentBuilderFactory
+					.newInstance();
+			final javax.xml.parsers.DocumentBuilder builder = factory.newDocumentBuilder();
+			final int storeCount = internalStore(builder, storer, progressObserver, howMuch, referenceGenerator, 0);
 			if (elementCount != storeCount) {
 				warnln("WARNING: elementCount " + elementCount + " != storeCount " + storeCount);
 			}
-		} catch (javax.xml.parsers.ParserConfigurationException pce) {
+		} catch (final javax.xml.parsers.ParserConfigurationException pce) {
 			pce.printStackTrace();
 		} finally {
 			if (progressObserver != null) {
@@ -1788,29 +1967,44 @@ public abstract class Element {
 			}
 		}
 	}
-	public void store(DirectoryTreeStorer storer, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver, java.util.Dictionary filnameToByteArrayMap, HowMuch howMuch) throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
-		store(storer, progressObserver, filnameToByteArrayMap, howMuch, new edu.cmu.cs.stage3.alice.core.reference.DefaultReferenceGenerator(this));
+
+	public void store(final DirectoryTreeStorer storer,
+			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver,
+			final java.util.Dictionary filnameToByteArrayMap, final HowMuch howMuch)
+			throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
+		store(storer, progressObserver, filnameToByteArrayMap, howMuch,
+				new edu.cmu.cs.stage3.alice.core.reference.DefaultReferenceGenerator(this));
 	}
-	public void store(DirectoryTreeStorer storer, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver, java.util.Dictionary filnameToByteArrayMap) throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
+
+	public void store(final DirectoryTreeStorer storer,
+			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver,
+			final java.util.Dictionary filnameToByteArrayMap)
+			throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
 		store(storer, progressObserver, filnameToByteArrayMap, HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
 	}
-	public void store(DirectoryTreeStorer storer, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
+
+	public void store(final DirectoryTreeStorer storer,
+			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver)
+			throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
 		store(storer, progressObserver, null);
 	}
-	public void store(DirectoryTreeStorer storer) throws java.io.IOException {
+
+	public void store(final DirectoryTreeStorer storer) throws java.io.IOException {
 		try {
 			store(storer, null);
-		} catch (edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
+		} catch (final edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
 			throw new Error();
 		}
 	}
 
-	public void store(java.io.File file, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver, java.util.Dictionary filnameToByteArrayMap) throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
+	public void store(final java.io.File file, final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver,
+			final java.util.Dictionary filnameToByteArrayMap)
+			throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
 		edu.cmu.cs.stage3.io.DirectoryTreeStorer storer;
 		if (file.isDirectory()) {
 			storer = new edu.cmu.cs.stage3.io.FileSystemTreeStorer();
 		} else {
-			String pathname = file.getAbsolutePath();
+			final String pathname = file.getAbsolutePath();
 			if (pathname.endsWith(".a2w") || pathname.endsWith(".a2c") || pathname.endsWith(".zip")) {
 				// todo: remove
 				if (pathname.endsWith(".a2c")) {
@@ -1829,37 +2023,45 @@ public abstract class Element {
 			storer.close();
 		}
 	}
-	public void store(java.io.File file, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
+
+	public void store(final java.io.File file, final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver)
+			throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
 		store(file, progressObserver, null);
 	}
-	public void store(java.io.File file) throws java.io.IOException {
+
+	public void store(final java.io.File file) throws java.io.IOException {
 		try {
 			store(file, null);
-		} catch (edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
-			throw new Error();
-		}
-	}
-	public void store(String filename, edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
-		store(new java.io.File(filename), progressObserver);
-	}
-	public void store(String filename) throws java.io.IOException {
-		try {
-			store(filename, null);
-		} catch (edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
+		} catch (final edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
 			throw new Error();
 		}
 	}
 
-	private String getUnnamedRepr(int childIndex) {
+	public void store(final String filename, final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver)
+			throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
+		store(new java.io.File(filename), progressObserver);
+	}
+
+	public void store(final String filename) throws java.io.IOException {
+		try {
+			store(filename, null);
+		} catch (final edu.cmu.cs.stage3.progress.ProgressCancelException pce) {
+			throw new Error();
+		}
+	}
+
+	private String getUnnamedRepr(final int childIndex) {
 		return "__Unnamed" + childIndex + "__";
 	}
-	public String getRepr(int childIndex) {
+
+	public String getRepr(final int childIndex) {
 		String nameValue = name.getStringValue();
 		if (nameValue == null || nameValue.length() == 0) {
 			nameValue = getUnnamedRepr(childIndex);
 		}
 		return nameValue;
 	}
+
 	public String getRepr() {
 		String nameValue = (String) name.get();
 		if (nameValue == null) {
@@ -1874,75 +2076,85 @@ public abstract class Element {
 		return nameValue;
 	}
 
-	protected void started(World world, double time) {
-		Element[] children = getChildren();
-		for (Element element : children) {
+	protected void started(final World world, final double time) {
+		final Element[] children = getChildren();
+		for (final Element element : children) {
 			element.started(world, time);
 		}
 	}
-	protected void stopped(World world, double time) {
-		Element[] children = getChildren();
-		for (Element element : children) {
+
+	protected void stopped(final World world, final double time) {
+		final Element[] children = getChildren();
+		for (final Element element : children) {
 			element.stopped(world, time);
 		}
 	}
-	public static void warn(Object o) {
+
+	public static void warn(final Object o) {
 		edu.cmu.cs.stage3.alice.scenegraph.Element.warn(o);
 	}
-	public static void warnln(Object o) {
+
+	public static void warnln(final Object o) {
 		edu.cmu.cs.stage3.alice.scenegraph.Element.warnln(o);
 	}
+
 	public static void warnln() {
 		edu.cmu.cs.stage3.alice.scenegraph.Element.warnln();
 	}
+
 	/** @deprecated */
 	@Deprecated
-	public static void debug(Object o) {
+	public static void debug(final Object o) {
 		System.err.print(o);
 	}
+
 	/** @deprecated */
 	@Deprecated
-	public static void debugln(Object o) {
+	public static void debugln(final Object o) {
 		System.err.println(o);
 	}
 
 	private static java.util.Hashtable s_classToElementCache = new java.util.Hashtable();
-	public static Class getValueClassForPropertyNamed(Class elementClass, String propertyName) {
+
+	public static Class getValueClassForPropertyNamed(final Class elementClass, final String propertyName) {
 		Element element = (Element) s_classToElementCache.get(elementClass);
 		if (element == null) {
 			try {
 				element = (Element) elementClass.newInstance();
 				s_classToElementCache.put(elementClass, element);
-			} catch (InstantiationException ie) {
+			} catch (final InstantiationException ie) {
 				return null;
-			} catch (IllegalAccessException iae) {
+			} catch (final IllegalAccessException iae) {
 				return null;
 			}
 		}
-		Property property = element.getPropertyNamed(propertyName);
+		final Property property = element.getPropertyNamed(propertyName);
 		return property.getValueClass();
 	}
 
-	public boolean isAccessibleFrom(Element e) {
+	public boolean isAccessibleFrom(final Element e) {
 		return true;
 	}
 
-	protected void internalAddExpressionIfAssignableTo(Expression expression, Class cls, java.util.Vector v) {
+	protected void internalAddExpressionIfAssignableTo(final Expression expression, final Class cls,
+			final java.util.Vector v) {
 		if (expression != null) {
 			if (cls.isAssignableFrom(expression.getValueClass())) {
 				v.addElement(expression);
 			}
 		}
 	}
-	protected void internalFindAccessibleExpressions(Class cls, java.util.Vector v) {
+
+	protected void internalFindAccessibleExpressions(final Class cls, final java.util.Vector v) {
 		if (m_parent != null) {
 			m_parent.internalFindAccessibleExpressions(cls, v);
 		}
 	}
-	public Expression[] findAccessibleExpressions(Class cls) {
-		java.util.Vector v = new java.util.Vector();
+
+	public Expression[] findAccessibleExpressions(final Class cls) {
+		final java.util.Vector v = new java.util.Vector();
 		internalFindAccessibleExpressions(cls, v);
-		Expression[] array = new Expression[v.size()];
+		final Expression[] array = new Expression[v.size()];
 		v.copyInto(array);
 		return array;
 	}

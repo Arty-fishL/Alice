@@ -11,12 +11,13 @@ import edu.cmu.cs.stage3.util.HowMuch;
 
 /**
  * @author caitlink
- * 
+ *
  *         TODO To change the template for this generated type comment go to
  *         Window - Preferences - Java - Code Style - Code Templates
  */
 public class FallDownAnimation extends AbstractBodyPositionAnimation {
-	public final edu.cmu.cs.stage3.alice.core.property.DirectionProperty sideToFallOn = new edu.cmu.cs.stage3.alice.core.property.DirectionProperty(this, "sideToFallOn", Direction.FORWARD);
+	public final edu.cmu.cs.stage3.alice.core.property.DirectionProperty sideToFallOn = new edu.cmu.cs.stage3.alice.core.property.DirectionProperty(
+			this, "sideToFallOn", Direction.FORWARD);
 
 	public class RuntimeFallDownAnimation extends RuntimeAbstractBodyPositionAnimation {
 
@@ -26,7 +27,7 @@ public class FallDownAnimation extends AbstractBodyPositionAnimation {
 		private edu.cmu.cs.stage3.alice.core.Direction m_side = null;
 
 		@Override
-		public void prologue(double t) {
+		public void prologue(final double t) {
 			super.prologue(t);
 
 			m_positionBegin = m_subject.getPosition(m_subject.getWorld());
@@ -41,13 +42,15 @@ public class FallDownAnimation extends AbstractBodyPositionAnimation {
 		}
 
 		@Override
-		public void update(double t) {
+		public void update(final double t) {
 			super.update(t);
 			if (m_positionEnd == null) {
 				m_positionEnd = getPositionEnd();
 			}
 
-			m_subject.setPositionRightNow(edu.cmu.cs.stage3.math.MathUtilities.interpolate(m_positionBegin, m_positionEnd, getPortion(t)), edu.cmu.cs.stage3.alice.core.ReferenceFrame.ABSOLUTE);
+			m_subject.setPositionRightNow(
+					edu.cmu.cs.stage3.math.MathUtilities.interpolate(m_positionBegin, m_positionEnd, getPortion(t)),
+					edu.cmu.cs.stage3.alice.core.ReferenceFrame.ABSOLUTE);
 
 			setOrientation(rightUpperArm, rightUpperArmInitialOrient, rightUpperArmFinalOrient, getPortion(t));
 			setOrientation(rightLowerArm, rightLowerArmInitialOrient, rightLowerArmFinalOrient, getPortion(t));
@@ -58,9 +61,9 @@ public class FallDownAnimation extends AbstractBodyPositionAnimation {
 		}
 
 		protected javax.vecmath.Vector3d getPositionEnd() {
-			javax.vecmath.Vector3d endPos = m_subject.getPosition(m_subject.getWorld());
+			final javax.vecmath.Vector3d endPos = m_subject.getPosition(m_subject.getWorld());
 
-			double pivotToGround = m_subject.getBoundingBox(m_subject.getWorld()).getCenterOfBottomFace().y;
+			final double pivotToGround = m_subject.getBoundingBox(m_subject.getWorld()).getCenterOfBottomFace().y;
 			double pivotToFront = 0.0;
 
 			if (m_side.equals(edu.cmu.cs.stage3.alice.core.Direction.FORWARD)) {
@@ -87,7 +90,7 @@ public class FallDownAnimation extends AbstractBodyPositionAnimation {
 
 		@Override
 		protected edu.cmu.cs.stage3.math.Quaternion getTargetQuaternion() {
-			edu.cmu.cs.stage3.math.Matrix44 quat = m_subject.getTransformation(m_subject.getWorld());
+			final edu.cmu.cs.stage3.math.Matrix44 quat = m_subject.getTransformation(m_subject.getWorld());
 			m_subject.standUpRightNow();
 
 			if (m_side.equals(edu.cmu.cs.stage3.alice.core.Direction.FORWARD)) {
@@ -99,7 +102,7 @@ public class FallDownAnimation extends AbstractBodyPositionAnimation {
 			} else if (m_side.equals(edu.cmu.cs.stage3.alice.core.Direction.RIGHT)) {
 				m_subject.rollRightNow(edu.cmu.cs.stage3.alice.core.Direction.RIGHT, 0.25);
 			}
-			edu.cmu.cs.stage3.math.Matrix33 orient = m_subject.getOrientationAsAxes(m_subject.getWorld());
+			final edu.cmu.cs.stage3.math.Matrix33 orient = m_subject.getOrientationAsAxes(m_subject.getWorld());
 			m_subject.setAbsoluteTransformationRightNow(quat);
 			return orient.getQuaternion();
 		}
@@ -116,7 +119,8 @@ public class FallDownAnimation extends AbstractBodyPositionAnimation {
 		 */
 
 		public void setFinalOrientations() {
-			if (m_side.equals(edu.cmu.cs.stage3.alice.core.Direction.LEFT) || m_side.equals(edu.cmu.cs.stage3.alice.core.Direction.RIGHT)) {
+			if (m_side.equals(edu.cmu.cs.stage3.alice.core.Direction.LEFT)
+					|| m_side.equals(edu.cmu.cs.stage3.alice.core.Direction.RIGHT)) {
 				rightUpperArmFinalOrient = new edu.cmu.cs.stage3.math.Matrix33();
 				rightUpperArmFinalOrient.rotateX(Math.random() * -0.5 * Math.PI);
 
@@ -128,7 +132,8 @@ public class FallDownAnimation extends AbstractBodyPositionAnimation {
 
 				leftLowerArmFinalOrient = new edu.cmu.cs.stage3.math.Matrix33();
 				leftLowerArmFinalOrient.rotateX(Math.random() * -0.5 * Math.PI);
-			} else if (m_side.equals(edu.cmu.cs.stage3.alice.core.Direction.FORWARD) || m_side.equals(edu.cmu.cs.stage3.alice.core.Direction.BACKWARD)) {
+			} else if (m_side.equals(edu.cmu.cs.stage3.alice.core.Direction.FORWARD)
+					|| m_side.equals(edu.cmu.cs.stage3.alice.core.Direction.BACKWARD)) {
 				rightUpperArmFinalOrient = new edu.cmu.cs.stage3.math.Matrix33();
 				rightUpperArmFinalOrient.rotateZ(Math.random() * 0.5 * Math.PI);
 

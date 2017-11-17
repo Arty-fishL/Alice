@@ -1,21 +1,21 @@
 /*
  * Copyright (c) 1999-2003, Carnegie Mellon University. All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
  * met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright
  *    notice, this list of conditions and the following disclaimer in the
  *    documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Products derived from the software may not be called "Alice",
  *    nor may "Alice" appear in their name, without prior written
  *    permission of Carnegie Mellon University.
- * 
+ *
  * 4. All advertising materials mentioning features or use of this software
  *    must display the following acknowledgement:
  *    "This product includes software developed by Carnegie Mellon University"
@@ -34,6 +34,11 @@ import javax.swing.JScrollPane;
  * @author Jason Pratt
  */
 public class TextureMapViewer extends javax.swing.JPanel implements edu.cmu.cs.stage3.alice.authoringtool.Editor {
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 3919871350442110302L;
+
 	public String editorName = "TextureMap Viewer";
 
 	protected edu.cmu.cs.stage3.alice.core.TextureMap textureMap;
@@ -54,10 +59,10 @@ public class TextureMapViewer extends javax.swing.JPanel implements edu.cmu.cs.s
 	}
 
 	@Override
-	public void setAuthoringTool(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
+	public void setAuthoringTool(final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool) {
 	}
 
-	public void setObject(edu.cmu.cs.stage3.alice.core.TextureMap textureMap) {
+	public void setObject(final edu.cmu.cs.stage3.alice.core.TextureMap textureMap) {
 		this.textureMap = textureMap;
 		if (textureMap != null) {
 			texturePanel.setImage(textureMap.image.getImageValue());
@@ -69,6 +74,10 @@ public class TextureMapViewer extends javax.swing.JPanel implements edu.cmu.cs.s
 	}
 
 	protected class ImagePanel extends JPanel {
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = 6796212713942851373L;
 		Image image;
 		int buffer = 5;
 		int imageWidth = 0;
@@ -78,30 +87,32 @@ public class TextureMapViewer extends javax.swing.JPanel implements edu.cmu.cs.s
 			setBackground(java.awt.Color.black);
 		}
 
-		public void setImage(Image image) {
+		public void setImage(final Image image) {
 			this.image = image;
 			if (image != null) {
-				java.awt.MediaTracker tracker = new java.awt.MediaTracker(this);
+				final java.awt.MediaTracker tracker = new java.awt.MediaTracker(this);
 				tracker.addImage(image, 0);
 				try {
 					tracker.waitForAll(1000); // wait a second max.
 					imageWidth = image.getWidth(this);
 					imageHeight = image.getHeight(this);
-					java.awt.Dimension size = new java.awt.Dimension(imageWidth + buffer * 2, imageHeight + buffer * 2);
+					final java.awt.Dimension size = new java.awt.Dimension(imageWidth + buffer * 2,
+							imageHeight + buffer * 2);
 					setMinimumSize(size);
 					setPreferredSize(size);
-				} catch (java.lang.InterruptedException e) {
-					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Interrupted while loading image.", e);
+				} catch (final java.lang.InterruptedException e) {
+					edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+							.showErrorDialog("Interrupted while loading image.", e);
 				}
 			} else {
-				java.awt.Dimension size = new java.awt.Dimension(buffer * 2, buffer * 2);
+				final java.awt.Dimension size = new java.awt.Dimension(buffer * 2, buffer * 2);
 				setMinimumSize(size);
 				setPreferredSize(size);
 			}
 		}
 
 		@Override
-		public void paintComponent(java.awt.Graphics g) {
+		public void paintComponent(final java.awt.Graphics g) {
 			super.paintComponent(g);
 			if (image != null) {
 				g.setColor(java.awt.Color.white);
@@ -116,47 +127,59 @@ public class TextureMapViewer extends javax.swing.JPanel implements edu.cmu.cs.s
 	// /////////////////////////////////////////////
 
 	@Override
-	public void stateChanging(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
-	}
-	@Override
-	public void worldLoading(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
-	}
-	@Override
-	public void worldUnLoading(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
-	}
-	@Override
-	public void worldStarting(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
-	}
-	@Override
-	public void worldStopping(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
-	}
-	@Override
-	public void worldPausing(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
-	}
-	@Override
-	public void worldSaving(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void stateChanging(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
 
 	@Override
-	public void stateChanged(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldLoading(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldLoaded(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldUnLoading(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldUnLoaded(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldStarting(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldStarted(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldStopping(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldStopped(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldPausing(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldPaused(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void worldSaving(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
+
 	@Override
-	public void worldSaved(edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	public void stateChanged(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	}
+
+	@Override
+	public void worldLoaded(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	}
+
+	@Override
+	public void worldUnLoaded(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	}
+
+	@Override
+	public void worldStarted(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	}
+
+	@Override
+	public void worldStopped(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	}
+
+	@Override
+	public void worldPaused(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
+	}
+
+	@Override
+	public void worldSaved(final edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent ev) {
 	}
 
 	// ////////////////////

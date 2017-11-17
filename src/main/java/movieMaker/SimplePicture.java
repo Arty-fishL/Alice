@@ -19,9 +19,9 @@ import javax.imageio.ImageIO;
  * associated file name and a title. A simple picture has pixels, width, and
  * height. A simple picture uses a BufferedImage to hold the pixels. You can
  * show a simple picture in a PictureFrame (a JFrame).
- * 
+ *
  * Copyright Georgia Institute of Technology 2004
- * 
+ *
  * @author Barb Ericson ericson@cc.gatech.edu
  */
 public class SimplePicture implements DigitalPicture {
@@ -69,11 +69,11 @@ public class SimplePicture implements DigitalPicture {
 	/**
 	 * A Constructor that takes a file name and uses the file to create a
 	 * picture
-	 * 
+	 *
 	 * @param fileName
 	 *            the file name to use in creating the picture
 	 */
-	public SimplePicture(String fileName) {
+	public SimplePicture(final String fileName) {
 
 		// load the picture into the buffered image
 		load(fileName);
@@ -84,13 +84,13 @@ public class SimplePicture implements DigitalPicture {
 	 * A constructor that takes the width and height desired for a picture and
 	 * creates a buffered image of that size. This constructor doesn't show the
 	 * picture.
-	 * 
+	 *
 	 * @param width
 	 *            the desired width
 	 * @param height
 	 *            the desired height
 	 */
-	public SimplePicture(int width, int height) {
+	public SimplePicture(final int width, final int height) {
 		bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		title = "None";
 		fileName = "None";
@@ -102,7 +102,7 @@ public class SimplePicture implements DigitalPicture {
 	 * A constructor that takes the width and height desired for a picture and
 	 * creates a buffered image of that size. It also takes the color to use for
 	 * the background of the picture.
-	 * 
+	 *
 	 * @param width
 	 *            the desired width
 	 * @param height
@@ -110,18 +110,18 @@ public class SimplePicture implements DigitalPicture {
 	 * @param theColor
 	 *            the background color for the picture
 	 */
-	public SimplePicture(int width, int height, Color theColor) {
+	public SimplePicture(final int width, final int height, final Color theColor) {
 		this(width, height);
 		setAllPixelsToAColor(theColor);
 	}
 
 	/**
 	 * A Constructor that takes a picture to copy information from
-	 * 
+	 *
 	 * @param copyPicture
 	 *            the picture to copy from
 	 */
-	public SimplePicture(SimplePicture copyPicture) {
+	public SimplePicture(final SimplePicture copyPicture) {
 		if (copyPicture.fileName != null) {
 			fileName = new String(copyPicture.fileName);
 			extension = copyPicture.extension;
@@ -130,18 +130,19 @@ public class SimplePicture implements DigitalPicture {
 			title = new String(copyPicture.title);
 		}
 		if (copyPicture.bufferedImage != null) {
-			bufferedImage = new BufferedImage(copyPicture.getWidth(), copyPicture.getHeight(), BufferedImage.TYPE_INT_RGB);
+			bufferedImage = new BufferedImage(copyPicture.getWidth(), copyPicture.getHeight(),
+					BufferedImage.TYPE_INT_RGB);
 			copyPicture(copyPicture);
 		}
 	}
 
 	/**
 	 * A constructor that takes a buffered image
-	 * 
+	 *
 	 * @param image
 	 *            the buffered image
 	 */
-	public SimplePicture(BufferedImage image) {
+	public SimplePicture(final BufferedImage image) {
 		bufferedImage = image;
 		title = "None";
 		fileName = "None";
@@ -152,7 +153,7 @@ public class SimplePicture implements DigitalPicture {
 
 	/**
 	 * Method to get the extension for this picture
-	 * 
+	 *
 	 * @return the extendsion (jpg or bmp)
 	 */
 	public String getExtension() {
@@ -162,18 +163,20 @@ public class SimplePicture implements DigitalPicture {
 	/**
 	 * Method that will copy all of the passed source picture into the current
 	 * picture object
-	 * 
+	 *
 	 * @param sourcePicture
 	 *            the picture object to copy
 	 */
-	public void copyPicture(SimplePicture sourcePicture) {
+	public void copyPicture(final SimplePicture sourcePicture) {
 		Pixel sourcePixel = null;
 		Pixel targetPixel = null;
 
 		// loop through the columns
-		for (int sourceX = 0, targetX = 0; sourceX < sourcePicture.getWidth() && targetX < getWidth(); sourceX++, targetX++) {
+		for (int sourceX = 0, targetX = 0; sourceX < sourcePicture.getWidth()
+				&& targetX < getWidth(); sourceX++, targetX++) {
 			// loop through the rows
-			for (int sourceY = 0, targetY = 0; sourceY < sourcePicture.getHeight() && targetY < getHeight(); sourceY++, targetY++) {
+			for (int sourceY = 0, targetY = 0; sourceY < sourcePicture.getHeight()
+					&& targetY < getHeight(); sourceY++, targetY++) {
 				sourcePixel = sourcePicture.getPixel(sourceX, sourceY);
 				targetPixel = getPixel(targetX, targetY);
 				targetPixel.setColor(sourcePixel.getColor());
@@ -184,11 +187,11 @@ public class SimplePicture implements DigitalPicture {
 
 	/**
 	 * Method to set the color in the picture to the passed color
-	 * 
+	 *
 	 * @param color
 	 *            the color to set to
 	 */
-	public void setAllPixelsToAColor(Color color) {
+	public void setAllPixelsToAColor(final Color color) {
 		// loop through all x
 		for (int x = 0; x < getWidth(); x++) {
 			// loop through all y
@@ -200,7 +203,7 @@ public class SimplePicture implements DigitalPicture {
 
 	/**
 	 * Method to get the buffered image
-	 * 
+	 *
 	 * @return the buffered image
 	 */
 	@Override
@@ -210,7 +213,7 @@ public class SimplePicture implements DigitalPicture {
 
 	/**
 	 * Method to get a graphics object for this picture to use to draw on
-	 * 
+	 *
 	 * @return a graphics object to use for drawing
 	 */
 	public Graphics getGraphics() {
@@ -227,7 +230,7 @@ public class SimplePicture implements DigitalPicture {
 
 	/**
 	 * Method to get the file name associated with the picture
-	 * 
+	 *
 	 * @return the file name associated with the picture
 	 */
 	@Override
@@ -237,17 +240,17 @@ public class SimplePicture implements DigitalPicture {
 
 	/**
 	 * Method to set the file name
-	 * 
+	 *
 	 * @param name
 	 *            the full pathname of the file
 	 */
-	public void setFileName(String name) {
+	public void setFileName(final String name) {
 		fileName = name;
 	}
 
 	/**
 	 * Method to get the title of the picture
-	 * 
+	 *
 	 * @return the title of the picture
 	 */
 	@Override
@@ -257,12 +260,12 @@ public class SimplePicture implements DigitalPicture {
 
 	/**
 	 * Method to set the title for the picture
-	 * 
+	 *
 	 * @param title
 	 *            the title to use for the picture
 	 */
 	@Override
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 		if (pictureFrame != null) {
 			pictureFrame.setTitle(title);
@@ -271,7 +274,7 @@ public class SimplePicture implements DigitalPicture {
 
 	/**
 	 * Method to get the width of the picture in pixels
-	 * 
+	 *
 	 * @return the width of the picture in pixels
 	 */
 	@Override
@@ -281,7 +284,7 @@ public class SimplePicture implements DigitalPicture {
 
 	/**
 	 * Method to get the height of the picture in pixels
-	 * 
+	 *
 	 * @return the height of the picture in pixels
 	 */
 	@Override
@@ -291,7 +294,7 @@ public class SimplePicture implements DigitalPicture {
 
 	/**
 	 * Method to get the picture frame for the picture
-	 * 
+	 *
 	 * @return the picture frame associated with this picture (it may be null)
 	 */
 	public PictureFrame getPictureFrame() {
@@ -300,18 +303,18 @@ public class SimplePicture implements DigitalPicture {
 
 	/**
 	 * Method to set the picture frame for this picture
-	 * 
+	 *
 	 * @param pictureFrame
 	 *            the picture frame to use
 	 */
-	public void setPictureFrame(PictureFrame pictureFrame) {
+	public void setPictureFrame(final PictureFrame pictureFrame) {
 		// set this picture objects' picture frame to the passed one
 		this.pictureFrame = pictureFrame;
 	}
 
 	/**
 	 * Method to get an image from the picture
-	 * 
+	 *
 	 * @return the buffered image since it is an image
 	 */
 	@Override
@@ -321,7 +324,7 @@ public class SimplePicture implements DigitalPicture {
 
 	/**
 	 * Method to return the pixel value as an int for the given x and y location
-	 * 
+	 *
 	 * @param x
 	 *            the x coordinate of the pixel
 	 * @param y
@@ -329,13 +332,13 @@ public class SimplePicture implements DigitalPicture {
 	 * @return the pixel value as an integer (alpha, red, green, blue)
 	 */
 	@Override
-	public int getBasicPixel(int x, int y) {
+	public int getBasicPixel(final int x, final int y) {
 		return bufferedImage.getRGB(x, y);
 	}
 
 	/**
 	 * Method to set the value of a pixel in the picture from an int
-	 * 
+	 *
 	 * @param x
 	 *            the x coordinate of the pixel
 	 * @param y
@@ -344,13 +347,13 @@ public class SimplePicture implements DigitalPicture {
 	 *            the new rgb value of the pixel (alpha, red, green, blue)
 	 */
 	@Override
-	public void setBasicPixel(int x, int y, int rgb) {
+	public void setBasicPixel(final int x, final int y, final int rgb) {
 		bufferedImage.setRGB(x, y, rgb);
 	}
 
 	/**
 	 * Method to get a pixel object for the given x and y location
-	 * 
+	 *
 	 * @param x
 	 *            the x location of the pixel in the picture
 	 * @param y
@@ -358,23 +361,23 @@ public class SimplePicture implements DigitalPicture {
 	 * @return a Pixel object for this location
 	 */
 	@Override
-	public Pixel getPixel(int x, int y) {
+	public Pixel getPixel(final int x, final int y) {
 		// create the pixel object for this picture and the given x and y
 		// location
-		Pixel pixel = new Pixel(this, x, y);
+		final Pixel pixel = new Pixel(this, x, y);
 		return pixel;
 	}
 
 	/**
 	 * Method to get a one-dimensional array of Pixels for this simple picture
-	 * 
+	 *
 	 * @return a one-dimensional array of Pixel objects starting with y=0 to
 	 *         y=height-1 and x=0 to x=width-1.
 	 */
 	public Pixel[] getPixels() {
-		int width = getWidth();
-		int height = getHeight();
-		Pixel[] pixelArray = new Pixel[width * height];
+		final int width = getWidth();
+		final int height = getHeight();
+		final Pixel[] pixelArray = new Pixel[width * height];
 
 		// loop through height rows from top to bottom
 		for (int row = 0; row < height; row++) {
@@ -388,14 +391,14 @@ public class SimplePicture implements DigitalPicture {
 
 	/**
 	 * Method to load the buffered image with the passed image
-	 * 
+	 *
 	 * @param image
 	 *            the image to use
 	 */
 	@Override
-	public void load(Image image) {
+	public void load(final Image image) {
 		// get a graphics context to use to draw on the buffered image
-		Graphics2D graphics2d = bufferedImage.createGraphics();
+		final Graphics2D graphics2d = bufferedImage.createGraphics();
 
 		// draw the image on the buffered image starting at 0,0
 		graphics2d.drawImage(image, 0, 0, null);
@@ -428,11 +431,11 @@ public class SimplePicture implements DigitalPicture {
 
 	/**
 	 * Method to make this picture visible or not
-	 * 
+	 *
 	 * @param flag
 	 *            true if you want it visible else false
 	 */
-	public void setVisible(boolean flag) {
+	public void setVisible(final boolean flag) {
 		if (flag) {
 			show();
 		} else {
@@ -463,16 +466,16 @@ public class SimplePicture implements DigitalPicture {
 
 	/**
 	 * Method to load the picture from the passed file name
-	 * 
+	 *
 	 * @param fileName
 	 *            the file name to use to load the picture from
 	 */
-	public void loadOrFail(String fileName) throws IOException {
+	public void loadOrFail(final String fileName) throws IOException {
 		// set the current picture's file name
 		this.fileName = fileName;
 
 		// set the extension
-		int posDot = fileName.lastIndexOf('.');
+		final int posDot = fileName.lastIndexOf('.');
 		if (posDot >= 0) {
 			extension = fileName.substring(posDot + 1);
 		}
@@ -498,18 +501,18 @@ public class SimplePicture implements DigitalPicture {
 	/**
 	 * Method to write the contents of the picture to a file with the passed
 	 * name without throwing errors
-	 * 
+	 *
 	 * @param fileName
 	 *            the name of the file to write the picture to
 	 * @return true if success else false
 	 */
 	@Override
-	public boolean load(String fileName) {
+	public boolean load(final String fileName) {
 		try {
 			loadOrFail(fileName);
 			return true;
 
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			System.out.println("There was an error trying to open " + fileName);
 			bufferedImage = new BufferedImage(600, 200, BufferedImage.TYPE_INT_RGB);
 			addMessage("Couldn't load " + fileName, 5, 100);
@@ -521,18 +524,18 @@ public class SimplePicture implements DigitalPicture {
 	/**
 	 * Method to load the picture from the passed file name this just calls
 	 * load(fileName) and is for name compatibility
-	 * 
+	 *
 	 * @param fileName
 	 *            the file name to use to load the picture from
 	 * @return true if success else false
 	 */
-	public boolean loadImage(String fileName) {
+	public boolean loadImage(final String fileName) {
 		return load(fileName);
 	}
 
 	/**
 	 * Method to draw a message as a string on the buffered image
-	 * 
+	 *
 	 * @param message
 	 *            the message to draw on the buffered image
 	 * @param xPos
@@ -540,9 +543,9 @@ public class SimplePicture implements DigitalPicture {
 	 * @param yPos
 	 *            the bottom of the string in y
 	 */
-	public void addMessage(String message, int xPos, int yPos) {
+	public void addMessage(final String message, final int xPos, final int yPos) {
 		// get a graphics context to use to draw on the buffered image
-		Graphics2D graphics2d = bufferedImage.createGraphics();
+		final Graphics2D graphics2d = bufferedImage.createGraphics();
 
 		// set the color to white
 		graphics2d.setPaint(Color.white);
@@ -557,7 +560,7 @@ public class SimplePicture implements DigitalPicture {
 
 	/**
 	 * Method to draw a string at the given location on the picture
-	 * 
+	 *
 	 * @param text
 	 *            the text to draw
 	 * @param xPos
@@ -565,31 +568,31 @@ public class SimplePicture implements DigitalPicture {
 	 * @param yPos
 	 *            the top y for the text
 	 */
-	public void drawString(String text, int xPos, int yPos) {
+	public void drawString(final String text, final int xPos, final int yPos) {
 		addMessage(text, xPos, yPos);
 	}
 
 	/**
 	 * Method to create a new picture by scaling the current picture by the
 	 * given x and y factors
-	 * 
+	 *
 	 * @param xFactor
 	 *            the amount to scale in x
 	 * @param yFactor
 	 *            the amount to scale in y
 	 * @return the resulting picture
 	 */
-	public Picture scale(double xFactor, double yFactor) {
+	public Picture scale(final double xFactor, final double yFactor) {
 		// set up the scale tranform
-		AffineTransform scaleTransform = new AffineTransform();
+		final AffineTransform scaleTransform = new AffineTransform();
 		scaleTransform.scale(xFactor, yFactor);
 
 		// create a new picture object that is the right size
-		Picture result = new Picture((int) (getWidth() * xFactor), (int) (getHeight() * yFactor));
+		final Picture result = new Picture((int) (getWidth() * xFactor), (int) (getHeight() * yFactor));
 
 		// get the graphics 2d object to draw on the result
-		Graphics graphics = result.getGraphics();
-		Graphics2D g2 = (Graphics2D) graphics;
+		final Graphics graphics = result.getGraphics();
+		final Graphics2D g2 = (Graphics2D) graphics;
 
 		// draw the current image onto the result image scaled
 		g2.drawImage(getImage(), scaleTransform, null);
@@ -600,41 +603,41 @@ public class SimplePicture implements DigitalPicture {
 	/**
 	 * Method to create a new picture of the passed width. The aspect ratio of
 	 * the width and height will stay the same.
-	 * 
+	 *
 	 * @param width
 	 *            the desired width
 	 * @return the resulting picture
 	 */
-	public Picture getPictureWithWidth(int width) {
+	public Picture getPictureWithWidth(final int width) {
 		// set up the scale tranform
-		double xFactor = (double) width / getWidth();
-		Picture result = scale(xFactor, xFactor);
+		final double xFactor = (double) width / getWidth();
+		final Picture result = scale(xFactor, xFactor);
 		return result;
 	}
 
 	/**
 	 * Method to create a new picture of the passed height. The aspect ratio of
 	 * the width and height will stay the same.
-	 * 
+	 *
 	 * @param height
 	 *            the desired height
 	 * @return the resulting picture
 	 */
-	public Picture getPictureWithHeight(int height) {
+	public Picture getPictureWithHeight(final int height) {
 		// set up the scale tranform
-		double yFactor = (double) height / getHeight();
-		Picture result = scale(yFactor, yFactor);
+		final double yFactor = (double) height / getHeight();
+		final Picture result = scale(yFactor, yFactor);
 		return result;
 	}
 
 	/**
 	 * Method to load a picture from a file name and show it in a picture frame
-	 * 
+	 *
 	 * @param fileName
 	 *            the file name to load the picture from
 	 * @return true if success else false
 	 */
-	public boolean loadPictureAndShowIt(String fileName) {
+	public boolean loadPictureAndShowIt(final String fileName) {
 		boolean result = true; // the default is that it worked
 
 		// try to load the picture into the buffered image from the file name
@@ -649,25 +652,26 @@ public class SimplePicture implements DigitalPicture {
 	/**
 	 * Method to write the contents of the picture to a file with the passed
 	 * name
-	 * 
+	 *
 	 * @param fileName
 	 *            the name of the file to write the picture to
 	 */
-	public void writeOrFail(String fileName) throws IOException {
+	public void writeOrFail(final String fileName) throws IOException {
 		String extension = this.extension; // the default is current
 
 		// create the file object
-		File file = new File(fileName);
-		File fileLoc = file.getParentFile();
+		final File file = new File(fileName);
+		final File fileLoc = file.getParentFile();
 
 		// canWrite is true only when the file exists already! (alexr)
 		if (!fileLoc.canWrite()) {
-			// System.err.println("can't write the file but trying anyway? ...");
+			// System.err.println("can't write the file but trying anyway?
+			// ...");
 			throw new IOException(fileName + " could not be opened. Check to see if you can write to the directory.");
 		}
 
 		// get the extension
-		int posDot = fileName.lastIndexOf('.');
+		final int posDot = fileName.lastIndexOf('.');
 		if (posDot >= 0) {
 			extension = fileName.substring(posDot + 1);
 		}
@@ -680,16 +684,16 @@ public class SimplePicture implements DigitalPicture {
 	/**
 	 * Method to write the contents of the picture to a file with the passed
 	 * name without throwing errors
-	 * 
+	 *
 	 * @param fileName
 	 *            the name of the file to write the picture to
 	 * @return true if success else false
 	 */
-	public boolean write(String fileName) {
+	public boolean write(final String fileName) {
 		try {
 			writeOrFail(fileName);
 			return true;
-		} catch (Exception ex) {
+		} catch (final Exception ex) {
 			System.out.println("There was an error trying to write " + fileName);
 			return false;
 		}
@@ -698,43 +702,43 @@ public class SimplePicture implements DigitalPicture {
 
 	/**
 	 * Method to set the media path by setting the directory to use
-	 * 
+	 *
 	 * @param directory
 	 *            the directory to use for the media path
 	 */
-	public static void setMediaPath(String directory) {
+	public static void setMediaPath(final String directory) {
 		FileChooser.setMediaPath(directory);
 	}
 
 	/**
 	 * Method to get the directory for the media
-	 * 
+	 *
 	 * @param fileName
 	 *            the base file name to use
 	 * @return the full path name by appending the file name to the media
 	 *         directory
 	 */
-	public static String getMediaPath(String fileName) {
+	public static String getMediaPath(final String fileName) {
 		return FileChooser.getMediaPath(fileName);
 	}
 
 	/**
 	 * Method to get the coordinates of the enclosing rectangle after this
 	 * transformation is applied to the current picture
-	 * 
+	 *
 	 * @return the enclosing rectangle
 	 */
-	public Rectangle2D getTransformEnclosingRect(AffineTransform trans) {
-		int width = getWidth();
-		int height = getHeight();
+	public Rectangle2D getTransformEnclosingRect(final AffineTransform trans) {
+		final int width = getWidth();
+		final int height = getHeight();
 		double maxX = width - 1;
 		double maxY = height - 1;
 		double minX, minY;
-		Point2D.Double p1 = new Point2D.Double(0, 0);
-		Point2D.Double p2 = new Point2D.Double(maxX, 0);
-		Point2D.Double p3 = new Point2D.Double(maxX, maxY);
-		Point2D.Double p4 = new Point2D.Double(0, maxY);
-		Point2D.Double result = new Point2D.Double(0, 0);
+		final Point2D.Double p1 = new Point2D.Double(0, 0);
+		final Point2D.Double p2 = new Point2D.Double(maxX, 0);
+		final Point2D.Double p3 = new Point2D.Double(maxX, maxY);
+		final Point2D.Double p4 = new Point2D.Double(0, maxY);
+		final Point2D.Double result = new Point2D.Double(0, 0);
 		Rectangle2D.Double rect = null;
 
 		// get the new points and min x and y and max x and y
@@ -766,13 +770,14 @@ public class SimplePicture implements DigitalPicture {
 
 	/**
 	 * Method to return a string with information about this picture
-	 * 
+	 *
 	 * @return a string with information about the picture
 	 */
 
 	@Override
 	public String toString() {
-		String output = "Simple Picture, filename " + fileName + " height " + getHeight() + " width " + getWidth();
+		final String output = "Simple Picture, filename " + fileName + " height " + getHeight() + " width "
+				+ getWidth();
 		return output;
 	}
 
