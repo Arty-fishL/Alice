@@ -74,3 +74,4 @@ local.properties
 
 # sbteclipse plugin
 .target
+/target/
