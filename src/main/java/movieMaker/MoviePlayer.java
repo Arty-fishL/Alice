@@ -32,7 +32,7 @@ public class MoviePlayer {
 	 * @param pictureList
 	 *            the list of pictures to show
 	 */
-	public MoviePlayer(final List pictureList) {
+	public MoviePlayer(final List<Picture> pictureList) {
 		animationPanel = new AnimationPanel(pictureList);
 		final Picture p = (Picture) pictureList.get(0);
 		final String fileName = p.getFileName();
@@ -161,7 +161,7 @@ public class MoviePlayer {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		final Container container = frame.getContentPane();
 		container.setLayout(new BorderLayout());
-		final JPanel buttonPanel = new JPanel();
+		// unused?? final JPanel buttonPanel = new JPanel();
 
 		// add the animation panel
 		container.add(animationPanel, BorderLayout.CENTER);

@@ -3414,7 +3414,7 @@ public class AuthoringTool implements java.awt.datatransfer.ClipboardOwner,
 		if (index > -1) {
 			return jAliceFrame.tabbedEditorComponent.getEditorAt(index).getJComponent();
 		} else {
-			final Class<?> editorClass = edu.cmu.cs.stage3.alice.authoringtool.util.EditorUtilities
+			final Class<? extends Editor> editorClass = edu.cmu.cs.stage3.alice.authoringtool.util.EditorUtilities
 					.getBestEditor(elementToEdit.getClass());
 			final Editor editor = editorManager.getEditorInstance(editorClass);
 			edu.cmu.cs.stage3.alice.authoringtool.util.EditorUtilities.editObject(editor, elementToEdit);

@@ -27,6 +27,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Vector;
 
+import edu.cmu.cs.stage3.alice.authoringtool.Editor;
+
 /**
  * Utilities for Editors. This Class keeps the master list of which Editors are
  * available, as well as providing a bunch of static methods for manipulating
@@ -35,8 +37,9 @@ import java.util.Vector;
  * @author Jason Pratt
  * @see edu.cmu.cs.stage3.alice.authoringtool.Editor
  */
+@SuppressWarnings("unchecked")
 public final class EditorUtilities {
-	private static Class[] allEditors = null;
+	private static Class<? extends Editor>[] allEditors = null;
 
 	static {
 		allEditors = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getEditorClasses();
@@ -52,7 +55,7 @@ public final class EditorUtilities {
 	 * call findAllEditors if you want to find new Editors that have been added
 	 * since initialization.
 	 */
-	public static Class[] getAllEditors() {
+	public static Class<? extends Editor>[] getAllEditors() {
 		return allEditors;
 	}
 
@@ -62,16 +65,16 @@ public final class EditorUtilities {
 	 *
 	 * TODO: CACHING...
 	 */
-	public static Class[] getEditorsForClass(final Class objectClass) {
-		final Vector editors = new Vector();
+	public static Class<? extends Editor>[] getEditorsForClass(final Class<?> objectClass) {
+		final Vector<Class<? extends Editor>> editors = new Vector<>();
 		if (!Object.class.isAssignableFrom(objectClass)) {
 			return null;
 		}
 		if (allEditors == null) {
 			return null;
 		}
-		for (final Class allEditor : allEditors) {
-			final Class acceptedClass = getObjectParameter(allEditor);
+		for (final Class<? extends Editor> allEditor : allEditors) {
+			final Class<?> acceptedClass = getObjectParameter(allEditor);
 			if (acceptedClass.isAssignableFrom(objectClass)) {
 				editors.addElement(allEditor);
 			}
@@ -79,9 +82,9 @@ public final class EditorUtilities {
 
 		sort(editors, objectClass);
 
-		final Class[] cvs = new Class[editors.size()];
+		final Class<? extends Editor>[] cvs = new Class[editors.size()];
 		for (int i = 0; i < cvs.length; i++) {
-			cvs[i] = (Class) editors.elementAt(i);
+			cvs[i] = (Class<? extends Editor>) editors.elementAt(i);
 		}
 		return cvs;
 	}
@@ -90,11 +93,11 @@ public final class EditorUtilities {
 	 * returns true if potentialEditor is in the current list of all known
 	 * Editors.
 	 */
-	public static boolean isInAllEditors(final Class potentialEditor) {
+	public static boolean isInAllEditors(final Class<? extends Editor> potentialEditor) {
 		if (allEditors == null) {
 			return false;
 		}
-		for (final Class allEditor : allEditors) {
+		for (final Class<? extends Editor> allEditor : allEditors) {
 			if (potentialEditor == allEditor) {
 				return true;
 			}
@@ -105,7 +108,7 @@ public final class EditorUtilities {
 	/**
 	 * Returns a new Editor instance of the specified Class
 	 */
-	public static edu.cmu.cs.stage3.alice.authoringtool.Editor getEditorFromClass(final Class editorClass) {
+	public static edu.cmu.cs.stage3.alice.authoringtool.Editor getEditorFromClass(final Class<? extends Editor> editorClass) {
 		try {
 			return (edu.cmu.cs.stage3.alice.authoringtool.Editor) editorClass.newInstance();
 		} catch (final Throwable t) {
@@ -115,11 +118,11 @@ public final class EditorUtilities {
 		return null;
 	}
 
-	public static java.lang.reflect.Method getSetMethodFromClass(final Class editorClass) {
+	public static java.lang.reflect.Method getSetMethodFromClass(final Class<? extends Editor> editorClass) {
 		final java.lang.reflect.Method[] methods = editorClass.getMethods();
 		for (final Method potentialMethod : methods) {
 			if (potentialMethod.getName().equals("setObject")) {
-				final Class[] parameterTypes = potentialMethod.getParameterTypes();
+				final Class<?>[] parameterTypes = potentialMethod.getParameterTypes();
 				if (parameterTypes.length == 1) {
 					if (Object.class.isAssignableFrom(parameterTypes[0])) {
 						return potentialMethod;
@@ -131,7 +134,7 @@ public final class EditorUtilities {
 		return null;
 	}
 
-	public static Class getObjectParameter(final Class editorClass) {
+	public static Class<?> getObjectParameter(final Class<? extends Editor> editorClass) {
 		final java.lang.reflect.Method setObject = getSetMethodFromClass(editorClass);
 		if (setObject != null) {
 			return setObject.getParameterTypes()[0];
@@ -146,15 +149,15 @@ public final class EditorUtilities {
 	 * between the given objectClass and the actual type that each Editor's
 	 * setObject method accepts.
 	 */
-	public static Class getBestEditor(final Class objectClass) {
+	public static Class<? extends Editor> getBestEditor(final Class<?> objectClass) {
 		// DEBUG System.out.println( "objectClass: " + objectClass );
-		Class bestEditor = null;
+		Class<? extends Editor> bestEditor = null;
 		int bestDepth = Integer.MAX_VALUE;
-		for (final Class editorClass : allEditors) {
+		for (final Class<? extends Editor> editorClass : allEditors) {
 			// DEBUG System.out.println( "editorClass: " + editorClass );
 			final java.lang.reflect.Method setObject = getSetMethodFromClass(editorClass);
 			if (setObject != null) {
-				final Class[] parameterTypes = setObject.getParameterTypes();
+				final Class<?>[] parameterTypes = setObject.getParameterTypes();
 				if (parameterTypes.length == 1) {
 					final int depth = getObjectClassDepth(parameterTypes[0], objectClass);
 					// DEBUG System.out.println( "getObjectClassDepth( " +
@@ -183,6 +186,7 @@ public final class EditorUtilities {
 		}
 	}
 
+	// Unused ??
 	/**
 	 * This method <bold>defines</bold> what it means to be a valid Editor.
 	 *
@@ -190,15 +194,16 @@ public final class EditorUtilities {
 	 * takes no arguments -have a method called setObject that takes a single
 	 * argument
 	 */
-	private static boolean isValidEditor(final Class editorClass) {
+	@SuppressWarnings("unused")
+	private static boolean isValidEditor(final Class<? extends Editor> editorClass) {
 		if (!edu.cmu.cs.stage3.alice.authoringtool.Editor.class.isAssignableFrom(editorClass)) {
 			return false;
 		}
 
 		boolean constructorFound = false;
-		final java.lang.reflect.Constructor[] editorConstructors = editorClass.getConstructors();
-		for (final Constructor editorConstructor : editorConstructors) {
-			final Class[] parameterTypes = editorConstructor.getParameterTypes();
+		final java.lang.reflect.Constructor<?>[] editorConstructors = editorClass.getConstructors();
+		for (final Constructor<?> editorConstructor : editorConstructors) {
+			final Class<?>[] parameterTypes = editorConstructor.getParameterTypes();
 			if (parameterTypes.length == 0) {
 				constructorFound = true;
 				break;
@@ -218,12 +223,12 @@ public final class EditorUtilities {
 	 * @returns the depth of the class hierarchy between the given superclass
 	 *          and subclass
 	 */
-	private static int getObjectClassDepth(final Class superclass, final Class subclass) {
+	private static int getObjectClassDepth(final Class<?> superclass, final Class<?> subclass) {
 		if (!superclass.isAssignableFrom(subclass)) {
 			return -1;
 		}
 
-		Class temp = subclass;
+		Class<?> temp = subclass;
 		int i = 0;
 		while (temp != superclass && superclass.isAssignableFrom(temp)) {
 			i++;
@@ -236,8 +241,8 @@ public final class EditorUtilities {
 	/**
 	 * Swaps elements a and b in Vector v
 	 */
-	private static void swap(final Vector v, final int a, final int b) {
-		final Object t = v.elementAt(a);
+	private static void swap(final Vector<Class<? extends Editor>> v, final int a, final int b) {
+		final Class<? extends Editor> t = v.elementAt(a);
 		v.setElementAt(v.elementAt(b), a);
 		v.setElementAt(t, b);
 	}
@@ -249,7 +254,7 @@ public final class EditorUtilities {
 	 * returns -1 if a is closer returns 1 if b is closer returns 0 if they are
 	 * equally close
 	 */
-	private static int compare(final Class a, final Class b, final Class objectClass) {
+	private static int compare(final Class<? extends Editor> a, final Class<? extends Editor> b, final Class<?> objectClass) {
 		final int aDist = getObjectClassDepth(getObjectParameter(a), objectClass);
 		final int bDist = getObjectClassDepth(getObjectParameter(b), objectClass);
 		if (aDist < bDist) {
@@ -268,10 +273,10 @@ public final class EditorUtilities {
 	 * This is going to be used on small vectors, so I'm just using Insertion
 	 * sort.
 	 */
-	private static void sort(final Vector v, final Class objectClass) {
+	private static void sort(final Vector<Class<? extends Editor>> v, final Class<?> objectClass) {
 		for (int i = 0; i < v.size(); i++) {
 			for (int j = i; j > 0
-					&& compare((Class) v.elementAt(j - 1), (Class) v.elementAt(j), objectClass) > 0; j--) {
+					&& compare((Class<? extends Editor>) v.elementAt(j - 1), (Class<? extends Editor>) v.elementAt(j), objectClass) > 0; j--) {
 				swap(v, j, j - 1);
 			}
 		}

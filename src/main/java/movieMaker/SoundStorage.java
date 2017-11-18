@@ -13,17 +13,17 @@ import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
 
 public class SoundStorage {
 
-	private final ArrayList soundList = new ArrayList();
+	private final ArrayList<SoundData> soundList = new ArrayList<>();
 
-	public ArrayList frameList = new ArrayList();
+	public ArrayList<Long> frameList = new ArrayList<>();
 
 	private boolean listening = false;
 
 	private double totalLength = 0.0;
 
-	private final Vector startCaptureTimes = new Vector();
+	private final Vector<Double> startCaptureTimes = new Vector<>();
 
-	private final Vector stopCaptureTimes = new Vector();
+	private final Vector<Double> stopCaptureTimes = new Vector<>();
 
 	// private boolean error = true;
 
@@ -32,7 +32,7 @@ public class SoundStorage {
 		soundList.add(new SoundData(start, len, ds, to, from, rate, volume));
 	}
 
-	public ArrayList getList() {
+	public ArrayList<SoundData> getList() {
 		return soundList;
 	}
 
@@ -114,9 +114,9 @@ public class SoundStorage {
 	Object stateLock = new Object();
 	boolean stateFailed = false;
 
-	public Vector encodeFiles(final double length, final String exportDirectory) // get
+	public Vector<String> encodeFiles(final double length, final String exportDirectory) // get
 	{
-		final Vector newDS = new Vector();
+		final Vector<String> newDS = new Vector<>();
 
 		String orig_file = "", final_sound = "", sound_slice = "", sound_cut = "", track_file = "";
 		final String silence = exportDirectory + "silence.wav";
@@ -217,7 +217,7 @@ public class SoundStorage {
 			}
 
 			if (blankLength > 0.0) {
-				final Vector v = new Vector();
+				final Vector<String> v = new Vector<>();
 				v.add(createURL(silence));
 				v.add(createURL(sound_slice));
 				final_sound = createURL(track_file);
@@ -261,8 +261,8 @@ public class SoundStorage {
 
 	public String tryToCut(final double length, final SoundData sd, final String file3, final String file4,
 			final double cropFromBeginning, double cropFromEnding, final double blankLength) {
-		final Vector start = new Vector();
-		final Vector stop = new Vector();
+		final Vector<Long> start = new Vector<>();
+		final Vector<Long> stop = new Vector<>();
 
 		if (cropFromBeginning != 0.0 || cropFromEnding != 0.0 || sd.clippedDuration + sd.worldTime > length) { // possiblility
 
@@ -316,7 +316,7 @@ public class SoundStorage {
 	public String createURL(final String s) {
 		String url;
 		try {
-			url = new java.io.File(s).toURL().toString();
+			url = new java.io.File(s).toURI().toURL().toString();
 		} catch (final MalformedURLException e) {
 			e.printStackTrace();
 			return "";
@@ -337,7 +337,7 @@ public class SoundStorage {
 		m = null;
 	}
 
-	public boolean concat(final java.util.Vector inputURL, final String outputURL) {
+	public boolean concat(final java.util.Vector<String> inputURL, final String outputURL) {
 
 		final MediaLocator iml[] = new MediaLocator[2];
 		MediaLocator oml;

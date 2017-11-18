@@ -23,28 +23,30 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool;
 
+import java.util.ListIterator;
+
 /**
  * @author Jason Pratt
  */
 public class EditorManager {
 	protected AuthoringTool authoringTool;
-	protected java.util.List availableEditors = new java.util.ArrayList();
-	protected java.util.List inUseEditors = new java.util.ArrayList();
+	protected java.util.List<Editor> availableEditors = new java.util.ArrayList<>();
+	protected java.util.List<Editor> inUseEditors = new java.util.ArrayList<>();
 
 	public EditorManager(final AuthoringTool authoringTool) {
 		this.authoringTool = authoringTool;
 	}
 
-	public Editor getBestEditorInstance(final Class objectClass) {
+	public Editor getBestEditorInstance(final Class<?> objectClass) {
 		return getEditorInstance(edu.cmu.cs.stage3.alice.authoringtool.util.EditorUtilities.getBestEditor(objectClass));
 	}
 
-	public Editor getEditorInstance(final Class editorClass) {
+	public Editor getEditorInstance(final Class<? extends Editor> editorClass) {
 		if (editorClass == null) {
 			return null;
 		}
-		for (final java.util.Iterator iter = availableEditors.listIterator(); iter.hasNext();) {
-			final Object editor = iter.next();
+		for (final ListIterator<Editor> iter = availableEditors.listIterator(); iter.hasNext();) {
+			final Editor editor = iter.next();
 			if (editor.getClass() == editorClass) {
 				iter.remove();
 				inUseEditors.add(editor);
@@ -71,7 +73,7 @@ public class EditorManager {
 		}
 	}
 
-	public void preloadEditor(final Class editorClass) {
+	public void preloadEditor(final Class<? extends Editor> editorClass) {
 		releaseEditorInstance(getEditorInstance(editorClass));
 	}
 }

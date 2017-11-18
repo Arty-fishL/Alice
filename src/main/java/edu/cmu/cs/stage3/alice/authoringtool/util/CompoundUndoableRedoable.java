@@ -24,7 +24,7 @@
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
 public class CompoundUndoableRedoable implements ContextAssignableUndoableRedoable {
-	protected java.util.ArrayList items = new java.util.ArrayList();
+	protected java.util.ArrayList<UndoableRedoable> items = new java.util.ArrayList<>();
 	protected Object context;
 
 	public CompoundUndoableRedoable() {
@@ -37,14 +37,14 @@ public class CompoundUndoableRedoable implements ContextAssignableUndoableRedoab
 
 	public void addItem(final UndoableRedoable item) {
 		if (item instanceof ChildChangeUndoableRedoable) {
-			final ChildChangeUndoableRedoable ccur = (ChildChangeUndoableRedoable) item;
+			// Unused ?? final ChildChangeUndoableRedoable ccur = (ChildChangeUndoableRedoable) item;
 		}
 		items.add(item);
 	}
 
 	@Override
 	public void undo() {
-		final java.util.ListIterator iter = items.listIterator();
+		final java.util.ListIterator<UndoableRedoable> iter = items.listIterator();
 		while (iter.hasNext()) {
 			iter.next();
 		}
@@ -57,7 +57,7 @@ public class CompoundUndoableRedoable implements ContextAssignableUndoableRedoab
 
 	@Override
 	public void redo() {
-		final java.util.ListIterator iter = items.listIterator();
+		final java.util.ListIterator<UndoableRedoable> iter = items.listIterator();
 		while (iter.hasNext()) {
 			final edu.cmu.cs.stage3.alice.authoringtool.util.UndoableRedoable item = (edu.cmu.cs.stage3.alice.authoringtool.util.UndoableRedoable) iter
 					.next();

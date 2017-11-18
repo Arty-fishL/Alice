@@ -102,7 +102,7 @@ public class AuthoringToolResources {
 		public java.util.HashMap<String, ImageIcon> stringIconMap = new java.util.HashMap<String, ImageIcon>();
 		public java.util.HashMap<ImageIcon, ImageIcon> disabledIconMap = new java.util.HashMap<ImageIcon, ImageIcon>();
 		public Class<Importer>[] importers;
-		public Class<?>[] editors;
+		public Class<? extends Editor>[] editors;
 		public java.util.HashMap<Class<?>, DataFlavor> flavorMap = new java.util.HashMap<Class<?>, DataFlavor>();
 		public java.util.HashMap<Integer, String> keyCodesToStrings = new java.util.HashMap<Integer, String>();
 		public boolean experimentalFeaturesEnabled;
@@ -2387,11 +2387,11 @@ public class AuthoringToolResources {
 		return AuthoringToolResources.resources.importers;
 	}
 
-	public static void setEditorClasses(final Class[] editors) {
+	public static void setEditorClasses(final Class<? extends Editor>[] editors) {
 		AuthoringToolResources.resources.editors = editors;
 	}
 
-	public static Class[] getEditorClasses() {
+	public static Class<? extends Editor>[] getEditorClasses() {
 		return AuthoringToolResources.resources.editors;
 	}
 

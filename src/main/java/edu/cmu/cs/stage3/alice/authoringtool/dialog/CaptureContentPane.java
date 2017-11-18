@@ -98,7 +98,7 @@ public class CaptureContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 	// Encode Bar
 	protected javax.swing.JButton encodeButton;
 	protected javax.swing.JTextField fileName;
-	protected javax.swing.JComboBox fileType;
+	protected javax.swing.JComboBox<String> fileType;
 	protected javax.swing.JLabel statusLabel;
 	protected movieMaker.StartMovieCapture movieCapture = null;
 
@@ -408,7 +408,7 @@ public class CaptureContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		encodeButton.setMargin(new java.awt.Insets(3, 2, 3, 2));
 
 		final String[] types = { "MOV" };
-		fileType = new javax.swing.JComboBox(types);
+		fileType = new javax.swing.JComboBox<String>(types);
 
 		fileName = new javax.swing.JTextField("MyVideo");
 		fileName.setFont(new java.awt.Font("SansSerif", java.awt.Font.BOLD, (int) (12 * fontSize / 12.0)));
@@ -675,7 +675,7 @@ public class CaptureContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		// getContentPane().add( buttonPanel, java.awt.BorderLayout.NORTH );
 
 		final int renderWidth = renderPanel.getWidth();
-		final int renderHeight = renderPanel.getHeight();
+		// unused ?? final int renderHeight = renderPanel.getHeight();
 
 		// this looks much more complicated than it really is, although some of
 		// the code is quite tempermental
@@ -806,7 +806,7 @@ public class CaptureContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 
 		// adds sound listeners
 		traverseTree();
-		authoringTool.getSoundStorage().frameList = new java.util.ArrayList();
+		authoringTool.getSoundStorage().frameList = new java.util.ArrayList<Long>();
 	}
 
 	// Used to delete frame files after encoding
@@ -960,7 +960,7 @@ public class CaptureContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 
 		authoringTool.setSoundStorage(new movieMaker.SoundStorage());
 		videoHandler = new MovieCapturer(exportDirectory + "/frames/");
-		authoringTool.getSoundStorage().frameList = new java.util.ArrayList();
+		authoringTool.getSoundStorage().frameList = new java.util.ArrayList<Long>();
 		frameSequencer = videoHandler.getFrameSequencer();
 		traverseTree();
 	}
@@ -1110,10 +1110,11 @@ public class CaptureContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 			// create the movie with no sound
 			MovieWriter writer = new MovieWriter(videoHandler.getFramesPerSecond(), exportDirectory + "/frames/",
 					fileName.getText() + "_NoSound", exportDirectory + "/frames/");
-			if (writer == null) {
+			/* Dead code ??
+			   if (writer == null) {
 				afterEncoding(true);
 				return;
-			}
+			}*/
 
 			// both options go to quicktime (avi never really worked)
 			boolean result;
@@ -1144,12 +1145,13 @@ public class CaptureContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 
 			movieMaker.Merge m = new movieMaker.Merge(
 					authoringTool.getSoundStorage().createURL(exportDirectory + "/" + fileName.getText() + ".mov"));
-			if (m == null) {
+			/* Dead code ??
+			   if (m == null) {
 				afterEncoding(true);
 				return;
-			}
+			}*/
 
-			java.util.Vector sources = new java.util.Vector();
+			java.util.Vector<String> sources = new java.util.Vector<>();
 
 			pulsing = true;
 			pulse = new Thread(new StartStatusPulsing(statusLabel, "Encoding Sound"));
@@ -1216,7 +1218,7 @@ public class CaptureContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		statusFrame.setVisible(false);
 		authoringTool.setSoundStorage(new movieMaker.SoundStorage());
 		videoHandler = new MovieCapturer(exportDirectory + "/frames/");
-		authoringTool.getSoundStorage().frameList = new java.util.ArrayList();
+		authoringTool.getSoundStorage().frameList = new java.util.ArrayList<Long>();
 		frameSequencer = videoHandler.getFrameSequencer();
 		traverseTree();
 		authoringTool.numEncoded++;

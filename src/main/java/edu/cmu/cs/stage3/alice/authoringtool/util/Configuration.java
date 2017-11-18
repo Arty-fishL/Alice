@@ -23,6 +23,10 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import java.util.Iterator;
+
+import org.w3c.dom.Element;
+
 /**
  * @author Jason Pratt
  */
@@ -141,7 +145,7 @@ public final class Configuration {
 	static {
 		root = new Key();
 		root.name = "<root>";
-		root.subKeys = new java.util.HashMap();
+		root.subKeys = new java.util.HashMap<String, Key>();
 		final java.io.File aliceHasNotExitedFile = new java.io.File(
 				edu.cmu.cs.stage3.alice.authoringtool.JAlice.getAliceUserDirectory(), "aliceHasNotExited.txt");
 		if (aliceHasNotExitedFile.canRead()) {
@@ -164,8 +168,8 @@ public final class Configuration {
 		public String name;
 		public int visibility;
 		public String value;
-		public java.util.ArrayList valueList;
-		public java.util.HashMap subKeys;
+		public java.util.ArrayList<String> valueList;
+		public java.util.HashMap<String, Key> subKeys;
 
 		public Key getSubKey(final String name) {
 			if (subKeys != null) {
@@ -184,7 +188,7 @@ public final class Configuration {
 
 		public Key createSubKey(final String name) {
 			if (subKeys == null) {
-				subKeys = new java.util.HashMap();
+				subKeys = new java.util.HashMap<String, Key>();
 			}
 
 			final int i = name.indexOf('.');
@@ -290,7 +294,7 @@ public final class Configuration {
 		}
 
 		if (key.valueList == null) {
-			key.valueList = new java.util.ArrayList(values == null ? 0 : values.length);
+			key.valueList = new java.util.ArrayList<String>(values == null ? 0 : values.length);
 		} else {
 			key.valueList.clear();
 		}
@@ -319,7 +323,7 @@ public final class Configuration {
 		}
 
 		if (key.valueList == null) {
-			key.valueList = new java.util.ArrayList();
+			key.valueList = new java.util.ArrayList<String>();
 		}
 		if (item != null) {
 			key.valueList.add(item);
@@ -344,7 +348,7 @@ public final class Configuration {
 		}
 
 		if (key.valueList == null) {
-			key.valueList = new java.util.ArrayList();
+			key.valueList = new java.util.ArrayList<String>();
 		} else {
 			if (item != null) {
 				key.valueList.remove(item);
@@ -373,8 +377,9 @@ public final class Configuration {
 	private static String[] _getSubKeys(final String keyName, final int visibility) {
 		final Key key = root.getSubKey(keyName);
 		if (key != null) {
-			final java.util.ArrayList list = new java.util.ArrayList(key.subKeys.size());
-			for (final java.util.Iterator iter = key.subKeys.keySet().iterator(); iter.hasNext();) {
+			final java.util.ArrayList<String> list = new java.util.ArrayList<>(key.subKeys.size());
+			// Wrong ?? for (final java.util.Iterator<Key> iter = key.subKeys.keySet().iterator(); iter.hasNext();) {
+			for (final java.util.Iterator<Key> iter = key.subKeys.values().iterator(); iter.hasNext();) {
 				final Key subKey = (Key) iter.next();
 				if ((subKey.visibility & visibility) > 0) {
 					list.add(subKey.name);
@@ -394,7 +399,7 @@ public final class Configuration {
 
 	// IO
 	private static void loadConfig(final java.io.File file) throws java.io.IOException {
-		loadConfig(file.toURL());
+		loadConfig(file.toURI().toURL());
 	}
 
 	private static void loadConfig(final java.net.URL url) throws java.io.IOException {
@@ -404,7 +409,7 @@ public final class Configuration {
 	}
 
 	private static void loadConfig(final java.io.InputStream is) throws java.io.IOException {
-		root.subKeys = new java.util.HashMap();
+		root.subKeys = new java.util.HashMap<String, Key>();
 
 		final javax.xml.parsers.DocumentBuilderFactory factory = javax.xml.parsers.DocumentBuilderFactory.newInstance();
 		try {
@@ -472,7 +477,7 @@ public final class Configuration {
 			key.visibility = VIS_HIDDEN;
 		}
 
-		final java.util.HashMap map = parseSingleNode(keyElement);
+		final java.util.HashMap<String, Object> map = parseSingleNode(keyElement);
 
 		final org.w3c.dom.Element nameElement = (org.w3c.dom.Element) map.get("name");
 		if (nameElement != null) {
@@ -486,10 +491,11 @@ public final class Configuration {
 		if (valueElement != null) {
 			final org.w3c.dom.Element listElement = (org.w3c.dom.Element) parseSingleNode(valueElement).get("list");
 			if (listElement != null) {
-				key.valueList = new java.util.ArrayList();
-				final java.util.ArrayList items = (java.util.ArrayList) parseSingleNode(listElement).get("items");
+				key.valueList = new java.util.ArrayList<String>();
+				@SuppressWarnings("unchecked")
+				final java.util.ArrayList<org.w3c.dom.Element> items = (java.util.ArrayList<org.w3c.dom.Element>) parseSingleNode(listElement).get("items");
 				if (items != null) {
-					for (final java.util.Iterator iter = items.iterator(); iter.hasNext();) {
+					for (final Iterator<Element> iter = items.iterator(); iter.hasNext();) {
 						final org.w3c.dom.Element itemElement = (org.w3c.dom.Element) iter.next();
 						if (itemElement != null) {
 							final org.w3c.dom.Text textNode = (org.w3c.dom.Text) parseSingleNode(itemElement)
@@ -508,13 +514,14 @@ public final class Configuration {
 			}
 		}
 
-		final java.util.ArrayList keys = (java.util.ArrayList) map.get("keys");
+		@SuppressWarnings("unchecked")
+		final java.util.ArrayList<Key> keys = (java.util.ArrayList<Key>) map.get("keys");
 		if (keys != null) {
-			for (final java.util.Iterator iter = keys.iterator(); iter.hasNext();) {
+			for (final Iterator<Key> iter = keys.iterator(); iter.hasNext();) {
 				final org.w3c.dom.Element subKeyElement = (org.w3c.dom.Element) iter.next();
 				if (subKeyElement != null) {
 					if (key.subKeys == null) {
-						key.subKeys = new java.util.HashMap();
+						key.subKeys = new java.util.HashMap<String, Key>();
 					}
 					final Key subKey = loadKey(subKeyElement);
 					if (subKey != null && subKey.name != null) {
@@ -534,10 +541,10 @@ public final class Configuration {
 	 * Element "items" -> ArrayList of <item> Elements "keys" -> ArrayList of
 	 * <key> Elements "text" -> last Text Node encountered
 	 */
-	private static java.util.HashMap parseSingleNode(final org.w3c.dom.Node node) {
+	private static java.util.HashMap<String, Object> parseSingleNode(final org.w3c.dom.Node node) {
 		// TODO: check for efficiency problems with creating this HashMap for
 		// each Node...
-		final java.util.HashMap map = new java.util.HashMap();
+		final java.util.HashMap<String, Object> map = new java.util.HashMap<>();
 
 		final org.w3c.dom.NodeList childNodes = node.getChildNodes();
 		for (int i = 0; i < childNodes.getLength(); i++) {
@@ -553,16 +560,18 @@ public final class Configuration {
 				} else if (tagName.equals("list")) {
 					map.put("list", childElement);
 				} else if (tagName.equals("item")) {
-					java.util.ArrayList list = (java.util.ArrayList) map.get("items");
+					@SuppressWarnings("unchecked")
+					java.util.ArrayList<org.w3c.dom.Element> list = (java.util.ArrayList<org.w3c.dom.Element>) map.get("items");
 					if (list == null) {
-						list = new java.util.ArrayList();
+						list = new java.util.ArrayList<org.w3c.dom.Element>();
 						map.put("items", list);
 					}
 					list.add(childElement);
 				} else if (tagName.equals("key")) {
-					java.util.ArrayList list = (java.util.ArrayList) map.get("keys");
+					@SuppressWarnings("unchecked")
+					java.util.ArrayList<Element> list = (java.util.ArrayList<Element>) map.get("keys");
 					if (list == null) {
-						list = new java.util.ArrayList();
+						list = new java.util.ArrayList<Element>();
 						map.put("keys", list);
 					}
 					list.add(childElement);
@@ -575,6 +584,8 @@ public final class Configuration {
 		return map;
 	}
 
+	// Unused ??
+	@SuppressWarnings("unused")
 	private static org.w3c.dom.Element getChildElementNamed(final String name, final org.w3c.dom.Node node) {
 		final org.w3c.dom.NodeList childNodes = node.getChildNodes();
 		for (int i = 0; i < childNodes.getLength(); i++) {
@@ -619,7 +630,7 @@ public final class Configuration {
 			document.appendChild(rootElement);
 
 			if (root.subKeys != null) {
-				for (final java.util.Iterator iter = root.subKeys.values().iterator(); iter.hasNext();) {
+				for (final Iterator<Key> iter = root.subKeys.values().iterator(); iter.hasNext();) {
 					final Key key = (Key) iter.next();
 					rootElement.appendChild(makeKeyElement(document, key));
 				}
@@ -668,7 +679,7 @@ public final class Configuration {
 		} else if (key.valueList != null) {
 			final org.w3c.dom.Element valueElement = document.createElement("value");
 			final org.w3c.dom.Element listElement = document.createElement("list");
-			for (final java.util.Iterator iter = key.valueList.iterator(); iter.hasNext();) {
+			for (final Iterator<String> iter = key.valueList.iterator(); iter.hasNext();) {
 				final org.w3c.dom.Element itemElement = document.createElement("item");
 				itemElement.appendChild(document.createTextNode((String) iter.next()));
 				listElement.appendChild(itemElement);
@@ -678,7 +689,7 @@ public final class Configuration {
 		}
 
 		if (key.subKeys != null) {
-			for (final java.util.Iterator iter = key.subKeys.values().iterator(); iter.hasNext();) {
+			for (final Iterator<Key> iter = key.subKeys.values().iterator(); iter.hasNext();) {
 				final Key subKey = (Key) iter.next();
 				keyElement.appendChild(makeKeyElement(document, subKey));
 			}
@@ -688,7 +699,7 @@ public final class Configuration {
 	}
 
 	// Listening
-	protected static java.util.HashSet listeners = new java.util.HashSet();
+	protected static java.util.HashSet<edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationListener> listeners = new java.util.HashSet<>();
 
 	public static void addConfigurationListener(
 			final edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationListener listener) {

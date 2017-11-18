@@ -33,7 +33,7 @@ public class FrameSequencer {
 	private MoviePlayer moviePlayer = null;
 
 	/** List of all the pictures so far */
-	private final ArrayList pictureList = new ArrayList();
+	private final ArrayList<Picture> pictureList = new ArrayList<>();
 
 	/** Use this to format the number for the frame */
 	private final NumberFormat numberFormat = NumberFormat.getIntegerInstance();
@@ -234,8 +234,8 @@ public class FrameSequencer {
 
 			// if there is a picture show the last one
 			if (pictureList.size() > 0) {
-				final int lastIndex = pictureList.size() - 1;
-				final Picture lastPicture = (Picture) pictureList.get(lastIndex);
+				// unused?? final int lastIndex = pictureList.size() - 1;
+				// unused?? final Picture lastPicture = (Picture) pictureList.get(lastIndex);
 				moviePlayer = new MoviePlayer(pictureList);
 				moviePlayer.setVisible(true);
 			} else {

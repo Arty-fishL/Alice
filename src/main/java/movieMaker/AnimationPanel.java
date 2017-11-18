@@ -27,10 +27,10 @@ public class AnimationPanel extends JComponent {
 	private static final long serialVersionUID = 8337458010142757232L;
 
 	/** list of image objects */
-	private final List imageList = new ArrayList();
+	private final List<Image> imageList = new ArrayList<>();
 
 	/** List of the file names */
-	private final List nameList = new ArrayList();
+	private final List<String> nameList = new ArrayList<>();
 
 	/** index of currently displayed image */
 	private int currIndex = 0;
@@ -53,7 +53,7 @@ public class AnimationPanel extends JComponent {
 	 * @param pictList
 	 *            the list of pictures
 	 */
-	public AnimationPanel(final List pictList) {
+	public AnimationPanel(final List<Picture> pictList) {
 		Image image = null;
 		Picture picture = null;
 		for (int i = 0; i < pictList.size(); i++) {
