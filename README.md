@@ -5,7 +5,7 @@ A project that aims to take a forked version of Alice 2.2 and:
 - [ ] Remove as many code warnings as possible (just 3000 to go!).
 - [ ] Update the code to match the Alice 2.4 source code.
 
-
+__________
 
 The Alice 2.4 source code has not been made public, 
 however we can work it out:
@@ -22,6 +22,6 @@ however we can work it out:
 - [ ] Add new files to this source code.
 - [ ] Apply all remaining changes.
 
+__________
 
-
-I need this code for a small project of mine (that may never actually see the light of day).
+** I need this code for a small project of mine (that may never actually see the light of day). **
