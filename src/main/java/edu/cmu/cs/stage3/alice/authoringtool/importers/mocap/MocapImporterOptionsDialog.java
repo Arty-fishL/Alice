@@ -42,6 +42,8 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.filechooser.FileFilter;
 
+import com.jamiegl.alicex.ui.JSystemFileChooser;
+
 import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
 import edu.cmu.cs.stage3.alice.core.Element;
 import edu.cmu.cs.stage3.alice.core.Sandbox;
@@ -251,7 +253,7 @@ public class MocapImporterOptionsDialog extends javax.swing.JDialog {
 	}
 
 	void jFileBoxButton_actionPerformed(final ActionEvent e) {
-		final JFileChooser chooser = new JFileChooser();
+		final JFileChooser chooser = new JSystemFileChooser();
 
 		class ASFFileFilter extends FileFilter {
 

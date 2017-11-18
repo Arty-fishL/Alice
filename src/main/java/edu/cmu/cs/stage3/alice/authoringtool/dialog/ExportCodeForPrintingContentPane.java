@@ -31,6 +31,8 @@ import java.awt.GridBagConstraints;
 
 import javax.swing.SwingConstants;
 
+import com.jamiegl.alicex.ui.JSystemFileChooser;
+
 class CustomCheckBox extends javax.swing.JCheckBox implements java.awt.image.ImageObserver {
 	/**
 	 *
@@ -142,7 +144,7 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 
 	private final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool m_authoringTool;
 
-	private final javax.swing.JFileChooser m_pathFileChooser = new javax.swing.JFileChooser();
+	private final javax.swing.JFileChooser m_pathFileChooser = new JSystemFileChooser();
 
 	private final javax.swing.JTextField m_authorNameTextField = new javax.swing.JTextField();
 	private final javax.swing.JTextField m_pathTextField = new javax.swing.JTextField();

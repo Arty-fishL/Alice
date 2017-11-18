@@ -36,6 +36,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.filechooser.FileFilter;
 
+import com.jamiegl.alicex.ui.JSystemFileChooser;
+
 import edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent;
 import edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateListener;
 import edu.cmu.cs.stage3.alice.authoringtool.event.ElementSelectionListener;
@@ -444,7 +446,8 @@ public class AuthoringTool implements java.awt.datatransfer.ClipboardOwner,
 			javax.swing.UIManager.put("TabbedPane.tabInsets", new java.awt.Insets(1, 4, 1, 3));
 
 			if (System.getProperty("os.name") != null && System.getProperty("os.name").startsWith("Windows")) {
-				javax.swing.UIManager.put("FileChooserUI", "com.sun.java.swing.plaf.windows.WindowsFileChooserUI");
+				// Can't do this in Java 7
+				//javax.swing.UIManager.put("FileChooserUI", "com.sun.java.swing.plaf.windows.WindowsFileChooserUI");
 			}
 		} catch (final Exception e) {
 			showErrorDialog("Error configuring Look and Feel.", e);
@@ -628,8 +631,8 @@ public class AuthoringTool implements java.awt.datatransfer.ClipboardOwner,
 
 	@SuppressWarnings("serial")
 	private void dialogInit() {
-		importFileChooser = new javax.swing.JFileChooser();
-		saveWorldFileChooser = new javax.swing.JFileChooser() {
+		importFileChooser = new JSystemFileChooser();
+		saveWorldFileChooser = new JSystemFileChooser() {
 			/**
 			 *
 			 */
@@ -661,10 +664,10 @@ public class AuthoringTool implements java.awt.datatransfer.ClipboardOwner,
 				}
 			}
 		};
-		addCharacterFileChooser = new javax.swing.JFileChooser();
-		saveCharacterFileDialog = new javax.swing.JFileChooser();
+		addCharacterFileChooser = new JSystemFileChooser();
+		saveCharacterFileDialog = new JSystemFileChooser();
 
-		browseFileChooser = new javax.swing.JFileChooser();
+		browseFileChooser = new JSystemFileChooser();
 		// browseFileChooser.setApproveButtonText( "Set Directory" );
 		// browseFileChooser.setDialogTitle( "Choose Directory..." );
 		// browseFileChooser.setDialogType( javax.swing.JFileChooser.OPEN_DIALOG

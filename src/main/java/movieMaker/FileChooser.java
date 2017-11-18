@@ -9,6 +9,8 @@ import java.util.Properties;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
+import com.jamiegl.alicex.ui.JSystemFileChooser;
+
 /**
  * A class to make working with a file chooser easier for students. It uses a
  * JFileChooser to let the user pick a file and returns the choosen file name.
@@ -86,14 +88,14 @@ public class FileChooser {
 		try {
 			final File file = new File(mediaDir);
 			if (file.exists()) {
-				fileChooser = new JFileChooser(file);
+				fileChooser = new JSystemFileChooser(file);
 			}
 		} catch (final Exception ex) {
 		}
 
 		// if no file chooser yet create one
 		if (fileChooser == null) {
-			fileChooser = new JFileChooser();
+			fileChooser = new JSystemFileChooser();
 		}
 
 		// pick the file
@@ -117,9 +119,9 @@ public class FileChooser {
 
 		// if no file chooser yet create one
 		if (mediaDir != null) {
-			fileChooser = new JFileChooser(mediaDir);
+			fileChooser = new JSystemFileChooser(mediaDir);
 		} else {
-			fileChooser = new JFileChooser();
+			fileChooser = new JSystemFileChooser();
 		}
 
 		// allow only directories to be picked

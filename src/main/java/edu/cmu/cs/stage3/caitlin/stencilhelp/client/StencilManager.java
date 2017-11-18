@@ -21,6 +21,8 @@ import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.jamiegl.alicex.ui.JSystemFileChooser;
+
 import edu.cmu.cs.stage3.alice.authoringtool.util.CustomMouseAdapter;
 import edu.cmu.cs.stage3.caitlin.stencilhelp.application.StateCapsule;
 import edu.cmu.cs.stage3.caitlin.stencilhelp.application.StencilApplication;
@@ -113,7 +115,7 @@ public class StencilManager
 
 	// COME BACK - THIS SHOULD NOT BE THIS WAY FOREVER
 	protected String showDialog(final javax.swing.filechooser.FileFilter filter) {
-		final JFileChooser chooser = new JFileChooser();
+		final JFileChooser chooser = new JSystemFileChooser();
 		if (filter != null) {
 			chooser.setFileFilter(filter);
 		}

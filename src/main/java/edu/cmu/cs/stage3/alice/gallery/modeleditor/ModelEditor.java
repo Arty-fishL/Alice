@@ -1,5 +1,7 @@
 package edu.cmu.cs.stage3.alice.gallery.modeleditor;
 
+import com.jamiegl.alicex.ui.JSystemFileChooser;
+
 import edu.cmu.cs.stage3.alice.core.Pose;
 import edu.cmu.cs.stage3.alice.core.reference.PropertyReference;
 
@@ -316,7 +318,7 @@ public class ModelEditor extends javax.swing.JFrame {
 			}
 		});
 
-		m_fileChooser = new javax.swing.JFileChooser();
+		m_fileChooser = new JSystemFileChooser();
 	}
 
 	public void init(final edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTargetFactory renderTargetFactory) {

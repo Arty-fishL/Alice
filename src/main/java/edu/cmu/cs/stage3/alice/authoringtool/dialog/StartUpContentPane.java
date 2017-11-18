@@ -45,6 +45,8 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 
+import com.jamiegl.alicex.ui.JSystemFileChooser;
+
 import edu.cmu.cs.stage3.alice.authoringtool.AikMin;
 
 /**
@@ -180,7 +182,7 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 	private final JScrollPane tutorialScrollPane = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 			JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-	private JFileChooser fileChooser = new JFileChooser() {
+	private JFileChooser fileChooser = new JSystemFileChooser() {
 		/**
 		 *
 		 */
@@ -620,7 +622,7 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 
 		mainTabPane.remove(fileChooser);
 		java.io.File currentDir = fileChooser.getCurrentDirectory();
-		fileChooser = new JFileChooser() {
+		fileChooser = new JSystemFileChooser() {
 			/**
 			 *
 			 */

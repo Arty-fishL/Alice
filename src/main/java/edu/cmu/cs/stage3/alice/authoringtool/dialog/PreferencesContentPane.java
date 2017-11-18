@@ -50,6 +50,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
+import com.jamiegl.alicex.ui.JSystemFileChooser;
+
 import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
 
 /**
@@ -64,7 +66,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	protected java.util.HashMap checkBoxToConfigKeyMap = new java.util.HashMap();
 	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
 	private final Package authoringToolPackage = Package.getPackage("edu.cmu.cs.stage3.alice.authoringtool");
-	protected javax.swing.JFileChooser browseFileChooser = new javax.swing.JFileChooser();
+	protected javax.swing.JFileChooser browseFileChooser = new JSystemFileChooser();
 	protected java.util.HashMap rendererStringMap = new java.util.HashMap();
 	protected boolean restartRequired = false;
 	protected boolean reloadRequired = false;

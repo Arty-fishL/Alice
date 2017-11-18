@@ -26,6 +26,8 @@ package edu.cmu.cs.stage3.alice.authoringtool.dialog;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+import com.jamiegl.alicex.ui.JSystemFileChooser;
+
 /**
  * @author Jason Pratt, Dennis Cosgrove
  */
@@ -426,7 +428,7 @@ public class SaveForWebContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 	private javax.swing.border.Border setTitleBorder;
 	private javax.swing.border.Border border2;
 	private final javax.swing.JPanel mainPanel = new javax.swing.JPanel();
-	private final javax.swing.JFileChooser htmlFileChooser = new javax.swing.JFileChooser();
+	private final javax.swing.JFileChooser htmlFileChooser = new JSystemFileChooser();
 	private final javax.swing.JPanel fileChooserPanel = new javax.swing.JPanel();
 	private javax.swing.border.Border border3;
 	private final javax.swing.JTextField heightTextField = new javax.swing.JTextField();
