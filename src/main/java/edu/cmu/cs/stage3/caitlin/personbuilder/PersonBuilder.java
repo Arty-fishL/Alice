@@ -23,14 +23,16 @@
 
 package edu.cmu.cs.stage3.caitlin.personbuilder;
 
+import edu.cmu.cs.stage3.util.StringObjectPair;
+
 public class PersonBuilder extends javax.swing.JPanel {
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 1014460200664339903L;
 
-	public static java.util.Vector getAllBuilders() {
-		final java.util.Vector builders = new java.util.Vector();
+	public static java.util.Vector<StringObjectPair> getAllBuilders() {
+		final java.util.Vector<StringObjectPair> builders = new java.util.Vector<>();
 		String name = "";
 		javax.swing.ImageIcon icon = null;
 		final org.w3c.dom.Document doc = (org.w3c.dom.Document) XMLDirectoryUtilities.loadFile("images/builders.xml");
@@ -51,8 +53,7 @@ public class PersonBuilder extends javax.swing.JPanel {
 								iconName);
 					}
 				}
-				final edu.cmu.cs.stage3.util.StringObjectPair sop = new edu.cmu.cs.stage3.util.StringObjectPair(name,
-						icon);
+				final StringObjectPair sop = new StringObjectPair(name, icon);
 				builders.addElement(sop);
 			}
 		}
@@ -65,11 +66,11 @@ public class PersonBuilder extends javax.swing.JPanel {
 	private RenderPanel renderPanel = null;
 	private NamePanel namePanel = null;
 	private ModelWrapper modelWrapper = null;
-	private String builderName = "";
+	// Unused ?? private String builderName = "";
 
 	public PersonBuilder(final String builderName, final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver)
 			throws edu.cmu.cs.stage3.progress.ProgressCancelException {
-		this.builderName = builderName;
+		// Unused ?? this.builderName = builderName;
 		final String builderFile = "images/" + builderName + ".xml";
 		int progressOffset = 0;
 		// progressObserver.progressBegin(

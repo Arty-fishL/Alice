@@ -23,13 +23,19 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
+import edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources;
 import edu.cmu.cs.stage3.alice.core.Element;
 import edu.cmu.cs.stage3.alice.core.Expression;
 import edu.cmu.cs.stage3.alice.core.Property;
@@ -41,25 +47,25 @@ import edu.cmu.cs.stage3.util.StringObjectPair;
  */
 public class PopupMenuUtilities {
 	protected static edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringToolConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration
-			.getLocalConfiguration(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.class.getPackage());
+			.getLocalConfiguration(AuthoringTool.class.getPackage());
 
-	protected static java.util.HashMap recentlyUsedValues = new java.util.HashMap();
+	protected static java.util.HashMap<Class<?>, List<Object>> recentlyUsedValues = new java.util.HashMap<>();
 
-	protected static java.util.Hashtable runnablesToActionListeners = new java.util.Hashtable();
+	protected static java.util.Hashtable<Runnable, ActionListener> runnablesToActionListeners = new java.util.Hashtable<>();
 	public final static PopupItemFactory oneShotFactory = new PopupItemFactory() {
 		@Override
 		public Object createItem(final Object o) {
 			return new Runnable() {
 				@Override
 				public void run() {
-					if (o instanceof edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype) {
-						final edu.cmu.cs.stage3.alice.core.Response response = ((edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype) o)
-								.createNewResponse();
-						final edu.cmu.cs.stage3.alice.core.Response undoResponse = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
-								.createUndoResponse(response);
-						final edu.cmu.cs.stage3.alice.core.Property[] properties = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+					if (o instanceof ResponsePrototype) {
+						final edu.cmu.cs.stage3.alice.core.Response response = 
+								((ResponsePrototype) o).createNewResponse();
+						final edu.cmu.cs.stage3.alice.core.Response undoResponse = 
+								AuthoringToolResources.createUndoResponse(response);
+						final edu.cmu.cs.stage3.alice.core.Property[] properties = AuthoringToolResources
 								.getAffectedProperties(response);
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().performOneShot(response,
+						AuthoringTool.getHack().performOneShot(response,
 								undoResponse, properties);
 					}
 				}
@@ -67,7 +73,7 @@ public class PopupMenuUtilities {
 		}
 	};
 
-	public final static javax.swing.Icon currentValueIcon = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+	public final static javax.swing.Icon currentValueIcon = AuthoringToolResources
 			.getIconForValue("currentValue");
 	public final static Object NO_CURRENT_VALUE = new Object();
 
@@ -115,7 +121,7 @@ public class PopupMenuUtilities {
 		}
 	};
 
-	protected static java.util.HashMap specialStringMap = new java.util.HashMap();
+	protected static java.util.HashMap<String, String> specialStringMap = new java.util.HashMap<>();
 
 	static {
 		javax.swing.JPopupMenu.setDefaultLightWeightPopupEnabled(false); // since
@@ -136,11 +142,11 @@ public class PopupMenuUtilities {
 		specialStringMap.put("<button>", "");
 	}
 
-	public static void addRecentlyUsedValue(final Class valueClass, final Object value) {
+	public static void addRecentlyUsedValue(final Class<?> valueClass, final Object value) {
 		if (!recentlyUsedValues.containsKey(valueClass)) {
-			recentlyUsedValues.put(valueClass, new java.util.ArrayList());
+			recentlyUsedValues.put(valueClass, new java.util.ArrayList<Object>());
 		}
-		final java.util.List recentList = (java.util.List) recentlyUsedValues.get(valueClass);
+		final java.util.List<Object> recentList = recentlyUsedValues.get(valueClass);
 		while (recentList.contains(value)) {
 			recentList.remove(value);
 		}
@@ -151,14 +157,14 @@ public class PopupMenuUtilities {
 		recentlyUsedValues.clear();
 	}
 
-	public static void createAndShowPopupMenu(final Vector structure, final java.awt.Component component, final int x,
+	public static void createAndShowPopupMenu(final Vector<Object> structure, final java.awt.Component component, final int x,
 			final int y) {
 		final javax.swing.JPopupMenu popup = makePopupMenu(structure);
 		popup.show(component, x, y);
 		ensurePopupIsOnScreen(popup);
 	}
 
-	public static JPopupMenu makePopupMenu(final Vector structure) {
+	public static JPopupMenu makePopupMenu(final Vector<Object> structure) {
 		final AliceMenuWithDelayedPopup menu = makeMenu("", structure);
 		if (menu != null) {
 			return menu.getPopupMenu();
@@ -201,8 +207,8 @@ public class PopupMenuUtilities {
 	// }
 	//
 	// Object content = pair.getObject();
-	// if( content instanceof java.util.Vector ) {
-	// JMenu submenu = makeMenu( name, (java.util.Vector)content );
+	// if( content instanceof Vector ) {
+	// JMenu submenu = makeMenu( name, (Vector<Object>)content );
 	// if( submenu != null ) {
 	// menu.add( submenu );
 	// }
@@ -237,7 +243,7 @@ public class PopupMenuUtilities {
 	// }
 	// }
 
-	public static AliceMenuWithDelayedPopup makeMenu(final String title, final Vector structure) {
+	public static AliceMenuWithDelayedPopup makeMenu(final String title, final Vector<Object> structure) {
 		if (structure == null || structure.isEmpty()) {
 			return null;
 		} else {
@@ -248,8 +254,8 @@ public class PopupMenuUtilities {
 		}
 	}
 
-	public static void populateDelayedMenu(final AliceMenuWithDelayedPopup menu, final Vector structure) {
-		for (final java.util.Enumeration enum0 = structure.elements(); enum0.hasMoreElements();) {
+	public static void populateDelayedMenu(final AliceMenuWithDelayedPopup menu, final Vector<Object> structure) {
+		for (final Enumeration<Object> enum0 = structure.elements(); enum0.hasMoreElements();) {
 			final Object o = enum0.nextElement();
 			if (!(o instanceof StringObjectPair)) {
 				throw new IllegalArgumentException("structure must be made only of StringObjectPairs, found: " + o);
@@ -260,7 +266,7 @@ public class PopupMenuUtilities {
 
 			// hack
 			if (name != null) {
-				for (final java.util.Iterator iter = specialStringMap.keySet().iterator(); iter.hasNext();) {
+				for (final java.util.Iterator<String> iter = specialStringMap.keySet().iterator(); iter.hasNext();) {
 					final String s = (String) iter.next();
 					if (name.indexOf(s) > -1) {
 						final StringBuffer sb = new StringBuffer(name);
@@ -281,8 +287,9 @@ public class PopupMenuUtilities {
 				content = ((PopupItemWithIcon) content).getItem();
 			}
 
-			if (content instanceof java.util.Vector) {
-				final JMenu submenu = makeMenu(name, (java.util.Vector) content);
+			if (content instanceof Vector) {
+				@SuppressWarnings("unchecked")
+				final JMenu submenu = makeMenu(name, (Vector<Object>) content);
 				if (submenu != null) {
 					menu.add(submenu);
 				}
@@ -292,7 +299,7 @@ public class PopupMenuUtilities {
 				menu.add(menuItem);
 			} else if (content instanceof Runnable) {
 				final JMenuItem menuItem = makeMenuItem(name, icon);
-				java.awt.event.ActionListener listener = (java.awt.event.ActionListener) runnablesToActionListeners
+				java.awt.event.ActionListener listener = runnablesToActionListeners
 						.get(content);
 				if (listener == null) {
 					listener = new PopupMenuItemActionListener((Runnable) content, menu /* MEMFIX */);
@@ -338,9 +345,9 @@ public class PopupMenuUtilities {
 	// StringObjectPair pair = (StringObjectPair)o;
 	// String name = pair.getString();
 	// Object content = pair.getObject();
-	// if( content instanceof java.util.Vector ) {
+	// if( content instanceof Vector ) {
 	// JMenu submenu = makeMenu( name, callback, context,
-	// (java.util.Vector)content );
+	// (Vector<Object>)content );
 	// if( submenu != null ) {
 	// menu.add( submenu );
 	// }
@@ -374,15 +381,16 @@ public class PopupMenuUtilities {
 		return item;
 	}
 
-	public static boolean isStringInStructure(final String s, final java.util.Vector structure) {
-		for (final java.util.Enumeration enum0 = structure.elements(); enum0.hasMoreElements();) {
+	@SuppressWarnings("unchecked")
+	public static boolean isStringInStructure(final String s, final Vector<Object> structure) {
+		for (final Enumeration<Object> enum0 = structure.elements(); enum0.hasMoreElements();) {
 			final StringObjectPair pair = (StringObjectPair) enum0.nextElement();
 			final String string = pair.getString();
 			final Object content = pair.getObject();
 			if (string == s) {
 				return true;
-			} else if (content instanceof java.util.Vector) {
-				if (isStringInStructure(s, (java.util.Vector) content)) {
+			} else if (content instanceof Vector) {
+				if (isStringInStructure(s, (Vector<Object>) content)) {
 					return true;
 				}
 			}
@@ -390,14 +398,15 @@ public class PopupMenuUtilities {
 		return false;
 	}
 
-	public static boolean isObjectInStructure(final Object o, final java.util.Vector structure) {
-		for (final java.util.Enumeration enum0 = structure.elements(); enum0.hasMoreElements();) {
+	@SuppressWarnings("unchecked")
+	public static boolean isObjectInStructure(final Object o, final Vector<Object> structure) {
+		for (final Enumeration<Object> enum0 = structure.elements(); enum0.hasMoreElements();) {
 			final StringObjectPair pair = (StringObjectPair) enum0.nextElement();
 			final Object content = pair.getObject();
 			if (content == o) {
 				return true;
-			} else if (content instanceof java.util.Vector) {
-				if (isObjectInStructure(o, (java.util.Vector) content)) {
+			} else if (content instanceof Vector) {
+				if (isObjectInStructure(o, (Vector<Object>) content)) {
 					return true;
 				}
 			}
@@ -405,11 +414,11 @@ public class PopupMenuUtilities {
 		return false;
 	}
 
-	public static java.util.Vector makeElementStructure(final Element root,
+	public static Vector<Object> makeElementStructure(final Element root,
 			final edu.cmu.cs.stage3.util.Criterion criterion, final PopupItemFactory factory,
 			final edu.cmu.cs.stage3.alice.core.Element context, final Object currentValue) {
 		DelayedBindingPopupItem delayedBindingPopupItem;
-		final java.util.Vector structure = new java.util.Vector();
+		final Vector<Object> structure = new Vector<>();
 		// System.out.println("making structure: root: "+root+", context:
 		// "+context);
 		if (criterion.accept(root)) {
@@ -438,7 +447,7 @@ public class PopupMenuUtilities {
 							delayedBindingPopupItem = new DelayedBindingPopupItem() {
 								@Override
 								public Object createItem() {
-									final java.util.Vector subStructure = makeElementStructure(child, criterion,
+									final Vector<Object> subStructure = makeElementStructure(child, criterion,
 											factory, context, currentValue);
 									if (subStructure.size() == 1 && criterion.accept(child)) {
 										if (child.equals(currentValue)) {
@@ -479,7 +488,7 @@ public class PopupMenuUtilities {
 						delayedBindingPopupItem = new DelayedBindingPopupItem() {
 							@Override
 							public Object createItem() {
-								final java.util.Vector subStructure = makeElementStructure(child, criterion, factory,
+								final Vector<Object> subStructure = makeElementStructure(child, criterion, factory,
 										context, currentValue);
 								if (subStructure.size() == 1 && criterion.accept(child)) {
 									if (child.equals(currentValue)) {
@@ -502,16 +511,16 @@ public class PopupMenuUtilities {
 		return structure;
 	}
 
-	public static java.util.Vector makeFlatElementStructure(final Element root,
+	public static Vector<Object> makeFlatElementStructure(final Element root,
 			final edu.cmu.cs.stage3.util.Criterion criterion, final PopupItemFactory factory,
 			final edu.cmu.cs.stage3.alice.core.Element context, final Object currentValue) {
-		final java.util.Vector structure = new java.util.Vector();
+		final Vector<Object> structure = new Vector<>();
 
 		final edu.cmu.cs.stage3.alice.core.Element[] elements = root.search(criterion);
 		for (final Element element : elements) {
-			String text = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(element);
+			String text = AuthoringToolResources.getReprForValue(element);
 			if (context != null) {
-				text = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getNameInContext(element, context);
+				text = AuthoringToolResources.getNameInContext(element, context);
 			}
 			if (element.equals(currentValue)) {
 				structure.addElement(new StringObjectPair(text,
@@ -524,21 +533,21 @@ public class PopupMenuUtilities {
 		return structure;
 	}
 
-	// public static java.util.Vector makeFlatExpressionStructure( Class
+	// public static Vector<Object> makeFlatExpressionStructure( Class
 	// valueClass, PopupItemFactory factory,
 	// edu.cmu.cs.stage3.alice.core.Element context ) {
-	// java.util.Vector structure = new java.util.Vector();
+	// Vector<Object> structure = new Vector<>();
 	//
 	// if( context != null ) {
 	// edu.cmu.cs.stage3.alice.core.Expression[] expressions =
 	// context.findAccessibleExpressions( valueClass );
 	// for( int i = 0; i < expressions.length; i++ ) {
 	// String text =
-	// edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(
+	// AuthoringToolResources.getReprForValue(
 	// expressions[i] );
 	// if( context != null ) {
 	// text =
-	// edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getNameInContext(
+	// AuthoringToolResources.getNameInContext(
 	// expressions[i], context );
 	// }
 	// if( expressions[i] instanceof
@@ -564,23 +573,23 @@ public class PopupMenuUtilities {
 	//
 	// return structure;
 	// }
-	public static java.util.Vector makeFlatExpressionStructure(final Class valueClass, final PopupItemFactory factory,
+	public static Vector<Object> makeFlatExpressionStructure(final Class<?> valueClass, final PopupItemFactory factory,
 			final edu.cmu.cs.stage3.alice.core.Element context, final Object currentValue) {
 		return makeFlatExpressionStructure(valueClass, null, factory, context, currentValue);
 	}
 
-	public static java.util.Vector makeFlatExpressionStructure(final Class valueClass,
+	public static Vector<Object> makeFlatExpressionStructure(final Class<?> valueClass,
 			final edu.cmu.cs.stage3.util.Criterion criterion, final PopupItemFactory factory,
 			final edu.cmu.cs.stage3.alice.core.Element context, final Object currentValue) {
-		final java.util.Vector structure = new java.util.Vector();
+		final Vector<Object> structure = new Vector<>();
 		if (context != null) {
 			final edu.cmu.cs.stage3.alice.core.Expression[] expressions = context.findAccessibleExpressions(valueClass);
 			for (final Expression expression : expressions) {
 				if (criterion == null || criterion.accept(expression)) {
-					String text = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+					String text = AuthoringToolResources
 							.getReprForValue(expression);
 					if (context != null) {
-						text = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getNameInContext(expression,
+						text = AuthoringToolResources.getNameInContext(expression,
 								context);
 					}
 					if (expression instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion) {
@@ -608,10 +617,10 @@ public class PopupMenuUtilities {
 		return structure;
 	}
 
-	public static java.util.Vector makeElementAndExpressionStructure(final Element root, final Class valueClass,
+	public static Vector<Object> makeElementAndExpressionStructure(final Element root, final Class<?> valueClass,
 			final PopupItemFactory factory, final boolean makeFlat, final edu.cmu.cs.stage3.alice.core.Element context,
 			final Object currentValue) {
-		java.util.Vector structure;
+		Vector<Object> structure;
 		if (makeFlat) {
 			structure = makeFlatElementStructure(root,
 					new edu.cmu.cs.stage3.util.criterion.InstanceOfCriterion(valueClass), factory, context,
@@ -621,14 +630,14 @@ public class PopupMenuUtilities {
 					factory, context, currentValue);
 		}
 
-		final java.util.Vector expressionStructure = makeFlatExpressionStructure(valueClass, factory, context,
+		final Vector<Object> expressionStructure = makeFlatExpressionStructure(valueClass, factory, context,
 				currentValue);
 		if (expressionStructure != null && expressionStructure.size() > 0) {
-			final String className = valueClass.getName();
+			// Unused ?? final String className = valueClass.getName();
 			if (structure.size() > 0) {
-				structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+				structure.add(new StringObjectPair("Separator", javax.swing.JSeparator.class));
 			}
-			structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("expressions", expressionStructure));
+			structure.add(new StringObjectPair("expressions", expressionStructure));
 		}
 
 		return structure;
@@ -638,22 +647,22 @@ public class PopupMenuUtilities {
 	 * the PopupItemFactory should accept a completed ResponsePrototype and
 	 * return a Runnable
 	 */
-	public static java.util.Vector makeResponseStructure(final edu.cmu.cs.stage3.alice.core.Element element,
+	public static Vector<Object> makeResponseStructure(final edu.cmu.cs.stage3.alice.core.Element element,
 			final PopupItemFactory factory, final edu.cmu.cs.stage3.alice.core.Element context) {
-		final java.util.Vector structure = new java.util.Vector();
-		Class valueClass = element.getClass();
+		final Vector<Object> structure = new Vector<>();
+		Class<?> valueClass = element.getClass();
 		if (element instanceof edu.cmu.cs.stage3.alice.core.Expression) {
 			valueClass = ((edu.cmu.cs.stage3.alice.core.Expression) element).getValueClass();
 		}
 
-		final java.util.Vector oneShotStructure = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
-				.getOneShotStructure(valueClass);
+		@SuppressWarnings("unchecked")
+		final Vector<Object> oneShotStructure = AuthoringToolResources.getOneShotStructure(valueClass);
 		if (oneShotStructure != null && oneShotStructure.size() > 0) {
 			boolean isFirst = true;
-			final String[] groupsToUse = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+			final String[] groupsToUse = AuthoringToolResources
 					.getOneShotGroupsToInclude();
 			for (int i = 0; i < oneShotStructure.size(); i++) {
-				final edu.cmu.cs.stage3.util.StringObjectPair sop = (edu.cmu.cs.stage3.util.StringObjectPair) oneShotStructure
+				final StringObjectPair sop = (StringObjectPair) oneShotStructure
 						.get(i); // pull
 									// off
 									// first
@@ -671,11 +680,12 @@ public class PopupMenuUtilities {
 				if (useIt) {
 					if (!isFirst) {
 						structure.add(
-								new edu.cmu.cs.stage3.util.StringObjectPair("separator", javax.swing.JSeparator.class));
+								new StringObjectPair("separator", javax.swing.JSeparator.class));
 					} else {
 						isFirst = false;
 					}
-					final java.util.Vector responseNames = (java.util.Vector) sop.getObject();
+					@SuppressWarnings("unchecked")
+					final Vector<Object> responseNames = (Vector<Object>) sop.getObject();
 					structure.addAll(makeOneShotStructure(responseNames, element, factory, context));
 				}
 			}
@@ -687,13 +697,13 @@ public class PopupMenuUtilities {
 					if (collection != null && collection.values.size() > 0 && edu.cmu.cs.stage3.alice.core.Model.class
 							.isAssignableFrom(collection.valueClass.getClassValue())) {
 						if (structure.size() > 0) {
-							structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Separator",
+							structure.add(new StringObjectPair("Separator",
 									javax.swing.JSeparator.class));
 						}
 						final DelayedBindingPopupItem delayedBindingPopupItem = new DelayedBindingPopupItem() {
 							@Override
 							public Object createItem() {
-								final java.util.Vector subStructure = new java.util.Vector();
+								final Vector<Object> subStructure = new Vector<>();
 								edu.cmu.cs.stage3.alice.core.Question question = null;
 								final Object[] items = collection.values.getArrayValue();
 								if (collection instanceof edu.cmu.cs.stage3.alice.core.List) {
@@ -701,7 +711,7 @@ public class PopupMenuUtilities {
 									question = new edu.cmu.cs.stage3.alice.core.question.visualization.list.ItemAtBeginning();
 									((edu.cmu.cs.stage3.alice.core.question.visualization.list.ItemAtBeginning) question).subject
 											.set(visualization);
-									java.util.Vector responseStructure = PopupMenuUtilities
+									Vector<Object> responseStructure = PopupMenuUtilities
 											.makeResponseStructure(question, factory, context);
 									subStructure.add(new StringObjectPair("item at the beginning", responseStructure));
 
@@ -731,7 +741,7 @@ public class PopupMenuUtilities {
 												.set(visualization);
 										((edu.cmu.cs.stage3.alice.core.question.visualization.array.ItemAtIndex) question).index
 												.set(new Double(i));
-										final java.util.Vector responseStructure = PopupMenuUtilities
+										final Vector<Object> responseStructure = PopupMenuUtilities
 												.makeResponseStructure(question, factory, context);
 										subStructure.add(new StringObjectPair("element " + i, responseStructure));
 									}
@@ -745,10 +755,10 @@ public class PopupMenuUtilities {
 			}
 			if (element instanceof edu.cmu.cs.stage3.alice.core.visualization.ModelVisualization) {
 				final edu.cmu.cs.stage3.alice.core.visualization.ModelVisualization visualization = (edu.cmu.cs.stage3.alice.core.visualization.ModelVisualization) element;
-				structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+				structure.add(new StringObjectPair("Separator", javax.swing.JSeparator.class));
 				final edu.cmu.cs.stage3.alice.core.Question question = new edu.cmu.cs.stage3.alice.core.question.visualization.model.Item();
 				((edu.cmu.cs.stage3.alice.core.question.visualization.model.Item) question).subject.set(visualization);
-				final java.util.Vector responseStructure = PopupMenuUtilities.makeResponseStructure(question, factory,
+				final Vector<Object> responseStructure = PopupMenuUtilities.makeResponseStructure(question, factory,
 						context);
 				structure.add(new StringObjectPair("item", responseStructure));
 			}
@@ -761,36 +771,36 @@ public class PopupMenuUtilities {
 	 * the PopupItemFactory should accept a completed ResponsePrototype and
 	 * return a Runnable
 	 */
-	public static java.util.Vector makeExpressionResponseStructure(
+	public static Vector<Object> makeExpressionResponseStructure(
 			final edu.cmu.cs.stage3.alice.core.Expression expression, final PopupItemFactory factory,
 			final edu.cmu.cs.stage3.alice.core.Element context) {
-		final java.util.Vector structure = new java.util.Vector();
+		final Vector<Object> structure = new Vector<>();
 
 		// if it's a variable, allow user to set it
 		if (expression instanceof edu.cmu.cs.stage3.alice.core.Variable) {
-			final edu.cmu.cs.stage3.util.StringObjectPair[] known = {
-					new edu.cmu.cs.stage3.util.StringObjectPair("element", expression),
-					new edu.cmu.cs.stage3.util.StringObjectPair("propertyName", "value"),
-					new edu.cmu.cs.stage3.util.StringObjectPair("duration", new Integer(0)) };
+			final StringObjectPair[] known = {
+					new StringObjectPair("element", expression),
+					new StringObjectPair("propertyName", "value"),
+					new StringObjectPair("duration", new Integer(0)) };
 			final String[] desired = { "value" };
-			final edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype rp = new edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype(
+			final ResponsePrototype rp = new ResponsePrototype(
 					edu.cmu.cs.stage3.alice.core.response.PropertyAnimation.class, known, desired);
-			final java.util.Vector setValueStructure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+			final Vector<Object> setValueStructure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 					.makePrototypeStructure(rp, factory, context);
 			if (setValueStructure != null && !setValueStructure.isEmpty()) {
-				structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("set value", setValueStructure));
+				structure.add(new StringObjectPair("set value", setValueStructure));
 			}
 		}
 
 		// cascade to appropriate responses
-		final java.util.Vector oneShotStructure = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
-				.getOneShotStructure(expression.getValueClass());
+		@SuppressWarnings("unchecked")
+		final Vector<Object> oneShotStructure = AuthoringToolResources.getOneShotStructure(expression.getValueClass());
 		if (oneShotStructure != null && oneShotStructure.size() > 0) {
 			boolean isFirst = true;
-			final String[] groupsToUse = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+			final String[] groupsToUse = AuthoringToolResources
 					.getOneShotGroupsToInclude();
 			for (int i = 0; i < oneShotStructure.size(); i++) {
-				final edu.cmu.cs.stage3.util.StringObjectPair sop = (edu.cmu.cs.stage3.util.StringObjectPair) oneShotStructure
+				final StringObjectPair sop = (StringObjectPair) oneShotStructure
 						.get(i); // pull
 									// off
 									// first
@@ -808,17 +818,18 @@ public class PopupMenuUtilities {
 				if (useIt) {
 					if (!isFirst) {
 						structure.add(
-								new edu.cmu.cs.stage3.util.StringObjectPair("separator", javax.swing.JSeparator.class));
+								new StringObjectPair("separator", javax.swing.JSeparator.class));
 					} else {
 						isFirst = false;
 					}
-					final java.util.Vector responseNames = (java.util.Vector) sop.getObject();
-					final java.util.Vector subStructure = makeOneShotStructure(responseNames, expression, factory,
+					@SuppressWarnings("unchecked")
+					final Vector<Object> responseNames = (Vector<Object>) sop.getObject();
+					final Vector<Object> subStructure = makeOneShotStructure(responseNames, expression, factory,
 							context);
 
 					if (subStructure.size() > 0) {
 						if (structure.size() > 0) {
-							structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Separator",
+							structure.add(new StringObjectPair("Separator",
 									javax.swing.JSeparator.class));
 						}
 						structure.addAll(subStructure);
@@ -840,13 +851,13 @@ public class PopupMenuUtilities {
 					if (collection != null && collection.values.size() > 0 && edu.cmu.cs.stage3.alice.core.Model.class
 							.isAssignableFrom(collection.valueClass.getClassValue())) {
 						if (structure.size() > 0) {
-							structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Separator",
+							structure.add(new StringObjectPair("Separator",
 									javax.swing.JSeparator.class));
 						}
 						final DelayedBindingPopupItem delayedBindingPopupItem = new DelayedBindingPopupItem() {
 							@Override
 							public Object createItem() {
-								final java.util.Vector subStructure = new java.util.Vector();
+								final Vector<Object> subStructure = new Vector<>();
 								final Object[] items = collection.values.getArrayValue();
 								for (int i = 0; i < items.length; i++) {
 									edu.cmu.cs.stage3.alice.core.Question question = null;
@@ -863,7 +874,7 @@ public class PopupMenuUtilities {
 										((edu.cmu.cs.stage3.alice.core.question.array.ItemAtIndex) question).index
 												.set(new Double(i));
 									}
-									final java.util.Vector responseStructure = PopupMenuUtilities
+									final Vector<Object> responseStructure = PopupMenuUtilities
 											.makeResponseStructure(question, factory, context);
 									subStructure.add(new StringObjectPair("item" + i, responseStructure));
 								}
@@ -879,56 +890,56 @@ public class PopupMenuUtilities {
 		return structure;
 	}
 
-	public static java.util.Vector makeOneShotStructure(final java.util.Vector responseNames,
+	public static Vector<Object> makeOneShotStructure(final Vector<Object> responseNames,
 			final edu.cmu.cs.stage3.alice.core.Element element, final PopupItemFactory factory,
 			final edu.cmu.cs.stage3.alice.core.Element context) {
-		final java.util.Vector structure = new java.util.Vector();
+		final Vector<Object> structure = new Vector<>();
 		if (responseNames != null) {
-			final int i = 0;
-			for (final java.util.Iterator iter = responseNames.iterator(); iter.hasNext();) {
+			// Unused ?? final int i = 0;
+			for (final Iterator<Object> iter = responseNames.iterator(); iter.hasNext();) {
 				final Object item = iter.next();
 				if (item instanceof String) {
 					final String className = (String) item;
 					try {
 						if (className.startsWith("edu.cmu.cs.stage3.alice.core.response.PropertyAnimation")) {
-							final String propertyName = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+							final String propertyName = AuthoringToolResources
 									.getSpecifier(className);
 							if (propertyName.equals("vehicle")) {
-								final edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues = new edu.cmu.cs.stage3.util.StringObjectPair[] {
-										new edu.cmu.cs.stage3.util.StringObjectPair("element", element),
-										new edu.cmu.cs.stage3.util.StringObjectPair("propertyName", propertyName),
-										new edu.cmu.cs.stage3.util.StringObjectPair("duration", new Double(0.0)), };
+								final StringObjectPair[] knownPropertyValues = new StringObjectPair[] {
+										new StringObjectPair("element", element),
+										new StringObjectPair("propertyName", propertyName),
+										new StringObjectPair("duration", new Double(0.0)), };
 								final String[] desiredProperties = new String[] { "value" };
-								final edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype responsePrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype(
+								final ResponsePrototype responsePrototype = new ResponsePrototype(
 										edu.cmu.cs.stage3.alice.core.response.VehiclePropertyAnimation.class,
 										knownPropertyValues, desiredProperties);
-								final String responseName = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+								final String responseName = AuthoringToolResources
 										.getFormattedReprForValue(
 												edu.cmu.cs.stage3.alice.core.response.PropertyAnimation.class,
 												knownPropertyValues);
-								final java.util.Vector subStructure = makePrototypeStructure(responsePrototype, factory,
+								final Vector<Object> subStructure = makePrototypeStructure(responsePrototype, factory,
 										context);
-								structure.add(new edu.cmu.cs.stage3.util.StringObjectPair(responseName, subStructure));
+								structure.add(new StringObjectPair(responseName, subStructure));
 							} else {
-								final edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues = new edu.cmu.cs.stage3.util.StringObjectPair[] {
-										new edu.cmu.cs.stage3.util.StringObjectPair("element", element),
-										new edu.cmu.cs.stage3.util.StringObjectPair("propertyName", propertyName) };
+								final StringObjectPair[] knownPropertyValues = new StringObjectPair[] {
+										new StringObjectPair("element", element),
+										new StringObjectPair("propertyName", propertyName) };
 								final String[] desiredProperties = new String[] { "value" };
-								final edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype responsePrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype(
+								final ResponsePrototype responsePrototype = new ResponsePrototype(
 										edu.cmu.cs.stage3.alice.core.response.PropertyAnimation.class,
 										knownPropertyValues, desiredProperties);
-								final String responseName = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+								final String responseName = AuthoringToolResources
 										.getFormattedReprForValue(
 												edu.cmu.cs.stage3.alice.core.response.PropertyAnimation.class,
 												knownPropertyValues);
-								final java.util.Vector subStructure = makePrototypeStructure(responsePrototype, factory,
+								final Vector<Object> subStructure = makePrototypeStructure(responsePrototype, factory,
 										context);
-								structure.add(new edu.cmu.cs.stage3.util.StringObjectPair(responseName, subStructure));
+								structure.add(new StringObjectPair(responseName, subStructure));
 							}
 						} else {
-							final Class responseClass = Class.forName(className);
-							final java.util.LinkedList known = new java.util.LinkedList();
-							final String format = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+							final Class<?> responseClass = Class.forName(className);
+							final java.util.LinkedList<StringObjectPair> known = new java.util.LinkedList<StringObjectPair>();
+							final String format = AuthoringToolResources
 									.getFormat(responseClass);
 							final edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer tokenizer = new edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer(
 									format);
@@ -940,41 +951,41 @@ public class PopupMenuUtilities {
 											token.indexOf(">"));
 									// System.out.println("property name:
 									// "+propertyName+", element "+element);
-									known.add(new edu.cmu.cs.stage3.util.StringObjectPair(propertyName, element));
+									known.add(new StringObjectPair(propertyName, element));
 								}
 							}
-							final edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues = (edu.cmu.cs.stage3.util.StringObjectPair[]) known
-									.toArray(new edu.cmu.cs.stage3.util.StringObjectPair[0]);
-							final String[] desiredProperties = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+							final StringObjectPair[] knownPropertyValues = known
+									.toArray(new StringObjectPair[0]);
+							final String[] desiredProperties = AuthoringToolResources
 									.getDesiredProperties(responseClass);
-							final edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype responsePrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype(
+							final ResponsePrototype responsePrototype = new ResponsePrototype(
 									responseClass, knownPropertyValues, desiredProperties);
-							final String responseName = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+							final String responseName = AuthoringToolResources
 									.getFormattedReprForValue(responseClass, knownPropertyValues);
 
 							if (responsePrototype.getDesiredProperties().length > 0) {
-								final java.util.Vector subStructure = makePrototypeStructure(responsePrototype, factory,
+								final Vector<Object> subStructure = makePrototypeStructure(responsePrototype, factory,
 										context);
-								structure.add(new edu.cmu.cs.stage3.util.StringObjectPair(responseName, subStructure));
+								structure.add(new StringObjectPair(responseName, subStructure));
 							} else {
-								structure.add(new edu.cmu.cs.stage3.util.StringObjectPair(responseName,
+								structure.add(new StringObjectPair(responseName,
 										factory.createItem(responsePrototype)));
 							}
 						}
 					} catch (final Throwable t) {
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+						AuthoringTool
 								.showErrorDialog("Error creating popup item.", t);
 					}
-				} else if (item instanceof edu.cmu.cs.stage3.util.StringObjectPair) {
+				} else if (item instanceof StringObjectPair) {
 					try {
-						final String label = ((edu.cmu.cs.stage3.util.StringObjectPair) item).getString();
-						final java.util.Vector subResponseNames = (java.util.Vector) ((edu.cmu.cs.stage3.util.StringObjectPair) item)
-								.getObject();
-						final java.util.Vector subStructure = makeOneShotStructure(subResponseNames, element, factory,
+						final String label = ((StringObjectPair) item).getString();
+						@SuppressWarnings("unchecked")
+						final Vector<Object> subResponseNames = (Vector<Object>) ((StringObjectPair) item).getObject();
+						final Vector<Object> subStructure = makeOneShotStructure(subResponseNames, element, factory,
 								context);
-						structure.add(new edu.cmu.cs.stage3.util.StringObjectPair(label, subStructure));
+						structure.add(new StringObjectPair(label, subStructure));
 					} catch (final Throwable t) {
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+						AuthoringTool
 								.showErrorDialog("Error creating popup item.", t);
 					}
 				}
@@ -988,21 +999,21 @@ public class PopupMenuUtilities {
 	 * the PopupItemFactory should accept a completed ElementPrototype and
 	 * return a Runnable
 	 */
-	public static java.util.Vector makePropertyAssignmentForUserDefinedQuestionStructure(
+	public static Vector<Object> makePropertyAssignmentForUserDefinedQuestionStructure(
 			final edu.cmu.cs.stage3.alice.core.Property property, final PopupItemFactory factory,
 			final edu.cmu.cs.stage3.alice.core.Element context) {
-		final java.util.Vector structure = new java.util.Vector();
+		final Vector<Object> structure = new Vector<>();
 
-		final edu.cmu.cs.stage3.util.StringObjectPair[] known = {
-				new edu.cmu.cs.stage3.util.StringObjectPair("element", property.getOwner()),
-				new edu.cmu.cs.stage3.util.StringObjectPair("propertyName", property.getName()) };
+		final StringObjectPair[] known = {
+				new StringObjectPair("element", property.getOwner()),
+				new StringObjectPair("propertyName", property.getName()) };
 		final String[] desired = { "value" };
 		final ElementPrototype ep = new ElementPrototype(
 				edu.cmu.cs.stage3.alice.core.question.userdefined.PropertyAssignment.class, known, desired);
-		final java.util.Vector setValueStructure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+		final Vector<Object> setValueStructure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 				.makePrototypeStructure(ep, factory, context);
 		if (setValueStructure != null && !setValueStructure.isEmpty()) {
-			structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("set value", setValueStructure));
+			structure.add(new StringObjectPair("set value", setValueStructure));
 		}
 
 		return structure;
@@ -1015,9 +1026,9 @@ public class PopupMenuUtilities {
 	 * the PopupItemFactory should accept a completed ElementPrototype and
 	 * rerfturn a Runnable
 	 */
-	public static java.util.Vector makePrototypeStructure(final ElementPrototype elementPrototype,
+	public static Vector<Object> makePrototypeStructure(final ElementPrototype elementPrototype,
 			final PopupItemFactory factory, final edu.cmu.cs.stage3.alice.core.Element context) {
-		final java.util.Vector structure = new java.util.Vector();
+		final Vector<Object> structure = new Vector<>();
 		final String[] desiredProperties = elementPrototype.getDesiredProperties();
 		if (desiredProperties == null || desiredProperties.length == 0) {
 			structure.add(new StringObjectPair("no properties to set on " + elementPrototype.getElementClass().getName()
@@ -1028,15 +1039,15 @@ public class PopupMenuUtilities {
 																							// reached
 		} else if (desiredProperties.length > 0) {
 			final String preRepr = elementPrototype.getElementClass().getName() + "." + desiredProperties[0];
-			String propertyRepr = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(preRepr);
+			String propertyRepr = AuthoringToolResources.getReprForValue(preRepr);
 			if (propertyRepr.equals(preRepr)) {
 				propertyRepr = desiredProperties[0];
 			}
-			structure.add(new edu.cmu.cs.stage3.util.StringObjectPair(propertyRepr, null));
-			// structure.add( new edu.cmu.cs.stage3.util.StringObjectPair(
+			structure.add(new StringObjectPair(propertyRepr, null));
+			// structure.add( new StringObjectPair(
 			// "Separator", javax.swing.JSeparator.class ) );
-			Class preValueClass = null;
-			java.util.Vector preDefaultStructure = null;
+			Class<?> preValueClass = null;
+			Vector<Object> preDefaultStructure = null;
 			if (edu.cmu.cs.stage3.alice.core.response.PropertyAnimation.class
 					.isAssignableFrom(elementPrototype.getElementClass())) {
 				preDefaultStructure = getDefaultValueStructureForPropertyAnimation(
@@ -1097,7 +1108,7 @@ public class PopupMenuUtilities {
 				for (final Object param : params) {
 					if (((edu.cmu.cs.stage3.alice.core.Variable) param).name.getStringValue()
 							.equals(desiredProperties[0])) {
-						preValueClass = (Class) ((edu.cmu.cs.stage3.alice.core.Variable) param).valueClass.getValue();
+						preValueClass = (Class<?>) ((edu.cmu.cs.stage3.alice.core.Variable) param).valueClass.getValue();
 						break;
 					}
 				}
@@ -1109,7 +1120,7 @@ public class PopupMenuUtilities {
 				for (final Object param : params) {
 					if (((edu.cmu.cs.stage3.alice.core.Variable) param).name.getStringValue()
 							.equals(desiredProperties[0])) {
-						preValueClass = (Class) ((edu.cmu.cs.stage3.alice.core.Variable) param).valueClass.getValue();
+						preValueClass = (Class<?>) ((edu.cmu.cs.stage3.alice.core.Variable) param).valueClass.getValue();
 						break;
 					}
 				}
@@ -1129,7 +1140,7 @@ public class PopupMenuUtilities {
 
 			// hack so we can use these in an inner class
 
-			final Class valueClass = preValueClass;
+			final Class<?> valueClass = preValueClass;
 
 			final PopupItemFactory recursiveFactory = new PopupItemFactory() {
 				@Override
@@ -1156,26 +1167,26 @@ public class PopupMenuUtilities {
 						// DEBUG System.out.println( "end of the line: " +
 						// desiredProperties[0] + ", " + o );
 						return factory.createItem(elementPrototype
-								.createCopy(new edu.cmu.cs.stage3.util.StringObjectPair(desiredProperties[0], o)));
+								.createCopy(new StringObjectPair(desiredProperties[0], o)));
 					} else { // recurse
 						// DEBUG System.out.println( "recursive: " +
 						// desiredProperties[0] + ", " + o );
 						return makePrototypeStructure(
 								elementPrototype.createCopy(
-										new edu.cmu.cs.stage3.util.StringObjectPair(desiredProperties[0], o)),
+										new StringObjectPair(desiredProperties[0], o)),
 								factory, context);
 					}
 				}
 			};
 			// hack so we can use these in an inner class
-			final java.util.Vector defaultStructure = processStructure(preDefaultStructure, recursiveFactory,
+			final Vector<Object> defaultStructure = processStructure(preDefaultStructure, recursiveFactory,
 					NO_CURRENT_VALUE);
 			// compute recent values
-			final java.util.Vector recentlyUsedStructure = new java.util.Vector();
+			final Vector<Object> recentlyUsedStructure = new Vector<>();
 			if (recentlyUsedValues.containsKey(preValueClass)) {
-				final java.util.List recentList = (java.util.List) recentlyUsedValues.get(preValueClass);
+				final java.util.List<Object> recentList = recentlyUsedValues.get(preValueClass);
 				int count = 0;
-				for (final java.util.Iterator iter = recentList.iterator(); iter.hasNext();) {
+				for (final java.util.Iterator<Object> iter = recentList.iterator(); iter.hasNext();) {
 					if (count > Integer.parseInt(authoringToolConfig.getValue("maxRecentlyUsedValues"))) {
 						break;
 					}
@@ -1190,7 +1201,7 @@ public class PopupMenuUtilities {
 			if (!defaultStructure.isEmpty()) {
 				if (structure.size() > 0) {
 					structure.add(
-							new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+							new StringObjectPair("Separator", javax.swing.JSeparator.class));
 				}
 				structure.addAll(defaultStructure);
 			}
@@ -1199,7 +1210,7 @@ public class PopupMenuUtilities {
 			if (!recentlyUsedStructure.isEmpty()) {
 				if (structure.size() > 0) {
 					structure.add(
-							new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+							new StringObjectPair("Separator", javax.swing.JSeparator.class));
 				}
 				addLabelsToValueStructure(recentlyUsedStructure, elementPrototype.getElementClass(),
 						desiredProperties[0]);
@@ -1230,8 +1241,8 @@ public class PopupMenuUtilities {
 			final InAppropriateObjectArrayPropertyCriterion inAppropriateOAPCriterion = new InAppropriateObjectArrayPropertyCriterion();
 			edu.cmu.cs.stage3.util.Criterion criterion = new edu.cmu.cs.stage3.util.criterion.MatchesAllCriterion(
 					new edu.cmu.cs.stage3.util.Criterion[] { instanceOf, elementIsNamed, inAppropriateOAPCriterion });
-			final Class elementClass = elementPrototype.getElementClass();
-			final edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues = elementPrototype
+			final Class<?> elementClass = elementPrototype.getElementClass();
+			final StringObjectPair[] knownPropertyValues = elementPrototype
 					.getKnownPropertyValues();
 
 			// Don't get self criterion stuff!
@@ -1266,14 +1277,14 @@ public class PopupMenuUtilities {
 				if (elements.length > 0) {
 					if (elements.length < 10) {
 						if (structure.size() > 0) {
-							structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Separator",
+							structure.add(new StringObjectPair("Separator",
 									javax.swing.JSeparator.class));
 						}
 						structure.addAll(makeFlatElementStructure(context.getRoot(), criterion, recursiveFactory,
 								context, NO_CURRENT_VALUE));
 					} else {
 						if (structure.size() > 0) {
-							structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Separator",
+							structure.add(new StringObjectPair("Separator",
 									javax.swing.JSeparator.class));
 						}
 						structure.addAll(makeElementStructure(context.getRoot(), criterion, recursiveFactory, context,
@@ -1295,14 +1306,14 @@ public class PopupMenuUtilities {
 					if (elements.length > 0) {
 						if (elements.length < 10) {
 							if (structure.size() > 0) {
-								structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Separator",
+								structure.add(new StringObjectPair("Separator",
 										javax.swing.JSeparator.class));
 							}
 							structure.addAll(makeFlatElementStructure(context.getRoot(), modelCriterion,
 									recursiveFactory, context, NO_CURRENT_VALUE));
 						} else {
 							if (structure.size() > 0) {
-								structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Separator",
+								structure.add(new StringObjectPair("Separator",
 										javax.swing.JSeparator.class));
 							}
 							structure.addAll(makeElementStructure(context.getRoot(), modelCriterion, recursiveFactory,
@@ -1320,14 +1331,14 @@ public class PopupMenuUtilities {
 					if (elements.length > 0) {
 						if (elements.length < 10) {
 							if (structure.size() > 0) {
-								structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Separator",
+								structure.add(new StringObjectPair("Separator",
 										javax.swing.JSeparator.class));
 							}
 							structure.addAll(makeFlatElementStructure(context.getRoot(), modelCriterion,
 									recursiveFactory, context, NO_CURRENT_VALUE));
 						} else {
 							if (structure.size() > 0) {
-								structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Separator",
+								structure.add(new StringObjectPair("Separator",
 										javax.swing.JSeparator.class));
 							}
 							structure.addAll(makeElementStructure(context.getRoot(), modelCriterion, recursiveFactory,
@@ -1345,14 +1356,14 @@ public class PopupMenuUtilities {
 					if (elements.length > 0) {
 						if (elements.length < 10) {
 							if (structure.size() > 0) {
-								structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Separator",
+								structure.add(new StringObjectPair("Separator",
 										javax.swing.JSeparator.class));
 							}
 							structure.addAll(makeFlatElementStructure(context.getRoot(), modelCriterion,
 									recursiveFactory, context, NO_CURRENT_VALUE));
 						} else {
 							if (structure.size() > 0) {
-								structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Separator",
+								structure.add(new StringObjectPair("Separator",
 										javax.swing.JSeparator.class));
 							}
 							structure.addAll(makeElementStructure(context.getRoot(), modelCriterion, recursiveFactory,
@@ -1373,7 +1384,7 @@ public class PopupMenuUtilities {
 						@Override
 						public void run() {
 							((Runnable) factory.createItem(elementPrototype
-									.createCopy(new edu.cmu.cs.stage3.util.StringObjectPair(desiredProperties[0], o))))
+									.createCopy(new StringObjectPair(desiredProperties[0], o))))
 											.run();
 						}
 					};
@@ -1384,7 +1395,7 @@ public class PopupMenuUtilities {
 						edu.cmu.cs.stage3.alice.authoringtool.JAlice.getAliceHomeDirectory(), "sounds")
 								.getAbsoluteFile();
 				if (soundDir.exists() && soundDir.isDirectory()) {
-					final java.util.ArrayList sounds = new java.util.ArrayList();
+					final java.util.ArrayList<File> sounds = new java.util.ArrayList<File>();
 					final java.io.File[] fileList = soundDir.listFiles();
 					for (final File element : fileList) {
 						if (element.isFile() && element.canRead()) {
@@ -1394,42 +1405,42 @@ public class PopupMenuUtilities {
 
 					if (sounds.size() > 0) {
 						if (structure.size() > 0) {
-							structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Separator",
+							structure.add(new StringObjectPair("Separator",
 									javax.swing.JSeparator.class));
 						}
-						for (final java.util.Iterator iter = sounds.iterator(); iter.hasNext();) {
-							final java.io.File soundFile = (java.io.File) iter.next();
+						for (final java.util.Iterator<File> iter = sounds.iterator(); iter.hasNext();) {
+							final java.io.File soundFile = iter.next();
 							String name = soundFile.getName();
 							name = name.substring(0, name.lastIndexOf('.'));
 							final Runnable importSoundRunnable = new Runnable() {
 								@Override
 								public void run() {
-									final edu.cmu.cs.stage3.alice.core.Sound sound = (edu.cmu.cs.stage3.alice.core.Sound) edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+									final edu.cmu.cs.stage3.alice.core.Sound sound = (edu.cmu.cs.stage3.alice.core.Sound) AuthoringTool
 											.getHack().importElement(soundFile, context.getSandbox());
 									if (sound != null) {
 										((Runnable) factory.createItem(
-												elementPrototype.createCopy(new edu.cmu.cs.stage3.util.StringObjectPair(
+												elementPrototype.createCopy(new StringObjectPair(
 														desiredProperties[0], sound)))).run();
 									}
 									// edu.cmu.cs.stage3.alice.authoringtool.util.SwingWorker
 									// worker =
-									// edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().importElement(
+									// AuthoringTool.getHack().importElement(
 									// soundFile, context.getSandbox() );
 									// ((Runnable)factory.createItem(
 									// elementPrototype.createCopy( new
-									// edu.cmu.cs.stage3.util.StringObjectPair(
+									// StringObjectPair(
 									// desiredProperties[0], worker.get() ) )
 									// )).run();
 								}
 							};
-							structure.add(new edu.cmu.cs.stage3.util.StringObjectPair(name, importSoundRunnable));
+							structure.add(new StringObjectPair(name, importSoundRunnable));
 						}
 					}
 				}
 
 				if (structure.size() > 0) {
 					structure.add(
-							new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+							new StringObjectPair("Separator", javax.swing.JSeparator.class));
 				}
 				final Runnable importRunnable = new Runnable() {
 					@Override
@@ -1438,36 +1449,36 @@ public class PopupMenuUtilities {
 						// PropertyPopupPostWorker( metaFactory );
 						final PropertyPopupPostImportRunnable propertyPopupPostImportRunnable = new PropertyPopupPostImportRunnable(
 								metaFactory);
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack()
+						AuthoringTool.getHack()
 								.setImportFileFilter("Sound Files");
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().importElement(null,
+						AuthoringTool.getHack().importElement(null,
 								context.getSandbox(), propertyPopupPostImportRunnable);
 					}
 				};
 				final Runnable recordRunnable = new Runnable() {
 					@Override
 					public void run() {
-						final edu.cmu.cs.stage3.alice.core.Sound sound = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+						final edu.cmu.cs.stage3.alice.core.Sound sound = AuthoringTool
 								.getHack().promptUserForRecordedSound(context.getSandbox());
 						if (sound != null) {
 							((Runnable) factory.createItem(elementPrototype.createCopy(
-									new edu.cmu.cs.stage3.util.StringObjectPair(desiredProperties[0], sound)))).run();
+									new StringObjectPair(desiredProperties[0], sound)))).run();
 						}
 					}
 				};
-				structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("import sound file...", importRunnable));
-				structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("record new sound...", recordRunnable));
+				structure.add(new StringObjectPair("import sound file...", importRunnable));
+				structure.add(new StringObjectPair("record new sound...", recordRunnable));
 			}
 
 			// expressions
-			final java.util.Vector expressionStructure = makeFlatExpressionStructure(valueClass, recursiveFactory,
+			final Vector<Object> expressionStructure = makeFlatExpressionStructure(valueClass, recursiveFactory,
 					context, NO_CURRENT_VALUE);
 			if (expressionStructure != null && expressionStructure.size() > 0) {
 				if (structure.size() > 0) {
 					structure.add(
-							new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+							new StringObjectPair("Separator", javax.swing.JSeparator.class));
 				}
-				structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("expressions", expressionStructure));
+				structure.add(new StringObjectPair("expressions", expressionStructure));
 			}
 
 			// Null
@@ -1477,7 +1488,7 @@ public class PopupMenuUtilities {
 			} else if (elementPrototype instanceof edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedQuestionPrototype) {
 				nullValid = true;
 			} else {
-				nullValid = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+				nullValid = AuthoringToolResources
 						.shouldGUIIncludeNone(elementPrototype.getElementClass(), desiredProperties[0]);
 				// nullValid =
 				// edu.cmu.cs.stage3.alice.core.Element.isNullValidForPropertyNamed(
@@ -1486,18 +1497,18 @@ public class PopupMenuUtilities {
 			if (nullValid) {
 				if (structure.size() > 0) {
 					structure.add(
-							new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+							new StringObjectPair("Separator", javax.swing.JSeparator.class));
 				}
-				final String nullRepr = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+				final String nullRepr = AuthoringToolResources
 						.getReprForValue(null, elementClass, desiredProperties[0], "menuContext");
 				if (desiredProperties.length == 1) { // end of the line
 					structure.add(new StringObjectPair(nullRepr, factory.createItem(elementPrototype
-							.createCopy(new edu.cmu.cs.stage3.util.StringObjectPair(desiredProperties[0], null)))));
+							.createCopy(new StringObjectPair(desiredProperties[0], null)))));
 				} else { // recurse
 					structure
 							.add(new StringObjectPair(nullRepr,
 									makePrototypeStructure(elementPrototype.createCopy(
-											new edu.cmu.cs.stage3.util.StringObjectPair(desiredProperties[0], null)),
+											new StringObjectPair(desiredProperties[0], null)),
 											factory, context)));
 				}
 			}
@@ -1510,7 +1521,7 @@ public class PopupMenuUtilities {
 						@Override
 						public void run() {
 							((Runnable) factory.createItem(elementPrototype
-									.createCopy(new edu.cmu.cs.stage3.util.StringObjectPair(desiredProperties[0], o))))
+									.createCopy(new StringObjectPair(desiredProperties[0], o))))
 											.run();
 						}
 					};
@@ -1520,7 +1531,7 @@ public class PopupMenuUtilities {
 					.isOtherDialogSupportedForClass(valueClass)) {
 				if (structure.size() > 0) {
 					structure.add(
-							new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+							new StringObjectPair("Separator", javax.swing.JSeparator.class));
 				}
 				final Runnable runnable = new Runnable() {
 					@Override
@@ -1532,19 +1543,19 @@ public class PopupMenuUtilities {
 								otherFactory, context);
 					}
 				};
-				structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("other...", runnable));
+				structure.add(new StringObjectPair("other...", runnable));
 			}
 
 			// allow user to create new list
 			if (edu.cmu.cs.stage3.alice.core.List.class.isAssignableFrom(valueClass) && desiredProperties.length == 1) {
 				if (structure.size() > 0) {
 					structure.add(
-							new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+							new StringObjectPair("Separator", javax.swing.JSeparator.class));
 				}
 				final Runnable createNewListRunnable = new Runnable() {
 					@Override
 					public void run() {
-						final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+						final AuthoringTool authoringTool = AuthoringTool
 								.getHack();
 						final edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty variables = context
 								.getSandbox().variables;
@@ -1561,7 +1572,7 @@ public class PopupMenuUtilities {
 								}
 							}
 							((Runnable) factory.createItem(elementPrototype.createCopy(
-									new edu.cmu.cs.stage3.util.StringObjectPair(desiredProperties[0], variable))))
+									new StringObjectPair(desiredProperties[0], variable))))
 											.run();
 						}
 					}
@@ -1581,7 +1592,7 @@ public class PopupMenuUtilities {
 	 *             edu.cmu.cs.stage3.alice.core.Element root )
 	 */
 	@Deprecated
-	public static java.util.Vector makePropertyStructure(final edu.cmu.cs.stage3.alice.core.Property property,
+	public static Vector<Object> makePropertyStructure(final edu.cmu.cs.stage3.alice.core.Property property,
 			final PopupItemFactory factory, final boolean includeDefaults, final boolean includeExpressions,
 			final boolean includeOther) {
 		return makePropertyStructure(property, factory, includeDefaults, includeExpressions, includeOther, null);
@@ -1593,14 +1604,14 @@ public class PopupMenuUtilities {
 	 * root is used to create an Element hierarchy if needed. if root is null,
 	 * property.getElement().getRoot() is used.
 	 */
-	public static java.util.Vector makePropertyStructure(final edu.cmu.cs.stage3.alice.core.Property property,
+	public static Vector<Object> makePropertyStructure(final edu.cmu.cs.stage3.alice.core.Property property,
 			final PopupItemFactory factory, final boolean includeDefaults, final boolean includeExpressions,
 			final boolean includeOther, edu.cmu.cs.stage3.alice.core.Element root) {
 		if (root == null) {
 			root = property.getOwner().getRoot();
 		}
-		java.util.Vector structure = new java.util.Vector();
-		final Class targetValueClass = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+		Vector<Object> structure = new Vector<>();
+		final Class<?> targetValueClass = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 				.getDesiredValueClass(property);
 		if (edu.cmu.cs.stage3.alice.core.List.class.isAssignableFrom(targetValueClass)) { // lists
 																							// are
@@ -1610,7 +1621,7 @@ public class PopupMenuUtilities {
 					.getPropertyReferencesTo(property.getOwner(), edu.cmu.cs.stage3.util.HowMuch.INSTANCE, false);
 			if (property.getOwner() instanceof edu.cmu.cs.stage3.alice.core.question.list.ListObjectQuestion
 					&& references.length > 0) {
-				final Class itemValueClass = references[0].getProperty().getValueClass();
+				final Class<?> itemValueClass = references[0].getProperty().getValueClass();
 				final edu.cmu.cs.stage3.util.Criterion criterion = new edu.cmu.cs.stage3.util.Criterion() {
 					@Override
 					public boolean accept(final Object o) {
@@ -1629,19 +1640,19 @@ public class PopupMenuUtilities {
 				structure = makeFlatExpressionStructure(targetValueClass, criterion, factory, property.getOwner(),
 						property.get());
 
-				if (!edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitNone(property)) {
+				if (!AuthoringToolResources.shouldGUIOmitNone(property)) {
 					if (structure.size() > 0) {
 						structure.add(
-								new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+								new StringObjectPair("Separator", javax.swing.JSeparator.class));
 					}
 					if (property.get() == null) {
-						structure.add(new edu.cmu.cs.stage3.util.StringObjectPair(
-								edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(null,
+						structure.add(new StringObjectPair(
+								AuthoringToolResources.getReprForValue(null,
 										property, "menuContext"),
 								new PopupItemWithIcon(factory.createItem(null), currentValueIcon)));
 					} else {
-						structure.add(new edu.cmu.cs.stage3.util.StringObjectPair(
-								edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(null,
+						structure.add(new StringObjectPair(
+								AuthoringToolResources.getReprForValue(null,
 										property, "menuContext"),
 								factory.createItem(null)));
 					}
@@ -1649,19 +1660,19 @@ public class PopupMenuUtilities {
 			} else { // not an anonymous list question; accept all lists
 				structure = makeFlatExpressionStructure(targetValueClass, factory, property.getOwner(), property.get());
 
-				if (!edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitNone(property)) {
+				if (!AuthoringToolResources.shouldGUIOmitNone(property)) {
 					if (structure.size() > 0) {
 						structure.add(
-								new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+								new StringObjectPair("Separator", javax.swing.JSeparator.class));
 					}
 					if (property.get() == null) {
-						structure.add(new edu.cmu.cs.stage3.util.StringObjectPair(
-								edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(null,
+						structure.add(new StringObjectPair(
+								AuthoringToolResources.getReprForValue(null,
 										property, "menuContext"),
 								new PopupItemWithIcon(factory.createItem(null), currentValueIcon)));
 					} else {
-						structure.add(new edu.cmu.cs.stage3.util.StringObjectPair(
-								edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(null,
+						structure.add(new StringObjectPair(
+								AuthoringToolResources.getReprForValue(null,
 										property, "menuContext"),
 								factory.createItem(null)));
 					}
@@ -1670,12 +1681,12 @@ public class PopupMenuUtilities {
 				// allow user to create new list
 				if (structure.size() > 0) {
 					structure.add(
-							new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+							new StringObjectPair("Separator", javax.swing.JSeparator.class));
 				}
 				final Runnable createNewListRunnable = new Runnable() {
 					@Override
 					public void run() {
-						final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+						final AuthoringTool authoringTool = AuthoringTool
 								.getHack();
 						final edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty variables = property.getOwner()
 								.getSandbox().variables;
@@ -1690,7 +1701,7 @@ public class PopupMenuUtilities {
 						}
 					}
 				};
-				structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("create new list...", createNewListRunnable));
+				structure.add(new StringObjectPair("create new list...", createNewListRunnable));
 			}
 		} else if (edu.cmu.cs.stage3.alice.core.Array.class.isAssignableFrom(targetValueClass)) { // arrays
 																									// are
@@ -1701,7 +1712,7 @@ public class PopupMenuUtilities {
 					.getPropertyReferencesTo(property.getOwner(), edu.cmu.cs.stage3.util.HowMuch.INSTANCE, false);
 			if (property.getOwner() instanceof edu.cmu.cs.stage3.alice.core.question.array.ArrayObjectQuestion
 					&& references.length > 0) {
-				final Class itemValueClass = references[0].getProperty().getValueClass();
+				final Class<?> itemValueClass = references[0].getProperty().getValueClass();
 				final edu.cmu.cs.stage3.util.Criterion criterion = new edu.cmu.cs.stage3.util.Criterion() {
 					@Override
 					public boolean accept(final Object o) {
@@ -1720,19 +1731,19 @@ public class PopupMenuUtilities {
 				structure = makeFlatExpressionStructure(targetValueClass, criterion, factory, property.getOwner(),
 						property.get());
 
-				if (!edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitNone(property)) {
+				if (!AuthoringToolResources.shouldGUIOmitNone(property)) {
 					if (structure.size() > 0) {
 						structure.add(
-								new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+								new StringObjectPair("Separator", javax.swing.JSeparator.class));
 					}
 					if (property.get() == null) {
-						structure.add(new edu.cmu.cs.stage3.util.StringObjectPair(
-								edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(null,
+						structure.add(new StringObjectPair(
+								AuthoringToolResources.getReprForValue(null,
 										property, "menuContext"),
 								new PopupItemWithIcon(factory.createItem(null), currentValueIcon)));
 					} else {
-						structure.add(new edu.cmu.cs.stage3.util.StringObjectPair(
-								edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(null,
+						structure.add(new StringObjectPair(
+								AuthoringToolResources.getReprForValue(null,
 										property, "menuContext"),
 								factory.createItem(null)));
 					}
@@ -1740,19 +1751,19 @@ public class PopupMenuUtilities {
 			} else { // not an anonymous array question; accept all arrays
 				structure = makeFlatExpressionStructure(targetValueClass, factory, property.getOwner(), property.get());
 
-				if (!edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitNone(property)) {
+				if (!AuthoringToolResources.shouldGUIOmitNone(property)) {
 					if (structure.size() > 0) {
 						structure.add(
-								new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+								new StringObjectPair("Separator", javax.swing.JSeparator.class));
 					}
 					if (property.get() == null) {
-						structure.add(new edu.cmu.cs.stage3.util.StringObjectPair(
-								edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(null,
+						structure.add(new StringObjectPair(
+								AuthoringToolResources.getReprForValue(null,
 										property, "menuContext"),
 								new PopupItemWithIcon(factory.createItem(null), currentValueIcon)));
 					} else {
-						structure.add(new edu.cmu.cs.stage3.util.StringObjectPair(
-								edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(null,
+						structure.add(new StringObjectPair(
+								AuthoringToolResources.getReprForValue(null,
 										property, "menuContext"),
 								factory.createItem(null)));
 					}
@@ -1800,12 +1811,12 @@ public class PopupMenuUtilities {
 				} else {
 					// default and recently used values
 
-					final java.util.Vector defaultStructure = getDefaultValueStructureForProperty(property);
-					final java.util.Vector recentlyUsedStructure = new java.util.Vector();
+					final Vector<Object> defaultStructure = getDefaultValueStructureForProperty(property);
+					final Vector<Object> recentlyUsedStructure = new Vector<>();
 					if (recentlyUsedValues.containsKey(targetValueClass)) {
-						final java.util.List recentList = (java.util.List) recentlyUsedValues.get(targetValueClass);
+						final java.util.List<Object> recentList = recentlyUsedValues.get(targetValueClass);
 						int count = 0;
-						for (final java.util.Iterator iter = recentList.iterator(); iter.hasNext();) {
+						for (final java.util.Iterator<Object> iter = recentList.iterator(); iter.hasNext();) {
 							if (count > Integer.parseInt(authoringToolConfig.getValue("maxRecentlyUsedValues"))) {
 								break;
 							}
@@ -1819,7 +1830,7 @@ public class PopupMenuUtilities {
 
 					// make sure current value is represented
 					final Object currentValue = property.get();
-					final java.util.Vector unlabeledDefaultValueStructure = getUnlabeledDefaultValueStructureForProperty(
+					final Vector<Object> unlabeledDefaultValueStructure = getUnlabeledDefaultValueStructureForProperty(
 							property.getOwner().getClass(), property.getName(), property); // very
 					// hackish
 					if (!(unlabeledDefaultValueStructure.contains(currentValue)
@@ -1835,12 +1846,12 @@ public class PopupMenuUtilities {
 
 					if (structure.size() > 0) {
 						structure.add(
-								new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+								new StringObjectPair("Separator", javax.swing.JSeparator.class));
 					}
 					structure.addAll(processStructure(defaultStructure, factory, property.get()));
 					if (!recentlyUsedStructure.isEmpty() && !property.getName().equalsIgnoreCase("keyCode")) {
 						if (structure.size() > 0) {
-							structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Separator",
+							structure.add(new StringObjectPair("Separator",
 									javax.swing.JSeparator.class));
 						}
 						addLabelsToValueStructure(recentlyUsedStructure, property.getOwner().getClass(),
@@ -1965,7 +1976,7 @@ public class PopupMenuUtilities {
 						final edu.cmu.cs.stage3.alice.core.Element[] elements = root.search(criterion);
 
 						if (structure.size() > 0 && elements.length > 0) {
-							structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Separator",
+							structure.add(new StringObjectPair("Separator",
 									javax.swing.JSeparator.class));
 						}
 						if (elements.length < 10) {
@@ -1978,7 +1989,7 @@ public class PopupMenuUtilities {
 						if (targetValueClass.isAssignableFrom(edu.cmu.cs.stage3.alice.core.Sound.class)) {
 							final edu.cmu.cs.stage3.alice.core.World world = root.getWorld();
 							if (structure.size() > 0) {
-								structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Separator",
+								structure.add(new StringObjectPair("Separator",
 										javax.swing.JSeparator.class));
 							}
 							final Runnable runnable = new Runnable() {
@@ -1986,9 +1997,9 @@ public class PopupMenuUtilities {
 								public void run() {
 									final PropertyPopupPostImportRunnable propertyPopupPostImportRunnable = new PropertyPopupPostImportRunnable(
 											factory);
-									edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack()
+									AuthoringTool.getHack()
 											.setImportFileFilter("Sound Files");
-									edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().importElement(null,
+									AuthoringTool.getHack().importElement(null,
 											world, propertyPopupPostImportRunnable); // should
 																						// probably
 																						// somehow
@@ -2004,26 +2015,26 @@ public class PopupMenuUtilities {
 								}
 							};
 							structure
-									.add(new edu.cmu.cs.stage3.util.StringObjectPair("import sound file...", runnable));
+									.add(new StringObjectPair("import sound file...", runnable));
 						}
 					}
 				}
 			}
 			// TODO check out to see if shouldGUIOmitNone needs to be handled
-			if (!edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitNone(property)) {
+			if (!AuthoringToolResources.shouldGUIOmitNone(property)) {
 				if (structure.size() > 0) {
 					structure.add(
-							new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+							new StringObjectPair("Separator", javax.swing.JSeparator.class));
 				}
 				if (property.get() == null) {
 					structure
-							.add(new edu.cmu.cs.stage3.util.StringObjectPair(
-									edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(null,
+							.add(new StringObjectPair(
+									AuthoringToolResources.getReprForValue(null,
 											property, "menuContext"),
 									new PopupItemWithIcon(factory.createItem(null), currentValueIcon)));
 				} else {
-					structure.add(new edu.cmu.cs.stage3.util.StringObjectPair(
-							edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(null, property,
+					structure.add(new StringObjectPair(
+							AuthoringToolResources.getReprForValue(null, property,
 									"menuContext"),
 							factory.createItem(null)));
 				}
@@ -2031,50 +2042,50 @@ public class PopupMenuUtilities {
 			// TODO check out makeFlatExpressionStructure
 			if (includeExpressions) {
 
-				final java.util.Vector expressionStructure = makeFlatExpressionStructure(targetValueClass, factory,
+				final Vector<Object> expressionStructure = makeFlatExpressionStructure(targetValueClass, factory,
 						property.getOwner(), property.get());
 				if (expressionStructure != null && expressionStructure.size() > 0) {
 					if (structure.size() > 0) {
 						structure.add(
-								new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+								new StringObjectPair("Separator", javax.swing.JSeparator.class));
 					}
-					structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("expressions", expressionStructure));
+					structure.add(new StringObjectPair("expressions", expressionStructure));
 				} else if (structure.size() == 0) {
 					final javax.swing.JLabel label = new javax.swing.JLabel("no expressions for this type");
 					label.setForeground(java.awt.Color.gray);
 					label.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 8, 2, 2));
-					structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("", label));
+					structure.add(new StringObjectPair("", label));
 				}
 			}
 
 			if (Boolean.class.isAssignableFrom(targetValueClass) && includeExpressions) {
-				final java.util.Vector booleanLogicStructure = makeBooleanLogicStructure(property.get(), factory,
+				final Vector<Object> booleanLogicStructure = makeBooleanLogicStructure(property.get(), factory,
 						property.getOwner());
 				if (booleanLogicStructure != null) {
 					if (structure.size() > 0) {
 						structure.add(
-								new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+								new StringObjectPair("Separator", javax.swing.JSeparator.class));
 					}
-					structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("logic", booleanLogicStructure));
+					structure.add(new StringObjectPair("logic", booleanLogicStructure));
 				}
 			}
 
 			if (Number.class.isAssignableFrom(targetValueClass) && includeExpressions) {
-				final java.util.Vector mathStructure = makeCommonMathQuestionStructure(property.get(), factory,
+				final Vector<Object> mathStructure = makeCommonMathQuestionStructure(property.get(), factory,
 						property.getOwner());
 				if (mathStructure != null) {
 					if (structure.size() > 0) {
 						structure.add(
-								new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+								new StringObjectPair("Separator", javax.swing.JSeparator.class));
 					}
-					structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("math", mathStructure));
+					structure.add(new StringObjectPair("math", mathStructure));
 				}
 			}
 
-			if (!edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitScriptDefined(property)) {
+			if (!AuthoringToolResources.shouldGUIOmitScriptDefined(property)) {
 				if (structure.size() > 0) {
 					structure.add(
-							new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+							new StringObjectPair("Separator", javax.swing.JSeparator.class));
 				}
 				final Runnable scriptDefinedRunnable = new Runnable() {
 					@Override
@@ -2083,7 +2094,7 @@ public class PopupMenuUtilities {
 								factory);
 					}
 				};
-				structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("script-defined...", scriptDefinedRunnable));
+				structure.add(new StringObjectPair("script-defined...", scriptDefinedRunnable));
 			}
 			// TODO: make this mroe intelligent
 			// Other...
@@ -2092,9 +2103,9 @@ public class PopupMenuUtilities {
 					.isOtherDialogSupportedForClass(targetValueClass)) {
 				if (structure.size() > 0) {
 					structure.add(
-							new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+							new StringObjectPair("Separator", javax.swing.JSeparator.class));
 				}
-				final Class finalOtherValueClass = targetValueClass;
+				final Class<?> finalOtherValueClass = targetValueClass;
 				final Runnable runnable = new Runnable() {
 					@Override
 					public void run() {
@@ -2102,7 +2113,7 @@ public class PopupMenuUtilities {
 								null, finalOtherValueClass);
 					}
 				};
-				structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("other...", runnable));
+				structure.add(new StringObjectPair("other...", runnable));
 			}
 		}
 
@@ -2110,16 +2121,16 @@ public class PopupMenuUtilities {
 			final javax.swing.JLabel label = new javax.swing.JLabel("nothing to choose");
 			label.setForeground(java.awt.Color.gray);
 			label.setBorder(javax.swing.BorderFactory.createEmptyBorder(2, 2, 2, 2));
-			structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("", label));
+			structure.add(new StringObjectPair("", label));
 		}
 
 		return structure;
 	}
 
-	public static java.util.Vector makeListQuestionStructure(final edu.cmu.cs.stage3.alice.core.Variable listVariable,
-			final PopupItemFactory factory, final Class returnValueClass,
+	public static Vector<Object> makeListQuestionStructure(final edu.cmu.cs.stage3.alice.core.Variable listVariable,
+			final PopupItemFactory factory, final Class<?> returnValueClass,
 			final edu.cmu.cs.stage3.alice.core.Element context) {
-		final java.util.Vector structure = new java.util.Vector();
+		final Vector<Object> structure = new Vector<>();
 
 		final edu.cmu.cs.stage3.alice.core.List list = (edu.cmu.cs.stage3.alice.core.List) listVariable.getValue();
 		final edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory prototypeToItemFactory = new edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory() {
@@ -2156,12 +2167,12 @@ public class PopupMenuUtilities {
 				}
 			};
 
-			final edu.cmu.cs.stage3.util.StringObjectPair[] known = new edu.cmu.cs.stage3.util.StringObjectPair[] {
-					new edu.cmu.cs.stage3.util.StringObjectPair("list", listVariable) };
+			final StringObjectPair[] known = new StringObjectPair[] {
+					new StringObjectPair("list", listVariable) };
 			final String[] desired = new String[] { "index" };
 			final ElementPrototype ithPrototype = new ElementPrototype(
 					edu.cmu.cs.stage3.alice.core.question.list.ItemAtIndex.class, known, desired);
-			final java.util.Vector ithStructure = makePrototypeStructure(ithPrototype, prototypeToItemFactory, context);
+			final Vector<Object> ithStructure = makePrototypeStructure(ithPrototype, prototypeToItemFactory, context);
 
 			structure.add(new StringObjectPair("first item from list", firstItemRunnable));
 			structure.add(new StringObjectPair("last item from list", lastItemRunnable));
@@ -2169,11 +2180,11 @@ public class PopupMenuUtilities {
 			structure.add(new StringObjectPair("ith item from list", ithStructure));
 		}
 		if (edu.cmu.cs.stage3.alice.core.Element.class.isAssignableFrom(list.valueClass.getClassValue())) {
-			// public static java.util.Vector makePropertyValueStructure( final
+			// public static Vector<Object> makePropertyValueStructure( final
 			// edu.cmu.cs.stage3.alice.core.Element element, Class valueClass,
 			// final PopupItemFactory factory,
 			// edu.cmu.cs.stage3.alice.core.Element context ) {
-			// java.util.Vector structure = new java.util.Vector();
+			// Vector<Object> structure = new Vector<>();
 			//
 			// Class elementClass = null;
 			// if( element instanceof edu.cmu.cs.stage3.alice.core.Expression )
@@ -2184,9 +2195,9 @@ public class PopupMenuUtilities {
 			// elementClass = element.getClass();
 			// }
 			//
-			// edu.cmu.cs.stage3.util.StringObjectPair[] known = new
-			// edu.cmu.cs.stage3.util.StringObjectPair[] { new
-			// edu.cmu.cs.stage3.util.StringObjectPair( "element", element ) };
+			// StringObjectPair[] known = new
+			// StringObjectPair[] { new
+			// StringObjectPair( "element", element ) };
 			// String[] desired = new String[] { "propertyName" };
 			// ElementPrototype prototype = new ElementPrototype(
 			// edu.cmu.cs.stage3.alice.core.question.PropertyValue.class, known,
@@ -2196,18 +2207,18 @@ public class PopupMenuUtilities {
 			// valueClass );
 			//
 			// String prefix =
-			// edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(
+			// AuthoringToolResources.getReprForValue(
 			// element, false ) + ".";
 			// for( int i = 0; i < propertyNames.length; i++ ) {
 			// if( (! propertyNames[i].equals( "visualization" )) && (!
 			// propertyNames[i].equals( "isFirstClass" )) ) { // HACK
 			// suppression
 			// String propertyName =
-			// edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(
+			// AuthoringToolResources.getReprForValue(
 			// propertyNames[i], false );
 			// structure.add( new StringObjectPair( prefix + propertyName,
 			// factory.createItem( prototype.createCopy( new
-			// edu.cmu.cs.stage3.util.StringObjectPair( "propertyName",
+			// StringObjectPair( "propertyName",
 			// propertyName ) ) ) ) );
 			// }
 			// }
@@ -2224,12 +2235,12 @@ public class PopupMenuUtilities {
 				}
 			};
 
-			final edu.cmu.cs.stage3.util.StringObjectPair[] known = new edu.cmu.cs.stage3.util.StringObjectPair[] {
-					new edu.cmu.cs.stage3.util.StringObjectPair("list", listVariable) };
+			final StringObjectPair[] known = new StringObjectPair[] {
+					new StringObjectPair("list", listVariable) };
 			final String[] desired = new String[] { "item" };
 			final ElementPrototype containsPrototype = new ElementPrototype(
 					edu.cmu.cs.stage3.alice.core.question.list.Contains.class, known, desired);
-			final java.util.Vector containsStructure = makePrototypeStructure(containsPrototype, prototypeToItemFactory,
+			final Vector<Object> containsStructure = makePrototypeStructure(containsPrototype, prototypeToItemFactory,
 					context);
 
 			if (structure.size() > 0) {
@@ -2249,18 +2260,18 @@ public class PopupMenuUtilities {
 				}
 			};
 
-			final edu.cmu.cs.stage3.util.StringObjectPair[] known = new edu.cmu.cs.stage3.util.StringObjectPair[] {
-					new edu.cmu.cs.stage3.util.StringObjectPair("list", listVariable) };
+			final StringObjectPair[] known = new StringObjectPair[] {
+					new StringObjectPair("list", listVariable) };
 			final String[] desired = new String[] { "item" };
 
 			final ElementPrototype firstIndexOfItemPrototype = new ElementPrototype(
 					edu.cmu.cs.stage3.alice.core.question.list.FirstIndexOfItem.class, known, desired);
-			final java.util.Vector firstIndexOfItemStructure = makePrototypeStructure(firstIndexOfItemPrototype,
+			final Vector<Object> firstIndexOfItemStructure = makePrototypeStructure(firstIndexOfItemPrototype,
 					prototypeToItemFactory, context);
 
 			final ElementPrototype lastIndexOfItemPrototype = new ElementPrototype(
 					edu.cmu.cs.stage3.alice.core.question.list.LastIndexOfItem.class, known, desired);
-			final java.util.Vector lastIndexOfItemStructure = makePrototypeStructure(lastIndexOfItemPrototype,
+			final Vector<Object> lastIndexOfItemStructure = makePrototypeStructure(lastIndexOfItemPrototype,
 					prototypeToItemFactory, context);
 
 			if (structure.size() > 0) {
@@ -2274,10 +2285,10 @@ public class PopupMenuUtilities {
 		return structure;
 	}
 
-	public static java.util.Vector makeArrayQuestionStructure(final edu.cmu.cs.stage3.alice.core.Variable arrayVariable,
-			final PopupItemFactory factory, final Class returnValueClass,
+	public static Vector<Object> makeArrayQuestionStructure(final edu.cmu.cs.stage3.alice.core.Variable arrayVariable,
+			final PopupItemFactory factory, final Class<?> returnValueClass,
 			final edu.cmu.cs.stage3.alice.core.Element context) {
-		final java.util.Vector structure = new java.util.Vector();
+		final Vector<Object> structure = new Vector<>();
 
 		final edu.cmu.cs.stage3.alice.core.Array array = (edu.cmu.cs.stage3.alice.core.Array) arrayVariable.getValue();
 
@@ -2290,12 +2301,12 @@ public class PopupMenuUtilities {
 		};
 
 		if (returnValueClass.isAssignableFrom(array.valueClass.getClassValue())) {
-			final edu.cmu.cs.stage3.util.StringObjectPair[] known = new edu.cmu.cs.stage3.util.StringObjectPair[] {
-					new edu.cmu.cs.stage3.util.StringObjectPair("array", arrayVariable) };
+			final StringObjectPair[] known = new StringObjectPair[] {
+					new StringObjectPair("array", arrayVariable) };
 			final String[] desired = new String[] { "index" };
 			final ElementPrototype ithPrototype = new ElementPrototype(
 					edu.cmu.cs.stage3.alice.core.question.array.ItemAtIndex.class, known, desired);
-			final java.util.Vector ithStructure = makePrototypeStructure(ithPrototype, prototypeToItemFactory, context);
+			final Vector<Object> ithStructure = makePrototypeStructure(ithPrototype, prototypeToItemFactory, context);
 
 			structure.add(new StringObjectPair("ith item from array", ithStructure));
 		}
@@ -2310,9 +2321,10 @@ public class PopupMenuUtilities {
 				}
 			};
 
-			final edu.cmu.cs.stage3.util.StringObjectPair[] known = new edu.cmu.cs.stage3.util.StringObjectPair[] {
-					new edu.cmu.cs.stage3.util.StringObjectPair("array", arrayVariable) };
-			final String[] desired = new String[] { "item" };
+			/* Unused ??
+			final StringObjectPair[] known = new StringObjectPair[] {
+					new StringObjectPair("array", arrayVariable) };
+			final String[] desired = new String[] { "item" };*/
 
 			if (structure.size() > 0) {
 				structure.add(new StringObjectPair("Separator", javax.swing.JSeparator.class));
@@ -2327,9 +2339,9 @@ public class PopupMenuUtilities {
 	 * the PopupItemFactory should accept a completed ElementPrototype and
 	 * return a Runnable
 	 */
-	public static java.util.Vector makeCommonMathQuestionStructure(final Object firstOperand,
+	public static Vector<Object> makeCommonMathQuestionStructure(final Object firstOperand,
 			final PopupItemFactory factory, final edu.cmu.cs.stage3.alice.core.Element context) {
-		final java.util.Vector structure = new java.util.Vector();
+		final Vector<Object> structure = new Vector<>();
 
 		if (firstOperand instanceof Number) {
 			// accept
@@ -2342,7 +2354,7 @@ public class PopupMenuUtilities {
 			throw new IllegalArgumentException("firstOperand must represent a Number");
 		}
 
-		final String firstOperandRepr = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+		final String firstOperandRepr = AuthoringToolResources
 				.getReprForValue(firstOperand, false);
 
 		// edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory
@@ -2355,22 +2367,22 @@ public class PopupMenuUtilities {
 		// }
 		// };
 
-		final edu.cmu.cs.stage3.util.StringObjectPair[] known = new edu.cmu.cs.stage3.util.StringObjectPair[] {
-				new edu.cmu.cs.stage3.util.StringObjectPair("a", firstOperand) };
+		final StringObjectPair[] known = new StringObjectPair[] {
+				new StringObjectPair("a", firstOperand) };
 		final String[] desired = new String[] { "b" };
 
 		final ElementPrototype addPrototype = new ElementPrototype(
 				edu.cmu.cs.stage3.alice.core.question.NumberAddition.class, known, desired);
-		final java.util.Vector addStructure = makePrototypeStructure(addPrototype, factory, context);
+		final Vector<Object> addStructure = makePrototypeStructure(addPrototype, factory, context);
 		final ElementPrototype subtractPrototype = new ElementPrototype(
 				edu.cmu.cs.stage3.alice.core.question.NumberSubtraction.class, known, desired);
-		final java.util.Vector subtractStructure = makePrototypeStructure(subtractPrototype, factory, context);
+		final Vector<Object> subtractStructure = makePrototypeStructure(subtractPrototype, factory, context);
 		final ElementPrototype multiplyPrototype = new ElementPrototype(
 				edu.cmu.cs.stage3.alice.core.question.NumberMultiplication.class, known, desired);
-		final java.util.Vector multiplyStructure = makePrototypeStructure(multiplyPrototype, factory, context);
+		final Vector<Object> multiplyStructure = makePrototypeStructure(multiplyPrototype, factory, context);
 		final ElementPrototype dividePrototype = new ElementPrototype(
 				edu.cmu.cs.stage3.alice.core.question.NumberDivision.class, known, desired);
-		final java.util.Vector divideStructure = makePrototypeStructure(dividePrototype, factory, context);
+		final Vector<Object> divideStructure = makePrototypeStructure(dividePrototype, factory, context);
 
 		structure.add(new StringObjectPair(firstOperandRepr + " +", addStructure));
 		structure.add(new StringObjectPair(firstOperandRepr + " -", subtractStructure));
@@ -2384,10 +2396,10 @@ public class PopupMenuUtilities {
 	 * the PopupItemFactory should accept a completed ElementPrototype and
 	 * return a Runnable
 	 */
-	public static java.util.Vector makeBooleanLogicStructure(final Object firstOperand, final PopupItemFactory factory,
+	public static Vector<Object> makeBooleanLogicStructure(final Object firstOperand, final PopupItemFactory factory,
 			final edu.cmu.cs.stage3.alice.core.Element context) {
-		final java.util.Vector structure = new java.util.Vector();
-		final boolean isNone = false;
+		final Vector<Object> structure = new Vector<>();
+		// Unused ?? final boolean isNone = false;
 		if (firstOperand instanceof Boolean) {
 			// accept
 		} else if (firstOperand instanceof edu.cmu.cs.stage3.alice.core.Expression && Boolean.class
@@ -2399,7 +2411,7 @@ public class PopupMenuUtilities {
 			throw new IllegalArgumentException("firstOperand must represent a Boolean");
 		}
 
-		final String firstOperandRepr = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+		final String firstOperandRepr = AuthoringToolResources
 				.getReprForValue(firstOperand, false);
 
 		// edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory
@@ -2412,30 +2424,30 @@ public class PopupMenuUtilities {
 		// }
 		// };
 
-		final edu.cmu.cs.stage3.util.StringObjectPair[] known = new edu.cmu.cs.stage3.util.StringObjectPair[] {
-				new edu.cmu.cs.stage3.util.StringObjectPair("a", firstOperand) };
+		final StringObjectPair[] known = new StringObjectPair[] {
+				new StringObjectPair("a", firstOperand) };
 		final String[] desired = new String[] { "b" };
 
 		final ElementPrototype andPrototype = new ElementPrototype(edu.cmu.cs.stage3.alice.core.question.And.class,
 				known, desired);
-		final java.util.Vector andStructure = makePrototypeStructure(andPrototype, factory, context);
+		final Vector<Object> andStructure = makePrototypeStructure(andPrototype, factory, context);
 		final ElementPrototype orPrototype = new ElementPrototype(edu.cmu.cs.stage3.alice.core.question.Or.class, known,
 				desired);
-		final java.util.Vector orStructure = makePrototypeStructure(orPrototype, factory, context);
+		final Vector<Object> orStructure = makePrototypeStructure(orPrototype, factory, context);
 		final ElementPrototype notPrototype = new ElementPrototype(edu.cmu.cs.stage3.alice.core.question.Not.class,
 				known, new String[0]);
 		final Object notItem = factory.createItem(notPrototype);
 		final ElementPrototype equalPrototype = new ElementPrototype(
 				edu.cmu.cs.stage3.alice.core.question.IsEqualTo.class, known, desired);
-		final java.util.Vector equalStructure = makePrototypeStructure(equalPrototype, factory, context);
+		final Vector<Object> equalStructure = makePrototypeStructure(equalPrototype, factory, context);
 		final ElementPrototype notEqualPrototype = new ElementPrototype(
 				edu.cmu.cs.stage3.alice.core.question.IsNotEqualTo.class, known, desired);
-		final java.util.Vector notEqualStructure = makePrototypeStructure(notEqualPrototype, factory, context);
+		final Vector<Object> notEqualStructure = makePrototypeStructure(notEqualPrototype, factory, context);
 
 		structure.add(new StringObjectPair(firstOperandRepr + " and", andStructure));
 		structure.add(new StringObjectPair(firstOperandRepr + " or", orStructure));
 		structure.add(new StringObjectPair("not " + firstOperandRepr, notItem));
-		structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Separator", javax.swing.JSeparator.class));
+		structure.add(new StringObjectPair("Separator", javax.swing.JSeparator.class));
 		structure.add(new StringObjectPair(firstOperandRepr + " ==", equalStructure));
 		structure.add(new StringObjectPair(firstOperandRepr + " !=", notEqualStructure));
 
@@ -2446,11 +2458,11 @@ public class PopupMenuUtilities {
 	 * the PopupItemFactory should accept a completed ElementPrototype and
 	 * return a Runnable
 	 */
-	public static java.util.Vector makeComparatorStructure(final Object firstOperand, final PopupItemFactory factory,
+	public static Vector<Object> makeComparatorStructure(final Object firstOperand, final PopupItemFactory factory,
 			final edu.cmu.cs.stage3.alice.core.Element context) {
-		final java.util.Vector structure = new java.util.Vector();
+		final Vector<Object> structure = new Vector<>();
 
-		final String firstOperandRepr = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+		final String firstOperandRepr = AuthoringToolResources
 				.getReprForValue(firstOperand, false);
 
 		// edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory
@@ -2463,15 +2475,15 @@ public class PopupMenuUtilities {
 		// }
 		// };
 
-		final edu.cmu.cs.stage3.util.StringObjectPair[] known = new edu.cmu.cs.stage3.util.StringObjectPair[] {
-				new edu.cmu.cs.stage3.util.StringObjectPair("a", firstOperand) };
+		final StringObjectPair[] known = new StringObjectPair[] {
+				new StringObjectPair("a", firstOperand) };
 		final String[] desired = new String[] { "b" };
 		final ElementPrototype equalPrototype = new ElementPrototype(
 				edu.cmu.cs.stage3.alice.core.question.IsEqualTo.class, known, desired);
-		final java.util.Vector equalStructure = makePrototypeStructure(equalPrototype, factory, context);
+		final Vector<Object> equalStructure = makePrototypeStructure(equalPrototype, factory, context);
 		final ElementPrototype notEqualPrototype = new ElementPrototype(
 				edu.cmu.cs.stage3.alice.core.question.IsNotEqualTo.class, known, desired);
-		final java.util.Vector notEqualStructure = makePrototypeStructure(notEqualPrototype, factory, context);
+		final Vector<Object> notEqualStructure = makePrototypeStructure(notEqualPrototype, factory, context);
 
 		structure.add(new StringObjectPair(firstOperandRepr + " ==", equalStructure));
 		structure.add(new StringObjectPair(firstOperandRepr + " !=", notEqualStructure));
@@ -2482,28 +2494,28 @@ public class PopupMenuUtilities {
 			// ElementPrototype equalToPrototype = new ElementPrototype(
 			// edu.cmu.cs.stage3.alice.core.question.NumberIsEqualTo.class,
 			// known, desired );
-			// java.util.Vector equalToStructure = makePrototypeStructure(
+			// Vector<Object> equalToStructure = makePrototypeStructure(
 			// equalToPrototype, factory, context );
 			// ElementPrototype notEqualToPrototype = new ElementPrototype(
 			// edu.cmu.cs.stage3.alice.core.question.NumberIsNotEqualTo.class,
 			// known, desired );
-			// java.util.Vector notEqualToStructure = makePrototypeStructure(
+			// Vector<Object> notEqualToStructure = makePrototypeStructure(
 			// notEqualToPrototype, factory, context );
 
 			final ElementPrototype lessThanPrototype = new ElementPrototype(
 					edu.cmu.cs.stage3.alice.core.question.NumberIsLessThan.class, known, desired);
-			final java.util.Vector lessThanStructure = makePrototypeStructure(lessThanPrototype, factory, context);
+			final Vector<Object> lessThanStructure = makePrototypeStructure(lessThanPrototype, factory, context);
 			final ElementPrototype greaterThanPrototype = new ElementPrototype(
 					edu.cmu.cs.stage3.alice.core.question.NumberIsGreaterThan.class, known, desired);
-			final java.util.Vector greaterThanStructure = makePrototypeStructure(greaterThanPrototype, factory,
+			final Vector<Object> greaterThanStructure = makePrototypeStructure(greaterThanPrototype, factory,
 					context);
 			final ElementPrototype lessThanOrEqualPrototype = new ElementPrototype(
 					edu.cmu.cs.stage3.alice.core.question.NumberIsLessThanOrEqualTo.class, known, desired);
-			final java.util.Vector lessThanOrEqualStructure = makePrototypeStructure(lessThanOrEqualPrototype, factory,
+			final Vector<Object> lessThanOrEqualStructure = makePrototypeStructure(lessThanOrEqualPrototype, factory,
 					context);
 			final ElementPrototype greaterThanOrEqualPrototype = new ElementPrototype(
 					edu.cmu.cs.stage3.alice.core.question.NumberIsGreaterThanOrEqualTo.class, known, desired);
-			final java.util.Vector greaterThanOrEqualStructure = makePrototypeStructure(greaterThanOrEqualPrototype,
+			final Vector<Object> greaterThanOrEqualStructure = makePrototypeStructure(greaterThanOrEqualPrototype,
 					factory, context);
 
 			// structure.add( new StringObjectPair( firstOperandRepr + " ==",
@@ -2523,9 +2535,9 @@ public class PopupMenuUtilities {
 	 * the PopupItemFactory should accept a completed ElementPrototype and
 	 * return a Runnable
 	 */
-	public static java.util.Vector makePartsOfPositionStructure(final Object position, final PopupItemFactory factory,
+	public static Vector<Object> makePartsOfPositionStructure(final Object position, final PopupItemFactory factory,
 			final edu.cmu.cs.stage3.alice.core.Element context) {
-		final java.util.Vector structure = new java.util.Vector();
+		final Vector<Object> structure = new Vector<>();
 
 		if (position instanceof javax.vecmath.Vector3d) {
 			// accept
@@ -2538,11 +2550,11 @@ public class PopupMenuUtilities {
 			throw new IllegalArgumentException("position must represent a javax.vecmath.Vector3d");
 		}
 
-		final String positionRepr = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+		final String positionRepr = AuthoringToolResources
 				.getReprForValue(position, false);
 
-		final edu.cmu.cs.stage3.util.StringObjectPair[] known = new edu.cmu.cs.stage3.util.StringObjectPair[] {
-				new edu.cmu.cs.stage3.util.StringObjectPair("vector3", position) };
+		final StringObjectPair[] known = new StringObjectPair[] {
+				new StringObjectPair("vector3", position) };
 
 		final ElementPrototype xPrototype = new ElementPrototype(edu.cmu.cs.stage3.alice.core.question.vector3.X.class,
 				known, new String[0]);
@@ -2565,33 +2577,32 @@ public class PopupMenuUtilities {
 	 * the PopupItemFactory should accept a completed ElementPrototype and
 	 * return a Runnable
 	 */
-	public static java.util.Vector makeResponsePrintStructure(final PopupItemFactory factory,
+	public static Vector<Object> makeResponsePrintStructure(final PopupItemFactory factory,
 			final edu.cmu.cs.stage3.alice.core.Element context) {
-		final java.util.Vector structure = new java.util.Vector();
+		final Vector<Object> structure = new Vector<>();
 
-		final edu.cmu.cs.stage3.util.StringObjectPair[] known = new edu.cmu.cs.stage3.util.StringObjectPair[0];
+		final StringObjectPair[] known = new StringObjectPair[0];
 
 		final Runnable textStringRunnable = new Runnable() {
 			@Override
 			public void run() {
 				final ElementPrototype elementPrototype = new ElementPrototype(
 						edu.cmu.cs.stage3.alice.core.response.Print.class, known, new String[] { "text" });
-				final java.awt.Frame jAliceFrame = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack()
-						.getJAliceFrame();
+				// Unused ?? final java.awt.Frame jAliceFrame = AuthoringTool.getHack().getJAliceFrame();
 				final String text = edu.cmu.cs.stage3.swing.DialogManager.showInputDialog("Enter text to print:",
 						"Enter Text String", javax.swing.JOptionPane.PLAIN_MESSAGE);
 				if (text != null) {
 					((Runnable) factory.createItem(
-							elementPrototype.createCopy(new edu.cmu.cs.stage3.util.StringObjectPair("text", text))))
+							elementPrototype.createCopy(new StringObjectPair("text", text))))
 									.run();
 				}
 			}
 		};
-		structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("text string...", textStringRunnable));
+		structure.add(new StringObjectPair("text string...", textStringRunnable));
 
 		final ElementPrototype elementPrototype = new ElementPrototype(
 				edu.cmu.cs.stage3.alice.core.response.Print.class, known, new String[] { "object" });
-		structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("object",
+		structure.add(new StringObjectPair("object",
 				PopupMenuUtilities.makePrototypeStructure(elementPrototype, factory, context)));
 
 		return structure;
@@ -2601,33 +2612,32 @@ public class PopupMenuUtilities {
 	 * the PopupItemFactory should accept a completed ElementPrototype and
 	 * return a Runnable
 	 */
-	public static java.util.Vector makeQuestionPrintStructure(final PopupItemFactory factory,
+	public static Vector<Object> makeQuestionPrintStructure(final PopupItemFactory factory,
 			final edu.cmu.cs.stage3.alice.core.Element context) {
-		final java.util.Vector structure = new java.util.Vector();
+		final Vector<Object> structure = new Vector<>();
 
-		final edu.cmu.cs.stage3.util.StringObjectPair[] known = new edu.cmu.cs.stage3.util.StringObjectPair[0];
+		final StringObjectPair[] known = new StringObjectPair[0];
 
 		final Runnable textStringRunnable = new Runnable() {
 			@Override
 			public void run() {
 				final ElementPrototype elementPrototype = new ElementPrototype(
 						edu.cmu.cs.stage3.alice.core.question.userdefined.Print.class, known, new String[] { "text" });
-				final java.awt.Frame jAliceFrame = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack()
-						.getJAliceFrame();
+				// Unused ?? final java.awt.Frame jAliceFrame = AuthoringTool.getHack().getJAliceFrame();
 				final String text = edu.cmu.cs.stage3.swing.DialogManager.showInputDialog("Enter text to print:",
 						"Enter Text String", javax.swing.JOptionPane.PLAIN_MESSAGE);
 				if (text != null) {
 					((Runnable) factory.createItem(
-							elementPrototype.createCopy(new edu.cmu.cs.stage3.util.StringObjectPair("text", text))))
+							elementPrototype.createCopy(new StringObjectPair("text", text))))
 									.run();
 				}
 			}
 		};
-		structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("text string...", textStringRunnable));
+		structure.add(new StringObjectPair("text string...", textStringRunnable));
 
 		final ElementPrototype elementPrototype = new ElementPrototype(
 				edu.cmu.cs.stage3.alice.core.question.userdefined.Print.class, known, new String[] { "object" });
-		structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("object",
+		structure.add(new StringObjectPair("object",
 				PopupMenuUtilities.makePrototypeStructure(elementPrototype, factory, context)));
 
 		return structure;
@@ -2637,34 +2647,34 @@ public class PopupMenuUtilities {
 	 * the PopupItemFactory should accept a completed ElementPrototype and
 	 * return a Runnable
 	 */
-	public static java.util.Vector makePropertyValueStructure(final edu.cmu.cs.stage3.alice.core.Element element,
-			final Class valueClass, final PopupItemFactory factory,
+	public static Vector<Object> makePropertyValueStructure(final edu.cmu.cs.stage3.alice.core.Element element,
+			final Class<?> valueClass, final PopupItemFactory factory,
 			final edu.cmu.cs.stage3.alice.core.Element context) {
-		final java.util.Vector structure = new java.util.Vector();
+		final Vector<Object> structure = new Vector<>();
 
-		Class elementClass = null;
+		Class<?> elementClass = null;
 		if (element instanceof edu.cmu.cs.stage3.alice.core.Expression) {
 			elementClass = ((edu.cmu.cs.stage3.alice.core.Expression) element).getValueClass();
 		} else {
 			elementClass = element.getClass();
 		}
 
-		final edu.cmu.cs.stage3.util.StringObjectPair[] known = new edu.cmu.cs.stage3.util.StringObjectPair[] {
-				new edu.cmu.cs.stage3.util.StringObjectPair("element", element) };
+		final StringObjectPair[] known = new StringObjectPair[] {
+				new StringObjectPair("element", element) };
 		final String[] desired = new String[] { "propertyName" };
 		final ElementPrototype prototype = new ElementPrototype(
 				edu.cmu.cs.stage3.alice.core.question.PropertyValue.class, known, desired);
 
 		final String[] propertyNames = getPropertyNames(elementClass, valueClass);
-		final String prefix = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(element,
+		final String prefix = AuthoringToolResources.getReprForValue(element,
 				false) + ".";
 		for (int i = 0; i < propertyNames.length; i++) {
 			if (!propertyNames[i].equals("visualization") && !propertyNames[i].equals("isFirstClass")) { // HACK
 																											// suppression
-				final String propertyName = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+				final String propertyName = AuthoringToolResources
 						.getReprForValue(propertyNames[i], false);
 				structure.add(new StringObjectPair(prefix + propertyName, factory.createItem(prototype
-						.createCopy(new edu.cmu.cs.stage3.util.StringObjectPair("propertyName", propertyName)))));
+						.createCopy(new StringObjectPair("propertyName", propertyName)))));
 			}
 		}
 
@@ -2672,12 +2682,12 @@ public class PopupMenuUtilities {
 	}
 
 	// HACK until this method is on Element
-	private static String[] getPropertyNames(final Class elementClass, final Class valueClass) {
+	private static String[] getPropertyNames(final Class<?> elementClass, final Class<?> valueClass) {
 		try {
 			final edu.cmu.cs.stage3.alice.core.Element element = (edu.cmu.cs.stage3.alice.core.Element) elementClass
 					.newInstance();
 			final edu.cmu.cs.stage3.alice.core.Property[] properties = element.getProperties();
-			final java.util.Vector propertyNames = new java.util.Vector();
+			final Vector<Object> propertyNames = new Vector<>();
 			for (final Property propertie : properties) {
 				if (valueClass.isAssignableFrom(propertie.getValueClass())) {
 					propertyNames.add(propertie.getName());
@@ -2691,21 +2701,21 @@ public class PopupMenuUtilities {
 		}
 	}
 
-	public static java.util.Vector getDefaultValueStructureForProperty(final Class elementClass,
+	public static Vector<Object> getDefaultValueStructureForProperty(final Class<?> elementClass,
 			final String propertyName) {
 		return getDefaultValueStructureForProperty(elementClass, propertyName, null);
 	}
 
-	public static java.util.Vector getDefaultValueStructureForProperty(
+	public static Vector<Object> getDefaultValueStructureForProperty(
 			final edu.cmu.cs.stage3.alice.core.Property property) {
 		return getDefaultValueStructureForProperty(property.getOwner().getClass(), property.getName(), property);
 	}
 
 	// property may be null if it is not available. if it is available, though,
 	// it will be used to derive the value class.
-	public static java.util.Vector getDefaultValueStructureForProperty(final Class elementClass,
+	public static Vector<Object> getDefaultValueStructureForProperty(final Class<?> elementClass,
 			final String propertyName, final edu.cmu.cs.stage3.alice.core.Property property) {
-		final java.util.Vector structure = new java.util.Vector(
+		final Vector<Object> structure = new Vector<>(
 				getUnlabeledDefaultValueStructureForProperty(elementClass, propertyName, property));
 		addLabelsToValueStructure(structure, elementClass, propertyName);
 		return structure;
@@ -2713,7 +2723,7 @@ public class PopupMenuUtilities {
 
 	// property may be null if it is not available. if it is available, though,
 	// it will be used to derive the value class.
-	public static java.util.Vector getUnlabeledDefaultValueStructureForProperty(Class elementClass, String propertyName,
+	public static Vector<Object> getUnlabeledDefaultValueStructureForProperty(Class<?> elementClass, String propertyName,
 			final edu.cmu.cs.stage3.alice.core.Property property) {
 		if (property != null) {
 			if (property.getOwner() instanceof edu.cmu.cs.stage3.alice.core.response.PropertyAnimation
@@ -2742,13 +2752,13 @@ public class PopupMenuUtilities {
 				propertyName = propertyAssignment.propertyName.getStringValue();
 			}
 		}
-		java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
-				.getDefaultPropertyValues(elementClass, propertyName);
+		@SuppressWarnings("unchecked")
+		Vector<Object> structure = AuthoringToolResources.getDefaultPropertyValues(elementClass, propertyName);
 		if (structure == null) {
-			structure = new java.util.Vector();
+			structure = new Vector<>();
 		}
 		if (structure.size() < 1) {
-			Class valueClass;
+			Class<?> valueClass;
 			if (property != null) {
 				if (property
 						.getOwner() instanceof edu.cmu.cs.stage3.alice.core.question.BinaryObjectResultingInBooleanQuestion
@@ -2782,8 +2792,8 @@ public class PopupMenuUtilities {
 		return structure;
 	}
 
-	public static java.util.Vector getDefaultValueStructureForCollectionIndexProperty(
-			final edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues) {
+	public static Vector<Object> getDefaultValueStructureForCollectionIndexProperty(
+			final StringObjectPair[] knownPropertyValues) {
 		Object collection = null;
 		for (final StringObjectPair knownPropertyValue : knownPropertyValues) {
 			if (knownPropertyValue.getString().equals("list")) {
@@ -2803,7 +2813,7 @@ public class PopupMenuUtilities {
 			realCollection = (edu.cmu.cs.stage3.alice.core.Collection) collection;
 		}
 
-		final java.util.Vector structure = new java.util.Vector();
+		final Vector<Object> structure = new Vector<>();
 		if (realCollection != null) {
 			final int size = realCollection.values.size();
 			for (int i = 0; i < size && i < 10; i++) {
@@ -2818,9 +2828,9 @@ public class PopupMenuUtilities {
 		return structure;
 	}
 
-	// public static java.util.Vector
+	// public static Vector<Object>
 	// getDefaultValueStructureForListIndexProperty(
-	// edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues ) {
+	// StringObjectPair[] knownPropertyValues ) {
 	// Object list = null;
 	// for( int i = 0; i < knownPropertyValues.length; i++ ) {
 	// if( knownPropertyValues[i].getString().equals( "list" ) ) {
@@ -2837,7 +2847,7 @@ public class PopupMenuUtilities {
 	// realList = (edu.cmu.cs.stage3.alice.core.List)list;
 	// }
 	//
-	// java.util.Vector structure = new java.util.Vector();
+	// Vector<Object> structure = new Vector<>();
 	// if( realList != null ) {
 	// int size = realList.values.size();
 	// for( int i = 0; (i < size) && (i < 10); i++ ) {
@@ -2853,9 +2863,9 @@ public class PopupMenuUtilities {
 	// return structure;
 	// }
 	//
-	// public static java.util.Vector
+	// public static Vector<Object>
 	// getDefaultValueStructureForArrayIndexProperty(
-	// edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues ) {
+	// StringObjectPair[] knownPropertyValues ) {
 	// Object array = null;
 	// for( int i = 0; i < knownPropertyValues.length; i++ ) {
 	// if( knownPropertyValues[i].getString().equals( "array" ) ) {
@@ -2872,7 +2882,7 @@ public class PopupMenuUtilities {
 	// realArray = (edu.cmu.cs.stage3.alice.core.Array)array;
 	// }
 	//
-	// java.util.Vector structure = new java.util.Vector();
+	// Vector<Object> structure = new Vector<>();
 	// if( realArray != null ) {
 	// int size = realArray.values.size();
 	// for( int i = 0; (i < size) && (i < 10); i++ ) {
@@ -2888,14 +2898,14 @@ public class PopupMenuUtilities {
 	// return structure;
 	// }
 
-	public static java.util.Vector getDefaultValueStructureForClass(final Class valueClass) {
-		final java.util.Vector structure = getUnlabeledDefaultValueStructureForClass(valueClass);
+	public static Vector<Object> getDefaultValueStructureForClass(final Class<?> valueClass) {
+		final Vector<Object> structure = getUnlabeledDefaultValueStructureForClass(valueClass);
 		addLabelsToValueStructure(structure);
 		return structure;
 	}
 
-	public static java.util.Vector getUnlabeledDefaultValueStructureForClass(final Class valueClass) {
-		final java.util.Vector structure = new java.util.Vector();
+	public static Vector<Object> getUnlabeledDefaultValueStructureForClass(final Class<?> valueClass) {
+		final Vector<Object> structure = new Vector<>();
 
 		if (Boolean.class.isAssignableFrom(valueClass)) {
 			structure.add(Boolean.TRUE);
@@ -2950,9 +2960,9 @@ public class PopupMenuUtilities {
 	}
 
 	// have to special-case PropertyAnimations
-	private static java.util.Vector getDefaultValueStructureForPropertyAnimation(
-			final edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues) {
-		java.util.Vector structure = new java.util.Vector();
+	private static Vector<Object> getDefaultValueStructureForPropertyAnimation(
+			final StringObjectPair[] knownPropertyValues) {
+		Vector<Object> structure = new Vector<>();
 		edu.cmu.cs.stage3.alice.core.Element element = null;
 		String propertyName = null;
 		for (final StringObjectPair knownPropertyValue : knownPropertyValues) {
@@ -2968,7 +2978,7 @@ public class PopupMenuUtilities {
 			}
 		}
 		if (element != null && propertyName != null) {
-			Class elementClass = element.getClass();
+			Class<?> elementClass = element.getClass();
 			if (element instanceof edu.cmu.cs.stage3.alice.core.Expression) {
 				elementClass = ((edu.cmu.cs.stage3.alice.core.Expression) element).getValueClass();
 			}
@@ -2979,79 +2989,83 @@ public class PopupMenuUtilities {
 		return structure;
 	}
 
-	private static void addLabelsToValueStructure(final java.util.Vector structure) {
-		for (final java.util.ListIterator iter = structure.listIterator(); iter.hasNext();) {
+	@SuppressWarnings("unchecked")
+	private static void addLabelsToValueStructure(final Vector<Object> structure) {
+		for (final java.util.ListIterator<Object> iter = structure.listIterator(); iter.hasNext();) {
 			final Object item = iter.next();
-			if (item instanceof edu.cmu.cs.stage3.util.StringObjectPair) {
-				final edu.cmu.cs.stage3.util.StringObjectPair sop = (edu.cmu.cs.stage3.util.StringObjectPair) item;
-				if (sop.getObject() instanceof java.util.Vector) {
-					addLabelsToValueStructure((java.util.Vector) sop.getObject());
+			if (item instanceof StringObjectPair) {
+				final StringObjectPair sop = (StringObjectPair) item;
+				if (sop.getObject() instanceof Vector) {
+					addLabelsToValueStructure((Vector<Object>) sop.getObject());
 				}
-			} else if (item instanceof java.util.Vector) {
-				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+			} else if (item instanceof Vector) {
+				AuthoringTool
 						.showErrorDialog("Unexpected Vector found while processing value structure", null);
 			} else {
-				final String text = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(item);
-				iter.set(new edu.cmu.cs.stage3.util.StringObjectPair(text, item));
+				final String text = AuthoringToolResources.getReprForValue(item);
+				iter.set(new StringObjectPair(text, item));
 			}
 		}
 	}
 
-	private static void addLabelsToValueStructure(final java.util.Vector structure, final Class elementClass,
+	@SuppressWarnings("unchecked")
+	private static void addLabelsToValueStructure(final Vector<Object> structure, final Class<?> elementClass,
 			final String propertyName) {
-		for (final java.util.ListIterator iter = structure.listIterator(); iter.hasNext();) {
+		for (final java.util.ListIterator<Object> iter = structure.listIterator(); iter.hasNext();) {
 			final Object item = iter.next();
-			if (item instanceof edu.cmu.cs.stage3.util.StringObjectPair) {
-				final edu.cmu.cs.stage3.util.StringObjectPair sop = (edu.cmu.cs.stage3.util.StringObjectPair) item;
-				if (sop.getObject() instanceof java.util.Vector) {
-					addLabelsToValueStructure((java.util.Vector) sop.getObject(), elementClass, propertyName);
+			if (item instanceof StringObjectPair) {
+				final StringObjectPair sop = (StringObjectPair) item;
+				if (sop.getObject() instanceof Vector) {
+					addLabelsToValueStructure((Vector<Object>) sop.getObject(), elementClass, propertyName);
 				}
-			} else if (item instanceof java.util.Vector) {
-				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+			} else if (item instanceof Vector) {
+				AuthoringTool
 						.showErrorDialog("Unexpected Vector found while processing value structure", null);
 			} else {
-				final String text = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(item,
+				final String text = AuthoringToolResources.getReprForValue(item,
 						elementClass, propertyName, "menuContext");
-				iter.set(new edu.cmu.cs.stage3.util.StringObjectPair(text, item));
+				iter.set(new StringObjectPair(text, item));
 			}
 		}
 	}
 
-	private static java.util.Vector processStructure(final java.util.Vector structure,
+	@SuppressWarnings("unchecked")
+	private static Vector<Object> processStructure(final Vector<Object> structure,
 			final edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory factory, final Object currentValue) {
-		final java.util.Vector processed = new java.util.Vector();
-		for (final java.util.Iterator iter = structure.iterator(); iter.hasNext();) {
+		final Vector<Object> processed = new Vector<>();
+		for (final Iterator<Object> iter = structure.iterator(); iter.hasNext();) {
 			final Object item = iter.next();
-			if (item instanceof edu.cmu.cs.stage3.util.StringObjectPair) {
-				final edu.cmu.cs.stage3.util.StringObjectPair sop = (edu.cmu.cs.stage3.util.StringObjectPair) item;
-				if (sop.getObject() instanceof java.util.Vector) {
-					processed.add(new edu.cmu.cs.stage3.util.StringObjectPair(sop.getString(),
-							processStructure((java.util.Vector) sop.getObject(), factory, currentValue)));
+			if (item instanceof StringObjectPair) {
+				final StringObjectPair sop = (StringObjectPair) item;
+				if (sop.getObject() instanceof Vector) {
+					processed.add(new StringObjectPair(sop.getString(),
+							processStructure((Vector<Object>) sop.getObject(), factory, currentValue)));
 				} else {
 					if (currentValue == null && sop.getObject() == null
 							|| currentValue != null && currentValue.equals(sop.getObject())) {
-						processed.add(new edu.cmu.cs.stage3.util.StringObjectPair(sop.getString(),
+						processed.add(new StringObjectPair(sop.getString(),
 								new PopupItemWithIcon(factory.createItem(sop.getObject()), currentValueIcon)));
 					} else {
-						processed.add(new edu.cmu.cs.stage3.util.StringObjectPair(sop.getString(),
+						processed.add(new StringObjectPair(sop.getString(),
 								factory.createItem(sop.getObject())));
 					}
 				}
 			} else {
-				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+				AuthoringTool
 						.showErrorDialog("Unexpected Vector found while processing value structure", null);
 			}
 		}
 		return processed;
 	}
 
-	public static boolean structureContains(final java.util.Vector structure, final Object value) {
-		for (final java.util.Iterator iter = structure.iterator(); iter.hasNext();) {
+	@SuppressWarnings("unchecked")
+	public static boolean structureContains(final Vector<Object> structure, final Object value) {
+		for (final Iterator<Object> iter = structure.iterator(); iter.hasNext();) {
 			final Object item = iter.next();
-			if (item instanceof edu.cmu.cs.stage3.util.StringObjectPair) {
-				final edu.cmu.cs.stage3.util.StringObjectPair sop = (edu.cmu.cs.stage3.util.StringObjectPair) item;
-				if (sop.getObject() instanceof java.util.Vector) {
-					if (structureContains((java.util.Vector) sop.getObject(), value)) {
+			if (item instanceof StringObjectPair) {
+				final StringObjectPair sop = (StringObjectPair) item;
+				if (sop.getObject() instanceof Vector) {
+					if (structureContains((Vector<Object>) sop.getObject(), value)) {
 						return true;
 					}
 				} else if (sop.getObject() == null) {
@@ -3069,9 +3083,9 @@ public class PopupMenuUtilities {
 	}
 
 	// have to special-case PropertyAnimations
-	private static Class getValueClassForPropertyAnimation(
-			final edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues) {
-		Class valueClass = null;
+	private static Class<?> getValueClassForPropertyAnimation(
+			final StringObjectPair[] knownPropertyValues) {
+		Class<?> valueClass = null;
 		edu.cmu.cs.stage3.alice.core.Element element = null;
 		String propertyName = null;
 		for (final StringObjectPair knownPropertyValue : knownPropertyValues) {
@@ -3089,7 +3103,7 @@ public class PopupMenuUtilities {
 		if (element instanceof edu.cmu.cs.stage3.alice.core.Variable && "value".equals(propertyName)) {
 			valueClass = ((edu.cmu.cs.stage3.alice.core.Variable) element).getValueClass();
 		} else if (element != null && propertyName != null) {
-			Class elementClass = element.getClass();
+			Class<?> elementClass = element.getClass();
 			if (element instanceof edu.cmu.cs.stage3.alice.core.Expression) {
 				elementClass = ((edu.cmu.cs.stage3.alice.core.Expression) element).getValueClass();
 			}
@@ -3099,8 +3113,8 @@ public class PopupMenuUtilities {
 		return valueClass;
 	}
 
-	private static Class getValueClassForList(final edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues) {
-		Class valueClass = null;
+	private static Class<?> getValueClassForList(final StringObjectPair[] knownPropertyValues) {
+		Class<?> valueClass = null;
 		Object list = null;
 		for (final StringObjectPair knownPropertyValue : knownPropertyValues) {
 			if (knownPropertyValue.getString().equals("list")) {
@@ -3123,8 +3137,8 @@ public class PopupMenuUtilities {
 		return valueClass;
 	}
 
-	private static Class getValueClassForArray(final edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues) {
-		Class valueClass = null;
+	private static Class<?> getValueClassForArray(final StringObjectPair[] knownPropertyValues) {
+		Class<?> valueClass = null;
 		Object array = null;
 		for (final StringObjectPair knownPropertyValue : knownPropertyValues) {
 			if (knownPropertyValue.getString().equals("array")) {
@@ -3146,8 +3160,8 @@ public class PopupMenuUtilities {
 		return valueClass;
 	}
 
-	private static Class generalizeValueClass(final Class valueClass) {
-		Class newValueClass = valueClass;
+	private static Class<?> generalizeValueClass(final Class<?> valueClass) {
+		Class<?> newValueClass = valueClass;
 		if (java.lang.Number.class.isAssignableFrom(valueClass)) {
 			newValueClass = java.lang.Number.class;
 		} else if (edu.cmu.cs.stage3.alice.core.Model.class.isAssignableFrom(valueClass)) {
@@ -3156,9 +3170,9 @@ public class PopupMenuUtilities {
 		return newValueClass;
 	}
 
-	private static Class getValueClassForComparator(
-			final edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues) {
-		Class valueClass = null;
+	private static Class<?> getValueClassForComparator(
+			final StringObjectPair[] knownPropertyValues) {
+		Class<?> valueClass = null;
 		Object operand = null;
 		for (final StringObjectPair knownPropertyValue : knownPropertyValues) {
 			if (knownPropertyValue.getString().equals("a")) {
@@ -3174,8 +3188,8 @@ public class PopupMenuUtilities {
 		return generalizeValueClass(valueClass);
 	}
 
-	public static Class getDesiredValueClass(final edu.cmu.cs.stage3.alice.core.Property property) {
-		Class targetValueClass = property.getValueClass();
+	public static Class<?> getDesiredValueClass(final edu.cmu.cs.stage3.alice.core.Property property) {
+		Class<?> targetValueClass = property.getValueClass();
 		if (property.getOwner() instanceof edu.cmu.cs.stage3.alice.core.question.BinaryObjectResultingInBooleanQuestion
 				&& (property.getName().equals("a") || property.getName().equals("b"))) {
 			Object otherValue;
@@ -3191,7 +3205,7 @@ public class PopupMenuUtilities {
 				ourValue = ((edu.cmu.cs.stage3.alice.core.question.BinaryObjectResultingInBooleanQuestion) property
 						.getOwner()).b.get();
 			}
-			Class otherValueClass;
+			Class<?> otherValueClass;
 			if (otherValue instanceof edu.cmu.cs.stage3.alice.core.Expression) {
 				otherValueClass = ((edu.cmu.cs.stage3.alice.core.Expression) otherValue).getValueClass();
 			} else if (otherValue != null) {
@@ -3214,9 +3228,9 @@ public class PopupMenuUtilities {
 		return targetValueClass;
 	}
 
-	public static java.util.Vector makeDefaultOneShotStructure(final edu.cmu.cs.stage3.alice.core.Element element) {
+	public static Vector<Object> makeDefaultOneShotStructure(final edu.cmu.cs.stage3.alice.core.Element element) {
 		// return makeResponseStructure( element, oneShotFactory,
-		// edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getWorld()
+		// AuthoringTool.getHack().getWorld()
 		// );
 		return makeResponseStructure(element, oneShotFactory, element.getRoot());
 	}
@@ -3255,14 +3269,14 @@ public class PopupMenuUtilities {
 		return popup;
 	}
 
-	public static edu.cmu.cs.stage3.util.Criterion getAvailableExpressionCriterion(final Class valueClass,
+	public static edu.cmu.cs.stage3.util.Criterion getAvailableExpressionCriterion(final Class<?> valueClass,
 			edu.cmu.cs.stage3.alice.core.Element context) {
 		// DEBUG System.out.println( "getAvailableExpressionCriterion( " +
 		// valueClass + ", " + context + " )" );
 		if (context == null) { // SERIOUS HACK
-			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+			AuthoringTool
 					.showErrorDialog("Error: null context while looking for expressions; using World", null);
-			context = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getWorld();
+			context = AuthoringTool.getHack().getWorld();
 		}
 		final edu.cmu.cs.stage3.util.Criterion isAccessible = new edu.cmu.cs.stage3.alice.core.criterion.ExpressionIsAccessibleFromCriterion(
 				context);
@@ -3272,26 +3286,27 @@ public class PopupMenuUtilities {
 				isNotActualParameter, isAccessible, isNamedElement, isAssignable });
 	}
 
-	public static void printStructure(final java.util.Vector structure) {
+	public static void printStructure(final Vector<Object> structure) {
 		printStructure(structure, 0);
 	}
 
-	private static void printStructure(final java.util.Vector structure, final int indent) {
+	@SuppressWarnings("unchecked")
+	private static void printStructure(final Vector<Object> structure, final int indent) {
 		String tabs = "";
 		for (int i = 0; i < indent; i++) {
 			tabs = tabs + "\t";
 		}
-		for (final java.util.Iterator iter = structure.iterator(); iter.hasNext();) {
+		for (final Iterator<Object> iter = structure.iterator(); iter.hasNext();) {
 			final Object item = iter.next();
-			if (item instanceof edu.cmu.cs.stage3.util.StringObjectPair) {
-				final edu.cmu.cs.stage3.util.StringObjectPair sop = (edu.cmu.cs.stage3.util.StringObjectPair) item;
-				if (sop.getObject() instanceof java.util.Vector) {
-					printStructure((java.util.Vector) sop.getObject(), indent + 1);
+			if (item instanceof StringObjectPair) {
+				final StringObjectPair sop = (StringObjectPair) item;
+				if (sop.getObject() instanceof Vector) {
+					printStructure((Vector<Object>) sop.getObject(), indent + 1);
 				} else {
 					System.out.println(tabs + sop.getString() + " : " + sop.getObject());
 				}
 			} else {
-				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
+				AuthoringTool
 						.showErrorDialog("unexpected object found while printing structure: " + item, null);
 			}
 		}
@@ -3320,8 +3335,7 @@ class PopupMenuItemActionListener implements java.awt.event.ActionListener {
 			}
 			// runnable = null; //MEMFIX
 		} catch (final Throwable t) {
-			edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
-					.showErrorDialog("Error encountered while responding to popup menu item.", t);
+			AuthoringTool.showErrorDialog("Error encountered while responding to popup menu item.", t);
 		}
 	}
 }

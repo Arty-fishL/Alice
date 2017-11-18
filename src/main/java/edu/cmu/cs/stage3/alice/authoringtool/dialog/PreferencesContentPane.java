@@ -32,7 +32,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -49,6 +51,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
+import javax.swing.event.ListDataListener;
 
 import com.jamiegl.alicex.ui.JSystemFileChooser;
 
@@ -63,17 +66,17 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	 *
 	 */
 	private static final long serialVersionUID = -5640197307370575192L;
-	protected java.util.HashMap checkBoxToConfigKeyMap = new java.util.HashMap();
+	protected java.util.HashMap<JCheckBox, String> checkBoxToConfigKeyMap = new java.util.HashMap<>();
 	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
 	private final Package authoringToolPackage = Package.getPackage("edu.cmu.cs.stage3.alice.authoringtool");
 	protected javax.swing.JFileChooser browseFileChooser = new JSystemFileChooser();
-	protected java.util.HashMap rendererStringMap = new java.util.HashMap();
+	protected java.util.HashMap<?, String> rendererStringMap = new java.util.HashMap<>(); // Unused ??
 	protected boolean restartRequired = false;
 	protected boolean reloadRequired = false;
 	protected boolean shouldListenToRenderBoundsChanges = true;
 	protected boolean changedCaptureDirectory = false;
 	protected java.awt.Frame owner;
-	private final java.util.Vector m_okActionListeners = new java.util.Vector();
+	private final java.util.Vector<ActionListener> m_okActionListeners = new java.util.Vector<>();
 	private final String FOREVER_INTERVAL_STRING = "Forever";
 	private final String INFINITE_BACKUPS_STRING = "Infinite";
 
@@ -690,7 +693,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	protected void setInput() {
 		final boolean oldContrast = Configuration.getValue(authoringToolPackage, "enableHighContrastMode")
 				.equalsIgnoreCase("true");
-		for (final java.util.Iterator iter = checkBoxToConfigKeyMap.keySet().iterator(); iter.hasNext();) {
+		for (final java.util.Iterator<JCheckBox> iter = checkBoxToConfigKeyMap.keySet().iterator(); iter.hasNext();) {
 			final javax.swing.JCheckBox checkBox = (javax.swing.JCheckBox) iter.next();
 			String currentValue = Configuration.getValue(authoringToolPackage,
 					(String) checkBoxToConfigKeyMap.get(checkBox));
@@ -818,7 +821,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	}
 
 	protected void updateGUI() {
-		for (final java.util.Iterator iter = checkBoxToConfigKeyMap.keySet().iterator(); iter.hasNext();) {
+		for (final java.util.Iterator<JCheckBox> iter = checkBoxToConfigKeyMap.keySet().iterator(); iter.hasNext();) {
 			final javax.swing.JCheckBox checkBox = (javax.swing.JCheckBox) iter.next();
 			boolean value;
 			try {
@@ -900,10 +903,11 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	}
 
 	protected class ConfigListModel
-			implements javax.swing.ListModel, edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationListener {
+			implements javax.swing.ListModel<String>, edu.cmu.cs.stage3.alice.authoringtool.util.event.ConfigurationListener {
+		
 		protected Package configPackage;
 		protected String configKey;
-		protected java.util.Set listenerSet = new java.util.HashSet();
+		protected java.util.Set<ListDataListener> listenerSet = new java.util.HashSet<>();
 
 		public ConfigListModel(final Package configPackage, final String configKey) {
 			this.configPackage = configPackage;
@@ -927,7 +931,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		}
 
 		@Override
-		public Object getElementAt(final int index) {
+		public String getElementAt(final int index) {
 			final String item = Configuration.getValueList(configPackage, configKey)[index];
 			return edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(item);
 		}
@@ -972,7 +976,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 				}
 				final javax.swing.event.ListDataEvent listDataEvent = new javax.swing.event.ListDataEvent(this,
 						javax.swing.event.ListDataEvent.CONTENTS_CHANGED, 0, upperRange);
-				for (final java.util.Iterator iter = listenerSet.iterator(); iter.hasNext();) {
+				for (final Iterator<ListDataListener> iter = listenerSet.iterator(); iter.hasNext();) {
 					((javax.swing.event.ListDataListener) iter.next()).contentsChanged(listDataEvent);
 				}
 			}
@@ -1008,7 +1012,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		addComboBoxValueValue(interval, saveIntervalOptions);
 	}
 
-	private void addComboBoxValueValue(final int toAdd, final java.util.Vector toAddTo) {
+	private void addComboBoxValueValue(final int toAdd, final java.util.Vector<String> toAddTo) {
 		if (toAdd > 0) {
 			boolean isThere = false;
 			int location = toAddTo.size() - 1;
@@ -1077,7 +1081,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	private void setFontSizeValues() {
 		fontSizeOptions.removeAllElements();
 		final int fontSize = Integer.parseInt(authoringToolConfig.getValue("fontSize"));
-		final java.util.List size = new java.util.ArrayList();
+		final java.util.List<Integer> size = new java.util.ArrayList<>();
 		size.add(Integer.valueOf(8));
 		size.add(Integer.valueOf(10));
 		size.add(Integer.valueOf(12));
@@ -1214,9 +1218,9 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	JCheckBox useBorderlessWindowCheckBox = new JCheckBox();
 	JCheckBox infiniteBackupsCheckBox = new JCheckBox();
 	JTextField importDirectoryTextField = new JTextField();
-	java.util.Vector saveIntervalOptions = new java.util.Vector();
-	java.util.Vector backupCountOptions = new java.util.Vector();
-	java.util.Vector fontSizeOptions = new java.util.Vector();
+	java.util.Vector<String> saveIntervalOptions = new java.util.Vector<>();
+	java.util.Vector<String> backupCountOptions = new java.util.Vector<>();
+	java.util.Vector<String> fontSizeOptions = new java.util.Vector<>();
 	JLabel importDirectoryLabel = new JLabel();
 	JButton importDirectoryBrowseButton = new JButton();
 	JCheckBox enableScriptingCheckBox = new JCheckBox();
@@ -1224,7 +1228,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	JCheckBox runtimeScratchPadEnabledCheckBox = new JCheckBox();
 	JCheckBox saveAsSingleFileCheckBox = new JCheckBox();
 	JCheckBox watcherPanelEnabledCheckBox = new JCheckBox();
-	JComboBox saveIntervalComboBox = new JComboBox();
+	JComboBox<String> saveIntervalComboBox = new JComboBox<String>();
 
 	JTabbedPane configTabbedPane = new JTabbedPane();
 
@@ -1281,8 +1285,8 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 
 	private final JTextField maxRecentWorldsTextField = new JTextField();
 	private final JLabel maxRecentWorldsLabel = new JLabel();
-	private final JComboBox resourceFileComboBox = new JComboBox();
-	private final JComboBox fontSizeComboBox = new JComboBox();
+	private final JComboBox<String> resourceFileComboBox = new JComboBox<String>();
+	private final JComboBox<String> fontSizeComboBox = new JComboBox<String>();
 	private final JTextField worldDirectoryTextField = new JTextField();
 
 	private void GeneralTabInit() {
@@ -1320,9 +1324,9 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 			resourceFileComboBox.addItem(resourceFile.getName());
 		}
 
-		resourceFileComboBox.setRenderer(new javax.swing.ListCellRenderer() {
+		resourceFileComboBox.setRenderer(new javax.swing.ListCellRenderer<String>() {
 			@Override
-			public java.awt.Component getListCellRendererComponent(final javax.swing.JList list, final Object value,
+			public java.awt.Component getListCellRendererComponent(final javax.swing.JList<? extends String> list, final String value,
 					final int index, final boolean isSelected, final boolean cellHasFocus) {
 				final javax.swing.JLabel toReturn = new javax.swing.JLabel("No Name");
 				toReturn.setOpaque(true);
@@ -1443,15 +1447,14 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 
 	private final JCheckBox forceSoftwareRenderingCheckBox = new JCheckBox();
 	private final JCheckBox showFPSCheckBox = new JCheckBox();
-	private final JCheckBox deleteFiles = new JCheckBox(); // Aik Min added
-															// this.
+	private final JCheckBox deleteFiles = new JCheckBox(); // Aik Min added this.
 	private final JTextField boundsXTextField = new JTextField();
 	private final JTextField boundsYTextField = new JTextField();
 	private final JTextField boundsWidthTextField = new JTextField();
 	private final JTextField boundsHeightTextField = new JTextField();
 	private final JCheckBox constrainRenderDialogAspectCheckBox = new JCheckBox();
 	private final JCheckBox ensureRenderDialogIsOnScreenCheckBox = new JCheckBox();
-	private final JList rendererList = new JList();
+	private final JList<String> rendererList = new JList<>();
 
 	private void RenderingTabInit() {
 		final JPanel renderWindowBoundsPanel = new JPanel();
@@ -1461,10 +1464,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 
 		forceSoftwareRenderingCheckBox.setText(" force software rendering (slower and safer)");
 		showFPSCheckBox.setText(" show frames per second");
-		deleteFiles.setText(" delete frames folder after exporting video"); // Aik
-																			// Min
-																			// added
-																			// this.
+		deleteFiles.setText(" delete frames folder after exporting video"); // Aik Min added this.
 		// renderWindowBoundsPanel.setAlignmentX((float) 0.0);
 		// renderWindowBoundsPanel.setMaximumSize(new Dimension(32767, 125));
 		// renderWindowBoundsPanel.setPreferredSize(new Dimension(300, 125));
@@ -1593,8 +1593,8 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 
 	JTextField captureDirectoryTextField = new JTextField();
 	private final JTextField baseNameTextField = new JTextField();
-	private final JComboBox numDigitsComboBox = new JComboBox();
-	private final JComboBox codecComboBox = new JComboBox();
+	private final JComboBox<String> numDigitsComboBox = new JComboBox<String>();
+	private final JComboBox<String> codecComboBox = new JComboBox<String>();
 	private final JCheckBox screenCaptureInformUserCheckBox = new JCheckBox();
 
 	private void ScreenGrabTabInit() {
@@ -1678,7 +1678,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 	private final JCheckBox clearStdOutOnRunCheckBox = new JCheckBox();
 	private final JCheckBox enableHighContrastCheckBox = new JCheckBox();
 	private final JTextField numClipboardsTextField = new JTextField();
-	private final JComboBox backupCountComboBox = new JComboBox();
+	private final JComboBox<String> backupCountComboBox = new JComboBox<String>();
 
 	private void SeldomUsedTabInit() {
 		final JPanel saveIntervalPanel = new JPanel();

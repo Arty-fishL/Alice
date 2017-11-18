@@ -26,17 +26,17 @@ package edu.cmu.cs.stage3.alice.authoringtool.util;
 /**
  * @author Jason Pratt
  */
-public class ExtensionGroupFileFilter extends javax.swing.filechooser.FileFilter implements Comparable {
-	private final java.util.ArrayList extensions;
+public class ExtensionGroupFileFilter extends javax.swing.filechooser.FileFilter implements Comparable<Object> {
+	private final java.util.ArrayList<ExtensionFileFilter> extensions;
 	private String description = "";
 	private String baseDescription = "";
 
 	public ExtensionGroupFileFilter(final String baseDescription) {
-		extensions = new java.util.ArrayList();
+		extensions = new java.util.ArrayList<>();
 		this.baseDescription = baseDescription;
 	}
 
-	public ExtensionGroupFileFilter(final java.util.ArrayList extensions, final String baseDescription) {
+	public ExtensionGroupFileFilter(final java.util.ArrayList<ExtensionFileFilter> extensions, final String baseDescription) {
 		this.extensions = extensions;
 		this.baseDescription = baseDescription;
 	}
@@ -49,7 +49,7 @@ public class ExtensionGroupFileFilter extends javax.swing.filechooser.FileFilter
 		final StringBuffer d = new StringBuffer(baseDescription);
 		d.append(" (");
 
-		final java.util.Iterator iter = extensions.iterator();
+		final java.util.Iterator<ExtensionFileFilter> iter = extensions.iterator();
 		if (iter.hasNext()) {
 			final ExtensionFileFilter ext = (ExtensionFileFilter) iter.next();
 			d.append(ext.getExtension());
@@ -66,7 +66,7 @@ public class ExtensionGroupFileFilter extends javax.swing.filechooser.FileFilter
 
 	@Override
 	public boolean accept(final java.io.File f) {
-		for (final java.util.Iterator iter = extensions.iterator(); iter.hasNext();) {
+		for (final java.util.Iterator<ExtensionFileFilter> iter = extensions.iterator(); iter.hasNext();) {
 			final ExtensionFileFilter ext = (ExtensionFileFilter) iter.next();
 			if (ext.accept(f)) {
 				return true;

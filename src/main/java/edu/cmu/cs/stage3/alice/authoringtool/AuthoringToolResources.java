@@ -54,6 +54,7 @@ public class AuthoringToolResources {
 		}
 	};
 	public static java.io.FileFilter resourceFileFilter = new java.io.FileFilter() {
+		@SuppressWarnings("unused")
 		public String getDescription() {
 			return "resource files";
 		}

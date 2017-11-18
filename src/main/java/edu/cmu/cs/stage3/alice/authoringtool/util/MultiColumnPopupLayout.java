@@ -100,7 +100,7 @@ public class MultiColumnPopupLayout implements java.awt.LayoutManager {
 			int widthThisColumn = 0;
 			int heightSoFar = 0;
 
-			final java.util.ArrayList oneColumn = new java.util.ArrayList();
+			final java.util.ArrayList<java.awt.Component> oneColumn = new java.util.ArrayList<>();
 
 			for (int i = 0; i < count; i++) {
 				final java.awt.Component comp = parent.getComponent(i);
@@ -113,7 +113,7 @@ public class MultiColumnPopupLayout implements java.awt.LayoutManager {
 																				// it
 																				// out
 					w = widthThisColumn;
-					for (final java.util.Iterator iter = oneColumn.iterator(); iter.hasNext();) {
+					for (final java.util.Iterator<java.awt.Component> iter = oneColumn.iterator(); iter.hasNext();) {
 						final java.awt.Component c = (java.awt.Component) iter.next();
 						h = c.getPreferredSize().height;
 						c.setBounds(x, y, w, h);
@@ -136,7 +136,7 @@ public class MultiColumnPopupLayout implements java.awt.LayoutManager {
 
 			if (!oneColumn.isEmpty()) { // last column
 				w = widthThisColumn;
-				for (final java.util.Iterator iter = oneColumn.iterator(); iter.hasNext();) {
+				for (final java.util.Iterator<java.awt.Component> iter = oneColumn.iterator(); iter.hasNext();) {
 					final java.awt.Component c = (java.awt.Component) iter.next();
 					h = c.getPreferredSize().height;
 					c.setBounds(x, y, w, h);

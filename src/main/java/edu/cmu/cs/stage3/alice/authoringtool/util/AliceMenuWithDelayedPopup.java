@@ -31,10 +31,10 @@ public class AliceMenuWithDelayedPopup extends AliceMenu {
 	 *
 	 */
 	private static final long serialVersionUID = -827272405105375311L;
-	protected java.util.Vector structure;
+	protected java.util.Vector<Object> structure;
 	protected boolean menuHasBeenPopulated = false;
 
-	public AliceMenuWithDelayedPopup(final String title, final java.util.Vector structure) {
+	public AliceMenuWithDelayedPopup(final String title, final java.util.Vector<Object> structure) {
 		super(title);
 		this.structure = structure;
 	}

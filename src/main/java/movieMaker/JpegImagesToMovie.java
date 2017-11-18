@@ -75,7 +75,7 @@ import javax.media.protocol.PullBufferStream;
 public class JpegImagesToMovie implements ControllerListener, DataSinkListener {
 
 	/** number of frames per second */
-	private int fRate = 16;
+	// Unused ?? private int fRate = 16;
 
 	/**
 	 * Method to write out a quicktime movie
@@ -91,9 +91,9 @@ public class JpegImagesToMovie implements ControllerListener, DataSinkListener {
 	 * @param outML
 	 *            the Media Locator
 	 */
-	public boolean doItQuicktime(final int width, final int height, final int frameRate, final List inFiles,
+	public boolean doItQuicktime(final int width, final int height, final int frameRate, final List<String> inFiles,
 			final MediaLocator outML) {
-		fRate = frameRate;
+		// Unused ?? fRate = frameRate;
 		return doIt(width, height, frameRate, inFiles, outML, FileTypeDescriptor.QUICKTIME);
 	}
 
@@ -111,9 +111,9 @@ public class JpegImagesToMovie implements ControllerListener, DataSinkListener {
 	 * @param outputURL
 	 *            the output URL for the movie
 	 */
-	public boolean doItQuicktime(final int width, final int height, final int frameRate, final List inFiles,
+	public boolean doItQuicktime(final int width, final int height, final int frameRate, final List<String> inFiles,
 			final String outputURL) {
-		fRate = frameRate;
+		// Unused ?? fRate = frameRate;
 		final MediaLocator oml = createMediaLocator(outputURL);
 		return doItQuicktime(width, height, frameRate, inFiles, oml);
 	}
@@ -132,9 +132,9 @@ public class JpegImagesToMovie implements ControllerListener, DataSinkListener {
 	 * @param outputURL
 	 *            the output URL for the movie
 	 */
-	public boolean doItAVI(final int width, final int height, final int frameRate, final List inFiles,
+	public boolean doItAVI(final int width, final int height, final int frameRate, final List<String> inFiles,
 			final String outputURL) {
-		fRate = frameRate;
+		// Unused ?? fRate = frameRate;
 		final MediaLocator oml = createMediaLocator(outputURL);
 		return doItAVI(width, height, frameRate, inFiles, oml);
 	}
@@ -153,9 +153,9 @@ public class JpegImagesToMovie implements ControllerListener, DataSinkListener {
 	 * @param outML
 	 *            the Media Locator
 	 */
-	public boolean doItAVI(final int width, final int height, final int frameRate, final List inFiles,
+	public boolean doItAVI(final int width, final int height, final int frameRate, final List<String> inFiles,
 			final MediaLocator outML) {
-		fRate = frameRate;
+		// Unused ?? fRate = frameRate;
 		return doItAVI(width, height, frameRate, inFiles, outML, FileTypeDescriptor.MSVIDEO);
 	}
 
@@ -174,9 +174,9 @@ public class JpegImagesToMovie implements ControllerListener, DataSinkListener {
 	 *            the Media Locator
 	 * @type the VideoFormat type
 	 */
-	public boolean doIt(final int width, final int height, final int frameRate, final List inFiles,
+	public boolean doIt(final int width, final int height, final int frameRate, final List<String> inFiles,
 			final MediaLocator outML, final String type) {
-		fRate = frameRate;
+		// Unused ?? fRate = frameRate;
 		final ImageDataSource ids = new ImageDataSource(width, height, frameRate, inFiles);
 
 		Processor p;
@@ -286,7 +286,7 @@ public class JpegImagesToMovie implements ControllerListener, DataSinkListener {
 	 *            the Media Locator
 	 * @type the VideoFormat type
 	 */
-	public boolean doItAVI(final int width, final int height, final int frameRate, final List inFiles,
+	public boolean doItAVI(final int width, final int height, final int frameRate, final List<String> inFiles,
 			final MediaLocator outML, final String type) {
 		final ImageDataSource ids = new ImageDataSource(width, height, frameRate, inFiles);
 
@@ -315,7 +315,7 @@ public class JpegImagesToMovie implements ControllerListener, DataSinkListener {
 
 		// Query for the processor for supported formats.
 		// Then set it on the processor.
-		final TrackControl tcs[] = p.getTrackControls();
+		// Unused ?? final TrackControl tcs[] = p.getTrackControls();
 		Format format;
 		final TrackControl[] arrTrackControls = p.getTrackControls();
 		for (final TrackControl arrTrackControl : arrTrackControls) {
@@ -512,7 +512,7 @@ public class JpegImagesToMovie implements ControllerListener, DataSinkListener {
 		// Parse the arguments.
 		int i = 0;
 		int width = -1, height = -1, frameRate = 1;
-		final List inputFiles = new ArrayList();
+		final List<String> inputFiles = new ArrayList<>();
 		String outputURL = null;
 
 		while (i < args.length) {
@@ -590,6 +590,7 @@ public class JpegImagesToMovie implements ControllerListener, DataSinkListener {
 	/**
 	 * Create a media locator from the given string.
 	 */
+	@SuppressWarnings("unused")
 	static MediaLocator createMediaLocator(final String url) {
 
 		MediaLocator ml;
@@ -625,7 +626,7 @@ public class JpegImagesToMovie implements ControllerListener, DataSinkListener {
 
 		ImageSourceStream streams[];
 
-		ImageDataSource(final int width, final int height, final int frameRate, final List images) {
+		ImageDataSource(final int width, final int height, final int frameRate, final List<String> images) {
 			streams = new ImageSourceStream[1];
 			streams[0] = new ImageSourceStream(width, height, frameRate, images);
 		}
@@ -700,7 +701,7 @@ public class JpegImagesToMovie implements ControllerListener, DataSinkListener {
 	 */
 	class ImageSourceStream implements PullBufferStream {
 
-		List images;
+		List<String> images;
 		int width, height;
 		VideoFormat format;
 		long frame = 0;
@@ -708,7 +709,7 @@ public class JpegImagesToMovie implements ControllerListener, DataSinkListener {
 		int nextImage = 0; // index of the next image to be read.
 		boolean ended = false;
 
-		public ImageSourceStream(final int width, final int height, final int frameRate, final List images) {
+		public ImageSourceStream(final int width, final int height, final int frameRate, final List<String> images) {
 			this.width = width;
 			this.height = height;
 			this.images = images;

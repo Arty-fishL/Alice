@@ -166,7 +166,7 @@ public class MovieWriter {
 		if (framesDir != null) {
 			try {
 				dir = new File(movieDir + movieName);
-				myURL = dir.toURL();
+				myURL = dir.toURI().toURL();
 			} catch (final Exception ex) {
 			}
 		}
@@ -178,20 +178,20 @@ public class MovieWriter {
 	 *
 	 * @return a list of full path names for the frames of the movie
 	 */
-	public List getFrameNames() {
+	public List<String> getFrameNames() {
 		final File dir = new File(framesDir);
 		final String[] filesArray = dir.list();
-		final List files = new ArrayList();
+		final List<String> files = new ArrayList<>();
 		long lenFirst = 0;
 		for (final String fileName : filesArray) {
 			// only continue if jpg picture
 			if (fileName.indexOf(".jpg") >= 0) {
 				final File f = new File(framesDir + fileName);
-				// check for imcomplete image
+				// check for incomplete image
 				if (lenFirst == 0 || f.length() > lenFirst / 2) {
 					// image okay so far
 					try {
-						final BufferedImage i = ImageIO.read(f);
+						/*final BufferedImage i =*/ ImageIO.read(f);
 						files.add(framesDir + fileName);
 					} catch (final Exception ex) {
 						// if problem reading don't add it
@@ -210,7 +210,7 @@ public class MovieWriter {
 	 */
 	public void writeAVI() {
 		final JpegImagesToMovie imageToMovie = new JpegImagesToMovie();
-		final List frameNames = getFrameNames();
+		final List<String> frameNames = getFrameNames();
 		final Picture p = new Picture((String) frameNames.get(0));
 		imageToMovie.doItAVI(p.getWidth(), p.getHeight(), frameRate, frameNames, outputURL + ".avi");
 	}
@@ -220,7 +220,7 @@ public class MovieWriter {
 	 */
 	public boolean writeQuicktime() {
 		final JpegImagesToMovie imageToMovie = new JpegImagesToMovie();
-		final List frameNames = getFrameNames();
+		final List<String> frameNames = getFrameNames();
 		final Picture p = new Picture((String) frameNames.get(0));
 		return imageToMovie.doItQuicktime(p.getWidth(), p.getHeight(), frameRate, frameNames, outputURL + ".mov");
 	}

@@ -24,8 +24,13 @@
 package edu.cmu.cs.stage3.alice.authoringtool.galleryviewer;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Vector;
 
 import javax.swing.ScrollPaneConstants;
+
+import edu.cmu.cs.stage3.caitlin.personbuilder.PersonBuilder;
+import edu.cmu.cs.stage3.util.StringObjectPair;
 
 /**
  * @author David Culyba
@@ -67,12 +72,12 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 	protected RootDirectoryStructure webGallery = null;
 	protected RootDirectoryStructure localGallery = null;
 	protected RootDirectoryStructure cdGallery = null;
-	protected java.util.Vector currentGalleryObjects;
+	protected java.util.Vector<?> currentGalleryObjects; // Unused ??
 	protected edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel objectPanel;
 	protected java.awt.FlowLayout objectPanelLayout;
 	protected javax.swing.JPanel directoryPanel;
 	protected javax.swing.JPanel searchPanel;
-	protected java.util.Vector rootDirectories;
+	protected java.util.Vector<RootDirectoryStructure> rootDirectories;
 	protected DirectoryStructure directoryOnDisplay;
 	protected DirectoryStructure searchResults;
 	protected DirectoryStructure oldDirectoryOnDisplay;
@@ -158,7 +163,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 			java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.HORIZONTAL, new java.awt.Insets(0, 0, 0, 0),
 			0, 0);
 	protected java.lang.Thread changingThread;
-	protected java.util.Vector builderButtonsVector;
+	protected java.util.Vector<GalleryObject> builderButtonsVector;
 
 	protected static double bitsPerSecond = 0;
 	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
@@ -237,7 +242,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 		public javax.vecmath.Vector3d dimensions = new javax.vecmath.Vector3d();
 		public String objectFilename = null;
 		public String imageFilename = null;
-		public java.util.Vector details = new java.util.Vector();
+		public java.util.Vector<StringObjectPair> details = new java.util.Vector<>();
 		public java.awt.datatransfer.Transferable transferable;
 		public int type;
 		public GalleryViewer mainViewer;
@@ -357,7 +362,8 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 					} else {
 						String toReturn = "";
 						if (current.getObject() instanceof java.util.Vector) {
-							final java.util.Vector allDetails = (java.util.Vector) current.getObject();
+							@SuppressWarnings("unchecked")
+							final java.util.Vector<Object> allDetails = (java.util.Vector<Object>) current.getObject();
 							for (int j = 0; j < allDetails.size(); j++) {
 								String currentDetail = allDetails.get(j).toString();
 								if (j < allDetails.size() - 1) {
@@ -376,8 +382,8 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 	}
 
 	protected class DirectoryXmlData {
-		public java.util.Vector directories = new java.util.Vector();
-		public java.util.Vector models = new java.util.Vector();
+		public java.util.Vector<ObjectXmlData> directories = new java.util.Vector<>();
+		public java.util.Vector<ObjectXmlData> models = new java.util.Vector<>();
 		public String name = "directory";
 
 		public DirectoryXmlData(final String name) {
@@ -534,10 +540,10 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 			return false;
 		}
 
-		public java.util.Vector getObjectMatches(final String searchString) {
-			java.util.Vector toReturn = null;
+		public java.util.Vector<ObjectXmlData> getObjectMatches(final String searchString) {
+			java.util.Vector<ObjectXmlData> toReturn = null;
 			if (xmlData != null) {
-				toReturn = new java.util.Vector();
+				toReturn = new java.util.Vector<>();
 				for (int i = 0; i < xmlData.models.size(); i++) {
 					if (((ObjectXmlData) xmlData.models.get(i)).matches(searchString)) {
 						toReturn.add(xmlData.models.get(i));
@@ -710,7 +716,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 			return currentModelData;
 		}
 
-		private void removeMissing(final java.util.Vector toSearch) {
+		private void removeMissing(final java.util.Vector<ObjectXmlData> toSearch) {
 			int count = 0;
 			while (count < toSearch.size()) {
 				final ObjectXmlData current = (ObjectXmlData) toSearch.get(count);
@@ -726,8 +732,9 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 		}
 
 		protected String getLinkPath(final java.io.File linkFile) {
+			java.io.BufferedReader fileReader = null;
 			try {
-				final java.io.BufferedReader fileReader = new java.io.BufferedReader(new java.io.FileReader(linkFile));
+				fileReader = new java.io.BufferedReader(new java.io.FileReader(linkFile));
 				final char b[] = new char[1000];
 				int numRead = fileReader.read(b);
 				String content = new String(b, 0, numRead);
@@ -742,6 +749,13 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 				final String toReturn = rootNode.rootPath + makeRelativePathReady(content);
 				return toReturn;
 			} catch (final Exception e) {
+			} finally {
+				if (fileReader != null) {
+					// Clean up
+					try {
+						fileReader.close();
+					} catch (final IOException e) {}
+				}
 			}
 			return null;
 		}
@@ -955,7 +969,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 			if (xml == null) {
 				return -1;
 			}
-			long oldTime = System.currentTimeMillis();
+			// Unused ?? long oldTime = System.currentTimeMillis();
 			xmlData = new DirectoryXmlData(name);
 			xmlData.name = name;
 			final java.io.ByteArrayInputStream bais = new java.io.ByteArrayInputStream(xml.getBytes());
@@ -967,11 +981,11 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 				final javax.xml.parsers.DocumentBuilder builder = factory.newDocumentBuilder();
 				// System.out.println("0a:
 				// "+(System.currentTimeMillis()-oldTime));
-				oldTime = System.currentTimeMillis();
+				// Unused ?? oldTime = System.currentTimeMillis();
 				document = builder.parse(bais);
 				// System.out.println("parse time:
 				// "+(System.currentTimeMillis()-oldTime));
-				oldTime = System.currentTimeMillis();
+				// Unused ?? oldTime = System.currentTimeMillis();
 				xmlRoot = document.getDocumentElement();
 			} catch (final javax.xml.parsers.ParserConfigurationException e) {
 				throw e;
@@ -983,12 +997,12 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 				throw e;
 			}
 			// System.out.println("1: "+(System.currentTimeMillis()-oldTime));
-			oldTime = System.currentTimeMillis();
+			// Unused ?? oldTime = System.currentTimeMillis();
 			final org.w3c.dom.NodeList xmlDirectories = xmlRoot.getElementsByTagName("directory");
 			final org.w3c.dom.NodeList xmlModels = xmlRoot.getElementsByTagName("model");
 			// System.out.println("getting all models and dirs:
 			// "+(System.currentTimeMillis()-oldTime));
-			oldTime = System.currentTimeMillis();
+			// Unused ?? oldTime = System.currentTimeMillis();
 			final int total = xmlDirectories.getLength() + xmlModels.getLength();
 			glueConstraints.gridx = total;
 			int count = 0;
@@ -1036,7 +1050,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 			}
 			// System.out.println("dir loading:
 			// "+(System.currentTimeMillis()-oldTime));
-			oldTime = System.currentTimeMillis();
+			// Unused ?? oldTime = System.currentTimeMillis();
 			for (int i = 0; i < xmlModels.getLength(); i++) {
 				if (stopBuildingGallery) {
 					xmlData = null;
@@ -1057,7 +1071,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 			}
 			// System.out.println("model loading:
 			// "+(System.currentTimeMillis()-oldTime));
-			oldTime = System.currentTimeMillis();
+			// Unused ?? oldTime = System.currentTimeMillis();
 			return count;
 		}
 	}
@@ -1116,8 +1130,8 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 			testDir.mkdirs();
 		}
 
-		final String filename = "galleryIndex.xml";
-		rootDirectories = new java.util.Vector();
+		// Unused ?? final String filename = "galleryIndex.xml";
+		rootDirectories = new java.util.Vector<>();
 		inBrowseMode = true;
 		guiInit();
 		localGallery = createDirectory(mainLocalGalleryFile, localGalleryName, LOCAL);
@@ -1163,6 +1177,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 		refreshGUI();
 	}
 
+	/* Unused ??
 	private GalleryObject getGalleryObject(final java.awt.Component c) {
 		if (c instanceof GalleryObject) {
 			return (GalleryObject) c;
@@ -1172,6 +1187,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 		}
 		return getGalleryObject(c.getParent());
 	}
+	*/
 
 	private String getRelativeDirectory(final String root, final String filename, final String separator) {
 		int split = filename.indexOf(root);
@@ -1197,6 +1213,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 		return toReturn;
 	}
 
+	/* Unused ??
 	private String getFilename(final String filename, final String separator) {
 		final int split = filename.lastIndexOf(separator);
 		String toReturn = null;
@@ -1205,6 +1222,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 		}
 		return toReturn;
 	}
+	*/
 
 	public void saveModel(final edu.cmu.cs.stage3.alice.core.Element toSave,
 			final java.awt.datatransfer.Transferable transferable) {
@@ -1685,7 +1703,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 	}
 
 	private java.awt.datatransfer.Transferable createURLTransferable(final String filename) {
-		final java.net.URL toReturn = null;
+		// Unused ?? final java.net.URL toReturn = null;
 		try {
 			final java.net.URL url = new java.net.URL(filename);
 			if (!url.getProtocol().equalsIgnoreCase("http")) {
@@ -1709,7 +1727,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 	private java.awt.datatransfer.Transferable createFileTransferable(final String filename) {
 		final java.io.File fileToTransfer = new java.io.File(filename);
 		if (fileToTransfer.exists() && fileToTransfer.canRead()) {
-			final java.util.ArrayList list = new java.util.ArrayList(1);
+			final java.util.ArrayList<File> list = new java.util.ArrayList<>(1);
 			list.add(fileToTransfer);
 			return new edu.cmu.cs.stage3.alice.authoringtool.datatransfer.FileListTransferable(list);
 		} else {
@@ -1810,9 +1828,11 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 				searchWebButton.setEnabled(false);
 			}
 
+			/* Unused ??
 			private void updateHeightTextField() {
 				searchWebButton.setEnabled(false);
 			}
+			*/
 
 			@Override
 			public void changedUpdate(final javax.swing.event.DocumentEvent ev) {
@@ -1963,13 +1983,12 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 		add3DTextButton = new TextBuilderButton();
 		add3DTextButton.set(add3DTextData, add3DTextIcon, null);
 
-		final java.util.Vector builderVector = edu.cmu.cs.stage3.caitlin.personbuilder.PersonBuilder.getAllBuilders();
-		builderButtonsVector = new java.util.Vector();
+		final java.util.Vector<StringObjectPair> builderVector = PersonBuilder.getAllBuilders();
+		builderButtonsVector = new java.util.Vector<GalleryObject>();
 		// builderButtonsVector.add(add3DTextButton);
 		for (int i = 0; i < builderVector.size(); i++) {
-			if (builderVector.get(i) instanceof edu.cmu.cs.stage3.util.StringObjectPair) {
-				final edu.cmu.cs.stage3.util.StringObjectPair sop = (edu.cmu.cs.stage3.util.StringObjectPair) builderVector
-						.get(i);
+			if (builderVector.get(i) instanceof StringObjectPair) {
+				final StringObjectPair sop = (StringObjectPair) builderVector.get(i);
 				javax.swing.ImageIcon builderIcon = null;
 				if (sop.getObject() instanceof javax.swing.ImageIcon) {
 					builderIcon = (javax.swing.ImageIcon) sop.getObject();
@@ -2042,7 +2061,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 		if (children.getLength() == 1 && children.item(0).getNodeType() == org.w3c.dom.Node.TEXT_NODE) {
 			toReturn = children.item(0).getNodeValue();
 		} else if (children.getLength() > 0) {
-			final java.util.Vector detailVector = new java.util.Vector();
+			final java.util.Vector<String> detailVector = new java.util.Vector<>();
 			for (int i = 0; i < children.getLength(); i++) {
 				final org.w3c.dom.Node currentNode = children.item(i);
 				if (currentNode.getNodeType() == org.w3c.dom.Node.ELEMENT_NODE) {
@@ -2361,7 +2380,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 				updatePanelsWhileLoading = false;
 				buildNewDirectory(toSearch, false);
 			}
-			final java.util.Vector matches = toSearch.getObjectMatches(toSearchFor);
+			final Vector<ObjectXmlData> matches = toSearch.getObjectMatches(toSearchFor);
 			if (matches != null) {
 				for (int i = 0; i < matches.size(); i++) {
 					if (!searchResults.contains((ObjectXmlData) matches.get(i))) {
@@ -2659,6 +2678,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 		// }
 	}
 
+	/** Unused ??
 	private void resetLayout(final int index) {
 		// for (int i=index; i<objectPanel.getComponentCount(); i++){
 		// java.awt.Component c = objectPanel.getComponent(i);
@@ -2667,11 +2687,14 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 		// objectPanelLayout.setConstraints(c,g);
 		// }
 	}
+	*/
 
+	/** Unused ??
 	private void removeGalleryObject(final GalleryObject toRemove) {
 		objectPanel.remove(toRemove);
 		resetLayout(0);
 	}
+	*/
 
 	private void modelAdded(final ObjectXmlData added, int count) {
 		final GalleryObject toAdd = createGalleryObject(added);
@@ -2704,6 +2727,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 		});
 	}
 
+	/* Unused ??
 	private GalleryObject getGalleryObject(final String objectName) {
 		for (int i = 0; i < objectPanel.getComponentCount(); i++) {
 			if (objectPanel.getComponent(i) instanceof GalleryObject) {
@@ -2715,6 +2739,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 		}
 		return null;
 	}
+	*/
 
 	/**
 	 * Creates the gui elements to display the current directory based on
@@ -2731,15 +2756,15 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 			if (xmlData == null || xmlData.directories == null || xmlData.models == null) {
 				return;
 			}
-			int size = xmlData.directories.size() + xmlData.models.size();
+			// Unused ?? int size = xmlData.directories.size() + xmlData.models.size();
 			boolean isPeople = false;
 			boolean isLocal = false;
 			if (xmlData.name.equalsIgnoreCase("people")) {
-				size += builderButtonsVector.size();
+				// Unused ?? size += builderButtonsVector.size();
 				isPeople = true;
 			}
 			if (xmlData.name.equalsIgnoreCase("local gallery")) {
-				size++;
+				// Unused ?? size++;
 				isLocal = true;
 			}
 			// objectPanel.add(javax.swing.Box.createHorizontalGlue(), new
@@ -2748,7 +2773,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 			for (int i = 0; i < xmlData.directories.size(); i++) {
 				if (!stopBuildingGallery) {
 					final ObjectXmlData currentDirectory = (ObjectXmlData) xmlData.directories.get(i);
-					final long oldTime = System.currentTimeMillis();
+					// Unused ?? final long oldTime = System.currentTimeMillis();
 					final GalleryObject toAdd = createGalleryDirectory(currentDirectory);
 					// System.out.println("directory build time:
 					// "+(System.currentTimeMillis()-oldTime));
@@ -2766,7 +2791,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 			for (int i = 0; i < xmlData.models.size(); i++) {
 				if (!stopBuildingGallery) {
 					final ObjectXmlData currentModel = (ObjectXmlData) xmlData.models.get(i);
-					final long oldTime = System.currentTimeMillis();
+					// Unused ?? final long oldTime = System.currentTimeMillis();
 					final GalleryObject toAdd = createGalleryObject(currentModel);
 					// System.out.println("object build time:
 					// "+(System.currentTimeMillis()-oldTime));
@@ -2827,8 +2852,8 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 
 	private void createRootGalleryPanels() {
 		if (rootDirectories != null && rootDirectories.size() > 0) {
-			int count = 0;
-			final int maxCount = rootDirectories.size();
+			// Unused ?? int count = 0;
+			// Unused ?? final int maxCount = rootDirectories.size();
 			objectPanel.removeAll();
 			// objectPanel.add(javax.swing.Box.createHorizontalGlue(), new
 			// java.awt.GridBagConstraints(maxCount,0,1,1,1,1,java.awt.GridBagConstraints.WEST,java.awt.GridBagConstraints.HORIZONTAL,
@@ -2858,7 +2883,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 						// java.awt.GridBagConstraints(count,0,1,1,0,0,java.awt.GridBagConstraints.NORTHWEST,java.awt.GridBagConstraints.NONE,
 						// panelInset, 0,0 ));
 						objectPanel.add(toAdd);
-						count++;
+						// Unused ?? count++;
 					}
 				} else {
 					return;
@@ -2876,7 +2901,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 
 	private void createDirectoryButtons() {
 		DirectoryStructure currentDir = directoryOnDisplay;
-		final java.util.Stack dirs = new java.util.Stack();
+		final java.util.Stack<DirectoryStructure> dirs = new java.util.Stack<>();
 		directoryPanel.removeAll();
 		final javax.swing.JLabel currentDirLabel = new javax.swing.JLabel();
 		currentDirLabel.setForeground(textColor);
@@ -2944,7 +2969,8 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 				new java.awt.GridBagConstraints(count, 0, 1, 1, 1, 1, java.awt.GridBagConstraints.WEST,
 						java.awt.GridBagConstraints.HORIZONTAL, new java.awt.Insets(0, 0, 0, 0), 0, 0));
 	}
-
+	
+	/* Unused ??
 	private void exploreXML(final org.w3c.dom.Node current, final int level) {
 		if (current != null) {
 			System.out.println(level + ": " + "Name: " + current.getNodeName() + ", Type: " + current.getNodeType()
@@ -2956,4 +2982,5 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 			System.out.println("}");
 		}
 	}
+	*/
 }

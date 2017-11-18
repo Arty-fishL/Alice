@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import java.util.Iterator;
+
 import edu.cmu.cs.stage3.alice.core.Element;
 
 /**
@@ -44,7 +46,7 @@ public class ElementUsageGraph extends javax.swing.JPanel {
 	protected ClassNameComparator classNameComparator = new ClassNameComparator();
 	protected float saturation = .5f;
 	protected float brightness = .9f;
-	protected java.util.HashMap classCountMap = new java.util.HashMap();
+	protected java.util.HashMap<Class<? extends Element>, Integer> classCountMap = new java.util.HashMap<>();
 	protected java.awt.GridBagConstraints labelConstraints = new java.awt.GridBagConstraints(0, 0, 1, 1, 1.0, 0.0,
 			java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE, new java.awt.Insets(0, 0, 0, 0), 0, 0);
 	protected java.awt.GridBagConstraints barConstraints = new java.awt.GridBagConstraints(0, 0, 1, 1, 1.0, 0.0,
@@ -82,6 +84,7 @@ public class ElementUsageGraph extends javax.swing.JPanel {
 		return elementCriterion;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void refresh() {
 		classCountMap.clear();
 		removeAll();
@@ -93,7 +96,7 @@ public class ElementUsageGraph extends javax.swing.JPanel {
 			int maxCount = 0;
 			final edu.cmu.cs.stage3.alice.core.Element[] elements = root.search(criterion);
 			for (final Element element : elements) {
-				final Class c = element.getClass();
+				final Class<? extends Element> c = element.getClass();
 				if (classCountMap.containsKey(c)) {
 					final Integer count = (Integer) classCountMap.get(c);
 					classCountMap.put(c, new Integer(count.intValue() + 1));
@@ -108,10 +111,10 @@ public class ElementUsageGraph extends javax.swing.JPanel {
 			barConstraints.gridy = gridy++;
 			add(totalLabel, barConstraints);
 
-			final java.util.List classList = new java.util.ArrayList(classCountMap.keySet());
+			final java.util.List<Class<? extends Element>> classList = new java.util.ArrayList<>(classCountMap.keySet());
 			java.util.Collections.sort(classList, classNameComparator);
-			for (final java.util.Iterator iter = classList.iterator(); iter.hasNext();) {
-				final Class c = (Class) iter.next();
+			for (final Iterator<Class<? extends Element>> iter = classList.iterator(); iter.hasNext();) {
+				final Class<? extends Element> c = (Class<? extends Element>) iter.next();
 				String name = c.getName();
 				name = name.substring(name.lastIndexOf('.') + 1);
 				final int count = ((Integer) classCountMap.get(c)).intValue();
@@ -162,6 +165,7 @@ public class ElementUsageGraph extends javax.swing.JPanel {
 		}
 	}
 
+	@SuppressWarnings("rawtypes")
 	protected class ClassNameComparator implements java.util.Comparator {
 		@Override
 		public int compare(final Object o1, final Object o2) {
