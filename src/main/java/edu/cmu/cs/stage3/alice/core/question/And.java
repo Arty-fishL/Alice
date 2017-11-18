@@ -24,10 +24,10 @@
 package edu.cmu.cs.stage3.alice.core.question;
 
 public class And extends BinaryBooleanResultingInBooleanQuestion {
-	private static Class[] s_supportedCoercionClasses = { Or.class };
+	private static Class<?>[] s_supportedCoercionClasses = { Or.class };
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

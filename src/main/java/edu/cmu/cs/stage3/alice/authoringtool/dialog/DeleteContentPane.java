@@ -26,10 +26,16 @@ package edu.cmu.cs.stage3.alice.authoringtool.dialog;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+import javax.swing.ListModel;
+
+import edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources;
+import edu.cmu.cs.stage3.alice.authoringtool.util.PropertyReferenceListCellRenderer;
 import edu.cmu.cs.stage3.alice.core.Element;
 import edu.cmu.cs.stage3.alice.core.Property;
 import edu.cmu.cs.stage3.alice.core.event.ChildrenListener;
 import edu.cmu.cs.stage3.alice.core.event.PropertyListener;
+import edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference;
+import edu.cmu.cs.stage3.alice.core.reference.PropertyReference;
 
 /**
  * @author Jason Pratt, Dennis Cosgrove
@@ -88,8 +94,7 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 		messageArea.setWrapStyleWord(true);
 		messageArea.setOpaque(false);
 
-		referencesList
-				.setCellRenderer(new edu.cmu.cs.stage3.alice.authoringtool.util.PropertyReferenceListCellRenderer());
+		referencesList.setCellRenderer(new PropertyReferenceListCellRenderer());
 		referencesList.addListSelectionListener(new ReferencesSelectionListener());
 		glassPane = new edu.cmu.cs.stage3.alice.authoringtool.util.HighlightingGlassPane(authoringTool);
 
@@ -158,10 +163,10 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 	}
 
 	public void startListening() {
-		final javax.swing.ListModel list = referencesList.getModel();
+		final javax.swing.ListModel<PropertyReference> list = referencesList.getModel();
 		for (int i = 0; i < list.getSize(); i++) {
-			if (list.getElementAt(i) instanceof edu.cmu.cs.stage3.alice.core.reference.PropertyReference) {
-				final edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference = (edu.cmu.cs.stage3.alice.core.reference.PropertyReference) list
+			if (list.getElementAt(i) instanceof PropertyReference) {
+				final PropertyReference reference = (PropertyReference) list
 						.getElementAt(i);
 				final edu.cmu.cs.stage3.alice.core.Element source = reference.getProperty().getOwner();
 				listenUpToRootElement(source);
@@ -172,12 +177,12 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 							propertie.addPropertyListener(this);
 						}
 					}
-				} else if (reference instanceof edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference) {
-					final edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference oAPR = (edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference) reference;
-					final edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] references = oAPR.getReference()
+				} else if (reference instanceof ObjectArrayPropertyReference) {
+					final ObjectArrayPropertyReference oAPR = (ObjectArrayPropertyReference) reference;
+					final PropertyReference[] references = oAPR.getReference()
 							.getPropertyReferencesTo(deleteRunnable.getElement(),
 									edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true, true);
-					if (references != null || references.length > 0) {
+					if (references != null && references.length > 0) {
 						reference.getProperty().addPropertyListener(this);
 					}
 
@@ -191,10 +196,10 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 	}
 
 	public void stopListening() {
-		final javax.swing.ListModel list = referencesList.getModel();
+		final ListModel<PropertyReference> list = referencesList.getModel();
 		for (int i = 0; i < list.getSize(); i++) {
-			if (list.getElementAt(i) instanceof edu.cmu.cs.stage3.alice.core.reference.PropertyReference) {
-				final edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference = (edu.cmu.cs.stage3.alice.core.reference.PropertyReference) list
+			if (list.getElementAt(i) instanceof PropertyReference) {
+				final PropertyReference reference = (PropertyReference) list
 						.getElementAt(i);
 				final edu.cmu.cs.stage3.alice.core.Element source = reference.getProperty().getOwner();
 				stopListeningUpToRootElement(source);
@@ -207,12 +212,12 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 							}
 						}
 					}
-				} else if (reference instanceof edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference) {
-					final edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference oAPR = (edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference) reference;
-					final edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] references = reference
+				} else if (reference instanceof ObjectArrayPropertyReference) {
+					// Unused ?? final ObjectArrayPropertyReference oAPR = (ObjectArrayPropertyReference) reference;
+					final PropertyReference[] references = reference
 							.getProperty().getOwner().getPropertyReferencesTo(deleteRunnable.getElement(),
 									edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true, true);
-					if (references != null || references.length > 0) {
+					if (references != null && references.length > 0) {
 						reference.getProperty().removePropertyListener(this);
 					}
 
@@ -312,15 +317,15 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 	public void refresh() {
 		if (deleteRunnable != null) {
 			final edu.cmu.cs.stage3.alice.core.Element element = deleteRunnable.getElement();
-			final String elementRepr = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+			final String elementRepr = AuthoringToolResources
 					.getReprForValue(element);
 
-			edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] references = element.getRoot()
+			PropertyReference[] references = element.getRoot()
 					.getPropertyReferencesTo(element, edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true,
 							true);
 
 			if (references.length > 0) {
-				edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.garbageCollectIfPossible(references);
+				AuthoringToolResources.garbageCollectIfPossible(references);
 				references = element.getRoot().getPropertyReferencesTo(element,
 						edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true, true);
 			}
@@ -348,7 +353,7 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 		}
 	}
 
-	public static String getHighlightID(final edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference) {
+	public static String getHighlightID(final PropertyReference reference) {
 		String highlightID = null;
 		if (reference != null) {
 			// System.out.println("\nreference is: "+reference);
@@ -493,7 +498,7 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 	}
 
 	public static javax.swing.ImageIcon getDeleteIcon(
-			final edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference) {
+			final PropertyReference reference) {
 		final javax.swing.ImageIcon toReturn = new javax.swing.ImageIcon();
 		if (reference != null) {
 			final String id = getHighlightID(reference);
@@ -505,7 +510,7 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 		return toReturn;
 	}
 
-	public static String getDeleteString(final edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference) {
+	public static String getDeleteString(final PropertyReference reference) {
 		String highlightID = null;
 		if (reference != null) {
 			final edu.cmu.cs.stage3.alice.core.Element source = reference.getProperty().getOwner();
@@ -619,7 +624,7 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 					for (final Property propertie : properties) {
 						if (propertie.get() == source) {
 							highlightID += " has a line of code "
-									+ edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+									+ AuthoringToolResources
 											.getReprForValue(source.getClass())
 									+ " who's " + propertie.getName() + " is set to " + ourName;
 							setIt = true;
@@ -644,7 +649,7 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 		@Override
 		public void valueChanged(final javax.swing.event.ListSelectionEvent ev) {
 			String highlightID = null;
-			final edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference = (edu.cmu.cs.stage3.alice.core.reference.PropertyReference) referencesList
+			final PropertyReference reference = (PropertyReference) referencesList
 					.getSelectedValue();
 			highlightID = getHighlightID(reference);
 			glassPane.setHighlightID(highlightID);
@@ -655,7 +660,7 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 	}
 
 	void removeReferenceButton_actionPerformed(final java.awt.event.ActionEvent e) {
-		final edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference = (edu.cmu.cs.stage3.alice.core.reference.PropertyReference) referencesList
+		final PropertyReference reference = (PropertyReference) referencesList
 				.getSelectedValue();
 		final edu.cmu.cs.stage3.alice.core.Element source = reference.getProperty().getOwner();
 		final edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();
@@ -672,16 +677,16 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 					for (final Property propertie : properties) {
 						if (propertie.get() == source) {
 							propertie.removePropertyListener(this);
-							propertie.set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+							propertie.set(AuthoringToolResources
 									.getDefaultValueForClass(propertie.getValueClass()));
 						}
 					}
 
 				}
-			} else if (reference instanceof edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference) {
-				final edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference oAPR = (edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference) reference;
+			} else if (reference instanceof ObjectArrayPropertyReference) {
+				final ObjectArrayPropertyReference oAPR = (ObjectArrayPropertyReference) reference;
 				oAPR.getObjectArrayProperty().set(oAPR.getIndex(), null);
-				final edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] references = oAPR.getProperty()
+				final PropertyReference[] references = oAPR.getProperty()
 						.getOwner().getPropertyReferencesTo(deleteRunnable.getElement(),
 								edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true, true);
 				if (references == null || references.length < 1) {
@@ -690,7 +695,7 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 
 			} else {
 				reference.getProperty().removePropertyListener(this);
-				reference.getProperty().set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+				reference.getProperty().set(AuthoringToolResources
 						.getDefaultValueForClass(reference.getProperty().getValueClass()));
 
 			}
@@ -716,7 +721,7 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 	void removeAllReferenceButton_actionPerformed(final java.awt.event.ActionEvent e) {
 		stopListening();
 		for (int i = 0; i < referencesList.getModel().getSize(); i++) {
-			final edu.cmu.cs.stage3.alice.core.reference.PropertyReference reference = (edu.cmu.cs.stage3.alice.core.reference.PropertyReference) referencesList
+			final PropertyReference reference = (PropertyReference) referencesList
 					.getModel().getElementAt(i);
 			final edu.cmu.cs.stage3.alice.core.Element source = reference.getProperty().getOwner();
 			final edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();
@@ -733,16 +738,16 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 						for (final Property propertie : properties) {
 							if (propertie.get() == source) {
 								propertie.removePropertyListener(this);
-								propertie.set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+								propertie.set(AuthoringToolResources
 										.getDefaultValueForClass(propertie.getValueClass()));
 							}
 						}
 
 					}
-				} else if (reference instanceof edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference) {
-					final edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference oAPR = (edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference) reference;
+				} else if (reference instanceof ObjectArrayPropertyReference) {
+					final ObjectArrayPropertyReference oAPR = (ObjectArrayPropertyReference) reference;
 					oAPR.getObjectArrayProperty().set(oAPR.getIndex(), null);
-					final edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] otherReferences = oAPR
+					final PropertyReference[] otherReferences = oAPR
 							.getProperty().getOwner().getPropertyReferencesTo(deleteRunnable.getElement(),
 									edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS, true, true);
 					if (otherReferences == null || otherReferences.length < 1) {
@@ -750,7 +755,7 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 					}
 				} else {
 					reference.getProperty().removePropertyListener(this);
-					reference.getProperty().set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+					reference.getProperty().set(AuthoringToolResources
 							.getDefaultValueForClass(reference.getProperty().getValueClass()));
 				}
 			}
@@ -781,7 +786,7 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 	javax.swing.border.Border border2;
 	javax.swing.JButton cancelButton = new javax.swing.JButton();
 	java.awt.GridBagLayout gridBagLayout2 = new java.awt.GridBagLayout();
-	javax.swing.JList referencesList = new javax.swing.JList();
+	javax.swing.JList<PropertyReference> referencesList = new javax.swing.JList<>();
 
 	private void jbInit() {
 		border1 = javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10);

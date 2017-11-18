@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.scenegraph.renderer;
 
+import edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.AffectorProxy;
+
 public abstract class AbstractProxyRenderTarget extends AbstractRenderTarget {
 	protected AbstractProxyRenderer m_abstractProxyRenderer;
 
@@ -36,7 +38,7 @@ public abstract class AbstractProxyRenderTarget extends AbstractRenderTarget {
 	}
 
 	protected AbstractProxy[] getProxiesFor(final edu.cmu.cs.stage3.alice.scenegraph.Element[] sgElements,
-			final Class componentType) {
+			final Class<? extends AffectorProxy> componentType) {
 		return m_abstractProxyRenderer.getProxiesFor(sgElements, componentType);
 	}
 

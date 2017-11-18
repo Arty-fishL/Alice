@@ -23,6 +23,12 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor;
 
+import java.io.Serializable;
+
+import javax.swing.ImageIcon;
+
+import edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources;
+
 /**
  * Title: Description: Copyright: Copyright (c) 2001 Company:
  *
@@ -38,7 +44,7 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 	 */
 	private static final long serialVersionUID = 3567536365903327683L;
 
-	public static final java.awt.Color COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+	public static final java.awt.Color COLOR = AuthoringToolResources
 			.getColor("behavior");
 
 	protected javax.swing.JPopupMenu popUpMenu;
@@ -72,7 +78,7 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 		setTransferable(new edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable(behavior)); // added
 																														// by
 																														// JFP
-		typeString = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+		typeString = AuthoringToolResources
 				.getReprForValue(m_behavior.getClass());
 		m_behavior.isEnabled.addPropertyListener(this);
 		popUpMenu = createPopup();
@@ -88,7 +94,7 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 		setTransferable(new edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable(behavior)); // added
 																														// by
 																														// JFP
-		typeString = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+		typeString = AuthoringToolResources
 				.getReprForValue(m_behavior.getClass());
 		m_behavior.isEnabled.addPropertyListener(this);
 		popUpMenu = createPopup();
@@ -117,10 +123,10 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 		String strikeStart = "";
 		String strikeEnd = "";
 		if (!m_behavior.isEnabled.booleanValue()) {
-			bgColor = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTML");
+			bgColor = AuthoringToolResources.getColor("disabledHTML");
 			strikeStart = "<strike><font color=\""
 					+ getHTMLColorString(
-							edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("disabledHTMLText"))
+							AuthoringToolResources.getColor("disabledHTMLText"))
 					+ "\">";
 			strikeEnd = "</font></strike>";
 		}
@@ -134,12 +140,13 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 	}
 
 	protected javax.swing.JPopupMenu createPopup() {
-		final java.util.Vector popupStructure = new java.util.Vector();
+		final java.util.Vector<Serializable> popupStructure = new java.util.Vector<Serializable>();
 		// popupStructure.add(
 		// edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.MakeCopyRunnable.class
 		// );
 		popupStructure.add(edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.DeleteRunnable.class);
-		final java.util.Vector coerceStructure = edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities
+		@SuppressWarnings("unchecked")
+		final java.util.Vector<Serializable> coerceStructure = edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities
 				.makeCoerceToStructure(m_behavior);
 		if (coerceStructure != null && coerceStructure.size() > 0) {
 			popupStructure.add(coerceStructure.elementAt(0));
@@ -237,7 +244,7 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 			currentSubstring = typeString.substring(oldLocation, locationLeft);
 			final String key = typeString.substring(locationLeft + 1, locationRight);
 			java.awt.Component toAdd;
-			final javax.swing.Icon icon = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+			final javax.swing.Icon icon = AuthoringToolResources
 					.getIconForValue(key);
 			if (icon == null) {
 				toAdd = new edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel();
@@ -291,7 +298,7 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 				final edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory propPIF = new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(
 						prop);
 				boolean shouldAllowExpressions = true;
-				final Class desiredValueClass = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+				final Class<?> desiredValueClass = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 						.getDesiredValueClass(prop);
 				if (edu.cmu.cs.stage3.alice.core.Response.class.isAssignableFrom(desiredValueClass)
 						|| prop.getName().equalsIgnoreCase("keyCode")) {
@@ -299,12 +306,13 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 				}
 				toAdd = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getPropertyViewController(prop, true,
 						shouldAllowExpressions,
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.shouldGUIOmitPropertyName(prop),
+						AuthoringToolResources.shouldGUIOmitPropertyName(prop),
 						propPIF);
 			} else {
-				toAdd = new javax.swing.JLabel(
-						edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getIconForValue(key));
-				if (toAdd == null) {
+				final ImageIcon imageIcon = AuthoringToolResources.getIconForValue(key);
+				if (imageIcon != null) {
+					toAdd = new javax.swing.JLabel(imageIcon);
+				} else {
 					toAdd = new javax.swing.JLabel("(no image)");
 				}
 			}

@@ -24,6 +24,7 @@
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
 import edu.cmu.cs.stage3.alice.core.Transformable;
+import edu.cmu.cs.stage3.alice.core.property.ObjectProperty;
 
 /**
  * @author Jason Pratt
@@ -45,7 +46,7 @@ public class SizeUndoableRedoable extends OneShotUndoableRedoable {
 		undoResponse.subject.set(transformable);
 		undoResponse.size.set(oldSize);
 
-		final java.util.ArrayList affectedProperties = new java.util.ArrayList();
+		final java.util.ArrayList<ObjectProperty> affectedProperties = new java.util.ArrayList<ObjectProperty>();
 		final edu.cmu.cs.stage3.alice.core.Transformable[] transformables = (edu.cmu.cs.stage3.alice.core.Transformable[]) transformable
 				.getDescendants(edu.cmu.cs.stage3.alice.core.Transformable.class,
 						edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
@@ -56,7 +57,7 @@ public class SizeUndoableRedoable extends OneShotUndoableRedoable {
 			}
 		}
 
-		oneShotBehavior.setAffectedProperties((edu.cmu.cs.stage3.alice.core.Property[]) affectedProperties
+		oneShotBehavior.setAffectedProperties(affectedProperties
 				.toArray(new edu.cmu.cs.stage3.alice.core.Property[0]));
 	}
 }

@@ -29,6 +29,7 @@ import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JTabbedPane;
 import javax.swing.border.Border;
 
@@ -45,7 +46,7 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 	protected AuthoringTool authoringTool;
 	protected EditorManager editorManager;
 	protected EditorDropTargetListener editorDropTargetListener = new EditorDropTargetListener();
-	protected java.util.HashMap componentsToEditors = new java.util.HashMap();
+	protected java.util.HashMap<JComponent, Editor> componentsToEditors = new java.util.HashMap<JComponent, Editor>();
 	protected RightClickListener rightClickListener = new RightClickListener();
 	protected NameListener nameListener = new NameListener();
 	protected DeletionListener deletionListener = new DeletionListener();
@@ -106,7 +107,7 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 		}
 	}
 
-	public void editObject(final Object object, final Class editorClass, final boolean switchToNewTab) {
+	public void editObject(final Object object, final Class<? extends Editor> editorClass, final boolean switchToNewTab) {
 		if (object == null || editorClass == null) { // TODO: this is a hack
 			closeAllTabs();
 		} else {
@@ -156,7 +157,7 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 				for (int i = 0; i < tabbedPane.getTabCount(); i++) {
 					final java.awt.Component component = tabbedPane.getComponentAt(i);
 					if (component != null) {
-						final Editor editor = (Editor) componentsToEditors.get(component);
+						final Editor editor = componentsToEditors.get(component);
 						if (editor != null) {
 							if (editor.getObject() == object) {
 								tabbedPane.setSelectedIndex(i);
@@ -177,7 +178,7 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 	public Object getObjectBeingEdited() {
 		final java.awt.Component component = tabbedPane.getSelectedComponent();
 		if (component != null) {
-			final Editor editor = (Editor) componentsToEditors.get(component);
+			final Editor editor = componentsToEditors.get(component);
 			if (editor != null) {
 				return editor.getObject();
 			}
@@ -188,7 +189,7 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 	public Object getObjectBeingEditedAt(final int index) {
 		final java.awt.Component component = tabbedPane.getComponentAt(index);
 		if (component != null) {
-			final Editor editor = (Editor) componentsToEditors.get(component);
+			final Editor editor = componentsToEditors.get(component);
 			if (editor != null) {
 				return editor.getObject();
 			}
@@ -199,9 +200,9 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 	public Object[] getObjectsBeingEdited() {
 		final java.awt.Component[] components = tabbedPane.getComponents();
 		if (components != null) {
-			final java.util.ArrayList objects = new java.util.ArrayList();
+			final java.util.ArrayList<Object> objects = new java.util.ArrayList<Object>();
 			for (final Component component2 : components) {
-				final Editor editor = (Editor) componentsToEditors.get(component2);
+				final Editor editor = componentsToEditors.get(component2);
 				if (editor != null) {
 					objects.add(editor.getObject());
 				}
@@ -215,7 +216,7 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 		final java.awt.Component[] components = tabbedPane.getComponents();
 		if (components != null) {
 			for (int i = 0; i < components.length; i++) {
-				final Editor editor = (Editor) componentsToEditors.get(components[i]);
+				final Editor editor = componentsToEditors.get(components[i]);
 				if (editor != null) {
 					if (editor.getObject().equals(o)) {
 						return i;
@@ -229,7 +230,7 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 	public Editor getCurrentEditor() {
 		final java.awt.Component component = tabbedPane.getSelectedComponent();
 		if (component != null) {
-			return (Editor) componentsToEditors.get(component);
+			return componentsToEditors.get(component);
 		}
 		return null;
 	}
@@ -237,7 +238,7 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 	public Editor getEditorAt(final int index) {
 		final java.awt.Component component = tabbedPane.getComponentAt(index);
 		if (component != null) {
-			return (Editor) componentsToEditors.get(component);
+			return componentsToEditors.get(component);
 		}
 		return null;
 	}
@@ -245,14 +246,14 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 	public Editor[] getEditors() {
 		final java.awt.Component[] components = tabbedPane.getComponents();
 		if (components != null) {
-			final java.util.ArrayList editors = new java.util.ArrayList();
+			final java.util.ArrayList<Editor> editors = new java.util.ArrayList<Editor>();
 			for (final Component component2 : components) {
-				final Editor editor = (Editor) componentsToEditors.get(component2);
+				final Editor editor = componentsToEditors.get(component2);
 				if (editor != null) {
 					editors.add(editor);
 				}
 			}
-			return (Editor[]) editors.toArray(new Editor[0]);
+			return editors.toArray(new Editor[0]);
 		}
 		return null;
 	}
@@ -261,7 +262,7 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 		final java.awt.Component[] components = tabbedPane.getComponents();
 		if (components != null) {
 			for (int i = 0; i < components.length; i++) {
-				final Editor e = (Editor) componentsToEditors.get(components[i]);
+				final Editor e = componentsToEditors.get(components[i]);
 				if (editor.equals(e)) {
 					return i;
 				}
@@ -273,7 +274,7 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 	public void closeTab(final int index) {
 		final java.awt.Component component = tabbedPane.getComponentAt(index);
 		if (component != null) {
-			final Editor editor = (Editor) componentsToEditors.get(component);
+			final Editor editor = componentsToEditors.get(component);
 			if (editor != null) {
 				final Object object = editor.getObject();
 				tabbedPane.removeTabAt(index);
@@ -308,7 +309,7 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 		for (int i = 0; i < tabbedPane.getTabCount(); i++) {
 			final java.awt.Component component = tabbedPane.getComponentAt(i);
 			if (component != null) {
-				final Editor editor = (Editor) componentsToEditors.get(component);
+				final Editor editor = componentsToEditors.get(component);
 				if (editor != null) {
 					if (editor.getObject() == o) {
 						return true;
@@ -323,7 +324,7 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 		for (int i = 0; i < tabbedPane.getTabCount(); i++) {
 			final java.awt.Component component = tabbedPane.getComponentAt(i);
 			if (component != null) {
-				final Editor editor = (Editor) componentsToEditors.get(component);
+				final Editor editor = componentsToEditors.get(component);
 				if (editor instanceof edu.cmu.cs.stage3.alice.authoringtool.editors.sceneeditor.SceneEditor) {
 					return (edu.cmu.cs.stage3.alice.authoringtool.editors.sceneeditor.SceneEditor) editor;
 				}
@@ -344,7 +345,7 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 						closeTab(index);
 					}
 				};
-				final java.util.Vector structure = new java.util.Vector();
+				final java.util.Vector<Object> structure = new java.util.Vector<Object>();
 				structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Close " + tabbedPane.getTitleAt(index),
 						closeTabRunnable));
 				structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Close All", closeAllTabsRunnable));
@@ -380,7 +381,7 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 						.safeGetCurrentDataFlavors(dtde);
 				if (flavors != null) {
 					for (final DataFlavor flavor : flavors) {
-						final Class c = flavor.getRepresentationClass();
+						final Class<?> c = flavor.getRepresentationClass();
 						if (edu.cmu.cs.stage3.alice.authoringtool.util.EditorUtilities.getBestEditor(c) != null) {
 							dtde.acceptDrag(java.awt.dnd.DnDConstants.ACTION_MOVE);
 							return;
@@ -461,7 +462,7 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 							.safeGetCurrentDataFlavors(dtde);
 					if (flavors != null) {
 						for (final DataFlavor flavor : flavors) {
-							final Class c = flavor.getDefaultRepresentationClass();
+							final Class<?> c = flavor.getDefaultRepresentationClass();
 							if (edu.cmu.cs.stage3.alice.authoringtool.util.EditorUtilities.getBestEditor(c) != null) {
 								dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_MOVE);
 								final java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
@@ -473,7 +474,7 @@ public class TabbedEditorComponent extends javax.swing.JPanel {
 				}
 				if (o != null) {
 					// DEBUG System.out.println( "o: " + o );
-					final Class editorClass = edu.cmu.cs.stage3.alice.authoringtool.util.EditorUtilities
+					final Class<? extends Editor> editorClass = edu.cmu.cs.stage3.alice.authoringtool.util.EditorUtilities
 							.getBestEditor(o.getClass());
 					// DEBUG System.out.println( "editorClass: " + editorClass
 					// );

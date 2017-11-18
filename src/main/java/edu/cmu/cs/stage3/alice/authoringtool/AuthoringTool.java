@@ -387,12 +387,10 @@ public class AuthoringTool implements java.awt.datatransfer.ClipboardOwner,
 			// 255, 255, 255, 0 ) ); // don't show focus // makes printing slow,
 			// unfortunately
 
-			@SuppressWarnings("serial")
 			class CustomButtonBorder extends javax.swing.border.AbstractBorder implements javax.swing.plaf.UIResource {
-				/**
-				 *
-				 */
 				private static final long serialVersionUID = 3455651414378617637L;
+				
+				
 				protected java.awt.Insets insets = new java.awt.Insets(3, 3, 3, 3);
 				protected javax.swing.border.Border line = javax.swing.BorderFactory
 						.createLineBorder(java.awt.Color.black, 1);
@@ -629,13 +627,9 @@ public class AuthoringTool implements java.awt.datatransfer.ClipboardOwner,
 				});
 	}
 
-	@SuppressWarnings("serial")
 	private void dialogInit() {
 		importFileChooser = new JSystemFileChooser();
 		saveWorldFileChooser = new JSystemFileChooser() {
-			/**
-			 *
-			 */
 			private static final long serialVersionUID = 7900019006340546025L;
 
 			@Override
@@ -1379,14 +1373,14 @@ public class AuthoringTool implements java.awt.datatransfer.ClipboardOwner,
 	}
 
 	public void editObject(final Object object, final boolean switchToNewTab) {
-		Class<?> editorClass = null;
+		Class<? extends Editor> editorClass = null;
 		if (object != null) {
 			editorClass = edu.cmu.cs.stage3.alice.authoringtool.util.EditorUtilities.getBestEditor(object.getClass());
 		}
 		editObject(object, editorClass, switchToNewTab);
 	}
 
-	public void editObject(final Object object, final Class<?> editorClass, final boolean switchToNewTab) {
+	public void editObject(final Object object, final Class<? extends Editor> editorClass, final boolean switchToNewTab) {
 		jAliceFrame.getTabbedEditorComponent().editObject(object, editorClass, switchToNewTab);
 		saveTabs();
 		if (switchToNewTab && getJAliceFrame().getGuiMode() != JAliceFrame.SCENE_EDITOR_SMALL_MODE) {
@@ -1425,7 +1419,7 @@ public class AuthoringTool implements java.awt.datatransfer.ClipboardOwner,
 		// worker.start();
 	}
 
-	public void editObject(final Object object, final Class<?> editorClass, final boolean switchToNewTab,
+	public void editObject(final Object object, final Class<? extends Editor> editorClass, final boolean switchToNewTab,
 			final javax.swing.JComponent componentToAnimateFrom) {
 		if (!isObjectBeingEdited(object)) {
 			animateEditOpen(componentToAnimateFrom);
@@ -3354,12 +3348,8 @@ public class AuthoringTool implements java.awt.datatransfer.ClipboardOwner,
 		final int result = edu.cmu.cs.stage3.swing.DialogManager.showDialog(exportCodeForPrintingContentPane);
 		if (result == edu.cmu.cs.stage3.swing.ContentPane.OK_OPTION) {
 			final java.io.File fileToExportTo = exportCodeForPrintingContentPane.getFileToExportTo();
-			@SuppressWarnings("serial")
 			final edu.cmu.cs.stage3.progress.ProgressPane progressPane = new ProgressPane("Saving HTML...",
 					"Saving: ") {
-				/**
-				 *
-				 */
 				private static final long serialVersionUID = 840287082339530378L;
 
 				@Override

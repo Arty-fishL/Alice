@@ -32,7 +32,7 @@ public abstract class ArrayObjectQuestion extends edu.cmu.cs.stage3.alice.core.Q
 	protected abstract Object getValue(Array array);
 
 	@Override
-	public Class getValueClass() {
+	public Class<?> getValueClass() {
 		return array.getArrayValue().valueClass.getClassValue();
 	}
 

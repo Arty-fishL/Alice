@@ -23,6 +23,9 @@
 
 package edu.cmu.cs.stage3.alice.scenegraph.renderer;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Property;
+import edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer.AffectorProxy;
+
 public abstract class AbstractProxy {
 	private edu.cmu.cs.stage3.alice.scenegraph.Element m_sgElement;
 	private AbstractProxyRenderer m_abstractProxyRenderer;
@@ -46,7 +49,8 @@ public abstract class AbstractProxy {
 	}
 
 	protected void initializeProperties() {
-		final java.util.Enumeration enum0 = edu.cmu.cs.stage3.alice.scenegraph.Property
+		@SuppressWarnings("unchecked")
+		final java.util.Enumeration<Property> enum0 = edu.cmu.cs.stage3.alice.scenegraph.Property
 				.getProperties(m_sgElement.getClass()).elements();
 		while (enum0.hasMoreElements()) {
 			final edu.cmu.cs.stage3.alice.scenegraph.Property property = (edu.cmu.cs.stage3.alice.scenegraph.Property) enum0
@@ -70,7 +74,7 @@ public abstract class AbstractProxy {
 	}
 
 	protected AbstractProxy[] getProxiesFor(final edu.cmu.cs.stage3.alice.scenegraph.Element[] sgElements,
-			final Class componentType) {
+			final Class<? extends AffectorProxy> componentType) {
 		return m_abstractProxyRenderer.getProxiesFor(sgElements, componentType);
 	}
 

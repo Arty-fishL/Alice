@@ -23,6 +23,9 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import edu.cmu.cs.stage3.alice.core.Property;
+import edu.cmu.cs.stage3.alice.core.Variable;
+
 /**
  * @author Jason Pratt
  */
@@ -39,8 +42,8 @@ public class WatcherPanel
 	 *
 	 */
 	private static final long serialVersionUID = 7622286365305225250L;
-	protected java.util.List variablesToWatch = new java.util.ArrayList();
-	protected java.util.List propertiesToWatch = new java.util.ArrayList();
+	protected java.util.List<Variable> variablesToWatch = new java.util.ArrayList<Variable>();
+	protected java.util.List<Property> propertiesToWatch = new java.util.ArrayList<Property>();
 	protected edu.cmu.cs.stage3.alice.core.Element root;
 
 	public WatcherPanel() {
@@ -99,8 +102,8 @@ public class WatcherPanel
 	protected void refreshGUI() {
 		removeAll();
 		int count = 0;
-		for (final java.util.Iterator iter = variablesToWatch.iterator(); iter.hasNext();) {
-			final edu.cmu.cs.stage3.alice.core.Variable variable = (edu.cmu.cs.stage3.alice.core.Variable) iter.next();
+		for (final java.util.Iterator<Variable> iter = variablesToWatch.iterator(); iter.hasNext();) {
+			final edu.cmu.cs.stage3.alice.core.Variable variable = iter.next();
 			final edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory factory = new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(
 					variable.value);
 			final javax.swing.JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
@@ -119,8 +122,8 @@ public class WatcherPanel
 				new java.awt.GridBagConstraints(0, count++, 1, 1, 1.0, 0.0, java.awt.GridBagConstraints.WEST,
 						java.awt.GridBagConstraints.NONE, new java.awt.Insets(2, 2, 2, 2), 0, 0));
 
-		for (final java.util.Iterator iter = propertiesToWatch.iterator(); iter.hasNext();) {
-			final edu.cmu.cs.stage3.alice.core.Property property = (edu.cmu.cs.stage3.alice.core.Property) iter.next();
+		for (final java.util.Iterator<Property> iter = propertiesToWatch.iterator(); iter.hasNext();) {
+			final edu.cmu.cs.stage3.alice.core.Property property = iter.next();
 			final edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory factory = new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(
 					property);
 			final javax.swing.JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory

@@ -29,6 +29,8 @@ import java.awt.Image;
 import java.awt.datatransfer.DataFlavor;
 import java.io.File;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 
@@ -74,22 +76,22 @@ public class AuthoringToolResources {
 		 *
 		 */
 		private static final long serialVersionUID = -1296784417803844599L;
-		public java.util.Vector propertyStructure;
-		public java.util.Vector oneShotStructure;
-		public java.util.Vector questionStructure;
-		public java.util.Vector worldTreeChildrenPropertiesStructure;
-		public java.util.Vector behaviorParameterPropertiesStructure;
+		public Vector<Object> propertyStructure;
+		public Vector<Object> oneShotStructure;
+		public Vector<Object> questionStructure;
+		public Vector<Object> worldTreeChildrenPropertiesStructure;
+		public Vector<Object> behaviorParameterPropertiesStructure;
 		public java.util.HashMap<Object, String> nameMap = new java.util.HashMap<Object, String>();
 		public java.util.HashMap<Object, String> htmlNameMap = new java.util.HashMap<Object, String>();
 		public java.util.HashMap<Object, String> formatMap = new java.util.HashMap<Object, String>();
-		public java.util.HashMap<String, HashMap> propertyValueFormatMap = new java.util.HashMap<String, HashMap>();
+		public java.util.HashMap<String, HashMap<Object, String>> propertyValueFormatMap = new java.util.HashMap<>();
 		public java.util.HashMap<String, String> unitMap = new java.util.HashMap<String, String>();
 		public Class<?>[] classesToOmitNoneFor;
 		public edu.cmu.cs.stage3.util.StringTypePair[] propertiesToOmitNoneFor;
 		public edu.cmu.cs.stage3.util.StringTypePair[] propertiesToIncludeNoneFor;
 		public edu.cmu.cs.stage3.util.StringTypePair[] propertyNamesToOmit;
 		public edu.cmu.cs.stage3.util.StringTypePair[] propertiesToOmitScriptDefinedFor;
-		public java.util.Vector defaultPropertyValuesStructure;
+		public Vector<Object> defaultPropertyValuesStructure;
 		public edu.cmu.cs.stage3.util.StringTypePair[] defaultVariableTypes;
 		public String[] defaultAspectRatios;
 		public Class<?>[] behaviorClasses;
@@ -268,12 +270,12 @@ public class AuthoringToolResources {
 		}
 	}
 
-	public static void setPropertyStructure(final java.util.Vector propertyStructure) {
+	public static void setPropertyStructure(final Vector<Object> propertyStructure) {
 		if (propertyStructure != null) {
-			for (final java.util.Iterator iter = propertyStructure.iterator(); iter.hasNext();) {
+			for (final Iterator<Object> iter = propertyStructure.iterator(); iter.hasNext();) {
 				final Object o = iter.next();
-				if (o instanceof edu.cmu.cs.stage3.util.StringObjectPair) {
-					final String className = ((edu.cmu.cs.stage3.util.StringObjectPair) o).getString();
+				if (o instanceof StringObjectPair) {
+					final String className = ((StringObjectPair) o).getString();
 					try {
 						Class.forName(className);
 					} catch (final java.lang.ClassNotFoundException e) {
@@ -288,18 +290,18 @@ public class AuthoringToolResources {
 		AuthoringToolResources.resources.propertyStructure = propertyStructure;
 	}
 
-	public static java.util.Vector<StringObjectPair> getPropertyStructure(final Class<?> elementClass) {
+	@SuppressWarnings("unchecked")
+	public static Vector<StringObjectPair> getPropertyStructure(final Class<?> elementClass) {
 		if (AuthoringToolResources.resources.propertyStructure != null) {
-			for (final java.util.Iterator iter = AuthoringToolResources.resources.propertyStructure.iterator(); iter
+			for (final Iterator<Object> iter = AuthoringToolResources.resources.propertyStructure.iterator(); iter
 					.hasNext();) {
 				final Object o = iter.next();
-				if (o instanceof edu.cmu.cs.stage3.util.StringObjectPair) {
-					final String className = ((edu.cmu.cs.stage3.util.StringObjectPair) o).getString();
+				if (o instanceof StringObjectPair) {
+					final String className = ((StringObjectPair) o).getString();
 					try {
 						final Class<?> c = Class.forName(className);
 						if (c.isAssignableFrom(elementClass)) {
-							return (java.util.Vector<StringObjectPair>) ((edu.cmu.cs.stage3.util.StringObjectPair) o)
-									.getObject();
+							return (Vector<StringObjectPair>) ((StringObjectPair) o).getObject();
 						}
 					} catch (final java.lang.ClassNotFoundException e) {
 						AuthoringTool.showErrorDialog("Can't find class " + className, e);
@@ -312,17 +314,18 @@ public class AuthoringToolResources {
 		return null;
 	}
 
-	public static java.util.Vector<StringObjectPair> getPropertyStructure(
+	public static Vector<StringObjectPair> getPropertyStructure(
 			final edu.cmu.cs.stage3.alice.core.Element element, final boolean includeLeftovers) {
-		final java.util.Vector<StringObjectPair> structure = getPropertyStructure(element.getClass());
+		final Vector<StringObjectPair> structure = getPropertyStructure(element.getClass());
 
 		if (includeLeftovers && structure != null) {
-			final java.util.Vector<Property> usedProperties = new java.util.Vector<Property>();
+			final Vector<Property> usedProperties = new Vector<Property>();
 			for (final StringObjectPair sop : structure) {
-				final java.util.Vector propertyNames = (java.util.Vector) sop.getObject();
+				@SuppressWarnings("unchecked")
+				final Vector<String> propertyNames = (Vector<String>) sop.getObject();
 				if (propertyNames != null) {
-					for (final java.util.Iterator jter = propertyNames.iterator(); jter.hasNext();) {
-						final String name = (String) jter.next();
+					for (final java.util.Iterator<String> jter = propertyNames.iterator(); jter.hasNext();) {
+						final String name = jter.next();
 						final edu.cmu.cs.stage3.alice.core.Property property = element.getPropertyNamed(name);
 						if (property != null) {
 							usedProperties.add(property);
@@ -331,7 +334,7 @@ public class AuthoringToolResources {
 				}
 			}
 
-			final java.util.Vector<String> leftovers = new java.util.Vector<String>();
+			final Vector<String> leftovers = new Vector<String>();
 			final edu.cmu.cs.stage3.alice.core.Property[] properties = element.getProperties();
 			for (int i = 0; i < properties.length; i++) {
 				if (!usedProperties.contains(properties[i])) {
@@ -340,35 +343,37 @@ public class AuthoringToolResources {
 			}
 
 			if (leftovers.size() > 0) {
-				structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("leftovers", leftovers));
+				structure.add(new StringObjectPair("leftovers", leftovers));
 			}
 		}
 
 		return structure;
 	}
 
-	public static void setOneShotStructure(final java.util.Vector oneShotStructure) {
+	public static void setOneShotStructure(final Vector<Object> oneShotStructure) {
 		// validate structure
 		if (oneShotStructure != null) {
-			for (final java.util.Iterator iter = oneShotStructure.iterator(); iter.hasNext();) {
+			for (final Iterator<Object> iter = oneShotStructure.iterator(); iter.hasNext();) {
 				final Object classChunk = iter.next();
-				if (classChunk instanceof edu.cmu.cs.stage3.util.StringObjectPair) {
-					final String className = ((edu.cmu.cs.stage3.util.StringObjectPair) classChunk).getString();
-					final Object groups = ((edu.cmu.cs.stage3.util.StringObjectPair) classChunk).getObject();
+				if (classChunk instanceof StringObjectPair) {
+					final String className = ((StringObjectPair) classChunk).getString();
+					final Object groups = ((StringObjectPair) classChunk).getObject();
 					// try {
 					// Class c = Class.forName( className );
-					if (groups instanceof java.util.Vector) {
-						for (final java.util.Iterator jter = ((java.util.Vector) groups).iterator(); jter.hasNext();) {
+					if (groups instanceof Vector) {
+						for (@SuppressWarnings("unchecked")
+						final java.util.Iterator<Object> jter = ((Vector<Object>) groups).iterator(); jter.hasNext();) {
 							final Object groupChunk = jter.next();
-							if (groupChunk instanceof edu.cmu.cs.stage3.util.StringObjectPair) {
-								final Object responseClasses = ((edu.cmu.cs.stage3.util.StringObjectPair) groupChunk)
+							if (groupChunk instanceof StringObjectPair) {
+								final Object responseClasses = ((StringObjectPair) groupChunk)
 										.getObject();
-								if (responseClasses instanceof java.util.Vector) {
-									for (final java.util.Iterator kter = ((java.util.Vector) responseClasses)
+								if (responseClasses instanceof Vector) {
+									for (@SuppressWarnings("unchecked")
+									final java.util.Iterator<Object> kter = ((Vector<Object>) responseClasses)
 											.iterator(); kter.hasNext();) {
 										final Object className2 = kter.next();
 										if (className2 instanceof String
-												|| className2 instanceof edu.cmu.cs.stage3.util.StringObjectPair) {
+												|| className2 instanceof StringObjectPair) {
 											// do nothing
 										} else {
 											throw new IllegalArgumentException(
@@ -399,17 +404,18 @@ public class AuthoringToolResources {
 		AuthoringToolResources.resources.oneShotStructure = oneShotStructure;
 	}
 
-	public static java.util.Vector getOneShotStructure(final Class<?> elementClass) {
+	@SuppressWarnings("unchecked")
+	public static Vector<Object> getOneShotStructure(final Class<?> elementClass) {
 		if (AuthoringToolResources.resources.oneShotStructure != null) {
-			for (final java.util.Iterator iter = AuthoringToolResources.resources.oneShotStructure.iterator(); iter
+			for (final Iterator<Object> iter = AuthoringToolResources.resources.oneShotStructure.iterator(); iter
 					.hasNext();) {
 				final Object o = iter.next();
-				if (o instanceof edu.cmu.cs.stage3.util.StringObjectPair) {
-					final String className = ((edu.cmu.cs.stage3.util.StringObjectPair) o).getString();
+				if (o instanceof StringObjectPair) {
+					final String className = ((StringObjectPair) o).getString();
 					try {
 						final Class<?> c = Class.forName(className);
 						if (c.isAssignableFrom(elementClass)) {
-							return (java.util.Vector) ((edu.cmu.cs.stage3.util.StringObjectPair) o).getObject();
+							return (Vector<Object>) ((StringObjectPair) o).getObject();
 						}
 					} catch (final java.lang.ClassNotFoundException e) {
 						AuthoringTool.showErrorDialog("Can't find class " + className, e);
@@ -423,24 +429,26 @@ public class AuthoringToolResources {
 		return null;
 	}
 
-	public static void setQuestionStructure(final java.util.Vector questionStructure) {
+	public static void setQuestionStructure(final Vector<Object> questionStructure) {
 		// validate structure
 		if (questionStructure != null) {
-			for (final java.util.Iterator iter = questionStructure.iterator(); iter.hasNext();) {
+			for (final java.util.Iterator<Object>iter = questionStructure.iterator(); iter.hasNext();) {
 				final Object classChunk = iter.next();
-				if (classChunk instanceof edu.cmu.cs.stage3.util.StringObjectPair) {
-					final String className = ((edu.cmu.cs.stage3.util.StringObjectPair) classChunk).getString();
-					final Object groups = ((edu.cmu.cs.stage3.util.StringObjectPair) classChunk).getObject();
+				if (classChunk instanceof StringObjectPair) {
+					final String className = ((StringObjectPair) classChunk).getString();
+					final Object groups = ((StringObjectPair) classChunk).getObject();
 					// try {
 					// Class c = Class.forName( className );
-					if (groups instanceof java.util.Vector) {
-						for (final java.util.Iterator jter = ((java.util.Vector) groups).iterator(); jter.hasNext();) {
+					if (groups instanceof Vector) {
+						for (@SuppressWarnings("unchecked")
+						final Iterator<?> jter = ((Vector<Object>) groups).iterator(); jter.hasNext();) {
 							final Object groupChunk = jter.next();
-							if (groupChunk instanceof edu.cmu.cs.stage3.util.StringObjectPair) {
-								final Object questionClasses = ((edu.cmu.cs.stage3.util.StringObjectPair) groupChunk)
+							if (groupChunk instanceof StringObjectPair) {
+								final Object questionClasses = ((StringObjectPair) groupChunk)
 										.getObject();
-								if (questionClasses instanceof java.util.Vector) {
-									for (final java.util.Iterator kter = ((java.util.Vector) questionClasses)
+								if (questionClasses instanceof Vector) {
+									for (@SuppressWarnings("unchecked")
+									final Iterator<?> kter = ((Vector<Object>) questionClasses)
 											.iterator(); kter.hasNext();) {
 										final Object className2 = kter.next();
 										if (className2 instanceof String) {
@@ -478,17 +486,18 @@ public class AuthoringToolResources {
 		AuthoringToolResources.resources.questionStructure = questionStructure;
 	}
 
-	public static java.util.Vector getQuestionStructure(final Class<?> elementClass) {
+	@SuppressWarnings("unchecked")
+	public static Vector<Object> getQuestionStructure(final Class<?> elementClass) {
 		if (AuthoringToolResources.resources.questionStructure != null) {
-			for (final java.util.Iterator iter = AuthoringToolResources.resources.questionStructure.iterator(); iter
+			for (final java.util.Iterator<Object>iter = AuthoringToolResources.resources.questionStructure.iterator(); iter
 					.hasNext();) {
 				final Object o = iter.next();
-				if (o instanceof edu.cmu.cs.stage3.util.StringObjectPair) {
-					final String className = ((edu.cmu.cs.stage3.util.StringObjectPair) o).getString();
+				if (o instanceof StringObjectPair) {
+					final String className = ((StringObjectPair) o).getString();
 					try {
 						final Class<?> c = Class.forName(className);
 						if (c.isAssignableFrom(elementClass)) {
-							return (java.util.Vector) ((edu.cmu.cs.stage3.util.StringObjectPair) o).getObject();
+							return (Vector<Object>) ((StringObjectPair) o).getObject();
 						}
 					} catch (final java.lang.ClassNotFoundException e) {
 						AuthoringTool.showErrorDialog("Can't find class " + className, e);
@@ -502,30 +511,31 @@ public class AuthoringToolResources {
 		return null;
 	}
 
-	public static void setDefaultPropertyValuesStructure(final java.util.Vector defaultPropertyValuesStructure) {
+	public static void setDefaultPropertyValuesStructure(final Vector<Object> defaultPropertyValuesStructure) {
 		// validate structure
 		if (defaultPropertyValuesStructure != null) {
-			for (final java.util.Iterator iter = defaultPropertyValuesStructure.iterator(); iter.hasNext();) {
+			for (final java.util.Iterator<Object>iter = defaultPropertyValuesStructure.iterator(); iter.hasNext();) {
 				final Object classChunk = iter.next();
-				if (classChunk instanceof edu.cmu.cs.stage3.util.StringObjectPair) {
+				if (classChunk instanceof StringObjectPair) {
 					// String className =
-					// ((edu.cmu.cs.stage3.util.StringObjectPair)classChunk).getString();
-					final Object properties = ((edu.cmu.cs.stage3.util.StringObjectPair) classChunk).getObject();
+					// ((StringObjectPair)classChunk).getString();
+					final Object properties = ((StringObjectPair) classChunk).getObject();
 					// try {
 					// Class c = Class.forName( className );
-					if (properties instanceof java.util.Vector) {
-						for (final java.util.Iterator jter = ((java.util.Vector) properties).iterator(); jter
+					if (properties instanceof Vector) {
+						for (@SuppressWarnings("unchecked")
+						final java.util.Iterator<Object>jter = ((Vector<Object>) properties).iterator(); jter
 								.hasNext();) {
 							final Object propertyChunk = jter.next();
-							if (propertyChunk instanceof edu.cmu.cs.stage3.util.StringObjectPair) {
-								final Object values = ((edu.cmu.cs.stage3.util.StringObjectPair) propertyChunk)
+							if (propertyChunk instanceof StringObjectPair) {
+								final Object values = ((StringObjectPair) propertyChunk)
 										.getObject();
-								if (!(values instanceof java.util.Vector)) {
+								if (!(values instanceof Vector)) {
 									throw new IllegalArgumentException(
 											"defaultPropertyValuesStructure error: expected Vector, got: " + values);
 									// } else {
-									// for( java.util.Iterator kter =
-									// ((java.util.Vector)values).iterator();
+									// for( java.util.Iterator<Object>kter =
+									// ((Vector)values).iterator();
 									// kter.hasNext(); ) {
 									// System.out.println( kter.next() );
 									// }
@@ -555,22 +565,23 @@ public class AuthoringToolResources {
 		AuthoringToolResources.resources.defaultPropertyValuesStructure = defaultPropertyValuesStructure;
 	}
 
-	public static java.util.Vector getDefaultPropertyValues(final Class<?> elementClass, final String propertyName) {
+	@SuppressWarnings("unchecked")
+	public static Vector<Object> getDefaultPropertyValues(final Class<?> elementClass, final String propertyName) {
 		if (AuthoringToolResources.resources.defaultPropertyValuesStructure != null) {
-			for (final java.util.Iterator iter = AuthoringToolResources.resources.defaultPropertyValuesStructure
+			for (final java.util.Iterator<Object>iter = AuthoringToolResources.resources.defaultPropertyValuesStructure
 					.iterator(); iter.hasNext();) {
-				final edu.cmu.cs.stage3.util.StringObjectPair classChunk = (edu.cmu.cs.stage3.util.StringObjectPair) iter
+				final StringObjectPair classChunk = (StringObjectPair) iter
 						.next();
 				final String className = classChunk.getString();
 				try {
 					final Class<?> c = Class.forName(className);
 					if (c.isAssignableFrom(elementClass)) {
-						final java.util.Vector properties = (java.util.Vector) classChunk.getObject();
-						for (final java.util.Iterator jter = properties.iterator(); jter.hasNext();) {
-							final edu.cmu.cs.stage3.util.StringObjectPair propertyChunk = (edu.cmu.cs.stage3.util.StringObjectPair) jter
+						final Vector<Object> properties = (Vector<Object>) classChunk.getObject();
+						for (final java.util.Iterator<Object>jter = properties.iterator(); jter.hasNext();) {
+							final StringObjectPair propertyChunk = (StringObjectPair) jter
 									.next();
 							if (propertyName.equals(propertyChunk.getString())) {
-								return (java.util.Vector) propertyChunk.getObject();
+								return (Vector<Object>) propertyChunk.getObject();
 							}
 						}
 					}
@@ -637,11 +648,11 @@ public class AuthoringToolResources {
 		return AuthoringToolResources.resources.formatMap.containsKey(key);
 	}
 
-	public static void putPropertyValueFormatMap(final String propertyKey, final java.util.HashMap valueReprMap) {
+	public static void putPropertyValueFormatMap(final String propertyKey, final java.util.HashMap<Object, String> valueReprMap) {
 		AuthoringToolResources.resources.propertyValueFormatMap.put(propertyKey, valueReprMap);
 	}
 
-	public static java.util.HashMap getPropertyValueFormatMap(final String propertyKey) {
+	public static java.util.HashMap<Object, String> getPropertyValueFormatMap(final String propertyKey) {
 		return AuthoringToolResources.resources.propertyValueFormatMap.get(propertyKey);
 	}
 
@@ -669,7 +680,7 @@ public class AuthoringToolResources {
 		return AuthoringToolResources.resources.unitMap.values();
 	}
 
-	public static void setClassesToOmitNoneFor(final Class[] classesToOmitNoneFor) {
+	public static void setClassesToOmitNoneFor(final Class<?>[] classesToOmitNoneFor) {
 		AuthoringToolResources.resources.classesToOmitNoneFor = classesToOmitNoneFor;
 	}
 
@@ -699,6 +710,7 @@ public class AuthoringToolResources {
 		return !shouldGUIIncludeNone(property);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static boolean shouldGUIIncludeNone(final edu.cmu.cs.stage3.alice.core.Property property) {
 		if (AuthoringToolResources.resources.propertiesToIncludeNoneFor != null) {
 			final Class<?> elementClass = property.getOwner().getClass();
@@ -712,6 +724,7 @@ public class AuthoringToolResources {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static boolean shouldGUIIncludeNone(final Class<?> elementClass, final String propertyName) {
 		if (AuthoringToolResources.resources.propertiesToIncludeNoneFor != null) {
 			for (final StringTypePair element : AuthoringToolResources.resources.propertiesToIncludeNoneFor) {
@@ -727,6 +740,7 @@ public class AuthoringToolResources {
 		AuthoringToolResources.resources.propertyNamesToOmit = propertyNamesToOmit;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static boolean shouldGUIOmitPropertyName(final edu.cmu.cs.stage3.alice.core.Property property) {
 		if (AuthoringToolResources.resources.propertyNamesToOmit != null) {
 			final Class<?> elementClass = property.getOwner().getClass();
@@ -745,6 +759,7 @@ public class AuthoringToolResources {
 		AuthoringToolResources.resources.propertiesToOmitScriptDefinedFor = propertiesToOmitScriptDefinedFor;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static boolean shouldGUIOmitScriptDefined(final edu.cmu.cs.stage3.alice.core.Property property) {
 		if (!authoringToolConfig.getValue("enableScripting").equalsIgnoreCase("true")) {
 			return true;
@@ -802,7 +817,7 @@ public class AuthoringToolResources {
 	public static String getReprForValue(final Object value, Class<?> elementClass, final String propertyName,
 			final Object extraContextInfo) {
 		boolean verbose = false;
-		Class<Object> valueClass = null;
+		Class<?> valueClass = null;
 		try {
 			valueClass = edu.cmu.cs.stage3.alice.core.Element.getValueClassForPropertyNamed(elementClass, propertyName);
 		} catch (final Exception e) { // a bit hackish
@@ -890,13 +905,13 @@ public class AuthoringToolResources {
 
 				String reprString = null;
 				if (propertyValueFormatMapContainsKey(propertyKey)) {
-					final java.util.HashMap map = getPropertyValueFormatMap(propertyKey);
+					final java.util.HashMap<Object, String> map = getPropertyValueFormatMap(propertyKey);
 					if (map.containsKey(value)) {
-						reprString = (String) map.get(value);
+						reprString = map.get(value);
 					} else if (value == null) { // is this right for all cases?
 						reprString = null;
 					} else if (map.containsKey("default")) {
-						reprString = (String) map.get("default");
+						reprString = map.get("default");
 					}
 				}
 
@@ -1001,7 +1016,7 @@ public class AuthoringToolResources {
 
 	protected static String stripUnnamedsFromName(final Object value) {
 		String toStrip = new String(value.toString());
-		String toReturn = "";
+		// Unused ?? String toReturn = "";
 		final String toMatch = "__Unnamed";
 		boolean notDone = true;
 		while (notDone) {
@@ -1009,7 +1024,7 @@ public class AuthoringToolResources {
 			if (nextIndex >= 0) {
 				final String toAdd = toStrip.substring(0, nextIndex);
 				if (toAdd != null) {
-					toReturn += toAdd;
+					// Unused ?? toReturn += toAdd;
 				}
 				String newToStrip = toStrip.substring(nextIndex, toStrip.length());
 				if (newToStrip != null) {
@@ -1032,7 +1047,7 @@ public class AuthoringToolResources {
 					break;
 				}
 			} else {
-				toReturn += toStrip;
+				// Unused ?? toReturn += toStrip;
 				notDone = false;
 				break;
 			}
@@ -1284,7 +1299,7 @@ public class AuthoringToolResources {
 	}
 
 	public static String getFormattedReprForValue(final Object value,
-			final edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues) {
+			final StringObjectPair[] knownPropertyValues) {
 		final String format = AuthoringToolResources.resources.formatMap.get(value);
 		final StringBuffer sb = new StringBuffer();
 		final edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer tokenizer = new edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer(
@@ -1407,11 +1422,11 @@ public class AuthoringToolResources {
 		return desired.toArray(new String[0]);
 	}
 
-	public static void setBehaviorClasses(final Class[] behaviorClasses) {
+	public static void setBehaviorClasses(final Class<?>[] behaviorClasses) {
 		AuthoringToolResources.resources.behaviorClasses = behaviorClasses;
 	}
 
-	public static Class[] getBehaviorClasses() {
+	public static Class<?>[] getBehaviorClasses() {
 		return AuthoringToolResources.resources.behaviorClasses;
 	}
 
@@ -1432,21 +1447,21 @@ public class AuthoringToolResources {
 	}
 
 	public static void setBehaviorParameterPropertiesStructure(
-			final java.util.Vector behaviorParameterPropertiesStructure) {
+			final Vector<Object> behaviorParameterPropertiesStructure) {
 		AuthoringToolResources.resources.behaviorParameterPropertiesStructure = behaviorParameterPropertiesStructure;
 	}
 
 	public static String[] getBehaviorParameterProperties(final Class<?> behaviorClass) {
 		if (AuthoringToolResources.resources.behaviorParameterPropertiesStructure != null) {
-			for (final java.util.Iterator iter = AuthoringToolResources.resources.behaviorParameterPropertiesStructure
+			for (final java.util.Iterator<Object>iter = AuthoringToolResources.resources.behaviorParameterPropertiesStructure
 					.iterator(); iter.hasNext();) {
 				final Object o = iter.next();
-				if (o instanceof edu.cmu.cs.stage3.util.StringObjectPair) {
-					final String className = ((edu.cmu.cs.stage3.util.StringObjectPair) o).getString();
+				if (o instanceof StringObjectPair) {
+					final String className = ((StringObjectPair) o).getString();
 					try {
 						final Class<?> c = Class.forName(className);
 						if (c.isAssignableFrom(behaviorClass)) {
-							return (String[]) ((edu.cmu.cs.stage3.util.StringObjectPair) o).getObject();
+							return (String[]) ((StringObjectPair) o).getObject();
 						}
 					} catch (final java.lang.ClassNotFoundException e) {
 						AuthoringTool.showErrorDialog("Can't find class " + className, e);
@@ -1530,7 +1545,7 @@ public class AuthoringToolResources {
 	}
 
 	private static java.awt.Color hslToRGB(final float[] hsl) {
-		final java.awt.Color rgb = new java.awt.Color(0, 0, 0);
+		// Unused ?? final java.awt.Color rgb = new java.awt.Color(0, 0, 0);
 		if (hsl[1] == 0) {
 			// System.out.println("For HSL: "+hsl[0]+", "+hsl[1]+", "+hsl[2]+"
 			// RGB = "+hsl[2]+", "+hsl[2]+", "+hsl[2]);
@@ -1833,7 +1848,7 @@ public class AuthoringToolResources {
 	// replacementMap.put( "<", "%3C" );
 	//
 	// StringBuffer sb = new StringBuffer( urlString );
-	// for( java.util.Iterator iter = replacementMap.keySet().iterator();
+	// for( java.util.Iterator<Object>iter = replacementMap.keySet().iterator();
 	// iter.hasNext(); ) {
 	// String key = (String)iter.next();
 	// String value = (String)replacementMap.get( key );
@@ -1924,11 +1939,11 @@ public class AuthoringToolResources {
 
 	public static boolean isMethodHookedUp(final edu.cmu.cs.stage3.alice.core.Response response,
 			final edu.cmu.cs.stage3.alice.core.World world) {
-		return isMethodHookedUp(response, world, new java.util.Vector<Element>());
+		return isMethodHookedUp(response, world, new Vector<Element>());
 	}
 
 	private static boolean isMethodHookedUp(final edu.cmu.cs.stage3.alice.core.Response response,
-			final edu.cmu.cs.stage3.alice.core.World world, final java.util.Vector<Element> checkedMethods) {
+			final edu.cmu.cs.stage3.alice.core.World world, final Vector<Element> checkedMethods) {
 		final edu.cmu.cs.stage3.alice.core.reference.PropertyReference[] references = response.getRoot()
 				.getPropertyReferencesTo(response, edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_ALL_DESCENDANTS, false,
 						true);
@@ -2077,7 +2092,7 @@ public class AuthoringToolResources {
 		if (response instanceof edu.cmu.cs.stage3.alice.core.response.ResizeAnimation) {
 			final edu.cmu.cs.stage3.alice.core.Transformable transformable = (edu.cmu.cs.stage3.alice.core.Transformable) ((edu.cmu.cs.stage3.alice.core.response.TransformAnimation) response).subject
 					.getElementValue();
-			final java.util.Vector<ObjectProperty> pVector = new java.util.Vector<ObjectProperty>();
+			final Vector<ObjectProperty> pVector = new Vector<ObjectProperty>();
 			pVector.add(transformable.localTransformation);
 			if (transformable instanceof edu.cmu.cs.stage3.alice.core.Model) {
 				pVector.add(((edu.cmu.cs.stage3.alice.core.Model) transformable).visualScale);
@@ -2281,21 +2296,21 @@ public class AuthoringToolResources {
 	 */
 
 	public static void setWorldTreeChildrenPropertiesStructure(
-			final java.util.Vector worldTreeChildrenPropertiesStructure) {
+			final Vector<Object> worldTreeChildrenPropertiesStructure) {
 		AuthoringToolResources.resources.worldTreeChildrenPropertiesStructure = worldTreeChildrenPropertiesStructure;
 	}
 
 	public static String[] getWorldTreeChildrenPropertiesStructure(final Class<?> elementClass) {
 		if (AuthoringToolResources.resources.worldTreeChildrenPropertiesStructure != null) {
-			for (final java.util.Iterator iter = AuthoringToolResources.resources.worldTreeChildrenPropertiesStructure
+			for (final Iterator<Object> iter = AuthoringToolResources.resources.worldTreeChildrenPropertiesStructure
 					.iterator(); iter.hasNext();) {
 				final Object o = iter.next();
-				if (o instanceof edu.cmu.cs.stage3.util.StringObjectPair) {
-					final String className = ((edu.cmu.cs.stage3.util.StringObjectPair) o).getString();
+				if (o instanceof StringObjectPair) {
+					final String className = ((StringObjectPair) o).getString();
 					try {
 						final Class<?> c = Class.forName(className);
 						if (c.isAssignableFrom(elementClass)) {
-							return (String[]) ((edu.cmu.cs.stage3.util.StringObjectPair) o).getObject();
+							return (String[]) ((StringObjectPair) o).getObject();
 						}
 					} catch (final java.lang.ClassNotFoundException e) {
 						AuthoringTool.showErrorDialog("Can't find class " + className, e);
@@ -2380,7 +2395,7 @@ public class AuthoringToolResources {
 		return timeMillis / 1000.0;
 	}
 
-	public static void setImporterClasses(final Class[] importers) {
+	public static void setImporterClasses(final Class<Importer>[] importers) {
 		AuthoringToolResources.resources.importers = importers;
 	}
 
@@ -2396,14 +2411,14 @@ public class AuthoringToolResources {
 		return AuthoringToolResources.resources.editors;
 	}
 
-	public static void findAssignables(final Class<?> baseClass, final java.util.Set<Class> result,
+	public static void findAssignables(final Class<?> baseClass, final java.util.Set<Class<?>> result,
 			final boolean includeInterfaces) {
 		if (baseClass != null) {
 			if (!result.contains(baseClass)) {
 				result.add(baseClass);
 
 				if (includeInterfaces) {
-					final Class[] interfaces = baseClass.getInterfaces();
+					final Class<?>[] interfaces = baseClass.getInterfaces();
 					for (final Class<?> interface1 : interfaces) {
 						findAssignables(interface1, result, includeInterfaces);
 					}

@@ -23,7 +23,13 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.viewcontroller;
 
+import java.awt.Component;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
+
 import edu.cmu.cs.stage3.alice.core.Element;
+import edu.cmu.cs.stage3.alice.core.Expression;
 import edu.cmu.cs.stage3.alice.core.event.ChildrenListener;
 
 /**
@@ -36,7 +42,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 	 */
 	private static final long serialVersionUID = -8368954381763407517L;
 	protected static RefreshThread refreshThread = new RefreshThread();
-	protected static java.util.Set propertyViewControllersToRefresh = new java.util.HashSet();
+	protected static java.util.Set<PropertyViewController> propertyViewControllersToRefresh = new java.util.HashSet<>();
 
 	public static int created = 0;
 	public static int released = 0;
@@ -63,11 +69,11 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 	private boolean popupEnabled = false;
 	protected boolean editingEnabled = true;
 	protected boolean sleeping = false;
-	protected java.util.Vector popupStructure;
+	protected java.util.Vector<Object> popupStructure;
 	protected javax.swing.JButton popupButton = new javax.swing.JButton(new javax.swing.ImageIcon(
 			edu.cmu.cs.stage3.alice.authoringtool.JAlice.class.getResource("images/popupArrow.gif")));
 	protected edu.cmu.cs.stage3.alice.core.event.PropertyListener propertyListener = new edu.cmu.cs.stage3.alice.core.event.PropertyListener() {
-		protected long lastTime = System.currentTimeMillis();
+		// Unused ?? protected long lastTime = System.currentTimeMillis();
 
 		@Override
 		public void propertyChanging(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent ev) {
@@ -240,7 +246,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 		return property;
 	}
 
-	protected void getLabels(final java.awt.Component c, final java.util.Vector v) {
+	protected void getLabels(final java.awt.Component c, final java.util.Vector<Component> v) {
 		if (c instanceof javax.swing.JLabel) {
 			if (c.isVisible()) {
 				if (!(c == nameLabel && omitPropertyName)) {
@@ -311,7 +317,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 			tempString += " " + unitLabel.getText();
 		}
 		tempString += "</span>";
-		// java.util.Vector labels = new java.util.Vector();
+		// Vector<Object>labels = new java.util.Vector();
 		// getLabels(this, labels);
 		// java.util.Collections.sort(labels, new java.util.Comparator(){
 		// public int compare(Object a, Object b){
@@ -565,9 +571,9 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 			if (!(property.getOwner() instanceof edu.cmu.cs.stage3.alice.core.response.Comment)
 					&& !(property.getOwner() instanceof edu.cmu.cs.stage3.alice.core.response.Print)) {
 				String unitString = null;
-				final java.util.Collection unitMapValues = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
+				final Collection<String> unitMapValues = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
 						.getUnitMapValues();
-				for (final java.util.Iterator iter = unitMapValues.iterator(); iter.hasNext();) {
+				for (final Iterator<String> iter = unitMapValues.iterator(); iter.hasNext();) {
 					final String s = (String) iter.next();
 					if (mainString.endsWith(" " + s)) {
 						unitString = s;
@@ -605,7 +611,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 
 	protected abstract java.awt.Component getNativeComponent();
 
-	protected abstract Class getNativeClass();
+	protected abstract Class<?> getNativeClass();
 
 	protected abstract void updateNativeComponent();
 
@@ -659,7 +665,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 
 	protected boolean checkTransferable(final java.awt.datatransfer.Transferable transferable) {
 		if (transferable != null) {
-			final Class desiredValueClass = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+			final Class<?> desiredValueClass = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 					.getDesiredValueClass(property);
 			try {
 				/*
@@ -689,7 +695,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 						transferable,
 						edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.variableReferenceFlavor)
 						&& PropertyViewController.this.allowExpressions) {
-					final java.util.List accessibleExpressions = new java.util.ArrayList(
+					final java.util.List<Expression> accessibleExpressions = new java.util.ArrayList<>(
 							java.util.Arrays.asList(property.getOwner().findAccessibleExpressions(Object.class)));
 					// System.out.println("owner: "+property.getOwner()+", root:
 					// "+property.getOwner().getRoot());
@@ -716,7 +722,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 									edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.variableReferenceFlavor);
 
 					if (accessibleExpressions.contains(variable)) {
-						java.util.Vector propertyValueStructure = new java.util.Vector();
+						java.util.Vector<Object> propertyValueStructure = new java.util.Vector<>();
 						if (edu.cmu.cs.stage3.alice.core.Element.class.isAssignableFrom(variable.getValueClass())) {
 							propertyValueStructure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 									.makePropertyValueStructure(variable, desiredValueClass, factory,
@@ -739,7 +745,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 							if (property
 									.getOwner() instanceof edu.cmu.cs.stage3.alice.core.question.list.ListObjectQuestion
 									&& references.length > 0) {
-								final Class itemValueClass = references[0].getProperty().getValueClass();
+								final Class<?> itemValueClass = references[0].getProperty().getValueClass();
 								if (list != null && itemValueClass.isAssignableFrom(list.valueClass.getClassValue())) {
 									return true;
 								}
@@ -773,7 +779,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 							if (property
 									.getOwner() instanceof edu.cmu.cs.stage3.alice.core.question.array.ArrayObjectQuestion
 									&& references.length > 0) {
-								final Class itemValueClass = references[0].getProperty().getValueClass();
+								final Class<?> itemValueClass = references[0].getProperty().getValueClass();
 								if (array != null
 										&& itemValueClass.isAssignableFrom(array.valueClass.getClassValue())) {
 									return true;
@@ -820,7 +826,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 					final edu.cmu.cs.stage3.alice.core.Element element = (edu.cmu.cs.stage3.alice.core.Element) transferable
 							.getTransferData(
 									edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.elementReferenceFlavor);
-					java.util.Vector propertyValueStructure = new java.util.Vector();
+					java.util.Vector<Object> propertyValueStructure = new java.util.Vector<>();
 					if (!(element instanceof edu.cmu.cs.stage3.alice.core.Expression)
 							&& PropertyViewController.this.allowExpressions) {
 						propertyValueStructure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
@@ -892,7 +898,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 					final edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype elementPrototype = (edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype) transferable
 							.getTransferData(
 									edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementPrototypeReferenceTransferable.elementPrototypeReferenceFlavor);
-					final Class elementClass = elementPrototype.getElementClass();
+					final Class<?> elementClass = elementPrototype.getElementClass();
 					if ((property.getOwner() instanceof edu.cmu.cs.stage3.alice.core.response.Print
 							|| property.getOwner() instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.Print)
 							&& edu.cmu.cs.stage3.alice.core.Response.class.isAssignableFrom(elementClass)) {
@@ -1013,7 +1019,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 	public void drop(final java.awt.dnd.DropTargetDropEvent dtde) {
 		final java.awt.datatransfer.Transferable transferable = edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager
 				.getCurrentTransferable();
-		final Class desiredValueClass = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+		final Class<?> desiredValueClass = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 				.getDesiredValueClass(property);
 		try {
 			// TODO: this whole question/variable dnd thing is really
@@ -1075,7 +1081,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 					}
 				} else if (Boolean.class.isAssignableFrom(desiredValueClass)) {
 					dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_LINK);
-					final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+					final java.util.Vector<Object> structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makeComparatorStructure(question, factory, property.getOwner());
 					final javax.swing.JPopupMenu popup = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makePopupMenu(structure);
@@ -1085,7 +1091,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 				} else if (Number.class.isAssignableFrom(desiredValueClass)
 						&& javax.vecmath.Vector3d.class.isAssignableFrom(question.getValueClass())) {
 					dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_LINK);
-					final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+					final java.util.Vector<Object> structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makePartsOfPositionStructure(question, factory, property.getOwner());
 					final javax.swing.JPopupMenu popup = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makePopupMenu(structure);
@@ -1094,7 +1100,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 					dtde.dropComplete(true);
 				} else if (edu.cmu.cs.stage3.alice.core.Response.class.isAssignableFrom(desiredValueClass)) {
 					dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_LINK);
-					final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+					final java.util.Vector<Object> structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makeExpressionResponseStructure(question, factory, property.getOwner());
 					final javax.swing.JPopupMenu popup = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makePopupMenu(structure);
@@ -1111,7 +1117,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 						.getTransferData(
 								edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.variableReferenceFlavor);
 
-				java.util.Vector propertyValueStructure = new java.util.Vector();
+				java.util.Vector<Object> propertyValueStructure = new java.util.Vector<>();
 				if (edu.cmu.cs.stage3.alice.core.Element.class.isAssignableFrom(variable.getValueClass())) {
 					propertyValueStructure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makePropertyValueStructure(variable, desiredValueClass, factory, property.getOwner());
@@ -1132,7 +1138,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 					// that the ListQuestion is within
 					if (property.getOwner() instanceof edu.cmu.cs.stage3.alice.core.question.list.ListObjectQuestion
 							&& references.length > 0) {
-						final Class itemValueClass = references[0].getProperty().getValueClass();
+						final Class<?> itemValueClass = references[0].getProperty().getValueClass();
 						if (list != null && itemValueClass.isAssignableFrom(list.valueClass.getClassValue())) {
 							dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_LINK);
 							property.set(variable);
@@ -1162,7 +1168,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 									};
 								}
 							};
-							final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+							final java.util.Vector<Object> structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 									.makeListQuestionStructure(variable, factory, desiredValueClass,
 											property.getOwner());
 							if (desiredValueClass.isAssignableFrom(edu.cmu.cs.stage3.alice.core.List.class)) {
@@ -1203,7 +1209,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 					// that the ArrayQuestion is within
 					if (property.getOwner() instanceof edu.cmu.cs.stage3.alice.core.question.array.ArrayObjectQuestion
 							&& references.length > 0) {
-						final Class itemValueClass = references[0].getProperty().getValueClass();
+						final Class<?> itemValueClass = references[0].getProperty().getValueClass();
 						if (array != null && itemValueClass.isAssignableFrom(array.valueClass.getClassValue())) {
 							dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_LINK);
 							property.set(variable);
@@ -1234,7 +1240,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 									};
 								}
 							};
-							final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+							final java.util.Vector<Object> structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 									.makeArrayQuestionStructure(variable, factory, desiredValueClass,
 											property.getOwner());
 							final javax.swing.JPopupMenu popup = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
@@ -1253,7 +1259,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 				} else if (desiredValueClass.isAssignableFrom(variable.getValueClass())) {
 					dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_LINK);
 					if (!propertyValueStructure.isEmpty()) {
-						final java.util.Vector structure = new java.util.Vector();
+						final java.util.Vector<Object> structure = new java.util.Vector<>();
 						final String variableRepr = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
 								.getReprForValue(variable, false);
 						if (variable.equals(property.get())) {
@@ -1282,7 +1288,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 					dtde.dropComplete(true);
 				} else if (Boolean.class.isAssignableFrom(desiredValueClass)) {
 					dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_LINK);
-					final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+					final java.util.Vector<Object> structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makeComparatorStructure(variable, factory, property.getOwner());
 					if (!propertyValueStructure.isEmpty()) {
 						structure.add(
@@ -1297,7 +1303,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 				} else if (Number.class.isAssignableFrom(desiredValueClass)
 						&& javax.vecmath.Vector3d.class.isAssignableFrom(variable.getValueClass())) {
 					dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_LINK);
-					final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+					final java.util.Vector<Object> structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makePartsOfPositionStructure(variable, factory, property.getOwner());
 					if (!propertyValueStructure.isEmpty()) {
 						structure.add(
@@ -1311,7 +1317,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 					dtde.dropComplete(true);
 				} else if (edu.cmu.cs.stage3.alice.core.Response.class.isAssignableFrom(desiredValueClass)) {
 					dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_LINK);
-					final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+					final java.util.Vector<Object> structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makeExpressionResponseStructure(variable, factory, property.getOwner());
 					final javax.swing.JPopupMenu popup = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makePopupMenu(structure);
@@ -1362,7 +1368,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 				final edu.cmu.cs.stage3.alice.core.Element element = (edu.cmu.cs.stage3.alice.core.Element) transferable
 						.getTransferData(
 								edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.elementReferenceFlavor);
-				java.util.Vector propertyValueStructure = new java.util.Vector();
+				java.util.Vector<Object> propertyValueStructure = new java.util.Vector<>();
 				if (PropertyViewController.this.allowExpressions) {
 					propertyValueStructure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makePropertyValueStructure(element, desiredValueClass, factory, property.getOwner());
@@ -1371,7 +1377,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 				if (desiredValueClass.isInstance(element)) {
 					dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_MOVE);
 					if (!propertyValueStructure.isEmpty()) {
-						final java.util.Vector structure = new java.util.Vector();
+						final java.util.Vector<Object> structure = new java.util.Vector<>();
 						final String elementRepr = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
 								.getReprForValue(element, false);
 						if (element.equals(property.get())) {
@@ -1396,7 +1402,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 					dtde.dropComplete(true);
 				} else if (Boolean.class.isAssignableFrom(desiredValueClass)) {
 					dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_LINK);
-					final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+					final java.util.Vector<Object> structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makeComparatorStructure(element, factory, property.getOwner());
 					if (!propertyValueStructure.isEmpty()) {
 						structure.add(
@@ -1411,7 +1417,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 				} else if (Number.class.isAssignableFrom(desiredValueClass)
 						&& javax.vecmath.Vector3d.class.isAssignableFrom(element.getClass())) {
 					dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_LINK);
-					final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+					final java.util.Vector<Object> structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makePartsOfPositionStructure(element, factory, property.getOwner());
 					if (!propertyValueStructure.isEmpty()) {
 						structure.add(
@@ -1468,7 +1474,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 					dtde.dropComplete(true);
 				} else if (edu.cmu.cs.stage3.alice.core.Response.class.isAssignableFrom(desiredValueClass)) {
 					dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_LINK);
-					final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+					final java.util.Vector<Object> structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makeResponseStructure(element, factory, property.getOwner());
 					final javax.swing.JPopupMenu popup = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makePopupMenu(structure);
@@ -1509,7 +1515,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 					propertyValueQuestion.element.set(p.getOwner());
 					propertyValueQuestion.propertyName.set(p.getName());
 					propertyValueQuestion.data.put("createdByPropertyViewController", "true");
-					final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+					final java.util.Vector<Object> structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makeComparatorStructure(propertyValueQuestion, factory, property.getOwner());
 					final javax.swing.JPopupMenu popup = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makePopupMenu(structure);
@@ -1524,7 +1530,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 					propertyValueQuestion.element.set(p.getOwner());
 					propertyValueQuestion.propertyName.set(p.getName());
 					propertyValueQuestion.data.put("createdByPropertyViewController", "true");
-					final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+					final java.util.Vector<Object> structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makePartsOfPositionStructure(propertyValueQuestion, factory, property.getOwner());
 					final javax.swing.JPopupMenu popup = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makePopupMenu(structure);
@@ -1569,7 +1575,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 						}
 					};
 
-					final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+					final Vector<Object>structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makePrototypeStructure(responsePrototype, prototypeFactory, property.getOwner());
 					final javax.swing.JPopupMenu popup = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makePopupMenu(structure);
@@ -1584,7 +1590,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 				edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype elementPrototype = (edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype) transferable
 						.getTransferData(
 								edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementPrototypeReferenceTransferable.elementPrototypeReferenceFlavor);
-				final Class elementClass = elementPrototype.getElementClass();
+				final Class<?> elementClass = elementPrototype.getElementClass();
 				boolean hookItUp = false;
 				if (desiredValueClass.isAssignableFrom(elementClass)) {
 					hookItUp = true;
@@ -1637,7 +1643,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 						dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_LINK);
 						final edu.cmu.cs.stage3.alice.core.Element element = elementPrototype.createNewElement();
 						property.getOwner().addChild(element);
-						final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+						final Vector<Object>structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 								.makePartsOfPositionStructure(element, factory, property.getOwner());
 						final javax.swing.JPopupMenu popup = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 								.makePopupMenu(structure);
@@ -1676,7 +1682,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 																						// getting
 																						// too
 																						// big
-						final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+						final Vector<Object>structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 								.makePrototypeStructure(elementPrototype, factory, property.getOwner());
 						final javax.swing.JPopupMenu popup = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 								.makePopupMenu(structure);
@@ -1696,7 +1702,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 					dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_LINK);
 					final edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory factory = new edu.cmu.cs.stage3.alice.authoringtool.util.SetPropertyImmediatelyFactory(
 							property);
-					final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+					final Vector<Object>structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makeCommonMathQuestionStructure(property.get(), factory, property.getOwner());
 					final javax.swing.JPopupMenu popup = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makePopupMenu(structure);
@@ -1905,7 +1911,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 			while (!haltThread) {
 				synchronized (PropertyViewController.propertyViewControllersToRefresh) {
 					if (!PropertyViewController.propertyViewControllersToRefresh.isEmpty()) {
-						for (final java.util.Iterator iter = PropertyViewController.propertyViewControllersToRefresh
+						for (final Iterator<PropertyViewController> iter = PropertyViewController.propertyViewControllersToRefresh
 								.iterator(); iter.hasNext();) {
 							final PropertyViewController pvc = (PropertyViewController) iter.next();
 							javax.swing.SwingUtilities.invokeLater(new Runnable() {

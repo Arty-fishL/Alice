@@ -37,16 +37,17 @@ public class WorldDifferencesCapsule implements edu.cmu.cs.stage3.alice.core.eve
 		edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateListener {
 	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
 	protected edu.cmu.cs.stage3.alice.core.World world;
-	protected java.util.HashMap changedProperties = new java.util.HashMap();
-	protected java.util.ArrayList changedObjectArrayProperties = new java.util.ArrayList();
-	protected java.util.ArrayList changedElements = new java.util.ArrayList();
+	protected java.util.HashMap<Object, Object> changedProperties = new java.util.HashMap<Object, Object>();
+	protected java.util.ArrayList<Object> changedObjectArrayProperties = new java.util.ArrayList<Object>();
+	protected java.util.ArrayList<Object> changedElements = new java.util.ArrayList<Object>();
 
 	// need to keep track of where things are moving
-	protected java.util.HashMap changedElementPositions = new java.util.HashMap();
+	@SuppressWarnings("rawtypes")
+	protected java.util.HashMap changedElementPositions = new java.util.HashMap(); // Unused ??
 
 	// need to keep track of the order of changes so restore happens in the
 	// right order
-	protected java.util.ArrayList changeOrder = new java.util.ArrayList();
+	protected java.util.ArrayList<String> changeOrder = new java.util.ArrayList<String>();
 
 	protected boolean isListening;
 
@@ -67,7 +68,7 @@ public class WorldDifferencesCapsule implements edu.cmu.cs.stage3.alice.core.eve
 
 		final edu.cmu.cs.stage3.alice.authoringtool.util.StencilStateCapsule capsule = new edu.cmu.cs.stage3.alice.authoringtool.util.StencilStateCapsule();
 
-		java.util.Iterator iter = changedElements.iterator();
+		java.util.Iterator<Object> iter = changedElements.iterator();
 
 		iter = changedObjectArrayProperties.iterator();
 		// System.out.println("\tChanged Object Array Properties:");
@@ -76,7 +77,7 @@ public class WorldDifferencesCapsule implements edu.cmu.cs.stage3.alice.core.eve
 
 			if (obj instanceof edu.cmu.cs.stage3.alice.authoringtool.util.ObjectArrayPropertyUndoableRedoable) {
 				final int type = ((edu.cmu.cs.stage3.alice.authoringtool.util.ObjectArrayPropertyUndoableRedoable) obj).changeType;
-				final int oldPos = ((edu.cmu.cs.stage3.alice.authoringtool.util.ObjectArrayPropertyUndoableRedoable) obj).oldIndex;
+				// Unused ?? final int oldPos = ((edu.cmu.cs.stage3.alice.authoringtool.util.ObjectArrayPropertyUndoableRedoable) obj).oldIndex;
 				final int newPos = ((edu.cmu.cs.stage3.alice.authoringtool.util.ObjectArrayPropertyUndoableRedoable) obj).newIndex;
 				Object o = ((edu.cmu.cs.stage3.alice.authoringtool.util.ObjectArrayPropertyUndoableRedoable) obj).value;
 				// System.out.println( (
@@ -88,10 +89,12 @@ public class WorldDifferencesCapsule implements edu.cmu.cs.stage3.alice.core.eve
 
 				o = ((edu.cmu.cs.stage3.alice.authoringtool.util.ObjectArrayPropertyUndoableRedoable) obj)
 						.getAffectedObject();
+				/* Unused ??
 				edu.cmu.cs.stage3.alice.core.Element affected = null;
 				if (o instanceof edu.cmu.cs.stage3.alice.core.Element) {
 					affected = (edu.cmu.cs.stage3.alice.core.Element) o;
 				}
+				*/
 
 				if (type == 1) {
 					// System.out.println("\t\t INSERT: " + value.getKey() +
@@ -203,11 +206,11 @@ public class WorldDifferencesCapsule implements edu.cmu.cs.stage3.alice.core.eve
 
 	// START HERE.
 
-	public java.util.Vector getChangedPropertiesNamed(final String propertyName) {
-		final java.util.Vector props = new java.util.Vector();
+	public java.util.Vector<Property> getChangedPropertiesNamed(final String propertyName) {
+		final java.util.Vector<Property> props = new java.util.Vector<Property>();
 
-		final java.util.Set changedProps = changedProperties.keySet();
-		final java.util.Iterator iter = changedProps.iterator();
+		final java.util.Set<Object> changedProps = changedProperties.keySet();
+		final java.util.Iterator<Object> iter = changedProps.iterator();
 		while (iter.hasNext()) {
 			final String propAndKey = (String) iter.next();
 			final int endName = propAndKey.lastIndexOf(".");
@@ -222,10 +225,10 @@ public class WorldDifferencesCapsule implements edu.cmu.cs.stage3.alice.core.eve
 		return props;
 	}
 
-	public boolean otherPropertyChangesMade(final java.util.Set correctPropertyChangeSet) {
+	public boolean otherPropertyChangesMade(final java.util.Set<String> correctPropertyChangeSet) {
 
-		final java.util.Set changedProps = changedProperties.keySet();
-		final java.util.Iterator iter = changedProps.iterator();
+		final java.util.Set<Object> changedProps = changedProperties.keySet();
+		final java.util.Iterator<Object> iter = changedProps.iterator();
 		while (iter.hasNext()) {
 			String propAndKey = (String) iter.next();
 
@@ -280,7 +283,7 @@ public class WorldDifferencesCapsule implements edu.cmu.cs.stage3.alice.core.eve
 		return false;
 	}
 
-	public boolean otherElementsShifted(final java.util.Set correctElementsShifted) {
+	public boolean otherElementsShifted(final java.util.Set<String> correctElementsShifted) {
 		// java.util.Set actualElementsShifted =
 		// this.changedElementPositions.keySet();
 		//
@@ -313,12 +316,12 @@ public class WorldDifferencesCapsule implements edu.cmu.cs.stage3.alice.core.eve
 
 	public boolean otherElementsInsertedOrDeleted(final String[] insertedNames, final String[] deletedNames) {
 
-		final java.util.List insertedList = java.util.Arrays.asList(insertedNames);
-		final java.util.List deletedList = java.util.Arrays.asList(deletedNames);
+		final java.util.List<String> insertedList = java.util.Arrays.asList(insertedNames);
+		final java.util.List<String> deletedList = java.util.Arrays.asList(deletedNames);
 
-		final java.util.Vector illegalInserts = new java.util.Vector();
+		final java.util.Vector<String> illegalInserts = new java.util.Vector<String>();
 
-		for (final java.util.Iterator iter = changedObjectArrayProperties.iterator(); iter.hasNext();) {
+		for (final java.util.Iterator<Object> iter = changedObjectArrayProperties.iterator(); iter.hasNext();) {
 			final Object obj = iter.next();
 			// System.out.println(obj);
 			if (obj instanceof edu.cmu.cs.stage3.alice.authoringtool.util.ObjectArrayPropertyUndoableRedoable) {
@@ -363,7 +366,7 @@ public class WorldDifferencesCapsule implements edu.cmu.cs.stage3.alice.core.eve
 		boolean insertsStillPresent = false;
 		for (int i = 0; i < illegalInserts.size(); i++) {
 			final edu.cmu.cs.stage3.alice.core.Element e = world
-					.getDescendantKeyed((String) illegalInserts.elementAt(i));
+					.getDescendantKeyed(illegalInserts.elementAt(i));
 			if (e != null) {
 				insertsStillPresent = true;
 			}
@@ -381,12 +384,12 @@ public class WorldDifferencesCapsule implements edu.cmu.cs.stage3.alice.core.eve
 	synchronized public void restoreWorld() {
 		setIsListening(false);
 
-		final java.util.Iterator elementIterator = changedElements.iterator();
+		final java.util.Iterator<Object> elementIterator = changedElements.iterator();
 
-		final java.util.Iterator objectArrayIterator = changedObjectArrayProperties.iterator();
+		final java.util.Iterator<Object> objectArrayIterator = changedObjectArrayProperties.iterator();
 
-		for (final java.util.Iterator iter = changeOrder.iterator(); iter.hasNext();) {
-			final String changeType = (String) iter.next();
+		for (final java.util.Iterator<String> iter = changeOrder.iterator(); iter.hasNext();) {
+			final String changeType = iter.next();
 			if (changeType.equals(WorldDifferencesCapsule.elementChange)) {
 				if (elementIterator.hasNext()) {
 					((UndoableRedoable) elementIterator.next()).undo();
@@ -398,7 +401,7 @@ public class WorldDifferencesCapsule implements edu.cmu.cs.stage3.alice.core.eve
 			}
 		}
 
-		for (final java.util.Iterator iter = changedProperties.keySet().iterator(); iter.hasNext();) {
+		for (final java.util.Iterator<Object> iter = changedProperties.keySet().iterator(); iter.hasNext();) {
 			final String propertyKey = (String) iter.next();
 			final Object oldValue = changedProperties.get(propertyKey);
 
@@ -466,7 +469,7 @@ public class WorldDifferencesCapsule implements edu.cmu.cs.stage3.alice.core.eve
 	@Override
 	synchronized public void propertyChanging(final edu.cmu.cs.stage3.alice.core.event.PropertyEvent propertyEvent) {
 		if (isListening) {
-			final edu.cmu.cs.stage3.alice.core.Property property = propertyEvent.getProperty();
+			// Unused ?? final edu.cmu.cs.stage3.alice.core.Property property = propertyEvent.getProperty();
 			preChangeValue = propertyEvent.getProperty().get();
 		}
 	}

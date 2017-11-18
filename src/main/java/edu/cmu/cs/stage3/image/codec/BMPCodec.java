@@ -66,12 +66,12 @@ public final class BMPCodec extends ImageCodec {
 	}
 
 	@Override
-	public Class getEncodeParamClass() {
+	public Class<BMPEncodeParam> getEncodeParamClass() {
 		return BMPEncodeParam.class;
 	}
 
 	@Override
-	public Class getDecodeParamClass() {
+	public Class<Object> getDecodeParamClass() {
 		return Object.class;
 	}
 

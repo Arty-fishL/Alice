@@ -36,7 +36,7 @@ public class AskUserForString extends edu.cmu.cs.stage3.alice.core.Question {
 	private edu.cmu.cs.stage3.alice.core.Clock m_clock;
 
 	@Override
-	public Class getValueClass() {
+	public Class<?> getValueClass() {
 		return String.class;
 	}
 
