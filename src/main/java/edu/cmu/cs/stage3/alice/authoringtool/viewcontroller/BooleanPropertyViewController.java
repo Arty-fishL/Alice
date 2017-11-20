@@ -74,7 +74,7 @@ public class BooleanPropertyViewController extends PropertyViewController {
 	}
 
 	@Override
-	protected Class getNativeClass() {
+	protected Class<Boolean> getNativeClass() {
 		return Boolean.class;
 	}
 

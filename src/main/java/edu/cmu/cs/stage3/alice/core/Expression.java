@@ -23,40 +23,44 @@
 
 package edu.cmu.cs.stage3.alice.core;
 
+import java.util.Enumeration;
+
+import edu.cmu.cs.stage3.alice.core.event.ExpressionEvent;
+import edu.cmu.cs.stage3.alice.core.event.ExpressionListener;
+
 public abstract class Expression extends Element {
 	public abstract Object getValue();
 
-	public abstract Class getValueClass();
+	public abstract Class<?> getValueClass();
 
-	private final java.util.Vector m_expressionListeners = new java.util.Vector();
-	private edu.cmu.cs.stage3.alice.core.event.ExpressionListener[] m_expressionListenerArray = null;
+	private final java.util.Vector<ExpressionListener> m_expressionListeners = new java.util.Vector<>();
+	private ExpressionListener[] m_expressionListenerArray = null;
 
-	public void addExpressionListener(final edu.cmu.cs.stage3.alice.core.event.ExpressionListener expressionListener) {
+	public void addExpressionListener(final ExpressionListener expressionListener) {
 		m_expressionListeners.addElement(expressionListener);
 		m_expressionListenerArray = null;
 	}
 
 	public void removeExpressionListener(
-			final edu.cmu.cs.stage3.alice.core.event.ExpressionListener expressionListener) {
+			final ExpressionListener expressionListener) {
 		m_expressionListeners.removeElement(expressionListener);
 		m_expressionListenerArray = null;
 	}
 
-	public edu.cmu.cs.stage3.alice.core.event.ExpressionListener[] getExpressionListeners() {
+	public ExpressionListener[] getExpressionListeners() {
 		if (m_expressionListenerArray == null) {
-			m_expressionListenerArray = new edu.cmu.cs.stage3.alice.core.event.ExpressionListener[m_expressionListeners
-					.size()];
+			m_expressionListenerArray = new ExpressionListener[m_expressionListeners.size()];
 			m_expressionListeners.copyInto(m_expressionListenerArray);
 		}
 		return m_expressionListenerArray;
 	}
 
 	protected void onExpressionChange() {
-		final edu.cmu.cs.stage3.alice.core.event.ExpressionEvent expressionEvent = new edu.cmu.cs.stage3.alice.core.event.ExpressionEvent(
+		final ExpressionEvent expressionEvent = new ExpressionEvent(
 				this);
-		final java.util.Enumeration enum0 = m_expressionListeners.elements();
+		final Enumeration<ExpressionListener> enum0 = m_expressionListeners.elements();
 		while (enum0.hasMoreElements()) {
-			final edu.cmu.cs.stage3.alice.core.event.ExpressionListener expressionListener = (edu.cmu.cs.stage3.alice.core.event.ExpressionListener) enum0
+			final ExpressionListener expressionListener = (ExpressionListener) enum0
 					.nextElement();
 			expressionListener.expressionChanged(expressionEvent);
 		}

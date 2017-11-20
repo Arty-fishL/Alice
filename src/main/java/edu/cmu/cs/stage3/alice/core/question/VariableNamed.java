@@ -41,12 +41,12 @@ public class VariableNamed extends Question {
 	}
 
 	@Override
-	public Class getValueClass() {
-		final Class cls = valueClass.getClassValue();
+	public Class<?> getValueClass() {
+		final Class<?> cls = valueClass.getClassValue();
 		if (cls != null) {
 			return cls;
 		} else {
-			return java.lang.Object.class;
+			return Object.class;
 		}
 	}
 }

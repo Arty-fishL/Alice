@@ -28,7 +28,7 @@ import edu.cmu.cs.stage3.alice.core.Transformable;
 public class DistanceTo extends SubjectObjectQuestion {
 
 	@Override
-	public Class getValueClass() {
+	public Class<Number> getValueClass() {
 		return Number.class;
 	}
 

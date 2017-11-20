@@ -24,6 +24,8 @@
 package edu.cmu.cs.stage3.alice.core;
 
 import java.lang.reflect.Field;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
 import edu.cmu.cs.stage3.alice.core.event.PropertyEvent;
 import edu.cmu.cs.stage3.alice.core.event.PropertyListener;
@@ -53,17 +55,17 @@ public abstract class Property {
 	private final Element m_owner;
 	private final String m_name;
 	private final Object m_defaultValue;
-	private Class m_valueClass;
+	private Class<?> m_valueClass;
 	private Object m_value;
 
-	private final java.util.Vector m_propertyListeners = new java.util.Vector();
+	private final java.util.Vector<PropertyListener> m_propertyListeners = new java.util.Vector<>();
 	private edu.cmu.cs.stage3.alice.core.event.PropertyListener[] m_propertyListenerArray = null;
 
 	private boolean m_isDeprecated = false;
 
 	protected Object m_associatedFileKey = null;
 
-	protected Property(final Element owner, final String name, final Object defaultValue, final Class valueClass) {
+	protected Property(final Element owner, final String name, final Object defaultValue, final Class<?> valueClass) {
 		m_owner = owner;
 		m_name = name;
 		m_defaultValue = defaultValue;
@@ -73,22 +75,22 @@ public abstract class Property {
 		m_owner.propertyCreated(this);
 	}
 
-	private static java.util.Dictionary s_ownerClassMap = new java.util.Hashtable();
+	private static Dictionary<Class<?>, Dictionary<Class<?>, String[]>> s_ownerClassMap = new Hashtable<>();
 
-	public static String[] getPropertyNames(final Class ownerClass, final Class valueClass) {
-		java.util.Dictionary valueClassMap = (java.util.Dictionary) s_ownerClassMap.get(ownerClass);
+	public static String[] getPropertyNames(final Class<?> ownerClass, final Class<?> valueClass) {
+		Dictionary<Class<?>, String[]> valueClassMap = s_ownerClassMap.get(ownerClass);
 		if (valueClassMap == null) {
-			valueClassMap = new java.util.Hashtable();
+			valueClassMap = new Hashtable<Class<?>, String[]>();
 			s_ownerClassMap.put(ownerClass, valueClassMap);
 		}
-		String[] propertyNameArray = (String[]) valueClassMap.get(valueClass);
+		String[] propertyNameArray = valueClassMap.get(valueClass);
 		if (propertyNameArray == null) {
-			final java.util.Vector propertyNames = new java.util.Vector();
+			final java.util.Vector<String> propertyNames = new java.util.Vector<>();
 			final java.lang.reflect.Field[] fields = ownerClass.getFields();
 			for (final Field field : fields) {
 				if (Property.class.isAssignableFrom(field.getType())) {
 					final String propertyName = field.getName();
-					final Class cls = Element.getValueClassForPropertyNamed(ownerClass, propertyName);
+					final Class<?> cls = Element.getValueClassForPropertyNamed(ownerClass, propertyName);
 					if (cls != null) {
 						if (valueClass.isAssignableFrom(cls)) {
 							propertyNames.addElement(propertyName);
@@ -105,11 +107,11 @@ public abstract class Property {
 		return propertyNameArray;
 	}
 
-	public static String[] getPropertyNames(final Class ownerClass) {
+	public static String[] getPropertyNames(final Class<?> ownerClass) {
 		return getPropertyNames(ownerClass, Object.class);
 	}
 
-	public boolean isAlsoKnownAs(final Class cls, final String name) {
+	public boolean isAlsoKnownAs(final Class<?> cls, final String name) {
 		if (cls.isAssignableFrom(m_owner.getClass())) {
 			try {
 				final java.lang.reflect.Field field = cls.getField(name);
@@ -132,11 +134,11 @@ public abstract class Property {
 		return getOwner();
 	}
 
-	public Class getValueClass() {
+	public Class<?> getValueClass() {
 		return m_valueClass;
 	}
 
-	protected void setValueClass(final Class valueClass) {
+	protected void setValueClass(final Class<?> valueClass) {
 		m_valueClass = valueClass;
 	}
 
@@ -173,9 +175,9 @@ public abstract class Property {
 		return m_propertyListenerArray;
 	}
 
-	public Class getDeclaredClass() {
+	public Class<?> getDeclaredClass() {
 		if (m_owner != null) {
-			Class cls = m_owner.getClass();
+			Class<?> cls = m_owner.getClass();
 			while (cls != null) {
 				try {
 					final java.lang.reflect.Field field = cls.getDeclaredField(m_name);
@@ -203,7 +205,7 @@ public abstract class Property {
 				return m_value;
 			} else {
 				try {
-					final Class[] parameterTypes = {};
+					final Class<?>[] parameterTypes = {};
 					final Object[] parameterValues = {};
 					final java.lang.reflect.Method method = m_value.getClass().getMethod("clone", parameterTypes);
 					if (method.isAccessible()) {
@@ -234,7 +236,7 @@ public abstract class Property {
 		final World world = getElement().getWorld();
 		if (world != null) {
 			if (value instanceof Element) {
-				final Element element = (Element) value;
+				// Unused ?? final Element element = (Element) value;
 				return world != getElement().getWorld();
 			}
 		}
@@ -260,7 +262,7 @@ public abstract class Property {
 
 	protected void checkValueType(final Object value) {
 		if (value != null) {
-			final Class valueClass = getValueClass();
+			final Class<?> valueClass = getValueClass();
 			if (value instanceof Expression) {
 				final Expression expression = (Expression) value;
 				// todo: there must be a better way
@@ -323,7 +325,7 @@ public abstract class Property {
 	 */
 	// todo: this should not be necessary
 	protected boolean getValueOfExpression() {
-		final Class valueClass = getValueClass();
+		final Class<?> valueClass = getValueClass();
 		if (valueClass.isAssignableFrom(Expression.class)) {
 			return false;
 		} else if (valueClass.isAssignableFrom(Variable.class)) {
@@ -425,7 +427,7 @@ public abstract class Property {
 	}
 
 	protected void onSet(final Object value) {
-		final Class valueClass = getValueClass();
+		// Unused ?? final Class<?> valueClass = getValueClass();
 		final PropertyEvent propertyEvent = new PropertyEvent(this, value);
 		onChanging(propertyEvent);
 		m_value = value;
@@ -476,7 +478,7 @@ public abstract class Property {
 	}
 
 	// /** deprecated */
-	// public void load( Class type, String text,
+	// public void load( Class<?> type, String text,
 	// edu.cmu.cs.stage3.io.DirectoryTreeLoader loader, java.util.Vector
 	// referencesToBeResolved, edu.cmu.cs.stage3.util.ProgressObserver
 	// progressObserver ) throws java.io.IOException {
@@ -549,7 +551,7 @@ public abstract class Property {
 	// }
 	// }
 	// }
-	protected Object getValueOf(final Class type, final String text) {
+	protected Object getValueOf(final Class<?> type, final String text) {
 		if (type.equals(Double.class)) {
 			if (text.equals("Infinity")) {
 				return new Double(Double.POSITIVE_INFINITY);
@@ -562,7 +564,7 @@ public abstract class Property {
 			return text;
 		} else {
 			try {
-				final Class[] parameterTypes = { String.class };
+				final Class<?>[] parameterTypes = { String.class };
 				final java.lang.reflect.Method valueOfMethod = type.getMethod("valueOf", parameterTypes);
 				final int modifiers = valueOfMethod.getModifiers();
 				if (java.lang.reflect.Modifier.isPublic(modifiers) && java.lang.reflect.Modifier.isStatic(modifiers)) {
@@ -602,10 +604,10 @@ public abstract class Property {
 		return text.substring(begin, end);
 	}
 
-	protected void decodeReference(final org.w3c.dom.Element node, final java.util.Vector referencesToBeResolved,
+	protected void decodeReference(final org.w3c.dom.Element node, final java.util.Vector<PropertyReference> referencesToBeResolved,
 			final double version, final String typeName) {
 		try {
-			final Class type = Class.forName(typeName);
+			final Class<?> type = Class.forName(typeName);
 			String text = getNodeText(node);
 			// todo?
 			if (text.equals(".")) {
@@ -637,12 +639,12 @@ public abstract class Property {
 	}
 
 	protected void decodeObject(final org.w3c.dom.Element node, final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader,
-			final java.util.Vector referencesToBeResolved, final double version) throws java.io.IOException {
+			final java.util.Vector<PropertyReference> referencesToBeResolved, final double version) throws java.io.IOException {
 		final String typeName = node.getAttribute("class");
 		if (typeName.length() > 0) {
 			final String text = getNodeText(node);
 			try {
-				final Class type = Class.forName(typeName);
+				final Class<?> type = Class.forName(typeName);
 				set(getValueOf(type, text));
 			} catch (final ClassNotFoundException cnfe) {
 				throw new RuntimeException(typeName);
@@ -654,7 +656,7 @@ public abstract class Property {
 	}
 
 	public final void decode(final org.w3c.dom.Element node, final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader,
-			final java.util.Vector referencesToBeResolved, final double version) throws java.io.IOException {
+			final java.util.Vector<PropertyReference> referencesToBeResolved, final double version) throws java.io.IOException {
 		if (node.hasChildNodes()) {
 			final String criterionClassname = node.getAttribute("criterionClass");
 			if (criterionClassname.length() > 0) {

@@ -23,12 +23,15 @@
 
 package edu.cmu.cs.stage3.alice.core.question.math;
 
-public class Ceil extends edu.cmu.cs.stage3.alice.core.question.UnaryNumberResultingInNumberQuestion {
-	private static Class[] s_supportedCoercionClasses = { Floor.class };
+import edu.cmu.cs.stage3.alice.core.question.UnaryNumberResultingInNumberQuestion;
 
+public class Ceil extends UnaryNumberResultingInNumberQuestion {
+	private static Class<?>[] s_supportedCoercionClasses = { Floor.class };
+
+	@SuppressWarnings("unchecked")
 	@Override
-	public Class[] getSupportedCoercionClasses() {
-		return s_supportedCoercionClasses;
+	public Class<? extends UnaryNumberResultingInNumberQuestion>[] getSupportedCoercionClasses() {
+		return (Class<? extends UnaryNumberResultingInNumberQuestion>[]) s_supportedCoercionClasses;
 	}
 
 	@Override

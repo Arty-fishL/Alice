@@ -27,10 +27,10 @@ import edu.cmu.cs.stage3.alice.core.Expression;
 import edu.cmu.cs.stage3.alice.core.property.BooleanProperty;
 
 public class ConditionalTriggerBehavior extends TriggerBehavior {
-	private static Class[] s_supportedCoercionClasses = { ConditionalBehavior.class };
+	private static Class<?>[] s_supportedCoercionClasses = { ConditionalBehavior.class };
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

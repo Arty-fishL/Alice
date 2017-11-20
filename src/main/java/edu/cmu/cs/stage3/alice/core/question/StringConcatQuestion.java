@@ -58,7 +58,7 @@ public class StringConcatQuestion extends Question {
 	}
 
 	@Override
-	public Class getValueClass() {
+	public Class<String> getValueClass() {
 		return String.class;
 	}
 

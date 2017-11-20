@@ -6,7 +6,7 @@ import edu.cmu.cs.stage3.alice.core.TextureMap;
 import edu.cmu.cs.stage3.alice.core.Variable;
 
 public abstract class CollectionOfModelsVisualization extends edu.cmu.cs.stage3.alice.core.Visualization {
-	private final java.util.Vector m_bins = new java.util.Vector();
+	private final java.util.Vector<Model> m_bins = new java.util.Vector<>();
 
 	@Override
 	public void unhook(final Model model) {
@@ -107,7 +107,7 @@ public abstract class CollectionOfModelsVisualization extends edu.cmu.cs.stage3.
 		final Model prototype = getPrototype();
 		if (prototype != null) {
 			for (int i = binCount; i < curr.length; i++) {
-				final Class[] share = { edu.cmu.cs.stage3.alice.core.Geometry.class };
+				final Class<?>[] share = { edu.cmu.cs.stage3.alice.core.Geometry.class };
 				final String name = "Sub" + i;
 				Model binI = (Model) getChildNamed(name);
 				if (binI == null) {

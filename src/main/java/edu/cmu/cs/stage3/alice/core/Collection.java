@@ -33,20 +33,20 @@ public abstract class Collection extends Element {
 	@Override
 	protected void propertyChanged(final Property property, final Object value) {
 		if (property == valueClass) {
-			values.setComponentType((Class) value);
+			values.setComponentType((Class<?>) value);
 		} else {
 			super.propertyChanged(property, value);
 		}
 	}
 
 	// for jython
-	/** @depracated */
+	/** @deprecated */
 	public void append(final Object o) {
 		values.add(o);
 	}
 
 	// for jython
-	/** @depracated */
+	/** @deprecated */
 	public void insert(final Number index, final Object o) {
 		values.add(index.intValue(), o);
 	}

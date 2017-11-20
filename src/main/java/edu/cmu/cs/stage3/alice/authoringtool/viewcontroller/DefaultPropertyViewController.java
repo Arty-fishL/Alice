@@ -48,7 +48,7 @@ public class DefaultPropertyViewController extends PropertyViewController {
 	}
 
 	@Override
-	protected Class getNativeClass() {
+	protected Class<Object> getNativeClass() {
 		return Object.class;
 	}
 

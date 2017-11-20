@@ -26,10 +26,10 @@ package edu.cmu.cs.stage3.alice.core.question;
 import edu.cmu.cs.stage3.alice.core.Dimension;
 
 public class Height extends SizeAlongDimensionQuestion {
-	private static Class[] s_supportedCoercionClasses = { Width.class, Depth.class };
+	private static Class<?>[] s_supportedCoercionClasses = { Width.class, Depth.class };
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

@@ -23,17 +23,19 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import edu.cmu.cs.stage3.alice.core.Element;
 import edu.cmu.cs.stage3.util.StringObjectPair;
 
 /**
  * @author Jason Pratt
  */
 public class ElementPrototype {
-	protected Class elementClass;
+	protected Class<? extends edu.cmu.cs.stage3.alice.core.Element> elementClass;
 	protected edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues;
 	protected String[] desiredProperties;
 
-	public ElementPrototype(final Class elementClass, edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues,
+	public ElementPrototype(final Class<? extends edu.cmu.cs.stage3.alice.core.Element> elementClass, 
+			edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues,
 			String[] desiredProperties) {
 		if (!edu.cmu.cs.stage3.alice.core.Element.class.isAssignableFrom(elementClass)) {
 			throw new IllegalArgumentException("The elementClass given is not actually a subclass of Element.");
@@ -41,7 +43,7 @@ public class ElementPrototype {
 
 		edu.cmu.cs.stage3.alice.core.Element testElement = null;
 		try {
-			testElement = (edu.cmu.cs.stage3.alice.core.Element) elementClass.newInstance();
+			testElement = elementClass.newInstance();
 		} catch (final Exception e) {
 			throw new IllegalArgumentException("Unable to create a new element of type: " + elementClass.getName());
 		}
@@ -78,7 +80,7 @@ public class ElementPrototype {
 						// " does not accept null values" );
 						// }
 					} else if (propertyValue instanceof edu.cmu.cs.stage3.alice.core.Expression) {
-						final Class valueClass = property.getValueClass();
+						// Unused ?? final Class<?> valueClass = property.getValueClass();
 						if (property.getValueClass().isAssignableFrom(propertyValue.getClass())) {
 							// allow
 						} else {
@@ -122,7 +124,7 @@ public class ElementPrototype {
 
 	public edu.cmu.cs.stage3.alice.core.Element createNewElement() {
 		try {
-			final edu.cmu.cs.stage3.alice.core.Element element = (edu.cmu.cs.stage3.alice.core.Element) elementClass
+			final edu.cmu.cs.stage3.alice.core.Element element = elementClass
 					.newInstance();
 
 			if (knownPropertyValues != null) {
@@ -216,9 +218,9 @@ public class ElementPrototype {
 	}
 
 	public ElementPrototype createCopy(final edu.cmu.cs.stage3.util.StringObjectPair[] newKnownPropertyValues) {
-		final java.util.Vector vKnownPropertyValues = new java.util.Vector(
+		final java.util.Vector<StringObjectPair> vKnownPropertyValues = new java.util.Vector<StringObjectPair>(
 				java.util.Arrays.asList(knownPropertyValues));
-		final java.util.Vector vDesiredProperties = new java.util.Vector(java.util.Arrays.asList(desiredProperties));
+		final java.util.Vector<String> vDesiredProperties = new java.util.Vector<String>(java.util.Arrays.asList(desiredProperties));
 
 		if (newKnownPropertyValues != null) {
 			for (final StringObjectPair newKnownPropertyValue : newKnownPropertyValues) {
@@ -226,8 +228,8 @@ public class ElementPrototype {
 					vDesiredProperties.remove(newKnownPropertyValue.getString());
 				}
 				boolean subbed = false;
-				for (final java.util.ListIterator iter = vKnownPropertyValues.listIterator(); iter.hasNext();) {
-					final edu.cmu.cs.stage3.util.StringObjectPair pair = (edu.cmu.cs.stage3.util.StringObjectPair) iter
+				for (final java.util.ListIterator<StringObjectPair> iter = vKnownPropertyValues.listIterator(); iter.hasNext();) {
+					final edu.cmu.cs.stage3.util.StringObjectPair pair = iter
 							.next();
 					if (pair.getString().equals(newKnownPropertyValue.getString())) {
 						iter.set(newKnownPropertyValue);
@@ -241,12 +243,12 @@ public class ElementPrototype {
 		}
 
 		return createInstance(elementClass,
-				(edu.cmu.cs.stage3.util.StringObjectPair[]) vKnownPropertyValues
+				vKnownPropertyValues
 						.toArray(new edu.cmu.cs.stage3.util.StringObjectPair[0]),
-				(String[]) vDesiredProperties.toArray(new String[0]));
+				vDesiredProperties.toArray(new String[0]));
 	}
 
-	public Class getElementClass() {
+	public Class<? extends Element> getElementClass() {
 		return elementClass;
 	}
 
@@ -260,7 +262,7 @@ public class ElementPrototype {
 
 	// a rather inelegant solution for creating copies of the correct type.
 	// subclasses should overrider this method and call their own constructor
-	protected ElementPrototype createInstance(final Class elementClass,
+	protected ElementPrototype createInstance(final Class<? extends edu.cmu.cs.stage3.alice.core.Element> elementClass,
 			final edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues, final String[] desiredProperties) {
 		return new ElementPrototype(elementClass, knownPropertyValues, desiredProperties);
 	}

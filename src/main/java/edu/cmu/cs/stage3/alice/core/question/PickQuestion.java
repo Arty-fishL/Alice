@@ -71,7 +71,7 @@ public class PickQuestion extends Question {
 	}
 
 	@Override
-	public Class getValueClass() {
+	public Class<Model> getValueClass() {
 		return Model.class;
 	}
 }

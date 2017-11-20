@@ -23,20 +23,24 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import edu.cmu.cs.stage3.alice.core.Question;
+import edu.cmu.cs.stage3.util.StringObjectPair;
+
 /**
  * @author Jason Pratt
  */
 public class QuestionPrototype extends ElementPrototype {
-	public QuestionPrototype(final Class questionClass,
-			final edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues, final String[] desiredProperties) {
+	public QuestionPrototype(final Class<? extends Question> questionClass,
+			final StringObjectPair[] knownPropertyValues, final String[] desiredProperties) {
 		super(questionClass, knownPropertyValues, desiredProperties);
 	}
 
-	public edu.cmu.cs.stage3.alice.core.Question createNewQuestion() {
-		return (edu.cmu.cs.stage3.alice.core.Question) super.createNewElement();
+	public Question createNewQuestion() {
+		return (Question) super.createNewElement();
 	}
 
-	public Class getQuestionClass() {
-		return super.getElementClass();
+	@SuppressWarnings("unchecked")
+	public Class<? extends Question> getQuestionClass() {
+		return (Class<? extends Question>) super.getElementClass();
 	}
 }

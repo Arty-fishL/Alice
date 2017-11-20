@@ -28,7 +28,7 @@ import edu.cmu.cs.stage3.alice.core.Question;
 public abstract class IntegerQuestion extends Question {
 
 	@Override
-	public Class getValueClass() {
+	public Class<Integer> getValueClass() {
 		return Integer.class;
 	}
 }

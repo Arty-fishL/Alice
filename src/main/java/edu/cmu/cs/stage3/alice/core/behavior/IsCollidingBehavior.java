@@ -6,10 +6,10 @@ import edu.cmu.cs.stage3.alice.core.World;
 import edu.cmu.cs.stage3.alice.core.property.CollectionProperty;
 
 public class IsCollidingBehavior extends AbstractConditionalBehavior {
-	private static Class[] s_supportedCoercionClasses = { CollisionBehavior.class };
+	private static Class<?>[] s_supportedCoercionClasses = { CollisionBehavior.class };
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 
@@ -17,8 +17,8 @@ public class IsCollidingBehavior extends AbstractConditionalBehavior {
 	public final CollectionProperty b = new CollectionProperty(this, "b", null);
 
 	private World m_world = null;
-	private final java.util.Vector m_a = new java.util.Vector();
-	private final java.util.Vector m_b = new java.util.Vector();
+	private final java.util.Vector<Object> m_a = new java.util.Vector<>();
+	private final java.util.Vector<Object> m_b = new java.util.Vector<>();
 
 	@Override
 	protected void started(final World world, final double time) {

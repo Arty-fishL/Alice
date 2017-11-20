@@ -35,7 +35,7 @@ public class PropertyValue extends edu.cmu.cs.stage3.alice.core.Question {
 	public final StringProperty propertyName = new StringProperty(this, "propertyName", null);
 
 	private void updateOverrideValueClass() {
-		Class elementOverrideValueClass = null;
+		Class<?> elementOverrideValueClass = null;
 		final String propertyNameValue = propertyName.getStringValue();
 		if (propertyNameValue != null) {
 			final Element elementValue = element.getElementValue();
@@ -45,7 +45,7 @@ public class PropertyValue extends edu.cmu.cs.stage3.alice.core.Question {
 					elementOverrideValueClass = property.getDeclaredClass();
 				} else {
 					if (elementValue instanceof Expression) {
-						final Class cls = ((Expression) elementValue).getValueClass();
+						final Class<?> cls = ((Expression) elementValue).getValueClass();
 						if (cls != null) {
 							elementOverrideValueClass = cls;
 						}
@@ -110,14 +110,14 @@ public class PropertyValue extends edu.cmu.cs.stage3.alice.core.Question {
 	}
 
 	@Override
-	public Class getValueClass() {
+	public Class<?> getValueClass() {
 		final Property property = getPropertyValue();
 		if (property != null) {
 			return property.getValueClass();
 		} else {
 			final String propertyNameValue = propertyName.getStringValue();
 			if (propertyNameValue != null) {
-				final Class cls = element.getValueClass();
+				final Class<?> cls = element.getValueClass();
 				if (edu.cmu.cs.stage3.alice.core.Element.class.isAssignableFrom(cls)) {
 					try {
 						final java.lang.reflect.Field field = cls.getField(propertyNameValue);

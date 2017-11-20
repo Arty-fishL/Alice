@@ -24,10 +24,10 @@
 package edu.cmu.cs.stage3.alice.core.question.math;
 
 public class Max extends edu.cmu.cs.stage3.alice.core.question.BinaryNumberResultingInNumberQuestion {
-	private static Class[] s_supportedCoercionClasses = { Min.class };
+	private static Class<?>[] s_supportedCoercionClasses = { Min.class };
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

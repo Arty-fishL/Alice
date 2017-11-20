@@ -24,10 +24,10 @@
 package edu.cmu.cs.stage3.alice.core.behavior;
 
 public class WorldIsRunningBehavior extends AbstractConditionalBehavior {
-	private static Class[] s_supportedCoercionClasses = { WorldStartBehavior.class };
+	private static Class<?>[] s_supportedCoercionClasses = { WorldStartBehavior.class };
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

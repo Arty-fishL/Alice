@@ -24,11 +24,11 @@
 package edu.cmu.cs.stage3.alice.core.question;
 
 public class NumberIsGreaterThan extends BinaryNumberResultingInBooleanQuestion {
-	private static Class[] s_supportedCoercionClasses = { NumberIsGreaterThanOrEqualTo.class, NumberIsLessThan.class,
+	private static Class<?>[] s_supportedCoercionClasses = { NumberIsGreaterThanOrEqualTo.class, NumberIsLessThan.class,
 			NumberIsLessThanOrEqualTo.class };
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

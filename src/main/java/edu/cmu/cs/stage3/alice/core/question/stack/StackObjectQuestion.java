@@ -32,7 +32,7 @@ public abstract class StackObjectQuestion extends edu.cmu.cs.stage3.alice.core.Q
 	protected abstract Object getValue(Stack stack);
 
 	@Override
-	public Class getValueClass() {
+	public Class<?> getValueClass() {
 		return stack.getStackValue().valueClass.getClassValue();
 	}
 

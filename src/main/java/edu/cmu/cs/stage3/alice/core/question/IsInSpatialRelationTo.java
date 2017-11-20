@@ -34,7 +34,7 @@ public abstract class IsInSpatialRelationTo extends SubjectObjectQuestion {
 	protected abstract SpatialRelation getSpatialRelation();
 
 	@Override
-	public Class getValueClass() {
+	public Class<Boolean> getValueClass() {
 		return Boolean.class;
 	}
 

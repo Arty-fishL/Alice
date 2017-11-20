@@ -24,10 +24,10 @@
 package edu.cmu.cs.stage3.alice.core.response;
 
 public class DoTogether extends CompositeResponse {
-	private static Class[] s_supportedCoercionClasses = { DoInOrder.class };
+	private static Class<?>[] s_supportedCoercionClasses = { DoInOrder.class };
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

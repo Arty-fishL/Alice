@@ -54,7 +54,7 @@ public abstract class SizeAlongDimensionQuestion extends Question {
 	}
 
 	@Override
-	public Class getValueClass() {
+	public Class<Number> getValueClass() {
 		return Number.class;
 	}
 }

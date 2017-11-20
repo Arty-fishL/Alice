@@ -29,13 +29,13 @@ public class Property {
 	private java.lang.reflect.Method m_getter;
 	private java.lang.reflect.Method m_setter;
 	private java.lang.reflect.Method m_setterHowMuch;
-	private final Class m_elementClass;
-	private final Class m_valueClass;
+	private final Class<? extends Element> m_elementClass;
+	private final Class<?> m_valueClass;
 	private final String m_capsAndUnderscoresName;
 	private final String m_mixedCaseName;
 	private final boolean m_isPersistent;
 
-	public Property(final Class elementClass, final String capsAndUnderscoresName, final boolean isPersistent) {
+	public Property(final Class<? extends Element> elementClass, final String capsAndUnderscoresName, final boolean isPersistent) {
 		m_capsAndUnderscoresName = capsAndUnderscoresName;
 		m_mixedCaseName = new String(convertAllCapsAndUnderscoresToMixedCase(capsAndUnderscoresName));
 		/*
@@ -48,7 +48,7 @@ public class Property {
 		 * methods[i]; break; case 2: m_setterHowMuch = methods[i]; break; } } }
 		 */
 		try {
-			final Class[] parameterTypes = {};
+			final Class<?>[] parameterTypes = {};
 			m_getter = elementClass.getDeclaredMethod("get" + m_mixedCaseName, parameterTypes);
 		} catch (final NoSuchMethodException nsme) {
 			Element.warnln("get" + m_mixedCaseName);
@@ -56,14 +56,14 @@ public class Property {
 		}
 		m_valueClass = m_getter.getReturnType();
 		try {
-			final Class[] parameterTypes = { m_valueClass };
+			final Class<?>[] parameterTypes = { m_valueClass };
 			m_setter = elementClass.getDeclaredMethod("set" + m_mixedCaseName, parameterTypes);
 		} catch (final NoSuchMethodException nsme) {
 			nsme.printStackTrace();
 		}
 
 		try {
-			final Class[] parameterTypes = { m_valueClass, edu.cmu.cs.stage3.util.HowMuch.class };
+			final Class<?>[] parameterTypes = { m_valueClass, edu.cmu.cs.stage3.util.HowMuch.class };
 			m_setterHowMuch = elementClass.getDeclaredMethod("set" + m_mixedCaseName, parameterTypes);
 		} catch (final NoSuchMethodException nsme) {
 			// no problem
@@ -76,7 +76,7 @@ public class Property {
 		m_isPersistent = isPersistent;
 	}
 
-	public Property(final Class elementClass, final String capsAndUnderscoresName) {
+	public Property(final Class<? extends Element> elementClass, final String capsAndUnderscoresName) {
 		this(elementClass, capsAndUnderscoresName, true);
 	}
 
@@ -163,11 +163,11 @@ public class Property {
 
 	}
 
-	public Class getElementClass() {
+	public Class<? extends Element> getElementClass() {
 		return m_elementClass;
 	}
 
-	public Class getValueClass() {
+	public Class<?> getValueClass() {
 		return m_valueClass;
 	}
 
@@ -193,7 +193,7 @@ public class Property {
 		final String classPart = propertyName.substring(0, i);
 		final String fieldPart = propertyName.substring(i + 1);
 		try {
-			final Class cls = Class.forName(classPart);
+			final Class<?> cls = Class.forName(classPart);
 			final java.lang.reflect.Field field = cls.getField(fieldPart);
 			final int modifiers = field.getModifiers();
 			if (java.lang.reflect.Modifier.isPublic(modifiers) && java.lang.reflect.Modifier.isFinal(modifiers)
@@ -214,9 +214,9 @@ public class Property {
 		return null;
 	}
 
-	public static java.util.Vector getProperties(final Class cls, final boolean persistentOnly,
+	public static java.util.Vector<Property> getProperties(final Class<? extends Object> cls, final boolean persistentOnly,
 			final boolean declaredOnly) {
-		final java.util.Vector v = new java.util.Vector();
+		final java.util.Vector<Property> v = new java.util.Vector<Property>();
 		java.lang.reflect.Field[] fields;
 		if (declaredOnly) {
 			fields = cls.getDeclaredFields();
@@ -242,14 +242,14 @@ public class Property {
 		return v;
 	}
 
-	public static java.util.Vector getProperties(final Class cls) {
+	public static java.util.Vector<Property> getProperties(final Class<? extends Object> cls) {
 		return getProperties(cls, false, false);
 	}
 
-	public static Property getPropertyMixedCaseNamed(final Class cls, final String mixedCaseName) {
-		final java.util.Enumeration enum0 = getProperties(cls).elements();
+	public static Property getPropertyMixedCaseNamed(final Class<? extends Object> cls, final String mixedCaseName) {
+		final java.util.Enumeration<Property> enum0 = getProperties(cls).elements();
 		while (enum0.hasMoreElements()) {
-			final Property property = (Property) enum0.nextElement();
+			final Property property = enum0.nextElement();
 			if (property.getMixedCaseName().equals(mixedCaseName)) {
 				return property;
 			}
@@ -257,10 +257,10 @@ public class Property {
 		return null;
 	}
 
-	public static Property getPropertyCapsAndUnderscoresNamed(final Class cls, final String capsAndUnderscoresName) {
-		final java.util.Enumeration enum0 = getProperties(cls).elements();
+	public static Property getPropertyCapsAndUnderscoresNamed(final Class<? extends Object> cls, final String capsAndUnderscoresName) {
+		final java.util.Enumeration<Property> enum0 = getProperties(cls).elements();
 		while (enum0.hasMoreElements()) {
-			final Property property = (Property) enum0.nextElement();
+			final Property property = enum0.nextElement();
 			if (property.getCapsAndUnderscoresName().equals(capsAndUnderscoresName)) {
 				return property;
 			}
@@ -268,18 +268,18 @@ public class Property {
 		return null;
 	}
 
-	public static java.util.Vector getPropertyValuePairs(final Object o, final boolean persistentOnly,
+	public static java.util.Vector<PropertyValuePair> getPropertyValuePairs(final Object o, final boolean persistentOnly,
 			final boolean declaredOnly) {
-		final java.util.Vector v = new java.util.Vector();
-		final java.util.Enumeration enum0 = getProperties(o.getClass(), persistentOnly, declaredOnly).elements();
+		final java.util.Vector<PropertyValuePair> v = new java.util.Vector<PropertyValuePair>();
+		final java.util.Enumeration<Property> enum0 = getProperties(o.getClass(), persistentOnly, declaredOnly).elements();
 		while (enum0.hasMoreElements()) {
-			final Property property = (Property) enum0.nextElement();
+			final Property property = enum0.nextElement();
 			v.addElement(new PropertyValuePair(property, property.get(o)));
 		}
 		return v;
 	}
 
-	public static java.util.Vector getPropertyValuePairs(final Object o) {
+	public static java.util.Vector<PropertyValuePair> getPropertyValuePairs(final Object o) {
 		return getPropertyValuePairs(o, false, false);
 	}
 

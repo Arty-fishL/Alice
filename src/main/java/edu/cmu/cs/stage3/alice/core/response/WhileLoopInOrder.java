@@ -29,10 +29,10 @@ public class WhileLoopInOrder extends DoInOrder {
 	public final BooleanProperty condition = new BooleanProperty(this, "condition", Boolean.TRUE);
 	public final BooleanProperty testBeforeAsOpposedToAfter = new BooleanProperty(this, "testBeforeAsOpposedToAfter",
 			Boolean.TRUE);
-	private static Class[] s_supportedCoercionClasses = {};
+	private static Class<?>[] s_supportedCoercionClasses = {};
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

@@ -32,7 +32,7 @@ public abstract class QueueObjectQuestion extends edu.cmu.cs.stage3.alice.core.Q
 	protected abstract Object getValue(Queue queue);
 
 	@Override
-	public Class getValueClass() {
+	public Class<?> getValueClass() {
 		return queue.getQueueValue().valueClass.getClassValue();
 	}
 

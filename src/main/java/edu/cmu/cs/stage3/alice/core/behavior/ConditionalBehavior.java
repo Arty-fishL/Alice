@@ -26,10 +26,10 @@ package edu.cmu.cs.stage3.alice.core.behavior;
 import edu.cmu.cs.stage3.alice.core.property.BooleanProperty;
 
 public class ConditionalBehavior extends AbstractConditionalBehavior {
-	private static Class[] s_supportedCoercionClasses = { ConditionalTriggerBehavior.class };
+	private static Class<?>[] s_supportedCoercionClasses = { ConditionalTriggerBehavior.class };
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

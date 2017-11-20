@@ -40,7 +40,7 @@ public class UserDefinedQuestion extends edu.cmu.cs.stage3.alice.core.Question {
 			Variable[].class);
 
 	@Override
-	protected void internalFindAccessibleExpressions(final Class cls, final java.util.Vector v) {
+	protected void internalFindAccessibleExpressions(final Class<?> cls, final java.util.Vector<Expression> v) {
 		for (int i = 0; i < requiredFormalParameters.size(); i++) {
 			internalAddExpressionIfAssignableTo((Expression) requiredFormalParameters.get(i), cls, v);
 		}
@@ -66,7 +66,7 @@ public class UserDefinedQuestion extends edu.cmu.cs.stage3.alice.core.Question {
 	}
 
 	@Override
-	public Class getValueClass() {
+	public Class<?> getValueClass() {
 		return valueClass.getClassValue();
 	}
 }

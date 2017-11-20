@@ -29,10 +29,10 @@ import edu.cmu.cs.stage3.alice.core.property.ObjectProperty;
 public class FirstIndexOfItem extends ListNumberQuestion {
 	public final ObjectProperty item = new ObjectProperty(this, "item", null, Object.class);
 	public final NumberProperty startFromIndex = new NumberProperty(this, "startFromIndex", null);
-	private static Class[] s_supportedCoercionClasses = { LastIndexOfItem.class };
+	private static Class<?>[] s_supportedCoercionClasses = { LastIndexOfItem.class };
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

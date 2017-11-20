@@ -28,7 +28,7 @@ import edu.cmu.cs.stage3.alice.core.Question;
 public abstract class BooleanQuestion extends Question {
 
 	@Override
-	public Class getValueClass() {
+	public Class<Boolean> getValueClass() {
 		return Boolean.class;
 	}
 }

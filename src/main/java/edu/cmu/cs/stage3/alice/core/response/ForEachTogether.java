@@ -25,12 +25,12 @@ package edu.cmu.cs.stage3.alice.core.response;
 
 public class ForEachTogether extends ForEach {
 	// todo:
-	// private static Class[] s_supportedCoercionClasses = {
+	// private static Class<?>[] s_supportedCoercionClasses = {
 	// ForEachInOrder.class };
-	private static Class[] s_supportedCoercionClasses = {};
+	private static Class<?>[] s_supportedCoercionClasses = {};
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

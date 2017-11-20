@@ -23,20 +23,24 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import edu.cmu.cs.stage3.alice.core.Element;
+import edu.cmu.cs.stage3.alice.core.Response;
+import edu.cmu.cs.stage3.util.StringObjectPair;
+
 /**
  * @author Jason Pratt
  */
 public class ResponsePrototype extends ElementPrototype {
-	public ResponsePrototype(final Class responseClass,
-			final edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues, final String[] desiredProperties) {
+	public ResponsePrototype(final Class<? extends Element> responseClass,
+			final StringObjectPair[] knownPropertyValues, final String[] desiredProperties) {
 		super(responseClass, knownPropertyValues, desiredProperties);
 	}
 
-	public edu.cmu.cs.stage3.alice.core.Response createNewResponse() {
-		return (edu.cmu.cs.stage3.alice.core.Response) createNewElement();
+	public Response createNewResponse() {
+		return (Response) createNewElement();
 	}
 
-	public Class getResponseClass() {
+	public Class<? extends Element> getResponseClass() {
 		return super.getElementClass();
 	}
 
@@ -44,8 +48,8 @@ public class ResponsePrototype extends ElementPrototype {
 	// subclasses should override this method and call their own constructor
 
 	@Override
-	protected ElementPrototype createInstance(final Class elementClass,
-			final edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues, final String[] desiredProperties) {
+	protected ElementPrototype createInstance(final Class<? extends Element> elementClass,
+			final StringObjectPair[] knownPropertyValues, final String[] desiredProperties) {
 		return new ResponsePrototype(elementClass, knownPropertyValues, desiredProperties);
 	}
 }

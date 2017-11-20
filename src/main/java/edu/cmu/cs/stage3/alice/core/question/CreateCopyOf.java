@@ -1,16 +1,16 @@
 package edu.cmu.cs.stage3.alice.core.question;
 
 public class CreateCopyOf extends SubjectQuestion {
-	private final java.util.Vector m_copies = new java.util.Vector();
+	private final java.util.Vector<edu.cmu.cs.stage3.alice.core.Model> m_copies = new java.util.Vector<>();
 
 	@Override
-	public Class getValueClass() {
+	public Class<edu.cmu.cs.stage3.alice.core.Model> getValueClass() {
 		return edu.cmu.cs.stage3.alice.core.Model.class;
 	}
 
 	@Override
 	protected Object getValue(final edu.cmu.cs.stage3.alice.core.Transformable subjectValue) {
-		final Class[] classesToShare = { edu.cmu.cs.stage3.alice.core.TextureMap.class,
+		final Class<?>[] classesToShare = { edu.cmu.cs.stage3.alice.core.TextureMap.class,
 				edu.cmu.cs.stage3.alice.core.Geometry.class };
 		final edu.cmu.cs.stage3.alice.core.Model original = (edu.cmu.cs.stage3.alice.core.Model) subject
 				.getTransformableValue();

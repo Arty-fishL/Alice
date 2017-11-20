@@ -32,7 +32,7 @@ public abstract class ListObjectQuestion extends edu.cmu.cs.stage3.alice.core.Qu
 	protected abstract Object getValue(List list);
 
 	@Override
-	public Class getValueClass() {
+	public Class<?> getValueClass() {
 		final List listValue = list.getListValue();
 		if (listValue != null) {
 			return listValue.valueClass.getClassValue();

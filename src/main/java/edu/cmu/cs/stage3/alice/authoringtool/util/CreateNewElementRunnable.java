@@ -23,14 +23,16 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import edu.cmu.cs.stage3.alice.core.Element;
+
 /**
  * @author Jason Pratt
  */
 public class CreateNewElementRunnable implements Runnable {
-	private final Class elementClass;
-	private final edu.cmu.cs.stage3.alice.core.Element parent;
+	private final Class<? extends Element> elementClass;
+	private final Element parent;
 
-	public CreateNewElementRunnable(final Class elementClass, final edu.cmu.cs.stage3.alice.core.Element parent) {
+	public CreateNewElementRunnable(final Class<Element> elementClass, final Element parent) {
 		this.elementClass = elementClass;
 		this.parent = parent;
 	}
@@ -39,13 +41,13 @@ public class CreateNewElementRunnable implements Runnable {
 	public void run() {
 		try {
 			final Object instance = elementClass.newInstance();
-			if (instance instanceof edu.cmu.cs.stage3.alice.core.Element) {
+			if (instance instanceof Element) {
 				String simpleName = elementClass.getName();
 				simpleName = simpleName.substring(simpleName.lastIndexOf('.') + 1);
-				((edu.cmu.cs.stage3.alice.core.Element) instance).name
+				((Element) instance).name
 						.set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getNameForNewChild(simpleName,
 								parent));
-				((edu.cmu.cs.stage3.alice.core.Element) instance).setParent(parent);
+				((Element) instance).setParent(parent);
 			}
 		} catch (final Throwable t) {
 			if (elementClass != null) {

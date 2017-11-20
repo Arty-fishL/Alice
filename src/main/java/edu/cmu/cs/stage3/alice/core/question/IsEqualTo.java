@@ -24,10 +24,10 @@
 package edu.cmu.cs.stage3.alice.core.question;
 
 public class IsEqualTo extends AbstractIsEqualTo {
-	private static Class[] s_supportedCoercionClasses = { IsNotEqualTo.class };
+	private static Class<?>[] s_supportedCoercionClasses = { IsNotEqualTo.class };
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

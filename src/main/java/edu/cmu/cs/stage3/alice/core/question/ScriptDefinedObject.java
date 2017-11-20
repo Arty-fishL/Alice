@@ -29,9 +29,9 @@ public class ScriptDefinedObject extends AbstractScriptDefinedObject {
 	public final ClassProperty valueClass = new ClassProperty(this, "valueClass", null);
 
 	@Override
-	public Class getValueClass() {
+	public Class<?> getValueClass() {
 		// todo?
-		final Class cls = (Class) valueClass.get();
+		final Class<?> cls = (Class<?>) valueClass.get();
 		if (cls != null) {
 			return cls;
 		} else {

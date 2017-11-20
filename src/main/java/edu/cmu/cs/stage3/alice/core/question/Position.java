@@ -25,12 +25,13 @@ package edu.cmu.cs.stage3.alice.core.question;
 
 import edu.cmu.cs.stage3.alice.core.ReferenceFrame;
 import edu.cmu.cs.stage3.alice.core.Transformable;
+import edu.cmu.cs.stage3.math.Vector3;
 
 public class Position extends SubjectAsSeenByQuestion {
 
 	@Override
-	public Class getValueClass() {
-		return edu.cmu.cs.stage3.math.Vector3.class;
+	public Class<Vector3> getValueClass() {
+		return Vector3.class;
 	}
 
 	@Override

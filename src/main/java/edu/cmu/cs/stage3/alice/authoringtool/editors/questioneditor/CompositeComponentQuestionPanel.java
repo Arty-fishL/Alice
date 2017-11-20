@@ -69,9 +69,11 @@ public class CompositeComponentQuestionPanel
 				if (currentElement != null) {
 					toAdd = new ComponentQuestionPanel();
 					((ComponentQuestionPanel) toAdd).set(currentElement);
-				} else {
+				}/* Dead code, as toAdd is null, so can return that
+				 else {
 					return null;
 				}
+				*/
 			}
 			return toAdd;
 		} else {
@@ -81,8 +83,10 @@ public class CompositeComponentQuestionPanel
 
 	@Override
 	public void dragOver(final java.awt.dnd.DropTargetDragEvent dtde) {
+		/* Unused ??
 		final java.awt.Component sourceComponent = edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager
 				.getCurrentDragComponent();
+		*/
 		final int action = dtde.getDropAction();
 
 		final boolean isCopy = (action & java.awt.dnd.DnDConstants.ACTION_COPY) > 0;
@@ -134,7 +138,7 @@ public class CompositeComponentQuestionPanel
 				final edu.cmu.cs.stage3.alice.core.CopyFactory copyFactory = (edu.cmu.cs.stage3.alice.core.CopyFactory) transferable
 						.getTransferData(
 								edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CopyFactoryTransferable.copyFactoryFlavor);
-				final Class valueClass = copyFactory.getValueClass();
+				final Class<?> valueClass = copyFactory.getValueClass();
 				if (edu.cmu.cs.stage3.alice.core.question.userdefined.Component.class.isAssignableFrom(valueClass)) {
 					dtde.acceptDrag(java.awt.dnd.DnDConstants.ACTION_MOVE); // looks
 																			// nicer
@@ -157,7 +161,7 @@ public class CompositeComponentQuestionPanel
 				final edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype prototype = (edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype) transferable
 						.getTransferData(
 								edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementPrototypeReferenceTransferable.elementPrototypeReferenceFlavor);
-				final Class valueClass = prototype.getElementClass();
+				final Class<?> valueClass = prototype.getElementClass();
 				if (edu.cmu.cs.stage3.alice.core.question.userdefined.Component.class.isAssignableFrom(valueClass)) {
 					dtde.acceptDrag(java.awt.dnd.DnDConstants.ACTION_MOVE); // looks
 																			// nicer
@@ -220,7 +224,7 @@ public class CompositeComponentQuestionPanel
 				final edu.cmu.cs.stage3.alice.core.CopyFactory copyFactory = (edu.cmu.cs.stage3.alice.core.CopyFactory) transferable
 						.getTransferData(
 								edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CopyFactoryTransferable.copyFactoryFlavor);
-				final Class valueClass = copyFactory.getValueClass();
+				final Class<?> valueClass = copyFactory.getValueClass();
 				if (edu.cmu.cs.stage3.alice.core.question.userdefined.Component.class.isAssignableFrom(valueClass)) {
 					dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_COPY);
 					successful = true;
@@ -290,7 +294,7 @@ public class CompositeComponentQuestionPanel
 					edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype questionPrototype = (edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype) transferable
 							.getTransferData(
 									edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementPrototypeReferenceTransferable.elementPrototypeReferenceFlavor);
-					final Class valueClass = questionPrototype.getElementClass();
+					final Class<? extends edu.cmu.cs.stage3.alice.core.Element> valueClass = questionPrototype.getElementClass();
 					if (!edu.cmu.cs.stage3.alice.core.question.userdefined.Component.class
 							.isAssignableFrom(valueClass)) {
 						dtde.rejectDrop();
@@ -332,7 +336,7 @@ public class CompositeComponentQuestionPanel
 									};
 								}
 							};
-							java.util.Vector structure = null;
+							java.util.Vector<Object> structure = null;
 							if (edu.cmu.cs.stage3.alice.core.question.userdefined.Print.class
 									.isAssignableFrom(questionPrototype.getElementClass())) {
 								structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
@@ -405,7 +409,7 @@ public class CompositeComponentQuestionPanel
 							};
 						}
 					};
-					final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+					final java.util.Vector<Object> structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makePropertyAssignmentForUserDefinedQuestionStructure(property, factory,
 									componentElements.getOwner());
 					final javax.swing.JPopupMenu popup = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities

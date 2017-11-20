@@ -26,7 +26,7 @@ package edu.cmu.cs.stage3.alice.core.question;
 public class ScriptDefinedBoolean extends AbstractScriptDefinedObject {
 
 	@Override
-	public Class getValueClass() {
+	public Class<Boolean> getValueClass() {
 		return Boolean.class;
 	}
 

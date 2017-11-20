@@ -42,7 +42,7 @@ public class ToStringQuestion extends Question {
 	};
 
 	@Override
-	public Class getValueClass() {
+	public Class<String> getValueClass() {
 		return String.class;
 	}
 

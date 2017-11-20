@@ -36,12 +36,12 @@ public class Variable extends Expression {
 	}
 
 	@Override
-	public Class getValueClass() {
-		return (Class) valueClass.getValue();
+	public Class<?> getValueClass() {
+		return (Class<?>) valueClass.getValue();
 	}
 
 	// todo
-	protected void valueClassValueChanging(final Class clsToBe) {
+	protected void valueClassValueChanging(final Class<?> clsToBe) {
 		if (clsToBe != null) {
 			final Object o = value.getValue();
 			if (o instanceof Expression) {
@@ -81,8 +81,8 @@ public class Variable extends Expression {
 			} else {
 				if (o instanceof Expression) {
 					final Expression expression = (Expression) o;
-					final Class cls = expression.getValueClass();
-					final Class valueCls = (Class) valueClass.getValue();
+					final Class<?> cls = expression.getValueClass();
+					final Class<?> valueCls = (Class<?>) valueClass.getValue();
 					if (valueCls == null) {
 						// pass
 					} else {
@@ -95,8 +95,8 @@ public class Variable extends Expression {
 					}
 
 				} else {
-					final Class cls = o.getClass();
-					final Class valueCls = (Class) valueClass.getValue();
+					final Class<? extends Object> cls = o.getClass();
+					final Class<?> valueCls = (Class<?>) valueClass.getValue();
 					if (valueCls == null) {
 						// pass
 					} else {
@@ -121,7 +121,7 @@ public class Variable extends Expression {
 		if (property == value) {
 			valueValueChanging(o);
 		} else if (property == valueClass) {
-			valueClassValueChanging((Class) o);
+			valueClassValueChanging((Class<?>) o);
 		} else {
 			super.propertyChanging(property, o);
 		}

@@ -5,7 +5,7 @@ import edu.cmu.cs.stage3.alice.core.visualization.CollectionOfModelsVisualizatio
 
 public abstract class CollectionOfModelsVisualizationProperty extends VisualizationProperty {
 	protected CollectionOfModelsVisualizationProperty(final Element owner, final String name,
-			final CollectionOfModelsVisualization defaultValue, final Class valueClass) {
+			final CollectionOfModelsVisualization defaultValue, final Class<?> valueClass) {
 		super(owner, name, defaultValue, valueClass);
 	}
 

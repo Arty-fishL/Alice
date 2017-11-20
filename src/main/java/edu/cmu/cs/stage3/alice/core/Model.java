@@ -300,7 +300,7 @@ public class Model extends Transformable {
 
 	@Override
 	protected void HACK_copyOverTextureMapReferences(final Element dst,
-			final java.util.Dictionary srcTextureMapToDstTextureMapMap) {
+			final java.util.Dictionary<TextureMap, TextureMap> srcTextureMapToDstTextureMapMap) {
 		super.HACK_copyOverTextureMapReferences(dst, srcTextureMapToDstTextureMapMap);
 		if (dst instanceof Model) {
 			TextureMap tm = diffuseColorMap.getTextureMapValue();

@@ -26,11 +26,11 @@ package edu.cmu.cs.stage3.alice.core.question;
 /** @deprecated */
 @Deprecated
 public class NumberIsEqualTo extends BinaryNumberResultingInBooleanQuestion {
-	private static Class[] s_supportedCoercionClasses = { NumberIsNotEqualTo.class, NumberIsGreaterThan.class,
+	private static Class<?>[] s_supportedCoercionClasses = { NumberIsNotEqualTo.class, NumberIsGreaterThan.class,
 			NumberIsGreaterThanOrEqualTo.class, NumberIsLessThan.class, NumberIsLessThanOrEqualTo.class };
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

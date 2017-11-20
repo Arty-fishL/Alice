@@ -23,13 +23,15 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import edu.cmu.cs.stage3.alice.authoringtool.util.event.DnDManagerListener;
+
 /**
  * @author Jason Pratt
  */
 public class DnDManager {
 	private static java.awt.datatransfer.Transferable currentTransferable;
 	private static java.awt.Component currentDragComponent;
-	private static java.util.HashSet listeners = new java.util.HashSet();
+	private static java.util.HashSet<DnDManagerListener> listeners = new java.util.HashSet<DnDManagerListener>();
 	private static DnDListener dndListener = new DnDListener();
 	private static java.awt.dnd.DragSourceContext currentContext;
 
@@ -67,8 +69,8 @@ public class DnDManager {
 	}
 
 	public static void fireDragGestureRecognized(final java.awt.dnd.DragGestureEvent ev) {
-		for (final java.util.Iterator iter = DnDManager.listeners.iterator(); iter.hasNext();) {
-			((java.awt.dnd.DragGestureListener) iter.next()).dragGestureRecognized(ev);
+		for (final java.util.Iterator<DnDManagerListener> iter = DnDManager.listeners.iterator(); iter.hasNext();) {
+			iter.next().dragGestureRecognized(ev);
 		}
 	}
 
@@ -76,8 +78,8 @@ public class DnDManager {
 			final java.awt.Component dragComponent) {
 		currentTransferable = transferable;
 		currentDragComponent = dragComponent;
-		for (final java.util.Iterator iter = DnDManager.listeners.iterator(); iter.hasNext();) {
-			((edu.cmu.cs.stage3.alice.authoringtool.util.event.DnDManagerListener) iter.next()).dragStarted();
+		for (final java.util.Iterator<DnDManagerListener> iter = DnDManager.listeners.iterator(); iter.hasNext();) {
+			iter.next().dragStarted();
 		}
 	}
 
@@ -88,8 +90,8 @@ public class DnDManager {
 			currentTransferable = dsde.getDragSourceContext().getTransferable();
 			currentDragComponent = dsde.getDragSourceContext().getComponent();
 			currentContext = dsde.getDragSourceContext();
-			for (final java.util.Iterator iter = DnDManager.listeners.iterator(); iter.hasNext();) {
-				((java.awt.dnd.DragSourceListener) iter.next()).dragEnter(dsde);
+			for (final java.util.Iterator<DnDManagerListener> iter = DnDManager.listeners.iterator(); iter.hasNext();) {
+				iter.next().dragEnter(dsde);
 			}
 		}
 
@@ -98,8 +100,8 @@ public class DnDManager {
 			// DEBUG System.out.println( "DnDManager.dragExit" );
 			currentTransferable = dse.getDragSourceContext().getTransferable();
 			currentDragComponent = dse.getDragSourceContext().getComponent();
-			for (final java.util.Iterator iter = DnDManager.listeners.iterator(); iter.hasNext();) {
-				((java.awt.dnd.DragSourceListener) iter.next()).dragExit(dse);
+			for (final java.util.Iterator<DnDManagerListener> iter = DnDManager.listeners.iterator(); iter.hasNext();) {
+				iter.next().dragExit(dse);
 			}
 		}
 
@@ -108,8 +110,8 @@ public class DnDManager {
 			// DEBUG System.out.println( "DnDManager.dragOver" );
 			currentTransferable = dsde.getDragSourceContext().getTransferable();
 			currentDragComponent = dsde.getDragSourceContext().getComponent();
-			for (final java.util.Iterator iter = DnDManager.listeners.iterator(); iter.hasNext();) {
-				((java.awt.dnd.DragSourceListener) iter.next()).dragOver(dsde);
+			for (final java.util.Iterator<DnDManagerListener> iter = DnDManager.listeners.iterator(); iter.hasNext();) {
+				iter.next().dragOver(dsde);
 			}
 		}
 
@@ -118,8 +120,8 @@ public class DnDManager {
 			// DEBUG System.out.println( "DnDManager.dropActionChanged" );
 			currentTransferable = dsde.getDragSourceContext().getTransferable();
 			currentDragComponent = dsde.getDragSourceContext().getComponent();
-			for (final java.util.Iterator iter = DnDManager.listeners.iterator(); iter.hasNext();) {
-				((java.awt.dnd.DragSourceListener) iter.next()).dropActionChanged(dsde);
+			for (final java.util.Iterator<DnDManagerListener> iter = DnDManager.listeners.iterator(); iter.hasNext();) {
+				iter.next().dropActionChanged(dsde);
 			}
 		}
 
@@ -128,8 +130,8 @@ public class DnDManager {
 			// DEBUG System.out.println( "DnDManager.dragDropEnd" );
 			currentTransferable = null;
 			currentDragComponent = null;
-			for (final java.util.Iterator iter = DnDManager.listeners.iterator(); iter.hasNext();) {
-				((java.awt.dnd.DragSourceListener) iter.next()).dragDropEnd(dsde);
+			for (final java.util.Iterator<DnDManagerListener> iter = DnDManager.listeners.iterator(); iter.hasNext();) {
+				iter.next().dragDropEnd(dsde);
 			}
 		}
 	}

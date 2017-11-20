@@ -46,7 +46,7 @@ public class ChildNamed extends Question {
 	}
 
 	@Override
-	public Class getValueClass() {
+	public Class<Element> getValueClass() {
 		return Element.class;
 	}
 }

@@ -60,9 +60,9 @@ public class BehaviorGroupsEditor extends edu.cmu.cs.stage3.alice.authoringtool.
 	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
 	protected javax.swing.JButton newBehaviorButton;
 	protected javax.swing.JPopupMenu behaviorMenu;
-	protected java.util.Vector behaviorRunnables = new java.util.Vector();
+	protected java.util.Vector<CreateNewBehaviorRunnable> behaviorRunnables = new java.util.Vector<CreateNewBehaviorRunnable>();
 	protected javax.swing.JLabel menuLabel = new javax.swing.JLabel();
-	protected java.util.Vector allSandboxes = new java.util.Vector();
+	protected java.util.Vector<?> allSandboxes = new java.util.Vector<>(); // Unused ??
 	protected boolean paintDropPotential = false;
 	protected boolean beingDroppedOn = false;
 
@@ -207,10 +207,10 @@ public class BehaviorGroupsEditor extends edu.cmu.cs.stage3.alice.authoringtool.
 	public BehaviorGroupsEditor() {
 		authoringTool = edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack();
 		behaviorMenu = new javax.swing.JPopupMenu();
-		final Class[] behaviors = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getBehaviorClasses();
-		final java.util.Vector structure = new java.util.Vector();
+		final Class<?>[] behaviors = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getBehaviorClasses();
+		final java.util.Vector<Object> structure = new java.util.Vector<Object>();
 		edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager.addListener(dropPotentialFeedbackListener);
-		for (final Class currentBehavior : behaviors) {
+		for (final Class<?> currentBehavior : behaviors) {
 			String behaviorName = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
 					.getReprForValue(currentBehavior);
 			if (behaviorName == null) {
@@ -248,12 +248,12 @@ public class BehaviorGroupsEditor extends edu.cmu.cs.stage3.alice.authoringtool.
 		return null;
 	}
 
-	public java.util.Vector getEditors() {
-		final java.util.Vector toReturn = new java.util.Vector();
+	public java.util.Vector<BasicBehaviorPanel> getEditors() {
+		final java.util.Vector<BasicBehaviorPanel> toReturn = new java.util.Vector<>();
 		for (int i = 0; i < m_containingPanel.getComponentCount(); i++) {
 			if (m_containingPanel.getComponent(i) instanceof BehaviorGroupEditor) {
 				final BehaviorGroupEditor bge = (BehaviorGroupEditor) m_containingPanel.getComponent(i);
-				final java.util.Vector behaviorsComponents = bge.getBehaviorComponents();
+				final java.util.Vector<BasicBehaviorPanel> behaviorsComponents = bge.getBehaviorComponents();
 				for (int j = 0; j < behaviorsComponents.size(); j++) {
 					toReturn.add(behaviorsComponents.get(j));
 				}
@@ -443,10 +443,10 @@ public class BehaviorGroupsEditor extends edu.cmu.cs.stage3.alice.authoringtool.
 	}
 
 	class CreateNewBehaviorRunnable implements Runnable {
-		Class behaviorClass;
+		Class<?> behaviorClass;
 		edu.cmu.cs.stage3.alice.core.Sandbox owner;
 
-		public CreateNewBehaviorRunnable(final Class behaviorClass, final edu.cmu.cs.stage3.alice.core.Sandbox owner) {
+		public CreateNewBehaviorRunnable(final Class<?> behaviorClass, final edu.cmu.cs.stage3.alice.core.Sandbox owner) {
 			this.behaviorClass = behaviorClass;
 			this.owner = owner;
 		}
@@ -521,7 +521,7 @@ public class BehaviorGroupsEditor extends edu.cmu.cs.stage3.alice.authoringtool.
 
 	protected void setRunnables(final edu.cmu.cs.stage3.alice.core.Sandbox s, final String label) {
 		for (int i = 0; i < behaviorRunnables.size(); i++) {
-			((CreateNewBehaviorRunnable) behaviorRunnables.get(i)).setOwner(s);
+			behaviorRunnables.get(i).setOwner(s);
 		}
 		menuLabel.setText(label);
 	}
@@ -725,7 +725,7 @@ public class BehaviorGroupsEditor extends edu.cmu.cs.stage3.alice.authoringtool.
 			final edu.cmu.cs.stage3.alice.core.CopyFactory copyFactory = (edu.cmu.cs.stage3.alice.core.CopyFactory) transferable
 					.getTransferData(
 							edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CopyFactoryTransferable.copyFactoryFlavor);
-			final Class valueClass = copyFactory.getValueClass();
+			final Class<?> valueClass = copyFactory.getValueClass();
 			if (edu.cmu.cs.stage3.alice.core.Behavior.class.isAssignableFrom(valueClass)) {
 				return BEHAVIOR;
 			} else {
@@ -750,7 +750,7 @@ public class BehaviorGroupsEditor extends edu.cmu.cs.stage3.alice.authoringtool.
 			final edu.cmu.cs.stage3.alice.core.CopyFactory copyFactory = (edu.cmu.cs.stage3.alice.core.CopyFactory) transferable
 					.getTransferData(
 							edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CopyFactoryTransferable.copyFactoryFlavor);
-			final Class valueClass = copyFactory.getValueClass();
+			final Class<?> valueClass = copyFactory.getValueClass();
 			if (edu.cmu.cs.stage3.alice.core.Behavior.class.isAssignableFrom(valueClass)) {
 				return BEHAVIOR;
 			} else {

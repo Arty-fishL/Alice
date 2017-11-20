@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.responseeditor;
 
+import edu.cmu.cs.stage3.alice.core.Element;
+
 /**
  * Title: Description: Copyright: Copyright (c) 2001 Company:
  *
@@ -58,9 +60,11 @@ public class CompositeComponentResponsePanel
 				if (currentElement != null) {
 					toAdd = new ComponentResponsePanel();
 					((ComponentResponsePanel) toAdd).set(currentElement);
-				} else {
+				}/* Dead code, as toAdd will be null, so can return that 
+				  else {
 					return null;
 				}
+				*/
 			}
 			return toAdd;
 		} else {
@@ -70,8 +74,10 @@ public class CompositeComponentResponsePanel
 
 	@Override
 	public void dragOver(final java.awt.dnd.DropTargetDragEvent dtde) {
+		/* Unused ??
 		final java.awt.Component sourceComponent = edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager
 				.getCurrentDragComponent();
+		*/
 		final int action = dtde.getDropAction();
 		final boolean isCopy = (action & java.awt.dnd.DnDConstants.ACTION_COPY) > 0;
 		final boolean isMove = (action & java.awt.dnd.DnDConstants.ACTION_MOVE) > 0;
@@ -115,7 +121,7 @@ public class CompositeComponentResponsePanel
 				final edu.cmu.cs.stage3.alice.core.CopyFactory copyFactory = (edu.cmu.cs.stage3.alice.core.CopyFactory) transferable
 						.getTransferData(
 								edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CopyFactoryTransferable.copyFactoryFlavor);
-				final Class valueClass = copyFactory.getValueClass();
+				final Class<? extends edu.cmu.cs.stage3.alice.core.Element> valueClass = copyFactory.getValueClass();
 				if (edu.cmu.cs.stage3.alice.core.Response.class.isAssignableFrom(valueClass)) {
 					dtde.acceptDrag(java.awt.dnd.DnDConstants.ACTION_MOVE); // looks
 																			// nicer
@@ -210,7 +216,7 @@ public class CompositeComponentResponsePanel
 				final edu.cmu.cs.stage3.alice.core.CopyFactory copyFactory = (edu.cmu.cs.stage3.alice.core.CopyFactory) transferable
 						.getTransferData(
 								edu.cmu.cs.stage3.alice.authoringtool.datatransfer.CopyFactoryTransferable.copyFactoryFlavor);
-				final Class valueClass = copyFactory.getValueClass();
+				final Class<? extends Element> valueClass = copyFactory.getValueClass();
 				if (edu.cmu.cs.stage3.alice.core.Response.class.isAssignableFrom(valueClass)) {
 					dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_COPY);
 					successful = true;
@@ -333,7 +339,7 @@ public class CompositeComponentResponsePanel
 								};
 							}
 						};
-						java.util.Vector structure = null;
+						java.util.Vector<Object> structure = null;
 						if (edu.cmu.cs.stage3.alice.core.response.Print.class
 								.isAssignableFrom(responsePrototype.getResponseClass())) {
 							structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
@@ -375,8 +381,8 @@ public class CompositeComponentResponsePanel
 			if (successful) {
 				try {
 					edu.cmu.cs.stage3.util.StringObjectPair[] known;
-					final edu.cmu.cs.stage3.alice.core.response.PropertyAnimation animation;
-					Class animationClass;
+					// Unused ?? final edu.cmu.cs.stage3.alice.core.response.PropertyAnimation animation;
+					Class<? extends edu.cmu.cs.stage3.alice.core.response.PropertyAnimation> animationClass;
 					final edu.cmu.cs.stage3.alice.core.Property property = (edu.cmu.cs.stage3.alice.core.Property) transferable
 							.getTransferData(
 									edu.cmu.cs.stage3.alice.authoringtool.datatransfer.PropertyReferenceTransferable.propertyReferenceFlavor);
@@ -422,7 +428,7 @@ public class CompositeComponentResponsePanel
 					// +", known: "+known+", desired: "+desired);
 					final edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype rp = new edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype(
 							animationClass, known, desired);
-					final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+					final java.util.Vector<Object> structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makePrototypeStructure(rp, factory, componentElements.getOwner());
 					final javax.swing.JPopupMenu popup = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makePopupMenu(structure);
@@ -484,7 +490,7 @@ public class CompositeComponentResponsePanel
 								};
 							}
 						};
-						final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+						final java.util.Vector<Object> structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 								.makeExpressionResponseStructure(variable, factory, componentElements.getOwner());
 						final javax.swing.JPopupMenu popup = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 								.makePopupMenu(structure);
@@ -568,7 +574,7 @@ public class CompositeComponentResponsePanel
 								};
 							}
 						};
-						final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+						final java.util.Vector<Object> structure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 								.makeResponseStructure(element, factory, componentElements.getOwner());
 						final javax.swing.JPopupMenu popup = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 								.makePopupMenu(structure);

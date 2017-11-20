@@ -26,7 +26,7 @@ package edu.cmu.cs.stage3.alice.authoringtool.util;
 import java.awt.event.InputEvent;
 
 public class CopyMode extends DefaultMoveMode {
-	protected Class[] classesToShare = {
+	protected Class<?>[] classesToShare = {
 			// edu.cmu.cs.stage3.alice.core.Sound.class,
 			// edu.cmu.cs.stage3.alice.core.TextureMap.class
 	};

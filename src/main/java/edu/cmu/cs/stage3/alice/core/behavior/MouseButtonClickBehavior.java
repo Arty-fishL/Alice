@@ -36,10 +36,10 @@ import edu.cmu.cs.stage3.alice.core.property.TransformableProperty;
 import edu.cmu.cs.stage3.alice.core.question.PickQuestion;
 
 public class MouseButtonClickBehavior extends TriggerBehavior implements java.awt.event.MouseListener {
-	private static Class[] s_supportedCoercionClasses = { MouseButtonIsPressedBehavior.class };
+	private static Class<?>[] s_supportedCoercionClasses = { MouseButtonIsPressedBehavior.class };
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

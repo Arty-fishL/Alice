@@ -36,10 +36,10 @@ import edu.cmu.cs.stage3.alice.core.question.PickQuestion;
 
 public class MouseButtonIsPressedBehavior extends AbstractConditionalBehavior
 		implements java.awt.event.MouseListener, java.awt.event.MouseMotionListener {
-	private static Class[] s_supportedCoercionClasses = { MouseButtonClickBehavior.class };
+	private static Class<?>[] s_supportedCoercionClasses = { MouseButtonClickBehavior.class };
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

@@ -26,7 +26,7 @@ package edu.cmu.cs.stage3.alice.core.property;
 import edu.cmu.cs.stage3.alice.core.Element;
 
 public class ObjectProperty extends edu.cmu.cs.stage3.alice.core.Property {
-	public ObjectProperty(final Element owner, final String name, final Object defaultValue, final Class valueClass) {
+	public ObjectProperty(final Element owner, final String name, final Object defaultValue, final Class<?> valueClass) {
 		super(owner, name, defaultValue, valueClass);
 	}
 }

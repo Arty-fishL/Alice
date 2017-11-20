@@ -74,7 +74,7 @@ public class CallToUserDefinedQuestionPrototype extends QuestionPrototype {
 
 	@Override
 	public edu.cmu.cs.stage3.alice.core.Element createNewElement() {
-		final java.util.HashMap knownMap = new java.util.HashMap();
+		final java.util.HashMap<String, Object> knownMap = new java.util.HashMap<>();
 		for (final StringObjectPair knownPropertyValue : knownPropertyValues) {
 			knownMap.put(knownPropertyValue.getString(), knownPropertyValue.getObject());
 		}
@@ -89,7 +89,7 @@ public class CallToUserDefinedQuestionPrototype extends QuestionPrototype {
 			actualParameter.valueClass.set(formalParameter.valueClass.get());
 			if (!knownMap.containsKey(formalParameter.name.get())) {
 				actualParameter.value.set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
-						.getDefaultValueForClass((Class) formalParameter.valueClass.get()));
+						.getDefaultValueForClass((Class<?>) formalParameter.valueClass.get()));
 			} else {
 				actualParameter.value.set(knownMap.get(formalParameter.name.get()));
 			}
@@ -121,7 +121,7 @@ public class CallToUserDefinedQuestionPrototype extends QuestionPrototype {
 	// subclasses should override this method and call their own constructor
 
 	@Override
-	protected ElementPrototype createInstance(final Class elementClass,
+	protected ElementPrototype createInstance(final Class<? extends edu.cmu.cs.stage3.alice.core.Element> elementClass,
 			final edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues, final String[] desiredProperties) {
 		return new CallToUserDefinedQuestionPrototype(actualQuestion, knownPropertyValues, desiredProperties);
 	}

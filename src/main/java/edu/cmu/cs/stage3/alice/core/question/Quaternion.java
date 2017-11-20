@@ -29,7 +29,7 @@ import edu.cmu.cs.stage3.alice.core.Transformable;
 public class Quaternion extends SubjectAsSeenByQuestion {
 
 	@Override
-	public Class getValueClass() {
+	public Class<edu.cmu.cs.stage3.math.Quaternion> getValueClass() {
 		return edu.cmu.cs.stage3.math.Quaternion.class;
 	}
 

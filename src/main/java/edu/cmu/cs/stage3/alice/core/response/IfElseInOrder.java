@@ -30,10 +30,10 @@ public class IfElseInOrder extends DoInOrder {
 	public final BooleanProperty condition = new BooleanProperty(this, "condition", Boolean.TRUE);
 	public final ElementArrayProperty elseComponentResponses = new ElementArrayProperty(this, "elseComponentResponses",
 			null, edu.cmu.cs.stage3.alice.core.Response[].class);
-	private static Class[] s_supportedCoercionClasses = {};
+	private static Class<?>[] s_supportedCoercionClasses = {};
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

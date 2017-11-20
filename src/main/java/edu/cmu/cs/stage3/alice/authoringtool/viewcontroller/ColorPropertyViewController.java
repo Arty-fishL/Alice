@@ -96,7 +96,7 @@ public class ColorPropertyViewController extends PropertyViewController {
 	}
 
 	@Override
-	protected Class getNativeClass() {
+	protected Class<edu.cmu.cs.stage3.alice.scenegraph.Color> getNativeClass() {
 		return edu.cmu.cs.stage3.alice.scenegraph.Color.class;
 	}
 

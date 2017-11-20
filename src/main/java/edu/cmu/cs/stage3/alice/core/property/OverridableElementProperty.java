@@ -26,13 +26,13 @@ package edu.cmu.cs.stage3.alice.core.property;
 import edu.cmu.cs.stage3.alice.core.Element;
 
 public class OverridableElementProperty extends ElementProperty {
-	private Class m_overrideValueClass = null;
+	private Class<?> m_overrideValueClass = null;
 
 	public OverridableElementProperty(final Element owner, final String name, final Element defaultValue) {
 		super(owner, name, defaultValue, Element.class);
 	}
 
-	public Class getOverrideValueClass() {
+	public Class<?> getOverrideValueClass() {
 		return m_overrideValueClass;
 	}
 
@@ -41,7 +41,7 @@ public class OverridableElementProperty extends ElementProperty {
 	}
 
 	@Override
-	public Class getValueClass() {
+	public Class<?> getValueClass() {
 		if (m_overrideValueClass != null) {
 			return m_overrideValueClass;
 		} else {

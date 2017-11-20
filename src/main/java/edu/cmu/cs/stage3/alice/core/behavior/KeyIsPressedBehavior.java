@@ -29,11 +29,11 @@ import edu.cmu.cs.stage3.alice.core.property.ElementArrayProperty;
 import edu.cmu.cs.stage3.alice.core.property.IntegerProperty;
 
 public class KeyIsPressedBehavior extends AbstractConditionalBehavior implements java.awt.event.KeyListener {
-	private static Class[] s_supportedCoercionClasses = { KeyClickBehavior.class };
+	private static Class<?>[] s_supportedCoercionClasses = { KeyClickBehavior.class };
 	private int m_keyCode = -1;
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

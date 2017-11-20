@@ -8,7 +8,7 @@ public class IsObjectInView extends SubjectObjectQuestion {
 	}
 
 	@Override
-	public Class getValueClass() {
+	public Class<Boolean> getValueClass() {
 		return Boolean.class;
 	}
 

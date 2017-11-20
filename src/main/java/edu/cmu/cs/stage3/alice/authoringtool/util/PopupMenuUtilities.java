@@ -655,7 +655,6 @@ public class PopupMenuUtilities {
 			valueClass = ((edu.cmu.cs.stage3.alice.core.Expression) element).getValueClass();
 		}
 
-		@SuppressWarnings("unchecked")
 		final Vector<Object> oneShotStructure = AuthoringToolResources.getOneShotStructure(valueClass);
 		if (oneShotStructure != null && oneShotStructure.size() > 0) {
 			boolean isFirst = true;
@@ -793,7 +792,6 @@ public class PopupMenuUtilities {
 		}
 
 		// cascade to appropriate responses
-		@SuppressWarnings("unchecked")
 		final Vector<Object> oneShotStructure = AuthoringToolResources.getOneShotStructure(expression.getValueClass());
 		if (oneShotStructure != null && oneShotStructure.size() > 0) {
 			boolean isFirst = true;
@@ -937,7 +935,9 @@ public class PopupMenuUtilities {
 								structure.add(new StringObjectPair(responseName, subStructure));
 							}
 						} else {
-							final Class<?> responseClass = Class.forName(className);
+							@SuppressWarnings("unchecked")
+							final Class<? extends edu.cmu.cs.stage3.alice.core.Element> responseClass = 
+									(Class<? extends Element>) Class.forName(className);
 							final java.util.LinkedList<StringObjectPair> known = new java.util.LinkedList<StringObjectPair>();
 							final String format = AuthoringToolResources
 									.getFormat(responseClass);
@@ -2752,7 +2752,6 @@ public class PopupMenuUtilities {
 				propertyName = propertyAssignment.propertyName.getStringValue();
 			}
 		}
-		@SuppressWarnings("unchecked")
 		Vector<Object> structure = AuthoringToolResources.getDefaultPropertyValues(elementClass, propertyName);
 		if (structure == null) {
 			structure = new Vector<>();

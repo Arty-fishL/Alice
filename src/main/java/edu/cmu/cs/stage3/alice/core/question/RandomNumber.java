@@ -52,7 +52,7 @@ public class RandomNumber extends Question {
 	}
 
 	@Override
-	public Class getValueClass() {
+	public Class<? extends Number> getValueClass() {
 		if (integerOnly.booleanValue()) {
 			return Integer.class;
 		} else {

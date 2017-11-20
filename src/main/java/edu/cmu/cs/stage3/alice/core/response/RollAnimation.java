@@ -26,10 +26,10 @@ package edu.cmu.cs.stage3.alice.core.response;
 import edu.cmu.cs.stage3.alice.core.Direction;
 
 public class RollAnimation extends RotateAnimation {
-	private static Class[] s_supportedCoercionClasses = { TurnAnimation.class };
+	private static Class<?>[] s_supportedCoercionClasses = { TurnAnimation.class };
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

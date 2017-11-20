@@ -24,6 +24,7 @@
 package edu.cmu.cs.stage3.alice.core.question;
 
 import edu.cmu.cs.stage3.alice.core.property.NumberProperty;
+import edu.cmu.cs.stage3.math.Vector3;
 
 public class RightUpForward extends edu.cmu.cs.stage3.alice.core.Question {
 	public final NumberProperty right = new NumberProperty(this, "right", new Double(0));
@@ -31,12 +32,12 @@ public class RightUpForward extends edu.cmu.cs.stage3.alice.core.Question {
 	public final NumberProperty forward = new NumberProperty(this, "forward", new Double(0));
 
 	@Override
-	public Class getValueClass() {
-		return edu.cmu.cs.stage3.math.Vector3.class;
+	public Class<Vector3> getValueClass() {
+		return Vector3.class;
 	}
 
 	@Override
 	public Object getValue() {
-		return new edu.cmu.cs.stage3.math.Vector3(right.doubleValue(), up.doubleValue(), forward.doubleValue());
+		return new Vector3(right.doubleValue(), up.doubleValue(), forward.doubleValue());
 	}
 }

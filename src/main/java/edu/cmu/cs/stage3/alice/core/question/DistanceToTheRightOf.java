@@ -26,11 +26,11 @@ package edu.cmu.cs.stage3.alice.core.question;
 import edu.cmu.cs.stage3.alice.core.SpatialRelation;
 
 public class DistanceToTheRightOf extends SpatialRelationDistanceQuestion {
-	private static Class[] s_supportedCoercionClasses = { DistanceToTheLeftOf.class, DistanceAbove.class,
+	private static Class<?>[] s_supportedCoercionClasses = { DistanceToTheLeftOf.class, DistanceAbove.class,
 			DistanceBelow.class, DistanceInFrontOf.class, DistanceBehind.class };
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

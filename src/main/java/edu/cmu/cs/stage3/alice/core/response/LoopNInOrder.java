@@ -37,10 +37,10 @@ public class LoopNInOrder extends DoInOrder {
 	public final NumberProperty end = new NumberProperty(this, "end", new Double(Double.POSITIVE_INFINITY));
 	public final NumberProperty increment = new NumberProperty(this, "increment", new Double(1));
 
-	private static Class[] s_supportedCoercionClasses = {};
+	private static Class<?>[] s_supportedCoercionClasses = {};
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

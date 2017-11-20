@@ -26,10 +26,10 @@ package edu.cmu.cs.stage3.alice.core.response;
 import edu.cmu.cs.stage3.alice.core.Direction;
 
 public class TurnAtSpeed extends RotateAtSpeed {
-	private static Class[] s_supportedCoercionClasses = { RollAtSpeed.class };
+	private static Class<?>[] s_supportedCoercionClasses = { RollAtSpeed.class };
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

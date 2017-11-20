@@ -24,11 +24,11 @@
 package edu.cmu.cs.stage3.alice.core.question;
 
 public class NumberAddition extends BinaryNumberResultingInNumberQuestion {
-	private static Class[] s_supportedCoercionClasses = { NumberSubtraction.class, NumberMultiplication.class,
+	private static Class<?>[] s_supportedCoercionClasses = { NumberSubtraction.class, NumberMultiplication.class,
 			NumberDivision.class };
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

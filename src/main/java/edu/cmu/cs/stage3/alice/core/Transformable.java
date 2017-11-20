@@ -55,7 +55,7 @@ public class Transformable extends ReferenceFrame {
 
 	public edu.cmu.cs.stage3.alice.scenegraph.Visual[] getAllSceneGraphVisuals(
 			final edu.cmu.cs.stage3.util.HowMuch howMuch) {
-		final java.util.Vector v = new java.util.Vector();
+		final java.util.Vector<edu.cmu.cs.stage3.alice.scenegraph.Visual> v = new java.util.Vector<>();
 		visit(new edu.cmu.cs.stage3.util.VisitListener() {
 			@Override
 			public void visited(final Object o) {

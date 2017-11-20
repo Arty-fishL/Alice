@@ -85,11 +85,11 @@ public class BehaviorGroupEditor extends edu.cmu.cs.stage3.alice.authoringtool.u
 		setDropTargets();
 	}
 
-	public java.util.Vector getBehaviorComponents() {
-		final java.util.Vector toReturn = new java.util.Vector();
+	public java.util.Vector<BasicBehaviorPanel> getBehaviorComponents() {
+		final java.util.Vector<BasicBehaviorPanel> toReturn = new java.util.Vector<>();
 		for (int i = 0; i < componentElementPanel.getComponentCount(); i++) {
 			if (componentElementPanel.getComponent(i) instanceof BasicBehaviorPanel) {
-				toReturn.add(componentElementPanel.getComponent(i));
+				toReturn.add((BasicBehaviorPanel) componentElementPanel.getComponent(i));
 			}
 		}
 		return toReturn;

@@ -3,7 +3,7 @@ package edu.cmu.cs.stage3.alice.core.question;
 public class Pose extends SubjectQuestion {
 
 	@Override
-	public Class getValueClass() {
+	public Class<edu.cmu.cs.stage3.alice.core.Pose> getValueClass() {
 		return edu.cmu.cs.stage3.alice.core.Pose.class;
 	}
 

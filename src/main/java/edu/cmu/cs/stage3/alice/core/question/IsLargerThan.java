@@ -26,15 +26,15 @@ package edu.cmu.cs.stage3.alice.core.question;
 import edu.cmu.cs.stage3.alice.core.Transformable;
 
 public class IsLargerThan extends SubjectObjectQuestion {
-	private static Class[] s_supportedCoercionClasses = { IsSmallerThan.class };
+	private static Class<?>[] s_supportedCoercionClasses = { IsSmallerThan.class };
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 
 	@Override
-	public Class getValueClass() {
+	public Class<Boolean> getValueClass() {
 		return Boolean.class;
 	}
 

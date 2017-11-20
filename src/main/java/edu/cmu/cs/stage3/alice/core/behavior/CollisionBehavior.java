@@ -3,11 +3,11 @@ package edu.cmu.cs.stage3.alice.core.behavior;
 import edu.cmu.cs.stage3.alice.core.property.CollectionProperty;
 
 public class CollisionBehavior extends TriggerBehavior {
-	private static Class[] s_supportedCoercionClasses = { IsCollidingBehavior.class };
+	private static Class<?>[] s_supportedCoercionClasses = { IsCollidingBehavior.class };
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
-		return s_supportedCoercionClasses;
+	public Class<?>[] getSupportedCoercionClasses() {
+		return (Class<?>[]) s_supportedCoercionClasses;
 	}
 
 	public final CollectionProperty a = new CollectionProperty(this, "a", null);
@@ -18,6 +18,7 @@ public class CollisionBehavior extends TriggerBehavior {
 		super.manufactureDetails();
 	}
 
+	/* Unused ??
 	private void updateDetails(final java.awt.event.MouseEvent mouseEvent) {
 		for (int i = 0; i < details.size(); i++) {
 			// Expression detail = (Expression)details.get( i );
@@ -26,4 +27,5 @@ public class CollisionBehavior extends TriggerBehavior {
 			// }
 		}
 	}
+	*/
 }

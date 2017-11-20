@@ -70,7 +70,7 @@ public class CallToUserDefinedQuestion extends Question {
 	}
 
 	@Override
-	public Class getValueClass() {
+	public Class<?> getValueClass() {
 		final UserDefinedQuestion userDefinedQuestionValue = userDefinedQuestion.getUserDefinedQuestionValue();
 		if (userDefinedQuestionValue != null) {
 			return userDefinedQuestionValue.getValueClass();

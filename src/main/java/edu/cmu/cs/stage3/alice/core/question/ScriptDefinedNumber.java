@@ -26,7 +26,7 @@ package edu.cmu.cs.stage3.alice.core.question;
 public class ScriptDefinedNumber extends AbstractScriptDefinedObject {
 
 	@Override
-	public Class getValueClass() {
+	public Class<Number> getValueClass() {
 		return Number.class;
 	}
 

@@ -28,11 +28,11 @@ import edu.cmu.cs.stage3.alice.core.property.BooleanProperty;
 public class DistanceFromTopEdge extends edu.cmu.cs.stage3.alice.core.question.NumberQuestion {
 	public final BooleanProperty relativeToRenderTarget = new BooleanProperty(this, "relativeToRenderTarget",
 			Boolean.TRUE);
-	private static Class[] s_supportedCoercionClasses = { DistanceFromLeftEdge.class };
+	private static Class<?>[] s_supportedCoercionClasses = { DistanceFromLeftEdge.class };
 	private edu.cmu.cs.stage3.alice.core.RenderTarget[] m_renderTargets = null;
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

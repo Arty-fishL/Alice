@@ -23,14 +23,16 @@
 
 package edu.cmu.cs.stage3.alice.core.question;
 
+import javax.vecmath.Matrix4d;
+
 import edu.cmu.cs.stage3.alice.core.ReferenceFrame;
 import edu.cmu.cs.stage3.alice.core.Transformable;
 
 public class PointOfView extends SubjectAsSeenByQuestion {
 
 	@Override
-	public Class getValueClass() {
-		return javax.vecmath.Matrix4d.class;
+	public Class<Matrix4d> getValueClass() {
+		return Matrix4d.class;
 	}
 
 	@Override

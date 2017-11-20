@@ -23,6 +23,7 @@
 
 package edu.cmu.cs.stage3.alice.core.question;
 
+import edu.cmu.cs.stage3.alice.core.Model;
 import edu.cmu.cs.stage3.alice.core.Question;
 import edu.cmu.cs.stage3.alice.core.property.BooleanProperty;
 import edu.cmu.cs.stage3.alice.core.property.StringProperty;
@@ -45,7 +46,7 @@ public class PartKeyed extends Question {
 	}
 
 	@Override
-	public Class getValueClass() {
-		return edu.cmu.cs.stage3.alice.core.Model.class;
+	public Class<Model> getValueClass() {
+		return Model.class;
 	}
 }

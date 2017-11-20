@@ -6,7 +6,7 @@ public class IsCollidingWith extends SubjectObjectQuestion {
 	private edu.cmu.cs.stage3.alice.core.World m_world = null;
 
 	@Override
-	public Class getValueClass() {
+	public Class<Boolean> getValueClass() {
 		return Boolean.class;
 	}
 
@@ -14,8 +14,8 @@ public class IsCollidingWith extends SubjectObjectQuestion {
 	protected Object getValue(final edu.cmu.cs.stage3.alice.core.Transformable subjectValue,
 			final edu.cmu.cs.stage3.alice.core.Transformable objectValue) {
 		final edu.cmu.cs.stage3.alice.core.World world = subjectValue.getWorld();
-		final edu.cmu.cs.stage3.alice.scenegraph.Visual[] subjectSGVisuals = subjectValue.getAllSceneGraphVisuals();
-		final edu.cmu.cs.stage3.alice.scenegraph.Visual[] objectSGVisuals = subjectValue.getAllSceneGraphVisuals();
+		/* Unused ?? final edu.cmu.cs.stage3.alice.scenegraph.Visual[] subjectSGVisuals = */ subjectValue.getAllSceneGraphVisuals();
+		/* Unused ?? final edu.cmu.cs.stage3.alice.scenegraph.Visual[] objectSGVisuals = */ subjectValue.getAllSceneGraphVisuals();
 		final edu.cmu.cs.stage3.alice.scenegraph.Visual[][] collisions = world.getCollisions();
 		for (final Visual[] pair : collisions) {
 			final Object a = ((edu.cmu.cs.stage3.alice.core.Model) pair[0].getBonus()).getSandbox();

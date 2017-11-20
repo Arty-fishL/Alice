@@ -27,12 +27,23 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.SystemColor;
+import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -40,12 +51,15 @@ import javax.swing.JTabbedPane;
 import javax.swing.border.Border;
 
 import edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable;
+import edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype;
 import edu.cmu.cs.stage3.alice.core.Element;
+import edu.cmu.cs.stage3.alice.core.Property;
+import edu.cmu.cs.stage3.util.StringObjectPair;
 
 /**
  * @author Jason Pratt
  */
-public class DragFromComponent extends javax.swing.JPanel
+public class DragFromComponent extends JPanel
 		implements edu.cmu.cs.stage3.alice.authoringtool.event.ElementSelectionListener {
 	/**
 	 *
@@ -70,12 +84,11 @@ public class DragFromComponent extends javax.swing.JPanel
 	protected QuestionsListener questionsListener = new QuestionsListener();
 	protected edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty poses;
 	protected PosesListener posesListener = new PosesListener();
-	protected java.awt.GridBagConstraints constraints = new java.awt.GridBagConstraints(0, 0, 1, 1, 1.0, 0.0,
-			java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.HORIZONTAL, new java.awt.Insets(0, 0, 0, 0),
-			0, 0);
-	protected java.awt.GridBagConstraints glueConstraints = new java.awt.GridBagConstraints(0, 0, 1, 1, 1.0, 1.0,
-			java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.BOTH, new java.awt.Insets(0, 0, 0, 0), 0, 0);
-	protected javax.swing.border.Border spacingBorder = javax.swing.BorderFactory.createEmptyBorder(4, 0, 8, 0);
+	protected GridBagConstraints constraints = new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,
+			GridBagConstraints.HORIZONTAL, new Insets(0, 0, 0, 0), 0, 0);
+	protected GridBagConstraints glueConstraints = new GridBagConstraints(0, 0, 1, 1, 1.0, 1.0, GridBagConstraints.WEST,
+			GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0);
+	protected Border spacingBorder = BorderFactory.createEmptyBorder(4, 0, 8, 0);
 	protected edu.cmu.cs.stage3.alice.core.event.ChildrenListener parentListener = new edu.cmu.cs.stage3.alice.core.event.ChildrenListener() {
 		private edu.cmu.cs.stage3.alice.core.Element parent;
 
@@ -106,10 +119,10 @@ public class DragFromComponent extends javax.swing.JPanel
 			ownerLabel.setText(ev.getValue().toString() + "'s details");
 		}
 	};
-	protected javax.swing.JButton newAnimationButton = new javax.swing.JButton("create new method");
-	protected javax.swing.JButton newQuestionButton = new javax.swing.JButton(
+	protected JButton newAnimationButton = new JButton("create new method");
+	protected JButton newQuestionButton = new JButton(
 			"create new " + edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.QUESTION_STRING);
-	protected javax.swing.JButton capturePoseButton = new javax.swing.JButton("capture pose");
+	protected JButton capturePoseButton = new JButton("capture pose");
 	protected edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse newlyCreatedAnimation;
 	protected edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion newlyCreatedQuestion;
 	protected edu.cmu.cs.stage3.alice.core.Pose newlyCreatedPose;
@@ -118,7 +131,7 @@ public class DragFromComponent extends javax.swing.JPanel
 	protected edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.TextureMapsPanel textureMapsPanel;
 	protected edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.ObjectArrayPropertyPanel miscPanel;
 
-	protected java.util.HashSet panelsToClean = new java.util.HashSet();
+	protected HashSet<JPanel> panelsToClean = new HashSet<>();
 
 	public DragFromComponent(final AuthoringTool authoringTool) {
 		this.authoringTool = authoringTool;
@@ -134,11 +147,11 @@ public class DragFromComponent extends javax.swing.JPanel
 	}
 
 	private void guiInit() {
-		newAnimationButton.setBackground(new java.awt.Color(240, 240, 255));
-		newAnimationButton.setMargin(new java.awt.Insets(2, 4, 2, 4));
-		newAnimationButton.addActionListener(new java.awt.event.ActionListener() {
+		newAnimationButton.setBackground(new Color(240, 240, 255));
+		newAnimationButton.setMargin(new Insets(2, 4, 2, 4));
+		newAnimationButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(final java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final ActionEvent ev) {
 				if (responses != null) {
 					newResponseContentPane.reset(responses.getOwner());
 					final int result = edu.cmu.cs.stage3.swing.DialogManager.showDialog(newResponseContentPane);
@@ -156,11 +169,11 @@ public class DragFromComponent extends javax.swing.JPanel
 				}
 			}
 		});
-		newQuestionButton.setBackground(new java.awt.Color(240, 240, 255));
-		newQuestionButton.setMargin(new java.awt.Insets(2, 4, 2, 4));
-		newQuestionButton.addActionListener(new java.awt.event.ActionListener() {
+		newQuestionButton.setBackground(new Color(240, 240, 255));
+		newQuestionButton.setMargin(new Insets(2, 4, 2, 4));
+		newQuestionButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(final java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final ActionEvent ev) {
 				if (questions != null) {
 					newQuestionContentPane.reset(questions.getOwner());
 					final int result = edu.cmu.cs.stage3.swing.DialogManager.showDialog(newQuestionContentPane);
@@ -180,11 +193,11 @@ public class DragFromComponent extends javax.swing.JPanel
 			}
 		});
 
-		capturePoseButton.setBackground(new java.awt.Color(240, 240, 255));
-		capturePoseButton.setMargin(new java.awt.Insets(2, 4, 2, 4));
-		capturePoseButton.addActionListener(new java.awt.event.ActionListener() {
+		capturePoseButton.setBackground(new Color(240, 240, 255));
+		capturePoseButton.setMargin(new Insets(2, 4, 2, 4));
+		capturePoseButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(final java.awt.event.ActionEvent ev) {
+			public void actionPerformed(final ActionEvent ev) {
 				if (poses != null) {
 					authoringTool.getUndoRedoStack().startCompound();
 					try {
@@ -207,10 +220,10 @@ public class DragFromComponent extends javax.swing.JPanel
 		tabbedPane.setSelectedIndex(ANIMATIONS_TAB);
 
 		// to make tab color match
-		propertiesScrollPane.setBackground(java.awt.Color.white);
-		animationsScrollPane.setBackground(java.awt.Color.white);
-		questionsScrollPane.setBackground(java.awt.Color.white);
-		otherScrollPane.setBackground(java.awt.Color.white);
+		propertiesScrollPane.setBackground(Color.white);
+		animationsScrollPane.setBackground(Color.white);
+		questionsScrollPane.setBackground(Color.white);
+		otherScrollPane.setBackground(Color.white);
 
 		soundsPanel.setExpanded(false);
 		textureMapsPanel.setExpanded(false);
@@ -244,9 +257,9 @@ public class DragFromComponent extends javax.swing.JPanel
 	}
 
 	@Override
-	public void paintComponent(final java.awt.Graphics g) {
+	public void paintComponent(final Graphics g) {
 		super.paintComponent(g);
-		g.setColor(java.awt.Color.black);
+		g.setColor(Color.black);
 		g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 	}
 
@@ -349,7 +362,7 @@ public class DragFromComponent extends javax.swing.JPanel
 		return tabbedPane.getSelectedIndex();
 	}
 
-	public String getKeyForComponent(final java.awt.Component c) {
+	public String getKeyForComponent(final Component c) {
 		final edu.cmu.cs.stage3.alice.core.World world = authoringTool.getWorld();
 		if (c == variableGroupEditor.getNewVariableButton()) {
 			return "newVariableButton";
@@ -359,7 +372,7 @@ public class DragFromComponent extends javax.swing.JPanel
 			return "newQuestionButton";
 		} else if (c instanceof edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel) {
 			try {
-				final java.awt.datatransfer.Transferable transferable = ((edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel) c)
+				final Transferable transferable = ((edu.cmu.cs.stage3.alice.authoringtool.util.DnDGroupingPanel) c)
 						.getTransferable();
 				if (AuthoringToolResources.safeIsDataFlavorSupported(transferable,
 						ElementReferenceTransferable.variableReferenceFlavor)) {
@@ -402,9 +415,8 @@ public class DragFromComponent extends javax.swing.JPanel
 					return "userDefinedQuestion<" + p.getActualQuestion().getKey(world) + ">";
 				} else if (AuthoringToolResources.safeIsDataFlavorSupported(transferable,
 						edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementPrototypeReferenceTransferable.elementPrototypeReferenceFlavor)) {
-					final edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype p = (edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype) transferable
-							.getTransferData(
-									edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementPrototypeReferenceTransferable.elementPrototypeReferenceFlavor);
+					final ElementPrototype p = (ElementPrototype) transferable.getTransferData(
+							edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementPrototypeReferenceTransferable.elementPrototypeReferenceFlavor);
 					if (edu.cmu.cs.stage3.alice.core.Response.class.isAssignableFrom(p.getElementClass())) {
 						return "responsePrototype<" + p.getElementClass().getName() + ">";
 					} else if (edu.cmu.cs.stage3.alice.core.Question.class.isAssignableFrom(p.getElementClass())) {
@@ -432,7 +444,7 @@ public class DragFromComponent extends javax.swing.JPanel
 		}
 	}
 
-	public java.awt.Component getComponentForKey(final String key) {
+	public Component getComponentForKey(final String key) {
 		final String prefix = AuthoringToolResources.getPrefix(key);
 		final String spec = AuthoringToolResources.getSpecifier(key);
 		final edu.cmu.cs.stage3.alice.core.World world = authoringTool.getWorld();
@@ -478,7 +490,7 @@ public class DragFromComponent extends javax.swing.JPanel
 			}
 		} else if (prefix.equals("responsePrototype") && spec != null) {
 			try {
-				final Class elementClass = Class.forName(spec);
+				final Class<?> elementClass = Class.forName(spec);
 				if (elementClass != null) {
 					return AuthoringToolResources.findPrototypeDnDPanel(animationsPanel, elementClass);
 				}
@@ -487,7 +499,7 @@ public class DragFromComponent extends javax.swing.JPanel
 			}
 		} else if (prefix.equals("questionPrototype") && spec != null) {
 			try {
-				final Class elementClass = Class.forName(spec);
+				final Class<?> elementClass = Class.forName(spec);
 				if (elementClass != null) {
 					return AuthoringToolResources.findPrototypeDnDPanel(questionsPanel, elementClass);
 				}
@@ -510,7 +522,7 @@ public class DragFromComponent extends javax.swing.JPanel
 		return null;
 	}
 
-	public java.awt.Component getPropertyViewComponentForKey(final String key) {
+	public Component getPropertyViewComponentForKey(final String key) {
 		final String prefix = AuthoringToolResources.getPrefix(key);
 		final String spec = AuthoringToolResources.getSpecifier(key);
 		final edu.cmu.cs.stage3.alice.core.World world = authoringTool.getWorld();
@@ -556,7 +568,7 @@ public class DragFromComponent extends javax.swing.JPanel
 			}
 		} else if (prefix.equals("responsePrototype") && spec != null) {
 			try {
-				final Class elementClass = Class.forName(spec);
+				final Class<?> elementClass = Class.forName(spec);
 				if (elementClass != null) {
 					return AuthoringToolResources.findPrototypeDnDPanel(animationsPanel, elementClass);
 				}
@@ -565,7 +577,7 @@ public class DragFromComponent extends javax.swing.JPanel
 			}
 		} else if (prefix.equals("questionPrototype") && spec != null) {
 			try {
-				final Class elementClass = Class.forName(spec);
+				final Class<?> elementClass = Class.forName(spec);
 				if (elementClass != null) {
 					return AuthoringToolResources.findPrototypeDnDPanel(questionsPanel, elementClass);
 				}
@@ -589,9 +601,9 @@ public class DragFromComponent extends javax.swing.JPanel
 	}
 
 	protected void cleanPanels() {
-		for (final java.util.Iterator iter = panelsToClean.iterator(); iter.hasNext();) {
-			final javax.swing.JPanel panel = (javax.swing.JPanel) iter.next();
-			final java.awt.Component[] children = panel.getComponents();
+		for (final Iterator<JPanel> iter = panelsToClean.iterator(); iter.hasNext();) {
+			final JPanel panel = iter.next();
+			final Component[] children = panel.getComponents();
 			for (final Component element2 : children) {
 				if (element2 instanceof edu.cmu.cs.stage3.alice.authoringtool.util.Releasable) {
 					((edu.cmu.cs.stage3.alice.authoringtool.util.Releasable) element2).release();
@@ -618,9 +630,9 @@ public class DragFromComponent extends javax.swing.JPanel
 
 			// poses
 			if (poses != null) {
-				final javax.swing.JPanel subPanel = new javax.swing.JPanel();
-				subPanel.setBackground(java.awt.Color.white);
-				subPanel.setLayout(new java.awt.GridBagLayout());
+				final JPanel subPanel = new JPanel();
+				subPanel.setBackground(Color.white);
+				subPanel.setLayout(new GridBagLayout());
 				subPanel.setBorder(spacingBorder);
 				panelsToClean.add(subPanel);
 
@@ -629,12 +641,10 @@ public class DragFromComponent extends javax.swing.JPanel
 				for (final Object element2 : poseArray) {
 					final edu.cmu.cs.stage3.alice.core.Pose pose = (edu.cmu.cs.stage3.alice.core.Pose) element2;
 
-					final javax.swing.JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
-							.getGUI(pose);
+					final JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getGUI(pose);
 					if (gui != null) {
-						final java.awt.GridBagConstraints constraints = new java.awt.GridBagConstraints(0, count, 1, 1,
-								1.0, 0.0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE,
-								new java.awt.Insets(2, 2, 2, 2), 0, 0);
+						final GridBagConstraints constraints = new GridBagConstraints(0, count, 1, 1, 1.0, 0.0,
+								GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0);
 						subPanel.add(gui, constraints);
 						count++;
 						if (newlyCreatedPose == pose
@@ -647,9 +657,8 @@ public class DragFromComponent extends javax.swing.JPanel
 					}
 				}
 
-				final java.awt.GridBagConstraints c = new java.awt.GridBagConstraints(0, count, 1, 1, 1.0, 0.0,
-						java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE,
-						new java.awt.Insets(4, 2, 2, 2), 0, 0);
+				final GridBagConstraints c = new GridBagConstraints(0, count, 1, 1, 1.0, 0.0, GridBagConstraints.WEST,
+						GridBagConstraints.NONE, new Insets(4, 2, 2, 2), 0, 0);
 				subPanel.add(capturePoseButton, c);
 
 				propertiesPanel.add(subPanel, constraints);
@@ -657,18 +666,18 @@ public class DragFromComponent extends javax.swing.JPanel
 			}
 
 			// property panels
-			final java.util.Vector propertyStructure = AuthoringToolResources.getPropertyStructure(element, false);
+			final Vector<StringObjectPair> propertyStructure = AuthoringToolResources.getPropertyStructure(element, false);
 			if (propertyStructure != null) {
-				for (final java.util.Iterator iter = propertyStructure.iterator(); iter.hasNext();) {
-					final edu.cmu.cs.stage3.util.StringObjectPair sop = (edu.cmu.cs.stage3.util.StringObjectPair) iter
-							.next();
+				for (final Iterator<StringObjectPair> iter = propertyStructure.iterator(); iter.hasNext();) {
+					final StringObjectPair sop = (StringObjectPair) iter.next();
 					final String groupName = sop.getString();
-					final java.util.Vector propertyNames = (java.util.Vector) sop.getObject();
+					@SuppressWarnings("unchecked")
+					final Vector<String> propertyNames = (Vector<String>) sop.getObject();
 
-					final javax.swing.JPanel subPanel = new javax.swing.JPanel();
-					javax.swing.JPanel toAdd = subPanel;
-					subPanel.setBackground(java.awt.Color.white);
-					subPanel.setLayout(new java.awt.GridBagLayout());
+					final JPanel subPanel = new JPanel();
+					JPanel toAdd = subPanel;
+					subPanel.setBackground(Color.white);
+					subPanel.setLayout(new GridBagLayout());
 					subPanel.setBorder(spacingBorder);
 					panelsToClean.add(subPanel);
 					if (groupName.compareTo("seldom used properties") == 0) {
@@ -681,7 +690,7 @@ public class DragFromComponent extends javax.swing.JPanel
 
 					if (propertyNames != null) {
 						int i = 0;
-						for (final java.util.Iterator jter = propertyNames.iterator(); jter.hasNext();) {
+						for (final Iterator<String> jter = propertyNames.iterator(); jter.hasNext();) {
 							final String name = (String) jter.next();
 							final edu.cmu.cs.stage3.alice.core.Property property = element.getPropertyNamed(name);
 							if (property != null) {
@@ -735,7 +744,7 @@ public class DragFromComponent extends javax.swing.JPanel
 													undoResponse.value.set(property.getValue());
 													// this is over-reaching for
 													// some properties
-													final java.util.Vector pVector = new java.util.Vector();
+													final Vector<Property> pVector = new Vector<Property>();
 													pVector.add(property);
 													final edu.cmu.cs.stage3.alice.core.Element[] descendants = property
 															.getOwner().getDescendants();
@@ -746,7 +755,7 @@ public class DragFromComponent extends javax.swing.JPanel
 															pVector.add(p);
 														}
 													}
-													final edu.cmu.cs.stage3.alice.core.Property[] properties = (edu.cmu.cs.stage3.alice.core.Property[]) pVector
+													final edu.cmu.cs.stage3.alice.core.Property[] properties = pVector
 															.toArray(new edu.cmu.cs.stage3.alice.core.Property[0]);
 													authoringTool.performOneShot(response, undoResponse, properties);
 												}
@@ -754,12 +763,12 @@ public class DragFromComponent extends javax.swing.JPanel
 										};
 									}
 								};
-								final javax.swing.JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
+								final JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
 										.getPropertyGUI(property, true, false, oneShotFactory);
 								if (gui != null) {
-									final java.awt.GridBagConstraints constraints = new java.awt.GridBagConstraints(0,
-											i, 1, 1, 1.0, 0.0, java.awt.GridBagConstraints.WEST,
-											java.awt.GridBagConstraints.NONE, new java.awt.Insets(2, 2, 2, 2), 0, 0);
+									final GridBagConstraints constraints = new GridBagConstraints(0, i, 1, 1, 1.0, 0.0,
+											GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0,
+											0);
 									subPanel.add(gui, constraints);
 									i++;
 								} else {
@@ -791,87 +800,80 @@ public class DragFromComponent extends javax.swing.JPanel
 					propertiesPanel.add(miscPanel, constraints);
 					constraints.gridy++;
 				}
-				propertiesPanel.add(javax.swing.Box.createVerticalStrut(8), constraints);
+				propertiesPanel.add(Box.createVerticalStrut(8), constraints);
 				constraints.gridy++;
 			}
 
 			if (element.data.get("modeled by") != null) {
-				propertiesPanel.add(new javax.swing.JLabel("modeled by:  " + element.data.get("modeled by")),
-						constraints);
+				propertiesPanel.add(new JLabel("modeled by:  " + element.data.get("modeled by")), constraints);
 				constraints.gridy++;
 			}
 			if (element.data.get("painted by") != null) {
-				propertiesPanel.add(new javax.swing.JLabel("painted by:  " + element.data.get("painted by")),
-						constraints);
+				propertiesPanel.add(new JLabel("painted by:  " + element.data.get("painted by")), constraints);
 				constraints.gridy++;
 			}
 			if (element.data.get("programmed by") != null) {
-				propertiesPanel.add(new javax.swing.JLabel("programmed by:  " + element.data.get("programmed by")),
-						constraints);
+				propertiesPanel.add(new JLabel("programmed by:  " + element.data.get("programmed by")), constraints);
 				constraints.gridy++;
 			}
 			if (element.data.get("modeled by") != null) {
 				final java.text.NumberFormat formatter = new java.text.DecimalFormat("#.####");
 				propertiesPanel.add(
-						new javax.swing.JLabel("depth:  "
+						new JLabel("depth:  "
 								+ formatter.format(((edu.cmu.cs.stage3.alice.core.Model) element).getDepth())),
 						constraints);
 				constraints.gridy++;
 				propertiesPanel.add(
-						new javax.swing.JLabel("height:  "
+						new JLabel("height:  "
 								+ formatter.format(((edu.cmu.cs.stage3.alice.core.Model) element).getHeight())),
 						constraints);
 				constraints.gridy++;
 				propertiesPanel.add(
-						new javax.swing.JLabel("width:  "
+						new JLabel("width:  "
 								+ formatter.format(((edu.cmu.cs.stage3.alice.core.Model) element).getWidth())),
 						constraints);
 				constraints.gridy++;
 			}
 			glueConstraints.gridy = constraints.gridy;
-			propertiesPanel.add(javax.swing.Box.createGlue(), glueConstraints);
+			propertiesPanel.add(Box.createGlue(), glueConstraints);
 
 			constraints.gridy = 0;
 
 			// user-defined responses
 			if (responses != null) {
-				final javax.swing.JPanel subPanel = new javax.swing.JPanel();
-				subPanel.setBackground(java.awt.Color.white);
-				subPanel.setLayout(new java.awt.GridBagLayout());
+				final JPanel subPanel = new JPanel();
+				subPanel.setBackground(Color.white);
+				subPanel.setLayout(new GridBagLayout());
 				subPanel.setBorder(spacingBorder);
 				panelsToClean.add(subPanel);
 
 				int count = 0;
 				final Object[] responseArray = responses.getArrayValue();
 				for (final Object element2 : responseArray) {
-					final Class responseClass = edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse.class;
+					// Unused ?? final Class<CallToUserDefinedResponse> responseClass = edu.cmu.cs.stage3.alice.core.response.CallToUserDefinedResponse.class;
 					final edu.cmu.cs.stage3.alice.core.Response response = (edu.cmu.cs.stage3.alice.core.Response) element2;
 
 					if (response instanceof edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse) {
 						final edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedResponsePrototype callToUserDefinedResponsePrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedResponsePrototype(
 								(edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse) response);
-						final javax.swing.JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
+						final JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
 								.getGUI(callToUserDefinedResponsePrototype);
 						if (gui != null) {
 							final edu.cmu.cs.stage3.alice.authoringtool.util.EditObjectButton editButton = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
 									.getEditObjectButton(response, gui);
 							editButton.setToolTipText(
 									"<html><font face=arial size=-1>Open this method for editing.</font></html>");
-							final javax.swing.JPanel guiPanel = new javax.swing.JPanel();
+							final JPanel guiPanel = new JPanel();
 							panelsToClean.add(guiPanel);
-							guiPanel.setBackground(java.awt.Color.white);
-							guiPanel.setLayout(new java.awt.GridBagLayout());
-							guiPanel.add(gui,
-									new java.awt.GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-											java.awt.GridBagConstraints.SOUTHWEST, java.awt.GridBagConstraints.NONE,
-											new java.awt.Insets(0, 0, 0, 0), 0, 0));
+							guiPanel.setBackground(Color.white);
+							guiPanel.setLayout(new GridBagLayout());
+							guiPanel.add(gui, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.SOUTHWEST,
+									GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 							guiPanel.add(editButton,
-									new java.awt.GridBagConstraints(1, 0, 1, 1, 1.0, 0.0,
-											java.awt.GridBagConstraints.SOUTHWEST, java.awt.GridBagConstraints.NONE,
-											new java.awt.Insets(0, 4, 0, 0), 0, 0));
-							final java.awt.GridBagConstraints constraints = new java.awt.GridBagConstraints(0, count, 1,
-									1, 1.0, 0.0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE,
-									new java.awt.Insets(2, 2, 2, 2), 0, 0);
+									new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.SOUTHWEST,
+											GridBagConstraints.NONE, new Insets(0, 4, 0, 0), 0, 0));
+							final GridBagConstraints constraints = new GridBagConstraints(0, count, 1, 1, 1.0, 0.0,
+									GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0);
 							subPanel.add(guiPanel, constraints);
 							count++;
 							if (newlyCreatedAnimation == response
@@ -890,9 +892,8 @@ public class DragFromComponent extends javax.swing.JPanel
 					}
 				}
 
-				final java.awt.GridBagConstraints c = new java.awt.GridBagConstraints(0, count, 1, 1, 1.0, 0.0,
-						java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE,
-						new java.awt.Insets(4, 2, 2, 2), 0, 0);
+				final GridBagConstraints c = new GridBagConstraints(0, count, 1, 1, 1.0, 0.0, GridBagConstraints.WEST,
+						GridBagConstraints.NONE, new Insets(4, 2, 2, 2), 0, 0);
 				subPanel.add(newAnimationButton, c);
 
 				animationsPanel.add(subPanel, constraints);
@@ -900,24 +901,24 @@ public class DragFromComponent extends javax.swing.JPanel
 			}
 
 			// response panels
-			final java.util.Vector oneShotStructure = AuthoringToolResources.getOneShotStructure(element.getClass());
+			final Vector<Object> oneShotStructure = AuthoringToolResources.getOneShotStructure(element.getClass());
 			if (oneShotStructure != null) {
-				for (final java.util.Iterator iter = oneShotStructure.iterator(); iter.hasNext();) {
-					final edu.cmu.cs.stage3.util.StringObjectPair sop = (edu.cmu.cs.stage3.util.StringObjectPair) iter
-							.next();
-					final String groupName = sop.getString();
-					final java.util.Vector responseNames = (java.util.Vector) sop.getObject();
-					final javax.swing.JPanel subPanel = new javax.swing.JPanel();
-					final javax.swing.JPanel toAdd = subPanel;
-					subPanel.setBackground(java.awt.Color.white);
-					subPanel.setLayout(new java.awt.GridBagLayout());
+				for (final Iterator<Object> iter = oneShotStructure.iterator(); iter.hasNext();) {
+					final StringObjectPair sop = (StringObjectPair) iter.next();
+					// Unused ?? final String groupName = sop.getString();
+					@SuppressWarnings("unchecked")
+					final Vector<String> responseNames = (Vector<String>) sop.getObject();
+					final JPanel subPanel = new JPanel();
+					final JPanel toAdd = subPanel;
+					subPanel.setBackground(Color.white);
+					subPanel.setLayout(new GridBagLayout());
 					subPanel.setBorder(spacingBorder);
 					panelsToClean.add(subPanel);
 
 					if (responseNames != null) {
 
 						int i = 0;
-						for (final java.util.Iterator jter = responseNames.iterator(); jter.hasNext();) {
+						for (final Iterator<String> jter = responseNames.iterator(); jter.hasNext();) {
 							final Object item = jter.next();
 							if (item instanceof String) { // ignore hierarchy
 															// for now
@@ -929,8 +930,8 @@ public class DragFromComponent extends javax.swing.JPanel
 																														// animations
 																														// for
 																														// now
-										final Class responseClass = Class.forName(className);
-										final java.util.LinkedList known = new java.util.LinkedList();
+										final Class<?> responseClass = Class.forName(className);
+										final LinkedList<StringObjectPair> known = new LinkedList<StringObjectPair>();
 										final String format = AuthoringToolResources.getFormat(responseClass);
 										final edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer tokenizer = new edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer(
 												format);
@@ -939,24 +940,24 @@ public class DragFromComponent extends javax.swing.JPanel
 											if (token.startsWith("<<<") && token.endsWith(">>>")) {
 												final String propertyName = token.substring(token.lastIndexOf("<") + 1,
 														token.indexOf(">"));
-												known.add(new edu.cmu.cs.stage3.util.StringObjectPair(propertyName,
-														element));
+												known.add(new StringObjectPair(propertyName, element));
 											}
 										}
-										final edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues = (edu.cmu.cs.stage3.util.StringObjectPair[]) known
-												.toArray(new edu.cmu.cs.stage3.util.StringObjectPair[0]);
+										final StringObjectPair[] knownPropertyValues = known
+												.toArray(new StringObjectPair[0]);
 
 										final String[] desiredProperties = AuthoringToolResources
 												.getDesiredProperties(responseClass);
-										final edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype responsePrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype(
-												responseClass, knownPropertyValues, desiredProperties);
-										final javax.swing.JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
+										@SuppressWarnings("unchecked")
+										final edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype responsePrototype = 
+												new edu.cmu.cs.stage3.alice.authoringtool.util.ResponsePrototype(
+												(Class<? extends Element>) responseClass, knownPropertyValues, desiredProperties);
+										final JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
 												.getGUI(responsePrototype);
 										if (gui != null) {
-											final java.awt.GridBagConstraints constraints = new java.awt.GridBagConstraints(
-													0, i, 1, 1, 1.0, 0.0, java.awt.GridBagConstraints.WEST,
-													java.awt.GridBagConstraints.NONE, new java.awt.Insets(2, 2, 2, 2),
-													0, 0);
+											final GridBagConstraints constraints = new GridBagConstraints(0, i, 1, 1,
+													1.0, 0.0, GridBagConstraints.WEST, GridBagConstraints.NONE,
+													new Insets(2, 2, 2, 2), 0, 0);
 											subPanel.add(gui, constraints);
 											i++;
 										} else {
@@ -977,48 +978,44 @@ public class DragFromComponent extends javax.swing.JPanel
 				}
 			}
 			glueConstraints.gridy = constraints.gridy;
-			animationsPanel.add(javax.swing.Box.createGlue(), glueConstraints);
+			animationsPanel.add(Box.createGlue(), glueConstraints);
 
 			// user-defined questions
 			constraints.gridy = 0;
 			if (questions != null) {
-				final javax.swing.JPanel subPanel = new javax.swing.JPanel();
-				subPanel.setBackground(java.awt.Color.white);
-				subPanel.setLayout(new java.awt.GridBagLayout());
+				final JPanel subPanel = new JPanel();
+				subPanel.setBackground(Color.white);
+				subPanel.setLayout(new GridBagLayout());
 				subPanel.setBorder(spacingBorder);
 				panelsToClean.add(subPanel);
 
 				int count = 0;
 				final Object[] questionsArray = questions.getArrayValue();
 				for (final Object element2 : questionsArray) {
-					final Class questionClass = edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion.class;
+					// Unused ?? final Class<CallToUserDefinedQuestion> questionClass = edu.cmu.cs.stage3.alice.core.question.userdefined.CallToUserDefinedQuestion.class;
 					final edu.cmu.cs.stage3.alice.core.Question question = (edu.cmu.cs.stage3.alice.core.Question) element2;
 
 					if (question instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion) {
 						final edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedQuestionPrototype callToUserDefinedQuestionPrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.CallToUserDefinedQuestionPrototype(
 								(edu.cmu.cs.stage3.alice.core.question.userdefined.UserDefinedQuestion) question);
-						final javax.swing.JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
+						final JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
 								.getGUI(callToUserDefinedQuestionPrototype);
 						if (gui != null) {
 							final edu.cmu.cs.stage3.alice.authoringtool.util.EditObjectButton editButton = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
 									.getEditObjectButton(question, gui);
 							editButton.setToolTipText(
 									"<html><font face=arial size=-1>Open this question for editing.</font></html>");
-							final javax.swing.JPanel guiPanel = new javax.swing.JPanel();
+							final JPanel guiPanel = new JPanel();
 							panelsToClean.add(guiPanel);
-							guiPanel.setBackground(java.awt.Color.white);
-							guiPanel.setLayout(new java.awt.GridBagLayout());
-							guiPanel.add(gui,
-									new java.awt.GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-											java.awt.GridBagConstraints.SOUTHWEST, java.awt.GridBagConstraints.NONE,
-											new java.awt.Insets(0, 0, 0, 0), 0, 0));
+							guiPanel.setBackground(Color.white);
+							guiPanel.setLayout(new GridBagLayout());
+							guiPanel.add(gui, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.SOUTHWEST,
+									GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 							guiPanel.add(editButton,
-									new java.awt.GridBagConstraints(1, 0, 1, 1, 1.0, 0.0,
-											java.awt.GridBagConstraints.SOUTHWEST, java.awt.GridBagConstraints.NONE,
-											new java.awt.Insets(0, 4, 0, 0), 0, 0));
-							final java.awt.GridBagConstraints constraints = new java.awt.GridBagConstraints(0, count, 1,
-									1, 1.0, 0.0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE,
-									new java.awt.Insets(2, 2, 2, 2), 0, 0);
+									new GridBagConstraints(1, 0, 1, 1, 1.0, 0.0, GridBagConstraints.SOUTHWEST,
+											GridBagConstraints.NONE, new Insets(0, 4, 0, 0), 0, 0));
+							final GridBagConstraints constraints = new GridBagConstraints(0, count, 1, 1, 1.0, 0.0,
+									GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0, 0);
 							subPanel.add(guiPanel, constraints);
 							count++;
 							if (newlyCreatedQuestion == question) {
@@ -1035,9 +1032,8 @@ public class DragFromComponent extends javax.swing.JPanel
 					}
 				}
 
-				final java.awt.GridBagConstraints c = new java.awt.GridBagConstraints(0, count, 1, 1, 1.0, 0.0,
-						java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.NONE,
-						new java.awt.Insets(4, 2, 2, 2), 0, 0);
+				final GridBagConstraints c = new GridBagConstraints(0, count, 1, 1, 1.0, 0.0, GridBagConstraints.WEST,
+						GridBagConstraints.NONE, new Insets(4, 2, 2, 2), 0, 0);
 				subPanel.add(newQuestionButton, c);
 
 				questionsPanel.add(subPanel, constraints);
@@ -1045,17 +1041,17 @@ public class DragFromComponent extends javax.swing.JPanel
 			}
 
 			// question panels
-			final java.util.Vector questionStructure = AuthoringToolResources.getQuestionStructure(element.getClass());
+			final Vector<Object> questionStructure = AuthoringToolResources.getQuestionStructure(element.getClass());
 			if (questionStructure != null) {
-				for (final java.util.Iterator iter = questionStructure.iterator(); iter.hasNext();) {
-					final edu.cmu.cs.stage3.util.StringObjectPair sop = (edu.cmu.cs.stage3.util.StringObjectPair) iter
-							.next();
+				for (final Iterator<Object> iter = questionStructure.iterator(); iter.hasNext();) {
+					final StringObjectPair sop = (StringObjectPair) iter.next();
 					final String groupName = sop.getString();
-					final java.util.Vector questionNames = (java.util.Vector) sop.getObject();
+					@SuppressWarnings("unchecked")
+					final Vector<String> questionNames = (Vector<String>) sop.getObject();
 
-					final javax.swing.JPanel subPanel = new javax.swing.JPanel();
-					subPanel.setBackground(java.awt.Color.white);
-					subPanel.setLayout(new java.awt.GridBagLayout());
+					final JPanel subPanel = new JPanel();
+					subPanel.setBackground(Color.white);
+					subPanel.setLayout(new GridBagLayout());
 					panelsToClean.add(subPanel);
 
 					final edu.cmu.cs.stage3.alice.authoringtool.util.ExpandablePanel expandPanel = new edu.cmu.cs.stage3.alice.authoringtool.util.ExpandablePanel();
@@ -1064,13 +1060,14 @@ public class DragFromComponent extends javax.swing.JPanel
 
 					if (questionNames != null) {
 						int i = 0;
-						for (final java.util.Iterator jter = questionNames.iterator(); jter.hasNext();) {
+						for (final Iterator<String> jter = questionNames.iterator(); jter.hasNext();) {
 							final String className = (String) jter.next();
 							try {
-								final Class questionClass = Class.forName(className);
-								final edu.cmu.cs.stage3.alice.core.Question tempQuestion = (edu.cmu.cs.stage3.alice.core.Question) questionClass
-										.newInstance();
-								final java.util.LinkedList known = new java.util.LinkedList();
+								final Class<?> questionClass = Class.forName(className);
+								@SuppressWarnings("unused")
+								final edu.cmu.cs.stage3.alice.core.Question tempQuestion = // Unused ??
+										(edu.cmu.cs.stage3.alice.core.Question) questionClass.newInstance();
+								final LinkedList<StringObjectPair> known = new LinkedList<StringObjectPair>();
 								final String format = AuthoringToolResources.getFormat(questionClass);
 								final edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer tokenizer = new edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer(
 										format);
@@ -1079,17 +1076,17 @@ public class DragFromComponent extends javax.swing.JPanel
 									if (token.startsWith("<<<") && token.endsWith(">>>")) {
 										final String propertyName = token.substring(token.lastIndexOf("<") + 1,
 												token.indexOf(">"));
-										known.add(new edu.cmu.cs.stage3.util.StringObjectPair(propertyName, element));
+										known.add(new StringObjectPair(propertyName, element));
 									}
 								}
 								if (edu.cmu.cs.stage3.alice.core.question.PartKeyed.class
 										.isAssignableFrom(questionClass)) { // special
 																			// case
 																			// hack
-									known.add(new edu.cmu.cs.stage3.util.StringObjectPair("key", ""));
+									known.add(new StringObjectPair("key", ""));
 								}
-								final edu.cmu.cs.stage3.util.StringObjectPair[] knownPropertyValues = (edu.cmu.cs.stage3.util.StringObjectPair[]) known
-										.toArray(new edu.cmu.cs.stage3.util.StringObjectPair[0]);
+								final StringObjectPair[] knownPropertyValues = known
+										.toArray(new StringObjectPair[0]);
 
 								String[] desiredProperties = AuthoringToolResources.getDesiredProperties(questionClass);
 								if (edu.cmu.cs.stage3.alice.core.question.PartKeyed.class
@@ -1098,14 +1095,15 @@ public class DragFromComponent extends javax.swing.JPanel
 																			// hack
 									desiredProperties = new String[0];
 								}
-								final edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype elementPrototype = new edu.cmu.cs.stage3.alice.authoringtool.util.ElementPrototype(
-										questionClass, knownPropertyValues, desiredProperties);
-								final javax.swing.JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
+								@SuppressWarnings("unchecked")
+								final ElementPrototype elementPrototype = new ElementPrototype((Class<? extends Element>) questionClass,
+										knownPropertyValues, desiredProperties);
+								final JComponent gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
 										.getGUI(elementPrototype);
 								if (gui != null) {
-									final java.awt.GridBagConstraints constraints = new java.awt.GridBagConstraints(0,
-											i, 1, 1, 1.0, 0.0, java.awt.GridBagConstraints.WEST,
-											java.awt.GridBagConstraints.NONE, new java.awt.Insets(2, 2, 2, 2), 0, 0);
+									final GridBagConstraints constraints = new GridBagConstraints(0, i, 1, 1, 1.0, 0.0,
+											GridBagConstraints.WEST, GridBagConstraints.NONE, new Insets(2, 2, 2, 2), 0,
+											0);
 									subPanel.add(gui, constraints);
 									i++;
 								} else {
@@ -1127,7 +1125,7 @@ public class DragFromComponent extends javax.swing.JPanel
 				}
 			}
 			glueConstraints.gridy = constraints.gridy;
-			questionsPanel.add(javax.swing.Box.createGlue(), glueConstraints);
+			questionsPanel.add(Box.createGlue(), glueConstraints);
 
 			// other panels
 			// constraints.gridy = 0;
@@ -1145,7 +1143,7 @@ public class DragFromComponent extends javax.swing.JPanel
 			// constraints.gridy++;
 			// }
 			// glueConstraints.gridy = constraints.gridy;
-			// otherPanel.add( javax.swing.Box.createGlue(), glueConstraints );
+			// otherPanel.add( Box.createGlue(), glueConstraints );
 		}
 		revalidate();
 		repaint();

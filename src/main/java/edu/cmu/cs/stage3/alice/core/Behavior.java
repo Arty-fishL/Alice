@@ -65,8 +65,8 @@ public abstract class Behavior extends Element {
 			}
 		}
 
-		public java.util.Stack getCurrentStack() {
-			final java.util.Stack stack = new java.util.Stack();
+		public java.util.Stack<Item> getCurrentStack() {
+			final java.util.Stack<Item> stack = new java.util.Stack<Item>();
 			Item prev = m_front;
 			while (true) {
 				final Item curr = prev.getNext();
@@ -157,13 +157,13 @@ public abstract class Behavior extends Element {
 	}
 
 	private class Context extends Single {
-		private final java.util.Dictionary m_variableMap = new java.util.Hashtable();
-		private final java.util.Dictionary m_nameMap = new java.util.Hashtable();
+		private final java.util.Dictionary<Variable, Variable> m_variableMap = new java.util.Hashtable<Variable, Variable>();
+		private final java.util.Dictionary<String, Variable> m_nameMap = new java.util.Hashtable<String, Variable>();
 		private boolean m_isCeiling = true;
 
 		@Override
 		public Variable lookup(final Variable variable) {
-			final Variable runtimeVariable = (Variable) m_variableMap.get(variable);
+			final Variable runtimeVariable = m_variableMap.get(variable);
 			if (runtimeVariable != null) {
 				return runtimeVariable;
 			} else {
@@ -177,7 +177,7 @@ public abstract class Behavior extends Element {
 
 		@Override
 		public Variable lookup(final String name) {
-			final Variable runtimeVariable = (Variable) m_nameMap.get(name);
+			final Variable runtimeVariable = m_nameMap.get(name);
 			if (runtimeVariable != null) {
 				return runtimeVariable;
 			} else {
@@ -197,7 +197,7 @@ public abstract class Behavior extends Element {
 	}
 
 	public void setForkIndex(final Object key, final int i) {
-		final Fork fork = (Fork) m_forkMap.get(key);
+		final Fork fork = m_forkMap.get(key);
 		fork.setIndex(i);
 	}
 
@@ -208,14 +208,14 @@ public abstract class Behavior extends Element {
 		}
 	}
 
-	public java.util.Stack getCurrentStack() {
+	public java.util.Stack<Item> getCurrentStack() {
 		return m_stack.getCurrentStack();
 	}
 
 	// private java.util.Stack m_stack = new java.util.Stack();
 	private final RuntimeStack m_stack = new RuntimeStack();
-	private final java.util.Hashtable m_detailNameMap = new java.util.Hashtable();
-	private final java.util.Hashtable m_forkMap = new java.util.Hashtable();
+	private final java.util.Hashtable<String, Expression> m_detailNameMap = new java.util.Hashtable<String, Expression>();
+	private final java.util.Hashtable<Object, Fork> m_forkMap = new java.util.Hashtable<Object, Fork>();
 
 	public void manufactureAnyNecessaryDetails() {
 	}
@@ -288,7 +288,7 @@ public abstract class Behavior extends Element {
 	private Variable createRuntimeVariable(final Variable other) {
 		final Variable v = new Variable();
 		v.name.set(other.name.getStringValue());
-		final Class cls = other.getValueClass();
+		final Class<?> cls = other.getValueClass();
 		v.valueClass.set(cls);
 		final Object value = other.getValue();
 		v.value.set(value);
@@ -318,7 +318,7 @@ public abstract class Behavior extends Element {
 	 * return null; }
 	 */
 	public Expression detailLookup(final String name) {
-		return (Expression) m_detailNameMap.get(name);
+		return m_detailNameMap.get(name);
 	}
 
 	public void pushEach(final Variable variable, final Variable runtimeVariable) {
@@ -370,7 +370,7 @@ public abstract class Behavior extends Element {
 
 	public void popStack() {
 		if (m_isActive) {
-			final Object context = m_stack.top();
+			// Unused ?? final Object context = m_stack.top();
 			// System.err.println( "popStack: " + context.hashCode() );
 			// Thread.dumpStack();
 			m_stack.pop();
@@ -378,7 +378,7 @@ public abstract class Behavior extends Element {
 	}
 
 	@Override
-	protected void internalFindAccessibleExpressions(final Class cls, final java.util.Vector v) {
+	protected void internalFindAccessibleExpressions(final Class<?> cls, final java.util.Vector<Expression> v) {
 		for (int i = 0; i < details.size(); i++) {
 			internalAddExpressionIfAssignableTo((Expression) details.get(i), cls, v);
 		}

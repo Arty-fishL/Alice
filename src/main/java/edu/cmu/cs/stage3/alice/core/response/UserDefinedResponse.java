@@ -49,10 +49,10 @@ public class UserDefinedResponse extends DoInOrder {
 		super.internalFindAccessibleExpressions(cls, v);
 	}
 
-	private static Class[] s_supportedCoercionClasses = {};
+	private static Class<?>[] s_supportedCoercionClasses = {};
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

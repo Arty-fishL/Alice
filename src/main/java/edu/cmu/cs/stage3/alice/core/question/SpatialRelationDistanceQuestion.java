@@ -32,7 +32,7 @@ public abstract class SpatialRelationDistanceQuestion extends SubjectObjectQuest
 	public final ReferenceFrameProperty asSeenBy = new ReferenceFrameProperty(this, "asSeenBy", null);
 
 	@Override
-	public Class getValueClass() {
+	public Class<Number> getValueClass() {
 		return Number.class;
 	}
 

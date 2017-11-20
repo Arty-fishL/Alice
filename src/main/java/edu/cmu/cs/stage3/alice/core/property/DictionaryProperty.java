@@ -23,19 +23,26 @@
 
 package edu.cmu.cs.stage3.alice.core.property;
 
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
+
 import edu.cmu.cs.stage3.alice.core.Element;
+import edu.cmu.cs.stage3.alice.core.reference.PropertyReference;
 
 public class DictionaryProperty extends ObjectProperty {
-	public DictionaryProperty(final Element owner, final String name, final java.util.Dictionary defaultValue) {
-		super(owner, name, defaultValue, java.util.Dictionary.class);
+	public DictionaryProperty(final Element owner, final String name, final Dictionary<?,?> defaultValue) {
+		super(owner, name, defaultValue, Dictionary.class);
 	}
 
-	public java.util.Dictionary getDictionaryValue() {
-		return (java.util.Dictionary) getValue();
+	public Dictionary<?,?> getDictionaryValue() {
+		return (Dictionary<?,?>) getValue();
 	}
-
-	private static Object valueOf(final Class cls, final String text) {
-		final Class[] parameterTypes = { String.class };
+	
+	/** Unused ??
+	private static Object valueOf(final Class<?> cls, final String text) {
+		final Class<?>[] parameterTypes = { String.class };
 		try {
 			final java.lang.reflect.Method valueOfMethod = cls.getMethod("valueOf", parameterTypes);
 			final int modifiers = valueOfMethod.getModifiers();
@@ -54,11 +61,12 @@ public class DictionaryProperty extends ObjectProperty {
 		}
 		return null;
 	}
+	*/
 
 	@Override
 	protected void decodeObject(final org.w3c.dom.Element node, final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader,
-			final java.util.Vector referencesToBeResolved, final double version) throws java.io.IOException {
-		final java.util.Dictionary dict = new java.util.Hashtable();
+			final Vector<PropertyReference> referencesToBeResolved, final double version) throws java.io.IOException {
+		final Dictionary<Object, Object> dict = new Hashtable<Object, Object>();
 		final org.w3c.dom.NodeList entryNodeList = node.getElementsByTagName("entry");
 		for (int i = 0; i < entryNodeList.getLength(); i++) {
 			final org.w3c.dom.Element entryNode = (org.w3c.dom.Element) entryNodeList.item(i);
@@ -66,7 +74,7 @@ public class DictionaryProperty extends ObjectProperty {
 			final String keyTypeName = keyNode.getAttribute("class");
 			Object key;
 			try {
-				final Class keyType = Class.forName(keyTypeName);
+				final Class<?> keyType = Class.forName(keyTypeName);
 				if (keyType == String.class) {
 					key = getNodeText(keyNode);
 				} else {
@@ -80,7 +88,7 @@ public class DictionaryProperty extends ObjectProperty {
 			final String valueTypeName = valueNode.getAttribute("class");
 			Object value;
 			try {
-				final Class valueType = Class.forName(valueTypeName);
+				final Class<?> valueType = Class.forName(valueTypeName);
 				if (valueType == String.class) {
 					value = getNodeText(valueNode);
 				} else {
@@ -98,9 +106,9 @@ public class DictionaryProperty extends ObjectProperty {
 	protected void encodeObject(final org.w3c.dom.Document document, final org.w3c.dom.Element node,
 			final edu.cmu.cs.stage3.io.DirectoryTreeStorer storer,
 			final edu.cmu.cs.stage3.alice.core.ReferenceGenerator referenceGenerator) throws java.io.IOException {
-		final java.util.Dictionary dict = getDictionaryValue();
+		final Dictionary<?, ?> dict = getDictionaryValue();
 		if (dict != null) {
-			final java.util.Enumeration enum0 = dict.keys();
+			final Enumeration<?> enum0 = dict.keys();
 			while (enum0.hasMoreElements()) {
 				final Object key = enum0.nextElement();
 				final Object value = dict.get(key);
@@ -122,8 +130,8 @@ public class DictionaryProperty extends ObjectProperty {
 		}
 	}
 
-	public java.util.Enumeration elements() {
-		final java.util.Dictionary dict = getDictionaryValue();
+	public Enumeration<?> elements() {
+		final Dictionary<?, ?> dict = getDictionaryValue();
 		if (dict != null) {
 			return dict.elements();
 		} else {
@@ -132,7 +140,7 @@ public class DictionaryProperty extends ObjectProperty {
 	}
 
 	public Object get(final Object key) {
-		final java.util.Dictionary dict = getDictionaryValue();
+		final Dictionary<?, ?> dict = getDictionaryValue();
 		if (dict != null) {
 			return dict.get(key);
 		} else {
@@ -141,7 +149,7 @@ public class DictionaryProperty extends ObjectProperty {
 	}
 
 	public boolean isEmpty() {
-		final java.util.Dictionary dict = getDictionaryValue();
+		final Dictionary<?, ?> dict = getDictionaryValue();
 		if (dict != null) {
 			return dict.isEmpty();
 		} else {
@@ -149,8 +157,8 @@ public class DictionaryProperty extends ObjectProperty {
 		}
 	}
 
-	public java.util.Enumeration keys() {
-		final java.util.Dictionary dict = getDictionaryValue();
+	public Enumeration<?> keys() {
+		final Dictionary<?, ?> dict = getDictionaryValue();
 		if (dict != null) {
 			return dict.keys();
 		} else {
@@ -159,11 +167,11 @@ public class DictionaryProperty extends ObjectProperty {
 	}
 
 	public Object put(final Object key, final Object value) {
-		final java.util.Dictionary dict = getDictionaryValue();
-		final java.util.Dictionary newDict = new java.util.Hashtable();
+		final Dictionary<?, ?> dict = getDictionaryValue();
+		final Dictionary<Object, Object> newDict = new Hashtable<Object, Object>();
 		if (dict != null) {
 			// todo: optimize?
-			final java.util.Enumeration enum0 = dict.keys();
+			final Enumeration<?> enum0 = dict.keys();
 			while (enum0.hasMoreElements()) {
 				final Object k = enum0.nextElement();
 				final Object v = dict.get(k);
@@ -176,12 +184,12 @@ public class DictionaryProperty extends ObjectProperty {
 	}
 
 	public Object remove(final Object key) {
-		final java.util.Dictionary dict = getDictionaryValue();
-		final java.util.Dictionary newDict = new java.util.Hashtable();
+		final Dictionary<?, ?> dict = getDictionaryValue();
+		final Dictionary<Object, Object> newDict = new Hashtable<Object, Object>();
 		Object value = null;
 		if (dict != null) {
 			// todo: optimize?
-			final java.util.Enumeration enum0 = dict.keys();
+			final Enumeration<?> enum0 = dict.keys();
 			while (enum0.hasMoreElements()) {
 				final Object k = enum0.nextElement();
 				final Object v = dict.get(k);
@@ -199,7 +207,7 @@ public class DictionaryProperty extends ObjectProperty {
 	}
 
 	public int size() {
-		final java.util.Dictionary dict = getDictionaryValue();
+		final Dictionary<?, ?> dict = getDictionaryValue();
 		if (dict != null) {
 			return dict.size();
 		} else {

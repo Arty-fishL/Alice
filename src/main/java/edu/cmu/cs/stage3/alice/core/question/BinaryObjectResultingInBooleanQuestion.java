@@ -36,7 +36,7 @@ public abstract class BinaryObjectResultingInBooleanQuestion extends BooleanQues
 	@Override
 	protected void propertyChanged(final edu.cmu.cs.stage3.alice.core.Property property, final Object value) {
 		if (property == valueClass) {
-			final Class overrideValueClass = valueClass.getClassValue();
+			final Class<?> overrideValueClass = valueClass.getClassValue();
 			a.setOverrideValueClass(overrideValueClass);
 			b.setOverrideValueClass(overrideValueClass);
 		} else {
