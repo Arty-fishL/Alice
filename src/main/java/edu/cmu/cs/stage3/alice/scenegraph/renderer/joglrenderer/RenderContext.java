@@ -36,8 +36,8 @@ class RenderContext extends Context {
 	private final float[] m_ambient = new float[4];
 	private final java.nio.FloatBuffer m_ambientBuffer = java.nio.FloatBuffer.wrap(m_ambient);
 
-	private final java.util.Hashtable m_displayListMap = new java.util.Hashtable();
-	private final java.util.Hashtable m_textureBindingMap = new java.util.Hashtable();
+	private final java.util.Hashtable<GeometryProxy, Integer> m_displayListMap = new java.util.Hashtable<GeometryProxy, Integer>();
+	private final java.util.Hashtable<TextureMapProxy, Integer> m_textureBindingMap = new java.util.Hashtable<TextureMapProxy, Integer>();
 	private TextureMapProxy m_currTextureMapProxy;
 
 	private boolean m_isShadingEnabled;
@@ -178,7 +178,7 @@ class RenderContext extends Context {
 	}
 
 	public Integer getDisplayListID(final GeometryProxy geometryProxy) {
-		return (Integer) m_displayListMap.get(geometryProxy);
+		return m_displayListMap.get(geometryProxy);
 	}
 
 	public Integer generateDisplayListID(final GeometryProxy geometryProxy) {
@@ -188,15 +188,15 @@ class RenderContext extends Context {
 	}
 
 	private void forgetAllGeometryProxies() {
-		final java.util.Enumeration enum0 = m_displayListMap.keys();
+		final java.util.Enumeration<GeometryProxy> enum0 = m_displayListMap.keys();
 		while (enum0.hasMoreElements()) {
-			forgetGeometryProxy((GeometryProxy) enum0.nextElement(), false);
+			forgetGeometryProxy(enum0.nextElement(), false);
 		}
 		m_displayListMap.clear();
 	}
 
 	public void forgetGeometryProxy(final GeometryProxy geometryProxy, final boolean removeFromMap) {
-		final Integer value = (Integer) m_displayListMap.get(geometryProxy);
+		final Integer value = m_displayListMap.get(geometryProxy);
 		if (value != null) {
 			gl.glDeleteLists(value.intValue(), 1);
 			if (removeFromMap) {
@@ -212,15 +212,15 @@ class RenderContext extends Context {
 	}
 
 	private void forgetAllTextureMapProxies() {
-		final java.util.Enumeration enum0 = m_textureBindingMap.keys();
+		final java.util.Enumeration<TextureMapProxy> enum0 = m_textureBindingMap.keys();
 		while (enum0.hasMoreElements()) {
-			forgetTextureMapProxy((TextureMapProxy) enum0.nextElement(), false);
+			forgetTextureMapProxy(enum0.nextElement(), false);
 		}
 		m_textureBindingMap.clear();
 	}
 
 	public void forgetTextureMapProxy(final TextureMapProxy textureMapProxy, final boolean removeFromMap) {
-		final Integer value = (Integer) m_textureBindingMap.get(textureMapProxy);
+		final Integer value = m_textureBindingMap.get(textureMapProxy);
 		if (value != null) {
 			final int id = value.intValue();
 			final java.nio.IntBuffer atID = java.nio.IntBuffer.allocate(1);
@@ -254,7 +254,7 @@ class RenderContext extends Context {
 			gl.glEnable(GL.GL_TEXTURE_2D);
 			if (m_currTextureMapProxy != textureMapProxy) {
 				if (textureMapProxy != null) {
-					Integer value = (Integer) m_textureBindingMap.get(textureMapProxy);
+					Integer value = m_textureBindingMap.get(textureMapProxy);
 					if (textureMapProxy.prepareByteBufferIfNecessary() || value == null) {
 						if (value == null) {
 							final java.nio.IntBuffer atID = java.nio.IntBuffer.allocate(1);

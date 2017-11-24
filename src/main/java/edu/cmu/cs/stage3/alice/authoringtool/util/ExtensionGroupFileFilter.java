@@ -51,11 +51,11 @@ public class ExtensionGroupFileFilter extends javax.swing.filechooser.FileFilter
 
 		final java.util.Iterator<ExtensionFileFilter> iter = extensions.iterator();
 		if (iter.hasNext()) {
-			final ExtensionFileFilter ext = (ExtensionFileFilter) iter.next();
+			final ExtensionFileFilter ext = iter.next();
 			d.append(ext.getExtension());
 		}
 		while (iter.hasNext()) {
-			final ExtensionFileFilter ext = (ExtensionFileFilter) iter.next();
+			final ExtensionFileFilter ext = iter.next();
 			d.append(";" + ext.getExtension());
 		}
 
@@ -67,7 +67,7 @@ public class ExtensionGroupFileFilter extends javax.swing.filechooser.FileFilter
 	@Override
 	public boolean accept(final java.io.File f) {
 		for (final java.util.Iterator<ExtensionFileFilter> iter = extensions.iterator(); iter.hasNext();) {
-			final ExtensionFileFilter ext = (ExtensionFileFilter) iter.next();
+			final ExtensionFileFilter ext = iter.next();
 			if (ext.accept(f)) {
 				return true;
 			}

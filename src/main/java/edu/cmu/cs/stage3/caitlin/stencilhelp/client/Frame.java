@@ -8,8 +8,8 @@ import java.awt.geom.RoundRectangle2D;
 import java.util.Vector;
 
 public class Frame implements StencilObject, LayoutChangeListener {
-	protected Vector stencilObjectPositionListeners = new Vector();
-	protected Vector shapes = new Vector();
+	protected Vector<StencilObjectPositionListener> stencilObjectPositionListeners = new Vector<StencilObjectPositionListener>();
+	protected Vector<ScreenShape> shapes = new Vector<ScreenShape>();
 	protected String id = null;
 	protected boolean isModified = true;
 	protected Rectangle previousRect = null;
@@ -30,7 +30,7 @@ public class Frame implements StencilObject, LayoutChangeListener {
 		previousRect = getRectangle();
 
 		if (shapes == null) {
-			shapes = new Vector();
+			shapes = new Vector<ScreenShape>();
 		}
 		shapes.removeAllElements();
 
@@ -78,7 +78,7 @@ public class Frame implements StencilObject, LayoutChangeListener {
 		previousRect = getRectangle();
 
 		if (shapes == null) {
-			shapes = new Vector();
+			shapes = new Vector<ScreenShape>();
 		}
 		shapes.removeAllElements();
 
@@ -115,7 +115,7 @@ public class Frame implements StencilObject, LayoutChangeListener {
 
 	/* stencil object stuff */
 	@Override
-	public Vector getShapes() {
+	public Vector<ScreenShape> getShapes() {
 		return shapes;
 	}
 

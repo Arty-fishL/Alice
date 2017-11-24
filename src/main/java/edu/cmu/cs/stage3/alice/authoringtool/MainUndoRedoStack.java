@@ -23,6 +23,7 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool;
 
+import edu.cmu.cs.stage3.alice.authoringtool.event.UndoRedoListener;
 import edu.cmu.cs.stage3.alice.core.Element;
 import edu.cmu.cs.stage3.alice.core.Property;
 import edu.cmu.cs.stage3.alice.core.event.ChildrenListener;
@@ -46,7 +47,7 @@ public class MainUndoRedoStack extends edu.cmu.cs.stage3.alice.authoringtool.uti
 	private edu.cmu.cs.stage3.alice.authoringtool.util.CompoundUndoableRedoable compoundItem;
 	private int unmodifiedIndex = -1;
 	private boolean scriptHasChanged = false;
-	protected java.util.HashSet listeners = new java.util.HashSet();
+	protected java.util.HashSet<UndoRedoListener> listeners = new java.util.HashSet<UndoRedoListener>();
 
 	public MainUndoRedoStack(final AuthoringTool authoringTool) {
 		this.authoringTool = authoringTool;
@@ -69,8 +70,8 @@ public class MainUndoRedoStack extends edu.cmu.cs.stage3.alice.authoringtool.uti
 	}
 
 	synchronized protected void fireChange() {
-		for (final java.util.Iterator iter = listeners.iterator(); iter.hasNext();) {
-			((edu.cmu.cs.stage3.alice.authoringtool.event.UndoRedoListener) iter.next()).onChange();
+		for (final java.util.Iterator<UndoRedoListener> iter = listeners.iterator(); iter.hasNext();) {
+			iter.next().onChange();
 		}
 	}
 

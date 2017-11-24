@@ -2286,14 +2286,14 @@ public class CameraViewPanel extends JPanel
 	JSeparator jSeparator1 = new JSeparator();
 	JRadioButton quadViewButton = new JRadioButton();
 	JPanel mouseModePanel = new JPanel();
-	JComboBox aspectRatioComboBox = new JComboBox();
+	JComboBox<Object> aspectRatioComboBox = new JComboBox<Object>();
 	JPanel mousePanel = new JPanel();
 	JPanel markerPanel = new JPanel();
 	JButton objectDummyButton = new JButton();
 	JCheckBox affectSubpartsCheckBox = new JCheckBox();
 	JRadioButton singleViewButton = new JRadioButton();
 	JLabel aspectRatioLabel = new JLabel();
-	JComboBox moveCameraCombo = new JComboBox();
+	JComboBox<Object> moveCameraCombo = new JComboBox<Object>();
 	JPanel controlPanel = new JPanel();
 	JButton cameraDummyButton = new JButton();
 	Component component1;

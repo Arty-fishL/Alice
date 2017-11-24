@@ -1,11 +1,15 @@
 package edu.cmu.cs.stage3.alice.gallery.modeleditor;
 
+import javax.swing.event.TreeModelListener;
+
+import edu.cmu.cs.stage3.alice.core.Element;
+
 class ElementTreeModel implements javax.swing.tree.TreeModel {
 	private edu.cmu.cs.stage3.alice.core.Element m_root;
-	private final java.util.Vector m_treeModelListeners = new java.util.Vector();
+	private final java.util.Vector<TreeModelListener> m_treeModelListeners = new java.util.Vector<TreeModelListener>();
 
 	private Object[] getPath(edu.cmu.cs.stage3.alice.core.Element element) {
-		final java.util.Vector v = new java.util.Vector();
+		final java.util.Vector<Element> v = new java.util.Vector<Element>();
 		while (element != m_root.getParent()) {
 			v.insertElementAt(element, 0);
 			element = element.getParent();
@@ -27,9 +31,9 @@ class ElementTreeModel implements javax.swing.tree.TreeModel {
 
 	private void fireTreeStructureChanged(final Object[] path) {
 		final javax.swing.event.TreeModelEvent e = new javax.swing.event.TreeModelEvent(this, path);
-		final java.util.Enumeration enum0 = m_treeModelListeners.elements();
+		final java.util.Enumeration<TreeModelListener> enum0 = m_treeModelListeners.elements();
 		while (enum0.hasMoreElements()) {
-			final javax.swing.event.TreeModelListener l = (javax.swing.event.TreeModelListener) enum0.nextElement();
+			final javax.swing.event.TreeModelListener l = enum0.nextElement();
 			l.treeStructureChanged(e);
 		}
 	}

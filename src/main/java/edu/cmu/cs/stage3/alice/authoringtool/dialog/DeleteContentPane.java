@@ -166,7 +166,7 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 		final javax.swing.ListModel<PropertyReference> list = referencesList.getModel();
 		for (int i = 0; i < list.getSize(); i++) {
 			if (list.getElementAt(i) instanceof PropertyReference) {
-				final PropertyReference reference = (PropertyReference) list
+				final PropertyReference reference = list
 						.getElementAt(i);
 				final edu.cmu.cs.stage3.alice.core.Element source = reference.getProperty().getOwner();
 				listenUpToRootElement(source);
@@ -199,7 +199,7 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 		final ListModel<PropertyReference> list = referencesList.getModel();
 		for (int i = 0; i < list.getSize(); i++) {
 			if (list.getElementAt(i) instanceof PropertyReference) {
-				final PropertyReference reference = (PropertyReference) list
+				final PropertyReference reference = list
 						.getElementAt(i);
 				final edu.cmu.cs.stage3.alice.core.Element source = reference.getProperty().getOwner();
 				stopListeningUpToRootElement(source);
@@ -649,7 +649,7 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 		@Override
 		public void valueChanged(final javax.swing.event.ListSelectionEvent ev) {
 			String highlightID = null;
-			final PropertyReference reference = (PropertyReference) referencesList
+			final PropertyReference reference = referencesList
 					.getSelectedValue();
 			highlightID = getHighlightID(reference);
 			glassPane.setHighlightID(highlightID);
@@ -660,7 +660,7 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 	}
 
 	void removeReferenceButton_actionPerformed(final java.awt.event.ActionEvent e) {
-		final PropertyReference reference = (PropertyReference) referencesList
+		final PropertyReference reference = referencesList
 				.getSelectedValue();
 		final edu.cmu.cs.stage3.alice.core.Element source = reference.getProperty().getOwner();
 		final edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();
@@ -721,7 +721,7 @@ public class DeleteContentPane extends edu.cmu.cs.stage3.swing.ContentPane imple
 	void removeAllReferenceButton_actionPerformed(final java.awt.event.ActionEvent e) {
 		stopListening();
 		for (int i = 0; i < referencesList.getModel().getSize(); i++) {
-			final PropertyReference reference = (PropertyReference) referencesList
+			final PropertyReference reference = referencesList
 					.getModel().getElementAt(i);
 			final edu.cmu.cs.stage3.alice.core.Element source = reference.getProperty().getOwner();
 			final edu.cmu.cs.stage3.alice.core.Element sourceParent = source.getParent();

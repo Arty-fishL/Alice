@@ -17,7 +17,7 @@ public class NavigationBar
 		implements StencilObject, MouseEventListener, StencilStackChangeListener, LayoutChangeListener {
 	protected StencilManager stencilManager = null;
 	protected ObjectPositionManager positionManager = null;
-	protected Vector shapes = new Vector();
+	protected Vector<ScreenShape> shapes = new Vector<ScreenShape>();
 	protected boolean isModified = true;
 	protected Rectangle previousRect = null;
 
@@ -45,7 +45,7 @@ public class NavigationBar
 
 	private boolean isError = false;
 
-	protected Vector stencilObjectPositionListeners = new Vector();
+	protected Vector<StencilObjectPositionListener> stencilObjectPositionListeners = new Vector<StencilObjectPositionListener>();
 
 	public NavigationBar(final StencilManager stencilManager, final ObjectPositionManager positionManager) {
 		this.stencilManager = stencilManager;
@@ -235,7 +235,7 @@ public class NavigationBar
 
 	/* stencil object stuff */
 	@Override
-	public Vector getShapes() {
+	public Vector<ScreenShape> getShapes() {
 		return shapes;
 	}
 
@@ -367,7 +367,7 @@ public class NavigationBar
 		 * Point topCenter = new Point((int)positionManager.getScreenWidth() /
 		 * 2, 0); createShape(topCenter);
 		 */
-		shapes = new Vector();
+		shapes = new Vector<ScreenShape>();
 		generateShapes();
 	}
 

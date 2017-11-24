@@ -32,7 +32,7 @@ public class ExpandablePanel extends javax.swing.JPanel {
 	 */
 	private static final long serialVersionUID = 314986225215164391L;
 
-	protected static java.util.HashSet collapsedSet = new java.util.HashSet();
+	protected static java.util.HashSet<String> collapsedSet = new java.util.HashSet<String>();
 
 	protected javax.swing.JPanel topPanel = new javax.swing.JPanel();
 	protected javax.swing.JPanel mainPanel = new javax.swing.JPanel();

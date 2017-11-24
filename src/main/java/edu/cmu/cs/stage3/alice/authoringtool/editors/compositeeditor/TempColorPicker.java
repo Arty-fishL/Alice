@@ -30,6 +30,8 @@ package edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+import edu.cmu.cs.stage3.alice.core.response.Comment;
+
 public class TempColorPicker extends javax.swing.JPanel {
 	/**
 	 *
@@ -83,7 +85,7 @@ public class TempColorPicker extends javax.swing.JPanel {
 			setBorder(javax.swing.BorderFactory.createEmptyBorder(4, 4, 4, 4));
 		}
 
-		public TileColorPicker(final String nameKey, final Class classKey, final String foregroundNameKey) {
+		public TileColorPicker(final String nameKey, final Class<Comment> classKey, final String foregroundNameKey) {
 			this(nameKey, classKey);
 			this.foregroundNameKey = foregroundNameKey;
 			foregroundToChange = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources

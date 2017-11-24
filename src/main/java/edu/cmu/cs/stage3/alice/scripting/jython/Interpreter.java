@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.scripting.jython;
 
+import edu.cmu.cs.stage3.alice.scripting.CompileType;
+
 /**
  * @author Dennis Cosgrove
  */

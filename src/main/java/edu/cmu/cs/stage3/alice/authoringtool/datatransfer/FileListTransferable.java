@@ -24,19 +24,20 @@
 package edu.cmu.cs.stage3.alice.authoringtool.datatransfer;
 
 import java.awt.datatransfer.DataFlavor;
+import java.io.File;
 
 /**
  * @author Jason Pratt
  */
 public class FileListTransferable implements java.awt.datatransfer.Transferable {
-	protected java.util.List fileList;
+	protected java.util.List<File> fileList;
 
 	protected java.awt.datatransfer.DataFlavor[] flavors;
 
 	/**
 	 * All items in fileList must be of type java.io.File
 	 */
-	public FileListTransferable(final java.util.List fileList) {
+	public FileListTransferable(final java.util.List<File> fileList) {
 		this.fileList = fileList;
 
 		flavors = new java.awt.datatransfer.DataFlavor[2];
@@ -66,8 +67,8 @@ public class FileListTransferable implements java.awt.datatransfer.Transferable 
 			return fileList;
 		} else if (flavor.equals(java.awt.datatransfer.DataFlavor.stringFlavor)) {
 			String files = "";
-			for (final java.util.Iterator iter = fileList.iterator(); iter.hasNext();) {
-				files += ((java.io.File) iter.next()).getAbsolutePath() + "; ";
+			for (final java.util.Iterator<File> iter = fileList.iterator(); iter.hasNext();) {
+				files += iter.next().getAbsolutePath() + "; ";
 			}
 			return files;
 		} else {

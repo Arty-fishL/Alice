@@ -49,7 +49,7 @@ public class CompoundUndoableRedoable implements ContextAssignableUndoableRedoab
 			iter.next();
 		}
 		while (iter.hasPrevious()) {
-			final edu.cmu.cs.stage3.alice.authoringtool.util.UndoableRedoable item = (edu.cmu.cs.stage3.alice.authoringtool.util.UndoableRedoable) iter
+			final edu.cmu.cs.stage3.alice.authoringtool.util.UndoableRedoable item = iter
 					.previous();
 			item.undo();
 		}
@@ -59,7 +59,7 @@ public class CompoundUndoableRedoable implements ContextAssignableUndoableRedoab
 	public void redo() {
 		final java.util.ListIterator<UndoableRedoable> iter = items.listIterator();
 		while (iter.hasNext()) {
-			final edu.cmu.cs.stage3.alice.authoringtool.util.UndoableRedoable item = (edu.cmu.cs.stage3.alice.authoringtool.util.UndoableRedoable) iter
+			final edu.cmu.cs.stage3.alice.authoringtool.util.UndoableRedoable item = iter
 					.next();
 			item.redo();
 		}

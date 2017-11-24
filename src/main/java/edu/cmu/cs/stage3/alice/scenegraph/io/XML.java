@@ -1,6 +1,8 @@
 package edu.cmu.cs.stage3.alice.scenegraph.io;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import edu.cmu.cs.stage3.alice.scenegraph.Vertex3d;
 import edu.cmu.cs.stage3.util.Enumerable;
@@ -13,7 +15,7 @@ class PropertyReference {
 		m_key = key;
 	}
 
-	public void resolve(final java.util.Dictionary map) {
+	public void resolve(final java.util.Dictionary<String, edu.cmu.cs.stage3.alice.scenegraph.Element> map) {
 		final Object value = map.get(m_key);
 		if (value != null) {
 			m_property.set(m_element, value);
@@ -176,7 +178,7 @@ public class XML {
 	}
 
 	private static org.w3c.dom.Element encodeElement(final edu.cmu.cs.stage3.alice.scenegraph.Element element,
-			final org.w3c.dom.Document document, final String s, final java.util.Dictionary elementsToBeEncoded) {
+			final org.w3c.dom.Document document, final String s, final java.util.Dictionary<String, Object> elementsToBeEncoded) {
 		final org.w3c.dom.Element xmlElement = document.createElement(s);
 		xmlElement.setAttribute("class", element.getClass().getName());
 		xmlElement.setAttribute("key", getKey(element));
@@ -421,7 +423,7 @@ public class XML {
 	}
 
 	private static org.w3c.dom.Element encodeComponent(final edu.cmu.cs.stage3.alice.scenegraph.Component component,
-			final org.w3c.dom.Document document, final String s, final java.util.Dictionary map) {
+			final org.w3c.dom.Document document, final String s, final java.util.Dictionary<String, Object> map) {
 		final org.w3c.dom.Element xmlComponent = encodeElement(component, document, s, map);
 		if (component instanceof edu.cmu.cs.stage3.alice.scenegraph.Container) {
 			final edu.cmu.cs.stage3.alice.scenegraph.Container container = (edu.cmu.cs.stage3.alice.scenegraph.Container) component;
@@ -439,14 +441,14 @@ public class XML {
 		final javax.xml.parsers.DocumentBuilderFactory factory = javax.xml.parsers.DocumentBuilderFactory.newInstance();
 		final javax.xml.parsers.DocumentBuilder builder = factory.newDocumentBuilder();
 		final org.w3c.dom.Document document = builder.newDocument();
-		final java.util.Dictionary elementsToBeEncoded = new java.util.Hashtable();
+		final java.util.Dictionary<String, Object> elementsToBeEncoded = new java.util.Hashtable<String, Object>();
 		final org.w3c.dom.Element rootNode = encodeComponent(component, document, "root", elementsToBeEncoded);
 		rootNode.setAttribute("version", Double.toString(VERSION));
 
-		final java.util.Dictionary elementsAlreadyEncoded = new java.util.Hashtable();
+		final java.util.Dictionary<Object, edu.cmu.cs.stage3.alice.scenegraph.Element> elementsAlreadyEncoded = new java.util.Hashtable<Object, edu.cmu.cs.stage3.alice.scenegraph.Element>();
 		while (true) {
 			boolean atLeastOneElementHasBeenEncoded = false;
-			final java.util.Enumeration enum0 = elementsToBeEncoded.keys();
+			final java.util.Enumeration<String> enum0 = elementsToBeEncoded.keys();
 			while (enum0.hasMoreElements()) {
 				final Object key = enum0.nextElement();
 				if (elementsAlreadyEncoded.get(key) != null) {
@@ -469,7 +471,7 @@ public class XML {
 		document.appendChild(rootNode);
 		document.getDocumentElement().normalize();
 
-		final Class cls = document.getClass();
+		final Class<? extends Document> cls = document.getClass();
 		final Class[] parameterTypes = { java.io.OutputStream.class };
 		final Object[] args = { os };
 		final java.lang.reflect.Method method = cls.getMethod("write", parameterTypes);
@@ -531,7 +533,7 @@ public class XML {
 	}
 
 	private static org.w3c.dom.Element[] getChildren(final org.w3c.dom.Node node, final String tag) {
-		final java.util.Vector vector = new java.util.Vector();
+		final java.util.Vector<Node> vector = new java.util.Vector<Node>();
 		org.w3c.dom.Node childNode = node.getFirstChild();
 		while (childNode != null) {
 			if (childNode instanceof org.w3c.dom.Element) {
@@ -590,7 +592,7 @@ public class XML {
 	}
 
 	private static edu.cmu.cs.stage3.alice.scenegraph.Element decodeElement(final org.w3c.dom.Element xmlElement,
-			final java.util.Dictionary map, final java.util.Vector referencesToBeResolved) {
+			final java.util.Dictionary<String, edu.cmu.cs.stage3.alice.scenegraph.Element> map, final java.util.Vector<PropertyReference> referencesToBeResolved) {
 		try {
 			final String classname = xmlElement.getAttribute("class");
 			final String elementKey = xmlElement.getAttribute("key");
@@ -780,7 +782,7 @@ public class XML {
 	}
 
 	private static edu.cmu.cs.stage3.alice.scenegraph.Component decodeComponent(final org.w3c.dom.Element xmlComponent,
-			final java.util.Dictionary map, final java.util.Vector referencesToBeResolved) {
+			final java.util.Dictionary<String, edu.cmu.cs.stage3.alice.scenegraph.Element> map, final java.util.Vector<PropertyReference> referencesToBeResolved) {
 		final edu.cmu.cs.stage3.alice.scenegraph.Component sgComponent = (edu.cmu.cs.stage3.alice.scenegraph.Component) decodeElement(
 				xmlComponent, map, referencesToBeResolved);
 		final org.w3c.dom.Element[] xmlChildren = getChildren(xmlComponent, "child");
@@ -799,8 +801,8 @@ public class XML {
 		final org.w3c.dom.Element xmlRoot = document.getDocumentElement();
 		// double version = Double.parseDouble( elementNode.getAttribute(
 		// "version" ) );
-		final java.util.Dictionary map = new java.util.Hashtable();
-		final java.util.Vector referencesToBeResolved = new java.util.Vector();
+		final java.util.Dictionary<String, edu.cmu.cs.stage3.alice.scenegraph.Element> map = new java.util.Hashtable<String, edu.cmu.cs.stage3.alice.scenegraph.Element>();
+		final java.util.Vector<PropertyReference> referencesToBeResolved = new java.util.Vector<PropertyReference>();
 		final edu.cmu.cs.stage3.alice.scenegraph.Component sgRoot = decodeComponent(xmlRoot, map,
 				referencesToBeResolved);
 
@@ -809,9 +811,9 @@ public class XML {
 			decodeElement(xmlElement, map, referencesToBeResolved);
 		}
 
-		final java.util.Enumeration enum0 = referencesToBeResolved.elements();
+		final java.util.Enumeration<PropertyReference> enum0 = referencesToBeResolved.elements();
 		while (enum0.hasMoreElements()) {
-			final PropertyReference propertyReference = (PropertyReference) enum0.nextElement();
+			final PropertyReference propertyReference = enum0.nextElement();
 			propertyReference.resolve(map);
 		}
 		return sgRoot;

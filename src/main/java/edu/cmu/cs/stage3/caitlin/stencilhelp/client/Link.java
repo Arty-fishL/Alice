@@ -24,14 +24,14 @@ public class Link implements StencilObject, MouseEventListener {
 	private final Font font = new Font("Arial", 1, 16);
 	protected boolean isModified = true;
 
-	protected Vector shapes = null;
+	protected Vector<ScreenShape> shapes = null;
 
 	public Link(final StencilManager stencilManager, final ObjectPositionManager posManager, final boolean next) {
 		this.stencilManager = stencilManager;
 		this.posManager = posManager;
 		this.next = next;
 
-		shapes = new Vector();
+		shapes = new Vector<ScreenShape>();
 
 		if (next) {
 			message = "Load Next Chapter";
@@ -67,7 +67,7 @@ public class Link implements StencilObject, MouseEventListener {
 	}
 
 	@Override
-	public Vector getShapes() {
+	public Vector<ScreenShape> getShapes() {
 		return shapes;
 
 	}

@@ -175,9 +175,9 @@ public final class Configuration {
 			if (subKeys != null) {
 				final int i = name.indexOf('.');
 				if (i == -1) {
-					return (Key) subKeys.get(name);
+					return subKeys.get(name);
 				} else {
-					final Key subKey = (Key) subKeys.get(name.substring(0, i));
+					final Key subKey = subKeys.get(name.substring(0, i));
 					if (subKey != null) {
 						return subKey.getSubKey(name.substring(i + 1));
 					}
@@ -193,7 +193,7 @@ public final class Configuration {
 
 			final int i = name.indexOf('.');
 			if (i == -1) {
-				Key subKey = (Key) subKeys.get(name);
+				Key subKey = subKeys.get(name);
 				if (subKey == null) {
 					subKey = new Key();
 					subKey.name = name;
@@ -201,7 +201,7 @@ public final class Configuration {
 				}
 				return subKey;
 			} else {
-				Key subKey = (Key) subKeys.get(name.substring(0, i));
+				Key subKey = subKeys.get(name.substring(0, i));
 				if (subKey == null) {
 					subKey = new Key();
 					subKey.name = name.substring(0, i);
@@ -217,7 +217,7 @@ public final class Configuration {
 				if (i == -1) {
 					subKeys.remove(name);
 				} else {
-					final Key subKey = (Key) subKeys.get(name.substring(0, i));
+					final Key subKey = subKeys.get(name.substring(0, i));
 					if (subKey != null) {
 						subKey.deleteSubKey(name.substring(i + 1));
 					}
@@ -380,7 +380,7 @@ public final class Configuration {
 			final java.util.ArrayList<String> list = new java.util.ArrayList<>(key.subKeys.size());
 			// Wrong ?? for (final java.util.Iterator<Key> iter = key.subKeys.keySet().iterator(); iter.hasNext();) {
 			for (final java.util.Iterator<Key> iter = key.subKeys.values().iterator(); iter.hasNext();) {
-				final Key subKey = (Key) iter.next();
+				final Key subKey = iter.next();
 				if ((subKey.visibility & visibility) > 0) {
 					list.add(subKey.name);
 				}
@@ -631,7 +631,7 @@ public final class Configuration {
 
 			if (root.subKeys != null) {
 				for (final Iterator<Key> iter = root.subKeys.values().iterator(); iter.hasNext();) {
-					final Key key = (Key) iter.next();
+					final Key key = iter.next();
 					rootElement.appendChild(makeKeyElement(document, key));
 				}
 			}
@@ -690,7 +690,7 @@ public final class Configuration {
 
 		if (key.subKeys != null) {
 			for (final Iterator<Key> iter = key.subKeys.values().iterator(); iter.hasNext();) {
-				final Key subKey = (Key) iter.next();
+				final Key subKey = iter.next();
 				keyElement.appendChild(makeKeyElement(document, subKey));
 			}
 		}

@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.scenegraph.io;
 
+import java.util.Vector;
+
 import edu.cmu.cs.stage3.alice.scenegraph.Vertex3d;
 
 public class OBJ {
@@ -55,10 +57,10 @@ public class OBJ {
 		st.slashStarComments(false);
 		st.whitespaceChars('/', '/');
 		st.parseNumbers();
-		final java.util.Vector xyzs = new java.util.Vector();
-		final java.util.Vector ijks = new java.util.Vector();
-		final java.util.Vector uvs = new java.util.Vector();
-		final java.util.Vector fs = new java.util.Vector();
+		final java.util.Vector<double[]> xyzs = new java.util.Vector<double[]>();
+		final java.util.Vector<double[]> ijks = new java.util.Vector<double[]>();
+		final java.util.Vector<double[]> uvs = new java.util.Vector<double[]>();
+		final java.util.Vector<Vector<Integer>> fs = new java.util.Vector<Vector<Integer>>();
 		while (st.nextToken() == java.io.StreamTokenizer.TT_WORD) {
 			if (st.sval.startsWith("vt")) {
 				final double uv[] = new double[3];
@@ -78,7 +80,7 @@ public class OBJ {
 				xyz[2] = getNextNumber(st);
 				xyzs.addElement(xyz);
 			} else if (st.sval.startsWith("f")) {
-				final java.util.Vector f = new java.util.Vector();
+				final java.util.Vector<Integer> f = new java.util.Vector<Integer>();
 				while (st.nextToken() == java.io.StreamTokenizer.TT_NUMBER) {
 					f.addElement(new Integer((int) st.nval - 1));
 				}
@@ -98,16 +100,16 @@ public class OBJ {
 		uvDefault[0] = 0;
 		uvDefault[1] = 0;
 		for (int v = 0; v < nVertexCount; v++) {
-			final double xyz[] = (double[]) xyzs.elementAt(v);
+			final double xyz[] = xyzs.elementAt(v);
 			double ijk[];
 			double uv[];
 			try {
-				ijk = (double[]) ijks.elementAt(v);
+				ijk = ijks.elementAt(v);
 			} catch (final ArrayIndexOutOfBoundsException e) {
 				ijk = ijkDefault;
 			}
 			try {
-				uv = (double[]) uvs.elementAt(v);
+				uv = uvs.elementAt(v);
 			} catch (final ArrayIndexOutOfBoundsException e) {
 				uv = uvDefault;
 			}
@@ -118,7 +120,7 @@ public class OBJ {
 		final int[] indices = new int[fs.size() * 3];
 		int i = 0;
 		for (int f = 0; f < fs.size(); f++) {
-			final java.util.Vector face = (java.util.Vector) fs.elementAt(f);
+			final java.util.Vector face = fs.elementAt(f);
 			switch (face.size()) {
 			case 3:
 				indices[i++] = ((Integer) face.elementAt(0)).intValue();

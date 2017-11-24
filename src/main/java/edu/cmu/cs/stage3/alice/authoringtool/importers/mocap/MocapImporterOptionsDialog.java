@@ -45,6 +45,7 @@ import javax.swing.filechooser.FileFilter;
 import com.jamiegl.alicex.ui.JSystemFileChooser;
 
 import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
+import edu.cmu.cs.stage3.alice.authoringtool.importers.mocap.MocapImporterOptionsDialog.ElementOrNullWrapper;
 import edu.cmu.cs.stage3.alice.core.Element;
 import edu.cmu.cs.stage3.alice.core.Sandbox;
 
@@ -96,7 +97,7 @@ public class MocapImporterOptionsDialog extends javax.swing.JDialog {
 	}
 
 	GridBagLayout gridBagLayout1 = new GridBagLayout();
-	JList partsList = new JList();
+	JList<ElementOrNullWrapper> partsList = new JList<ElementOrNullWrapper>();
 	JLabel promptLabel = new JLabel();
 	JScrollPane jScrollPane1 = new JScrollPane();
 	JComboBox nativeFPSCombo = new JComboBox();
@@ -127,7 +128,7 @@ public class MocapImporterOptionsDialog extends javax.swing.JDialog {
 	}
 
 	private void guiInit() {
-		final DefaultListModel listOfStuff = new DefaultListModel();
+		final DefaultListModel<ElementOrNullWrapper> listOfStuff = new DefaultListModel<ElementOrNullWrapper>();
 		partsList.setModel(listOfStuff);
 
 		listOfStuff.addElement(new ElementOrNullWrapper(null, "Build Model from skeleton file"));
@@ -208,7 +209,7 @@ public class MocapImporterOptionsDialog extends javax.swing.JDialog {
 	}
 
 	void okButton_actionPerformed(final ActionEvent e) {
-		selectedPart = ((ElementOrNullWrapper) partsList.getSelectedValue()).obj;
+		selectedPart = partsList.getSelectedValue().obj;
 		asfFile = jSkelFile.getText();
 		fps = Double.parseDouble((String) aliceFPSCombo.getSelectedItem());
 		nativeFPS = Integer.parseInt((String) nativeFPSCombo.getSelectedItem());

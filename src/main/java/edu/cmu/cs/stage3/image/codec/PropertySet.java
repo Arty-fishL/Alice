@@ -100,7 +100,7 @@ class PropertySet {
 	private static final int TYPE_VT_VECTOR = 4096;
 
 	SeekableStream stream;
-	Hashtable properties = new Hashtable();
+	Hashtable<Integer, Property> properties = new Hashtable<Integer, Property>();
 
 	public PropertySet(final SeekableStream stream) throws IOException {
 		this.stream = stream;
@@ -126,12 +126,12 @@ class PropertySet {
 	}
 
 	public boolean hasProperty(final int id) {
-		final Property p = (Property) properties.get(new Integer(id));
+		final Property p = properties.get(new Integer(id));
 		return p != null;
 	}
 
 	public int getI4(final int id) {
-		final Property p = (Property) properties.get(new Integer(id));
+		final Property p = properties.get(new Integer(id));
 		try {
 			final int offset = p.getOffset();
 			stream.seek(offset);
@@ -144,7 +144,7 @@ class PropertySet {
 	}
 
 	public int getUI1(final int id) {
-		final Property p = (Property) properties.get(new Integer(id));
+		final Property p = properties.get(new Integer(id));
 		try {
 			final int offset = p.getOffset();
 			stream.seek(offset);
@@ -157,7 +157,7 @@ class PropertySet {
 	}
 
 	public int getUI2(final int id) {
-		final Property p = (Property) properties.get(new Integer(id));
+		final Property p = properties.get(new Integer(id));
 		try {
 			final int offset = p.getOffset();
 			stream.seek(offset);
@@ -170,7 +170,7 @@ class PropertySet {
 	}
 
 	public long getUI4(final int id) {
-		final Property p = (Property) properties.get(new Integer(id));
+		final Property p = properties.get(new Integer(id));
 		try {
 			final int offset = p.getOffset();
 			stream.seek(offset);
@@ -183,7 +183,7 @@ class PropertySet {
 	}
 
 	public long getUI4(final int id, final long defaultValue) {
-		final Property p = (Property) properties.get(new Integer(id));
+		final Property p = properties.get(new Integer(id));
 		if (p == null) {
 			return defaultValue;
 		}
@@ -200,7 +200,7 @@ class PropertySet {
 	}
 
 	public String getLPSTR(final int id) {
-		final Property p = (Property) properties.get(new Integer(id));
+		final Property p = properties.get(new Integer(id));
 		if (p == null) {
 			return null;
 		}
@@ -223,7 +223,7 @@ class PropertySet {
 	}
 
 	public String getLPWSTR(final int id) {
-		final Property p = (Property) properties.get(new Integer(id));
+		final Property p = properties.get(new Integer(id));
 		try {
 			final int offset = p.getOffset();
 
@@ -242,7 +242,7 @@ class PropertySet {
 	}
 
 	public float getR4(final int id) {
-		final Property p = (Property) properties.get(new Integer(id));
+		final Property p = properties.get(new Integer(id));
 		try {
 			final int offset = p.getOffset();
 			stream.seek(offset);
@@ -262,7 +262,7 @@ class PropertySet {
 	}
 
 	public byte[] getBlob(final int id) {
-		final Property p = (Property) properties.get(new Integer(id));
+		final Property p = properties.get(new Integer(id));
 		try {
 			final int offset = p.getOffset();
 			stream.seek(offset);

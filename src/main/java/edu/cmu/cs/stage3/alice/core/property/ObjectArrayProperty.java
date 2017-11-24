@@ -27,10 +27,11 @@ import edu.cmu.cs.stage3.alice.core.Element;
 import edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent;
 import edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyListener;
 import edu.cmu.cs.stage3.alice.core.reference.ObjectArrayPropertyReference;
+import edu.cmu.cs.stage3.alice.core.reference.PropertyReference;
 
 public class ObjectArrayProperty extends ObjectProperty {
 	private Object[] m_arrayValueIfNull = null;
-	private final java.util.Vector m_objectArrayPropertyListeners = new java.util.Vector();
+	private final java.util.Vector<ObjectArrayPropertyListener> m_objectArrayPropertyListeners = new java.util.Vector<ObjectArrayPropertyListener>();
 	private ObjectArrayPropertyListener[] m_objectArrayPropertyListenerArray = null;
 
 	public ObjectArrayProperty(final Element owner, final String name, final Object[] defaultValue,
@@ -103,7 +104,7 @@ public class ObjectArrayProperty extends ObjectProperty {
 
 	@Override
 	protected void decodeObject(final org.w3c.dom.Element node, final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader,
-			final java.util.Vector referencesToBeResolved, final double version) throws java.io.IOException {
+			final java.util.Vector<PropertyReference> referencesToBeResolved, final double version) throws java.io.IOException {
 		final String componentTypeName = node.getAttribute("componentClass");
 		try {
 			final Class arrayComponentCls = Class.forName(componentTypeName);

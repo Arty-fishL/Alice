@@ -35,7 +35,7 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 
 	private AudioFormat formatOld;
 	private Format arrSupportedFormats[] = null;
-	private Vector vectorContSuppFormats = new Vector();
+	private Vector<Format> vectorContSuppFormats = new Vector<Format>();
 	private final boolean boolDisplayEnableTrack;
 	private final ActionListener listenerEnableTrack;
 	private boolean boolEnableTrackSaved = true;
@@ -221,7 +221,7 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		setSupportedFormats(vectorContSuppFormats);
 	}
 
-	public void setSupportedFormats(final Vector vectorContSuppFormats) {
+	public void setSupportedFormats(final Vector<Format> vectorContSuppFormats) {
 		this.vectorContSuppFormats = vectorContSuppFormats;
 
 		if (vectorContSuppFormats.isEmpty()) {
@@ -374,7 +374,7 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 		String strSampleRatePref = null;
 		Object objectFormat;
 		AudioFormat formatAudio;
-		final Vector vectorRates = new Vector();
+		final Vector<String> vectorRates = new Vector<String>();
 		boolean boolEnable;
 
 		boolEnable = comboSampleRate.isEnabled();

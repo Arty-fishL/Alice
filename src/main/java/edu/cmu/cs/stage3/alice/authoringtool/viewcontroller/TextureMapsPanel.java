@@ -23,6 +23,10 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.viewcontroller;
 
+import javax.swing.JComponent;
+
+import edu.cmu.cs.stage3.alice.core.TextureMap;
+
 /**
  * @author Jason Pratt
  */
@@ -33,7 +37,7 @@ public class TextureMapsPanel extends edu.cmu.cs.stage3.alice.authoringtool.util
 	private static final long serialVersionUID = 2782421703217605011L;
 	protected edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty textureMaps;
 	protected javax.swing.JPanel contentPanel = new javax.swing.JPanel();
-	protected java.util.HashMap textureMapGuiCache = new java.util.HashMap();
+	protected java.util.HashMap<TextureMap, JComponent> textureMapGuiCache = new java.util.HashMap<TextureMap, JComponent>();
 	protected javax.swing.JButton importTextureMapButton = new javax.swing.JButton("import texture map");
 	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
 	protected RefreshListener refreshListener = new RefreshListener();
@@ -85,7 +89,7 @@ public class TextureMapsPanel extends edu.cmu.cs.stage3.alice.authoringtool.util
 			for (int i = 0; i < textureMaps.size(); i++) {
 				final edu.cmu.cs.stage3.alice.core.TextureMap textureMap = (edu.cmu.cs.stage3.alice.core.TextureMap) textureMaps
 						.get(i);
-				javax.swing.JComponent gui = (javax.swing.JComponent) textureMapGuiCache.get(textureMap);
+				javax.swing.JComponent gui = textureMapGuiCache.get(textureMap);
 				if (gui == null) {
 					gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getGUI(textureMap);
 					textureMapGuiCache.put(textureMap, gui);

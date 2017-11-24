@@ -23,6 +23,7 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import javax.swing.Icon;
 import javax.swing.JTable;
 
 public class PropertyCellRenderer extends javax.swing.table.DefaultTableCellRenderer {
@@ -122,7 +123,7 @@ public class PropertyCellRenderer extends javax.swing.table.DefaultTableCellRend
 		 *
 		 */
 		private static final long serialVersionUID = 2278473570775139789L;
-		java.util.Hashtable colorsToIcons = new java.util.Hashtable();
+		java.util.Hashtable<Object, Icon> colorsToIcons = new java.util.Hashtable<Object, Icon>();
 
 		public ColorRenderer() {
 		}
@@ -137,7 +138,7 @@ public class PropertyCellRenderer extends javax.swing.table.DefaultTableCellRend
 
 			setBackground(isSelected ? table.getSelectionBackground() : table.getBackground());
 
-			javax.swing.Icon icon = (javax.swing.Icon) colorsToIcons.get(color);
+			javax.swing.Icon icon = colorsToIcons.get(color);
 			if (icon == null) {
 				final int height = table.getRowHeight() - 4;
 				final int width = height * 2;

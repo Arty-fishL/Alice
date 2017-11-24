@@ -146,7 +146,7 @@ public class AliceMenuItemUI extends javax.swing.plaf.basic.BasicMenuItemUI {
 			System.arraycopy(oldPath, 0, newPath, 0, i);
 			newPath[i] = menuItem;
 		} else {
-			final java.util.Vector path = new java.util.Vector();
+			final java.util.Vector<MenuElement> path = new java.util.Vector<MenuElement>();
 			MenuElement me = menuItem;
 			while (me instanceof MenuElement) {
 				path.add(0, me);
@@ -169,7 +169,7 @@ public class AliceMenuItemUI extends javax.swing.plaf.basic.BasicMenuItemUI {
 				}
 			}
 
-			newPath = (MenuElement[]) path.toArray(new MenuElement[0]);
+			newPath = path.toArray(new MenuElement[0]);
 		}
 
 		return newPath;

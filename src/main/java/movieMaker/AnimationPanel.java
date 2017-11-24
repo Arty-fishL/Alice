@@ -57,7 +57,7 @@ public class AnimationPanel extends JComponent {
 		Image image = null;
 		Picture picture = null;
 		for (int i = 0; i < pictList.size(); i++) {
-			picture = (Picture) pictList.get(i);
+			picture = pictList.get(i);
 			nameList.add(picture.getFileName());
 			image = picture.getImage();
 			imageList.add(image);
@@ -97,7 +97,7 @@ public class AnimationPanel extends JComponent {
 
 		// set size of this panel
 		if (imageIcon != null) {
-			image = (Image) imageList.get(0);
+			image = imageList.get(0);
 			final int width = image.getWidth(null);
 			final int height = image.getHeight(null);
 			this.setSize(new Dimension(width, height));
@@ -275,7 +275,7 @@ public class AnimationPanel extends JComponent {
 	 *            the graphics context to draw to
 	 */
 	public void draw(final Graphics g) {
-		final Image image = (Image) imageList.get(currIndex);
+		final Image image = imageList.get(currIndex);
 		g.drawImage(image, 0, 0, this);
 	}
 

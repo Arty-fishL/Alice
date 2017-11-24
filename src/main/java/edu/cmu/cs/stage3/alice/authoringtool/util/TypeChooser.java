@@ -28,6 +28,7 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JComboBox;
 import javax.swing.JRadioButton;
+import javax.swing.event.ChangeListener;
 
 import edu.cmu.cs.stage3.util.StringTypePair;
 
@@ -41,13 +42,13 @@ public class TypeChooser extends javax.swing.JPanel {
 	private static final long serialVersionUID = 4056975601661381544L;
 	private Class type;
 	private final javax.swing.ButtonGroup buttonGroup;
-	private final java.util.HashMap typeMap = new java.util.HashMap();
-	private final java.util.HashSet changeListeners = new java.util.HashSet();
+	private final java.util.HashMap<String, Class> typeMap = new java.util.HashMap<String, Class>();
+	private final java.util.HashSet<ChangeListener> changeListeners = new java.util.HashSet<ChangeListener>();
 	private final JRadioButton numberButton = new JRadioButton("Number");
 	private final JRadioButton booleanButton = new JRadioButton("Boolean");
 	private final JRadioButton objectButton = new JRadioButton("Object");
 	private final JRadioButton otherButton = new JRadioButton("Other...");
-	private final JComboBox otherCombo = new JComboBox();
+	private final JComboBox<String> otherCombo = new JComboBox<String>();
 	private final edu.cmu.cs.stage3.alice.authoringtool.util.CheckForValidityCallback okButtonCallback;
 
 	public TypeChooser(final edu.cmu.cs.stage3.alice.authoringtool.util.CheckForValidityCallback okButtonCallback) {
@@ -137,7 +138,7 @@ public class TypeChooser extends javax.swing.JPanel {
 	protected void parseOtherType() {
 		final String typeString = ((javax.swing.JTextField) otherCombo.getEditor().getEditorComponent()).getText()
 				.trim();
-		Class newType = (Class) typeMap.get(typeString);
+		Class newType = typeMap.get(typeString);
 		if (newType == null) {
 			try {
 				newType = Class.forName(typeString);
@@ -188,8 +189,8 @@ public class TypeChooser extends javax.swing.JPanel {
 
 	protected void fireStateChanged(final Object source) {
 		final javax.swing.event.ChangeEvent ev = new javax.swing.event.ChangeEvent(source);
-		for (final java.util.Iterator iter = changeListeners.iterator(); iter.hasNext();) {
-			((javax.swing.event.ChangeListener) iter.next()).stateChanged(ev);
+		for (final java.util.Iterator<ChangeListener> iter = changeListeners.iterator(); iter.hasNext();) {
+			iter.next().stateChanged(ev);
 		}
 	}
 }

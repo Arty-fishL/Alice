@@ -48,6 +48,7 @@ import javax.swing.event.ChangeEvent;
 import com.jamiegl.alicex.ui.JSystemFileChooser;
 
 import edu.cmu.cs.stage3.alice.authoringtool.AikMin;
+import edu.cmu.cs.stage3.util.StringObjectPair;
 
 /**
  * @author David Culyba, Dennis Cosgrove
@@ -453,8 +454,8 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		return name;
 	}
 
-	private java.util.Vector buildVectorFromString(final String[] files) {
-		final java.util.Vector toReturn = new java.util.Vector();
+	private java.util.Vector<StringObjectPair> buildVectorFromString(final String[] files) {
+		final java.util.Vector<StringObjectPair> toReturn = new java.util.Vector<StringObjectPair>();
 		if (files != null) {
 			for (final String file : files) {
 				final String name = makeNameFromFilename(file);
@@ -466,10 +467,10 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		return toReturn;
 	}
 
-	private java.util.Vector buildVectorFromDirectory(final java.io.File dir, final java.io.FileFilter f) {
-		java.util.Vector toReturn = null;
+	private java.util.Vector<StringObjectPair> buildVectorFromDirectory(final java.io.File dir, final java.io.FileFilter f) {
+		java.util.Vector<StringObjectPair> toReturn = null;
 		if (dir != null && dir.isDirectory()) {
-			toReturn = new java.util.Vector();
+			toReturn = new java.util.Vector<StringObjectPair>();
 			final java.io.File[] files = dir.listFiles(f);
 			for (final File file : files) {
 				String name = "";
@@ -551,7 +552,7 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		}
 	}
 
-	private int buildPanel(final javax.swing.JPanel toBuild, final java.util.Vector toAdd, final boolean needToSave,
+	private int buildPanel(final javax.swing.JPanel toBuild, final java.util.Vector<StringObjectPair> toAdd, final boolean needToSave,
 			final java.io.File parentDir, final int type) {
 		// int width = 0;
 		// int currentRow = 0;
@@ -570,7 +571,7 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		}
 		if (toAdd != null) {
 			for (int i = 0; i < toAdd.size(); i++) {
-				final edu.cmu.cs.stage3.util.StringObjectPair sop = (edu.cmu.cs.stage3.util.StringObjectPair) toAdd
+				final edu.cmu.cs.stage3.util.StringObjectPair sop = toAdd
 						.get(i);
 				final String name = sop.getString();
 				String filename = (String) sop.getObject();
@@ -608,8 +609,8 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 	}
 
 	private void initializeFileChooser() {
-		final javax.swing.LookAndFeel feel = UIManager.getLookAndFeel();
-		final String font = "SansSerif";
+		// Unused? final javax.swing.LookAndFeel feel = UIManager.getLookAndFeel();
+		// Unused ?? final String font = "SansSerif";
 		try {
 			if (System.getProperty("os.name") != null && System.getProperty("os.name").startsWith("Windows")) {
 				UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");// "com.sun.java.swing.plaf.windows.WindowsLookAndFeel");

@@ -44,13 +44,13 @@ import edu.cmu.cs.stage3.alice.scenegraph.util.Triangle;
 
 public class Polygon {
 
-	private final java.util.Vector segments;
+	private final java.util.Vector<Object> segments;
 
 	private Vertex3d[] triVertices = null;
 	private int[] indices = null;
 
 	public Polygon() {
-		segments = new java.util.Vector();
+		segments = new java.util.Vector<Object>();
 	}
 
 	public boolean parsePathIterator(final PathIterator pi, final Point2d offset, final int curvature) {
@@ -97,7 +97,7 @@ public class Polygon {
 
 		final edu.cmu.cs.stage3.alice.scenegraph.util.Triangulator triangulator = new edu.cmu.cs.stage3.alice.scenegraph.util.Triangulator();
 
-		java.util.ListIterator li = segments.listIterator();
+		java.util.ListIterator<Object> li = segments.listIterator();
 		while (li.hasNext()) {
 			triangulator.addContour(((PolygonSegment) li.next()).points());
 		}
@@ -155,7 +155,7 @@ public class Polygon {
 			return;
 		}
 		((PolygonSegment) segments.firstElement()).genSideStrips(extz);
-		final java.util.ListIterator li = segments.listIterator();
+		final java.util.ListIterator<Object> li = segments.listIterator();
 		while (li.hasNext()) {
 			((PolygonSegment) li.next()).genSideStrips(extz);
 		}

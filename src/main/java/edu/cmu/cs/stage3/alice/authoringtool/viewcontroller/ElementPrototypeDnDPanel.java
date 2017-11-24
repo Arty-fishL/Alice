@@ -24,7 +24,9 @@
 package edu.cmu.cs.stage3.alice.authoringtool.viewcontroller;
 
 import java.awt.Component;
+import java.util.LinkedList;
 
+import edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.ElementPrototypeDnDPanel.Tile;
 import edu.cmu.cs.stage3.util.StringObjectPair;
 
 /**
@@ -215,10 +217,10 @@ public class ElementPrototypeDnDPanel extends edu.cmu.cs.stage3.alice.authoringt
 	}
 
 	static class TilePool {
-		protected java.util.HashMap tileListMap = new java.util.HashMap();
+		protected java.util.HashMap<String, LinkedList<Tile>> tileListMap = new java.util.HashMap<String, LinkedList<Tile>>();
 
 		public Tile getTile(final String text) {
-			final java.util.LinkedList tileList = (java.util.LinkedList) tileListMap.get(text);
+			final java.util.LinkedList tileList = tileListMap.get(text);
 			if (tileList != null && !tileList.isEmpty()) {
 				return (Tile) tileList.removeFirst();
 			} else {
@@ -228,9 +230,9 @@ public class ElementPrototypeDnDPanel extends edu.cmu.cs.stage3.alice.authoringt
 		}
 
 		public void releaseTile(final String text, final Tile tile) {
-			java.util.LinkedList tileList = (java.util.LinkedList) tileListMap.get(text);
+			java.util.LinkedList<Tile> tileList = tileListMap.get(text);
 			if (tileList == null) {
-				tileList = new java.util.LinkedList();
+				tileList = new java.util.LinkedList<Tile>();
 				tileListMap.put(text, tileList);
 			}
 			tileList.addFirst(tile);

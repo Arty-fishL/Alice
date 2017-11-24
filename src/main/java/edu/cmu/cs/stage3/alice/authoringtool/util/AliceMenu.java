@@ -1500,7 +1500,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 * @return the array of menu items
 	 */
 	private MenuElement[] buildMenuElementArray(final AliceMenu leaf) {
-		final Vector elements = new Vector();
+		final Vector<JComponent> elements = new Vector<JComponent>();
 		Component current = leaf.getPopupMenu();
 		JPopupMenu pop;
 		AliceMenu menu;

@@ -8,6 +8,7 @@ package edu.cmu.cs.stage3.alice.gallery;
 
 import java.io.File;
 
+import edu.cmu.cs.stage3.alice.core.Element;
 import edu.cmu.cs.stage3.alice.core.Model;
 
 /**
@@ -29,7 +30,7 @@ public class CaitlinFixer {
 	}
 
 	private static void removeAllMarkersAndLights(final edu.cmu.cs.stage3.alice.core.Element element) {
-		final java.util.Vector v = new java.util.Vector();
+		final java.util.Vector<Element> v = new java.util.Vector<Element>();
 		for (int i = 0; i < element.getChildCount(); i++) {
 			final edu.cmu.cs.stage3.alice.core.Element child = element.getChildAt(i);
 			if (child instanceof edu.cmu.cs.stage3.alice.core.Light) {
@@ -45,7 +46,7 @@ public class CaitlinFixer {
 			}
 		}
 		for (int i = 0; i < v.size(); i++) {
-			final edu.cmu.cs.stage3.alice.core.Element elementsToRemoveI = (edu.cmu.cs.stage3.alice.core.Element) v
+			final edu.cmu.cs.stage3.alice.core.Element elementsToRemoveI = v
 					.elementAt(i);
 			System.err.println("removing: " + elementsToRemoveI);
 			elementsToRemoveI.removeFromParent();

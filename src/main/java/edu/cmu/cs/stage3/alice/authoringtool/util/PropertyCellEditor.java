@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import javax.swing.DefaultCellEditor;
+
 import edu.cmu.cs.stage3.util.Enumerable;
 import edu.cmu.cs.stage3.util.StringObjectPair;
 
@@ -53,7 +55,7 @@ public class PropertyCellEditor implements javax.swing.table.TableCellEditor, ja
 	protected boolean isNullValid;
 	protected javax.swing.event.EventListenerList listenerList = new javax.swing.event.EventListenerList();
 
-	protected java.util.Hashtable classesToEditors = new java.util.Hashtable();
+	protected java.util.Hashtable<Class, DefaultCellEditor> classesToEditors = new java.util.Hashtable<Class, DefaultCellEditor>();
 	protected edu.cmu.cs.stage3.alice.core.Element element = null;
 
 	public PropertyCellEditor() {
@@ -71,8 +73,8 @@ public class PropertyCellEditor implements javax.swing.table.TableCellEditor, ja
 		classesToEditors.put(edu.cmu.cs.stage3.alice.core.ReferenceFrame.class, elementEditor);
 		// classesToEditors.put( java.awt.Font.class, fontEditor );
 
-		for (final java.util.Enumeration enum0 = classesToEditors.elements(); enum0.hasMoreElements();) {
-			final javax.swing.table.TableCellEditor editor = (javax.swing.table.TableCellEditor) enum0.nextElement();
+		for (final java.util.Enumeration<DefaultCellEditor> enum0 = classesToEditors.elements(); enum0.hasMoreElements();) {
+			final javax.swing.table.TableCellEditor editor = enum0.nextElement();
 			editor.removeCellEditorListener(this);
 			editor.addCellEditorListener(this);
 		}
@@ -162,7 +164,7 @@ public class PropertyCellEditor implements javax.swing.table.TableCellEditor, ja
 
 		currentValueClass = valueClass;
 		if (valueClass != null) {
-			currentEditor = (javax.swing.table.TableCellEditor) classesToEditors.get(valueClass);
+			currentEditor = classesToEditors.get(valueClass);
 		} else {
 			valueClass = Object.class;
 			currentEditor = null;
@@ -174,10 +176,10 @@ public class PropertyCellEditor implements javax.swing.table.TableCellEditor, ja
 		 * editor for class
 		 */
 		if (currentEditor == null) {
-			for (final java.util.Enumeration enum0 = classesToEditors.keys(); enum0.hasMoreElements();) {
-				final Class editorClass = (Class) enum0.nextElement();
+			for (final java.util.Enumeration<Class> enum0 = classesToEditors.keys(); enum0.hasMoreElements();) {
+				final Class editorClass = enum0.nextElement();
 				if (editorClass.isAssignableFrom(valueClass)) {
-					currentEditor = (javax.swing.table.TableCellEditor) classesToEditors.get(editorClass);
+					currentEditor = classesToEditors.get(editorClass);
 					break;
 				}
 			}

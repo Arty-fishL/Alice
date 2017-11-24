@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.io;
 
+import java.util.zip.ZipEntry;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -43,7 +45,7 @@ public class ZipFileTreeLoader implements DirectoryTreeLoader {
 		return pathname;
 	}
 
-	private final java.util.Hashtable m_pathnameToZipEntryMap = new java.util.Hashtable();
+	private final java.util.Hashtable<String, ZipEntry> m_pathnameToZipEntryMap = new java.util.Hashtable<String, ZipEntry>();
 	private java.io.File m_rootFile = null;
 	private java.util.zip.ZipFile m_zipFile = null;
 	private String m_currentDirectory = null;
@@ -116,7 +118,7 @@ public class ZipFileTreeLoader implements DirectoryTreeLoader {
 	public java.io.InputStream readFile(final String filename) throws IllegalArgumentException, java.io.IOException {
 		closeCurrentFile();
 		final String pathname = getCanonicalPathname(m_currentDirectory + filename);
-		final java.util.zip.ZipEntry zipEntry = (java.util.zip.ZipEntry) m_pathnameToZipEntryMap.get(pathname);
+		final java.util.zip.ZipEntry zipEntry = m_pathnameToZipEntryMap.get(pathname);
 		if (zipEntry != null) {
 			m_currentlyOpenStream = m_zipFile.getInputStream(zipEntry);
 			return m_currentlyOpenStream;

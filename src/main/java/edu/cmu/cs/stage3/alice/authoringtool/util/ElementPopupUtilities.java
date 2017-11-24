@@ -25,7 +25,9 @@ package edu.cmu.cs.stage3.alice.authoringtool.util;
 
 import edu.cmu.cs.stage3.alice.core.Element;
 import edu.cmu.cs.stage3.alice.core.Property;
+import edu.cmu.cs.stage3.alice.core.property.ObjectProperty;
 import edu.cmu.cs.stage3.alice.core.reference.PropertyReference;
+import edu.cmu.cs.stage3.util.StringObjectPair;
 
 /**
  * @author Jason Pratt
@@ -125,7 +127,7 @@ public class ElementPopupUtilities {
 	public static java.util.Vector makeCoerceToStructure(final edu.cmu.cs.stage3.alice.core.Element element) {
 		if (element != null && element.isCoercionSupported()) {
 			final java.util.Vector structure = new java.util.Vector();
-			final java.util.Vector subStructure = new java.util.Vector();
+			final java.util.Vector<StringObjectPair> subStructure = new java.util.Vector<StringObjectPair>();
 
 			final Class[] classes = element.getSupportedCoercionClasses();
 			if (classes != null) {
@@ -594,7 +596,7 @@ public class ElementPopupUtilities {
 
 		protected edu.cmu.cs.stage3.alice.core.Property[] calculateAffectedProperties(
 				final edu.cmu.cs.stage3.alice.core.Model model) {
-			final java.util.Vector properties = new java.util.Vector();
+			final java.util.Vector<ObjectProperty> properties = new java.util.Vector<ObjectProperty>();
 			properties.add(model.localTransformation);
 			properties.add(model.vehicle);
 			final edu.cmu.cs.stage3.alice.core.Element[] descendants = model.getDescendants(); // TODO:
@@ -617,7 +619,7 @@ public class ElementPopupUtilities {
 																											// head
 				}
 			}
-			return (edu.cmu.cs.stage3.alice.core.Property[]) properties
+			return properties
 					.toArray(new edu.cmu.cs.stage3.alice.core.Property[0]);
 		}
 	}
@@ -1003,7 +1005,7 @@ public class ElementPopupUtilities {
 	}
 
 	public static class SortGroupAlphabeticallyRunnable extends ElementPopupRunnable {
-		protected java.util.Comparator sorter = new java.util.Comparator() {
+		protected java.util.Comparator<Object> sorter = new java.util.Comparator() {
 			@Override
 			public int compare(final Object o1, final Object o2) {
 				if (o1 instanceof edu.cmu.cs.stage3.alice.core.Element

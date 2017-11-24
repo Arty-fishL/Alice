@@ -25,6 +25,7 @@ package edu.cmu.cs.stage3.alice.authoringtool.dialog;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.event.ActionListener;
 
 import com.jamiegl.alicex.ui.JSystemFileChooser;
 
@@ -38,7 +39,7 @@ public class SaveForWebContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 	private static final long serialVersionUID = 3281659873596007008L;
 	private final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
 	private boolean ignoreSizeChange = false;
-	private final java.util.Vector m_okActionListeners = new java.util.Vector();
+	private final java.util.Vector<ActionListener> m_okActionListeners = new java.util.Vector<ActionListener>();
 
 	private static edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringToolConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration
 			.getLocalConfiguration(edu.cmu.cs.stage3.alice.authoringtool.JAlice.class.getPackage());
@@ -84,7 +85,7 @@ public class SaveForWebContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 		final java.awt.event.ActionEvent e = new java.awt.event.ActionEvent(this,
 				java.awt.event.ActionEvent.ACTION_PERFORMED, "OK");
 		for (int i = 0; i < m_okActionListeners.size(); i++) {
-			final java.awt.event.ActionListener l = (java.awt.event.ActionListener) m_okActionListeners.elementAt(i);
+			final java.awt.event.ActionListener l = m_okActionListeners.elementAt(i);
 			l.actionPerformed(e);
 		}
 	}

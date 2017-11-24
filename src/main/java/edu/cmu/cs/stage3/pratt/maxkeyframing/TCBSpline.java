@@ -29,7 +29,7 @@ package edu.cmu.cs.stage3.pratt.maxkeyframing;
 public class TCBSpline extends Spline {
 	protected TCBKey[] keys;
 	protected edu.cmu.cs.stage3.math.HermiteCubic[][] curves;
-	protected java.util.HashMap curveMap = new java.util.HashMap();
+	protected java.util.HashMap<TCBKey, Integer> curveMap = new java.util.HashMap<TCBKey, Integer>();
 	protected int numComponents;
 
 	public boolean addKey(final TCBKey key) {

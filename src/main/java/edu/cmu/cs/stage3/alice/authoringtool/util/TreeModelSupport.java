@@ -36,7 +36,7 @@ import javax.swing.event.TreeModelListener;
  * I don't know why these classes aren't in the standard API
  */
 public class TreeModelSupport {
-	private final Vector vector = new Vector();
+	private final Vector<TreeModelListener> vector = new Vector<TreeModelListener>();
 
 	public void addTreeModelListener(final TreeModelListener listener) {
 		if (listener != null && !vector.contains(listener)) {
@@ -61,9 +61,9 @@ public class TreeModelSupport {
 																// thread
 			@Override
 			public void run() {
-				final Enumeration listeners = vector.elements();
+				final Enumeration<TreeModelListener> listeners = vector.elements();
 				while (listeners.hasMoreElements()) {
-					final TreeModelListener listener = (TreeModelListener) listeners.nextElement();
+					final TreeModelListener listener = listeners.nextElement();
 					listener.treeNodesChanged(e);
 				}
 			}
@@ -81,9 +81,9 @@ public class TreeModelSupport {
 																// thread
 			@Override
 			public void run() {
-				final Enumeration listeners = vector.elements();
+				final Enumeration<TreeModelListener> listeners = vector.elements();
 				while (listeners.hasMoreElements()) {
-					final TreeModelListener listener = (TreeModelListener) listeners.nextElement();
+					final TreeModelListener listener = listeners.nextElement();
 					listener.treeNodesInserted(e);
 				}
 			}
@@ -101,9 +101,9 @@ public class TreeModelSupport {
 																// thread
 			@Override
 			public void run() {
-				final Enumeration listeners = vector.elements();
+				final Enumeration<TreeModelListener> listeners = vector.elements();
 				while (listeners.hasMoreElements()) {
-					final TreeModelListener listener = (TreeModelListener) listeners.nextElement();
+					final TreeModelListener listener = listeners.nextElement();
 					listener.treeNodesRemoved(e);
 				}
 			}
@@ -121,9 +121,9 @@ public class TreeModelSupport {
 																// thread
 			@Override
 			public void run() {
-				final Enumeration listeners = vector.elements();
+				final Enumeration<TreeModelListener> listeners = vector.elements();
 				while (listeners.hasMoreElements()) {
-					final TreeModelListener listener = (TreeModelListener) listeners.nextElement();
+					final TreeModelListener listener = listeners.nextElement();
 					listener.treeStructureChanged(e);
 				}
 			}

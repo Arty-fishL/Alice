@@ -23,12 +23,14 @@
 
 package edu.cmu.cs.stage3.alice.scripting.jython;
 
+import edu.cmu.cs.stage3.alice.core.Element;
+
 public class Namespace extends org.python.core.PyStringMap {
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = 5601665909748681996L;
-	private final java.util.Hashtable m_map = new java.util.Hashtable();
+	private final java.util.Hashtable<Element, PyElement> m_map = new java.util.Hashtable<Element, PyElement>();
 	private edu.cmu.cs.stage3.alice.core.World m_world = null;
 	private PyElement m_pyWorld = null;
 
@@ -40,7 +42,7 @@ public class Namespace extends org.python.core.PyStringMap {
 	}
 
 	/* package protected */PyElement getPyElement(final edu.cmu.cs.stage3.alice.core.Element element) {
-		PyElement pyElement = (PyElement) m_map.get(element);
+		PyElement pyElement = m_map.get(element);
 		if (pyElement == null) {
 			if (element instanceof edu.cmu.cs.stage3.alice.core.Sandbox) {
 				pyElement = new PySandbox((edu.cmu.cs.stage3.alice.core.Sandbox) element, this);

@@ -523,7 +523,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
 		final int numEntries = fields.length;
 
 		long offsetBeyondIFD = firstIFDOffset + 12 * numEntries + 4 + 2;
-		final Vector tooBig = new Vector();
+		final Vector<Integer> tooBig = new Vector<Integer>();
 
 		TIFFField field;
 		int tag;
@@ -572,7 +572,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
 		int index;
 		// Write the tag values that did not fit into 4 bytes
 		for (int i = 0; i < tooBig.size(); i++) {
-			index = ((Integer) tooBig.elementAt(i)).intValue();
+			index = tooBig.elementAt(i).intValue();
 			writeValues(fields[index]);
 		}
 	}

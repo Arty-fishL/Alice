@@ -1303,8 +1303,8 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 
 	// Other chunk types
 
-	Vector chunkType = new Vector();
-	Vector chunkData = new Vector();
+	Vector<String> chunkType = new Vector<String>();
+	Vector<byte[]> chunkData = new Vector<byte[]>();
 
 	/**
 	 * Adds a private chunk, in binary form, to the list of chunks to be stored
@@ -1333,7 +1333,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	 * <code>getNumPrivateChunks</code>.
 	 */
 	public synchronized String getPrivateChunkType(final int index) {
-		return (String) chunkType.elementAt(index);
+		return chunkType.elementAt(index);
 	}
 
 	/**
@@ -1342,7 +1342,7 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	 * value of <code>getNumPrivateChunks</code>.
 	 */
 	public synchronized byte[] getPrivateChunkData(final int index) {
-		return (byte[]) chunkData.elementAt(index);
+		return chunkData.elementAt(index);
 	}
 
 	/**
@@ -1351,8 +1351,8 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	 * images.
 	 */
 	public synchronized void removeUnsafeToCopyPrivateChunks() {
-		final Vector newChunkType = new Vector();
-		final Vector newChunkData = new Vector();
+		final Vector<String> newChunkType = new Vector<String>();
+		final Vector<byte[]> newChunkData = new Vector<byte[]>();
 
 		final int len = getNumPrivateChunks();
 		for (int i = 0; i < len; i++) {
@@ -1372,8 +1372,8 @@ public abstract class PNGEncodeParam implements ImageEncodeParam {
 	 * Remove all private chunks associated with this parameter instance.
 	 */
 	public synchronized void removeAllPrivateChunks() {
-		chunkType = new Vector();
-		chunkData = new Vector();
+		chunkType = new Vector<String>();
+		chunkData = new Vector<byte[]>();
 	}
 
 	/**

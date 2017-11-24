@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.editors.compositeeditor;
 
+import javax.swing.Timer;
+
 import edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyEvent;
 
 /**
@@ -42,7 +44,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 
 	protected final boolean USE_DEPTH = false;
 
-	protected static java.util.Vector timers = new java.util.Vector();
+	protected static java.util.Vector<Timer> timers = new java.util.Vector<Timer>();
 	protected static boolean shouldReact = true;
 
 	public static final int LEFT_INDENT = 15;
@@ -193,7 +195,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 
 	protected static void stopAllTimers() {
 		for (int i = 0; i < timers.size(); i++) {
-			final javax.swing.Timer t = (javax.swing.Timer) timers.elementAt(i);
+			final javax.swing.Timer t = timers.elementAt(i);
 			t.stop();
 		}
 		timers.removeAllElements();

@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.core.bubble;
 
+import java.awt.geom.Rectangle2D.Double;
+
 public class BubbleManager implements edu.cmu.cs.stage3.alice.scenegraph.renderer.event.RenderTargetListener {
 	private Bubble[] m_bubbles;
 	private edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget m_renderTarget;
@@ -36,7 +38,7 @@ public class BubbleManager implements edu.cmu.cs.stage3.alice.scenegraph.rendere
 
 	private boolean layoutBubbles(final edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget rt) {
 		boolean isPaintRequired = false;
-		final java.util.Vector rects = new java.util.Vector();
+		final java.util.Vector<Double> rects = new java.util.Vector<Double>();
 		for (final Bubble bubbleI : m_bubbles) {
 			;
 			if (bubbleI.isShowing()) {

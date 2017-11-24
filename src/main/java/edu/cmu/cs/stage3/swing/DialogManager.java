@@ -1,5 +1,7 @@
 package edu.cmu.cs.stage3.swing;
 
+import java.awt.Window;
+
 import javax.swing.WindowConstants;
 
 abstract class ReturnValueTracker {
@@ -39,12 +41,12 @@ abstract class ReturnValueTracker {
 }
 
 public class DialogManager {
-	private static java.util.Stack s_stack = new java.util.Stack();
+	private static java.util.Stack<Window> s_stack = new java.util.Stack<Window>();
 
 	private static javax.swing.JDialog createModalDialog(final String title) {
 		java.awt.Component parent;
 		try {
-			parent = (java.awt.Component) s_stack.peek();
+			parent = s_stack.peek();
 		} catch (final java.util.EmptyStackException ese) {
 			parent = new java.awt.Frame("empty stack");
 			parent.setVisible(true);
@@ -165,7 +167,7 @@ public class DialogManager {
 			}
 		}
 		final ColorTracker colorTracker = new ColorTracker();
-		final java.awt.Component parent = (java.awt.Component) s_stack.peek();
+		final java.awt.Component parent = s_stack.peek();
 		final javax.swing.JDialog dialog = javax.swing.JColorChooser.createDialog(parent, title, true, colorChooser,
 				colorTracker, null);
 		showModalDialog(dialog);
@@ -292,7 +294,7 @@ public class DialogManager {
 		pane.setSelectionValues(selectionValues);
 		pane.setInitialSelectionValue(initialSelectionValue);
 
-		final java.awt.Component parent = (java.awt.Component) s_stack.peek();
+		final java.awt.Component parent = s_stack.peek();
 		pane.setComponentOrientation(parent.getComponentOrientation());
 
 		final javax.swing.JDialog dialog = pane.createDialog(parent, title);
@@ -351,7 +353,7 @@ public class DialogManager {
 		pane.setInitialValue(initialValue);
 		java.awt.Component parent = null;
 		if (!s_stack.isEmpty()) {
-			parent = (java.awt.Component) s_stack.peek();
+			parent = s_stack.peek();
 			pane.setComponentOrientation(parent.getComponentOrientation());
 		}
 

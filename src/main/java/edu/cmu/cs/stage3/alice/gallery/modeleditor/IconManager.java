@@ -1,7 +1,9 @@
 package edu.cmu.cs.stage3.alice.gallery.modeleditor;
 
+import javax.swing.ImageIcon;
+
 class IconManager {
-	private static java.util.Dictionary s_classToImageMap = new java.util.Hashtable();
+	private static java.util.Dictionary<Class, ImageIcon> s_classToImageMap = new java.util.Hashtable<Class, ImageIcon>();
 	private static javax.swing.ImageIcon m_defaultIcon;
 	private static javax.swing.ImageIcon m_modelIcon;
 	private static javax.swing.ImageIcon m_partIcon;
@@ -40,7 +42,7 @@ class IconManager {
 	}
 
 	static public javax.swing.ImageIcon lookupIcon(final Object o) {
-		final javax.swing.ImageIcon icon = (javax.swing.ImageIcon) s_classToImageMap.get(o.getClass());
+		final javax.swing.ImageIcon icon = s_classToImageMap.get(o.getClass());
 		if (icon == null) {
 			if (o instanceof edu.cmu.cs.stage3.alice.core.Model) {
 				final edu.cmu.cs.stage3.alice.core.Model model = (edu.cmu.cs.stage3.alice.core.Model) o;

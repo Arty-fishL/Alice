@@ -23,6 +23,10 @@
 
 package edu.cmu.cs.stage3.alice.core.response;
 
+import edu.cmu.cs.stage3.alice.core.Transformable;
+import edu.cmu.cs.stage3.math.Quaternion;
+import edu.cmu.cs.stage3.math.Vector3;
+
 /**
  * @author Jason Pratt
  */
@@ -56,12 +60,12 @@ public class PoseAnimation extends Animation {
 		protected edu.cmu.cs.stage3.alice.core.Transformable subject;
 		protected edu.cmu.cs.stage3.alice.core.Pose pose;
 		protected java.util.Dictionary poseStringMap;
-		protected java.util.Vector transformableKeys = new java.util.Vector();
+		protected java.util.Vector<Transformable> transformableKeys = new java.util.Vector<Transformable>();
 		protected java.util.Dictionary poseTransformableMap = new java.util.Hashtable();
-		protected java.util.Dictionary sourcePositionMap = new java.util.Hashtable();
-		protected java.util.Dictionary targetPositionMap = new java.util.Hashtable();
-		protected java.util.Dictionary sourceQuaternionMap = new java.util.Hashtable();
-		protected java.util.Dictionary targetQuaternionMap = new java.util.Hashtable();
+		protected java.util.Dictionary<Transformable, Vector3> sourcePositionMap = new java.util.Hashtable<Transformable, Vector3>();
+		protected java.util.Dictionary<Transformable, Vector3> targetPositionMap = new java.util.Hashtable<Transformable, Vector3>();
+		protected java.util.Dictionary<Transformable, Quaternion> sourceQuaternionMap = new java.util.Hashtable<Transformable, Quaternion>();
+		protected java.util.Dictionary<Transformable, Quaternion> targetQuaternionMap = new java.util.Hashtable<Transformable, Quaternion>();
 		protected java.util.Dictionary sourceScaleMap = new java.util.Hashtable();
 		protected java.util.Dictionary targetScaleMap = new java.util.Hashtable();
 
@@ -93,17 +97,17 @@ public class PoseAnimation extends Animation {
 		public void update(final double t) {
 			super.update(t);
 			final double portion = getPortion(t);
-			for (final java.util.Enumeration enum0 = transformableKeys.elements(); enum0.hasMoreElements();) {
-				final edu.cmu.cs.stage3.alice.core.Transformable key = (edu.cmu.cs.stage3.alice.core.Transformable) enum0
+			for (final java.util.Enumeration<Transformable> enum0 = transformableKeys.elements(); enum0.hasMoreElements();) {
+				final edu.cmu.cs.stage3.alice.core.Transformable key = enum0
 						.nextElement();
 
-				final edu.cmu.cs.stage3.math.Vector3 sourcePosition = (edu.cmu.cs.stage3.math.Vector3) sourcePositionMap
+				final edu.cmu.cs.stage3.math.Vector3 sourcePosition = sourcePositionMap
 						.get(key);
-				final edu.cmu.cs.stage3.math.Vector3 targetPosition = (edu.cmu.cs.stage3.math.Vector3) targetPositionMap
+				final edu.cmu.cs.stage3.math.Vector3 targetPosition = targetPositionMap
 						.get(key);
-				final edu.cmu.cs.stage3.math.Quaternion sourceQuaternion = (edu.cmu.cs.stage3.math.Quaternion) sourceQuaternionMap
+				final edu.cmu.cs.stage3.math.Quaternion sourceQuaternion = sourceQuaternionMap
 						.get(key);
-				final edu.cmu.cs.stage3.math.Quaternion targetQuaternion = (edu.cmu.cs.stage3.math.Quaternion) targetQuaternionMap
+				final edu.cmu.cs.stage3.math.Quaternion targetQuaternion = targetQuaternionMap
 						.get(key);
 
 				final edu.cmu.cs.stage3.math.Vector3 currentPosition = edu.cmu.cs.stage3.math.Vector3

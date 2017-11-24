@@ -23,6 +23,10 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.viewcontroller;
 
+import javax.swing.JComponent;
+
+import edu.cmu.cs.stage3.alice.core.Sound;
+
 /**
  * @author Jason Pratt
  */
@@ -33,7 +37,7 @@ public class SoundsPanel extends edu.cmu.cs.stage3.alice.authoringtool.util.Expa
 	private static final long serialVersionUID = -5979933443924207511L;
 	protected edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty sounds;
 	protected javax.swing.JPanel contentPanel = new javax.swing.JPanel();
-	protected java.util.HashMap soundGuiCache = new java.util.HashMap();
+	protected java.util.HashMap<Sound, JComponent> soundGuiCache = new java.util.HashMap<Sound, JComponent>();
 	protected javax.swing.JButton importSoundButton = new javax.swing.JButton("import sound");
 	protected javax.swing.JButton recordSoundButton = new javax.swing.JButton("record sound");
 	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
@@ -112,7 +116,7 @@ public class SoundsPanel extends edu.cmu.cs.stage3.alice.authoringtool.util.Expa
 			for (int i = 0; i < sounds.size(); i++) {
 				final edu.cmu.cs.stage3.alice.core.Sound sound = (edu.cmu.cs.stage3.alice.core.Sound) sounds.get(i);
 				if (sound != null) {
-					javax.swing.JComponent gui = (javax.swing.JComponent) soundGuiCache.get(sound);
+					javax.swing.JComponent gui = soundGuiCache.get(sound);
 					if (gui == null) {
 						gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getGUI(sound);
 						soundGuiCache.put(sound, gui);

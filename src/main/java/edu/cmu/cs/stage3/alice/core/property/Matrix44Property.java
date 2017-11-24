@@ -24,6 +24,7 @@
 package edu.cmu.cs.stage3.alice.core.property;
 
 import edu.cmu.cs.stage3.alice.core.Element;
+import edu.cmu.cs.stage3.alice.core.reference.PropertyReference;
 
 public class Matrix44Property extends ObjectProperty {
 	public Matrix44Property(final Element owner, final String name, final javax.vecmath.Matrix4d defaultValue) {
@@ -45,7 +46,7 @@ public class Matrix44Property extends ObjectProperty {
 
 	@Override
 	protected void decodeObject(final org.w3c.dom.Element node, final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader,
-			final java.util.Vector referencesToBeResolved, final double version) throws java.io.IOException {
+			final java.util.Vector<PropertyReference> referencesToBeResolved, final double version) throws java.io.IOException {
 		final javax.vecmath.Matrix4d m = new javax.vecmath.Matrix4d();
 		final org.w3c.dom.NodeList rowNodeList = node.getElementsByTagName("row");
 		for (int i = 0; i < 4; i++) {

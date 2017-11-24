@@ -24,6 +24,7 @@
 package edu.cmu.cs.stage3.alice.core.property;
 
 import edu.cmu.cs.stage3.alice.core.Element;
+import edu.cmu.cs.stage3.alice.core.reference.PropertyReference;
 
 public class ColorProperty extends ObjectProperty {
 	public ColorProperty(final Element owner, final String name,
@@ -37,7 +38,7 @@ public class ColorProperty extends ObjectProperty {
 
 	@Override
 	protected void decodeObject(final org.w3c.dom.Element node, final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader,
-			final java.util.Vector referencesToBeResolved, final double version) throws java.io.IOException {
+			final java.util.Vector<PropertyReference> referencesToBeResolved, final double version) throws java.io.IOException {
 		final org.w3c.dom.Node redNode = node.getElementsByTagName("red").item(0);
 		final org.w3c.dom.Node greenNode = node.getElementsByTagName("green").item(0);
 		final org.w3c.dom.Node blueNode = node.getElementsByTagName("blue").item(0);

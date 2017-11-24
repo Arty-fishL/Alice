@@ -114,7 +114,7 @@ public class ElementUsageGraph extends javax.swing.JPanel {
 			final java.util.List<Class<? extends Element>> classList = new java.util.ArrayList<>(classCountMap.keySet());
 			java.util.Collections.sort(classList, classNameComparator);
 			for (final Iterator<Class<? extends Element>> iter = classList.iterator(); iter.hasNext();) {
-				final Class<? extends Element> c = (Class<? extends Element>) iter.next();
+				final Class<? extends Element> c = iter.next();
 				String name = c.getName();
 				name = name.substring(name.lastIndexOf('.') + 1);
 				final int count = ((Integer) classCountMap.get(c)).intValue();

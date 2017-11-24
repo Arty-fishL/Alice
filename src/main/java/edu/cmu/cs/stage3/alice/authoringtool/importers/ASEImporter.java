@@ -41,7 +41,7 @@ import edu.cmu.cs.stage3.pratt.maxkeyframing.KeyframeResponse;
 public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractImporter {
 	protected java.io.StreamTokenizer tokenizer;
 	protected Map<Model, String> modelsToParentStrings;
-	protected Map<Object, Model> namesToModels;
+	protected Map<String, Model> namesToModels;
 	protected Map<String, Material> namesToMaterials;
 	protected Map<Model, Integer> modelsToMaterialIndices;
 	protected Map<Model, List<KeyframeResponse>> modelsToKeyframeAnims;
@@ -106,7 +106,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 		tokenizer.wordChars(':', ':');
 
 		modelsToParentStrings = new HashMap<Model, String>();
-		namesToModels = new HashMap<Object, Model>();
+		namesToModels = new HashMap<String, Model>();
 		namesToMaterials = new HashMap<String, Material>();
 		modelsToMaterialIndices = new HashMap<Model, Integer>();
 		modelsToKeyframeAnims = new HashMap<Model, List<KeyframeResponse>>();
@@ -815,7 +815,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 
 			if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*NODE_NAME")) {
 				helper.name.set(parseString());
-				namesToModels.put(helper.name.getValue(), helper);
+				namesToModels.put(helper.name.getStringValue(), helper);
 				currentObject = (String) helper.name.getValue();
 			} else if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*NODE_PARENT")) {
 				modelsToParentStrings.put(helper, parseString());
@@ -853,7 +853,7 @@ public class ASEImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractI
 
 			if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*NODE_NAME")) {
 				model.name.set(parseString());
-				namesToModels.put(model.name.getValue(), model);
+				namesToModels.put(model.name.getStringValue(), model);
 				currentObject = (String) model.name.getValue();
 			} else if (tokenizer.sval != null && tokenizer.sval.equalsIgnoreCase("*NODE_PARENT")) {
 				modelsToParentStrings.put(model, parseString());

@@ -137,7 +137,7 @@ public class FilteringElementTreeModel extends TreeModelSupport implements
 	}
 
 	public Object[] getPath(final edu.cmu.cs.stage3.alice.core.Element element) {
-		final java.util.LinkedList list = new java.util.LinkedList();
+		final java.util.LinkedList<Element> list = new java.util.LinkedList<Element>();
 
 		edu.cmu.cs.stage3.alice.core.Element e = element;
 		while (true) {

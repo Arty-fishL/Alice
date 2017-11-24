@@ -24,6 +24,7 @@
 package edu.cmu.cs.stage3.alice.core;
 
 import edu.cmu.cs.stage3.alice.core.event.ChildrenListener;
+import edu.cmu.cs.stage3.alice.core.event.MessageListener;
 import edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyListener;
 import edu.cmu.cs.stage3.alice.core.event.PropertyListener;
 import edu.cmu.cs.stage3.alice.core.property.ColorProperty;
@@ -72,14 +73,14 @@ public class World extends ReferenceFrame {
 	private final edu.cmu.cs.stage3.alice.scenegraph.collision.CollisionManager m_collisionManager = new edu.cmu.cs.stage3.alice.scenegraph.collision.CollisionManager();
 	private edu.cmu.cs.stage3.alice.scenegraph.Visual[][] m_collisions = {};
 
-	private final java.util.Vector m_capsulePropertyValuePairs = new java.util.Vector();
+	private final java.util.Vector<Object[]> m_capsulePropertyValuePairs = new java.util.Vector<Object[]>();
 	private final java.util.Hashtable m_capsuleElements = new java.util.Hashtable();
 	private edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTargetFactory m_renderTargetFactory = null;
 
 	private edu.cmu.cs.stage3.alice.scripting.ScriptingFactory m_scriptingFactory;
 	private edu.cmu.cs.stage3.alice.scripting.Interpreter m_interpreter;
 
-	private final java.util.Vector m_messageListeners = new java.util.Vector();
+	private final java.util.Vector<MessageListener> m_messageListeners = new java.util.Vector<MessageListener>();
 	private edu.cmu.cs.stage3.alice.core.event.MessageListener[] m_messageListenerArray = null;
 
 	private Sandbox m_currentSandbox = null;
@@ -407,7 +408,7 @@ public class World extends ReferenceFrame {
 		final edu.cmu.cs.stage3.alice.core.event.MessageEvent messageEvent = new edu.cmu.cs.stage3.alice.core.event.MessageEvent(
 				source, message, fromWho, toWhom, when);
 		for (int i = 0; i < m_messageListeners.size(); i++) {
-			final edu.cmu.cs.stage3.alice.core.event.MessageListener messageListener = (edu.cmu.cs.stage3.alice.core.event.MessageListener) m_messageListeners
+			final edu.cmu.cs.stage3.alice.core.event.MessageListener messageListener = m_messageListeners
 					.elementAt(i);
 			messageListener.messageSent(messageEvent);
 		}
@@ -474,9 +475,9 @@ public class World extends ReferenceFrame {
 	}
 
 	public void restore() {
-		final java.util.Enumeration preserves = m_capsulePropertyValuePairs.elements();
+		final java.util.Enumeration<Object[]> preserves = m_capsulePropertyValuePairs.elements();
 		while (preserves.hasMoreElements()) {
-			final Object[] tuple = (Object[]) preserves.nextElement();
+			final Object[] tuple = preserves.nextElement();
 			final Property property = (Property) tuple[0];
 			final Object value = tuple[1];
 			property.set(value);

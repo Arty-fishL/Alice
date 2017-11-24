@@ -23,6 +23,7 @@
 
 package edu.cmu.cs.stage3.caitlin.personbuilder;
 
+import java.net.URL;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -52,10 +53,10 @@ public class ModelWrapper {
 	protected Hashtable partsTable = new Hashtable();
 	protected java.net.URL url = null; // HACK
 
-	protected Vector propertyNameList = new Vector();
-	protected Vector propertyValueList = new Vector();
+	protected Vector<String> propertyNameList = new Vector<String>();
+	protected Vector<String> propertyValueList = new Vector<String>();
 	protected Vector propertyDescList = new Vector();
-	protected Vector itemChoosersWithAlts = new Vector();
+	protected Vector<ItemChooser> itemChoosersWithAlts = new Vector<ItemChooser>();
 
 	public ModelWrapper(final Node root) {
 		worldInit();
@@ -117,7 +118,7 @@ public class ModelWrapper {
 
 	public void switchToAltModel(final String modelName) {
 		for (int i = 0; i < itemChoosersWithAlts.size(); i++) {
-			final ItemChooser itemChooser = (ItemChooser) itemChoosersWithAlts.elementAt(i);
+			final ItemChooser itemChooser = itemChoosersWithAlts.elementAt(i);
 			final edu.cmu.cs.stage3.alice.core.Model model = itemChooser.getAltModel();
 			replaceModel(modelName, model);
 
@@ -126,7 +127,7 @@ public class ModelWrapper {
 
 	public void switchToOrigModel(final String modelName) {
 		for (int i = 0; i < itemChoosersWithAlts.size(); i++) {
-			final ItemChooser itemChooser = (ItemChooser) itemChoosersWithAlts.elementAt(i);
+			final ItemChooser itemChooser = itemChoosersWithAlts.elementAt(i);
 			final edu.cmu.cs.stage3.alice.core.Model model = itemChooser.getOriginalModel();
 			replaceModel(modelName, model);
 
@@ -175,9 +176,9 @@ public class ModelWrapper {
 	}
 
 	protected void loadInitModel(final Node root) {
-		final Vector modelURLs = XMLDirectoryUtilities.getModelURLs(root);
+		final Vector<URL> modelURLs = XMLDirectoryUtilities.getModelURLs(root);
 		for (int i = 0; i < modelURLs.size(); i++) {
-			url = (java.net.URL) modelURLs.elementAt(i);
+			url = modelURLs.elementAt(i);
 			try {
 				template = (Model) Element.load(url, null);
 			} catch (final java.io.IOException ioe) {
@@ -361,8 +362,8 @@ public class ModelWrapper {
 		regenerateTexture();
 
 		for (int i = 0; i < propertyNameList.size(); i++) {
-			final String propName = (String) propertyNameList.elementAt(i);
-			final String propValue = (String) propertyValueList.elementAt(i);
+			final String propName = propertyNameList.elementAt(i);
+			final String propValue = propertyValueList.elementAt(i);
 			final String propDesc = (String) propertyDescList.elementAt(i);
 
 			setPropertyValue(propName, propValue, propDesc);

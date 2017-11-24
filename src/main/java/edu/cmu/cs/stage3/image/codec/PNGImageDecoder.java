@@ -303,7 +303,7 @@ class PNGImage extends SimpleRenderedImage {
 	// Add transparency to a given gray value, expand
 	private static final int POST_ADD_GRAY_TRANS_EXP = POST_ADD_GRAY_TRANS | POST_EXP_MASK;
 
-	private final Vector streamVec = new Vector();
+	private final Vector<ByteArrayInputStream> streamVec = new Vector<ByteArrayInputStream>();
 	private DataInputStream dataStream;
 
 	private int bytesPerPixel; // number of bytes per input pixel
@@ -313,11 +313,11 @@ class PNGImage extends SimpleRenderedImage {
 	// Number of private chunks
 	private int chunkIndex = 0;
 
-	private final Vector textKeys = new Vector();
-	private final Vector textStrings = new Vector();
+	private final Vector<String> textKeys = new Vector<String>();
+	private final Vector<String> textStrings = new Vector<String>();
 
-	private final Vector ztextKeys = new Vector();
-	private final Vector ztextStrings = new Vector();
+	private final Vector<String> ztextKeys = new Vector<String>();
+	private final Vector<String> ztextStrings = new Vector<String>();
 
 	private WritableRaster theTile;
 
@@ -721,8 +721,8 @@ class PNGImage extends SimpleRenderedImage {
 		final int textLen = textKeys.size();
 		final String[] textArray = new String[2 * textLen];
 		for (int i = 0; i < textLen; i++) {
-			final String key = (String) textKeys.elementAt(i);
-			final String val = (String) textStrings.elementAt(i);
+			final String key = textKeys.elementAt(i);
+			final String val = textStrings.elementAt(i);
 			textArray[2 * i] = key;
 			textArray[2 * i + 1] = val;
 			if (emitProperties) {
@@ -738,8 +738,8 @@ class PNGImage extends SimpleRenderedImage {
 		final int ztextLen = ztextKeys.size();
 		final String[] ztextArray = new String[2 * ztextLen];
 		for (int i = 0; i < ztextLen; i++) {
-			final String key = (String) ztextKeys.elementAt(i);
-			final String val = (String) ztextStrings.elementAt(i);
+			final String key = ztextKeys.elementAt(i);
+			final String val = ztextStrings.elementAt(i);
 			ztextArray[2 * i] = key;
 			ztextArray[2 * i + 1] = val;
 			if (emitProperties) {

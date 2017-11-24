@@ -669,7 +669,7 @@ public class DragFromComponent extends JPanel
 			final Vector<StringObjectPair> propertyStructure = AuthoringToolResources.getPropertyStructure(element, false);
 			if (propertyStructure != null) {
 				for (final Iterator<StringObjectPair> iter = propertyStructure.iterator(); iter.hasNext();) {
-					final StringObjectPair sop = (StringObjectPair) iter.next();
+					final StringObjectPair sop = iter.next();
 					final String groupName = sop.getString();
 					@SuppressWarnings("unchecked")
 					final Vector<String> propertyNames = (Vector<String>) sop.getObject();

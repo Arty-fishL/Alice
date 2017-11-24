@@ -229,16 +229,16 @@ public class AMCImporter extends AbstractImporter {
 			ASFBone bone;
 
 			while (tokenizer.ttype == StreamTokenizer.TT_WORD) {
-				bone = (ASFBone) skel.bones_dict.get(tokenizer.sval);
+				bone = skel.bones_dict.get(tokenizer.sval);
 				tokenizer.nextToken();
 
 				bone.position = (Vector3) bone.base_position.clone();
 				bone.axis = new Matrix33();
 
-				ListIterator li2;
+				ListIterator<Integer> li2;
 				li2 = bone.dof.listIterator();
 				while (li2.hasNext()) {
-					final Integer d = (Integer) li2.next();
+					final Integer d = li2.next();
 					if (d.equals(ASFBone.DOF_L)) {
 						// bone.lengthSpline.addKey(new
 						// DoubleSimpleKey((samplenumber-1)*dt,tokenizer.nval*skel.lengthscale));

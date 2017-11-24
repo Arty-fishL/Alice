@@ -23,13 +23,14 @@
 
 package edu.cmu.cs.stage3.alice.scenegraph.renderer;
 
+import edu.cmu.cs.stage3.alice.scenegraph.Camera;
 import edu.cmu.cs.stage3.alice.scenegraph.renderer.event.RenderTargetListener;
 
 public abstract class AbstractRenderTarget implements edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTarget {
 	private final AbstractRenderer m_abstractRenderer;
-	private final java.util.Vector m_sgCameras = new java.util.Vector();
+	private final java.util.Vector<Camera> m_sgCameras = new java.util.Vector<Camera>();
 	private edu.cmu.cs.stage3.alice.scenegraph.Camera[] m_sgCameraArray = null;
-	private final java.util.Vector m_renderTargetListeners = new java.util.Vector();
+	private final java.util.Vector<RenderTargetListener> m_renderTargetListeners = new java.util.Vector<RenderTargetListener>();
 	private edu.cmu.cs.stage3.alice.scenegraph.renderer.event.RenderTargetListener[] m_renderTargetListenerArray = null;
 	private String m_name = null;
 

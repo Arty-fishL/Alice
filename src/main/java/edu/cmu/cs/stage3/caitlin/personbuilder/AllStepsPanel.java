@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.caitlin.personbuilder;
 
+import java.awt.Image;
+import java.net.URL;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -40,7 +42,7 @@ public class AllStepsPanel extends JPanel {
 	protected int numSteps = 0;
 	protected ImageIcon nextImage = null;
 	protected ImageIcon backImage = null;
-	protected Vector stepPanels = new Vector();
+	protected Vector<StepPanel> stepPanels = new Vector<StepPanel>();
 
 	public AllStepsPanel(final Node root, final ModelWrapper modelWrapper,
 			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver, final int progressOffset)
@@ -52,24 +54,24 @@ public class AllStepsPanel extends JPanel {
 	private void createGuiElements(final Node root, final ModelWrapper modelWrapper,
 			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver, int progressOffset)
 			throws edu.cmu.cs.stage3.progress.ProgressCancelException {
-		final Vector imageURLs = XMLDirectoryUtilities.getImageURLs(root);
+		final Vector<URL> imageURLs = XMLDirectoryUtilities.getImageURLs(root);
 		for (int i = 0; i < imageURLs.size(); i++) {
-			final java.net.URL url = (java.net.URL) imageURLs.elementAt(i);
+			final java.net.URL url = imageURLs.elementAt(i);
 			if (url.toString().indexOf("stepNext.jpg") != -1) {
 				nextImage = new ImageIcon(url);
 			} else if (url.toString().indexOf("stepBack.jpg") != -1) {
 				backImage = new ImageIcon(url);
 			}
 		}
-		final Vector stepNodes = XMLDirectoryUtilities.getDirectories(root);
+		final Vector<Node> stepNodes = XMLDirectoryUtilities.getDirectories(root);
 		if (stepNodes != null) {
 			cLayout = new java.awt.CardLayout();
 			setLayout(cLayout);
 			numSteps = stepNodes.size();
 			progressObserver.progressUpdateTotal(progressOffset + stepNodes.size());
 			for (int i = 0; i < stepNodes.size(); i++) {
-				final Node currentStepNode = (Node) stepNodes.elementAt(i);
-				final Vector stepImages = XMLDirectoryUtilities.getImages(currentStepNode);
+				final Node currentStepNode = stepNodes.elementAt(i);
+				final Vector<Image> stepImages = XMLDirectoryUtilities.getImages(currentStepNode);
 				if (stepImages != null && stepImages.size() > 0) {
 					final StepPanel stepPanel = new StepPanel(currentStepNode, nextImage, backImage, modelWrapper);
 					stepPanels.addElement(stepPanel);
@@ -82,7 +84,7 @@ public class AllStepsPanel extends JPanel {
 
 	public void resetDefaults() {
 		for (int i = 0; i < stepPanels.size(); i++) {
-			final StepPanel stepPanel = (StepPanel) stepPanels.elementAt(i);
+			final StepPanel stepPanel = stepPanels.elementAt(i);
 			stepPanel.resetDefaults();
 		}
 	}

@@ -26,5 +26,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="D:/Users/jamie/Documents/WonderPlayer for Alice for Android/Alice 2.4x Win build/Required/externalLib/gluegen-rt.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

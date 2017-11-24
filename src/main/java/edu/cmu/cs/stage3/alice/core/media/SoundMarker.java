@@ -29,7 +29,7 @@ import edu.cmu.cs.stage3.alice.core.property.NumberProperty;
 public class SoundMarker extends Element {
 	public final NumberProperty time = new NumberProperty(this, "time", new Double(0));
 
-	protected java.util.Vector soundMarkerListeners = new java.util.Vector();
+	protected java.util.Vector<SoundMarkerListener> soundMarkerListeners = new java.util.Vector<SoundMarkerListener>();
 
 	public SoundMarker() {
 	}

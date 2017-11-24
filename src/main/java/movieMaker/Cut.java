@@ -80,9 +80,9 @@ public class Cut implements ControllerListener, DataSinkListener {
 		String inputURL = null;
 		String outputURL = null;
 		long start[], end[];
-		final Vector startV = new Vector(); // start piece (in long form
+		final Vector<Long> startV = new Vector<Long>(); // start piece (in long form
 											// apparently)
-		final Vector endV = new Vector();// end piece
+		final Vector<Long> endV = new Vector<Long>();// end piece
 		boolean frameMode = false; // whether specified in frames or seconds
 									// (want seconds) in miliseconds?
 
@@ -161,8 +161,8 @@ public class Cut implements ControllerListener, DataSinkListener {
 		// Parse the start and end points.
 		for (int j = 0; j < start.length; j++) {
 
-			start[j] = ((Long) startV.elementAt(j)).longValue();
-			end[j] = ((Long) endV.elementAt(j)).longValue();
+			start[j] = startV.elementAt(j).longValue();
+			end[j] = endV.elementAt(j).longValue();
 
 			if (prevEnd > start[j]) {
 				System.err.println("Previous end point cannot be > the next start point.");
@@ -212,7 +212,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 		System.exit(0);
 	}
 
-	public boolean doCut(final String input, final String output, final Vector startV, final Vector endV) {
+	public boolean doCut(final String input, final String output, final Vector<Long> startV, final Vector<Long> endV) {
 		final String inputURL = input;
 		final String outputURL = output;
 		MediaLocator iml;
@@ -225,8 +225,8 @@ public class Cut implements ControllerListener, DataSinkListener {
 		// Parse the start and end points.
 		for (int j = 0; j < start.length; j++) {
 
-			start[j] = ((Long) startV.elementAt(j)).longValue();
-			end[j] = ((Long) endV.elementAt(j)).longValue();
+			start[j] = startV.elementAt(j).longValue();
+			end[j] = endV.elementAt(j).longValue();
 
 			if (prevEnd > start[j]) {
 				// System.err.println("Previous end point cannot be > the next

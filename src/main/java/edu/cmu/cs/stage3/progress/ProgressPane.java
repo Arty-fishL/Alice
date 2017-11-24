@@ -1,5 +1,7 @@
 package edu.cmu.cs.stage3.progress;
 
+import java.awt.event.ActionListener;
+
 public abstract class ProgressPane extends edu.cmu.cs.stage3.swing.ContentPane
 		implements edu.cmu.cs.stage3.progress.ProgressObserver {
 	/**
@@ -13,8 +15,8 @@ public abstract class ProgressPane extends edu.cmu.cs.stage3.swing.ContentPane
 	private final String m_title;
 	private final String m_preDescription;
 
-	private final java.util.Vector m_okActionListeners = new java.util.Vector();
-	private final java.util.Vector m_cancelActionListeners = new java.util.Vector();
+	private final java.util.Vector<ActionListener> m_okActionListeners = new java.util.Vector<ActionListener>();
+	private final java.util.Vector<ActionListener> m_cancelActionListeners = new java.util.Vector<ActionListener>();
 
 	private final int UNKNOWN_TOTAL_MAX = 100;
 	private int m_total;
@@ -201,12 +203,12 @@ public abstract class ProgressPane extends edu.cmu.cs.stage3.swing.ContentPane
 		m_isCanceled = true;
 	}
 
-	private void fireActionListeners(final java.util.Vector actionListeners, final java.awt.event.ActionEvent e) {
+	private void fireActionListeners(final java.util.Vector<ActionListener> actionListeners, final java.awt.event.ActionEvent e) {
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				for (int i = 0; i < actionListeners.size(); i++) {
-					final java.awt.event.ActionListener l = (java.awt.event.ActionListener) actionListeners
+					final java.awt.event.ActionListener l = actionListeners
 							.elementAt(i);
 					l.actionPerformed(e);
 				}

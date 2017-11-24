@@ -53,7 +53,7 @@ public abstract class AbstractProxy {
 		final java.util.Enumeration<Property> enum0 = edu.cmu.cs.stage3.alice.scenegraph.Property
 				.getProperties(m_sgElement.getClass()).elements();
 		while (enum0.hasMoreElements()) {
-			final edu.cmu.cs.stage3.alice.scenegraph.Property property = (edu.cmu.cs.stage3.alice.scenegraph.Property) enum0
+			final edu.cmu.cs.stage3.alice.scenegraph.Property property = enum0
 					.nextElement();
 			changed(property, property.get(m_sgElement));
 		}

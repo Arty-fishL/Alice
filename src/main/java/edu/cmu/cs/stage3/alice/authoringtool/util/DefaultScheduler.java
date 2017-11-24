@@ -39,9 +39,9 @@ public class DefaultScheduler implements Runnable {
 
 	private final boolean defaultThreadEnabled = false;
 
-	private final java.util.Set doOnceRunnables = new java.util.HashSet();
-	private final java.util.Set eachFrameRunnables = new java.util.HashSet();
-	private final java.util.Set eachFrameRunnablesMarkedForRemoval = new java.util.HashSet();
+	private final java.util.Set<Runnable> doOnceRunnables = new java.util.HashSet<Runnable>();
+	private final java.util.Set<Runnable> eachFrameRunnables = new java.util.HashSet<Runnable>();
+	private final java.util.Set<Runnable> eachFrameRunnablesMarkedForRemoval = new java.util.HashSet<Runnable>();
 
 	public boolean addDoOnceRunnable(final Runnable doOnceRunnable) {
 		synchronized (doOnceRunnables) {
@@ -65,8 +65,8 @@ public class DefaultScheduler implements Runnable {
 		synchronized (eachFrameRunnables) {
 			final Runnable[] runnables = new Runnable[eachFrameRunnables.size()];
 			int i = 0;
-			for (final java.util.Iterator iter = eachFrameRunnables.iterator(); iter.hasNext();) {
-				runnables[i++] = (Runnable) iter.next();
+			for (final java.util.Iterator<Runnable> iter = eachFrameRunnables.iterator(); iter.hasNext();) {
+				runnables[i++] = iter.next();
 			}
 			return runnables;
 		}
@@ -89,8 +89,8 @@ public class DefaultScheduler implements Runnable {
 	// }
 
 	synchronized private void simulateOnce() {
-		for (final java.util.Iterator iter = doOnceRunnables.iterator(); iter.hasNext();) {
-			final Runnable runnable = (Runnable) iter.next();
+		for (final java.util.Iterator<Runnable> iter = doOnceRunnables.iterator(); iter.hasNext();) {
+			final Runnable runnable = iter.next();
 			try {
 				runnable.run();
 			} catch (final org.python.core.PyException e) {
@@ -108,13 +108,13 @@ public class DefaultScheduler implements Runnable {
 			iter.remove();
 		}
 
-		for (final java.util.Iterator iter = eachFrameRunnablesMarkedForRemoval.iterator(); iter.hasNext();) {
+		for (final java.util.Iterator<Runnable> iter = eachFrameRunnablesMarkedForRemoval.iterator(); iter.hasNext();) {
 			eachFrameRunnables.remove(iter.next());
 		}
 		eachFrameRunnablesMarkedForRemoval.clear();
 
-		for (final java.util.Iterator iter = eachFrameRunnables.iterator(); iter.hasNext();) {
-			final Runnable runnable = (Runnable) iter.next();
+		for (final java.util.Iterator<Runnable> iter = eachFrameRunnables.iterator(); iter.hasNext();) {
+			final Runnable runnable = iter.next();
 			try {
 				runnable.run();
 			} catch (final org.python.core.PyException e) {

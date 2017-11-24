@@ -61,7 +61,7 @@ public abstract class Geometry extends Element {
 		}
 	}
 
-	private final java.util.Vector m_boundListeners = new java.util.Vector();
+	private final java.util.Vector<BoundListener> m_boundListeners = new java.util.Vector<BoundListener>();
 
 	public void addBoundListener(final BoundListener boundListener) {
 		m_boundListeners.addElement(boundListener);
@@ -78,9 +78,9 @@ public abstract class Geometry extends Element {
 	}
 
 	private void onBoundsChange(final BoundEvent boundEvent) {
-		final java.util.Enumeration enum0 = m_boundListeners.elements();
+		final java.util.Enumeration<BoundListener> enum0 = m_boundListeners.elements();
 		while (enum0.hasMoreElements()) {
-			((BoundListener) enum0.nextElement()).boundChanged(boundEvent);
+			enum0.nextElement().boundChanged(boundEvent);
 		}
 	}
 

@@ -37,7 +37,7 @@ public abstract class VisualProxy extends ComponentProxy {
 	protected abstract void onDisabledAffectorsChange(AffectorProxy[] affectors);
 
 	// todo: use Dictionary
-	static java.util.Vector m_instances = new java.util.Vector();
+	static java.util.Vector<VisualProxy> m_instances = new java.util.Vector<VisualProxy>();
 
 	public VisualProxy() {
 		super();
@@ -52,7 +52,7 @@ public abstract class VisualProxy extends ComponentProxy {
 
 	static VisualProxy map(final int nativeInstance) {
 		for (int i = 0; i < m_instances.size(); i++) {
-			final VisualProxy visualProxy = (VisualProxy) m_instances.elementAt(i);
+			final VisualProxy visualProxy = m_instances.elementAt(i);
 			if (visualProxy.getNativeInstance() == nativeInstance) {
 				return visualProxy;
 			}

@@ -49,8 +49,8 @@ public class StencilAppPanel extends JPanel implements StencilApplication {
 	 *
 	 */
 	private static final long serialVersionUID = -1996084991154196394L;
-	Hashtable nameToComp = new Hashtable();
-	Hashtable compToName = new Hashtable();
+	Hashtable<String, Component> nameToComp = new Hashtable<String, Component>();
+	Hashtable<Component, String> compToName = new Hashtable<Component, String>();
 
 	StencilManager stencilManager = null;
 	JPanel stencilComponent = null;
@@ -117,7 +117,7 @@ public class StencilAppPanel extends JPanel implements StencilApplication {
 
 	@Override
 	public java.awt.Rectangle getBoxForID(final String ID) {
-		final Component c = (Component) nameToComp.get(ID);
+		final Component c = nameToComp.get(ID);
 		if (c != null) {
 			final Point corner = c.getLocationOnScreen();
 			javax.swing.SwingUtilities.convertPointFromScreen(corner, getRootPane());
@@ -212,7 +212,7 @@ public class StencilAppPanel extends JPanel implements StencilApplication {
 	}
 
 	public void replaceTable(final String name, final Component c) {
-		final Component old = (Component) nameToComp.remove(name);
+		final Component old = nameToComp.remove(name);
 		nameToComp.put(name, c);
 
 		if (old != null) {

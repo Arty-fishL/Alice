@@ -5,7 +5,7 @@ import edu.cmu.cs.stage3.media.event.PlayerListener;
 public abstract class AbstractPlayer implements Player {
 	private boolean m_isAvailable = true;
 	private final AbstractDataSource m_dataSource;
-	private final java.util.Vector m_playerListeners = new java.util.Vector();
+	private final java.util.Vector<PlayerListener> m_playerListeners = new java.util.Vector<PlayerListener>();
 	private edu.cmu.cs.stage3.media.event.PlayerListener[] m_playerListenerArray;
 	private double m_beginTime = 0;
 	private double m_endTime = Double.NaN;

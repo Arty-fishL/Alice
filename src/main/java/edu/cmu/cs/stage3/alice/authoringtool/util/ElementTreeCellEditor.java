@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import javax.swing.event.CellEditorListener;
+
 /**
  * @author Jason Pratt
  */
@@ -32,7 +34,7 @@ public class ElementTreeCellEditor extends ElementTreeCellRenderer implements ja
 	 */
 	private static final long serialVersionUID = -8359889682103239140L;
 	protected javax.swing.JTextField textField;
-	protected java.util.HashSet cellEditorListeners;
+	protected java.util.HashSet<CellEditorListener> cellEditorListeners;
 	protected edu.cmu.cs.stage3.alice.core.Element element;
 	protected long lastClickTime;
 	protected long editDelay = 500;
@@ -42,7 +44,7 @@ public class ElementTreeCellEditor extends ElementTreeCellRenderer implements ja
 	synchronized protected void initializeIfNecessary() {
 		if (textField == null) {
 			textField = new javax.swing.JTextField();
-			cellEditorListeners = new java.util.HashSet();
+			cellEditorListeners = new java.util.HashSet<CellEditorListener>();
 
 			elementPanel.remove(elementLabel);
 			elementPanel.add(textField,
@@ -182,16 +184,16 @@ public class ElementTreeCellEditor extends ElementTreeCellRenderer implements ja
 	protected void fireCellEditingCancelled() {
 		initializeIfNecessary();
 		final javax.swing.event.ChangeEvent ev = new javax.swing.event.ChangeEvent(this);
-		for (final java.util.Iterator iter = cellEditorListeners.iterator(); iter.hasNext();) {
-			((javax.swing.event.CellEditorListener) iter.next()).editingCanceled(ev);
+		for (final java.util.Iterator<CellEditorListener> iter = cellEditorListeners.iterator(); iter.hasNext();) {
+			iter.next().editingCanceled(ev);
 		}
 	}
 
 	protected void fireCellEditingStopped() {
 		initializeIfNecessary();
 		final javax.swing.event.ChangeEvent ev = new javax.swing.event.ChangeEvent(this);
-		for (final java.util.Iterator iter = cellEditorListeners.iterator(); iter.hasNext();) {
-			((javax.swing.event.CellEditorListener) iter.next()).editingStopped(ev);
+		for (final java.util.Iterator<CellEditorListener> iter = cellEditorListeners.iterator(); iter.hasNext();) {
+			iter.next().editingStopped(ev);
 		}
 	}
 }

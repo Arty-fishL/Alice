@@ -26,7 +26,7 @@ package edu.cmu.cs.stage3.alice.scenegraph.renderer.joglrenderer;
 class PickContext extends Context {
 	private final RenderTarget m_renderTarget;
 
-	private final java.util.Hashtable m_pickNameMap = new java.util.Hashtable();
+	private final java.util.Hashtable<Integer, VisualProxy> m_pickNameMap = new java.util.Hashtable<Integer, VisualProxy>();
 	private PickParameters m_pickParameters;
 	private PickInfo m_pickInfo;
 
@@ -82,7 +82,7 @@ class PickContext extends Context {
 		// System.err.println( m_pickNameMap );
 		// System.err.println( (VisualProxy)m_pickNameMap.get( new Integer( name
 		// ) ) );
-		return (VisualProxy) m_pickNameMap.get(new Integer(name));
+		return m_pickNameMap.get(new Integer(name));
 	}
 
 	protected void renderPickVertex(final edu.cmu.cs.stage3.alice.scenegraph.Vertex3d vertex) {

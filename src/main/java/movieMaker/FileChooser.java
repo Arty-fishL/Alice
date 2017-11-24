@@ -177,7 +177,8 @@ public class FileChooser {
 			// load the properties from a file
 			try {
 				// get the URL for where we loaded this class
-				final Class currClass = Class.forName("FileChooser");
+				@SuppressWarnings("unchecked")
+				final Class<FileChooser> currClass = (Class<FileChooser>) Class.forName("FileChooser");
 				final URL classURL = currClass.getResource("FileChooser.class");
 				final URL fileURL = new URL(classURL, PROPERTY_FILE_NAME);
 				final FileInputStream in = new FileInputStream(fileURL.getPath());
@@ -190,7 +191,7 @@ public class FileChooser {
 
 		// get the media directory
 		if (appProperties != null) {
-			directory = (String) appProperties.get(MEDIA_DIRECTORY);
+			directory = appProperties.getProperty(MEDIA_DIRECTORY);
 		}
 
 		return directory;
@@ -228,7 +229,8 @@ public class FileChooser {
 			try {
 
 				// get the URL for where we loaded this class
-				final Class currClass = Class.forName("FileChooser");
+				@SuppressWarnings("unchecked")
+				final Class<FileChooser> currClass = (Class<FileChooser>) Class.forName("FileChooser");
 				final URL classURL = currClass.getResource("FileChooser.class");
 				final URL fileURL = new URL(classURL, PROPERTY_FILE_NAME);
 				final FileOutputStream out = new FileOutputStream(fileURL.getPath());

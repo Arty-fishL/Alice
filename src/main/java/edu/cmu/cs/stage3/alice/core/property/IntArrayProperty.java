@@ -24,6 +24,7 @@
 package edu.cmu.cs.stage3.alice.core.property;
 
 import edu.cmu.cs.stage3.alice.core.Element;
+import edu.cmu.cs.stage3.alice.core.reference.PropertyReference;
 
 public class IntArrayProperty extends ObjectProperty {
 	public IntArrayProperty(final Element owner, final String name, final int[] defaultValue) {
@@ -45,7 +46,7 @@ public class IntArrayProperty extends ObjectProperty {
 
 	@Override
 	protected void decodeObject(final org.w3c.dom.Element node, final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader,
-			final java.util.Vector referencesToBeResolved, final double version) throws java.io.IOException {
+			final java.util.Vector<PropertyReference> referencesToBeResolved, final double version) throws java.io.IOException {
 		m_associatedFileKey = null;
 		final String filename = getFilename(getNodeText(node));
 		final String extension = filename.substring(filename.lastIndexOf('.') + 1);

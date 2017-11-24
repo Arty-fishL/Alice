@@ -1,8 +1,8 @@
 package edu.cmu.cs.stage3.scheduler;
 
 public abstract class AbstractScheduler implements Scheduler {
-	private final java.util.Vector m_eachFrameRunnables = new java.util.Vector();
-	private final java.util.Vector m_eachFrameRunnablesMarkedForRemoval = new java.util.Vector();
+	private final java.util.Vector<Runnable> m_eachFrameRunnables = new java.util.Vector<Runnable>();
+	private final java.util.Vector<Runnable> m_eachFrameRunnablesMarkedForRemoval = new java.util.Vector<Runnable>();
 	private Runnable[] m_cachedEachFrameRunnables;
 
 	@Override
@@ -26,7 +26,7 @@ public abstract class AbstractScheduler implements Scheduler {
 			synchronized (m_eachFrameRunnables) {
 				synchronized (m_eachFrameRunnablesMarkedForRemoval) {
 					if (m_eachFrameRunnablesMarkedForRemoval.size() > 0) {
-						final java.util.Enumeration enum0 = m_eachFrameRunnablesMarkedForRemoval.elements();
+						final java.util.Enumeration<Runnable> enum0 = m_eachFrameRunnablesMarkedForRemoval.elements();
 						while (enum0.hasMoreElements()) {
 							m_eachFrameRunnables.removeElement(enum0.nextElement());
 						}

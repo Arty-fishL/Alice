@@ -43,50 +43,50 @@ public class SoundStorage {
 			startCaptureTimes.add(new Double(time));
 		} else {
 			stopCaptureTimes.add(new Double(time));
-			totalLength += time - ((Double) startCaptureTimes.get(startCaptureTimes.size() - 1)).doubleValue();
+			totalLength += time - startCaptureTimes.get(startCaptureTimes.size() - 1).doubleValue();
 		}
 	}
 
 	public void convertTimes() {
 
-		final long startNum = ((Long) frameList.get(0)).longValue();
+		final long startNum = frameList.get(0).longValue();
 
 		for (int x = 0; x < frameList.size(); x++) {
-			frameList.set(x, new Long(((Long) frameList.get(x)).longValue() - startNum));
+			frameList.set(x, new Long(frameList.get(x).longValue() - startNum));
 		}
 
 		for (int x = 0; x < soundList.size(); x++) {
-			((SoundData) soundList.get(x)).worldTime -= startNum;
+			soundList.get(x).worldTime -= startNum;
 		}
 
 		for (int x = 0; x < soundList.size(); x++) {
 			int index = 0;
 			long time1, time2;
 			while (index < frameList.size()
-					&& ((Long) frameList.get(index)).longValue() < ((SoundData) soundList.get(x)).worldTime) {
+					&& frameList.get(index).longValue() < soundList.get(x).worldTime) {
 				index++;
 			}
 			if (index == frameList.size()) {
 				continue;
 			}
 
-			time2 = ((Long) frameList.get(index)).longValue();
-			time1 = ((Long) frameList.get(index == 0 ? 0 : index - 1)).longValue();
+			time2 = frameList.get(index).longValue();
+			time1 = frameList.get(index == 0 ? 0 : index - 1).longValue();
 			// System.err.println("Time1 : " + time1+ " Time2 : " + time2);
 			if (time1 == time2) {
-				((SoundData) soundList.get(x)).worldTime = ((SoundData) soundList.get(x)).worldTime / 1000.0;
+				soundList.get(x).worldTime = soundList.get(x).worldTime / 1000.0;
 			} else {
-				final double percentage = (((SoundData) soundList.get(x)).worldTime - time1) / (time2 - time1);
-				((SoundData) soundList.get(x)).worldTime = (index - 1 + percentage) / 16.0;
+				final double percentage = (soundList.get(x).worldTime - time1) / (time2 - time1);
+				soundList.get(x).worldTime = (index - 1 + percentage) / 16.0;
 			}
 		}
 	}
 
 	public void convertCaptureTimes() {
-		final double start = ((Double) startCaptureTimes.get(0)).doubleValue();
+		final double start = startCaptureTimes.get(0).doubleValue();
 		for (int x = 0; x < startCaptureTimes.size(); x++) {
-			startCaptureTimes.set(x, new Double(((Double) startCaptureTimes.get(x)).doubleValue() - start));
-			stopCaptureTimes.set(x, new Double(((Double) stopCaptureTimes.get(x)).doubleValue() - start));
+			startCaptureTimes.set(x, new Double(startCaptureTimes.get(x).doubleValue() - start));
+			stopCaptureTimes.set(x, new Double(stopCaptureTimes.get(x).doubleValue() - start));
 			// print("Captures Times" + startCaptureTimes.get(x) + " " +
 			// stopCaptureTimes.get(x));
 		}
@@ -96,16 +96,16 @@ public class SoundStorage {
 	public void convertNumbers(final double length) {
 		// /convert Down by percentage
 		for (int x = 0; x < soundList.size(); x++) {
-			final SoundData sd = (SoundData) soundList.get(x);
+			final SoundData sd = soundList.get(x);
 			sd.worldTime *= length / totalLength;
 			sd.duration *= length / totalLength;
 			sd.clippedDuration *= length / totalLength;
 		}
 
 		for (int x = 0; x < startCaptureTimes.size(); x++) {
-			double d = ((Double) startCaptureTimes.get(x)).doubleValue();
+			double d = startCaptureTimes.get(x).doubleValue();
 			startCaptureTimes.set(x, new Double(d * length / totalLength));
-			d = ((Double) stopCaptureTimes.get(x)).doubleValue();
+			d = stopCaptureTimes.get(x).doubleValue();
 			stopCaptureTimes.set(x, new Double(d * length / totalLength));
 		}
 
@@ -131,7 +131,7 @@ public class SoundStorage {
 		for (int y = 0; y < soundList.size(); y++) {
 
 			double blankLength = 0;
-			final SoundData sd = (SoundData) soundList.get(y);
+			final SoundData sd = soundList.get(y);
 
 			if (sd.duration < sd.clippedDuration || sd.clippedDuration == 0.0) {
 				sd.clippedDuration = sd.duration;
@@ -139,8 +139,8 @@ public class SoundStorage {
 
 			sd.stopTime = sd.duration;
 
-			while (sd.worldTime > ((Double) stopCaptureTimes.get(currentChunk)).doubleValue()) {
-				currentLength += ((Double) stopCaptureTimes.get(currentChunk)).doubleValue();
+			while (sd.worldTime > stopCaptureTimes.get(currentChunk).doubleValue()) {
+				currentLength += stopCaptureTimes.get(currentChunk).doubleValue();
 				currentChunk++;
 				if (currentChunk >= stopCaptureTimes.size()) {
 					break;
@@ -151,7 +151,7 @@ public class SoundStorage {
 			if (currentChunk >= stopCaptureTimes.size()) {
 				break;
 			}
-			if (((Double) startCaptureTimes.get(currentChunk)).doubleValue() > sd.worldTime + sd.clippedDuration) {
+			if (startCaptureTimes.get(currentChunk).doubleValue() > sd.worldTime + sd.clippedDuration) {
 				continue;
 			}
 
@@ -162,8 +162,8 @@ public class SoundStorage {
 			// print("Current Sound: Start " + sd.worldTime + " End: " +
 			// (sd.worldTime + sd.clippedDuration));
 
-			if (sd.worldTime > ((Double) startCaptureTimes.get(currentChunk)).doubleValue()) {
-				blankLength = sd.worldTime - ((Double) startCaptureTimes.get(currentChunk)).doubleValue()
+			if (sd.worldTime > startCaptureTimes.get(currentChunk).doubleValue()) {
+				blankLength = sd.worldTime - startCaptureTimes.get(currentChunk).doubleValue()
 						+ currentLength;
 			} else {
 				blankLength = currentLength;
@@ -242,18 +242,18 @@ public class SoundStorage {
 	// need to check if either startOFSound is between the too or stopSound
 	// between or stop <start and
 	public double cropBeginning(final SoundData sd, final double length, final int current) {
-		if (((Double) startCaptureTimes.get(current)).doubleValue() < sd.worldTime) {
+		if (startCaptureTimes.get(current).doubleValue() < sd.worldTime) {
 			return 0.0;
-		} else if (((Double) startCaptureTimes.get(current)).doubleValue() > sd.worldTime) {
-			return ((Double) startCaptureTimes.get(current)).doubleValue() - sd.worldTime;
+		} else if (startCaptureTimes.get(current).doubleValue() > sd.worldTime) {
+			return startCaptureTimes.get(current).doubleValue() - sd.worldTime;
 		}
 		return 0.0;
 	}
 
 	public double cropEnding(final SoundData sd, final double length, final int current) {
-		if (((Double) stopCaptureTimes.get(current)).doubleValue() < sd.duration + sd.worldTime) {
-			return sd.worldTime + sd.duration - ((Double) stopCaptureTimes.get(current)).doubleValue();
-		} else if (((Double) stopCaptureTimes.get(current)).doubleValue() > sd.duration + sd.worldTime) {
+		if (stopCaptureTimes.get(current).doubleValue() < sd.duration + sd.worldTime) {
+			return sd.worldTime + sd.duration - stopCaptureTimes.get(current).doubleValue();
+		} else if (stopCaptureTimes.get(current).doubleValue() > sd.duration + sd.worldTime) {
 			return 0.0;
 		}
 		return 0.0;
@@ -301,7 +301,7 @@ public class SoundStorage {
 			// " Stop of cropped area" + stop.get(0));
 
 			movieMaker.Cut cut = new Cut();
-			if (((Long) start.get(0)).longValue() != 0.0 || ((Long) stop.get(0)).longValue() != sd.clippedDuration) {
+			if (start.get(0).longValue() != 0.0 || stop.get(0).longValue() != sd.clippedDuration) {
 				cut.doCut(createURL(file3), createURL(file4), start, stop);
 			}
 			cut = null;

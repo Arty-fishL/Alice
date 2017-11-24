@@ -27,7 +27,7 @@ package edu.cmu.cs.stage3.alice.scripting.jython;
  * @author Dennis Cosgrove
  */
 public class ScriptingFactory implements edu.cmu.cs.stage3.alice.scripting.ScriptingFactory {
-	private final java.util.Vector m_interpreters = new java.util.Vector();
+	private final java.util.Vector<Interpreter> m_interpreters = new java.util.Vector<Interpreter>();
 	private Interpreter[] m_interpreterArray = null;
 
 	public ScriptingFactory() {

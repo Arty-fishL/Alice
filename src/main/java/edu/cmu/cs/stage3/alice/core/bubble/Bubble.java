@@ -70,7 +70,7 @@ public abstract class Bubble {
 	private edu.cmu.cs.stage3.alice.core.ReferenceFrame m_referenceFrame = null;
 	private javax.vecmath.Vector3d m_offsetFromReferenceFrame = new javax.vecmath.Vector3d();
 
-	protected java.util.Vector m_subTexts = new java.util.Vector();
+	protected java.util.Vector<SubText> m_subTexts = new java.util.Vector<SubText>();
 	protected java.awt.Point m_pixelOffset = null;
 	private final java.awt.Point m_origin = new java.awt.Point();
 
@@ -162,10 +162,10 @@ public abstract class Bubble {
 
 	public java.awt.geom.Rectangle2D getTotalBound() {
 		if (m_subTexts.size() > 0) {
-			final SubText subText0 = (SubText) m_subTexts.elementAt(0);
+			final SubText subText0 = m_subTexts.elementAt(0);
 			final java.awt.geom.Rectangle2D totalBound = subText0.getSafeBound();
 			for (int i = 1; i < m_subTexts.size(); i++) {
-				final SubText subTextI = (SubText) m_subTexts.elementAt(i);
+				final SubText subTextI = m_subTexts.elementAt(i);
 				java.awt.geom.Rectangle2D.union(totalBound, subTextI.getBound(), totalBound);
 			}
 			return totalBound;
@@ -237,11 +237,11 @@ public abstract class Bubble {
 				}
 				g.setColor(m_foregroundColor);
 				if (m_subTexts.size() > 0) {
-					final SubText subText0 = (SubText) m_subTexts.elementAt(0);
+					final SubText subText0 = m_subTexts.elementAt(0);
 					final int offsetX = m_pixelOffset.x;
 					final int offsetY = m_pixelOffset.y - (int) subText0.getBound().getY();
 					for (int i = 0; i < m_subTexts.size(); i++) {
-						final SubText subTextI = (SubText) m_subTexts.elementAt(i);
+						final SubText subTextI = m_subTexts.elementAt(i);
 						final java.awt.geom.Rectangle2D boundI = subTextI.getBound();
 						final int x = (int) (offsetX + boundI.getX());
 						final int y = (int) (offsetY + boundI.getY());

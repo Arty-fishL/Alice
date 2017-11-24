@@ -23,6 +23,10 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.viewcontroller;
 
+import javax.swing.JComponent;
+
+import edu.cmu.cs.stage3.alice.core.media.SoundMarker;
+
 /** @deprecated */
 @Deprecated
 public class SoundMarkersPanel extends javax.swing.JPanel {
@@ -31,7 +35,7 @@ public class SoundMarkersPanel extends javax.swing.JPanel {
 	 */
 	private static final long serialVersionUID = -1642436436589631169L;
 	protected edu.cmu.cs.stage3.alice.core.Media sound = null;
-	protected java.util.HashMap soundMarkersGuiCache = new java.util.HashMap();
+	protected java.util.HashMap<SoundMarker, JComponent> soundMarkersGuiCache = new java.util.HashMap<SoundMarker, JComponent>();
 	protected javax.swing.JButton dropMarkerButton = new javax.swing.JButton("Drop Marker");
 	protected RefreshListener refreshListener = new RefreshListener();
 
@@ -79,7 +83,7 @@ public class SoundMarkersPanel extends javax.swing.JPanel {
 			for (int i = 0; i < sound.markers.size(); i++) {
 				final edu.cmu.cs.stage3.alice.core.media.SoundMarker marker = (edu.cmu.cs.stage3.alice.core.media.SoundMarker) sound.markers
 						.get(i);
-				javax.swing.JComponent gui = (javax.swing.JComponent) soundMarkersGuiCache.get(marker);
+				javax.swing.JComponent gui = soundMarkersGuiCache.get(marker);
 				if (gui == null) {
 					gui = edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getGUI(marker);
 					soundMarkersGuiCache.put(marker, gui);

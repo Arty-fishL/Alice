@@ -34,8 +34,8 @@ import edu.cmu.cs.stage3.alice.scenegraph.event.HierarchyListener;
 public abstract class Component extends Element {
 	public static final Property PARENT_PROPERTY = new Property(Component.class, "PARENT");
 	private Container m_parent = null;
-	private final java.util.Vector m_absoluteTransformationListeners = new java.util.Vector();
-	private final java.util.Vector m_hierarchyListeners = new java.util.Vector();
+	private final java.util.Vector<Object> m_absoluteTransformationListeners = new java.util.Vector<Object>();
+	private final java.util.Vector<Object> m_hierarchyListeners = new java.util.Vector<Object>();
 
 	@Override
 	protected void releasePass1() {
@@ -48,7 +48,7 @@ public abstract class Component extends Element {
 
 	@Override
 	protected void releasePass3() {
-		java.util.Enumeration enum0;
+		java.util.Enumeration<Object> enum0;
 		enum0 = m_absoluteTransformationListeners.elements();
 		while (enum0.hasMoreElements()) {
 			final AbsoluteTransformationListener absoluteTransformationListener = (AbsoluteTransformationListener) enum0
@@ -149,7 +149,7 @@ public abstract class Component extends Element {
 	}
 
 	private void onAbsoluteTransformationChange(final AbsoluteTransformationEvent absoluteTransformationEvent) {
-		final java.util.Enumeration enum0 = m_absoluteTransformationListeners.elements();
+		final java.util.Enumeration<Object> enum0 = m_absoluteTransformationListeners.elements();
 		while (enum0.hasMoreElements()) {
 			((AbsoluteTransformationListener) enum0.nextElement())
 					.absoluteTransformationChanged(absoluteTransformationEvent);
@@ -180,7 +180,7 @@ public abstract class Component extends Element {
 	}
 
 	private void onHierarchyChange(final HierarchyEvent hierarchyEvent) {
-		final java.util.Enumeration enum0 = m_hierarchyListeners.elements();
+		final java.util.Enumeration<Object> enum0 = m_hierarchyListeners.elements();
 		while (enum0.hasMoreElements()) {
 			((HierarchyListener) enum0.nextElement()).hierarchyChanged(hierarchyEvent);
 		}

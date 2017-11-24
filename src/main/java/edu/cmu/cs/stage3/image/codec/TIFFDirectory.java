@@ -88,7 +88,7 @@ public class TIFFDirectory extends Object {
 	TIFFField[] fields;
 
 	/** A Hashtable indexing the fields by tag number. */
-	Hashtable fieldIndex = new Hashtable();
+	Hashtable<Integer, Integer> fieldIndex = new Hashtable<Integer, Integer>();
 
 	/** The default constructor. */
 	TIFFDirectory() {
@@ -236,7 +236,7 @@ public class TIFFDirectory extends Object {
 
 					// Can be multiple strings
 					int index = 0, prevIndex = 0;
-					final Vector v = new Vector();
+					final Vector<String> v = new Vector<String>();
 
 					while (index < count) {
 
@@ -253,7 +253,7 @@ public class TIFFDirectory extends Object {
 					count = v.size();
 					final String strings[] = new String[count];
 					for (int c = 0; c < count; c++) {
-						strings[c] = (String) v.elementAt(c);
+						strings[c] = v.elementAt(c);
 					}
 
 					obj = strings;
@@ -349,7 +349,7 @@ public class TIFFDirectory extends Object {
 	 * not present.
 	 */
 	public TIFFField getField(final int tag) {
-		final Integer i = (Integer) fieldIndex.get(new Integer(tag));
+		final Integer i = fieldIndex.get(new Integer(tag));
 		if (i == null) {
 			return null;
 		} else {
@@ -369,11 +369,11 @@ public class TIFFDirectory extends Object {
 	 */
 	public int[] getTags() {
 		final int[] tags = new int[fieldIndex.size()];
-		final Enumeration enum0 = fieldIndex.keys();
+		final Enumeration<Integer> enum0 = fieldIndex.keys();
 		int i = 0;
 
 		while (enum0.hasMoreElements()) {
-			tags[i++] = ((Integer) enum0.nextElement()).intValue();
+			tags[i++] = enum0.nextElement().intValue();
 		}
 
 		return tags;
@@ -393,7 +393,7 @@ public class TIFFDirectory extends Object {
 	 * TIFFField.TIFF_SBYTE, TIFF_BYTE, or TIFF_UNDEFINED.
 	 */
 	public byte getFieldAsByte(final int tag, final int index) {
-		final Integer i = (Integer) fieldIndex.get(new Integer(tag));
+		final Integer i = fieldIndex.get(new Integer(tag));
 		final byte[] b = fields[i.intValue()].getAsBytes();
 		return b[index];
 	}
@@ -414,7 +414,7 @@ public class TIFFDirectory extends Object {
 	 * TIFF_SLONG or TIFF_LONG.
 	 */
 	public long getFieldAsLong(final int tag, final int index) {
-		final Integer i = (Integer) fieldIndex.get(new Integer(tag));
+		final Integer i = fieldIndex.get(new Integer(tag));
 		return fields[i.intValue()].getAsLong(index);
 	}
 
@@ -434,7 +434,7 @@ public class TIFFDirectory extends Object {
 	 * numeric type (all but TIFF_UNDEFINED and TIFF_ASCII).
 	 */
 	public float getFieldAsFloat(final int tag, final int index) {
-		final Integer i = (Integer) fieldIndex.get(new Integer(tag));
+		final Integer i = fieldIndex.get(new Integer(tag));
 		return fields[i.intValue()].getAsFloat(index);
 	}
 
@@ -453,7 +453,7 @@ public class TIFFDirectory extends Object {
 	 * numeric type (all but TIFF_UNDEFINED and TIFF_ASCII).
 	 */
 	public double getFieldAsDouble(final int tag, final int index) {
-		final Integer i = (Integer) fieldIndex.get(new Integer(tag));
+		final Integer i = fieldIndex.get(new Integer(tag));
 		return fields[i.intValue()].getAsDouble(index);
 	}
 

@@ -6,7 +6,11 @@
  */
 package edu.cmu.cs.stage3.alice.core.response;
 
+import java.awt.Color;
+
 import edu.cmu.cs.stage3.alice.core.Element;
+import edu.cmu.cs.stage3.alice.core.property.ColorProperty;
+import edu.cmu.cs.stage3.alice.core.property.NumberProperty;
 
 /**
  * @author caitlin
@@ -23,16 +27,16 @@ public class AbstractFadeAnimation extends Animation {
 	protected static boolean currentlyBlack = false;
 
 	// these ones are for objects with an emissive color that's not black
-	protected static java.util.Vector properties = new java.util.Vector();
-	protected static java.util.Vector origPropertyValues = new java.util.Vector();
+	protected static java.util.Vector<ColorProperty> properties = new java.util.Vector<ColorProperty>();
+	protected static java.util.Vector<Color> origPropertyValues = new java.util.Vector<Color>();
 
 	// these ones are for objects with an emissive color that's not black
-	protected static java.util.Vector specularProperties = new java.util.Vector();
-	protected static java.util.Vector origSpecularValues = new java.util.Vector();
+	protected static java.util.Vector<edu.cmu.cs.stage3.alice.core.property.ColorProperty> specularProperties = new java.util.Vector<>();
+	protected static java.util.Vector<Color> origSpecularValues = new java.util.Vector<>();
 
 	// these are to find all the lights in the world
-	protected static java.util.Vector lightProperties = new java.util.Vector();
-	protected static java.util.Vector origLightValues = new java.util.Vector();
+	protected static java.util.Vector<NumberProperty> lightProperties = new java.util.Vector<NumberProperty>();
+	protected static java.util.Vector<Number> origLightValues = new java.util.Vector<Number>();
 
 	public abstract class RuntimeAbstractFadeAnimation extends RuntimeAnimation {
 
@@ -40,16 +44,16 @@ public class AbstractFadeAnimation extends Animation {
 		protected edu.cmu.cs.stage3.alice.core.property.ColorProperty m_ambientLightColorProp = null;
 
 		// emissive color
-		protected java.util.Vector m_beginPropColors = new java.util.Vector();
-		protected java.util.Vector m_endPropColors = new java.util.Vector();
+		protected java.util.Vector<Color> m_beginPropColors = new java.util.Vector<Color>();
+		protected java.util.Vector<Color> m_endPropColors = new java.util.Vector<Color>();
 
 		// specular highlight color
-		protected java.util.Vector m_beginSpecularColors = new java.util.Vector();
-		protected java.util.Vector m_endSpecularColors = new java.util.Vector();
+		protected java.util.Vector<Color> m_beginSpecularColors = new java.util.Vector<Color>();
+		protected java.util.Vector<Color> m_endSpecularColors = new java.util.Vector<Color>();
 
 		// light brightness
-		protected java.util.Vector m_beginPropBrightness = new java.util.Vector();
-		protected java.util.Vector m_endPropBrightness = new java.util.Vector();
+		protected java.util.Vector<Number> m_beginPropBrightness = new java.util.Vector<Number>();
+		protected java.util.Vector<Number> m_endPropBrightness = new java.util.Vector<Number>();
 
 		protected java.awt.Color m_beginAtmosphereColor = null;
 		protected java.awt.Color m_endAtmosphereColor = null;
@@ -89,7 +93,7 @@ public class AbstractFadeAnimation extends Animation {
 				// this list is pretty long, so pare out objects if we already
 				// have their "rootparent"
 				for (final Element el : els) {
-					final String key = el.getKey();
+					// Unused ?? final String key = el.getKey();
 					final edu.cmu.cs.stage3.alice.core.property.ColorProperty emissColorProp = (edu.cmu.cs.stage3.alice.core.property.ColorProperty) el
 							.getPropertyNamed("emissiveColor");
 
@@ -106,7 +110,7 @@ public class AbstractFadeAnimation extends Animation {
 				// this list is pretty long, so pare out objects if we already
 				// have their "rootparent"
 				for (final Element el : els) {
-					final String key = el.getKey();
+					// Unused ?? final String key = el.getKey();
 					final edu.cmu.cs.stage3.alice.core.property.ColorProperty emissColorProp = (edu.cmu.cs.stage3.alice.core.property.ColorProperty) el
 							.getPropertyNamed("specularHighlightColor");
 
@@ -148,8 +152,7 @@ public class AbstractFadeAnimation extends Animation {
 
 				// emissive color
 				for (int i = 0; i < properties.size(); i++) {
-					final edu.cmu.cs.stage3.alice.core.property.ColorProperty colorProp = (edu.cmu.cs.stage3.alice.core.property.ColorProperty) properties
-							.elementAt(i);
+					final edu.cmu.cs.stage3.alice.core.property.ColorProperty colorProp = properties.elementAt(i);
 					m_beginPropColors.addElement(colorProp.getColorValue().createAWTColor());
 					m_endPropColors.addElement(new java.awt.Color(0, 0, 0));
 				}
@@ -164,7 +167,7 @@ public class AbstractFadeAnimation extends Animation {
 
 				// light brightness
 				for (int i = 0; i < lightProperties.size(); i++) {
-					final edu.cmu.cs.stage3.alice.core.property.NumberProperty numberProp = (edu.cmu.cs.stage3.alice.core.property.NumberProperty) lightProperties
+					final edu.cmu.cs.stage3.alice.core.property.NumberProperty numberProp = lightProperties
 							.elementAt(i);
 					m_beginPropBrightness.addElement(numberProp.getNumberValue());
 					m_endPropBrightness.addElement(new Double(0.0));
@@ -178,8 +181,7 @@ public class AbstractFadeAnimation extends Animation {
 
 				// emissive color
 				for (int i = 0; i < properties.size(); i++) {
-					final edu.cmu.cs.stage3.alice.core.property.ColorProperty colorProp = (edu.cmu.cs.stage3.alice.core.property.ColorProperty) properties
-							.elementAt(i);
+					final edu.cmu.cs.stage3.alice.core.property.ColorProperty colorProp = properties.elementAt(i);
 					m_beginPropColors.addElement(colorProp.getColorValue().createAWTColor());
 					m_endPropColors.addElement(origPropertyValues.elementAt(i));
 				}
@@ -192,7 +194,7 @@ public class AbstractFadeAnimation extends Animation {
 				}
 				// light brightness
 				for (int i = 0; i < lightProperties.size(); i++) {
-					final edu.cmu.cs.stage3.alice.core.property.NumberProperty numberProp = (edu.cmu.cs.stage3.alice.core.property.NumberProperty) lightProperties
+					final edu.cmu.cs.stage3.alice.core.property.NumberProperty numberProp = lightProperties
 							.elementAt(i);
 					m_beginPropBrightness.addElement(numberProp.getNumberValue());
 					m_endPropBrightness.addElement(origLightValues.elementAt(i));
@@ -223,10 +225,9 @@ public class AbstractFadeAnimation extends Animation {
 
 			// emissive Color that's not black
 			for (int i = 0; i < properties.size(); i++) {
-				final edu.cmu.cs.stage3.alice.core.property.ColorProperty colorProp = (edu.cmu.cs.stage3.alice.core.property.ColorProperty) properties
-						.elementAt(i);
-				final java.awt.Color beginColor = (java.awt.Color) m_beginPropColors.elementAt(i);
-				final java.awt.Color endColor = (java.awt.Color) m_endPropColors.elementAt(i);
+				final edu.cmu.cs.stage3.alice.core.property.ColorProperty colorProp = properties.elementAt(i);
+				final java.awt.Color beginColor = m_beginPropColors.elementAt(i);
+				final java.awt.Color endColor = m_endPropColors.elementAt(i);
 
 				if (beginColor != null && endColor != null) {
 					value = edu.cmu.cs.stage3.math.Interpolator.interpolate(beginColor, endColor, getPortion(t));
@@ -241,8 +242,8 @@ public class AbstractFadeAnimation extends Animation {
 			for (int i = 0; i < specularProperties.size(); i++) {
 				final edu.cmu.cs.stage3.alice.core.property.ColorProperty colorProp = (edu.cmu.cs.stage3.alice.core.property.ColorProperty) specularProperties
 						.elementAt(i);
-				final java.awt.Color beginColor = (java.awt.Color) m_beginSpecularColors.elementAt(i);
-				final java.awt.Color endColor = (java.awt.Color) m_endSpecularColors.elementAt(i);
+				final java.awt.Color beginColor = m_beginSpecularColors.elementAt(i);
+				final java.awt.Color endColor = m_endSpecularColors.elementAt(i);
 
 				if (beginColor != null && endColor != null) {
 					value = edu.cmu.cs.stage3.math.Interpolator.interpolate(beginColor, endColor, getPortion(t));
@@ -255,8 +256,7 @@ public class AbstractFadeAnimation extends Animation {
 
 			// lights with non-zero brightness
 			for (int i = 0; i < lightProperties.size(); i++) {
-				final edu.cmu.cs.stage3.alice.core.property.NumberProperty numberProp = (edu.cmu.cs.stage3.alice.core.property.NumberProperty) lightProperties
-						.elementAt(i);
+				final edu.cmu.cs.stage3.alice.core.property.NumberProperty numberProp = lightProperties.elementAt(i);
 				final Double beginBrightness = (Double) m_beginPropBrightness.elementAt(i);
 				final Double endBrightness = (Double) m_endPropBrightness.elementAt(i);
 

@@ -24,6 +24,7 @@
 package edu.cmu.cs.stage3.alice.core.property;
 
 import edu.cmu.cs.stage3.alice.core.Element;
+import edu.cmu.cs.stage3.alice.core.reference.PropertyReference;
 
 public class FontProperty extends ObjectProperty {
 	public FontProperty(final Element owner, final String name, final java.awt.Font defaultValue) {
@@ -36,7 +37,7 @@ public class FontProperty extends ObjectProperty {
 
 	@Override
 	protected void decodeObject(final org.w3c.dom.Element node, final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader,
-			final java.util.Vector referencesToBeResolved, final double version) throws java.io.IOException {
+			final java.util.Vector<PropertyReference> referencesToBeResolved, final double version) throws java.io.IOException {
 		final org.w3c.dom.Node familyNode = node.getElementsByTagName("family").item(0);
 		final org.w3c.dom.Node nameNode = node.getElementsByTagName("name").item(0);
 		final org.w3c.dom.Node styleNode = node.getElementsByTagName("style").item(0);

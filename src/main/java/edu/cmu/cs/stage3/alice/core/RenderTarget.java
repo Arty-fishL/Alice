@@ -23,7 +23,11 @@
 
 package edu.cmu.cs.stage3.alice.core;
 
+import java.awt.Component;
+import java.awt.event.MouseEvent;
+
 import edu.cmu.cs.stage3.alice.core.property.ObjectProperty;
+import edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo;
 
 public class RenderTarget extends Element {
 	/** @deprecated */
@@ -32,11 +36,11 @@ public class RenderTarget extends Element {
 			Long.class);
 	private edu.cmu.cs.stage3.alice.scenegraph.renderer.OnscreenRenderTarget m_onscreenRenderTarget = null;
 	private java.awt.Component m_awtComponent;
-	private final java.util.Vector m_cameras = new java.util.Vector();
+	private final java.util.Vector<Camera> m_cameras = new java.util.Vector<Camera>();
 	private Camera[] m_cameraArray = null;
 	private edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTargetFactory m_renderTargetFactory;
-	private static java.util.Dictionary s_componentMap = new java.util.Hashtable();
-	private static java.util.Dictionary s_eventMap = new java.util.Hashtable();
+	private static java.util.Dictionary<Component, RenderTarget> s_componentMap = new java.util.Hashtable<Component, RenderTarget>();
+	private static java.util.Dictionary<MouseEvent, PickInfo> s_eventMap = new java.util.Hashtable<MouseEvent, PickInfo>();
 
 	public RenderTarget() {
 		requiredCapabilities.deprecate();
@@ -54,9 +58,9 @@ public class RenderTarget extends Element {
 	protected void internalRelease(final int pass) {
 		switch (pass) {
 		case 1:
-			final java.util.Enumeration enum0 = m_cameras.elements();
+			final java.util.Enumeration<Camera> enum0 = m_cameras.elements();
 			while (enum0.hasMoreElements()) {
-				final Camera camera = (Camera) enum0.nextElement();
+				final Camera camera = enum0.nextElement();
 				if (m_onscreenRenderTarget != null) {
 					m_onscreenRenderTarget.removeCamera(camera.getSceneGraphCamera());
 				}
@@ -85,10 +89,10 @@ public class RenderTarget extends Element {
 
 	public static edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pick(
 			final java.awt.event.MouseEvent mouseEvent) {
-		edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pickInfo = (edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo) s_eventMap
+		edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pickInfo = s_eventMap
 				.get(mouseEvent);
 		if (pickInfo == null) {
-			final RenderTarget renderTarget = (RenderTarget) s_componentMap.get(mouseEvent.getComponent());
+			final RenderTarget renderTarget = s_componentMap.get(mouseEvent.getComponent());
 			pickInfo = renderTarget.pick(mouseEvent.getX(), mouseEvent.getY(), false, true);
 			if (pickInfo != null) {
 				s_eventMap.put(mouseEvent, pickInfo);
@@ -102,9 +106,9 @@ public class RenderTarget extends Element {
 		m_onscreenRenderTarget = renderTargetFactory.createOnscreenRenderTarget();
 		m_awtComponent = m_onscreenRenderTarget.getAWTComponent();
 		s_componentMap.put(m_awtComponent, this);
-		final java.util.Enumeration enum0 = m_cameras.elements();
+		final java.util.Enumeration<Camera> enum0 = m_cameras.elements();
 		while (enum0.hasMoreElements()) {
-			final Camera camera = (Camera) enum0.nextElement();
+			final Camera camera = enum0.nextElement();
 			m_onscreenRenderTarget.addCamera(camera.getSceneGraphCamera());
 			m_onscreenRenderTarget.setIsLetterboxedAsOpposedToDistorted(camera.getSceneGraphCamera(),
 					camera.isLetterboxedAsOpposedToDistorted.booleanValue());

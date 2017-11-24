@@ -87,7 +87,7 @@ import java.util.Vector;
  */
 public abstract class ImageCodec {
 
-	private static Hashtable codecs = new Hashtable();
+	private static Hashtable<String, ImageCodec> codecs = new Hashtable<String, ImageCodec>();
 
 	/** Allow only subclasses to instantiate this class. */
 	protected ImageCodec() {
@@ -115,7 +115,7 @@ public abstract class ImageCodec {
 	 * @return The associated <code>ImageCodec</code>, or <code>null</code>.
 	 */
 	public static ImageCodec getCodec(final String name) {
-		return (ImageCodec) codecs.get(name.toLowerCase());
+		return codecs.get(name.toLowerCase());
 	}
 
 	/**
@@ -145,7 +145,7 @@ public abstract class ImageCodec {
 	 * Returns an <code>Enumeration</code> of all regstered
 	 * <code>ImageCodec</code> objects.
 	 */
-	public static Enumeration getCodecs() {
+	public static Enumeration<ImageCodec> getCodecs() {
 		return codecs.elements();
 	}
 
@@ -241,11 +241,11 @@ public abstract class ImageCodec {
 		return codec.createImageDecoder(src, param);
 	}
 
-	private static String[] vectorToStrings(final Vector nameVec) {
+	private static String[] vectorToStrings(final Vector<String> nameVec) {
 		final int count = nameVec.size();
 		final String[] names = new String[count];
 		for (int i = 0; i < count; i++) {
-			names[i] = (String) nameVec.elementAt(i);
+			names[i] = nameVec.elementAt(i);
 		}
 		return names;
 	}
@@ -280,12 +280,12 @@ public abstract class ImageCodec {
 			throw new IllegalArgumentException(JaiI18N.getString("ImageCodec2"));
 		}
 
-		final Enumeration enum0 = codecs.elements();
-		final Vector nameVec = new Vector();
+		final Enumeration<ImageCodec> enum0 = codecs.elements();
+		final Vector<String> nameVec = new Vector<String>();
 
 		final String opName = null;
 		while (enum0.hasMoreElements()) {
-			final ImageCodec codec = (ImageCodec) enum0.nextElement();
+			final ImageCodec codec = enum0.nextElement();
 
 			final int bytesNeeded = codec.getNumHeaderBytes();
 			if (bytesNeeded == 0 && !src.canSeekBackwards()) {
@@ -331,12 +331,12 @@ public abstract class ImageCodec {
 	 * @return An array of <code>String</code>s.
 	 */
 	public static String[] getEncoderNames(final RenderedImage im, final ImageEncodeParam param) {
-		final Enumeration enum0 = codecs.elements();
-		final Vector nameVec = new Vector();
+		final Enumeration<ImageCodec> enum0 = codecs.elements();
+		final Vector<String> nameVec = new Vector<String>();
 
 		final String opName = null;
 		while (enum0.hasMoreElements()) {
-			final ImageCodec codec = (ImageCodec) enum0.nextElement();
+			final ImageCodec codec = enum0.nextElement();
 
 			if (codec.canEncodeImage(im, param)) {
 				nameVec.add(codec.getFormatName());

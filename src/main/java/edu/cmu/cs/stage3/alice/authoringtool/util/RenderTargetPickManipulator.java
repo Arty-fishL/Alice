@@ -23,13 +23,16 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import edu.cmu.cs.stage3.alice.authoringtool.util.event.RenderTargetPickManipulatorListener;
+import edu.cmu.cs.stage3.alice.core.Transformable;
+
 public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseListener {
 	protected edu.cmu.cs.stage3.alice.core.Transformable ePickedTransformable = null;
 	protected edu.cmu.cs.stage3.alice.core.Transformable lastEPickedTransformable = null;
 	protected edu.cmu.cs.stage3.alice.scenegraph.Transformable sgPickedTransformable = null;
 	protected edu.cmu.cs.stage3.alice.scenegraph.renderer.OnscreenRenderTarget renderTarget = null;
-	protected java.util.HashSet objectsOfInterest = new java.util.HashSet();
-	protected java.util.HashSet listeners = new java.util.HashSet();
+	protected java.util.HashSet<Transformable> objectsOfInterest = new java.util.HashSet<Transformable>();
+	protected java.util.HashSet<RenderTargetPickManipulatorListener> listeners = new java.util.HashSet<RenderTargetPickManipulatorListener>();
 	protected java.awt.Cursor invisibleCursor = java.awt.Toolkit.getDefaultToolkit().createCustomCursor(
 			java.awt.Toolkit.getDefaultToolkit().getImage(""), new java.awt.Point(0, 0), "invisible cursor");
 	protected java.awt.Cursor savedCursor = java.awt.Cursor.getDefaultCursor();
@@ -169,7 +172,7 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 
 			firePrePick();
 			if (objectsOfInterest.size() == 1 && pickAllForOneObjectOfInterest) {
-				ePickedTransformable = (edu.cmu.cs.stage3.alice.core.Transformable) objectsOfInterest.iterator().next();
+				ePickedTransformable = objectsOfInterest.iterator().next();
 				sgPickedTransformable = ePickedTransformable.getSceneGraphTransformable();
 			} else {
 				// implementors are responsible for pushing their own undos onto
@@ -282,8 +285,8 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 	protected void firePrePick() {
 		final edu.cmu.cs.stage3.alice.authoringtool.util.event.RenderTargetPickManipulatorEvent ev = new edu.cmu.cs.stage3.alice.authoringtool.util.event.RenderTargetPickManipulatorEvent(
 				renderTarget, null);
-		for (final java.util.Iterator iter = listeners.iterator(); iter.hasNext();) {
-			((edu.cmu.cs.stage3.alice.authoringtool.util.event.RenderTargetPickManipulatorListener) iter.next())
+		for (final java.util.Iterator<RenderTargetPickManipulatorListener> iter = listeners.iterator(); iter.hasNext();) {
+			iter.next()
 					.prePick(ev);
 		}
 	}
@@ -291,8 +294,8 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 	protected void firePostPick(final edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pickInfo) {
 		final edu.cmu.cs.stage3.alice.authoringtool.util.event.RenderTargetPickManipulatorEvent ev = new edu.cmu.cs.stage3.alice.authoringtool.util.event.RenderTargetPickManipulatorEvent(
 				renderTarget, pickInfo);
-		for (final java.util.Iterator iter = listeners.iterator(); iter.hasNext();) {
-			((edu.cmu.cs.stage3.alice.authoringtool.util.event.RenderTargetPickManipulatorListener) iter.next())
+		for (final java.util.Iterator<RenderTargetPickManipulatorListener> iter = listeners.iterator(); iter.hasNext();) {
+			iter.next()
 					.postPick(ev);
 		}
 	}

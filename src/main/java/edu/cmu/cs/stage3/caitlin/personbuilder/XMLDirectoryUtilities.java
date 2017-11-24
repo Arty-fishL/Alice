@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.caitlin.personbuilder;
 
+import java.awt.Image;
+import java.net.URL;
 import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -84,9 +86,9 @@ public class XMLDirectoryUtilities {
 		return loadURL(url);
 	}
 
-	public static Vector getDirectories(final Node node) {
+	public static Vector<Node> getDirectories(final Node node) {
 		final NodeList nList = node.getChildNodes();
-		final Vector directoryNodes = new Vector();
+		final Vector<Node> directoryNodes = new Vector<Node>();
 		for (int i = 0; i < nList.getLength(); i++) {
 			final Node kidNode = nList.item(i);
 			if (kidNode.getNodeName().equals("directory")) {
@@ -96,9 +98,9 @@ public class XMLDirectoryUtilities {
 		return directoryNodes;
 	}
 
-	public static Vector getSetColorNodes(final Node node) {
+	public static Vector<Node> getSetColorNodes(final Node node) {
 		final NodeList nList = node.getChildNodes();
-		final Vector propertySetNodes = new Vector();
+		final Vector<Node> propertySetNodes = new Vector<Node>();
 		for (int i = 0; i < nList.getLength(); i++) {
 			final Node kidNode = nList.item(i);
 			if (kidNode.getNodeName().equals("setColor")) {
@@ -108,9 +110,9 @@ public class XMLDirectoryUtilities {
 		return propertySetNodes;
 	}
 
-	protected static Vector getFilesOfType(final String nodeType, final Node node) {
+	protected static Vector<URL> getFilesOfType(final String nodeType, final Node node) {
 		final NodeList nList = node.getChildNodes();
-		final Vector files = new Vector();
+		final Vector<URL> files = new Vector<URL>();
 		for (int i = 0; i < nList.getLength(); i++) {
 			final Node kidNode = nList.item(i);
 			if (kidNode.getNodeName().equals(nodeType)) {
@@ -129,16 +131,16 @@ public class XMLDirectoryUtilities {
 		return files;
 	}
 
-	public static Vector getImageURLs(final Node node) {
+	public static Vector<URL> getImageURLs(final Node node) {
 		return getFilesOfType("image", node);
 	}
 
-	public static Vector getImages(final Node node) {
-		final Vector urls = getImageURLs(node);
-		final Vector images = new Vector();
+	public static Vector<Image> getImages(final Node node) {
+		final Vector<URL> urls = getImageURLs(node);
+		final Vector<Image> images = new Vector<Image>();
 		final java.awt.Toolkit tk = java.awt.Toolkit.getDefaultToolkit();
 		for (int i = 0; i < urls.size(); i++) {
-			final java.net.URL url = (java.net.URL) urls.elementAt(i);
+			final java.net.URL url = urls.elementAt(i);
 			try {
 				final java.awt.Image img = tk.createImage(url);
 				if (img != null) {
@@ -151,15 +153,15 @@ public class XMLDirectoryUtilities {
 		return images;
 	}
 
-	public static Vector getModelURLs(final Node node) {
+	public static Vector<URL> getModelURLs(final Node node) {
 		return getFilesOfType("model", node);
 	}
 
-	public static Vector getXMLURLs(final Node node) {
+	public static Vector<URL> getXMLURLs(final Node node) {
 		return getFilesOfType("xml", node);
 	}
 
-	public static Vector getPropertySets(final Node node) {
+	public static Vector<URL> getPropertySets(final Node node) {
 		return getFilesOfType("propertySet", node);
 	}
 }

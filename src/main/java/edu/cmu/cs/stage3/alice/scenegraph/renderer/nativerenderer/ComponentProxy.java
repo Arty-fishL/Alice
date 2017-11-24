@@ -32,7 +32,7 @@ public abstract class ComponentProxy extends ElementProxy {
 
 	private SceneProxy m_sceneProxy = null;
 
-	private static java.util.Vector s_changed = new java.util.Vector(); // todo?
+	private static java.util.Vector<ComponentProxy> s_changed = new java.util.Vector<ComponentProxy>(); // todo?
 																		// initialCapacity
 
 	protected boolean listenToHierarchyAndAbsoluteTransformationChanges() {
@@ -42,9 +42,9 @@ public abstract class ComponentProxy extends ElementProxy {
 	static void updateAbsoluteTransformationChanges() {
 		synchronized (s_changed) {
 			if (s_changed.size() > 0) {
-				final java.util.Enumeration enum0 = s_changed.elements();
+				final java.util.Enumeration<ComponentProxy> enum0 = s_changed.elements();
 				while (enum0.hasMoreElements()) {
-					final ComponentProxy componentProxy = (ComponentProxy) enum0.nextElement();
+					final ComponentProxy componentProxy = enum0.nextElement();
 					final edu.cmu.cs.stage3.alice.scenegraph.Component sgComponent = componentProxy
 							.getSceneGraphComponent();
 					if (sgComponent != null) {

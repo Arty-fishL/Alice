@@ -34,7 +34,7 @@ public class MoviePlayer {
 	 */
 	public MoviePlayer(final List<Picture> pictureList) {
 		animationPanel = new AnimationPanel(pictureList);
-		final Picture p = (Picture) pictureList.get(0);
+		final Picture p = pictureList.get(0);
 		final String fileName = p.getFileName();
 		final File f = new File(fileName);
 		dir = f.getParent() + "/";

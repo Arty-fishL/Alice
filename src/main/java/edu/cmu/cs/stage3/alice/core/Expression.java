@@ -60,7 +60,7 @@ public abstract class Expression extends Element {
 				this);
 		final Enumeration<ExpressionListener> enum0 = m_expressionListeners.elements();
 		while (enum0.hasMoreElements()) {
-			final ExpressionListener expressionListener = (ExpressionListener) enum0
+			final ExpressionListener expressionListener = enum0
 					.nextElement();
 			expressionListener.expressionChanged(expressionEvent);
 		}

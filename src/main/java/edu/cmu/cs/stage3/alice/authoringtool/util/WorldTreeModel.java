@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import edu.cmu.cs.stage3.alice.core.Element;
+
 /**
  * @author Jason Pratt
  */
@@ -73,7 +75,7 @@ public class WorldTreeModel extends TreeModelSupport
 	}
 
 	public Object[] getPath(final edu.cmu.cs.stage3.alice.core.Element element) {
-		final java.util.LinkedList list = new java.util.LinkedList();
+		final java.util.LinkedList<Element> list = new java.util.LinkedList<Element>();
 
 		edu.cmu.cs.stage3.alice.core.Element e = element;
 		while (true) {

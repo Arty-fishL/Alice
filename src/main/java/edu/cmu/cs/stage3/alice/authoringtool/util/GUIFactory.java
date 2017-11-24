@@ -23,11 +23,13 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import java.util.Set;
+
 /**
  * @author Jason Pratt
  */
 public class GUIFactory {
-	public static java.util.HashMap guiCache = new java.util.HashMap();
+	public static java.util.HashMap<Class<? extends GUIElement>, Set> guiCache = new java.util.HashMap<Class<? extends GUIElement>, Set>();
 
 	protected static CollectionEditorPanel collectionEditorPanel;
 
@@ -265,10 +267,10 @@ public class GUIFactory {
 	public static void releaseGUI(final edu.cmu.cs.stage3.alice.authoringtool.util.GUIElement guiElement) {
 		// guiElement.die();
 		guiElement.clean();
-		final Class guiClass = guiElement.getClass();
-		java.util.Set guiSet = (java.util.Set) guiCache.get(guiClass);
+		final Class<? extends GUIElement> guiClass = guiElement.getClass();
+		java.util.Set<GUIElement> guiSet = guiCache.get(guiClass);
 		if (guiSet == null) {
-			guiSet = new java.util.HashSet();
+			guiSet = new java.util.HashSet<GUIElement>();
 			guiCache.put(guiClass, guiSet);
 		}
 		guiSet.add(guiElement);
@@ -280,7 +282,7 @@ public class GUIFactory {
 	}
 
 	protected static javax.swing.JComponent getOrCreateGUI(final Class guiClass) {
-		final java.util.Set guiSet = (java.util.Set) guiCache.get(guiClass);
+		final java.util.Set guiSet = guiCache.get(guiClass);
 		if (guiSet != null && !guiSet.isEmpty()) {
 			final javax.swing.JComponent guiElement = (javax.swing.JComponent) guiSet.iterator().next();
 			if (guiElement.getParent() != null) {

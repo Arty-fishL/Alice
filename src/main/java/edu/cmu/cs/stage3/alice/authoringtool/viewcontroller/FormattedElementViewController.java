@@ -39,7 +39,7 @@ public class FormattedElementViewController extends edu.cmu.cs.stage3.alice.auth
 	 */
 	private static final long serialVersionUID = -8158567280224069941L;
 	protected edu.cmu.cs.stage3.alice.core.Element element;
-	protected java.util.List visibleProperties;
+	protected java.util.List<Property> visibleProperties;
 	protected javax.swing.JPanel subPanel = new edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel();
 	protected String format;
 	protected java.util.HashMap guiMap = new java.util.HashMap();
@@ -329,7 +329,7 @@ public class FormattedElementViewController extends edu.cmu.cs.stage3.alice.auth
 	}
 
 	private void calculateVisibleProperties() {
-		visibleProperties = new java.util.LinkedList();
+		visibleProperties = new java.util.LinkedList<Property>();
 		if (element != null) {
 			final String visiblePropertiesString = (String) element.data
 					.get("edu.cmu.cs.stage3.alice.authoringtool.visibleProperties");
@@ -361,7 +361,7 @@ public class FormattedElementViewController extends edu.cmu.cs.stage3.alice.auth
 
 		if (visibleProperties.size() > 0) {
 			final StringBuffer sb = new StringBuffer();
-			for (final java.util.Iterator iter = visibleProperties.iterator(); iter.hasNext();) {
+			for (final java.util.Iterator<Property> iter = visibleProperties.iterator(); iter.hasNext();) {
 				Object o = iter.next();
 				if (o instanceof edu.cmu.cs.stage3.alice.core.Property) {
 					o = ((edu.cmu.cs.stage3.alice.core.Property) o).getName();
@@ -394,9 +394,9 @@ public class FormattedElementViewController extends edu.cmu.cs.stage3.alice.auth
 
 		final String[] propertiesToOmit = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
 				.getParameterizedPropertiesToOmit();
-		final java.util.List propertiesToOmitList = java.util.Arrays.asList(propertiesToOmit);
+		final java.util.List<String> propertiesToOmitList = java.util.Arrays.asList(propertiesToOmit);
 
-		final java.util.LinkedList unsetProperties = new java.util.LinkedList();
+		final java.util.LinkedList<Property> unsetProperties = new java.util.LinkedList<Property>();
 		if (FormattedElementViewController.this.element != null) {
 			final edu.cmu.cs.stage3.alice.core.Property[] properties = FormattedElementViewController.this.element
 					.getProperties();
@@ -409,7 +409,7 @@ public class FormattedElementViewController extends edu.cmu.cs.stage3.alice.auth
 			}
 		}
 		if (unsetProperties.size() > 0) {
-			return (edu.cmu.cs.stage3.alice.core.Property[]) unsetProperties
+			return unsetProperties
 					.toArray(new edu.cmu.cs.stage3.alice.core.Property[0]);
 		} else {
 			return new edu.cmu.cs.stage3.alice.core.Property[0];
@@ -462,7 +462,7 @@ public class FormattedElementViewController extends edu.cmu.cs.stage3.alice.auth
 		if (element != null) {
 			calculateVisibleProperties();
 			// add formatted tokens
-			final java.util.LinkedList unusedVisibleProperties = new java.util.LinkedList(visibleProperties);
+			final java.util.LinkedList<Property> unusedVisibleProperties = new java.util.LinkedList<Property>(visibleProperties);
 			final edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer formatTokenizer = new edu.cmu.cs.stage3.alice.authoringtool.util.FormatTokenizer(
 					format);
 			int i = 0;
@@ -561,8 +561,8 @@ public class FormattedElementViewController extends edu.cmu.cs.stage3.alice.auth
 			}
 
 			// add remaining properties
-			for (final java.util.Iterator iter = unusedVisibleProperties.iterator(); iter.hasNext();) {
-				final edu.cmu.cs.stage3.alice.core.Property property = (edu.cmu.cs.stage3.alice.core.Property) iter
+			for (final java.util.Iterator<Property> iter = unusedVisibleProperties.iterator(); iter.hasNext();) {
+				final edu.cmu.cs.stage3.alice.core.Property property = iter
 						.next();
 				if (property != null) {
 					javax.swing.JComponent gui = null;

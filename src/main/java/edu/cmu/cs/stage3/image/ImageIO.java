@@ -86,10 +86,10 @@ public class ImageIO {
 		} else {
 			final java.awt.image.Raster raster = renderedImage.getData();
 			final java.awt.image.ColorModel colorModel = renderedImage.getColorModel();
-			java.util.Hashtable properties = null;
+			java.util.Hashtable<String, Object> properties = null;
 			final String[] propertyNames = renderedImage.getPropertyNames();
 			if (propertyNames != null) {
-				properties = new java.util.Hashtable();
+				properties = new java.util.Hashtable<String, Object>();
 				for (final String propertyName : propertyNames) {
 					properties.put(propertyName, renderedImage.getProperty(propertyName));
 				}

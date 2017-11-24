@@ -23,6 +23,10 @@
 
 package edu.cmu.cs.stage3.alice.core;
 
+import java.util.Enumeration;
+
+import edu.cmu.cs.stage3.math.Matrix44;
+
 /**
  * @author Jason Pratt
  */
@@ -32,7 +36,7 @@ public class Pose extends Element {
 
 	public static Pose manufacturePose(final Transformable modelRoot, final Transformable poseRoot) {
 		final Pose pose = new Pose();
-		final java.util.Hashtable map = new java.util.Hashtable();
+		final java.util.Hashtable<String, Matrix44> map = new java.util.Hashtable<>();
 		final Transformable[] descendants = (Transformable[]) poseRoot.getDescendants(Transformable.class);
 		for (final Transformable descendant : descendants) {
 			if (descendant != poseRoot) {
@@ -43,14 +47,15 @@ public class Pose extends Element {
 		return pose;
 	}
 
-	private final java.util.Hashtable HACK_hardMap = new java.util.Hashtable();
+	private final java.util.Hashtable<Element, Object> HACK_hardMap = new java.util.Hashtable<Element, Object>();
 
 	public void HACK_harden() {
 		final Element parent = getParent();
 		HACK_hardMap.clear();
-		final java.util.Enumeration enum0 = poseMap.keys();
+		@SuppressWarnings("unchecked")
+		final java.util.Enumeration<String> enum0 = (Enumeration<String>) poseMap.keys();
 		while (enum0.hasMoreElements()) {
-			final String key = (String) enum0.nextElement();
+			final String key = enum0.nextElement().toString();
 			final Object value = poseMap.get(key);
 			final Element hardKey = parent.getDescendantKeyedIgnoreCase(key);
 			if (hardKey != null) {
@@ -63,10 +68,10 @@ public class Pose extends Element {
 
 	public void HACK_soften() {
 		final Element parent = getParent();
-		final java.util.Dictionary softMap = new java.util.Hashtable();
-		final java.util.Enumeration enum0 = HACK_hardMap.keys();
+		final java.util.Dictionary<String, Object> softMap = new java.util.Hashtable<String, Object>();
+		final java.util.Enumeration<Element> enum0 = HACK_hardMap.keys();
 		while (enum0.hasMoreElements()) {
-			final Element hardKey = (Element) enum0.nextElement();
+			final Element hardKey = enum0.nextElement();
 			final Object value = HACK_hardMap.get(hardKey);
 			final String softKey = hardKey.getKey(parent);
 			if (softKey != null) {
@@ -102,10 +107,11 @@ public class Pose extends Element {
 	 */
 
 	public void resize(final Element part, final Element modelRoot, final double ratio) {
-		final java.util.Enumeration keys = poseMap.keys();
+		@SuppressWarnings("unchecked")
+		final java.util.Enumeration<String> keys = (Enumeration<String>) poseMap.keys();
 		while (keys.hasMoreElements()) {
-			final Object key = keys.nextElement();
-			if (((String) key).indexOf(part.getKey(modelRoot)) != -1) {
+			final String key = keys.nextElement().toString();
+			if (key.indexOf(part.getKey(modelRoot)) != -1) {
 				final edu.cmu.cs.stage3.math.Matrix44 transform = (edu.cmu.cs.stage3.math.Matrix44) poseMap.get(key);
 				final edu.cmu.cs.stage3.math.Vector3 pos = transform.getPosition();
 				pos.scale(ratio);

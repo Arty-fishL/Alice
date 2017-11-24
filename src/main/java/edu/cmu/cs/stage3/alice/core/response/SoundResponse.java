@@ -24,6 +24,7 @@
 package edu.cmu.cs.stage3.alice.core.response;
 
 import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
+import edu.cmu.cs.stage3.alice.core.event.SoundListener;
 import edu.cmu.cs.stage3.alice.core.media.SoundMarker;
 import edu.cmu.cs.stage3.alice.core.property.ElementProperty;
 import edu.cmu.cs.stage3.alice.core.property.NumberProperty;
@@ -38,7 +39,7 @@ public class SoundResponse extends edu.cmu.cs.stage3.alice.core.Response {
 	public final NumberProperty volumeLevel = new NumberProperty(this, "volumeLevel", new Double(1));
 	public final NumberProperty rate = new NumberProperty(this, "rate", new Double(1));
 	public final NumberProperty pan = new NumberProperty(this, "pan", new Double(0));
-	private final java.util.Vector soundListeners = new java.util.Vector();
+	private final java.util.Vector<SoundListener> soundListeners = new java.util.Vector<SoundListener>();
 	private edu.cmu.cs.stage3.alice.core.event.SoundListener[] soundListenerArray = null;
 
 	@Override
@@ -75,7 +76,7 @@ public class SoundResponse extends edu.cmu.cs.stage3.alice.core.Response {
 		final edu.cmu.cs.stage3.alice.core.event.SoundEvent e = new edu.cmu.cs.stage3.alice.core.event.SoundEvent(this,
 				new Double(time), ds, new Double(duration));
 		for (int i = 0; i < soundListeners.size(); i++) {
-			final edu.cmu.cs.stage3.alice.core.event.SoundListener l = (edu.cmu.cs.stage3.alice.core.event.SoundListener) soundListeners
+			final edu.cmu.cs.stage3.alice.core.event.SoundListener l = soundListeners
 					.elementAt(i);
 			l.SoundStarted(e);
 		}

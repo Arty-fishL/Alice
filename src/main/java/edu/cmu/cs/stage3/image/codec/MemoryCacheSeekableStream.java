@@ -79,7 +79,7 @@ public final class MemoryCacheSeekableStream extends SeekableStream {
 	private static final int SECTOR_MASK = SECTOR_SIZE - 1;
 
 	/** A Vector of source sectors. */
-	private final Vector data = new Vector();
+	private final Vector<byte[]> data = new Vector<byte[]>();
 
 	/** Number of sectors stored. */
 	int sectors = 0;
@@ -205,7 +205,7 @@ public final class MemoryCacheSeekableStream extends SeekableStream {
 		final long next = pointer + 1;
 		final long pos = readUntil(next);
 		if (pos >= next) {
-			final byte[] buf = (byte[]) data.elementAt((int) (pointer >> SECTOR_SHIFT));
+			final byte[] buf = data.elementAt((int) (pointer >> SECTOR_SHIFT));
 			return buf[(int) (pointer++ & SECTOR_MASK)] & 0xff;
 		} else {
 			return -1;
@@ -287,7 +287,7 @@ public final class MemoryCacheSeekableStream extends SeekableStream {
 			return -1;
 		}
 
-		final byte[] buf = (byte[]) data.elementAt((int) (pointer >> SECTOR_SHIFT));
+		final byte[] buf = data.elementAt((int) (pointer >> SECTOR_SHIFT));
 		final int nbytes = Math.min(len, SECTOR_SIZE - (int) (pointer & SECTOR_MASK));
 		System.arraycopy(buf, (int) (pointer & SECTOR_MASK), b, off, nbytes);
 		pointer += nbytes;

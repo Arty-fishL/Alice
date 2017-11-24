@@ -29,8 +29,8 @@ import java.lang.reflect.Method;
  * @author Jason Pratt
  */
 public abstract class Spline {
-	private final java.util.TreeSet keys;
-	private final java.util.Comparator keyComparator = new java.util.Comparator() {
+	private final java.util.TreeSet<Key> keys;
+	private final java.util.Comparator<Object> keyComparator = new java.util.Comparator() {
 		@Override
 		public int compare(final Object o1, final Object o2) {
 			if (o1 instanceof Key && o2 instanceof Key) {
@@ -51,7 +51,7 @@ public abstract class Spline {
 	private Key recentKey;
 
 	protected Spline() {
-		keys = new java.util.TreeSet(keyComparator);
+		keys = new java.util.TreeSet<Key>(keyComparator);
 	}
 
 	protected boolean addKey(final Key key) {
@@ -67,7 +67,7 @@ public abstract class Spline {
 	}
 
 	public Key[] getKeyArray(final Key[] keyArray) {
-		return (Key[]) keys.toArray(keyArray);
+		return keys.toArray(keyArray);
 	}
 
 	private final Key[] boundingKeys = new Key[2];
@@ -77,7 +77,7 @@ public abstract class Spline {
 		Key nextKey = null;
 
 		if (keys.size() == 1) {
-			prevKey = nextKey = (Key) keys.first();
+			prevKey = nextKey = keys.first();
 			boundingKeys[0] = prevKey;
 			boundingKeys[1] = nextKey;
 			return boundingKeys;
@@ -85,12 +85,12 @@ public abstract class Spline {
 
 		// first try our cached position
 		if (recentKey != null) {
-			final java.util.Iterator iter = keys.tailSet(recentKey).iterator();
+			final java.util.Iterator<Key> iter = keys.tailSet(recentKey).iterator();
 			if (iter.hasNext()) {
-				nextKey = (Key) iter.next();
+				nextKey = iter.next();
 				while (iter.hasNext()) {
 					prevKey = nextKey;
-					nextKey = (Key) iter.next();
+					nextKey = iter.next();
 					if (time >= prevKey.getTime() && time < nextKey.getTime()) {
 						recentKey = prevKey;
 						boundingKeys[0] = prevKey;
@@ -102,12 +102,12 @@ public abstract class Spline {
 		}
 
 		// next, try from the beginning
-		final java.util.Iterator iter = keys.iterator();
+		final java.util.Iterator<Key> iter = keys.iterator();
 		if (iter.hasNext()) {
-			nextKey = (Key) iter.next();
+			nextKey = iter.next();
 			while (iter.hasNext()) {
 				prevKey = nextKey;
-				nextKey = (Key) iter.next();
+				nextKey = iter.next();
 				if (time >= prevKey.getTime() && time < nextKey.getTime()) {
 					recentKey = prevKey;
 					boundingKeys[0] = prevKey;
@@ -121,11 +121,11 @@ public abstract class Spline {
 	}
 
 	public Key getFirstKey() {
-		return (Key) keys.first();
+		return keys.first();
 	}
 
 	public Key getLastKey() {
-		return (Key) keys.last();
+		return keys.last();
 	}
 
 	public double getDuration() {
@@ -149,8 +149,8 @@ public abstract class Spline {
 	}
 
 	public void scaleKeyValueComponents(final double scaleFactor) {
-		for (final java.util.Iterator iter = keys.iterator(); iter.hasNext();) {
-			final Key key = (Key) iter.next();
+		for (final java.util.Iterator<Key> iter = keys.iterator(); iter.hasNext();) {
+			final Key key = iter.next();
 			final double[] valueComponents = key.getValueComponents();
 			for (int i = 0; i < valueComponents.length; i++) {
 				valueComponents[i] *= scaleFactor;
@@ -176,8 +176,8 @@ public abstract class Spline {
 		repr.append("{/splineType}");
 
 		repr.append("{keys}");
-		for (final java.util.Iterator iter = keys.iterator(); iter.hasNext();) {
-			final Key key = (Key) iter.next();
+		for (final java.util.Iterator<Key> iter = keys.iterator(); iter.hasNext();) {
+			final Key key = iter.next();
 			repr.append("{key}");
 			repr.append("{type}");
 			repr.append(key.getClass().getName());

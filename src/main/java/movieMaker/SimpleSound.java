@@ -79,7 +79,7 @@ public class SimpleSound {
 	/**
 	 * A collection of the threads that are playing this sound.
 	 */
-	private Vector playbacks = new Vector();
+	private Vector<Playback> playbacks = new Vector<Playback>();
 
 	/**
 	 * The explorer for this sound, if it exists. If it exists, this becomes the
@@ -280,7 +280,7 @@ public class SimpleSound {
 	public SimpleSound(final SimpleSound sound) {
 		audioFileFormat = sound.audioFileFormat;
 		fileName = sound.fileName;
-		playbacks = new Vector();
+		playbacks = new Vector<Playback>();
 
 		// copy the samples
 		if (sound.buffer != null) {
@@ -346,7 +346,7 @@ public class SimpleSound {
 	 *
 	 * @return the vector of playback threads for this simple sound
 	 */
-	public Vector getPlaybacks() {
+	public Vector<Playback> getPlaybacks() {
 		return playbacks;
 	}
 

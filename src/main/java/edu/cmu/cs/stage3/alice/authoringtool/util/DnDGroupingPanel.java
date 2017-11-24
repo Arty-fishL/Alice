@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import java.awt.dnd.DragGestureRecognizer;
+
 /**
  * @author Jason Pratt
  */
@@ -42,7 +44,7 @@ public class DnDGroupingPanel extends GroupingPanel {
 	protected int arcWidth = 12;
 	protected int arcHeight = 10;
 	protected GroupingPanelDragGestureListener dragGestureListener = new GroupingPanelDragGestureListener();
-	protected java.util.LinkedList dragGestureRecognizers = new java.util.LinkedList(); // MEMFIX
+	protected java.util.LinkedList<DragGestureRecognizer> dragGestureRecognizers = new java.util.LinkedList<DragGestureRecognizer>(); // MEMFIX
 	protected boolean dragEnabled = true;
 	protected boolean drawFaded = false;
 	protected java.awt.Composite defaultComposite = java.awt.AlphaComposite.SrcOver;
@@ -112,8 +114,8 @@ public class DnDGroupingPanel extends GroupingPanel {
 	}
 
 	public void addDragSourceComponent(final java.awt.Component component) {
-		for (final java.util.Iterator iter = dragGestureRecognizers.iterator(); iter.hasNext();) {
-			final java.awt.dnd.DragGestureRecognizer dgr = (java.awt.dnd.DragGestureRecognizer) iter.next();
+		for (final java.util.Iterator<DragGestureRecognizer> iter = dragGestureRecognizers.iterator(); iter.hasNext();) {
+			final java.awt.dnd.DragGestureRecognizer dgr = iter.next();
 			if (dgr.getComponent() == component) {
 				return; // HACK
 			}
@@ -128,8 +130,8 @@ public class DnDGroupingPanel extends GroupingPanel {
 	}
 
 	public void removeDragSourceComponent(final java.awt.Component component) {
-		for (final java.util.ListIterator iter = dragGestureRecognizers.listIterator(); iter.hasNext();) {
-			final java.awt.dnd.DragGestureRecognizer dgr = (java.awt.dnd.DragGestureRecognizer) iter.next();
+		for (final java.util.ListIterator<DragGestureRecognizer> iter = dragGestureRecognizers.listIterator(); iter.hasNext();) {
+			final java.awt.dnd.DragGestureRecognizer dgr = iter.next();
 			if (dgr.getComponent() == component) {
 				dgr.removeDragGestureListener(dragGestureListener);
 				dgr.setComponent(null);
@@ -166,8 +168,8 @@ public class DnDGroupingPanel extends GroupingPanel {
 		// dragWindow2.hide();
 		// }
 		// dragWindow2 = null;
-		for (final java.util.Iterator iter = dragGestureRecognizers.listIterator(); iter.hasNext();) { // MEMFIX
-			final java.awt.dnd.DragGestureRecognizer dgr = (java.awt.dnd.DragGestureRecognizer) iter.next();
+		for (final java.util.Iterator<DragGestureRecognizer> iter = dragGestureRecognizers.listIterator(); iter.hasNext();) { // MEMFIX
+			final java.awt.dnd.DragGestureRecognizer dgr = iter.next();
 			if (dragGestureListener != null) {
 				dgr.removeDragGestureListener(dragGestureListener);
 				iter.remove();

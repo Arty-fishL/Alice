@@ -37,7 +37,7 @@ public class StepPanel extends JPanel {
 	private static final long serialVersionUID = -4752979295821815207L;
 	ImageIcon backImage = null;
 	ImageIcon nextImage = null;
-	Vector choosers = new Vector();
+	Vector<JPanel> choosers = new Vector<JPanel>();
 
 	public StepPanel(final Node stepNode, final ImageIcon nextImage, final ImageIcon backImage,
 			final ModelWrapper modelWrapper) {
@@ -58,20 +58,20 @@ public class StepPanel extends JPanel {
 		}
 	}
 
-	private Vector getChoosers(final Node stepNode, final ModelWrapper modelWrapper) {
+	private Vector<JPanel> getChoosers(final Node stepNode, final ModelWrapper modelWrapper) {
 
-		final Vector choosers = new Vector();
+		final Vector<JPanel> choosers = new Vector<JPanel>();
 
-		final Vector colorNodes = XMLDirectoryUtilities.getSetColorNodes(stepNode);
+		final Vector<Node> colorNodes = XMLDirectoryUtilities.getSetColorNodes(stepNode);
 		for (int i = 0; i < colorNodes.size(); i++) {
 			final ColorSelector colorSelector = new ColorSelector(modelWrapper);
 			choosers.addElement(colorSelector);
 		}
 
-		final Vector chooserNodes = XMLDirectoryUtilities.getDirectories(stepNode);
+		final Vector<Node> chooserNodes = XMLDirectoryUtilities.getDirectories(stepNode);
 		final double incr = 3.0 / chooserNodes.size();
 		for (int i = 0; i < chooserNodes.size(); i++) {
-			final Node chooserNode = (Node) chooserNodes.elementAt(i);
+			final Node chooserNode = chooserNodes.elementAt(i);
 			if (chooserNode.getNodeName().equals("directory")) {
 				final ItemChooser chooser = new ItemChooser(chooserNode, nextImage, backImage, modelWrapper);
 				choosers.addElement(chooser);
@@ -80,10 +80,10 @@ public class StepPanel extends JPanel {
 		return choosers;
 	}
 
-	private void addChoosers(final Vector choosers) {
+	private void addChoosers(final Vector<JPanel> choosers) {
 		setLayout(new java.awt.GridLayout(3, 1));
 		for (int i = 0; i < choosers.size(); i++) {
-			this.add((JPanel) choosers.elementAt(i));
+			this.add(choosers.elementAt(i));
 		}
 	}
 }

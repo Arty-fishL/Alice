@@ -78,7 +78,7 @@ public class RenderTargetOrbitManipulator extends RenderTargetPickManipulator {
 			orbitZoomFactor = Double.parseDouble(orbitConfig.getValue("renderTargetOrbitManipulator.orbitZoomFactor"));
 
 			if (sgPickedTransformable == null && objectsOfInterest.size() == 1) {
-				ePickedTransformable = (edu.cmu.cs.stage3.alice.core.Transformable) objectsOfInterest.iterator().next();
+				ePickedTransformable = objectsOfInterest.iterator().next();
 				sgPickedTransformable = ePickedTransformable.getSceneGraphTransformable();
 				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.getHack().getUndoRedoStack().setIsListening(false);
 				mouseIsDown = true;

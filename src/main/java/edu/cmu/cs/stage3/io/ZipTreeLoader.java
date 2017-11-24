@@ -30,8 +30,8 @@ public class ZipTreeLoader implements DirectoryTreeLoader {
 	protected java.util.zip.ZipInputStream zipIn = null;
 	protected String currentDirectory = null;
 	protected boolean isLoading = false;
-	protected java.util.Hashtable pathnamesToByteArrays = null;
-	protected java.util.Vector directories = null;
+	protected java.util.Hashtable<String, byte[]> pathnamesToByteArrays = null;
+	protected java.util.Vector<String> directories = null;
 	private Object pathnameBeingWaitedOn = null;
 	protected final static Object WHOLE_FILE = new Object();
 	protected ZipLoaderThread loaderThread = null;
@@ -65,8 +65,8 @@ public class ZipTreeLoader implements DirectoryTreeLoader {
 
 		zipIn = new java.util.zip.ZipInputStream(new java.io.BufferedInputStream(in));
 		currentDirectory = "";
-		pathnamesToByteArrays = new java.util.Hashtable();
-		directories = new java.util.Vector();
+		pathnamesToByteArrays = new java.util.Hashtable<String, byte[]>();
+		directories = new java.util.Vector<String>();
 		loaderThread = new ZipLoaderThread();
 		loaderThread.start();
 	}
@@ -123,7 +123,7 @@ public class ZipTreeLoader implements DirectoryTreeLoader {
 		final String pathname = getCanonicalPathname(currentDirectory + filename);
 		waitFor(pathname);
 
-		final byte[] fileContents = (byte[]) pathnamesToByteArrays.get(pathname);
+		final byte[] fileContents = pathnamesToByteArrays.get(pathname);
 		if (fileContents == null) {
 			throw new java.io.FileNotFoundException("Not Found: " + pathname);
 		}
@@ -148,9 +148,9 @@ public class ZipTreeLoader implements DirectoryTreeLoader {
 	public String[] getFilesInCurrentDirectory() {
 		waitFor(ZipTreeLoader.WHOLE_FILE);
 
-		final java.util.Vector files = new java.util.Vector();
-		for (final java.util.Enumeration enum0 = pathnamesToByteArrays.keys(); enum0.hasMoreElements();) {
-			final String filename = (String) enum0.nextElement();
+		final java.util.Vector<String> files = new java.util.Vector<String>();
+		for (final java.util.Enumeration<String> enum0 = pathnamesToByteArrays.keys(); enum0.hasMoreElements();) {
+			final String filename = enum0.nextElement();
 			final int index = filename.indexOf(currentDirectory);
 			if (index == 0) {
 				final String tail = filename.substring(currentDirectory.length());
@@ -162,8 +162,8 @@ public class ZipTreeLoader implements DirectoryTreeLoader {
 
 		final String[] filenames = new String[files.size()];
 		int i = 0;
-		for (final java.util.Enumeration enum0 = files.elements(); enum0.hasMoreElements();) {
-			filenames[i++] = (String) enum0.nextElement();
+		for (final java.util.Enumeration<String> enum0 = files.elements(); enum0.hasMoreElements();) {
+			filenames[i++] = enum0.nextElement();
 		}
 
 		return filenames;
@@ -177,9 +177,9 @@ public class ZipTreeLoader implements DirectoryTreeLoader {
 	public String[] getDirectoriesInCurrentDirectory() {
 		waitFor(ZipTreeLoader.WHOLE_FILE);
 
-		final java.util.Vector dirs = new java.util.Vector();
-		for (final java.util.Enumeration enum0 = directories.elements(); enum0.hasMoreElements();) {
-			final String dirname = (String) enum0.nextElement();
+		final java.util.Vector<String> dirs = new java.util.Vector<String>();
+		for (final java.util.Enumeration<String> enum0 = directories.elements(); enum0.hasMoreElements();) {
+			final String dirname = enum0.nextElement();
 			final int index = dirname.indexOf(currentDirectory);
 			if (index == 0) {
 				final String tail = dirname.substring(currentDirectory.length());
@@ -193,8 +193,8 @@ public class ZipTreeLoader implements DirectoryTreeLoader {
 
 		final String[] dirnames = new String[dirs.size()];
 		int i = 0;
-		for (final java.util.Enumeration enum0 = dirs.elements(); enum0.hasMoreElements();) {
-			dirnames[i++] = (String) enum0.nextElement();
+		for (final java.util.Enumeration<String> enum0 = dirs.elements(); enum0.hasMoreElements();) {
+			dirnames[i++] = enum0.nextElement();
 		}
 
 		return dirnames;

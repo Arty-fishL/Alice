@@ -26,7 +26,7 @@ package edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer;
 public abstract class GeometryProxy extends ElementProxy {
 	protected abstract void onBoundChange(double x, double y, double z, double radius);
 
-	private static java.util.Vector s_changed = new java.util.Vector(); // todo?
+	private static java.util.Vector<GeometryProxy> s_changed = new java.util.Vector<GeometryProxy>(); // todo?
 																		// initialCapacity
 
 	private edu.cmu.cs.stage3.alice.scenegraph.Geometry getSceneGraphGeometry() {
@@ -56,9 +56,9 @@ public abstract class GeometryProxy extends ElementProxy {
 
 	static void updateBoundChanges() {
 		if (s_changed.size() > 0) {
-			final java.util.Enumeration enum0 = s_changed.elements();
+			final java.util.Enumeration<GeometryProxy> enum0 = s_changed.elements();
 			while (enum0.hasMoreElements()) {
-				final GeometryProxy geometryProxy = (GeometryProxy) enum0.nextElement();
+				final GeometryProxy geometryProxy = enum0.nextElement();
 				final edu.cmu.cs.stage3.math.Sphere sphere = geometryProxy.getSceneGraphGeometry().getBoundingSphere();
 				double x = Double.NaN;
 				double y = Double.NaN;

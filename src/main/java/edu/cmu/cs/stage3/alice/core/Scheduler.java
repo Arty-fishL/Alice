@@ -28,7 +28,7 @@ import edu.cmu.cs.stage3.alice.core.event.ScheduleListener;
 
 public class Scheduler implements Runnable {
 	private static long s_startTime = System.currentTimeMillis();
-	private final java.util.Vector m_scheduleListeners = new java.util.Vector();
+	private final java.util.Vector<ScheduleListener> m_scheduleListeners = new java.util.Vector<ScheduleListener>();
 	private ScheduleListener[] m_scheduleListenerArray = null;
 	private double m_falseDT = Double.NaN;
 	private double m_prevTime = Double.NaN;

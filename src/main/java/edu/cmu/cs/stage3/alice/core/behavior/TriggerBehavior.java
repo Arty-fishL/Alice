@@ -34,7 +34,7 @@ public class TriggerBehavior extends Behavior {
 	public final ObjectProperty multipleRuntimeResponsePolicy = new ObjectProperty(this,
 			"multipleRuntimeResponsePolicy", MultipleRuntimeResponsePolicy.ENQUEUE_MULTIPLE,
 			MultipleRuntimeResponsePolicy.class);
-	private final java.util.Vector m_runtimeResponses = new java.util.Vector();
+	private final java.util.Vector<RuntimeResponse> m_runtimeResponses = new java.util.Vector<RuntimeResponse>();
 	private Response.RuntimeResponse[] m_runtimeResponseArray = null;
 
 	private Response.RuntimeResponse[] getRuntimeResponseArray() {
@@ -87,9 +87,9 @@ public class TriggerBehavior extends Behavior {
 		}
 		if (m_runtimeResponses.size() > 0) {
 			synchronized (m_runtimeResponses) {
-				final java.util.Enumeration enum0 = m_runtimeResponses.elements();
+				final java.util.Enumeration<RuntimeResponse> enum0 = m_runtimeResponses.elements();
 				while (enum0.hasMoreElements()) {
-					final Response.RuntimeResponse runtimeResponse = (Response.RuntimeResponse) enum0.nextElement();
+					final Response.RuntimeResponse runtimeResponse = enum0.nextElement();
 					if (runtimeResponse.HACK_isMarkedForRemoval()) {
 						m_runtimeResponses.removeElement(runtimeResponse);
 						m_runtimeResponseArray = null;

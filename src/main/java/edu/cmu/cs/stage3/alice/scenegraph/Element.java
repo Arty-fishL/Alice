@@ -63,9 +63,9 @@ public abstract class Element {
 	public static final Property NAME_PROPERTY = new Property(Element.class, "NAME");
 	private Object m_bonus = null;
 	private String m_name = null;
-	private java.util.Vector m_releaseListeners = new java.util.Vector();
+	private java.util.Vector<Object> m_releaseListeners = new java.util.Vector<Object>();
 	private ReleaseListener[] m_releaseListenerArray = null;
-	private java.util.Vector m_propertyListeners = new java.util.Vector();
+	private java.util.Vector<Object> m_propertyListeners = new java.util.Vector<Object>();
 	private PropertyListener[] m_propertyListenerArray = null;
 	private boolean m_isReleased = false;
 
@@ -88,7 +88,7 @@ public abstract class Element {
 	}
 
 	protected void releasePass3() {
-		java.util.Enumeration enum0;
+		java.util.Enumeration<Object> enum0;
 		enum0 = m_propertyListeners.elements();
 		while (enum0.hasMoreElements()) {
 			final PropertyListener propertyListener = (PropertyListener) enum0.nextElement();
@@ -164,7 +164,7 @@ public abstract class Element {
 	}
 
 	protected void onPropertyChange(final PropertyEvent propertyEvent) {
-		final java.util.Enumeration enum0 = m_propertyListeners.elements();
+		final java.util.Enumeration<Object> enum0 = m_propertyListeners.elements();
 		while (enum0.hasMoreElements()) {
 			final PropertyListener propertyListener = (PropertyListener) enum0.nextElement();
 			propertyListener.changed(propertyEvent);

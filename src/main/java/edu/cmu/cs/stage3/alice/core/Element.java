@@ -1686,7 +1686,7 @@ public abstract class Element {
 						element, externalRoot);
 				final Enumeration<PropertyReference> enum0 = referencesToBeResolved.elements();
 				while (enum0.hasMoreElements()) {
-					final PropertyReference propertyReference = (PropertyReference) enum0.nextElement();
+					final PropertyReference propertyReference = enum0.nextElement();
 					try {
 						propertyReference.resolve(referenceResolver);
 					} catch (final UnresolvableReferenceException ure) {
@@ -1947,7 +1947,7 @@ public abstract class Element {
 				final Enumeration<String> enum0 = filnameToByteArrayMap.keys();
 				while (enum0.hasMoreElements()) {
 					final String filename = (String) enum0.nextElement();
-					final byte[] byteArray = (byte[]) filnameToByteArrayMap.get(filename);
+					final byte[] byteArray = filnameToByteArrayMap.get(filename);
 					final java.io.OutputStream os = storer.createFile(filename, false);
 					os.write(byteArray);
 					os.flush();

@@ -28,6 +28,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.net.URL;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
@@ -42,6 +43,7 @@ import org.w3c.dom.NodeList;
 
 import edu.cmu.cs.stage3.alice.core.Element;
 import edu.cmu.cs.stage3.alice.core.Model;
+import edu.cmu.cs.stage3.caitlin.personbuilder.ItemChooser.CommandInfo;
 
 /**
  * Title: Description: Copyright: Copyright (c) 2002 Company:
@@ -62,7 +64,7 @@ public class ItemChooser extends JPanel {
 	ImageIcon nextImage = null;
 	ImageIcon backImage = null;
 	ModelWrapper modelWrapper = null;
-	Vector commandInfos = new Vector();
+	Vector<CommandInfo> commandInfos = new Vector<CommandInfo>();
 	int index = 0;
 
 	public ItemChooser(final Node itemsNode, final ImageIcon nextImage, final ImageIcon backImage,
@@ -74,7 +76,7 @@ public class ItemChooser extends JPanel {
 			initializeChoices(itemsNode);
 			jbInit();
 
-			final CommandInfo currentInfo = (CommandInfo) commandInfos.elementAt(index);
+			final CommandInfo currentInfo = commandInfos.elementAt(index);
 			itemPicture.setIcon(currentInfo.imageIcon);
 		} catch (final Exception e) {
 			e.printStackTrace();
@@ -83,7 +85,7 @@ public class ItemChooser extends JPanel {
 
 	public void resetDefaults() {
 		index = 0;
-		final CommandInfo currentInfo = (CommandInfo) commandInfos.elementAt(index);
+		final CommandInfo currentInfo = commandInfos.elementAt(index);
 		itemPicture.setIcon(currentInfo.imageIcon);
 	}
 
@@ -317,7 +319,7 @@ public class ItemChooser extends JPanel {
 	}
 
 	private void initializeChoices(final Node itemsNode) {
-		final Vector allImages = XMLDirectoryUtilities.getImages(itemsNode);
+		final Vector<Image> allImages = XMLDirectoryUtilities.getImages(itemsNode);
 		final Document configDoc = loadXMLFile(itemsNode);
 
 		if (allImages != null && allImages.size() > 0 && configDoc != null) {
@@ -332,13 +334,13 @@ public class ItemChooser extends JPanel {
 		Document document = null;
 		java.net.URL fileURL = null;
 
-		final Vector xmlFiles = XMLDirectoryUtilities.getXMLURLs(itemsNode);
+		final Vector<URL> xmlFiles = XMLDirectoryUtilities.getXMLURLs(itemsNode);
 		if (xmlFiles.size() == 0) {
 			System.out.println("No xml file found: ");
 		} else if (xmlFiles.size() > 1) {
 			System.out.println("Multiple xml files found: ");
 		} else {
-			fileURL = (java.net.URL) xmlFiles.elementAt(0);
+			fileURL = xmlFiles.elementAt(0);
 		}
 
 		document = (Document) XMLDirectoryUtilities.loadURL(fileURL);
@@ -347,7 +349,7 @@ public class ItemChooser extends JPanel {
 
 	private void currentLosingFocus() {
 		if (index >= 0 && index < commandInfos.size()) {
-			final CommandInfo currentInfo = (CommandInfo) commandInfos.elementAt(index);
+			final CommandInfo currentInfo = commandInfos.elementAt(index);
 			if (currentInfo.id.equals("addTexture") && currentInfo.altModelName != null) {
 				modelWrapper.switchToOrigModel(currentInfo.altModelName);
 			} else if (currentInfo.id.equals("addTexture")) {
@@ -369,7 +371,7 @@ public class ItemChooser extends JPanel {
 	private void setIcon() {
 		try {
 			if (index >= 0 && index < commandInfos.size()) {
-				final CommandInfo currentInfo = (CommandInfo) commandInfos.elementAt(index);
+				final CommandInfo currentInfo = commandInfos.elementAt(index);
 				itemPicture.setIcon(currentInfo.imageIcon);
 				if (currentInfo.id.equals("addTexture")) {
 					modelWrapper.addTexture(currentInfo.texture, currentInfo.level);
@@ -415,7 +417,7 @@ public class ItemChooser extends JPanel {
 	 * altModels
 	 */
 	public edu.cmu.cs.stage3.alice.core.Model getAltModel() {
-		final CommandInfo currentInfo = (CommandInfo) commandInfos.elementAt(index);
+		final CommandInfo currentInfo = commandInfos.elementAt(index);
 		if (currentInfo.altModelFactory != null) {
 			try {
 				return (edu.cmu.cs.stage3.alice.core.Model) currentInfo.altModelFactory.manufactureCopy(null);
@@ -429,7 +431,7 @@ public class ItemChooser extends JPanel {
 	}
 
 	public edu.cmu.cs.stage3.alice.core.Model getOriginalModel() {
-		final CommandInfo currentInfo = (CommandInfo) commandInfos.elementAt(index);
+		final CommandInfo currentInfo = commandInfos.elementAt(index);
 		if (currentInfo.modelFactory != null) {
 			try {
 				return (edu.cmu.cs.stage3.alice.core.Model) currentInfo.modelFactory.manufactureCopy(null);

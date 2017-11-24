@@ -354,7 +354,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 
 		public String getDetail(final String toGet) {
 			for (int i = 0; i < details.size(); i++) {
-				final edu.cmu.cs.stage3.util.StringObjectPair current = (edu.cmu.cs.stage3.util.StringObjectPair) details
+				final edu.cmu.cs.stage3.util.StringObjectPair current = details
 						.get(i);
 				if (current.getString().equalsIgnoreCase(toGet)) {
 					if (current.getObject() instanceof String) {
@@ -392,7 +392,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 
 		public void addDirectory(final ObjectXmlData dir) {
 			for (int i = 0; i < directories.size(); i++) {
-				final ObjectXmlData current = (ObjectXmlData) directories.get(i);
+				final ObjectXmlData current = directories.get(i);
 				if (current.equals(dir)) {
 					return;
 				}
@@ -402,7 +402,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 
 		public void addDirectory(final ObjectXmlData dir, final int index) {
 			for (int i = 0; i < directories.size(); i++) {
-				final ObjectXmlData current = (ObjectXmlData) directories.get(i);
+				final ObjectXmlData current = directories.get(i);
 				if (current.equals(dir)) {
 					return;
 				}
@@ -412,7 +412,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 
 		public void addModel(final ObjectXmlData model) {
 			for (int i = 0; i < models.size(); i++) {
-				final ObjectXmlData current = (ObjectXmlData) models.get(i);
+				final ObjectXmlData current = models.get(i);
 				if (current.equals(model)) {
 					return;
 				}
@@ -422,7 +422,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 
 		public void addModel(final ObjectXmlData model, final int index) {
 			for (int i = 0; i < models.size(); i++) {
-				final ObjectXmlData current = (ObjectXmlData) models.get(i);
+				final ObjectXmlData current = models.get(i);
 				if (current.equals(model)) {
 					return;
 				}
@@ -440,7 +440,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 		 */
 		public ObjectXmlData getModel(final ObjectXmlData toGet) {
 			for (int i = 0; i < models.size(); i++) {
-				final ObjectXmlData current = (ObjectXmlData) models.get(i);
+				final ObjectXmlData current = models.get(i);
 				if (current.equals(toGet)) {
 					return current;
 				}
@@ -450,14 +450,14 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 
 		public DirectoryStructure getDirectory(final int i) {
 			if (directories != null) {
-				return ((ObjectXmlData) directories.get(i)).directoryData;
+				return directories.get(i).directoryData;
 			}
 			return null;
 		}
 
 		public ObjectXmlData getDirectory(final ObjectXmlData toGet) {
 			for (int i = 0; i < directories.size(); i++) {
-				final ObjectXmlData current = (ObjectXmlData) directories.get(i);
+				final ObjectXmlData current = directories.get(i);
 				if (current.equals(toGet)) {
 					return current;
 				}
@@ -468,9 +468,9 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 		public DirectoryStructure getDirectoryNamed(final String toSearchFor) {
 			if (directories != null) {
 				for (int i = 0; i < directories.size(); i++) {
-					final String currentName = ((ObjectXmlData) directories.get(i)).name;
+					final String currentName = directories.get(i).name;
 					if (currentName.equals(toSearchFor)) {
-						return ((ObjectXmlData) directories.get(i)).directoryData;
+						return directories.get(i).directoryData;
 					}
 				}
 			}
@@ -480,9 +480,9 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 		public ObjectXmlData getDirectoryXMLNamed(final String toSearchFor) {
 			if (directories != null) {
 				for (int i = 0; i < directories.size(); i++) {
-					final String currentName = ((ObjectXmlData) directories.get(i)).name;
+					final String currentName = directories.get(i).name;
 					if (currentName.equals(toSearchFor)) {
-						return (ObjectXmlData) directories.get(i);
+						return directories.get(i);
 					}
 				}
 			}
@@ -719,7 +719,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 		private void removeMissing(final java.util.Vector<ObjectXmlData> toSearch) {
 			int count = 0;
 			while (count < toSearch.size()) {
-				final ObjectXmlData current = (ObjectXmlData) toSearch.get(count);
+				final ObjectXmlData current = toSearch.get(count);
 				if (!current.isThere) {
 					toSearch.remove(count);
 				} else {
@@ -727,7 +727,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 				}
 			}
 			for (int i = 0; i < toSearch.size(); i++) {
-				((ObjectXmlData) toSearch.get(i)).isThere = false;
+				toSearch.get(i).isThere = false;
 			}
 		}
 
@@ -1321,7 +1321,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 
 	private DirectoryStructure getRootDirectoryNamed(final String dirName) {
 		for (int i = 0; i < rootDirectories.size(); i++) {
-			final RootDirectoryStructure current = (RootDirectoryStructure) rootDirectories.get(i);
+			final RootDirectoryStructure current = rootDirectories.get(i);
 			if (current.directory.name.equalsIgnoreCase(dirName)) {
 				return current.directory;
 			}
@@ -1988,7 +1988,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 		// builderButtonsVector.add(add3DTextButton);
 		for (int i = 0; i < builderVector.size(); i++) {
 			if (builderVector.get(i) instanceof StringObjectPair) {
-				final StringObjectPair sop = (StringObjectPair) builderVector.get(i);
+				final StringObjectPair sop = builderVector.get(i);
 				javax.swing.ImageIcon builderIcon = null;
 				if (sop.getObject() instanceof javax.swing.ImageIcon) {
 					builderIcon = (javax.swing.ImageIcon) sop.getObject();
@@ -2383,12 +2383,12 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 			final Vector<ObjectXmlData> matches = toSearch.getObjectMatches(toSearchFor);
 			if (matches != null) {
 				for (int i = 0; i < matches.size(); i++) {
-					if (!searchResults.contains((ObjectXmlData) matches.get(i))) {
-						searchResults.xmlData.addModel((ObjectXmlData) matches.get(i));
+					if (!searchResults.contains(matches.get(i))) {
+						searchResults.xmlData.addModel(matches.get(i));
 						if (searchCount == 0) {
 							objectPanel.removeAll();
 						}
-						modelAdded((ObjectXmlData) matches.get(i), searchCount);
+						modelAdded(matches.get(i), searchCount);
 						searchCount++;
 					}
 				}
@@ -2456,7 +2456,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 
 				if (toSearch == null) {
 					for (int i = 0; i < rootDirectories.size(); i++) {
-						final RootDirectoryStructure currentRoot = (RootDirectoryStructure) rootDirectories.get(i);
+						final RootDirectoryStructure currentRoot = rootDirectories.get(i);
 						if (!isWeb && currentRoot != webGallery) {
 							total += searchDirectory(currentRoot.directory, toSearchFor);
 						}
@@ -2860,7 +2860,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 			// new java.awt.Insets(0,0,0,0), 0,0 ));
 			for (int i = 0; i < rootDirectories.size(); i++) {
 				if (!stopBuildingGallery) {
-					final RootDirectoryStructure currentRoot = (RootDirectoryStructure) rootDirectories.get(i);
+					final RootDirectoryStructure currentRoot = rootDirectories.get(i);
 					GalleryObject toAdd = (GalleryObject) edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory
 							.getGUI(currentRoot.xmlData);
 					try {
@@ -2929,7 +2929,7 @@ public class GalleryViewer extends edu.cmu.cs.stage3.alice.authoringtool.util.Gr
 				}
 			}
 			while (!dirs.empty()) {
-				currentDir = (DirectoryStructure) dirs.pop();
+				currentDir = dirs.pop();
 				if (count > 0) {
 					final javax.swing.JLabel arrow = new javax.swing.JLabel(">");
 					arrow.setForeground(textColor);

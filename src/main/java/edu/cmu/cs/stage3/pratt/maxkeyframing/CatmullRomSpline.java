@@ -29,7 +29,7 @@ package edu.cmu.cs.stage3.pratt.maxkeyframing;
 public class CatmullRomSpline extends Spline {
 	protected SimpleKey[] keys;
 	protected edu.cmu.cs.stage3.math.CatmullRomCubic[][] curves;
-	protected java.util.HashMap curveMap = new java.util.HashMap();
+	protected java.util.HashMap<SimpleKey, Integer> curveMap = new java.util.HashMap<SimpleKey, Integer>();
 	protected int numComponents;
 
 	public boolean addKey(final SimpleKey key) {

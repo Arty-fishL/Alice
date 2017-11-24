@@ -349,7 +349,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		final java.awt.event.ActionEvent e = new java.awt.event.ActionEvent(this,
 				java.awt.event.ActionEvent.ACTION_PERFORMED, "OK");
 		for (int i = 0; i < m_okActionListeners.size(); i++) {
-			final java.awt.event.ActionListener l = (java.awt.event.ActionListener) m_okActionListeners.elementAt(i);
+			final java.awt.event.ActionListener l = m_okActionListeners.elementAt(i);
 			l.actionPerformed(e);
 		}
 	}
@@ -694,7 +694,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 		final boolean oldContrast = Configuration.getValue(authoringToolPackage, "enableHighContrastMode")
 				.equalsIgnoreCase("true");
 		for (final java.util.Iterator<JCheckBox> iter = checkBoxToConfigKeyMap.keySet().iterator(); iter.hasNext();) {
-			final javax.swing.JCheckBox checkBox = (javax.swing.JCheckBox) iter.next();
+			final javax.swing.JCheckBox checkBox = iter.next();
 			String currentValue = Configuration.getValue(authoringToolPackage,
 					(String) checkBoxToConfigKeyMap.get(checkBox));
 			if (currentValue == null) {
@@ -822,7 +822,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 
 	protected void updateGUI() {
 		for (final java.util.Iterator<JCheckBox> iter = checkBoxToConfigKeyMap.keySet().iterator(); iter.hasNext();) {
-			final javax.swing.JCheckBox checkBox = (javax.swing.JCheckBox) iter.next();
+			final javax.swing.JCheckBox checkBox = iter.next();
 			boolean value;
 			try {
 				value = Configuration.getValue(authoringToolPackage, (String) checkBoxToConfigKeyMap.get(checkBox))
@@ -977,7 +977,7 @@ public class PreferencesContentPane extends edu.cmu.cs.stage3.swing.ContentPane 
 				final javax.swing.event.ListDataEvent listDataEvent = new javax.swing.event.ListDataEvent(this,
 						javax.swing.event.ListDataEvent.CONTENTS_CHANGED, 0, upperRange);
 				for (final Iterator<ListDataListener> iter = listenerSet.iterator(); iter.hasNext();) {
-					((javax.swing.event.ListDataListener) iter.next()).contentsChanged(listDataEvent);
+					iter.next().contentsChanged(listDataEvent);
 				}
 			}
 		}

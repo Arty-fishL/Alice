@@ -30,9 +30,9 @@ import edu.cmu.cs.stage3.alice.scenegraph.event.ChildrenListener;
  * @author Dennis Cosgrove
  */
 public abstract class Container extends Component {
-	private java.util.Vector m_children = new java.util.Vector();
+	private java.util.Vector<Component> m_children = new java.util.Vector<Component>();
 	private Component[] m_childArray = null;
-	private java.util.Vector m_childrenListeners = new java.util.Vector();
+	private java.util.Vector<ChildrenListener> m_childrenListeners = new java.util.Vector<ChildrenListener>();
 	private ChildrenListener[] m_childrenListenerArray = null;
 
 	public boolean isAncestorOf(final Component component) {
@@ -62,9 +62,9 @@ public abstract class Container extends Component {
 
 	@Override
 	protected void releasePass3() {
-		final java.util.Enumeration enum0 = m_childrenListeners.elements();
+		final java.util.Enumeration<ChildrenListener> enum0 = m_childrenListeners.elements();
 		while (enum0.hasMoreElements()) {
-			final ChildrenListener childrenListener = (ChildrenListener) enum0.nextElement();
+			final ChildrenListener childrenListener = enum0.nextElement();
 			warnln("WARNING: released container " + this + " still has childrenListener " + childrenListener + ".");
 		}
 		m_childrenListeners = null;
@@ -121,7 +121,7 @@ public abstract class Container extends Component {
 	}
 
 	public Component getChildAt(final int i) {
-		return (Component) m_children.elementAt(i);
+		return m_children.elementAt(i);
 	}
 
 	public void addChildrenListener(final ChildrenListener childrenListener) {

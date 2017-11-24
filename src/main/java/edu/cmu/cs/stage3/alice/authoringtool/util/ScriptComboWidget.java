@@ -106,7 +106,7 @@ public class ScriptComboWidget extends javax.swing.JPanel {
 	// GUI
 	// ///////////////
 
-	private final javax.swing.JComboBox comboBox = new javax.swing.JComboBox();
+	private final javax.swing.JComboBox<String> comboBox = new javax.swing.JComboBox<String>();
 	private final javax.swing.JButton runButton = new javax.swing.JButton(runAction);
 
 	private void guiInit() {

@@ -23,6 +23,7 @@
 
 package edu.cmu.cs.stage3.caitlin.personbuilder;
 
+import java.net.URL;
 import java.util.Vector;
 
 import javax.swing.JPanel;
@@ -91,9 +92,9 @@ public class StringPropertySetter extends JPanel implements javax.swing.event.Do
 
 		// // get the xml path from here
 		java.net.URL xmlURL = null;
-		final Vector xmlFiles = XMLDirectoryUtilities.getXMLURLs(propSetNode);
+		final Vector<URL> xmlFiles = XMLDirectoryUtilities.getXMLURLs(propSetNode);
 		if (xmlFiles.size() == 1) {
-			xmlURL = (java.net.URL) xmlFiles.elementAt(0);
+			xmlURL = xmlFiles.elementAt(0);
 		} else {
 			System.out.println("Zero or Multiple xml files found");
 		}

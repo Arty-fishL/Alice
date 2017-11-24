@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer;
 
+import java.awt.Rectangle;
+
 import edu.cmu.cs.stage3.alice.scenegraph.Camera;
 
 public abstract class RenderTarget extends edu.cmu.cs.stage3.alice.scenegraph.renderer.AbstractProxyRenderTarget {
@@ -32,7 +34,7 @@ public abstract class RenderTarget extends edu.cmu.cs.stage3.alice.scenegraph.re
 		return m_adapter;
 	}
 
-	private final java.util.Dictionary m_cameraViewportMap = new java.util.Hashtable();
+	private final java.util.Dictionary<Camera, Rectangle> m_cameraViewportMap = new java.util.Hashtable<Camera, Rectangle>();
 
 	RenderTarget(final Renderer renderer) {
 		super(renderer);
@@ -91,7 +93,7 @@ public abstract class RenderTarget extends edu.cmu.cs.stage3.alice.scenegraph.re
 
 	@Override
 	public java.awt.Rectangle getViewport(final edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera) {
-		return (java.awt.Rectangle) m_cameraViewportMap.get(sgCamera);
+		return m_cameraViewportMap.get(sgCamera);
 	}
 
 	@Override

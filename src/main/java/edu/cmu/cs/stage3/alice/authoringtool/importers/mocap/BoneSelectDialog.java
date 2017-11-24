@@ -62,7 +62,7 @@ public class BoneSelectDialog extends javax.swing.JDialog {
 	 */
 	private static final long serialVersionUID = 9107195682681851859L;
 	GridBagLayout gridBagLayout1 = new GridBagLayout();
-	JList partsList = new JList();
+	JList<Element> partsList = new JList<Element>();
 	JButton selectButton = new JButton();
 	JButton skipButton = new JButton();
 	JLabel promptLabel = new JLabel();
@@ -83,7 +83,7 @@ public class BoneSelectDialog extends javax.swing.JDialog {
 	}
 
 	private void guiInit(final String matching, final Element[] possibilities) {
-		final DefaultListModel listOfStuff = new DefaultListModel();
+		final DefaultListModel<Element> listOfStuff = new DefaultListModel<Element>();
 		partsList.setModel(listOfStuff);
 		for (final Element possibilitie : possibilities) {
 			listOfStuff.addElement(possibilitie);
@@ -138,7 +138,7 @@ public class BoneSelectDialog extends javax.swing.JDialog {
 	}
 
 	void selectButton_actionPerformed(final ActionEvent e) {
-		selectedPart = (Element) partsList.getSelectedValue();
+		selectedPart = partsList.getSelectedValue();
 		descend = false;
 		setVisible(false);
 	}

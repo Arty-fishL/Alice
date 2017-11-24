@@ -33,7 +33,7 @@ public abstract class Enumerable implements java.io.Serializable {
 	private String m_repr = null;
 
 	public static Enumerable[] getItems(final Class cls) {
-		final java.util.Vector v = new java.util.Vector();
+		final java.util.Vector<Object> v = new java.util.Vector<Object>();
 		final java.lang.reflect.Field[] fields = cls.getFields();
 		for (final Field field : fields) {
 			final int modifiers = field.getModifiers();

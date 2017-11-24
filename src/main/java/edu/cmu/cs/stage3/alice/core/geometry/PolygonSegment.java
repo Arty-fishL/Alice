@@ -45,15 +45,15 @@ import edu.cmu.cs.stage3.alice.scenegraph.Vertex3d;
 import edu.cmu.cs.stage3.math.MathUtilities;
 
 public class PolygonSegment {
-	private final java.util.Vector points;
-	private final java.util.Vector normals;
+	private final java.util.Vector<Point2d> points;
+	private final java.util.Vector<Vector3f> normals;
 
 	private Vertex3d[] sideVertices = null;
 	private int[] indices = null;
 
 	public PolygonSegment() {
-		points = new java.util.Vector();
-		normals = new java.util.Vector();
+		points = new java.util.Vector<Point2d>();
+		normals = new java.util.Vector<Vector3f>();
 	}
 
 	protected Shape getShape() {
@@ -61,10 +61,10 @@ public class PolygonSegment {
 			return null;
 		}
 		final java.awt.geom.GeneralPath gp = new java.awt.geom.GeneralPath();
-		gp.moveTo((float) ((Point2d) points.firstElement()).x, (float) ((Point2d) points.firstElement()).y);
-		final java.util.ListIterator li = points.listIterator(1);
+		gp.moveTo((float) points.firstElement().x, (float) points.firstElement().y);
+		final java.util.ListIterator<Point2d> li = points.listIterator(1);
 		while (li.hasNext()) {
-			final Point2d cur = (Point2d) li.next();
+			final Point2d cur = li.next();
 			gp.lineTo((float) cur.x, (float) cur.y);
 		}
 		gp.closePath();
@@ -79,8 +79,8 @@ public class PolygonSegment {
 		points.add(point);
 		normals.setSize(normals.size() + 2);
 		if (points.size() > 1) {
-			final double dx = ((Point2d) points.lastElement()).x - ((Point2d) points.elementAt(points.size() - 2)).x;
-			final double dy = ((Point2d) points.lastElement()).y - ((Point2d) points.elementAt(points.size() - 2)).y;
+			final double dx = points.lastElement().x - points.elementAt(points.size() - 2).x;
+			final double dy = points.lastElement().y - points.elementAt(points.size() - 2).y;
 			final double len = Math.sqrt(dx * dx + dy * dy);
 			final Vector3d a = new Vector3d(dx / len, 0, dy / len);
 			final Vector3d b = new Vector3d(0, 1, 0);
@@ -97,8 +97,8 @@ public class PolygonSegment {
 
 		normals.setSize(normals.size() + 2 * numSegs);
 
-		final Point2d cp0 = new Point2d(-((Point2d) points.lastElement()).x + offset.x,
-				-((Point2d) points.lastElement()).y + offset.y);
+		final Point2d cp0 = new Point2d(-points.lastElement().x + offset.x,
+				-points.lastElement().y + offset.y);
 
 		final Point3d[] newPositions = new Point3d[numSegs + 1];
 		final Vector3d[] newNormals = new Vector3d[numSegs + 1];
@@ -119,14 +119,14 @@ public class PolygonSegment {
 			return;
 		}
 
-		if (points.size() > 1 && ((Point2d) points.lastElement()).equals((Point2d) points.firstElement())) {
+		if (points.size() > 1 && points.lastElement().equals(points.firstElement())) {
 			points.setSize(points.size() - 1);
 			normals.setSize(normals.size() - 2);
 		}
 		if (points.size() >= 3) {
 
-			final double dx = ((Point2d) points.firstElement()).x - ((Point2d) points.lastElement()).x;
-			final double dy = ((Point2d) points.firstElement()).y - ((Point2d) points.lastElement()).y;
+			final double dx = points.firstElement().x - points.lastElement().x;
+			final double dy = points.firstElement().y - points.lastElement().y;
 			final double len = Math.sqrt(dx * dx + dy * dy);
 			final Vector3d a = new Vector3d(dx / len, 0, dy / len);
 			final Vector3d b = new Vector3d(0, 1, 0);
@@ -179,7 +179,7 @@ public class PolygonSegment {
 		return points.isEmpty();
 	}
 
-	public java.util.Vector points() {
+	public java.util.Vector<Point2d> points() {
 		return points;
 	}
 
@@ -198,20 +198,20 @@ public class PolygonSegment {
 		sideVertices = new Vertex3d[points.size() * 4];
 		indices = new int[points.size() * 6];
 
-		final java.util.ListIterator li = points.listIterator();
+		final java.util.ListIterator<Point2d> li = points.listIterator();
 		for (int i = 0; li.hasNext(); i++) {
-			final Point2d point = (Point2d) li.next();
+			final Point2d point = li.next();
 
 			Point3d pos = new Point3d(point.x, point.y, -extz / 2);
-			sideVertices[i * 2] = new Vertex3d(pos, new Vector3d((Vector3f) normals.elementAt(i * 2)), null, null,
+			sideVertices[i * 2] = new Vertex3d(pos, new Vector3d(normals.elementAt(i * 2)), null, null,
 					new TexCoord2f());
-			sideVertices[i * 2 + 1] = new Vertex3d(pos, new Vector3d((Vector3f) normals.elementAt(i * 2 + 1)), null,
+			sideVertices[i * 2 + 1] = new Vertex3d(pos, new Vector3d(normals.elementAt(i * 2 + 1)), null,
 					null, new TexCoord2f());
 			pos = new Point3d(point.x, point.y, extz / 2);
 			sideVertices[points.size() * 2 + i * 2] = new Vertex3d(pos,
-					new Vector3d((Vector3f) normals.elementAt(i * 2)), null, null, new TexCoord2f());
+					new Vector3d(normals.elementAt(i * 2)), null, null, new TexCoord2f());
 			sideVertices[points.size() * 2 + i * 2 + 1] = new Vertex3d(pos,
-					new Vector3d((Vector3f) normals.elementAt(i * 2 + 1)), null, null, new TexCoord2f());
+					new Vector3d(normals.elementAt(i * 2 + 1)), null, null, new TexCoord2f());
 		}
 
 		for (int i = 0; i < points.size() - 1; i++) {

@@ -33,7 +33,7 @@ public abstract class NewNamedElementContentPane extends edu.cmu.cs.stage3.swing
 	private static final long serialVersionUID = 5148486854620630833L;
 	private final javax.swing.JButton m_okButton = new javax.swing.JButton("OK");
 	private final javax.swing.JButton m_cancelButton = new javax.swing.JButton("Cancel");
-	private final java.util.HashMap validityHashmap = new java.util.HashMap();
+	private final java.util.HashMap<Object, Boolean> validityHashmap = new java.util.HashMap<Object, Boolean>();
 	private final edu.cmu.cs.stage3.alice.authoringtool.util.CheckForValidityCallback validityChecker = new edu.cmu.cs.stage3.alice.authoringtool.util.CheckForValidityCallback() {
 		@Override
 		public void setValidity(final Object source, final boolean value) {
@@ -116,7 +116,7 @@ public abstract class NewNamedElementContentPane extends edu.cmu.cs.stage3.swing
 
 	private void okButtonEnabler(final Object source, final boolean value) {
 		validityHashmap.put(source, new Boolean(value));
-		final java.util.Iterator valueIterator = validityHashmap.values().iterator();
+		final java.util.Iterator<Boolean> valueIterator = validityHashmap.values().iterator();
 		boolean isEnableable = true;
 		while (valueIterator.hasNext()) {
 			final Object currentValue = valueIterator.next();

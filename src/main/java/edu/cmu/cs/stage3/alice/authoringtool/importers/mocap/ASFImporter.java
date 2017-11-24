@@ -43,7 +43,7 @@ import edu.cmu.cs.stage3.io.EStreamTokenizer;
 
 public class ASFImporter extends AbstractImporter {
 	protected ASFSkeleton skel;
-	private static final edu.cmu.cs.stage3.alice.core.World scene = new edu.cmu.cs.stage3.alice.core.World();
+	// Unused ?? private static final edu.cmu.cs.stage3.alice.core.World scene = new edu.cmu.cs.stage3.alice.core.World();
 	// protected Elmenent applyTo = null;
 
 	public ASFImporter() {
@@ -51,8 +51,8 @@ public class ASFImporter extends AbstractImporter {
 	}
 
 	@Override
-	public Map getExtensionMap() {
-		final java.util.HashMap map = new java.util.HashMap();
+	public Map<String, String> getExtensionMap() {
+		final java.util.HashMap<String, String> map = new java.util.HashMap<>();
 		map.put("ASF", "Acclaim Skeleton File");
 		return map;
 	}
@@ -270,7 +270,7 @@ public class ASFImporter extends AbstractImporter {
 				tokenizer.nextToken();
 				continue;
 			}
-			bone = (ASFBone) skel.bones_dict.get(tokenizer.sval);
+			bone = skel.bones_dict.get(tokenizer.sval);
 
 			while (tokenizer.nextToken() != StreamTokenizer.TT_EOL) {
 				bone.children.addElement(skel.bones_dict.get(tokenizer.sval));

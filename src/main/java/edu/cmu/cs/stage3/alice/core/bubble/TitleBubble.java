@@ -80,11 +80,11 @@ public class TitleBubble extends Bubble {
 				}
 				g.setColor(getForegroundColor());
 				if (m_subTexts.size() > 0) {
-					final SubText subText0 = (SubText) m_subTexts.elementAt(0);
+					final SubText subText0 = m_subTexts.elementAt(0);
 					final int offsetX = m_pixelOffset.x;
 					final int offsetY = m_pixelOffset.y - (int) subText0.getBound().getY();
 					for (int i = 0; i < m_subTexts.size(); i++) {
-						final SubText subTextI = (SubText) m_subTexts.elementAt(i);
+						final SubText subTextI = m_subTexts.elementAt(i);
 						final java.awt.geom.Rectangle2D boundI = subTextI.getBound();
 						final int x = actualViewport.x + actualViewport.width / 2
 								- (int) (boundI.getWidth() * 0.85 / 2);

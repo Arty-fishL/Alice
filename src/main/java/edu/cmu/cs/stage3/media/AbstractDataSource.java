@@ -7,9 +7,9 @@ public abstract class AbstractDataSource implements DataSource {
 	private double m_duration = Double.NaN;
 	private double m_durationHint = Double.NaN;
 	private final boolean m_isCompressionWorthwhile;
-	private final java.util.Vector m_dataSourceListeners = new java.util.Vector();
+	private final java.util.Vector<DataSourceListener> m_dataSourceListeners = new java.util.Vector<DataSourceListener>();
 	private edu.cmu.cs.stage3.media.event.DataSourceListener[] m_dataSourceListenerArray;
-	private final java.util.Vector m_players = new java.util.Vector();
+	private final java.util.Vector<Player> m_players = new java.util.Vector<Player>();
 
 	protected abstract Player createPlayer();
 
@@ -56,9 +56,9 @@ public abstract class AbstractDataSource implements DataSource {
 
 	private int getRealizedPlayerCount() {
 		int realizedPlayerCount = 0;
-		final java.util.Enumeration enum0 = m_players.elements();
+		final java.util.Enumeration<Player> enum0 = m_players.elements();
 		while (enum0.hasMoreElements()) {
-			final Player player = (Player) enum0.nextElement();
+			final Player player = enum0.nextElement();
 			if (player.getState() >= Player.STATE_REALIZED) {
 				realizedPlayerCount++;
 			}
@@ -72,9 +72,9 @@ public abstract class AbstractDataSource implements DataSource {
 		while (m_players.size() < playerCount) {
 			addNewPlayer();
 		}
-		final java.util.Enumeration enum0 = m_players.elements();
+		final java.util.Enumeration<Player> enum0 = m_players.elements();
 		while (enum0.hasMoreElements()) {
-			final Player player = (Player) enum0.nextElement();
+			final Player player = enum0.nextElement();
 			player.realize();
 		}
 		return getRealizedPlayerCount();
@@ -83,9 +83,9 @@ public abstract class AbstractDataSource implements DataSource {
 	@Override
 	public Player acquirePlayer() {
 		Player availablePlayer = null;
-		final java.util.Enumeration enum0 = m_players.elements();
+		final java.util.Enumeration<Player> enum0 = m_players.elements();
 		while (enum0.hasMoreElements()) {
-			final Player player = (Player) enum0.nextElement();
+			final Player player = enum0.nextElement();
 			if (player.isAvailable()) {
 				availablePlayer = player;
 				break;

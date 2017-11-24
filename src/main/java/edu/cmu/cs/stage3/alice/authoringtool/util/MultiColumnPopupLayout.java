@@ -114,7 +114,7 @@ public class MultiColumnPopupLayout implements java.awt.LayoutManager {
 																				// out
 					w = widthThisColumn;
 					for (final java.util.Iterator<java.awt.Component> iter = oneColumn.iterator(); iter.hasNext();) {
-						final java.awt.Component c = (java.awt.Component) iter.next();
+						final java.awt.Component c = iter.next();
 						h = c.getPreferredSize().height;
 						c.setBounds(x, y, w, h);
 						y += h;
@@ -137,7 +137,7 @@ public class MultiColumnPopupLayout implements java.awt.LayoutManager {
 			if (!oneColumn.isEmpty()) { // last column
 				w = widthThisColumn;
 				for (final java.util.Iterator<java.awt.Component> iter = oneColumn.iterator(); iter.hasNext();) {
-					final java.awt.Component c = (java.awt.Component) iter.next();
+					final java.awt.Component c = iter.next();
 					h = c.getPreferredSize().height;
 					c.setBounds(x, y, w, h);
 					y += h;

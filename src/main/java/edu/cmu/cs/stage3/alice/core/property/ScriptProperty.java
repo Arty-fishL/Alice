@@ -24,6 +24,7 @@
 package edu.cmu.cs.stage3.alice.core.property;
 
 import edu.cmu.cs.stage3.alice.core.Element;
+import edu.cmu.cs.stage3.alice.core.reference.PropertyReference;
 
 public class ScriptProperty extends StringProperty {
 	private edu.cmu.cs.stage3.alice.scripting.Code m_code = null;
@@ -82,7 +83,7 @@ public class ScriptProperty extends StringProperty {
 
 	@Override
 	protected void decodeObject(final org.w3c.dom.Element node, final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader,
-			final java.util.Vector referencesToBeResolved, final double version) throws java.io.IOException {
+			final java.util.Vector<PropertyReference> referencesToBeResolved, final double version) throws java.io.IOException {
 		m_associatedFileKey = null;
 		final String filename = getFilename(getNodeText(node));
 		final java.io.InputStream is = loader.readFile(filename);

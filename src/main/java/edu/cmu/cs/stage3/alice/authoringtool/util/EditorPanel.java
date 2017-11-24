@@ -23,6 +23,9 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import edu.cmu.cs.stage3.alice.authoringtool.Editor;
+import edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelListener;
+
 //TODO: handle null edits better in the stack
 
 /**
@@ -36,9 +39,9 @@ public class EditorPanel extends javax.swing.JPanel
 	private static final long serialVersionUID = 5756362286458797818L;
 	protected edu.cmu.cs.stage3.alice.authoringtool.Editor activeEditor = null;
 	protected java.lang.reflect.Method activeEditorSetMethod = null;
-	protected java.util.HashMap cachedEditors = new java.util.HashMap();
+	protected java.util.HashMap<Class, Editor> cachedEditors = new java.util.HashMap<Class, Editor>();
 	protected EditStack editStack = new EditStack();
-	protected java.util.HashSet listenerSet = new java.util.HashSet();
+	protected java.util.HashSet<EditorPanelListener> listenerSet = new java.util.HashSet<EditorPanelListener>();
 	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
 
 	protected final edu.cmu.cs.stage3.alice.core.event.ChildrenListener deletionListener = new edu.cmu.cs.stage3.alice.core.event.ChildrenListener() {
@@ -112,7 +115,7 @@ public class EditorPanel extends javax.swing.JPanel
 		edu.cmu.cs.stage3.alice.authoringtool.Editor editor = null;
 
 		if (editorClass != null) {
-			editor = (edu.cmu.cs.stage3.alice.authoringtool.Editor) cachedEditors.get(editorClass);
+			editor = cachedEditors.get(editorClass);
 			if (editor == null) {
 				try {
 					editor = EditorUtilities.getEditorFromClass(editorClass);
@@ -184,10 +187,10 @@ public class EditorPanel extends javax.swing.JPanel
 				add(java.awt.BorderLayout.CENTER, activeEditor.getJComponent());
 			} else {
 				activeEditorSetMethod = null;
-				for (final java.util.Iterator iter = listenerSet.iterator(); iter.hasNext();) {
+				for (final java.util.Iterator<EditorPanelListener> iter = listenerSet.iterator(); iter.hasNext();) {
 					final edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelEvent ev = new edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelEvent(
 							null);
-					((edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelListener) iter.next())
+					iter.next()
 							.elementChanged(ev);
 				}
 			}
@@ -203,10 +206,10 @@ public class EditorPanel extends javax.swing.JPanel
 					editStack.push(new EditItem(element, editorClass));
 					updateActions();
 				}
-				for (final java.util.Iterator iter = listenerSet.iterator(); iter.hasNext();) {
+				for (final java.util.Iterator<EditorPanelListener> iter = listenerSet.iterator(); iter.hasNext();) {
 					final edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelEvent ev = new edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelEvent(
 							element);
-					((edu.cmu.cs.stage3.alice.authoringtool.util.event.EditorPanelListener) iter.next())
+					iter.next()
 							.elementChanged(ev);
 				}
 				if (element != null && element.getParent() != null) {

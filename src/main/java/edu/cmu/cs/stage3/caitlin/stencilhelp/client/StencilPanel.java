@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
@@ -20,13 +21,13 @@ public class StencilPanel extends JPanel implements MouseEventListener, ReadWrit
 	private static final long serialVersionUID = -1506713176778750356L;
 	protected StencilManager stencilManager = null;
 	protected boolean isDrawing = false;
-	protected Vector holes = new Vector();
-	protected Vector filledShapes = new Vector();
-	protected Vector unfilledShapes = new Vector();
-	protected Vector stencilPanelMessageListeners = new Vector();
+	protected Vector<ScreenShape> holes = new Vector<ScreenShape>();
+	protected Vector<ScreenShape> filledShapes = new Vector<ScreenShape>();
+	protected Vector<ScreenShape> unfilledShapes = new Vector<ScreenShape>();
+	protected Vector<StencilPanelMessageListener> stencilPanelMessageListeners = new Vector<StencilPanelMessageListener>();
 	protected boolean writeEnabled = true;
-	protected Vector holeRegions = new Vector();
-	protected Vector clearRegions = new Vector();
+	protected Vector<Rectangle> holeRegions = new Vector<Rectangle>();
+	protected Vector<Rectangle> clearRegions = new Vector<Rectangle>();
 	protected boolean nothingToDraw = true;
 	protected Color bgColor = new Color(13, 99, 161, 150);// (0, 150,255,100);
 
@@ -59,18 +60,18 @@ public class StencilPanel extends JPanel implements MouseEventListener, ReadWrit
 		this.repaint();
 	}
 
-	protected void categorizeShapes(final Vector shapes, final Vector allRegions) {
+	protected void categorizeShapes(final Vector<ScreenShape> shapes, final Vector<Rectangle> allRegions) {
 		// if (nothingToDraw) {
-		holes = new Vector();
-		filledShapes = new Vector();
-		unfilledShapes = new Vector();
+		holes = new Vector<ScreenShape>();
+		filledShapes = new Vector<ScreenShape>();
+		unfilledShapes = new Vector<ScreenShape>();
 
-		holeRegions = new Vector();
-		clearRegions = new Vector();
+		holeRegions = new Vector<Rectangle>();
+		clearRegions = new Vector<Rectangle>();
 		// }
 
 		for (int i = 0; i < shapes.size(); i++) {
-			final ScreenShape currentShape = (ScreenShape) shapes.elementAt(i);
+			final ScreenShape currentShape = shapes.elementAt(i);
 			if (currentShape.getColor() == null) { // this is a hole
 				holes.addElement(currentShape);
 				if (currentShape.getIndex() == 0) {
@@ -78,7 +79,7 @@ public class StencilPanel extends JPanel implements MouseEventListener, ReadWrit
 				}
 			} else {
 				if (currentShape.getIndex() == 0 && allRegions.size() > 0) {
-					final java.awt.Rectangle r = (java.awt.Rectangle) allRegions.remove(0);
+					final java.awt.Rectangle r = allRegions.remove(0);
 					clearRegions.addElement(r);
 				}
 				if (currentShape.getIsFilled() == true) {
@@ -110,8 +111,8 @@ public class StencilPanel extends JPanel implements MouseEventListener, ReadWrit
 			graphics.fillRect(0, 0, getWidth(), getHeight());
 		}
 
-		final Vector allShapes = stencilManager.getUpdateShapes();
-		final Vector allRegions = stencilManager.getClearRegions();
+		final Vector<ScreenShape> allShapes = stencilManager.getUpdateShapes();
+		final Vector<Rectangle> allRegions = stencilManager.getClearRegions();
 		categorizeShapes(allShapes, allRegions);
 
 		final Graphics2D bg2 = (Graphics2D) screenBuffer.getGraphics();
@@ -148,21 +149,21 @@ public class StencilPanel extends JPanel implements MouseEventListener, ReadWrit
 
 			// clear out all the appropriate regions and refill them
 			for (int i = 0; i < clearRegions.size(); i++) {
-				final java.awt.Rectangle r = (java.awt.Rectangle) clearRegions.elementAt(i);
+				final java.awt.Rectangle r = clearRegions.elementAt(i);
 				bg2.clearRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(), (int) r.getHeight());
 				bg2.fillRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(), (int) r.getHeight());
 			}
 
 			// now make the holes
 			for (int i = 0; i < holeRegions.size(); i++) {
-				final java.awt.Rectangle r = (java.awt.Rectangle) holeRegions.elementAt(i);
+				final java.awt.Rectangle r = holeRegions.elementAt(i);
 				bg2.clearRect((int) r.getX(), (int) r.getY(), (int) r.getWidth(), (int) r.getHeight());
 			}
 
 			// subtract out the holes
 			for (int i = 0; i < holes.size(); i++) {
-				outside = new Area((java.awt.Rectangle) holeRegions.elementAt(i));
-				final ScreenShape scrShape = (ScreenShape) holes.elementAt(i);
+				outside = new Area(holeRegions.elementAt(i));
+				final ScreenShape scrShape = holes.elementAt(i);
 
 				final RoundRectangle2D.Double r = (RoundRectangle2D.Double) scrShape.getShape();
 				final RoundRectangle2D.Double upperShadow = new RoundRectangle2D.Double(r.x - 2, r.y - 2, r.width + 2,
@@ -189,7 +190,7 @@ public class StencilPanel extends JPanel implements MouseEventListener, ReadWrit
 			bg2.setColor(outsideColor);
 
 			for (int i = 0; i < filledShapes.size(); i++) {
-				final ScreenShape currentShape = (ScreenShape) filledShapes.elementAt(i);
+				final ScreenShape currentShape = filledShapes.elementAt(i);
 				if (currentShape.shape instanceof Line2D) {
 					bg2.setColor(currentShape.color);
 					bg2.draw(currentShape.shape);
@@ -200,7 +201,7 @@ public class StencilPanel extends JPanel implements MouseEventListener, ReadWrit
 			}
 
 			for (int i = 0; i < unfilledShapes.size(); i++) {
-				final ScreenShape currentShape = (ScreenShape) unfilledShapes.elementAt(i);
+				final ScreenShape currentShape = unfilledShapes.elementAt(i);
 				bg2.setColor(currentShape.color);
 				bg2.draw(currentShape.shape);
 
@@ -232,7 +233,7 @@ public class StencilPanel extends JPanel implements MouseEventListener, ReadWrit
 
 	protected void broadCastMessage(final int messageID, final Object data) {
 		for (int i = 0; i < stencilPanelMessageListeners.size(); i++) {
-			final StencilPanelMessageListener spmListener = (StencilPanelMessageListener) stencilPanelMessageListeners
+			final StencilPanelMessageListener spmListener = stencilPanelMessageListeners
 					.elementAt(i);
 			spmListener.messageReceived(messageID, data);
 		}

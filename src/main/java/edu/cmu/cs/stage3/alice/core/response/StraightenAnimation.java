@@ -8,6 +8,8 @@ package edu.cmu.cs.stage3.alice.core.response;
 
 import edu.cmu.cs.stage3.alice.core.Element;
 import edu.cmu.cs.stage3.alice.core.ReferenceFrame;
+import edu.cmu.cs.stage3.alice.core.Transformable;
+import edu.cmu.cs.stage3.math.Matrix33;
 
 /**
  * @author caitlink
@@ -18,16 +20,16 @@ import edu.cmu.cs.stage3.alice.core.ReferenceFrame;
 public class StraightenAnimation extends TransformAnimation {
 
 	public class RuntimeStraightenAnimation extends RuntimeTransformAnimation {
-		java.util.Vector bodyPartInitialOrientations = null;
-		java.util.Vector bodyParts = null;
+		java.util.Vector<Matrix33> bodyPartInitialOrientations = null;
+		java.util.Vector<Transformable> bodyParts = null;
 
 		edu.cmu.cs.stage3.math.Matrix33 normalOrientation = new edu.cmu.cs.stage3.math.Matrix33();
 
 		@Override
 		public void prologue(final double t) {
 			super.prologue(t);
-			bodyPartInitialOrientations = new java.util.Vector();
-			bodyParts = new java.util.Vector();
+			bodyPartInitialOrientations = new java.util.Vector<Matrix33>();
+			bodyParts = new java.util.Vector<Transformable>();
 			normalOrientation.setForwardUpGuide(new javax.vecmath.Vector3d(0, 0, 1),
 					new javax.vecmath.Vector3d(0, 1, 0));
 
@@ -44,8 +46,8 @@ public class StraightenAnimation extends TransformAnimation {
 		@Override
 		public void update(final double t) {
 			for (int i = 0; i < bodyPartInitialOrientations.size(); i++) {
-				setOrientation((edu.cmu.cs.stage3.alice.core.Transformable) bodyParts.elementAt(i),
-						(edu.cmu.cs.stage3.math.Matrix33) bodyPartInitialOrientations.elementAt(i), normalOrientation,
+				setOrientation(bodyParts.elementAt(i),
+						bodyPartInitialOrientations.elementAt(i), normalOrientation,
 						getPortion(t));
 			}
 

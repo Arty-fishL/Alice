@@ -57,7 +57,7 @@ public class ElementReferenceTransferable implements java.awt.datatransfer.Trans
 	public ElementReferenceTransferable(final edu.cmu.cs.stage3.alice.core.Element element) {
 		this.element = element;
 
-		final java.util.HashSet assignables = new java.util.HashSet();
+		final java.util.HashSet<Class<?>> assignables = new java.util.HashSet<Class<?>>();
 		if (element != null) {
 			edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.findAssignables(element.getClass(),
 					assignables, true);
@@ -68,9 +68,9 @@ public class ElementReferenceTransferable implements java.awt.datatransfer.Trans
 
 		flavors = new java.awt.datatransfer.DataFlavor[assignables.size() + 1];
 		int i = 0;
-		for (final java.util.Iterator iter = assignables.iterator(); iter.hasNext();) {
+		for (final java.util.Iterator<Class<?>> iter = assignables.iterator(); iter.hasNext();) {
 			flavors[i++] = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
-					.getReferenceFlavorForClass((Class) iter.next());
+					.getReferenceFlavorForClass(iter.next());
 		}
 
 		flavors[i++] = java.awt.datatransfer.DataFlavor.stringFlavor;

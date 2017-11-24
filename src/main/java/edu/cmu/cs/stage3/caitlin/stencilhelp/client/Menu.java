@@ -14,8 +14,8 @@ import java.util.Vector;
 
 public class Menu implements StencilObject, StencilPanelMessageListener, MouseEventListener, StencilFocusListener,
 		ReadWriteListener {
-	protected Vector shapes = new Vector();
-	protected Vector stencilObjectPositionListeners = new Vector();
+	protected Vector<ScreenShape> shapes = new Vector<ScreenShape>();
+	protected Vector<StencilObjectPositionListener> stencilObjectPositionListeners = new Vector<StencilObjectPositionListener>();
 	protected StencilManager stencilManager = null;
 	protected boolean isShowing = false;
 	protected int level = 0;
@@ -132,7 +132,7 @@ public class Menu implements StencilObject, StencilPanelMessageListener, MouseEv
 
 	/* Stencil Object stuff */
 	@Override
-	public Vector getShapes() {
+	public Vector<ScreenShape> getShapes() {
 		if (isShowing) {
 			return shapes;
 		} else {

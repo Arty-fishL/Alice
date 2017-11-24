@@ -39,20 +39,21 @@ import edu.cmu.cs.stage3.alice.core.Model;
 import edu.cmu.cs.stage3.alice.core.Pose;
 import edu.cmu.cs.stage3.alice.core.response.DoTogether;
 import edu.cmu.cs.stage3.alice.core.response.UserDefinedResponse;
+import edu.cmu.cs.stage3.math.Matrix44;
 
 public class ASFSkeleton {
-	public Vector bones;
-	public Hashtable bones_dict;
+	public Vector<ASFBone> bones;
+	public Hashtable<String, ASFBone> bones_dict;
 	public double lengthscale;
 	public double anglescale;
 
 	public ASFSkeleton() {
-		bones = new Vector();
-		bones_dict = new Hashtable();
+		bones = new Vector<ASFBone>();
+		bones_dict = new Hashtable<>();
 	}
 
 	public ASFBone getRoot() {
-		return (ASFBone) bones_dict.get("root");
+		return bones_dict.get("root");
 	}
 
 	public Model buildBones() {
@@ -82,8 +83,8 @@ public class ASFSkeleton {
 		poseList[0] = new Pose();
 		poseList[1] = new Pose();
 
-		poseList[0].poseMap.set(new java.util.Hashtable());
-		poseList[1].poseMap.set(new java.util.Hashtable());
+		poseList[0].poseMap.set(new java.util.Hashtable<String, Matrix44>());
+		poseList[1].poseMap.set(new java.util.Hashtable<String, Matrix44>());
 
 		getRoot().buildPoses(getRoot().realMod, poseList[0], poseList[1]);
 		return poseList;

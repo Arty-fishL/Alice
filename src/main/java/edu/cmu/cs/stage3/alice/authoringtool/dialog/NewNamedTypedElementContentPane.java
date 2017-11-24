@@ -51,7 +51,7 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 	protected javax.swing.JLabel valueLabel;
 	private javax.swing.JComponent valueViewController;
 	public javax.swing.JCheckBox makeCollectionCheckBox;
-	private javax.swing.JComboBox collectionTypeCombo;
+	private javax.swing.JComboBox<Class> collectionTypeCombo;
 
 	private edu.cmu.cs.stage3.alice.authoringtool.util.ObjectArrayPropertyEditor objectArrayPropertyEditor;
 	private javax.swing.JScrollPane objectArrayScrollPane;
@@ -112,7 +112,7 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 			}
 		});
 
-		collectionTypeCombo = new javax.swing.JComboBox();
+		collectionTypeCombo = new javax.swing.JComboBox<Class>();
 		collectionTypeCombo.addItem(edu.cmu.cs.stage3.alice.core.List.class);
 		collectionTypeCombo.addItem(edu.cmu.cs.stage3.alice.core.Array.class);
 		collectionTypeCombo.setRenderer(new javax.swing.DefaultListCellRenderer() {

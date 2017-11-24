@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import javax.media.Buffer;
+
 /**
  * @author Dennis Cosgrove
  */
@@ -34,7 +36,7 @@ public class CaptureRenderer implements javax.media.Renderer {
 					javax.media.Format.NOT_SPECIFIED, javax.media.Format.NOT_SPECIFIED, javax.media.Format.byteArray) };
 	private javax.media.Format m_inputFormat;
 
-	private final java.util.Vector m_buffers = new java.util.Vector();
+	private final java.util.Vector<Buffer> m_buffers = new java.util.Vector<Buffer>();
 
 	@Override
 	public javax.media.Format[] getSupportedInputFormats() {
@@ -85,15 +87,15 @@ public class CaptureRenderer implements javax.media.Renderer {
 
 	@Override
 	public int process(final javax.media.Buffer buffer) {
-		m_buffers.addElement(buffer.clone());
+		m_buffers.addElement((Buffer) buffer.clone());
 		return BUFFER_PROCESSED_OK;
 	}
 
 	public int getDataLength() {
 		int size = 0;
-		final java.util.Enumeration enum0 = m_buffers.elements();
+		final java.util.Enumeration<Buffer> enum0 = m_buffers.elements();
 		while (enum0.hasMoreElements()) {
-			final javax.media.Buffer buffer = (javax.media.Buffer) enum0.nextElement();
+			final javax.media.Buffer buffer = enum0.nextElement();
 			size += buffer.getOffset();
 			size += buffer.getLength();
 		}
@@ -102,9 +104,9 @@ public class CaptureRenderer implements javax.media.Renderer {
 
 	public void getData(final byte[] data, final int offset, final int length) {
 		int location = offset;
-		final java.util.Enumeration enum0 = m_buffers.elements();
+		final java.util.Enumeration<Buffer> enum0 = m_buffers.elements();
 		while (enum0.hasMoreElements()) {
-			final javax.media.Buffer buffer = (javax.media.Buffer) enum0.nextElement();
+			final javax.media.Buffer buffer = enum0.nextElement();
 			location += buffer.getOffset();
 			if (location + buffer.getLength() <= data.length) {
 				System.arraycopy(buffer.getData(), 0, data, location, buffer.getLength());

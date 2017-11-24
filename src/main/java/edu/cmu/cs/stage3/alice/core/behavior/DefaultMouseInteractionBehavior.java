@@ -25,6 +25,7 @@ package edu.cmu.cs.stage3.alice.core.behavior;
 
 import edu.cmu.cs.stage3.alice.core.RenderTarget;
 import edu.cmu.cs.stage3.alice.core.Transformable;
+import edu.cmu.cs.stage3.alice.core.manipulator.RenderTargetModelManipulator;
 
 /**
  * @author Jason Pratt
@@ -35,15 +36,15 @@ public class DefaultMouseInteractionBehavior extends InternalResponseBehavior {
 	public final edu.cmu.cs.stage3.alice.core.property.ListProperty objects = new edu.cmu.cs.stage3.alice.core.property.ListProperty(
 			this, "objects", null);
 
-	protected java.util.Vector manipulators = new java.util.Vector();
+	protected java.util.Vector<RenderTargetModelManipulator> manipulators = new java.util.Vector<RenderTargetModelManipulator>();
 
 	protected void scheduled(final double t) {
 	}
 
 	protected void objectsValueChanged(final edu.cmu.cs.stage3.alice.core.List value) {
-		final java.util.Enumeration enum0 = DefaultMouseInteractionBehavior.this.manipulators.elements();
+		final java.util.Enumeration<RenderTargetModelManipulator> enum0 = DefaultMouseInteractionBehavior.this.manipulators.elements();
 		while (enum0.hasMoreElements()) {
-			final edu.cmu.cs.stage3.alice.core.manipulator.RenderTargetModelManipulator rtmm = (edu.cmu.cs.stage3.alice.core.manipulator.RenderTargetModelManipulator) enum0
+			final edu.cmu.cs.stage3.alice.core.manipulator.RenderTargetModelManipulator rtmm = enum0
 					.nextElement();
 			rtmm.clearObjectsOfInterestList();
 			if (value != null) {
@@ -56,9 +57,9 @@ public class DefaultMouseInteractionBehavior extends InternalResponseBehavior {
 
 	private void setIsEnabled(final boolean value) {
 		if (manipulators != null) {
-			final java.util.Enumeration enum0 = manipulators.elements();
+			final java.util.Enumeration<RenderTargetModelManipulator> enum0 = manipulators.elements();
 			while (enum0.hasMoreElements()) {
-				((edu.cmu.cs.stage3.alice.core.manipulator.RenderTargetModelManipulator) enum0.nextElement())
+				enum0.nextElement()
 						.setEnabled(isEnabled.booleanValue());
 			}
 		}
@@ -107,9 +108,9 @@ public class DefaultMouseInteractionBehavior extends InternalResponseBehavior {
 	@Override
 	protected void stopped(final edu.cmu.cs.stage3.alice.core.World world, final double time) {
 		super.stopped(world, time);
-		final java.util.Enumeration enum0 = manipulators.elements();
+		final java.util.Enumeration<RenderTargetModelManipulator> enum0 = manipulators.elements();
 		while (enum0.hasMoreElements()) {
-			((edu.cmu.cs.stage3.alice.core.manipulator.RenderTargetModelManipulator) enum0.nextElement())
+			enum0.nextElement()
 					.setRenderTarget(null);
 		}
 		manipulators.clear();

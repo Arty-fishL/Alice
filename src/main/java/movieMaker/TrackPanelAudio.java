@@ -71,7 +71,7 @@ public class TrackPanelAudio extends TrackPanel implements ActionListener {
 		arrSupportedFormats = trackControl.getSupportedFormats();
 		this.strContentType = strContentType;
 		nSize = arrSupportedFormats.length;
-		vectorContSuppFormats = new Vector();
+		vectorContSuppFormats = new Vector<Format>();
 
 		for (i = 0; i < nSize; i++) {
 			if (!(arrSupportedFormats[i] instanceof AudioFormat)) {

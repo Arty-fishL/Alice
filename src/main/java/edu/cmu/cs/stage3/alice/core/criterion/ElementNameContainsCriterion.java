@@ -69,7 +69,7 @@ public class ElementNameContainsCriterion implements edu.cmu.cs.stage3.util.Crit
 		return getClass().getName() + "[" + m_contains + "]";
 	}
 
-	protected static ElementNameContainsCriterion valueOf(final String s, final Class cls) {
+	protected static ElementNameContainsCriterion valueOf(final String s, final Class<ElementNameContainsCriterion> cls) {
 		final String beginMarker = cls.getName() + "[";
 		final String endMarker = "]";
 		final int begin = s.indexOf(beginMarker) + beginMarker.length();
@@ -77,8 +77,8 @@ public class ElementNameContainsCriterion implements edu.cmu.cs.stage3.util.Crit
 		try {
 			final Class[] types = { String.class };
 			final Object[] values = { s.substring(begin, end) };
-			final java.lang.reflect.Constructor constructor = cls.getConstructor(types);
-			return (ElementNameContainsCriterion) constructor.newInstance(values);
+			final java.lang.reflect.Constructor<ElementNameContainsCriterion> constructor = cls.getConstructor(types);
+			return constructor.newInstance(values);
 		} catch (final Throwable t) {
 			throw new RuntimeException();
 		}

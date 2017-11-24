@@ -77,8 +77,8 @@ public class ASFBone {
 	public javax.vecmath.Vector3d base_position;
 	public javax.vecmath.Vector3d position;
 
-	public Vector dof;
-	public Vector children;
+	public Vector<Integer> dof;
+	public Vector<ASFBone> children;
 
 	public javax.vecmath.Vector3d endPoint;
 	public Model model;
@@ -102,10 +102,10 @@ public class ASFBone {
 
 	public ASFBone() {
 		name = "";
-		dof = new Vector();
+		dof = new Vector<Integer>();
 		length = .04;
 		width = .04;
-		children = new Vector();
+		children = new Vector<ASFBone>();
 		base_position = new javax.vecmath.Vector3d(0, 0, 0);
 		position = new javax.vecmath.Vector3d(0, 0, 0);
 		direction = new javax.vecmath.Vector3d(0, 0, 1);
@@ -404,11 +404,11 @@ public class ASFBone {
 		}
 
 		ASFBone child;
-		ListIterator li;
+		ListIterator<ASFBone> li;
 		li = children.listIterator();
 
 		while (li.hasNext()) {
-			child = (ASFBone) li.next();
+			child = li.next();
 
 			final Model child_piece = child.buildBone(this);
 		}
@@ -445,11 +445,11 @@ public class ASFBone {
 		}
 
 		ASFBone child;
-		ListIterator li;
+		ListIterator<ASFBone> li;
 		li = children.listIterator();
 
 		while (li.hasNext()) {
-			child = (ASFBone) li.next();
+			child = li.next();
 
 			Model part = (edu.cmu.cs.stage3.alice.core.Model) mod.getChildNamed(child.name);
 			/*
@@ -516,11 +516,11 @@ public class ASFBone {
 		}
 
 		ASFBone child;
-		ListIterator li;
+		ListIterator<ASFBone> li;
 		li = children.listIterator();
 
 		while (li.hasNext()) {
-			child = (ASFBone) li.next();
+			child = li.next();
 
 			if (realMod == null && (hasFrame || hasAccum)) {
 				final Matrix44 newInvBase = child.model.getPointOfView(model);
@@ -561,11 +561,11 @@ public class ASFBone {
 		}
 
 		ASFBone child;
-		ListIterator li;
+		ListIterator<ASFBone> li;
 		li = children.listIterator();
 
 		while (li.hasNext()) {
-			child = (ASFBone) li.next();
+			child = li.next();
 
 			child.buildAnim(anim);
 		}
@@ -607,11 +607,11 @@ public class ASFBone {
 		}
 
 		ASFBone child;
-		ListIterator li;
+		ListIterator<ASFBone> li;
 		li = children.listIterator();
 
 		while (li.hasNext()) {
-			child = (ASFBone) li.next();
+			child = li.next();
 
 			child.buildPoses(rootMod, startPose, endPose);
 		}

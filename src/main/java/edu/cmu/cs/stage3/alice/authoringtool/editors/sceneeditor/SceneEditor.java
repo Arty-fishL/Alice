@@ -28,8 +28,10 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ComponentEvent;
+import java.util.Iterator;
 
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
@@ -100,7 +102,7 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 
 	private void guiInit() {
 		// set the divider locations
-		final int width = (int) (java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth() * .8);
+		// Unused ?? final int width = (int) (java.awt.Toolkit.getDefaultToolkit().getScreenSize().getWidth() * .8);
 		mainPanel.setMinimumSize(new java.awt.Dimension(0, 0));
 
 		if (authoringToolConfig.getValue("enableScripting").equalsIgnoreCase("true")) {
@@ -275,8 +277,8 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 	// for Stencils
 	// ///////////////////////////////////////////////
 
-	protected java.util.HashMap idsToComponents = new java.util.HashMap();
-	protected java.util.HashMap componentsToIds = new java.util.HashMap();
+	protected java.util.HashMap<String, JComponent> idsToComponents = new java.util.HashMap<>();
+	protected java.util.HashMap<JComponent, String> componentsToIds = new java.util.HashMap<>();
 
 	protected void stencilInit() {
 		idsToComponents.put("makeSceneEditorBigButton", makeSceneEditorBigButton);
@@ -305,8 +307,8 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 		idsToComponents.put("superRenderPanel", cameraViewPanel.superRenderPanel);
 		idsToComponents.put("renderPanel", cameraViewPanel.renderPanel);
 
-		for (final java.util.Iterator iter = idsToComponents.keySet().iterator(); iter.hasNext();) {
-			final Object key = iter.next();
+		for (final Iterator<String> iter = idsToComponents.keySet().iterator(); iter.hasNext();) {
+			final String key = iter.next();
 			componentsToIds.put(idsToComponents.get(key), key);
 		}
 	}
@@ -316,7 +318,7 @@ public class SceneEditor extends javax.swing.JPanel implements edu.cmu.cs.stage3
 	}
 
 	public java.awt.Component getComponentForId(final String id) {
-		return (java.awt.Component) idsToComponents.get(id);
+		return idsToComponents.get(id);
 	}
 
 	// ///////////////////////////////////////////////

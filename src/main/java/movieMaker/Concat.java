@@ -88,7 +88,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 	 */
 	public static void main(final String[] args) {
 
-		final Vector inputURL = new Vector();
+		final Vector<String> inputURL = new Vector<String>();
 		String outputURL = null;
 
 		if (args.length == 0) {
@@ -126,7 +126,7 @@ public class Concat implements ControllerListener, DataSinkListener {
 		MediaLocator oml;
 
 		for (i = 0; i < inputURL.size(); i++) {
-			if ((iml[i] = createMediaLocator((String) inputURL.elementAt(i))) == null) {
+			if ((iml[i] = createMediaLocator(inputURL.elementAt(i))) == null) {
 				System.err.println("Cannot build media locator from: " + inputURL);
 				System.exit(0);
 			}

@@ -11,8 +11,8 @@ import java.util.Vector;
 import edu.cmu.cs.stage3.caitlin.stencilhelp.application.StencilApplication;
 
 public class Hole implements StencilObject, MouseEventListener, KeyEventListener, LayoutChangeListener {
-	Vector shapes = new Vector();
-	Vector stencilObjectPositionListeners = new Vector();
+	Vector<ScreenShape> shapes = new Vector<ScreenShape>();
+	Vector<StencilObjectPositionListener> stencilObjectPositionListeners = new Vector<StencilObjectPositionListener>();
 	ObjectPositionManager positionManager = null;
 	StencilApplication stencilApp = null;
 	StencilManager stencilManager = null; // TEMP
@@ -40,7 +40,7 @@ public class Hole implements StencilObject, MouseEventListener, KeyEventListener
 
 	/* stencil object stuff */
 	@Override
-	public Vector getShapes() {
+	public Vector<ScreenShape> getShapes() {
 		return shapes;
 	}
 

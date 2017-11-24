@@ -15,6 +15,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import edu.cmu.cs.stage3.caitlin.stencilhelp.application.StencilApplication;
+import edu.cmu.cs.stage3.caitlin.stencilhelp.client.StencilManager.Stencil;
 
 public class StencilParser { // extends org.xml.sax.helpers.DefaultHandler{
 	StringBuffer textBuffer;
@@ -66,7 +67,7 @@ public class StencilParser { // extends org.xml.sax.helpers.DefaultHandler{
 
 		// then we need to get the text of the note too....
 		String message = "hello world";
-		final Vector msgs = new Vector();
+		final Vector<String> msgs = new Vector<String>();
 		final Vector colors = new Vector();
 		String id = "id";
 		for (int i = 0; i < noteParts.getLength(); i++) {
@@ -116,7 +117,7 @@ public class StencilParser { // extends org.xml.sax.helpers.DefaultHandler{
 			final Note note = new Note(p, initPos, hole, positionManager, stencilManager, hasNext);
 			// note.setText(message);
 			for (int i = 0; i < msgs.size(); i++) {
-				note.addText((String) msgs.elementAt(i), (String) colors.elementAt(i));
+				note.addText(msgs.elementAt(i), (String) colors.elementAt(i));
 			}
 			boolean autoAdvance = false;
 			if (autoAdvanceNode != null) {
@@ -144,7 +145,7 @@ public class StencilParser { // extends org.xml.sax.helpers.DefaultHandler{
 			final Note note = new Note(p, initPos, frame, positionManager, stencilManager, hasNext);
 			// note.setText(message);
 			for (int i = 0; i < msgs.size(); i++) {
-				note.addText((String) msgs.elementAt(i), (String) colors.elementAt(i));
+				note.addText(msgs.elementAt(i), (String) colors.elementAt(i));
 			}
 			newStencil.addObject(frame);
 			newStencil.addObject(note);
@@ -155,7 +156,7 @@ public class StencilParser { // extends org.xml.sax.helpers.DefaultHandler{
 			final Note note = new Note(p, initPos, navBar, positionManager, stencilManager, hasNext);
 			// note.setText(message);
 			for (int i = 0; i < msgs.size(); i++) {
-				note.addText((String) msgs.elementAt(i), (String) colors.elementAt(i));
+				note.addText(msgs.elementAt(i), (String) colors.elementAt(i));
 			}
 			newStencil.addObject(note);
 		} else {
@@ -166,7 +167,7 @@ public class StencilParser { // extends org.xml.sax.helpers.DefaultHandler{
 			final Note note = new Note(p, new Point(0, 0), null, positionManager, stencilManager, hasNext);
 			// note.setText(message);
 			for (int i = 0; i < msgs.size(); i++) {
-				note.addText((String) msgs.elementAt(i), (String) colors.elementAt(i));
+				note.addText(msgs.elementAt(i), (String) colors.elementAt(i));
 			}
 			newStencil.addObject(note);
 		}
@@ -200,7 +201,7 @@ public class StencilParser { // extends org.xml.sax.helpers.DefaultHandler{
 		return newStencil;
 	}
 
-	public Vector parseFile(final java.io.File fileToLoad) {
+	public Vector<Stencil> parseFile(final java.io.File fileToLoad) {
 		Document document;
 		try {
 			final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -218,7 +219,7 @@ public class StencilParser { // extends org.xml.sax.helpers.DefaultHandler{
 		}
 
 		if (document != null) {
-			final Vector stencilList = new Vector();
+			final Vector<Stencil> stencilList = new Vector<Stencil>();
 			final NamedNodeMap attr = document.getDocumentElement().getAttributes();
 			final Node readPermission = attr.getNamedItem("access");
 			if (readPermission.getNodeValue().equals("read")) {

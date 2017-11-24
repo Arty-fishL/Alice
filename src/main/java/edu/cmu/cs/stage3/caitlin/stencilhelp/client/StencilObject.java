@@ -15,7 +15,7 @@ import java.awt.Rectangle;
 import java.util.Vector;
 
 public interface StencilObject {
-	public Vector getShapes();
+	public Vector<ScreenShape> getShapes();
 
 	public Rectangle getRectangle();
 

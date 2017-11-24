@@ -35,24 +35,24 @@ package edu.cmu.cs.stage3.alice.scenegraph.util;
 import javax.vecmath.Point2d;
 
 public class Triangulator {
-	private java.util.Vector contours;
-	public java.util.Vector points;
+	private java.util.Vector<PointNode> contours;
+	public java.util.Vector<Object> points;
 
-	public java.util.Vector triangles;
+	public java.util.Vector<Object> triangles;
 
 	public static PointComparator pc = new PointComparator();
 
 	public Triangulator() {
-		triangles = new java.util.Vector();
-		contours = new java.util.Vector();
-		points = new java.util.Vector();
+		triangles = new java.util.Vector<Object>();
+		contours = new java.util.Vector<PointNode>();
+		points = new java.util.Vector<Object>();
 	}
 
 	// ********************
 	// ** List Functions **
 	// ********************
-	private java.util.Vector linkedListToVector(final PointNode head) {
-		final java.util.Vector returnVal = new java.util.Vector();
+	private java.util.Vector<PointNode> linkedListToVector(final PointNode head) {
+		final java.util.Vector<PointNode> returnVal = new java.util.Vector<PointNode>();
 
 		PointNode cur = head;
 
@@ -80,7 +80,7 @@ public class Triangulator {
 	public int indexOfPoint(final Point2d tofind) {
 		// return java.util.Arrays.binarySearch(points,tofind,new
 		// PointComparator());
-		final java.util.ListIterator li = points.listIterator();
+		final java.util.ListIterator<Object> li = points.listIterator();
 		for (int i = 0; li.hasNext(); i++) {
 			if (pointCompare((Point2d) li.next(), tofind) == 0) {
 				return i;
@@ -154,21 +154,21 @@ public class Triangulator {
 		contours.add(first);
 	}
 
-	public void addContour(final java.util.Vector contour) {
+	public void addContour(final java.util.Vector<Point2d> contour) {
 		if (contour.isEmpty()) {
 			return;
 		}
 
 		final int curpoint = points.size();
 
-		final PointNode first = new PointNode((Point2d) contour.firstElement());
+		final PointNode first = new PointNode(contour.firstElement());
 		first.next = first;
 		first.prev = first;
 		points.add(contour.firstElement());
 
-		final java.util.ListIterator li = contour.listIterator(1);
+		final java.util.ListIterator<Point2d> li = contour.listIterator(1);
 		while (li.hasNext()) {
-			final Point2d cur = (Point2d) li.next();
+			final Point2d cur = li.next();
 			final PointNode newPoint = new PointNode(cur);
 			first.prev.insertAfter(newPoint);
 			points.add(cur);
@@ -194,7 +194,7 @@ public class Triangulator {
 		System.out.println("Contours");
 		for (int i = 0; i < contours.size(); i++) {
 			System.out.print("Contour " + String.valueOf(i) + ": ");
-			PointNode cur = (PointNode) contours.elementAt(i);
+			PointNode cur = contours.elementAt(i);
 			do {
 				System.out.print(String.valueOf(indexOfPoint(cur.data)) + ",");
 				cur = cur.next;
@@ -216,7 +216,7 @@ public class Triangulator {
 		System.out.println("Contours");
 		for (int i = 0; i < contours.size(); i++) {
 			System.out.println("Contour " + String.valueOf(i));
-			PointNode cur = (PointNode) contours.elementAt(i);
+			PointNode cur = contours.elementAt(i);
 			do {
 				System.out.println(String.valueOf(indexOfPoint(cur.data)) + ": " + String.valueOf(isEar(cur)) + ","
 						+ String.valueOf(cur.convex()));
@@ -229,7 +229,7 @@ public class Triangulator {
 	// ********************
 	// ** public Compute **
 	// ********************
-	public java.util.Vector triangulate() {
+	public java.util.Vector<Object> triangulate() {
 		// debug("Input");
 		sortData();
 		// debug("Sorted");
@@ -245,18 +245,18 @@ public class Triangulator {
 		while (changed) {
 			changed = false;
 
-			final java.util.Vector ears = determineEars();
+			final java.util.Vector<PointNode> ears = determineEars();
 
-			final java.util.ListIterator li = ears.listIterator();
+			final java.util.ListIterator<PointNode> li = ears.listIterator();
 			while (li.hasNext()) {
-				if (clipEar((PointNode) li.next())) {
+				if (clipEar(li.next())) {
 					changed = true;
 				}
 			}
 		}
 
-		if (linkedListToVector((PointNode) contours.firstElement()).size() == 3) {
-			triangles.add(((PointNode) contours.firstElement()).triangle());
+		if (linkedListToVector(contours.firstElement()).size() == 3) {
+			triangles.add(contours.firstElement().triangle());
 		} else {
 			// TODO: get really mad!!!!
 		}
@@ -276,10 +276,10 @@ public class Triangulator {
 		java.util.Collections.sort(points, pc);
 
 		// find leftmost point in each contour
-		final java.util.ListIterator li = contours.listIterator();
+		final java.util.ListIterator<PointNode> li = contours.listIterator();
 		for (int i = 0; li.hasNext(); i++) {
 
-			final PointNode first = (PointNode) li.next();
+			final PointNode first = li.next();
 			PointNode left = first;
 
 			PointNode cur = first.next;
@@ -299,7 +299,7 @@ public class Triangulator {
 
 	private void removeDuplicates() {
 		Point2d prevPoint = (Point2d) points.firstElement();
-		final java.util.ListIterator li2 = points.listIterator(1);
+		final java.util.ListIterator<Object> li2 = points.listIterator(1);
 		while (li2.hasNext()) {
 			Point2d curPoint = (Point2d) li2.next();
 			boolean makeChange = false;
@@ -312,9 +312,9 @@ public class Triangulator {
 				curPoint = (Point2d) li2.next();
 			}
 			if (makeChange) {
-				final java.util.ListIterator li = contours.listIterator();
+				final java.util.ListIterator<PointNode> li = contours.listIterator();
 				while (li.hasNext()) {
-					final PointNode first = (PointNode) li.next();
+					final PointNode first = li.next();
 					PointNode cur = first;
 
 					do {
@@ -332,12 +332,12 @@ public class Triangulator {
 	}
 
 	private void adjustOrientations() {
-		if (polygonArea((PointNode) contours.firstElement()) < 0) {
-			reverseContour((PointNode) contours.firstElement());
+		if (polygonArea(contours.firstElement()) < 0) {
+			reverseContour(contours.firstElement());
 		}
-		final java.util.ListIterator li = contours.listIterator(1);
+		final java.util.ListIterator<PointNode> li = contours.listIterator(1);
 		while (li.hasNext()) {
-			final PointNode cur = (PointNode) li.next();
+			final PointNode cur = li.next();
 			if (polygonArea(cur) > 0) {
 				reverseContour(cur);
 			}
@@ -347,17 +347,17 @@ public class Triangulator {
 	private void buildBridges() {
 		final DistanceComparator dc = new DistanceComparator();
 
-		final java.util.ListIterator li = contours.listIterator();
+		final java.util.ListIterator<PointNode> li = contours.listIterator();
 		while (li.hasNext()) {
-			final PointNode cur = (PointNode) li.next();
+			final PointNode cur = li.next();
 
-			final java.util.Vector outer = linkedListToVector((PointNode) contours.firstElement());
+			final java.util.Vector<PointNode> outer = linkedListToVector(contours.firstElement());
 			dc.start = cur.data;
 			java.util.Collections.sort(outer, dc);
 
-			final java.util.ListIterator li2 = outer.listIterator();
+			final java.util.ListIterator<PointNode> li2 = outer.listIterator();
 			while (li2.hasNext()) {
-				final PointNode outerPoint = (PointNode) li2.next();
+				final PointNode outerPoint = li2.next();
 				if (outerPoint.compareTo(cur) == 0) {
 					cur.next.prev = outerPoint;
 					outerPoint.next.prev = cur;
@@ -365,7 +365,7 @@ public class Triangulator {
 					cur.next = outerPoint.next;
 					outerPoint.next = temp;
 					break;
-				} else if (outerPoint.inCone(cur.data) && !intersectsContour((PointNode) contours.firstElement(),
+				} else if (outerPoint.inCone(cur.data) && !intersectsContour(contours.firstElement(),
 						new SegmentBBox(cur.data, outerPoint.data))) {
 					final PointNode n1 = new PointNode(cur.data);
 					final PointNode n2 = new PointNode(outerPoint.data);
@@ -382,22 +382,22 @@ public class Triangulator {
 				}
 			}
 		}
-		final PointNode first = (PointNode) contours.firstElement();
-		contours = new java.util.Vector(1);
+		final PointNode first = contours.firstElement();
+		contours = new java.util.Vector<PointNode>(1);
 		contours.add(first);
 
 	}
 
 	private boolean isEar(final PointNode ear) {
 		return ear.convex() > 0
-				&& !intersectsContour((PointNode) contours.firstElement(),
+				&& !intersectsContour(contours.firstElement(),
 						new SegmentBBox(ear.prev.data, ear.next.data))
 				&& ear.next.inCone(ear.prev.data) && ear.prev.inCone(ear.next.data);
 	}
 
-	private java.util.Vector determineEars() {
-		final java.util.Vector ears = new java.util.Vector();
-		final PointNode head = (PointNode) contours.firstElement();
+	private java.util.Vector<PointNode> determineEars() {
+		final java.util.Vector<PointNode> ears = new java.util.Vector<PointNode>();
+		final PointNode head = contours.firstElement();
 		PointNode cur = head;
 
 		do {

@@ -18,6 +18,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Line2D;
 import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Float;
 import java.util.Vector;
 
 import javax.sound.sampled.AudioFormat;
@@ -883,7 +884,7 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 		} else if (e.getActionCommand().equals("Stop")) {
 			// stop all playback threads related to this sound
 			for (int i = 0; i < sound.getPlaybacks().size(); i++) {
-				((Playback) sound.getPlaybacks().elementAt(i)).stopPlaying();
+				sound.getPlaybacks().elementAt(i).stopPlaying();
 			}
 		} else if (e.getActionCommand().equals("Zoom In")) {
 			handleZoomIn(true);
@@ -1174,7 +1175,7 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 		 */
 		private static final long serialVersionUID = -470544013804744161L;
 		private final boolean forLeftSample;
-		private final Vector points;
+		private final Vector<Float> points;
 
 		/**
 		 * Constructor that takes a flag to tell if for left or right sample
@@ -1198,7 +1199,7 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 						"\tSample panel preferred size: " + getPreferredSize() + "\n\tSample panel size: " + getSize());
 			}
 
-			points = new Vector();
+			points = new Vector<Float>();
 			createWaveForm(forLeftSample);
 		}// constructor(forLeftSample)
 
@@ -1301,7 +1302,7 @@ public class SoundExplorer implements MouseMotionListener, ActionListener, Mouse
 			// draw the lines
 			g2.setColor(waveColor);
 			for (int i = (int) rectToPaint.getX(); i < rectToPaint.getX() + rectToPaint.getWidth() - 1; i++) {
-				g2.draw(new Line2D.Float((Point2D.Float) points.elementAt(i), (Point2D.Float) points.elementAt(i + 1)));
+				g2.draw(new Line2D.Float(points.elementAt(i), points.elementAt(i + 1)));
 			}
 
 			// draw the center line

@@ -24,6 +24,8 @@
 package edu.cmu.cs.stage3.awt;
 
 import java.awt.event.InputEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 public class AWTUtilities {
 	private static boolean s_successfullyLoadedLibrary;
@@ -191,8 +193,8 @@ public class AWTUtilities {
 		return isGetModifiersSupported() && isGetCursorLocationSupported();
 	}
 
-	private static java.util.Vector s_mouseListeners = new java.util.Vector();
-	private static java.util.Vector s_mouseMotionListeners = new java.util.Vector();
+	private static java.util.Vector<MouseListener> s_mouseListeners = new java.util.Vector<MouseListener>();
+	private static java.util.Vector<MouseMotionListener> s_mouseMotionListeners = new java.util.Vector<MouseMotionListener>();
 
 	public static void addMouseListener(final java.awt.event.MouseListener mouseListener) {
 		s_mouseListeners.addElement(mouseListener);
@@ -285,7 +287,7 @@ public class AWTUtilities {
 					final java.awt.event.MouseEvent mouseEvent = new java.awt.event.MouseEvent(s_source, id, when,
 							currModifiers, s_currCursorPos.x, s_currCursorPos.y, s_clickCount, isPopupTrigger);
 					for (int i = 0; i < s_mouseListeners.size(); i++) {
-						final java.awt.event.MouseListener mouseListener = (java.awt.event.MouseListener) s_mouseListeners
+						final java.awt.event.MouseListener mouseListener = s_mouseListeners
 								.elementAt(i);
 						switch (id) {
 						case java.awt.event.MouseEvent.MOUSE_CLICKED:
@@ -319,7 +321,7 @@ public class AWTUtilities {
 						final java.awt.event.MouseEvent mouseEvent = new java.awt.event.MouseEvent(s_source, id, when,
 								currModifiers, s_currCursorPos.x, s_currCursorPos.y, s_clickCount, isPopupTrigger);
 						for (int i = 0; i < s_mouseMotionListeners.size(); i++) {
-							final java.awt.event.MouseMotionListener mouseMotionListener = (java.awt.event.MouseMotionListener) s_mouseMotionListeners
+							final java.awt.event.MouseMotionListener mouseMotionListener = s_mouseMotionListeners
 									.elementAt(i);
 							switch (id) {
 							case java.awt.event.MouseEvent.MOUSE_MOVED:

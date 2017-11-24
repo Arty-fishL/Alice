@@ -33,7 +33,7 @@ public abstract class Response extends Code {
 	}
 
 	protected Class getRuntimeResponseClass() {
-		final Class cls = getClass();
+		final Class<? extends Response> cls = getClass();
 		final Class[] declaredClasses = cls.getDeclaredClasses();
 		for (final Class declaredClasse : declaredClasses) {
 			if (RuntimeResponse.class.isAssignableFrom(declaredClasse)) {

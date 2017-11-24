@@ -115,7 +115,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 	// private Format captureFormat = null;
 
 	private TabControl tabControl;
-	private final Hashtable hashtablePanelsAudio = new Hashtable();
+	private final Hashtable<String, TrackPanelAudio> hashtablePanelsAudio = new Hashtable<String, TrackPanelAudio>();
 	private Choice comboContentType;
 
 	private Image imageAudioEn = null;
@@ -348,7 +348,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 		final FileDialog dlgFile;
 		final String strDirName = null;
 		final String strFileName = null;
-		Enumeration enumKeys;
+		Enumeration<String> enumKeys;
 		String strPanel;
 		TrackPanelAudio panelAudio;
 		int nMediaDuration;
@@ -365,8 +365,8 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 			// go through parameters ...
 			enumKeys = hashtablePanelsAudio.keys();
 			while (enumKeys.hasMoreElements()) {
-				strPanel = (String) enumKeys.nextElement();
-				panelAudio = (TrackPanelAudio) hashtablePanelsAudio.get(strPanel);
+				strPanel = enumKeys.nextElement();
+				panelAudio = hashtablePanelsAudio.get(strPanel);
 				panelAudio.updateTrack();
 
 				if (cfgJMApps != null) {
@@ -620,7 +620,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 	 * type. It notifies all track pages about the change.
 	 */
 	private void changeContentType() {
-		Enumeration enumPanels;
+		Enumeration<TrackPanelAudio> enumPanels;
 		TrackPanelAudio panelAudio;
 
 		strContentType = FileTypeDescriptor.WAVE;
@@ -632,7 +632,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 
 		enumPanels = hashtablePanelsAudio.elements();
 		while (enumPanels.hasMoreElements()) {
-			panelAudio = (TrackPanelAudio) enumPanels.nextElement();
+			panelAudio = enumPanels.nextElement();
 			panelAudio.setContentType(strContentType);
 		}
 

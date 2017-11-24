@@ -2,6 +2,7 @@ package edu.cmu.cs.stage3.caitlin.stencilhelp.client;
 
 import java.awt.Component;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -26,23 +27,24 @@ import com.jamiegl.alicex.ui.JSystemFileChooser;
 import edu.cmu.cs.stage3.alice.authoringtool.util.CustomMouseAdapter;
 import edu.cmu.cs.stage3.caitlin.stencilhelp.application.StateCapsule;
 import edu.cmu.cs.stage3.caitlin.stencilhelp.application.StencilApplication;
+import edu.cmu.cs.stage3.caitlin.stencilhelp.client.StencilManager.Stencil;
 
 public class StencilManager
 		implements MouseListener, MouseMotionListener, KeyListener, StencilClient, StencilStackChangeListener {
 	StencilApplication stencilApp = null;
 	StencilPanel stencilPanel = null;
 	ObjectPositionManager positionManager = null;
-	Vector updateShapes = null;
-	Vector clearRegions = null;
+	Vector<ScreenShape> updateShapes = null;
+	Vector<Rectangle> clearRegions = null;
 	StencilParser stencilParser = null;
 
-	Vector mouseEventListeners = new Vector();
-	Vector keyEventListeners = new Vector();
-	Vector stencilFocusListeners = new Vector();
-	Vector layoutChangeListeners = new Vector();
-	Vector stencilStackChangeListeners = new Vector();
-	Vector readWriteListeners = new Vector();
-	Vector stencilList = new Vector();
+	Vector<MouseEventListener> mouseEventListeners = new Vector<MouseEventListener>();
+	Vector<KeyEventListener> keyEventListeners = new Vector<KeyEventListener>();
+	Vector<StencilFocusListener> stencilFocusListeners = new Vector<StencilFocusListener>();
+	Vector<LayoutChangeListener> layoutChangeListeners = new Vector<LayoutChangeListener>();
+	Vector<StencilStackChangeListener> stencilStackChangeListeners = new Vector<StencilStackChangeListener>();
+	Vector<ReadWriteListener> readWriteListeners = new Vector<ReadWriteListener>();
+	Vector<Stencil> stencilList = new Vector<Stencil>();
 	int currentStencilIndex = 0;
 	StencilObject focalObject = null;
 	StencilMouseAdapter mouseAdapter = new StencilMouseAdapter();
@@ -71,7 +73,7 @@ public class StencilManager
 	}
 
 	protected void createDefaultStencilObjects() {
-		final StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList
+		final StencilManager.Stencil currentStencil = stencilList
 				.elementAt(currentStencilIndex);
 
 		final NavigationBar navBar = new NavigationBar(this, positionManager);
@@ -230,7 +232,7 @@ public class StencilManager
 				root.setAttribute("previousStack", previousStack);
 			}
 			for (int i = 0; i < stencilList.size(); i++) {
-				final StencilManager.Stencil stencil = (StencilManager.Stencil) stencilList.elementAt(i);
+				final StencilManager.Stencil stencil = stencilList.elementAt(i);
 				stencil.write(document, root);
 			}
 
@@ -267,7 +269,7 @@ public class StencilManager
 			final Note n = new Note(p, new Point(30, 30), h, positionManager, this, false);
 			addMouseEventListener(n);
 			addKeyEventListener(n);
-			final StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList
+			final StencilManager.Stencil currentStencil = stencilList
 					.elementAt(currentStencilIndex);
 			currentStencil.addObject(h);
 			currentStencil.addObject(n);
@@ -287,7 +289,7 @@ public class StencilManager
 			final Note n = new Note(p, new Point(30, 30), h, positionManager, this, false);
 			addMouseEventListener(n);
 			addKeyEventListener(n);
-			final StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList
+			final StencilManager.Stencil currentStencil = stencilList
 					.elementAt(currentStencilIndex);
 			currentStencil.addObject(h);
 			currentStencil.addObject(n);
@@ -303,7 +305,7 @@ public class StencilManager
 		final Note n = new Note(p, new Point(0, 0), null, positionManager, this, false);
 		addMouseEventListener(n);
 		addKeyEventListener(n);
-		final StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList
+		final StencilManager.Stencil currentStencil = stencilList
 				.elementAt(currentStencilIndex);
 		currentStencil.addObject(n);
 		announceLayoutChange();
@@ -318,20 +320,20 @@ public class StencilManager
 	public void removeAllObjects() {
 		// focalObject = null;
 		setNewFocalObject(null);
-		final StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList
+		final StencilManager.Stencil currentStencil = stencilList
 				.elementAt(currentStencilIndex);
 		currentStencil.removeAllObjects();
 		stencilChanged = true;
 	}
 
 	/* Current Stencil Object stuff */
-	protected Vector getShapesToDraw() {
-		final Vector shapes = new Vector();
-		final Stencil currentStencil = (Stencil) stencilList.elementAt(currentStencilIndex);
-		final Vector currentObjects = currentStencil.getObjects();
+	protected Vector<ScreenShape> getShapesToDraw() {
+		final Vector<ScreenShape> shapes = new Vector<ScreenShape>();
+		final Stencil currentStencil = stencilList.elementAt(currentStencilIndex);
+		final Vector<StencilObject> currentObjects = currentStencil.getObjects();
 		for (int i = 0; i < currentObjects.size(); i++) {
-			final StencilObject screenObj = (StencilObject) currentObjects.elementAt(i);
-			final Vector temp = screenObj.getShapes();
+			final StencilObject screenObj = currentObjects.elementAt(i);
+			final Vector<ScreenShape> temp = screenObj.getShapes();
 			if (temp != null) {
 				shapes.addAll(temp);
 			}
@@ -341,31 +343,31 @@ public class StencilManager
 
 	/* EXPERIMENTAL - REMOVE?????? */
 	// a call to this must be followed by an immediate call to getClearRegions
-	public Vector getUpdateShapes() {
+	public Vector<ScreenShape> getUpdateShapes() {
 		updateDrawInfo();
 		return updateShapes;
 	}
 
-	public Vector getClearRegions() {
+	public Vector<Rectangle> getClearRegions() {
 		return clearRegions;
 	}
 
 	protected void updateDrawInfo() {
-		updateShapes = new Vector();
-		clearRegions = new Vector();
-		final Stencil currentStencil = (Stencil) stencilList.elementAt(currentStencilIndex);
-		final Vector currentObjects = currentStencil.getObjects();
-		final Vector unmodifiedObjects = new Vector();
+		updateShapes = new Vector<ScreenShape>();
+		clearRegions = new Vector<Rectangle>();
+		final Stencil currentStencil = stencilList.elementAt(currentStencilIndex);
+		final Vector<StencilObject> currentObjects = currentStencil.getObjects();
+		final Vector<StencilObject> unmodifiedObjects = new Vector<StencilObject>();
 		boolean overlapping = false;
 
 		if (stencilChanged == false) {
 
 			// add the objects and clear regions that have been modified
 			for (int i = 0; i < currentObjects.size(); i++) {
-				final StencilObject obj = (StencilObject) currentObjects.elementAt(i);
+				final StencilObject obj = currentObjects.elementAt(i);
 
 				if (obj.isModified()) {
-					final Vector objShapes = obj.getShapes();
+					final Vector<ScreenShape> objShapes = obj.getShapes();
 					if (objShapes != null) {
 						updateShapes.addAll(objShapes);
 					}
@@ -380,7 +382,7 @@ public class StencilManager
 
 			// check to see if there is any overlapping
 			for (int i = 0; i < unmodifiedObjects.size(); i++) {
-				final StencilObject obj = (StencilObject) unmodifiedObjects.elementAt(i);
+				final StencilObject obj = unmodifiedObjects.elementAt(i);
 				final java.awt.Rectangle objRect = obj.getRectangle();
 				java.awt.Rectangle prevObjRect = obj.getPreviousRectangle();
 				if (prevObjRect == null) {
@@ -388,7 +390,7 @@ public class StencilManager
 				}
 				if (objRect != null) {
 					for (int j = 0; j < clearRegions.size(); j++) {
-						final java.awt.Rectangle clearRect = (java.awt.Rectangle) clearRegions.elementAt(j);
+						final java.awt.Rectangle clearRect = clearRegions.elementAt(j);
 						if (clearRect.intersects(objRect) || clearRect.intersects(prevObjRect)) {
 							overlapping = true;
 							break;
@@ -400,12 +402,12 @@ public class StencilManager
 
 		// if overlapping - just redraw everything.
 		if (overlapping || stencilChanged) {
-			updateShapes = new Vector();
-			clearRegions = new Vector();
+			updateShapes = new Vector<ScreenShape>();
+			clearRegions = new Vector<Rectangle>();
 			clearRegions.addElement(new java.awt.Rectangle(0, 0, stencilPanel.getWidth(), stencilPanel.getHeight()));
 			for (int i = 0; i < currentObjects.size(); i++) {
-				final StencilObject obj = (StencilObject) currentObjects.elementAt(i);
-				final Vector newShapes = obj.getShapes();
+				final StencilObject obj = currentObjects.elementAt(i);
+				final Vector<ScreenShape> newShapes = obj.getShapes();
 				if (newShapes != null) {
 					updateShapes.addAll(obj.getShapes());
 				}
@@ -417,11 +419,11 @@ public class StencilManager
 	/* Stencil Navigation stuff */
 	public boolean hasNext() {
 		boolean autoAdvancingHole = false;
-		final Stencil currentStencil = (Stencil) stencilList.elementAt(currentStencilIndex);
+		final Stencil currentStencil = stencilList.elementAt(currentStencilIndex);
 		if (currentStencil != null) {
-			final Vector stencilObjects = currentStencil.getObjects();
+			final Vector<StencilObject> stencilObjects = currentStencil.getObjects();
 			for (int i = 0; i < stencilObjects.size(); i++) {
-				final StencilObject stencilObj = (StencilObject) stencilObjects.elementAt(i);
+				final StencilObject stencilObj = stencilObjects.elementAt(i);
 				if (stencilObj instanceof Hole) {
 					if (((Hole) stencilObj).getAutoAdvance() == true
 							&& ((Hole) stencilObj).getAdvanceEvent() != Hole.ADVANCE_ON_ENTER) {
@@ -440,7 +442,7 @@ public class StencilManager
 
 	public boolean hasPrevious() {
 		if (currentStencilIndex > 0) {
-			final Stencil currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
+			final Stencil currentStencil = stencilList.elementAt(currentStencilIndex);
 			if (currentStencil.getStepsToGoBack() > 0) {
 				return true;
 			} else {
@@ -463,12 +465,12 @@ public class StencilManager
 		loadWorld();
 
 		// tell current stencil that it's not current
-		StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
+		StencilManager.Stencil currentStencil = stencilList.elementAt(currentStencilIndex);
 		currentStencil.setCurrentStencil(false);
 		currentStencilIndex = 0;
 
 		// tell next stencil that it is current
-		currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
+		currentStencil = stencilList.elementAt(currentStencilIndex);
 		currentStencil.setCurrentStencil(true);
 		broadcastStencilNumberChange();
 
@@ -501,7 +503,7 @@ public class StencilManager
 	public void showNextStencil() {
 		if (currentStencilIndex < stencilList.size() - 1) {
 			// tell current stencil that it's not current
-			StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
+			StencilManager.Stencil currentStencil = stencilList.elementAt(currentStencilIndex);
 
 			final boolean checkState = checkState(currentStencil);
 
@@ -509,7 +511,7 @@ public class StencilManager
 			currentStencilIndex++;
 
 			// tell next stencil that it is current
-			currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
+			currentStencil = stencilList.elementAt(currentStencilIndex);
 			currentStencil.setCurrentStencil(true);
 
 			if (checkState == false) {
@@ -525,7 +527,7 @@ public class StencilManager
 	}
 
 	public void showPreviousStencil() {
-		StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
+		StencilManager.Stencil currentStencil = stencilList.elementAt(currentStencilIndex);
 		if (currentStencil != null) {
 			final int stepsToGoBack = currentStencil.getStepsToGoBack();
 
@@ -539,7 +541,7 @@ public class StencilManager
 					currentStencilIndex -= stepsToGoBack;
 				}
 
-				currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
+				currentStencil = stencilList.elementAt(currentStencilIndex);
 				currentStencil.setCurrentStencil(true);
 				broadcastStencilNumberChange();
 				stencilChanged = true;
@@ -582,7 +584,7 @@ public class StencilManager
 
 	public void insertNewStencil() {
 		// tell current stencil that it's not current
-		StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList.elementAt(currentStencilIndex);
+		StencilManager.Stencil currentStencil = stencilList.elementAt(currentStencilIndex);
 		final boolean checkState = checkState(currentStencil);
 		if (checkState == false) {
 			// some kind of error has happened, handle it.
@@ -668,14 +670,14 @@ public class StencilManager
 		worldToLoad = null;
 		nextStack = null;
 		previousStack = null;
-		final Vector newStencilList = stencilParser.parseFile(tutorialFile);
+		final Vector<Stencil> newStencilList = stencilParser.parseFile(tutorialFile);
 
 		// update the state of stencilmanager
-		mouseEventListeners = new Vector();
-		keyEventListeners = new Vector();
-		stencilFocusListeners = new Vector();
-		layoutChangeListeners = new Vector();
-		stencilStackChangeListeners = new Vector();
+		mouseEventListeners = new Vector<MouseEventListener>();
+		keyEventListeners = new Vector<KeyEventListener>();
+		stencilFocusListeners = new Vector<StencilFocusListener>();
+		layoutChangeListeners = new Vector<LayoutChangeListener>();
+		stencilStackChangeListeners = new Vector<StencilStackChangeListener>();
 		currentStencilIndex = 0;
 		// focalObject = null;
 		setNewFocalObject(null);
@@ -687,7 +689,7 @@ public class StencilManager
 		// tell everyone to update their current values
 		stencilList = newStencilList;
 		addLinks();
-		final StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList
+		final StencilManager.Stencil currentStencil = stencilList
 				.elementAt(currentStencilIndex);
 		currentStencil.setCurrentStencil(true);
 		broadcastCurrentStencilChange();
@@ -714,14 +716,14 @@ public class StencilManager
 
 	protected void broadcastStencilNumberChange() {
 		for (int i = 0; i < stencilStackChangeListeners.size(); i++) {
-			((StencilStackChangeListener) stencilStackChangeListeners.elementAt(i))
+			stencilStackChangeListeners.elementAt(i)
 					.numberOfStencilsChanged(stencilList.size());
 		}
 	}
 
 	protected void broadcastCurrentStencilChange() {
 		for (int i = 0; i < stencilStackChangeListeners.size(); i++) {
-			((StencilStackChangeListener) stencilStackChangeListeners.elementAt(i))
+			stencilStackChangeListeners.elementAt(i)
 					.currentStencilChanged(currentStencilIndex);
 		}
 	}
@@ -739,7 +741,7 @@ public class StencilManager
 		writeEnabled = enabled;
 		// announce the change to all who care
 		for (int i = 0; i < readWriteListeners.size(); i++) {
-			final ReadWriteListener rwL = (ReadWriteListener) readWriteListeners.elementAt(i);
+			final ReadWriteListener rwL = readWriteListeners.elementAt(i);
 			rwL.setWriteEnabled(writeEnabled);
 		}
 		this.triggerRefresh();
@@ -772,12 +774,12 @@ public class StencilManager
 
 	protected void addLinks() {
 		if (previousStack != null && stencilList.size() > 0) {
-			final Stencil stencil = (Stencil) stencilList.elementAt(0);
+			final Stencil stencil = stencilList.elementAt(0);
 			stencil.addObject(new Link(this, positionManager, false));
 		}
 
 		if (nextStack != null && stencilList.size() > 0) {
-			final Stencil stencil = (Stencil) stencilList.elementAt(stencilList.size() - 1);
+			final Stencil stencil = stencilList.elementAt(stencilList.size() - 1);
 			stencil.addObject(new Link(this, positionManager, true));
 		}
 	}
@@ -795,19 +797,19 @@ public class StencilManager
 		boolean error = false;
 		// System.out.println("LAYOUT CHANGE");
 		for (int i = 0; i < layoutChangeListeners.size(); i++) {
-			final LayoutChangeListener lcListener = (LayoutChangeListener) layoutChangeListeners.elementAt(i);
+			final LayoutChangeListener lcListener = layoutChangeListeners.elementAt(i);
 			if (!(lcListener instanceof Note)) {
 				error = !lcListener.layoutChanged();
 			}
 			if (error) {
-				final StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList
+				final StencilManager.Stencil currentStencil = stencilList
 						.elementAt(currentStencilIndex);
 				// System.out.println("something is missing");
 				currentStencil.setErrorStencil(true);
 			}
 		}
 		for (int i = 0; i < layoutChangeListeners.size(); i++) {
-			final LayoutChangeListener lcListener = (LayoutChangeListener) layoutChangeListeners.elementAt(i);
+			final LayoutChangeListener lcListener = layoutChangeListeners.elementAt(i);
 			if (lcListener instanceof Note) {
 				lcListener.layoutChanged();
 			}
@@ -868,7 +870,7 @@ public class StencilManager
 	@Override
 	public void mousePressed(final MouseEvent e) {
 		for (int i = 0; i < mouseEventListeners.size(); i++) {
-			final MouseEventListener meListener = (MouseEventListener) mouseEventListeners.elementAt(i);
+			final MouseEventListener meListener = mouseEventListeners.elementAt(i);
 			if (meListener.contains(e.getPoint())) {
 				setNewFocalListener(meListener);
 
@@ -894,7 +896,7 @@ public class StencilManager
 	@Override
 	public void mouseClicked(final MouseEvent e) {
 		for (int i = 0; i < mouseEventListeners.size(); i++) {
-			final MouseEventListener meListener = (MouseEventListener) mouseEventListeners.elementAt(i);
+			final MouseEventListener meListener = mouseEventListeners.elementAt(i);
 			if (meListener.contains(e.getPoint())) {
 				setNewFocalListener(meListener);
 
@@ -938,7 +940,7 @@ public class StencilManager
 	@Override
 	public void mouseMoved(final MouseEvent e) {
 		for (int i = 0; i < mouseEventListeners.size(); i++) {
-			final MouseEventListener meListener = (MouseEventListener) mouseEventListeners.elementAt(i);
+			final MouseEventListener meListener = mouseEventListeners.elementAt(i);
 			if (meListener.contains(e.getPoint())) {
 				final boolean refresh = meListener.mouseMoved(e);
 				if (refresh) {
@@ -1004,7 +1006,7 @@ public class StencilManager
 	@Override
 	public void numberOfStencilsChanged(final int newNumberOfStencils) {
 		if (writeEnabled) {
-			final StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList
+			final StencilManager.Stencil currentStencil = stencilList
 					.elementAt(currentStencilIndex);
 			// System.out.println(" stencil number change: " + currentStencil);
 		}
@@ -1013,7 +1015,7 @@ public class StencilManager
 	@Override
 	public void currentStencilChanged(final int selectedStencil) {
 		if (writeEnabled) {
-			final StencilManager.Stencil currentStencil = (StencilManager.Stencil) stencilList
+			final StencilManager.Stencil currentStencil = stencilList
 					.elementAt(currentStencilIndex);
 			// System.out.println(" stencil change: " + currentStencil);
 		}
@@ -1035,7 +1037,7 @@ public class StencilManager
 	/* Stencil Class to keep track of the objects in each stencil */
 	// COME BACK - make this a stand alone class
 	public class Stencil {
-		protected Vector stencilObjects = new Vector();
+		protected Vector<StencilObject> stencilObjects = new Vector<StencilObject>();
 		protected StateCapsule endStateCapsule = null; // this should encode the
 														// correct state for the
 														// world at the *end* of
@@ -1071,7 +1073,7 @@ public class StencilManager
 				stencilElement.appendChild(stateNode);
 			}
 			for (int i = 0; i < stencilObjects.size(); i++) {
-				final StencilObject stencilObj = (StencilObject) stencilObjects.elementAt(i);
+				final StencilObject stencilObj = stencilObjects.elementAt(i);
 				if (stencilObj instanceof Note) {
 					((Note) stencilObj).write(document, stencilElement);
 				} else if (stencilObj instanceof NavigationBar) {
@@ -1100,7 +1102,7 @@ public class StencilManager
 				addAllListeners();
 				// update the positions of objects
 				for (int i = 0; i < stencilObjects.size(); i++) {
-					final StencilObject obj = (StencilObject) stencilObjects.elementAt(i);
+					final StencilObject obj = stencilObjects.elementAt(i);
 					if (obj instanceof Hole) {
 						final boolean success = ((Hole) obj).layoutChanged();
 						// if this comes back unsuccessful, then I need to check
@@ -1119,7 +1121,7 @@ public class StencilManager
 					}
 				}
 				for (int i = 0; i < stencilObjects.size(); i++) {
-					final StencilObject obj = (StencilObject) stencilObjects.elementAt(i);
+					final StencilObject obj = stencilObjects.elementAt(i);
 					// if (obj instanceof Note) (
 					// (Note)obj).updatePosition(StencilManager.this.stencilApp);
 					if (obj instanceof Note) {
@@ -1153,7 +1155,7 @@ public class StencilManager
 		protected void addAllListeners() {
 			for (int i = 0; i < stencilObjects.size(); i++) {
 
-				final StencilObject obj = (StencilObject) stencilObjects.elementAt(i);
+				final StencilObject obj = stencilObjects.elementAt(i);
 				if (obj instanceof MouseEventListener) {
 					addMouseEventListener((MouseEventListener) obj);
 				}
@@ -1179,7 +1181,7 @@ public class StencilManager
 		protected void removeAllListeners() {
 			for (int i = 0; i < stencilObjects.size(); i++) {
 
-				final StencilObject obj = (StencilObject) stencilObjects.elementAt(i);
+				final StencilObject obj = stencilObjects.elementAt(i);
 				if (obj instanceof MouseEventListener) {
 					removeMouseEventListener((MouseEventListener) obj);
 				}
@@ -1203,13 +1205,13 @@ public class StencilManager
 		}
 
 		public void removeAllObjects() {
-			final Vector newStencilObjects = new Vector();
+			final Vector<StencilObject> newStencilObjects = new Vector<StencilObject>();
 			for (int i = 0; i < stencilObjects.size(); i++) {
 				if (stencilObjects.elementAt(i) instanceof Menu || stencilObjects.elementAt(i) instanceof NavigationBar
 						|| stencilObjects.elementAt(i) instanceof Link) {
 					newStencilObjects.addElement(stencilObjects.elementAt(i));
 				} else {
-					final StencilObject obj = (StencilObject) stencilObjects.elementAt(i);
+					final StencilObject obj = stencilObjects.elementAt(i);
 					if (obj instanceof MouseEventListener) {
 						removeMouseEventListener((MouseEventListener) obj);
 					}
@@ -1233,7 +1235,7 @@ public class StencilManager
 			stencilObjects = newStencilObjects;
 		}
 
-		public Vector getObjects() {
+		public Vector<StencilObject> getObjects() {
 			if (error) {
 				// next step is to return the error screen stencil objects.
 				// System.out.println("error in getObjects");

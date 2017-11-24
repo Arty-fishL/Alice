@@ -310,7 +310,7 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 
 		prefix = prefix.toLowerCase();
 
-		final Vector names = new Vector();
+		final Vector<String> names = new Vector<String>();
 		for (final String propertyName : propertyNames) {
 			if (propertyName.startsWith(prefix)) {
 				names.addElement(propertyName);
@@ -324,8 +324,8 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 		// Copy the strings from the Vector over to a String array.
 		final String prefixNames[] = new String[names.size()];
 		int count = 0;
-		for (final Iterator it = names.iterator(); it.hasNext();) {
-			prefixNames[count++] = (String) it.next();
+		for (final Iterator<String> it = names.iterator(); it.hasNext();) {
+			prefixNames[count++] = it.next();
 		}
 
 		return prefixNames;

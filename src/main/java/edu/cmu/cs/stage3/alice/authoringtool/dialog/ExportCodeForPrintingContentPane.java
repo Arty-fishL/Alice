@@ -134,7 +134,7 @@ class CustomListButton extends JButton implements ActionListener {
 	public void actionPerformed(final ActionEvent e) {
 		boolean areAllSelected = true;
 		for (int i = 0; i < checkBoxes.size(); i++) {
-			final CustomCheckBox currentCheckBox = (CustomCheckBox) checkBoxes.get(i);
+			final CustomCheckBox currentCheckBox = checkBoxes.get(i);
 			if (!currentCheckBox.isSelected()) {
 				areAllSelected = false;
 				break;
@@ -142,12 +142,12 @@ class CustomListButton extends JButton implements ActionListener {
 		}
 		if (areAllSelected) {
 			for (int i = 0; i < checkBoxes.size(); i++) {
-				final CustomCheckBox currentCheckBox = (CustomCheckBox) checkBoxes.get(i);
+				final CustomCheckBox currentCheckBox = checkBoxes.get(i);
 				currentCheckBox.setSelected(false);
 			}
 		} else {
 			for (int i = 0; i < checkBoxes.size(); i++) {
-				final CustomCheckBox currentCheckBox = (CustomCheckBox) checkBoxes.get(i);
+				final CustomCheckBox currentCheckBox = checkBoxes.get(i);
 				currentCheckBox.setSelected(true);
 			}
 		}
@@ -362,7 +362,7 @@ public class ExportCodeForPrintingContentPane extends edu.cmu.cs.stage3.swing.Co
 		final ActionEvent e = new ActionEvent(this,
 				ActionEvent.ACTION_PERFORMED, "OK");
 		for (int i = 0; i < m_okActionListeners.size(); i++) {
-			final ActionListener l = (ActionListener) m_okActionListeners.elementAt(i);
+			final ActionListener l = m_okActionListeners.elementAt(i);
 			l.actionPerformed(e);
 		}
 	}

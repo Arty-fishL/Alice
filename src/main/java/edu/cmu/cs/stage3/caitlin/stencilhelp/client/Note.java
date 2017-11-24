@@ -20,9 +20,9 @@ import org.w3c.dom.Element;
 
 public class Note implements StencilObject, MouseEventListener, KeyEventListener, StencilObjectPositionListener,
 		ReadWriteListener, LayoutChangeListener {
-	protected Vector shapes = new Vector();
+	protected Vector<ScreenShape> shapes = new Vector<ScreenShape>();
 	protected Paragraph paragraph = null;
-	protected Vector stencilObjectPositionListeners = new Vector();
+	protected Vector<StencilObjectPositionListener> stencilObjectPositionListeners = new Vector<StencilObjectPositionListener>();
 	protected ObjectPositionManager positionManager = null;
 	protected StencilManager stencilManager = null;
 	protected Point clickPos = null;
@@ -368,7 +368,7 @@ public class Note implements StencilObject, MouseEventListener, KeyEventListener
 			index += 2;
 		}
 
-		final Vector newShapes = new Vector();
+		final Vector<ScreenShape> newShapes = new Vector<ScreenShape>();
 		for (int i = 0; i < index; i++) {
 			newShapes.addElement(shapes.elementAt(i));
 		}
@@ -416,9 +416,9 @@ public class Note implements StencilObject, MouseEventListener, KeyEventListener
 		}
 
 		if (paragraph != null) {
-			final Vector wordShapes = paragraph.getShapes();
+			final Vector<ScreenShape> wordShapes = paragraph.getShapes();
 			for (int i = 0; i < wordShapes.size(); i++) {
-				final ScreenShape wShape = (ScreenShape) wordShapes.elementAt(i);
+				final ScreenShape wShape = wordShapes.elementAt(i);
 				shapes.addElement(new ScreenShape(wShape.getColor(), wShape.getShape(), wShape.getIsFilled(), index));
 				index++;
 			}
@@ -483,7 +483,7 @@ public class Note implements StencilObject, MouseEventListener, KeyEventListener
 
 	/* screen object stuff */
 	@Override
-	public Vector getShapes() {
+	public Vector<ScreenShape> getShapes() {
 		if (scrObject != null && scrObject.getRectangle() == null) {
 			prevBlank = true;
 			return null;
@@ -761,14 +761,14 @@ public class Note implements StencilObject, MouseEventListener, KeyEventListener
 		idNode.appendChild(idSection);
 		noteElement.appendChild(idNode);
 
-		Vector msgs = new Vector();
-		Vector colors = new Vector();
+		Vector<String> msgs = new Vector<String>();
+		Vector<Color> colors = new Vector<Color>();
 		if (paragraph != null) {
 			msgs = paragraph.getText();
 			colors = paragraph.getColors();
 			for (int i = 0; i < msgs.size(); i++) {
 				final Element messageNode = document.createElement("message");
-				String msg = (String) msgs.elementAt(i); // paragraph.getText();
+				String msg = msgs.elementAt(i); // paragraph.getText();
 				if (colors.elementAt(i).equals(accentColor)) {
 					messageNode.setAttribute("color", "blue");
 				}
