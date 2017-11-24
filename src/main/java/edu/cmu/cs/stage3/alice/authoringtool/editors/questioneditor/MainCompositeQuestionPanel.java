@@ -184,7 +184,7 @@ public class MainCompositeQuestionPanel
 						returnQuestion = new edu.cmu.cs.stage3.alice.core.question.userdefined.Return();
 						returnQuestion.valueClass.set(setQuestion.valueClass.get());
 						returnQuestion.value.set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
-								.getDefaultValueForClass((Class) setQuestion.valueClass.get()));
+								.getDefaultValueForClass((Class<?>) setQuestion.valueClass.get()));
 						returnQuestion.setParent(setQuestion);
 
 						setQuestion.components.add(setQuestion.components.size(), returnQuestion);
@@ -193,7 +193,7 @@ public class MainCompositeQuestionPanel
 					returnQuestion = new edu.cmu.cs.stage3.alice.core.question.userdefined.Return();
 					returnQuestion.valueClass.set(setQuestion.valueClass.get());
 					returnQuestion.value.set(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
-							.getDefaultValueForClass((Class) setQuestion.valueClass.get()));
+							.getDefaultValueForClass((Class<?>) setQuestion.valueClass.get()));
 					returnQuestion.setParent(setQuestion);
 					setQuestion.components.add(0, returnQuestion);
 				}

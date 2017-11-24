@@ -27,7 +27,7 @@ import edu.cmu.cs.stage3.alice.core.Element;
 
 public class ElementArrayProperty extends ObjectArrayProperty {
 	public ElementArrayProperty(final Element owner, final String name, final Object[] defaultValue,
-			final Class valueClass) {
+			final Class<?> valueClass) {
 		super(owner, name, defaultValue, valueClass);
 	}
 
@@ -39,11 +39,9 @@ public class ElementArrayProperty extends ObjectArrayProperty {
 		final Element[] src = getElementArrayValue();
 		final Element[] dst = (Element[]) java.lang.reflect.Array.newInstance(getComponentType(), src.length);
 		System.arraycopy(src, 0, dst, 0, dst.length);
-		java.util.Arrays.sort(dst, new java.util.Comparator() {
+		java.util.Arrays.sort(dst, new java.util.Comparator<Element>() {
 			@Override
-			public int compare(final Object o1, final Object o2) {
-				final Element e1 = (Element) o1;
-				final Element e2 = (Element) o2;
+			public int compare(final Element e1, final Element e2) {
 				final String n1 = e1.name.getStringValue();
 				final String n2 = e2.name.getStringValue();
 				if (n1 != null) {

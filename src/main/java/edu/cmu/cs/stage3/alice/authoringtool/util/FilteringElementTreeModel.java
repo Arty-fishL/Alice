@@ -23,7 +23,11 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 import edu.cmu.cs.stage3.alice.core.Element;
+import edu.cmu.cs.stage3.util.Criterion;
 
 /**
  * @author Jason Pratt
@@ -33,26 +37,26 @@ public class FilteringElementTreeModel extends TreeModelSupport implements
 		edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateListener, javax.swing.tree.TreeModel {
 	protected edu.cmu.cs.stage3.alice.core.Element root;
 	protected Object[] emptyPath = { new edu.cmu.cs.stage3.alice.core.World() };
-	protected java.util.LinkedList inclusionList;
-	protected java.util.LinkedList exclusionList;
+	protected LinkedList<Criterion> inclusionList;
+	protected LinkedList<Criterion> exclusionList;
 
 	public FilteringElementTreeModel() {
 	}
 
-	public java.util.LinkedList getInclusionList() {
+	public LinkedList<Criterion> getInclusionList() {
 		return inclusionList;
 	}
 
-	public void setInclusionList(final java.util.LinkedList list) {
+	public void setInclusionList(final LinkedList<Criterion> list) {
 		inclusionList = list;
 		update();
 	}
 
-	public java.util.LinkedList getExclusionList() {
+	public LinkedList<Criterion> getExclusionList() {
 		return exclusionList;
 	}
 
-	public void setExclusionList(final java.util.LinkedList list) {
+	public void setExclusionList(final LinkedList<Criterion> list) {
 		exclusionList = list;
 		update();
 	}
@@ -64,10 +68,10 @@ public class FilteringElementTreeModel extends TreeModelSupport implements
 
 		// anyone meeting an exclusion Criterion get booted
 		if (exclusionList != null) {
-			for (final java.util.Iterator iter = exclusionList.iterator(); iter.hasNext();) {
+			for (final Iterator<Criterion> iter = exclusionList.iterator(); iter.hasNext();) {
 				final Object item = iter.next();
-				if (item instanceof edu.cmu.cs.stage3.util.Criterion) {
-					if (((edu.cmu.cs.stage3.util.Criterion) item).accept(element)) {
+				if (item instanceof Criterion) {
+					if (((Criterion) item).accept(element)) {
 						return false;
 					}
 				}
@@ -76,10 +80,10 @@ public class FilteringElementTreeModel extends TreeModelSupport implements
 
 		// anyone left who meets an inclusion Criterion is accepted
 		if (inclusionList != null) {
-			for (final java.util.Iterator iter = inclusionList.iterator(); iter.hasNext();) {
+			for (final Iterator<Criterion> iter = inclusionList.iterator(); iter.hasNext();) {
 				final Object item = iter.next();
-				if (item instanceof edu.cmu.cs.stage3.util.Criterion) {
-					if (((edu.cmu.cs.stage3.util.Criterion) item).accept(element)) {
+				if (item instanceof Criterion) {
+					if (((Criterion) item).accept(element)) {
 						return true;
 					}
 				}
@@ -137,7 +141,7 @@ public class FilteringElementTreeModel extends TreeModelSupport implements
 	}
 
 	public Object[] getPath(final edu.cmu.cs.stage3.alice.core.Element element) {
-		final java.util.LinkedList<Element> list = new java.util.LinkedList<Element>();
+		final LinkedList<Element> list = new LinkedList<Element>();
 
 		edu.cmu.cs.stage3.alice.core.Element e = element;
 		while (true) {
@@ -463,12 +467,12 @@ public class FilteringElementTreeModel extends TreeModelSupport implements
 	 * @returns the depth of the class hierarchy between the given superclass
 	 *          and subclass
 	 */
-	protected static int getClassDepth(final Class superclass, final Class subclass) {
+	protected static int getClassDepth(final Class<?> superclass, final Class<?> subclass) {
 		if (!superclass.isAssignableFrom(subclass)) {
 			return -1;
 		}
 
-		Class temp = subclass;
+		Class<?> temp = subclass;
 		int i = 0;
 		while (temp != superclass && superclass.isAssignableFrom(temp)) {
 			i++;

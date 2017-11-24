@@ -23,6 +23,7 @@
 
 package edu.cmu.cs.stage3.alice.core;
 
+import edu.cmu.cs.stage3.alice.core.Behavior.Item;
 import edu.cmu.cs.stage3.alice.core.property.NumberProperty;
 
 public abstract class Response extends Code {
@@ -32,10 +33,10 @@ public abstract class Response extends Code {
 		return new Double(1);
 	}
 
-	protected Class getRuntimeResponseClass() {
+	protected Class<?> getRuntimeResponseClass() {
 		final Class<? extends Response> cls = getClass();
-		final Class[] declaredClasses = cls.getDeclaredClasses();
-		for (final Class declaredClasse : declaredClasses) {
+		final Class<?>[] declaredClasses = cls.getDeclaredClasses();
+		for (final Class<?> declaredClasse : declaredClasses) {
 			if (RuntimeResponse.class.isAssignableFrom(declaredClasse)) {
 				return declaredClasse;
 			}
@@ -44,9 +45,9 @@ public abstract class Response extends Code {
 	}
 
 	public RuntimeResponse manufactureRuntimeResponse() {
-		final Class runtimeResponseClass = getRuntimeResponseClass();
+		final Class<?> runtimeResponseClass = getRuntimeResponseClass();
 		if (runtimeResponseClass != null) {
-			final java.lang.reflect.Constructor[] constructors = runtimeResponseClass.getConstructors();
+			final java.lang.reflect.Constructor<?>[] constructors = runtimeResponseClass.getConstructors();
 			if (constructors.length > 0) {
 				try {
 					final Object[] initargs = { this };
@@ -144,7 +145,7 @@ public abstract class Response extends Code {
 			return null;
 		}
 
-		protected java.util.Stack getCurrentStack() {
+		protected java.util.Stack<Item> getCurrentStack() {
 			final edu.cmu.cs.stage3.alice.core.Behavior behavior = getCurrentBehavior();
 			if (behavior != null) {
 				return behavior.getCurrentStack();

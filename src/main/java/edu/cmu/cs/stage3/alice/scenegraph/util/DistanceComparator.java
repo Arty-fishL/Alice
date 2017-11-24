@@ -34,7 +34,7 @@ package edu.cmu.cs.stage3.alice.scenegraph.util;
 
 import javax.vecmath.Point2d;
 
-public class DistanceComparator implements java.util.Comparator {
+public class DistanceComparator implements java.util.Comparator<Object> {
 	public Point2d start = null;
 
 	public DistanceComparator() {

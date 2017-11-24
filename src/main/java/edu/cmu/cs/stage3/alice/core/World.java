@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.core;
 
+import java.util.Vector;
+
 import edu.cmu.cs.stage3.alice.core.event.ChildrenListener;
 import edu.cmu.cs.stage3.alice.core.event.MessageListener;
 import edu.cmu.cs.stage3.alice.core.event.ObjectArrayPropertyListener;
@@ -74,7 +76,7 @@ public class World extends ReferenceFrame {
 	private edu.cmu.cs.stage3.alice.scenegraph.Visual[][] m_collisions = {};
 
 	private final java.util.Vector<Object[]> m_capsulePropertyValuePairs = new java.util.Vector<Object[]>();
-	private final java.util.Hashtable m_capsuleElements = new java.util.Hashtable();
+	private final java.util.Hashtable<Element, Boolean> m_capsuleElements = new java.util.Hashtable<>();
 	private edu.cmu.cs.stage3.alice.scenegraph.renderer.RenderTargetFactory m_renderTargetFactory = null;
 
 	private edu.cmu.cs.stage3.alice.scripting.ScriptingFactory m_scriptingFactory;
@@ -369,7 +371,7 @@ public class World extends ReferenceFrame {
 	}
 
 	@Override
-	protected void internalFindAccessibleExpressions(final Class cls, final java.util.Vector v) {
+	protected void internalFindAccessibleExpressions(final Class<?> cls, final Vector<Expression> v) {
 		for (int i = 0; i < sandboxes.size(); i++) {
 			final Sandbox sandbox = (Sandbox) sandboxes.get(i);
 			for (int j = 0; j < sandbox.variables.size(); j++) {

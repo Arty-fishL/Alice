@@ -51,7 +51,7 @@ import edu.cmu.cs.stage3.math.Vector3;
 
 public class AMCImporter extends AbstractImporter {
 	protected ASFSkeleton skel = null;
-	private static final edu.cmu.cs.stage3.alice.core.World scene = new edu.cmu.cs.stage3.alice.core.World();
+	// Unused ?? private static final edu.cmu.cs.stage3.alice.core.World scene = new edu.cmu.cs.stage3.alice.core.World();
 	protected Model applyTo = null;
 
 	protected double fps = 30;
@@ -64,8 +64,8 @@ public class AMCImporter extends AbstractImporter {
 	}
 
 	@Override
-	public Map getExtensionMap() {
-		final java.util.HashMap map = new java.util.HashMap();
+	public Map<String, String> getExtensionMap() {
+		final java.util.HashMap<String, String> map = new java.util.HashMap<String, String>();
 		map.put("AMC", "Acclaim Motion Capture");
 		return map;
 	}

@@ -239,8 +239,8 @@ public abstract class ForEachElementPanel extends CompositeElementPanel
 
 			@Override
 			public void run(final Object v) {
-				final edu.cmu.cs.stage3.alice.core.Element inputList;
-				final String name;
+				// Unused ?? final edu.cmu.cs.stage3.alice.core.Element inputList;
+				// Unused ?? final String name;
 				if (v instanceof edu.cmu.cs.stage3.alice.core.List) {
 				} else if (v instanceof edu.cmu.cs.stage3.alice.core.Variable) {
 					if (!(((edu.cmu.cs.stage3.alice.core.Variable) v).value
@@ -306,11 +306,11 @@ public abstract class ForEachElementPanel extends CompositeElementPanel
 	private void setVariable() {
 		if (m_each.get() != null && m_list.get() != null) {
 			final edu.cmu.cs.stage3.alice.core.Element l = (edu.cmu.cs.stage3.alice.core.Element) m_list.get();
-			Class valueClass = null;
+			Class<?> valueClass = null;
 			if (l instanceof edu.cmu.cs.stage3.alice.core.List) {
-				valueClass = (Class) ((edu.cmu.cs.stage3.alice.core.List) l).valueClass.get();
+				valueClass = (Class<?>) ((edu.cmu.cs.stage3.alice.core.List) l).valueClass.get();
 			} else if (l instanceof edu.cmu.cs.stage3.alice.core.Variable) {
-				valueClass = (Class) ((edu.cmu.cs.stage3.alice.core.List) ((edu.cmu.cs.stage3.alice.core.Variable) l).value
+				valueClass = (Class<?>) ((edu.cmu.cs.stage3.alice.core.List) ((edu.cmu.cs.stage3.alice.core.Variable) l).value
 						.get()).valueClass.get();
 			}
 			((edu.cmu.cs.stage3.alice.core.Variable) m_each.get()).valueClass.set(valueClass);
@@ -372,11 +372,11 @@ public abstract class ForEachElementPanel extends CompositeElementPanel
 		if (propertyEvent.getProperty() == m_each) {
 			if (m_each.get() != null) {
 				final edu.cmu.cs.stage3.alice.core.Element l = (edu.cmu.cs.stage3.alice.core.Element) m_list.get();
-				Class valueClass = null;
+				Class<?> valueClass = null;
 				if (l instanceof edu.cmu.cs.stage3.alice.core.List) {
-					valueClass = (Class) ((edu.cmu.cs.stage3.alice.core.List) l).valueClass.get();
+					valueClass = (Class<?>) ((edu.cmu.cs.stage3.alice.core.List) l).valueClass.get();
 				} else if (l instanceof edu.cmu.cs.stage3.alice.core.Variable) {
-					valueClass = (Class) ((edu.cmu.cs.stage3.alice.core.List) ((edu.cmu.cs.stage3.alice.core.Variable) l).value
+					valueClass = (Class<?>) ((edu.cmu.cs.stage3.alice.core.List) ((edu.cmu.cs.stage3.alice.core.Variable) l).value
 							.get()).valueClass.get();
 				}
 				((edu.cmu.cs.stage3.alice.core.Variable) m_each.get()).valueClass.set(valueClass);

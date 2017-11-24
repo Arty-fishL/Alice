@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.viewcontroller;
 
+import edu.cmu.cs.stage3.util.StringObjectPair;
+
 /**
  * @author Jason Pratt
  */
@@ -43,7 +45,7 @@ public class VariableDnDPanel extends edu.cmu.cs.stage3.alice.authoringtool.util
 			stopEditing();
 		}
 	};
-	protected java.util.Vector popupStructure = new java.util.Vector();
+	protected java.util.Vector<StringObjectPair> popupStructure = new java.util.Vector<StringObjectPair>();
 	protected NamePropertyListener namePropertyListener = new NamePropertyListener();
 
 	public VariableDnDPanel() {

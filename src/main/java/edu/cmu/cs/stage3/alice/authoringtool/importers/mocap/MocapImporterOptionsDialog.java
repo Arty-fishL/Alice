@@ -45,7 +45,6 @@ import javax.swing.filechooser.FileFilter;
 import com.jamiegl.alicex.ui.JSystemFileChooser;
 
 import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
-import edu.cmu.cs.stage3.alice.authoringtool.importers.mocap.MocapImporterOptionsDialog.ElementOrNullWrapper;
 import edu.cmu.cs.stage3.alice.core.Element;
 import edu.cmu.cs.stage3.alice.core.Sandbox;
 
@@ -100,10 +99,10 @@ public class MocapImporterOptionsDialog extends javax.swing.JDialog {
 	JList<ElementOrNullWrapper> partsList = new JList<ElementOrNullWrapper>();
 	JLabel promptLabel = new JLabel();
 	JScrollPane jScrollPane1 = new JScrollPane();
-	JComboBox nativeFPSCombo = new JComboBox();
+	JComboBox<String> nativeFPSCombo = new JComboBox<>();
 	JLabel jLabel1 = new JLabel();
 	JLabel jLabel2 = new JLabel();
-	JComboBox aliceFPSCombo = new JComboBox();
+	JComboBox<String> aliceFPSCombo = new JComboBox<>();
 	JButton okButton = new JButton();
 	JLabel jLabel3 = new JLabel();
 	JTextField jSkelFile = new JTextField();

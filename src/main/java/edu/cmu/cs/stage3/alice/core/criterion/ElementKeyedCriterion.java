@@ -67,16 +67,16 @@ public class ElementKeyedCriterion implements edu.cmu.cs.stage3.util.Criterion {
 		return getClass().getName() + "[" + m_key + "]";
 	}
 
-	protected static ElementKeyedCriterion valueOf(final String s, final Class cls) {
+	protected static ElementKeyedCriterion valueOf(final String s, final Class<? extends ElementKeyedCriterion> cls) {
 		final String beginMarker = cls.getName() + "[";
 		final String endMarker = "]";
 		final int begin = s.indexOf(beginMarker) + beginMarker.length();
 		final int end = s.lastIndexOf(endMarker);
 		try {
-			final Class[] types = { String.class };
+			final Class<?>[] types = { String.class };
 			final Object[] values = { s.substring(begin, end) };
-			final java.lang.reflect.Constructor constructor = cls.getConstructor(types);
-			return (ElementKeyedCriterion) constructor.newInstance(values);
+			final java.lang.reflect.Constructor<? extends ElementKeyedCriterion> constructor = cls.getConstructor(types);
+			return constructor.newInstance(values);
 		} catch (final Throwable t) {
 			throw new RuntimeException();
 		}

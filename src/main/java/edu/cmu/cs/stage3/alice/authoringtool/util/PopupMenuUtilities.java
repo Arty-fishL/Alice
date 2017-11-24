@@ -157,14 +157,14 @@ public class PopupMenuUtilities {
 		recentlyUsedValues.clear();
 	}
 
-	public static void createAndShowPopupMenu(final Vector<Object> structure, final java.awt.Component component, final int x,
+	public static void createAndShowPopupMenu(final Vector<?> structure, final java.awt.Component component, final int x,
 			final int y) {
 		final javax.swing.JPopupMenu popup = makePopupMenu(structure);
 		popup.show(component, x, y);
 		ensurePopupIsOnScreen(popup);
 	}
 
-	public static JPopupMenu makePopupMenu(final Vector<Object> structure) {
+	public static JPopupMenu makePopupMenu(final Vector<?> structure) {
 		final AliceMenuWithDelayedPopup menu = makeMenu("", structure);
 		if (menu != null) {
 			return menu.getPopupMenu();
@@ -243,7 +243,7 @@ public class PopupMenuUtilities {
 	// }
 	// }
 
-	public static AliceMenuWithDelayedPopup makeMenu(final String title, final Vector<Object> structure) {
+	public static AliceMenuWithDelayedPopup makeMenu(final String title, final Vector<?> structure) {
 		if (structure == null || structure.isEmpty()) {
 			return null;
 		} else {
@@ -254,8 +254,8 @@ public class PopupMenuUtilities {
 		}
 	}
 
-	public static void populateDelayedMenu(final AliceMenuWithDelayedPopup menu, final Vector<Object> structure) {
-		for (final Enumeration<Object> enum0 = structure.elements(); enum0.hasMoreElements();) {
+	public static void populateDelayedMenu(final AliceMenuWithDelayedPopup menu, final Vector<?> structure) {
+		for (final Enumeration<?> enum0 = structure.elements(); enum0.hasMoreElements();) {
 			final Object o = enum0.nextElement();
 			if (!(o instanceof StringObjectPair)) {
 				throw new IllegalArgumentException("structure must be made only of StringObjectPairs, found: " + o);
@@ -2181,7 +2181,7 @@ public class PopupMenuUtilities {
 		}
 		if (edu.cmu.cs.stage3.alice.core.Element.class.isAssignableFrom(list.valueClass.getClassValue())) {
 			// public static Vector<Object> makePropertyValueStructure( final
-			// edu.cmu.cs.stage3.alice.core.Element element, Class valueClass,
+			// edu.cmu.cs.stage3.alice.core.Element element, Class<?> valueClass,
 			// final PopupItemFactory factory,
 			// edu.cmu.cs.stage3.alice.core.Element context ) {
 			// Vector<Object> structure = new Vector<>();

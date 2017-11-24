@@ -24,10 +24,12 @@
 package edu.cmu.cs.stage3.alice.authoringtool.editors.behaviorgroupseditor;
 
 import java.io.Serializable;
+import java.util.Vector;
 
 import javax.swing.ImageIcon;
 
 import edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources;
+import edu.cmu.cs.stage3.util.StringObjectPair;
 
 /**
  * Title: Description: Copyright: Copyright (c) 2001 Company:
@@ -145,8 +147,7 @@ public abstract class BasicBehaviorPanel extends edu.cmu.cs.stage3.alice.authori
 		// edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.MakeCopyRunnable.class
 		// );
 		popupStructure.add(edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.DeleteRunnable.class);
-		@SuppressWarnings("unchecked")
-		final java.util.Vector<Serializable> coerceStructure = edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities
+		final Vector<StringObjectPair> coerceStructure = edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities
 				.makeCoerceToStructure(m_behavior);
 		if (coerceStructure != null && coerceStructure.size() > 0) {
 			popupStructure.add(coerceStructure.elementAt(0));

@@ -82,7 +82,7 @@ class ByteArraySeekablePullSourceStream
 }
 
 class ByteArrayDataSource extends javax.media.protocol.PullDataSource {
-	private static java.util.Dictionary s_extensionToContentTypeMap;
+	// Unused ?? private static java.util.Dictionary<String, String> s_extensionToContentTypeMap;
 	private final byte[] m_data;
 	private final String m_contentType;
 
@@ -138,9 +138,9 @@ class ByteArrayDataSource extends javax.media.protocol.PullDataSource {
 }
 
 public class DataSource extends edu.cmu.cs.stage3.media.AbstractDataSource {
-	private static java.util.Dictionary s_extensionToContentTypeMap = new java.util.Hashtable();
+	private static java.util.Dictionary<String, String> s_extensionToContentTypeMap = new java.util.Hashtable<String, String>();
 	static {
-		s_extensionToContentTypeMap = new java.util.Hashtable();
+		s_extensionToContentTypeMap = new java.util.Hashtable<String, String>();
 		s_extensionToContentTypeMap.put("mp3", "audio.mpeg");
 		s_extensionToContentTypeMap.put("wav", "audio.x_wav");
 	}
@@ -149,7 +149,7 @@ public class DataSource extends edu.cmu.cs.stage3.media.AbstractDataSource {
 
 	public DataSource(final byte[] data, final String extension) {
 		super(extension);
-		final String contentType = (String) s_extensionToContentTypeMap.get(extension.toLowerCase());
+		final String contentType = s_extensionToContentTypeMap.get(extension.toLowerCase());
 		try {
 			m_jmfDataSource = new ByteArrayDataSource(data, contentType);
 		} catch (final Throwable t) {

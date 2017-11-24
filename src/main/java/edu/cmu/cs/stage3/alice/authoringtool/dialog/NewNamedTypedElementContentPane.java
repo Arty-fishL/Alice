@@ -51,7 +51,7 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 	protected javax.swing.JLabel valueLabel;
 	private javax.swing.JComponent valueViewController;
 	public javax.swing.JCheckBox makeCollectionCheckBox;
-	private javax.swing.JComboBox<Class> collectionTypeCombo;
+	private javax.swing.JComboBox<Class<?>> collectionTypeCombo;
 
 	private edu.cmu.cs.stage3.alice.authoringtool.util.ObjectArrayPropertyEditor objectArrayPropertyEditor;
 	private javax.swing.JScrollPane objectArrayScrollPane;
@@ -112,7 +112,7 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 			}
 		});
 
-		collectionTypeCombo = new javax.swing.JComboBox<Class>();
+		collectionTypeCombo = new javax.swing.JComboBox<Class<?>>();
 		collectionTypeCombo.addItem(edu.cmu.cs.stage3.alice.core.List.class);
 		collectionTypeCombo.addItem(edu.cmu.cs.stage3.alice.core.Array.class);
 		collectionTypeCombo.setRenderer(new javax.swing.DefaultListCellRenderer() {
@@ -123,10 +123,10 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 			private static final long serialVersionUID = -2371137427167238607L;
 
 			@Override
-			public java.awt.Component getListCellRendererComponent(final javax.swing.JList list, Object value,
+			public java.awt.Component getListCellRendererComponent(final javax.swing.JList<?> list, Object value,
 					final int index, final boolean isSelected, final boolean cellHasFocus) {
 				if (value instanceof Class) {
-					final String className = ((Class) value).getName();
+					final String className = ((Class<?>) value).getName();
 					value = className.substring(className.lastIndexOf(".") + 1);
 				}
 				return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
@@ -197,8 +197,8 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 	}
 
 	private void updateCollection() {
-		final Class type = m_typeChooser.getType();
-		final Class collectionType = (Class) collectionTypeCombo.getSelectedItem();
+		final Class<?> type = m_typeChooser.getType();
+		final Class<?> collectionType = (Class<?>) collectionTypeCombo.getSelectedItem();
 		edu.cmu.cs.stage3.alice.core.Collection collection = null;
 		if (m_variable.value.get() != null && collectionType.isAssignableFrom(m_variable.value.get().getClass())) {
 			collection = (edu.cmu.cs.stage3.alice.core.Collection) m_variable.value.get();
@@ -232,7 +232,7 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 	}
 
 	private void updateVariableValue() {
-		final Class type = m_typeChooser.getType();
+		final Class<?> type = m_typeChooser.getType();
 		final Object currentValue = m_variable.value.get();
 		if (currentValue == null || !type.isAssignableFrom(currentValue.getClass())) {
 			if (valueViewController instanceof edu.cmu.cs.stage3.alice.authoringtool.viewcontroller.PropertyViewController) {
@@ -373,7 +373,7 @@ public abstract class NewNamedTypedElementContentPane extends NewNamedElementCon
 		return m_variable;
 	}
 
-	public Class getTypeValue() {
+	public Class<?> getTypeValue() {
 		return m_typeChooser.getType();
 	}
 }

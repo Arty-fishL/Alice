@@ -68,12 +68,12 @@ public final class PNGCodec extends ImageCodec {
 	}
 
 	@Override
-	public Class getEncodeParamClass() {
+	public Class<PNGEncodeParam> getEncodeParamClass() {
 		return PNGEncodeParam.class;
 	}
 
 	@Override
-	public Class getDecodeParamClass() {
+	public Class<PNGDecodeParam> getDecodeParamClass() {
 		return PNGDecodeParam.class;
 	}
 

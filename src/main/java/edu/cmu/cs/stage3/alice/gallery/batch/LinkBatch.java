@@ -23,8 +23,12 @@ public abstract class LinkBatch {
 		for (final File fileI : files) {
 			try {
 				final java.io.BufferedReader r = new java.io.BufferedReader(new java.io.FileReader(fileI));
-				final String s = r.readLine();
-				linkHandler.handleLink(fileI, s);
+				try {
+					final String s = r.readLine();
+					linkHandler.handleLink(fileI, s);
+				} finally {
+					r.close();
+				}
 			} catch (final java.io.IOException ioe) {
 				ioe.printStackTrace();
 			}

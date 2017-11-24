@@ -73,7 +73,7 @@ public class ElementPropertyViewController extends PropertyViewController {
 	}
 
 	@Override
-	protected Class getNativeClass() {
+	protected Class<edu.cmu.cs.stage3.alice.core.Element> getNativeClass() {
 		return edu.cmu.cs.stage3.alice.core.Element.class;
 	}
 

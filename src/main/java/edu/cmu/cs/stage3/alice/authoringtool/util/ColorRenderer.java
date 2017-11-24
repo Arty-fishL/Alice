@@ -23,6 +23,7 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+@SuppressWarnings("rawtypes")
 class ColorRenderer extends javax.swing.JLabel implements javax.swing.ListCellRenderer,
 		javax.swing.table.TableCellRenderer, javax.swing.tree.TreeCellRenderer {
 	// TODO: cache icons while paying attention to width and height?

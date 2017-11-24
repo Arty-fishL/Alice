@@ -27,11 +27,11 @@ package edu.cmu.cs.stage3.alice.authoringtool.util;
  * @author Jason Pratt
  */
 public class FormatTokenizer {
-	protected java.util.Iterator tokenIterator;
+	protected java.util.Iterator<String> tokenIterator;
 
 	public FormatTokenizer(String inputString) {
 		if (inputString != null) {
-			final java.util.LinkedList tokens = new java.util.LinkedList();
+			final java.util.LinkedList<String> tokens = new java.util.LinkedList<String>();
 			while (inputString.length() > 0) {
 				if (inputString.startsWith("<<<")) {
 					if (inputString.indexOf(">>>") > 0) {
@@ -83,7 +83,7 @@ public class FormatTokenizer {
 	public String nextToken() {
 		if (tokenIterator != null) {
 			if (tokenIterator.hasNext()) {
-				return (String) tokenIterator.next();
+				return tokenIterator.next();
 			} else {
 				return null;
 			}

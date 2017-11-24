@@ -29,9 +29,9 @@ public class StringTypePair implements java.io.Serializable {
 	 */
 	private static final long serialVersionUID = -8206561114237176303L;
 	private String string;
-	private Class type;
+	private Class<?> type;
 
-	public StringTypePair(final String string, final Class type) {
+	public StringTypePair(final String string, final Class<?> type) {
 		this.string = string;
 		this.type = type;
 	}
@@ -44,11 +44,11 @@ public class StringTypePair implements java.io.Serializable {
 		this.string = string;
 	}
 
-	public Class getType() {
+	public Class<?> getType() {
 		return type;
 	}
 
-	public void setType(final Class type) {
+	public void setType(final Class<?> type) {
 		this.type = type;
 	}
 

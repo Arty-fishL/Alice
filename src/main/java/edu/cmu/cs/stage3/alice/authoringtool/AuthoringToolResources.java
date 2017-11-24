@@ -684,7 +684,7 @@ public class AuthoringToolResources {
 		AuthoringToolResources.resources.classesToOmitNoneFor = classesToOmitNoneFor;
 	}
 
-	// public static boolean shouldGUIOmitNone( Class valueClass ) {
+	// public static boolean shouldGUIOmitNone( Class<?> valueClass ) {
 	// for( int i = 0; i <
 	// AuthoringToolResources.resources.classesToOmitNoneFor.length; i++ ) {
 	// if(

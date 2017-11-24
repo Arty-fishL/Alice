@@ -681,6 +681,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 	/**
 	 * Create a media locator from the given string.
 	 */
+	@SuppressWarnings("unused")
 	static MediaLocator createMediaLocator(final String url) {
 
 		MediaLocator ml;
@@ -700,6 +701,7 @@ public class Cut implements ControllerListener, DataSinkListener {
 			}
 		}
 
+		// Dead code!
 		return null;
 	}
 

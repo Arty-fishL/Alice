@@ -27,7 +27,7 @@ package edu.cmu.cs.stage3.alice.authoringtool.util;
  * @author Jason Pratt
  */
 public interface TypedTableModel extends javax.swing.table.TableModel {
-	public Class getTypeAt(int row, int column);
+	public Class<?> getTypeAt(int row, int column);
 
 	public boolean isNullValidAt(int row, int column);
 }

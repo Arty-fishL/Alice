@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.core.response;
 
+import java.util.Vector;
+
 import edu.cmu.cs.stage3.alice.core.Expression;
 import edu.cmu.cs.stage3.alice.core.Variable;
 import edu.cmu.cs.stage3.alice.core.property.ElementArrayProperty;
@@ -36,7 +38,7 @@ public class UserDefinedResponse extends DoInOrder {
 			Variable[].class);
 
 	@Override
-	protected void internalFindAccessibleExpressions(final Class cls, final java.util.Vector v) {
+	protected void internalFindAccessibleExpressions(final Class<?> cls, final Vector<Expression> v) {
 		for (int i = 0; i < requiredFormalParameters.size(); i++) {
 			internalAddExpressionIfAssignableTo((Expression) requiredFormalParameters.get(i), cls, v);
 		}

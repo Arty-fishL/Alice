@@ -27,7 +27,7 @@ import javax.media.opengl.GL;
 
 public class PickInfo implements edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo {
 	private edu.cmu.cs.stage3.alice.scenegraph.Component m_source;
-	private javax.vecmath.Matrix4d m_projection;
+	// Unused ?? private javax.vecmath.Matrix4d m_projection;
 	private edu.cmu.cs.stage3.alice.scenegraph.Visual[] m_visuals;
 	private boolean[] m_isFrontFacings;
 	private edu.cmu.cs.stage3.alice.scenegraph.Geometry[] m_geometries;
@@ -54,7 +54,7 @@ public class PickInfo implements edu.cmu.cs.stage3.alice.scenegraph.renderer.Pic
 			PickItem(final PickContext context, final java.nio.IntBuffer pickBuffer, final int offset) {
 				final int nameCount = pickBuffer.get(offset + 0);
 				zFront = pickBuffer.get(offset + 1);
-				final int zBack = pickBuffer.get(offset + 2);
+				/* Unused ?? final int zBack = */ pickBuffer.get(offset + 2);
 				if (nameCount == 3) {
 					final VisualProxy visualProxy = context.getPickVisualProxyForName(pickBuffer.get(offset + 3));
 					if (visualProxy != null) {
@@ -74,11 +74,9 @@ public class PickInfo implements edu.cmu.cs.stage3.alice.scenegraph.renderer.Pic
 			offset += 6;
 		}
 
-		java.util.Arrays.sort(pickItems, new java.util.Comparator() {
+		java.util.Arrays.sort(pickItems, new java.util.Comparator<PickItem>() {
 			@Override
-			public int compare(final Object o1, final Object o2) {
-				final PickItem pi1 = (PickItem) o1;
-				final PickItem pi2 = (PickItem) o2;
+			public int compare(final PickItem pi1, final PickItem pi2) {
 				return pi1.zFront - pi2.zFront;
 			}
 

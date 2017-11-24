@@ -3,19 +3,19 @@ package edu.cmu.cs.stage3.alice.gallery.modeleditor;
 import javax.swing.ImageIcon;
 
 class IconManager {
-	private static java.util.Dictionary<Class, ImageIcon> s_classToImageMap = new java.util.Hashtable<Class, ImageIcon>();
+	private static java.util.Dictionary<Class<?>, ImageIcon> s_classToImageMap = new java.util.Hashtable<>();
 	private static javax.swing.ImageIcon m_defaultIcon;
 	private static javax.swing.ImageIcon m_modelIcon;
 	private static javax.swing.ImageIcon m_partIcon;
 	private static javax.swing.ImageIcon m_methodIcon;
-	private static javax.swing.ImageIcon m_questionIcon;
+	// unused ?? private static javax.swing.ImageIcon m_questionIcon;
 	private static javax.swing.ImageIcon m_propertyIcon;
 	static {
 		m_defaultIcon = loadImageFromResource("images/default.gif");
 		m_modelIcon = loadImageFromResource("images/model.png");
 		m_partIcon = loadImageFromResource("images/subpart.gif");
 		m_methodIcon = loadImageFromResource("images/method.png");
-		m_questionIcon = loadImageFromResource("images/question.png");
+		// Unused ?? m_questionIcon = loadImageFromResource("images/question.png");
 		m_propertyIcon = loadImageFromResource("images/property.png");
 		s_classToImageMap.put(edu.cmu.cs.stage3.alice.core.light.AmbientLight.class,
 				loadImageFromResource("images/ambientLight.gif"));

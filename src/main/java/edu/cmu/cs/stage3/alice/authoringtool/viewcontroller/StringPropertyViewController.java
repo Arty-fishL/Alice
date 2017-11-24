@@ -88,7 +88,7 @@ public class StringPropertyViewController extends TextFieldEditablePropertyViewC
 	}
 
 	@Override
-	protected Class getNativeClass() {
+	protected Class<String> getNativeClass() {
 		return String.class;
 	}
 

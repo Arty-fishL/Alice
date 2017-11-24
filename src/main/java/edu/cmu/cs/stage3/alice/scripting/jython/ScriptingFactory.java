@@ -51,21 +51,25 @@ public class ScriptingFactory implements edu.cmu.cs.stage3.alice.scripting.Scrip
 			final java.io.InputStream is = new java.io.FileInputStream(f.getAbsoluteFile());
 			final java.io.BufferedReader br = new java.io.BufferedReader(
 					new java.io.InputStreamReader(new java.io.BufferedInputStream(is)));
-			final StringBuffer sb = new StringBuffer();
-			while (true) {
-				final String s = br.readLine();
-				if (s != null) {
-					sb.append(s);
-					sb.append('\n');
-				} else {
-					break;
+			try {
+				final StringBuffer sb = new StringBuffer();
+				while (true) {
+					final String s = br.readLine();
+					if (s != null) {
+						sb.append(s);
+						sb.append('\n');
+					} else {
+						break;
+					}
 				}
-			}
-			if (sb.length() > 0) {
-				final String script = sb.substring(0, sb.length() - 1);
-				final org.python.core.PyCode code = org.python.core.__builtin__.compile(script,
-						"<jython-2.1/lib/alice/__init__.py>", "exec");
-				org.python.core.Py.exec(code, systemState.builtins, systemState.builtins);
+				if (sb.length() > 0) {
+					final String script = sb.substring(0, sb.length() - 1);
+					final org.python.core.PyCode code = org.python.core.__builtin__.compile(script,
+							"<jython-2.1/lib/alice/__init__.py>", "exec");
+					org.python.core.Py.exec(code, systemState.builtins, systemState.builtins);
+				}
+			} finally {
+				br.close();
 			}
 		} catch (final java.io.IOException ioe) {
 			throw new edu.cmu.cs.stage3.alice.core.ExceptionWrapper(ioe, "IOException attempting to load " + pathname);

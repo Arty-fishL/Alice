@@ -34,7 +34,7 @@ package edu.cmu.cs.stage3.alice.scenegraph.util;
 
 import javax.vecmath.Point2d;
 
-public class PointNode implements Comparable {
+public class PointNode implements Comparable<Object> {
 	public Point2d data = null;
 	public PointNode next = null;
 	public PointNode prev = null;

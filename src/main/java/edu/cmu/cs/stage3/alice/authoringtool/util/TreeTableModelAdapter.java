@@ -94,7 +94,7 @@ public class TreeTableModelAdapter extends AbstractTableModel implements TypedTa
 	}
 
 	@Override
-	public Class getColumnClass(final int column) {
+	public Class<?> getColumnClass(final int column) {
 		return treeTableModel.getColumnClass(column);
 	}
 
@@ -114,7 +114,7 @@ public class TreeTableModelAdapter extends AbstractTableModel implements TypedTa
 	}
 
 	@Override
-	public Class getTypeAt(final int row, final int column) {
+	public Class<?> getTypeAt(final int row, final int column) {
 		return treeTableModel.getTypeAt(nodeForRow(row), column);
 	}
 

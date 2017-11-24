@@ -66,7 +66,7 @@ public interface TreeTableModel extends TreeModel {
 	/**
 	 * Returns the type for column number <code>column</code>.
 	 */
-	public Class getColumnClass(int column);
+	public Class<?> getColumnClass(int column);
 
 	/**
 	 * Returns the value to be displayed for node <code>node</code>, at column
@@ -74,7 +74,7 @@ public interface TreeTableModel extends TreeModel {
 	 */
 	public Object getValueAt(Object node, int column);
 
-	public Class getTypeAt(Object node, int column);
+	public Class<?> getTypeAt(Object node, int column);
 
 	public boolean isNullValidAt(Object node, int column);
 

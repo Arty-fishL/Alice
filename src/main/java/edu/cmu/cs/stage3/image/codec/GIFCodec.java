@@ -64,12 +64,12 @@ public final class GIFCodec extends ImageCodec {
 	}
 
 	@Override
-	public Class getEncodeParamClass() {
+	public Class<Object> getEncodeParamClass() {
 		return Object.class;
 	}
 
 	@Override
-	public Class getDecodeParamClass() {
+	public Class<Object> getDecodeParamClass() {
 		return Object.class;
 	}
 

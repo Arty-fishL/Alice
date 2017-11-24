@@ -28,11 +28,17 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Insets;
+import java.util.HashSet;
+import java.util.Vector;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.TitledBorder;
+
+import edu.cmu.cs.stage3.alice.authoringtool.event.ElementSelectionListener;
+import edu.cmu.cs.stage3.alice.core.Element;
+import edu.cmu.cs.stage3.util.StringObjectPair;
 
 /**
  * @author Jason Pratt
@@ -50,7 +56,7 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 	protected edu.cmu.cs.stage3.alice.core.Element selectedElement;
 	protected edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringtoolConfig;
 	protected java.awt.dnd.DragSource dragSource = new java.awt.dnd.DragSource();
-	protected java.util.HashSet elementSelectionListeners = new java.util.HashSet();
+	protected HashSet<ElementSelectionListener> elementSelectionListeners = new HashSet<>();
 	protected WorldTreeDropTargetListener worldTreeDropTargetListener = new WorldTreeDropTargetListener();
 	protected AuthoringTool authoringTool;
 
@@ -314,7 +320,7 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 			worldTree.setCursorLocation(dtde.getLocation());
 
 			try {
-				final Object o = null;
+				// Unused ?? final Object o = null;
 				if (AuthoringToolResources.safeIsDataFlavorSupported(dtde,
 						AuthoringToolResources.getReferenceFlavorForClass(edu.cmu.cs.stage3.alice.core.Model.class))) {
 					final java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
@@ -362,13 +368,14 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 			dtde.dropComplete(succeeded);
 		}
 
+		@SuppressWarnings("unchecked")
 		private boolean isAcceptableDrop(final edu.cmu.cs.stage3.alice.core.Element parent,
 				final edu.cmu.cs.stage3.alice.core.Element child) {
 			if (parent instanceof edu.cmu.cs.stage3.alice.core.Group) {
 				final edu.cmu.cs.stage3.alice.core.Group group = (edu.cmu.cs.stage3.alice.core.Group) parent;
-				Class childValueClass = child.getClass();
+				Class<? extends Element> childValueClass = child.getClass();
 				if (child instanceof edu.cmu.cs.stage3.alice.core.Expression) {
-					childValueClass = ((edu.cmu.cs.stage3.alice.core.Expression) child).getValueClass();
+					childValueClass = (Class<? extends Element>) ((edu.cmu.cs.stage3.alice.core.Expression) child).getValueClass();
 				}
 				if (!group.valueClass.getClassValue().isAssignableFrom(childValueClass)) {
 					return false;
@@ -564,7 +571,7 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 	// ///////////////////////////
 
 	protected final java.awt.event.MouseListener worldTreeMouseListener = new edu.cmu.cs.stage3.alice.authoringtool.util.CustomMouseAdapter() {
-		protected java.util.Vector defaultStructure;
+		protected Vector<StringObjectPair> defaultStructure;
 
 		@Override
 		protected void popupResponse(final java.awt.event.MouseEvent ev) {
@@ -587,17 +594,17 @@ public class WorldTreeComponent extends javax.swing.JPanel {
 
 		private javax.swing.JPopupMenu createPopup(final edu.cmu.cs.stage3.alice.core.Element element,
 				final javax.swing.tree.TreePath path) {
-			final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities
+			final Vector<?> structure = edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities
 					.getDefaultStructure(element, worldTreeModel.isElementInScope(element), authoringTool, worldTree,
 							path);
 			return edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.makeElementPopupMenu(element,
 					structure);
 		}
 
-		protected java.util.Vector getDefaultStructure() {
+		protected Vector<StringObjectPair> getDefaultStructure() {
 			if (defaultStructure == null) {
-				defaultStructure = new java.util.Vector();
-				defaultStructure.add(new edu.cmu.cs.stage3.util.StringObjectPair("create new group", new Runnable() {
+				defaultStructure = new Vector<StringObjectPair>();
+				defaultStructure.add(new StringObjectPair("create new group", new Runnable() {
 					@Override
 					public void run() {
 						final edu.cmu.cs.stage3.alice.core.Group newGroup = new edu.cmu.cs.stage3.alice.core.Group();

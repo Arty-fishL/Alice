@@ -39,7 +39,7 @@ public class EditorPanel extends javax.swing.JPanel
 	private static final long serialVersionUID = 5756362286458797818L;
 	protected edu.cmu.cs.stage3.alice.authoringtool.Editor activeEditor = null;
 	protected java.lang.reflect.Method activeEditorSetMethod = null;
-	protected java.util.HashMap<Class, Editor> cachedEditors = new java.util.HashMap<Class, Editor>();
+	protected java.util.HashMap<Class<? extends Editor>, Editor> cachedEditors = new java.util.HashMap<>();
 	protected EditStack editStack = new EditStack();
 	protected java.util.HashSet<EditorPanelListener> listenerSet = new java.util.HashSet<EditorPanelListener>();
 	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
@@ -111,7 +111,7 @@ public class EditorPanel extends javax.swing.JPanel
 		listenerSet.remove(listener);
 	}
 
-	public edu.cmu.cs.stage3.alice.authoringtool.Editor loadEditor(final Class editorClass) {
+	public edu.cmu.cs.stage3.alice.authoringtool.Editor loadEditor(final Class<? extends Editor> editorClass) {
 		edu.cmu.cs.stage3.alice.authoringtool.Editor editor = null;
 
 		if (editorClass != null) {
@@ -141,7 +141,7 @@ public class EditorPanel extends javax.swing.JPanel
 		editElement(element, true);
 	}
 
-	public void editElement(final edu.cmu.cs.stage3.alice.core.Element element, final Class editorClass) {
+	public void editElement(final edu.cmu.cs.stage3.alice.core.Element element, final Class<? extends Editor> editorClass) {
 		editElement(element, editorClass, true);
 	}
 
@@ -149,7 +149,7 @@ public class EditorPanel extends javax.swing.JPanel
 		if (element == null) {
 			editElement(null, null, performPush);
 		} else {
-			final Class bestEditorClass = EditorUtilities.getBestEditor(element.getClass());
+			final Class<? extends Editor> bestEditorClass = EditorUtilities.getBestEditor(element.getClass());
 			if (bestEditorClass == null) {
 				edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool
 						.showErrorDialog("No editor found for " + element.getClass(), null);
@@ -158,7 +158,7 @@ public class EditorPanel extends javax.swing.JPanel
 		}
 	}
 
-	protected void editElement(final edu.cmu.cs.stage3.alice.core.Element element, final Class editorClass,
+	protected void editElement(final edu.cmu.cs.stage3.alice.core.Element element, final Class<? extends Editor> editorClass,
 			final boolean performPush) {
 		if (getElementBeingEdited() != null && getElementBeingEdited().getParent() != null) {
 			getElementBeingEdited().getParent().removeChildrenListener(deletionListener);
@@ -287,9 +287,9 @@ public class EditorPanel extends javax.swing.JPanel
 
 	class EditItem implements UndoableRedoable {
 		protected edu.cmu.cs.stage3.alice.core.Element element;
-		protected Class editorClass;
+		protected Class<? extends Editor> editorClass;
 
-		public EditItem(final edu.cmu.cs.stage3.alice.core.Element element, final Class editorClass) {
+		public EditItem(final edu.cmu.cs.stage3.alice.core.Element element, final Class<? extends Editor> editorClass) {
 			this.element = element;
 			this.editorClass = editorClass;
 		}
@@ -316,7 +316,7 @@ public class EditorPanel extends javax.swing.JPanel
 			return element;
 		}
 
-		public Class getEditorClass() {
+		public Class<? extends Editor> getEditorClass() {
 			return editorClass;
 		}
 	}

@@ -30,7 +30,7 @@ import java.lang.reflect.Method;
  */
 public abstract class Spline {
 	private final java.util.TreeSet<Key> keys;
-	private final java.util.Comparator<Object> keyComparator = new java.util.Comparator() {
+	private final java.util.Comparator<Object> keyComparator = new java.util.Comparator<Object>() {
 		@Override
 		public int compare(final Object o1, final Object o2) {
 			if (o1 instanceof Key && o2 instanceof Key) {
@@ -207,7 +207,7 @@ public abstract class Spline {
 		Spline spline = null;
 		java.lang.reflect.Method addKeyMethod = null;
 		try {
-			final Class splineClass = Class.forName(splineTypeBlock.tokenContents);
+			final Class<?> splineClass = Class.forName(splineTypeBlock.tokenContents);
 			spline = (Spline) splineClass.newInstance();
 			addKeyMethod = null;
 			final java.lang.reflect.Method[] methods = splineClass.getMethods();
@@ -242,9 +242,9 @@ public abstract class Spline {
 					.getTokenBlock(typeBlock.tokenEndIndex, keyBlock.tokenContents);
 
 			try {
-				final Class keyClass = Class.forName(typeBlock.tokenContents);
+				final Class<?> keyClass = Class.forName(typeBlock.tokenContents);
 				final java.lang.reflect.Method valueOfMethod = keyClass.getMethod("valueOf",
-						new Class[] { String.class });
+						new Class<?>[] { String.class });
 				final Object key = valueOfMethod.invoke(null, new Object[] { dataBlock.tokenContents });
 				addKeyMethod.invoke(spline, new Object[] { key });
 			} catch (final ClassNotFoundException e) {

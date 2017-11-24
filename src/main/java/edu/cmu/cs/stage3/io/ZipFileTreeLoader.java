@@ -23,6 +23,7 @@
 
 package edu.cmu.cs.stage3.io;
 
+import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 
 /**
@@ -70,7 +71,7 @@ public class ZipFileTreeLoader implements DirectoryTreeLoader {
 		m_currentDirectory = "";
 		m_currentlyOpenStream = null;
 		m_pathnameToZipEntryMap.clear();
-		final java.util.Enumeration enum0 = m_zipFile.entries();
+		final Enumeration<? extends ZipEntry> enum0 = m_zipFile.entries();
 		while (enum0.hasMoreElements()) {
 			final java.util.zip.ZipEntry zipEntry = (java.util.zip.ZipEntry) enum0.nextElement();
 			m_pathnameToZipEntryMap.put(getCanonicalPathname(zipEntry.getName()), zipEntry);

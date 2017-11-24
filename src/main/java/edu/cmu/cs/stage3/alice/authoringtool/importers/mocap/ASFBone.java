@@ -143,6 +143,7 @@ public class ASFBone {
 		name = n;
 	}
 
+	/* Unused ??
 	private IndexedTriangleArray buildUnitCube() {
 
 		final Vertex3d[] vertices = new Vertex3d[24];
@@ -219,6 +220,7 @@ public class ASFBone {
 		ita.vertices.set(vertices);
 		return ita;
 	}
+	*/
 
 	private IndexedTriangleArray buildBoneGeometry(final double width, final double length) {
 		/*
@@ -410,7 +412,7 @@ public class ASFBone {
 		while (li.hasNext()) {
 			child = li.next();
 
-			final Model child_piece = child.buildBone(this);
+			/* Unused ?? final Model child_piece = */ child.buildBone(this);
 		}
 		return model;
 	}
@@ -572,6 +574,7 @@ public class ASFBone {
 		return anim;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void buildPoses(final Model rootMod, final Pose startPose, final Pose endPose) {
 		Key positionKey;
 		Key quaternionKey;
@@ -590,7 +593,7 @@ public class ASFBone {
 				quaternionKey = quaternionSpline.getFirstKey();
 				orientation = (Quaternion) quaternionKey.createSample(quaternionKey.getValueComponents());
 			}
-			((java.util.Hashtable) startPose.poseMap.getDictionaryValue()).put(realMod.getKey(rootMod),
+			((java.util.Hashtable<String, Matrix44>) startPose.poseMap.getDictionaryValue()).put(realMod.getKey(rootMod),
 					new Matrix44(orientation, position));
 
 			if (dof.contains(ASFBone.DOF_TX) || dof.contains(ASFBone.DOF_TY) || dof.contains(ASFBone.DOF_TZ)) {
@@ -602,7 +605,7 @@ public class ASFBone {
 				quaternionKey = quaternionSpline.getLastKey();
 				orientation = (Quaternion) quaternionKey.createSample(quaternionKey.getValueComponents());
 			}
-			((java.util.Hashtable) endPose.poseMap.getDictionaryValue()).put(realMod.getKey(rootMod),
+			((java.util.Hashtable<String, Matrix44>) endPose.poseMap.getDictionaryValue()).put(realMod.getKey(rootMod),
 					new Matrix44(orientation, position));
 		}
 

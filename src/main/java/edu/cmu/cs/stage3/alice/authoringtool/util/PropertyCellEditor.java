@@ -25,7 +25,6 @@ package edu.cmu.cs.stage3.alice.authoringtool.util;
 
 import javax.swing.DefaultCellEditor;
 
-import edu.cmu.cs.stage3.util.Enumerable;
 import edu.cmu.cs.stage3.util.StringObjectPair;
 
 /**
@@ -51,11 +50,11 @@ public class PropertyCellEditor implements javax.swing.table.TableCellEditor, ja
 	// javax.swing.DefaultCellEditor( new javax.swing.JTextField() );
 
 	protected javax.swing.table.TableCellEditor currentEditor = null;
-	protected Class currentValueClass = null;
+	protected Class<?> currentValueClass = null;
 	protected boolean isNullValid;
 	protected javax.swing.event.EventListenerList listenerList = new javax.swing.event.EventListenerList();
 
-	protected java.util.Hashtable<Class, DefaultCellEditor> classesToEditors = new java.util.Hashtable<Class, DefaultCellEditor>();
+	protected java.util.Hashtable<Class<?>, DefaultCellEditor> classesToEditors = new java.util.Hashtable<>();
 	protected edu.cmu.cs.stage3.alice.core.Element element = null;
 
 	public PropertyCellEditor() {
@@ -145,7 +144,7 @@ public class PropertyCellEditor implements javax.swing.table.TableCellEditor, ja
 			final boolean isSelected, final int row, final int column) {
 		// DEBUG System.out.println( "getTableCellEditorComponent" );
 		// DEBUG Thread.dumpStack();
-		Class valueClass = null;
+		Class<?> valueClass = null;
 		final javax.swing.table.TableModel model = table.getModel();
 		if (model instanceof edu.cmu.cs.stage3.alice.authoringtool.util.TypedTableModel) {
 			valueClass = ((edu.cmu.cs.stage3.alice.authoringtool.util.TypedTableModel) model).getTypeAt(row, column);
@@ -176,8 +175,8 @@ public class PropertyCellEditor implements javax.swing.table.TableCellEditor, ja
 		 * editor for class
 		 */
 		if (currentEditor == null) {
-			for (final java.util.Enumeration<Class> enum0 = classesToEditors.keys(); enum0.hasMoreElements();) {
-				final Class editorClass = enum0.nextElement();
+			for (final java.util.Enumeration<Class<?>> enum0 = classesToEditors.keys(); enum0.hasMoreElements();) {
+				final Class<?> editorClass = enum0.nextElement();
 				if (editorClass.isAssignableFrom(valueClass)) {
 					currentEditor = classesToEditors.get(editorClass);
 					break;
@@ -313,7 +312,7 @@ public class PropertyCellEditor implements javax.swing.table.TableCellEditor, ja
 		}
 
 		protected javax.swing.JPopupMenu createPopupMenu() {
-			final java.util.Vector structure = createPopupStructure();
+			final java.util.Vector<StringObjectPair> structure = createPopupStructure();
 			if (structure != null) {
 				return PopupMenuUtilities.makePopupMenu(structure);
 			} else {
@@ -321,8 +320,8 @@ public class PropertyCellEditor implements javax.swing.table.TableCellEditor, ja
 			}
 		}
 
-		protected java.util.Vector createPopupStructure() {
-			final java.util.Vector structure = createExpressionStructure();
+		protected java.util.Vector<StringObjectPair> createPopupStructure() {
+			final java.util.Vector<StringObjectPair> structure = createExpressionStructure();
 			if (structure != null && isNullValid) {
 				if (structure.size() > 0) {
 					structure.insertElementAt(new StringObjectPair("Separator", javax.swing.JSeparator.class), 0);
@@ -333,7 +332,7 @@ public class PropertyCellEditor implements javax.swing.table.TableCellEditor, ja
 			return structure;
 		}
 
-		protected java.util.Vector createExpressionStructure() {
+		protected java.util.Vector<StringObjectPair> createExpressionStructure() {
 			return null;
 			// return PopupMenuUtilities.makeFlatElementStructure(
 			// element.getRoot(), new
@@ -377,17 +376,18 @@ public class PropertyCellEditor implements javax.swing.table.TableCellEditor, ja
 		private static final long serialVersionUID = 3069083595175981898L;
 
 		@Override
-		protected java.util.Vector createPopupStructure() {
-			final java.util.Vector structure = new java.util.Vector();
-			final edu.cmu.cs.stage3.util.Enumerable[] items = edu.cmu.cs.stage3.util.Enumerable
-					.getItems(currentValueClass);
+		protected java.util.Vector<StringObjectPair> createPopupStructure() {
+			final java.util.Vector<StringObjectPair> structure = new java.util.Vector<StringObjectPair>();
+			/* Unused ?? final edu.cmu.cs.stage3.util.Enumerable[] items = */ edu.cmu.cs.stage3.util.Enumerable.getItems(currentValueClass);
+			/* Unused ?? 
 			for (final Enumerable item : items) {
 				// structure.add( new edu.cmu.cs.stage3.util.StringObjectPair(
 				// items[i].getRepr(), objectRunnableFactory.createRunnable(
 				// items[i] ) ) );
 			}
+			*/
 
-			final java.util.Vector expressionStructure = createExpressionStructure();
+			final java.util.Vector<StringObjectPair> expressionStructure = createExpressionStructure();
 			if (expressionStructure != null && expressionStructure.size() > 0) {
 				final String className = currentValueClass.getName();
 				structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Seperator", javax.swing.JSeparator.class));
@@ -440,7 +440,7 @@ public class PropertyCellEditor implements javax.swing.table.TableCellEditor, ja
 		protected javax.swing.JPopupMenu createPopupMenu() {
 			final javax.swing.JMenu menu = new javax.swing.JMenu("");
 
-			final javax.swing.JMenuItem item;
+			// Unused ?? final javax.swing.JMenuItem item;
 
 			/*
 			 * item = new javax.swing.JMenuItem( "white",
@@ -545,7 +545,7 @@ public class PropertyCellEditor implements javax.swing.table.TableCellEditor, ja
 		private static final long serialVersionUID = -1994460893178469405L;
 
 		@Override
-		protected java.util.Vector createPopupStructure() {
+		protected java.util.Vector<StringObjectPair> createPopupStructure() {
 			/*
 			 * if( PropertyCellEditor.this.currentValueClass ==
 			 * edu.cmu.cs.stage3.alice.core.Expression.class ) {
@@ -647,10 +647,12 @@ public class PropertyCellEditor implements javax.swing.table.TableCellEditor, ja
 			// big problems with the whole focus thing
 			// textField.addFocusListener( PropertyCellEditor.this );
 
+			/* Dead code. Comment out for some reason
+			
 			button.addActionListener(new java.awt.event.ActionListener() {
 				@Override
 				public void actionPerformed(final java.awt.event.ActionEvent e) {
-					final java.util.Vector structure = null;
+					final java.util.Vector<?> structure = null;
 					// structure = PopupMenuUtilities.makeFlatElementStructure(
 					// element.getRoot(), new
 					// edu.cmu.cs.stage3.alice.core.criterion.ExpressionIsAssignableToCriterion(
@@ -667,6 +669,8 @@ public class PropertyCellEditor implements javax.swing.table.TableCellEditor, ja
 					}
 				}
 			});
+			
+			*/
 		}
 
 		@Override
@@ -721,8 +725,8 @@ public class PropertyCellEditor implements javax.swing.table.TableCellEditor, ja
 		private static final long serialVersionUID = 5470125846880256878L;
 
 		@Override
-		protected java.util.Vector createPopupStructure() {
-			final java.util.Vector structure = new java.util.Vector();
+		protected java.util.Vector<StringObjectPair> createPopupStructure() {
+			final java.util.Vector<StringObjectPair> structure = new java.util.Vector<StringObjectPair>();
 
 			// structure.add( new edu.cmu.cs.stage3.util.StringObjectPair(
 			// "True", objectRunnableFactory.createRunnable( Boolean.TRUE ) ) );
@@ -730,7 +734,7 @@ public class PropertyCellEditor implements javax.swing.table.TableCellEditor, ja
 			// "False", objectRunnableFactory.createRunnable( Boolean.FALSE ) )
 			// );
 
-			final java.util.Vector expressionStructure = createExpressionStructure();
+			final java.util.Vector<StringObjectPair> expressionStructure = createExpressionStructure();
 			if (expressionStructure != null && expressionStructure.size() > 0) {
 				structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Seperator", javax.swing.JSeparator.class));
 				structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Expressions which evaluate to Boolean",

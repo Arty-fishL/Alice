@@ -36,7 +36,7 @@ public class OverridableElementProperty extends ElementProperty {
 		return m_overrideValueClass;
 	}
 
-	public void setOverrideValueClass(final Class overrideValueClass) {
+	public void setOverrideValueClass(final Class<?> overrideValueClass) {
 		m_overrideValueClass = overrideValueClass;
 	}
 

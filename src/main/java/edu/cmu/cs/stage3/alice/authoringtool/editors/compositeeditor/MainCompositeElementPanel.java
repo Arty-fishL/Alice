@@ -179,12 +179,12 @@ public class MainCompositeElementPanel extends CompositeElementPanel
 	protected String getHeaderHTML() {
 		String htmlToReturn = "<b>" + methodNameLabel.getText() + "</b>&nbsp;(&nbsp;";
 		for (int i = 0; i < requiredParameters.size(); i++) {
-			Class iconClass = ((edu.cmu.cs.stage3.alice.core.Variable) requiredParameters.get(i)).valueClass
+			Class<?> iconClass = ((edu.cmu.cs.stage3.alice.core.Variable) requiredParameters.get(i)).valueClass
 					.getClassValue();
 
 			boolean isList = false;
 			if (edu.cmu.cs.stage3.alice.core.Collection.class.isAssignableFrom(iconClass)) {
-				iconClass = (Class) ((edu.cmu.cs.stage3.alice.core.Collection) ((edu.cmu.cs.stage3.alice.core.Variable) requiredParameters
+				iconClass = (Class<?>) ((edu.cmu.cs.stage3.alice.core.Collection) ((edu.cmu.cs.stage3.alice.core.Variable) requiredParameters
 						.get(i)).getValue()).valueClass.get();
 				isList = true;
 			}
@@ -326,7 +326,7 @@ public class MainCompositeElementPanel extends CompositeElementPanel
 					boolean isList = false;
 					if (edu.cmu.cs.stage3.alice.core.Collection.class
 							.isAssignableFrom(currentVariable.getValueClass())) {
-						className = ((Class) ((edu.cmu.cs.stage3.alice.core.Collection) currentVariable
+						className = ((Class<?>) ((edu.cmu.cs.stage3.alice.core.Collection) currentVariable
 								.getValue()).valueClass.get()).getName();
 						isList = true;
 					}
@@ -416,6 +416,7 @@ public class MainCompositeElementPanel extends CompositeElementPanel
 		}
 	}
 
+	/* Unused ??
 	private void clearReferences(final edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty toClear) {
 		for (int i = 0; i < toClear.size(); i++) {
 			if (toClear.get(i) instanceof edu.cmu.cs.stage3.alice.core.Variable) {
@@ -427,6 +428,7 @@ public class MainCompositeElementPanel extends CompositeElementPanel
 			}
 		}
 	}
+	*/
 
 	protected void buildParameterPanel() {
 		parameterPanel.removeAll();
@@ -442,7 +444,7 @@ public class MainCompositeElementPanel extends CompositeElementPanel
 				String className = currentQuestion.getValueClass().getName();
 				boolean isList = false;
 				if (edu.cmu.cs.stage3.alice.core.Collection.class.isAssignableFrom(currentQuestion.getValueClass())) {
-					className = ((Class) ((edu.cmu.cs.stage3.alice.core.Collection) currentQuestion
+					className = ((Class<?>) ((edu.cmu.cs.stage3.alice.core.Collection) currentQuestion
 							.getValue()).valueClass.get()).getName();
 					isList = true;
 				}
@@ -741,6 +743,7 @@ public class MainCompositeElementPanel extends CompositeElementPanel
 
 	}
 
+	/* Unused ??
 	private void DEBUG_printTree(final java.awt.Container c) {
 		for (int i = 0; i < c.getComponentCount(); i++) {
 			if (c.getComponent(i).getHeight() > 0) {
@@ -763,6 +766,7 @@ public class MainCompositeElementPanel extends CompositeElementPanel
 			}
 		}
 	}
+	*/
 
 	@Override
 	protected void updateGUI() {

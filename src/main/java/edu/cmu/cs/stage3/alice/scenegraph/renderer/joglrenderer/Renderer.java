@@ -94,20 +94,21 @@ public class Renderer extends edu.cmu.cs.stage3.alice.scenegraph.renderer.Abstra
 	private static final String SCENEGRAPH_PACKAGE_NAME = "edu.cmu.cs.stage3.alice.scenegraph.";
 	private static final int SCENEGRAPH_PACKAGE_NAME_COUNT = SCENEGRAPH_PACKAGE_NAME.length();
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected edu.cmu.cs.stage3.alice.scenegraph.renderer.AbstractProxy createProxyFor(
 			final edu.cmu.cs.stage3.alice.scenegraph.Element sgElement) {
-		Class sgClass = sgElement.getClass();
+		Class<? extends edu.cmu.cs.stage3.alice.scenegraph.Element> sgClass = sgElement.getClass();
 		while (sgClass != null) {
 			final String className = sgClass.getName();
 			if (className.startsWith(SCENEGRAPH_PACKAGE_NAME)) {
 				break;
 			} else {
-				sgClass = sgClass.getSuperclass();
+				sgClass = (Class<? extends edu.cmu.cs.stage3.alice.scenegraph.Element>) sgClass.getSuperclass();
 			}
 		}
 		try {
-			final Class proxyClass = Class.forName(
+			final Class<?> proxyClass = Class.forName(
 					RENDERER_PACKAGE_NAME + sgClass.getName().substring(SCENEGRAPH_PACKAGE_NAME_COUNT) + "Proxy");
 			return (edu.cmu.cs.stage3.alice.scenegraph.renderer.AbstractProxy) proxyClass.newInstance();
 		} catch (final ClassNotFoundException cnfe) {

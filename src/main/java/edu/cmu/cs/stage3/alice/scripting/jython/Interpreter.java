@@ -29,7 +29,7 @@ import edu.cmu.cs.stage3.alice.scripting.CompileType;
  * @author Dennis Cosgrove
  */
 public class Interpreter implements edu.cmu.cs.stage3.alice.scripting.Interpreter {
-	static final java.util.Dictionary s_map = new java.util.Hashtable();
+	static final java.util.Dictionary<CompileType, String> s_map = new java.util.Hashtable<CompileType, String>();
 	static {
 		s_map.put(edu.cmu.cs.stage3.alice.scripting.CompileType.EVAL, "eval");
 		s_map.put(edu.cmu.cs.stage3.alice.scripting.CompileType.EXEC_SINGLE, "single");
@@ -37,7 +37,8 @@ public class Interpreter implements edu.cmu.cs.stage3.alice.scripting.Interprete
 	}
 
 	private ScriptingFactory m_scriptingFactory;
-	private final org.python.core.PyModule m_module;
+	@SuppressWarnings("unused")
+	private final org.python.core.PyModule m_module; // unused ??
 	private final Namespace m_dict;
 
 	private edu.cmu.cs.stage3.alice.core.World m_world;
@@ -79,7 +80,7 @@ public class Interpreter implements edu.cmu.cs.stage3.alice.scripting.Interprete
 	public edu.cmu.cs.stage3.alice.scripting.Code compile(final String script, final Object source,
 			final edu.cmu.cs.stage3.alice.scripting.CompileType compileType) {
 		final org.python.core.PyCode pyCode = org.python.core.Py.compile_flags(script, source.toString(),
-				(String) s_map.get(compileType), null);
+				s_map.get(compileType), null);
 		return new Code(pyCode, compileType);
 	}
 

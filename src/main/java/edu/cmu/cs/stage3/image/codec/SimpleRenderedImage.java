@@ -98,10 +98,10 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 	protected ColorModel colorModel = null;
 
 	/** The image's sources, stored in a Vector. */
-	protected Vector sources = new Vector();
+	protected Vector<RenderedImage> sources = new Vector<>(); // unused ?? might not be RenderedImage type
 
 	/** A Hashtable containing the image properties. */
-	protected Hashtable properties = new Hashtable();
+	protected Hashtable<String, Object> properties = new Hashtable<>();
 
 	public SimpleRenderedImage() {
 	}
@@ -281,7 +281,7 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 		final String[] names = new String[properties.size()];
 		int index = 0;
 
-		final Enumeration e = properties.keys();
+		final Enumeration<String> e = properties.keys();
 		while (e.hasMoreElements()) {
 			final String name = (String) e.nextElement();
 			names[index++] = name;
@@ -428,7 +428,7 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 	}
 
 	@Override
-	public Vector getSources() {
+	public Vector<RenderedImage> getSources() {
 		return null;
 	}
 
@@ -548,7 +548,7 @@ public abstract class SimpleRenderedImage implements RenderedImage {
 		for (int j = startY; j <= endY; j++) {
 			for (int i = startX; i <= endX; i++) {
 				tile = getTile(i, j);
-				final Rectangle tileRect = tile.getBounds();
+				// unused ?? final Rectangle tileRect = tile.getBounds();
 				final Rectangle intersectRect = bounds.intersection(tile.getBounds());
 				final Raster liveRaster = tile.createChild(intersectRect.x, intersectRect.y, intersectRect.width,
 						intersectRect.height, intersectRect.x, intersectRect.y, null);

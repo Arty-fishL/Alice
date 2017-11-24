@@ -46,7 +46,7 @@ public class FeedBackEnabledJTree extends javax.swing.JTree {
 		init();
 	}
 
-	public FeedBackEnabledJTree(final Hashtable value) {
+	public FeedBackEnabledJTree(final Hashtable<?, ?> value) {
 		super(value);
 		init();
 	}
@@ -71,7 +71,7 @@ public class FeedBackEnabledJTree extends javax.swing.JTree {
 		init();
 	}
 
-	public FeedBackEnabledJTree(final Vector value) {
+	public FeedBackEnabledJTree(final Vector<?> value) {
 		super(value);
 		init();
 	}

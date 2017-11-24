@@ -35,7 +35,7 @@ public class Return extends Component {
 		if (property == value) {
 			// todo
 		} else if (property == valueClass) {
-			value.setOverrideValueClass((Class) o);
+			value.setOverrideValueClass((Class<?>) o);
 		} else {
 			super.propertyChanged(property, o);
 		}
@@ -43,7 +43,7 @@ public class Return extends Component {
 
 	@Override
 	public Object[] execute() {
-		final Class valueClassValue = valueClass.getClassValue();
+		// Unused ?? final Class<?> valueClassValue = valueClass.getClassValue();
 		final Object[] returnArray = (Object[]) java.lang.reflect.Array.newInstance(valueClass.getClassValue(), 1);
 		returnArray[0] = value.getValue();
 		return returnArray;

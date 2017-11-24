@@ -61,6 +61,9 @@ import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGDecodeParam;
 import com.sun.image.codec.jpeg.JPEGImageDecoder;
 
+// Too much unused shit in this class, suppress all the warnings
+
+@SuppressWarnings("unused")
 public class FPXImage extends SimpleRenderedImage {
 
 	private static final int SUBIMAGE_COLOR_SPACE_COLORLESS = 0;
@@ -652,7 +655,7 @@ public class FPXImage extends SimpleRenderedImage {
 		}
 	}
 
-	Hashtable properties = null;
+	Hashtable<String, Object> properties = null;
 
 	private void addLPSTRProperty(final String name, final PropertySet ps, final int id) {
 		final String s = ps.getLPSTR(id);
@@ -729,7 +732,7 @@ public class FPXImage extends SimpleRenderedImage {
 		if (properties != null) {
 			return;
 		}
-		properties = new Hashtable();
+		properties = new Hashtable<String, Object>();
 
 		getSummaryInformation();
 		getImageInfo();
@@ -744,11 +747,11 @@ public class FPXImage extends SimpleRenderedImage {
 
 		final int len = properties.size();
 		final String[] names = new String[len];
-		final Enumeration enum0 = properties.keys();
+		final Enumeration<String> enum0 = properties.keys();
 
 		int count = 0;
 		while (enum0.hasMoreElements()) {
-			names[count++] = (String) enum0.nextElement();
+			names[count++] = enum0.nextElement();
 		}
 
 		return names;

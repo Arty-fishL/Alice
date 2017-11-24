@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import edu.cmu.cs.stage3.util.StringObjectPair;
+
 /**
  * @author Jason Pratt
  */
@@ -141,7 +143,7 @@ public class StyledStreamTextPane extends javax.swing.JTextPane {
 				}
 			};
 
-			final java.util.Vector structure = new java.util.Vector();
+			final java.util.Vector<StringObjectPair> structure = new java.util.Vector<StringObjectPair>();
 			structure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Clear All", clearAllRunnable));
 
 			return PopupMenuUtilities.makePopupMenu(structure);

@@ -316,6 +316,7 @@ public class RasterFactory {
 	 *             not one of the enumerated datatypes of
 	 *             java.awt.image.DataBuffer.
 	 */
+	@SuppressWarnings("unused")
 	public static WritableRaster createBandedRaster(final int dataType, final int width, final int height,
 			final int scanlineStride, final int bankIndices[], final int bandOffsets[], final Point location) {
 		DataBuffer d;
@@ -325,6 +326,7 @@ public class RasterFactory {
 			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory1"));
 		}
 		if (bandOffsets == null) {
+			// Dead code!
 			throw new IllegalArgumentException(JaiI18N.getString("RasterFactory4"));
 		}
 

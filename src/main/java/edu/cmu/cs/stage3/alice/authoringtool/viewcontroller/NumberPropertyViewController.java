@@ -77,7 +77,7 @@ public class NumberPropertyViewController extends TextFieldEditablePropertyViewC
 	}
 
 	@Override
-	protected Class getNativeClass() {
+	protected Class<Number> getNativeClass() {
 		return Number.class;
 	}
 

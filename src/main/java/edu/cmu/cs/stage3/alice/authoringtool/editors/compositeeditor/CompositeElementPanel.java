@@ -76,7 +76,7 @@ public abstract class CompositeElementPanel extends edu.cmu.cs.stage3.alice.auth
 			if (ev.isPopupTrigger() || System.getProperty("os.name") != null
 					&& !System.getProperty("os.name").startsWith("Windows") && ev.isControlDown()) {
 				if (CompositeElementPanel.this.getParent() != null) {
-					final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities
+					final java.util.Vector<Object> structure = edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities
 							.getDefaultStructure(m_element);
 					if (!ForEachElementPanel.class.isAssignableFrom(CompositeElementPanel.this.getClass())
 							&& !LoopNElementPanel.class.isAssignableFrom(CompositeElementPanel.this.getClass())) {
@@ -521,9 +521,9 @@ public abstract class CompositeElementPanel extends edu.cmu.cs.stage3.alice.auth
 	protected static int getTotalRowsToRenderForIfElse(final edu.cmu.cs.stage3.alice.core.Element ifElse,
 			final edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty components) {
 		int total = 0;
-		final java.util.Vector potentiallyEmpty = new java.util.Vector();
+		final java.util.Vector<Object> potentiallyEmpty = new java.util.Vector<Object>();
 		if (ifElse instanceof edu.cmu.cs.stage3.alice.core.response.IfElseInOrder) {
-			final edu.cmu.cs.stage3.alice.core.response.IfElseInOrder ifElseResponse = (edu.cmu.cs.stage3.alice.core.response.IfElseInOrder) ifElse;
+			// unused ?? final edu.cmu.cs.stage3.alice.core.response.IfElseInOrder ifElseResponse = (edu.cmu.cs.stage3.alice.core.response.IfElseInOrder) ifElse;
 			for (int i = 0; i < components.size(); i++) {
 				if (components.get(i) instanceof edu.cmu.cs.stage3.alice.core.response.CompositeResponse) {
 					final edu.cmu.cs.stage3.alice.core.Element[] ds = ((edu.cmu.cs.stage3.alice.core.Element) components
@@ -550,7 +550,7 @@ public abstract class CompositeElementPanel extends edu.cmu.cs.stage3.alice.auth
 				}
 			}
 		} else if (ifElse instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.IfElse) {
-			final edu.cmu.cs.stage3.alice.core.question.userdefined.IfElse ifElseQuestion = (edu.cmu.cs.stage3.alice.core.question.userdefined.IfElse) ifElse;
+			// Unused ?? final edu.cmu.cs.stage3.alice.core.question.userdefined.IfElse ifElseQuestion = (edu.cmu.cs.stage3.alice.core.question.userdefined.IfElse) ifElse;
 			for (int i = 0; i < components.size(); i++) {
 				total++;
 				if (components.get(i) instanceof edu.cmu.cs.stage3.alice.core.question.userdefined.IfElse) {

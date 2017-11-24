@@ -40,9 +40,9 @@ public class TypeChooser extends javax.swing.JPanel {
 	 *
 	 */
 	private static final long serialVersionUID = 4056975601661381544L;
-	private Class type;
+	private Class<?> type;
 	private final javax.swing.ButtonGroup buttonGroup;
-	private final java.util.HashMap<String, Class> typeMap = new java.util.HashMap<String, Class>();
+	private final java.util.HashMap<String, Class<?>> typeMap = new java.util.HashMap<>();
 	private final java.util.HashSet<ChangeListener> changeListeners = new java.util.HashSet<ChangeListener>();
 	private final JRadioButton numberButton = new JRadioButton("Number");
 	private final JRadioButton booleanButton = new JRadioButton("Boolean");
@@ -138,7 +138,7 @@ public class TypeChooser extends javax.swing.JPanel {
 	protected void parseOtherType() {
 		final String typeString = ((javax.swing.JTextField) otherCombo.getEditor().getEditorComponent()).getText()
 				.trim();
-		Class newType = typeMap.get(typeString);
+		Class<?> newType = typeMap.get(typeString);
 		if (newType == null) {
 			try {
 				newType = Class.forName(typeString);
@@ -164,7 +164,7 @@ public class TypeChooser extends javax.swing.JPanel {
 		okButtonCallback.setValidity(this, type != null);
 	}
 
-	public Class getType() {
+	public Class<?> getType() {
 		return type;
 	}
 

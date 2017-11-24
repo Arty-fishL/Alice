@@ -38,7 +38,7 @@ public class ResponsePrintViewController extends edu.cmu.cs.stage3.alice.authori
 	protected javax.swing.JPanel subPanel = new edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel();
 	protected javax.swing.JLabel printPrefixLabel = new javax.swing.JLabel("Print: ");
 	protected javax.swing.JLabel printSuffixLabel = new javax.swing.JLabel("");
-	protected java.util.HashMap guiMap = new java.util.HashMap();
+	protected java.util.HashMap<?, ?> guiMap = new java.util.HashMap<>(); // Unused ??
 	protected MouseListener mouseListener = new MouseListener();
 	protected edu.cmu.cs.stage3.alice.core.event.PropertyListener commentedListener = new edu.cmu.cs.stage3.alice.core.event.PropertyListener() {
 		@Override
@@ -269,7 +269,7 @@ public class ResponsePrintViewController extends edu.cmu.cs.stage3.alice.authori
 
 		@Override
 		public void popupResponse(final java.awt.event.MouseEvent ev) {
-			final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities
+			final java.util.Vector<?> structure = edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities
 					.getDefaultStructure(printStatement);
 			if (structure != null && !structure.isEmpty()) {
 				edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.createAndShowElementPopupMenu(

@@ -689,7 +689,7 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 	}
 
 	// private static void updateDescendants( java.awt.Component component,
-	// Class cls, java.util.Vector v ) {
+	// Class<?> cls, java.util.Vector v ) {
 	// if( cls.isAssignableFrom( component.getClass() ) ) {
 	// v.addElement( component );
 	// }
@@ -701,7 +701,7 @@ public class StartUpContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 	// }
 	// }
 	// private static java.awt.Component[] getDescendants( java.awt.Container
-	// root, Class cls ) {
+	// root, Class<?> cls ) {
 	// java.util.Vector v = new java.util.Vector();
 	// updateDescendants( root, cls, v );
 	// Object[] array = (Object[])java.lang.reflect.Array.newInstance( cls,

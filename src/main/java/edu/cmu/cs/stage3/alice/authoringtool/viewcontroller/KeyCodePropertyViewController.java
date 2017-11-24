@@ -45,7 +45,7 @@ public class KeyCodePropertyViewController extends PropertyViewController {
 	}
 
 	@Override
-	protected Class getNativeClass() {
+	protected Class<Integer> getNativeClass() {
 		return Integer.class;
 	}
 

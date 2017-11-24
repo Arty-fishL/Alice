@@ -23,6 +23,12 @@
 
 package edu.cmu.cs.stage3.awt;
 
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Insets;
+
 /**
  * @author culyba
  *
@@ -30,23 +36,23 @@ package edu.cmu.cs.stage3.awt;
  *         Window>Preferences>Java>Code Generation>Code and Comments
  */
 
-public class DynamicFlowLayout extends java.awt.FlowLayout {
+public class DynamicFlowLayout extends FlowLayout {
 
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = -7368331511313439427L;
-	private java.awt.Dimension lastPreferredSize;
-	private java.awt.Component anchorComponent;
-	private java.awt.Component ownerComponent;
+	private Dimension lastPreferredSize;
+	private Component anchorComponent;
+	// Unused ?? private Component ownerComponent;
 	private int anchorConstant = 0;
-	private final Class anchorClass;
+	private final Class<? extends Component> anchorClass;
 
-	public DynamicFlowLayout(final int align, final java.awt.Component anchor, final Class anchorClass) {
+	public DynamicFlowLayout(final int align, final Component anchor, final Class<? extends Component> anchorClass) {
 		this(align, anchor, anchorClass, 0);
 	}
 
-	public DynamicFlowLayout(final int align, final java.awt.Component anchor, final Class anchorClass,
+	public DynamicFlowLayout(final int align, final Component anchor, final Class<? extends Component> anchorClass,
 			final int anchorConstant) {
 		super(align);
 		anchorComponent = anchor;
@@ -55,9 +61,9 @@ public class DynamicFlowLayout extends java.awt.FlowLayout {
 	}
 
 	@Override
-	public void layoutContainer(final java.awt.Container target) {
+	public void layoutContainer(final Container target) {
 		synchronized (target.getTreeLock()) {
-			final java.awt.Insets insets = target.getInsets();
+			final Insets insets = target.getInsets();
 			final int hgap = getHgap();
 			final int vgap = getVgap();
 			if (lastPreferredSize == null) {
@@ -71,9 +77,9 @@ public class DynamicFlowLayout extends java.awt.FlowLayout {
 			final boolean ltr = target.getComponentOrientation().isLeftToRight();
 
 			for (int i = 0; i < nmembers; i++) {
-				final java.awt.Component m = target.getComponent(i);
+				final Component m = target.getComponent(i);
 				if (m.isVisible()) {
-					final java.awt.Dimension d = m.getPreferredSize();
+					final Dimension d = m.getPreferredSize();
 					m.setSize(d.width, d.height);
 					if (x == 0 || x + d.width <= maxwidth) {
 						if (x > 0) {
@@ -94,7 +100,7 @@ public class DynamicFlowLayout extends java.awt.FlowLayout {
 		}
 	}
 
-	private void moveComponents(final java.awt.Container target, int x, final int y, final int width, final int height,
+	private void moveComponents(final Container target, int x, final int y, final int width, final int height,
 			final int rowStart, final int rowEnd, final boolean ltr) {
 		synchronized (target.getTreeLock()) {
 			switch (getAlignment()) {
@@ -114,7 +120,7 @@ public class DynamicFlowLayout extends java.awt.FlowLayout {
 				break;
 			}
 			for (int i = rowStart; i < rowEnd; i++) {
-				final java.awt.Component m = target.getComponent(i);
+				final Component m = target.getComponent(i);
 				if (target.isVisible()) {
 					if (ltr) {
 						m.setLocation(x, y + (height - m.getHeight()) / 2);
@@ -128,8 +134,8 @@ public class DynamicFlowLayout extends java.awt.FlowLayout {
 	}
 
 	@Override
-	public java.awt.Dimension preferredLayoutSize(final java.awt.Container target) {
-		final java.awt.Insets insets = target.getInsets();
+	public Dimension preferredLayoutSize(final Container target) {
+		final Insets insets = target.getInsets();
 		final int hgap = getHgap();
 		final int vgap = getVgap();
 		if (anchorComponent == null) {
@@ -145,7 +151,7 @@ public class DynamicFlowLayout extends java.awt.FlowLayout {
 		// hgap*2));
 		// System.out.println(ownerComponent+", "+target);
 		// System.out.println(target.getWidth()+", "+maxwidth);
-		// ownerComponent.setBackground(java.awt.Color.red);
+		// ownerComponent.setBackground(Color.red);
 		final int nmembers = target.getComponentCount();
 		int x = 0, y = insets.top + vgap;
 		int rowh = 0;
@@ -153,9 +159,9 @@ public class DynamicFlowLayout extends java.awt.FlowLayout {
 		if (maxwidth < 0) {
 			maxwidth = 0;
 			for (int i = 0; i < nmembers; i++) {
-				final java.awt.Component m = target.getComponent(i);
+				final Component m = target.getComponent(i);
 				if (m.isVisible()) {
-					final java.awt.Dimension d = m.getPreferredSize();
+					final Dimension d = m.getPreferredSize();
 					y = Math.max(y, d.height);
 					if (d.width > 0 && d.height > 0) {
 						if (maxwidth > 0) {
@@ -166,11 +172,11 @@ public class DynamicFlowLayout extends java.awt.FlowLayout {
 				}
 			}
 		} else {
-			final boolean ltr = target.getComponentOrientation().isLeftToRight();
+			// Unused ?? final boolean ltr = target.getComponentOrientation().isLeftToRight();
 			for (int i = 0; i < nmembers; i++) {
-				final java.awt.Component m = target.getComponent(i);
+				final Component m = target.getComponent(i);
 				if (m.isVisible()) {
-					final java.awt.Dimension d = m.getPreferredSize();
+					final Dimension d = m.getPreferredSize();
 					// System.out.println("on "+m+"\n dimensions: "+d);
 					// System.out.println("x is currently "+x);
 					// // if (d.width > 0 && d.height > 0){
@@ -197,19 +203,19 @@ public class DynamicFlowLayout extends java.awt.FlowLayout {
 				}
 			}
 		}
-		// System.out.println("returning: "+(new java.awt.Dimension(maxwidth,
+		// System.out.println("returning: "+(new Dimension(maxwidth,
 		// y+rowh+vgap)));
 		// System.out.println("DONE GETTING SIZE\n");
-		lastPreferredSize = new java.awt.Dimension(maxwidth, y + rowh + vgap);
+		lastPreferredSize = new Dimension(maxwidth, y + rowh + vgap);
 		return lastPreferredSize;
 	}
 
 	@Override
-	public java.awt.Dimension minimumLayoutSize(final java.awt.Container target) {
+	public Dimension minimumLayoutSize(final Container target) {
 		return preferredLayoutSize(target);
 	}
 
-	private java.awt.Component getAnchor(final java.awt.Component current) {
+	private Component getAnchor(final Component current) {
 		if (current == null || anchorClass.isAssignableFrom(current.getClass())) {
 			return current;
 		} else {

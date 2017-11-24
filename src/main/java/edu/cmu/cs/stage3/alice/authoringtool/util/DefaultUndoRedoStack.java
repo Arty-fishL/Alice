@@ -23,7 +23,9 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
-public class DefaultUndoRedoStack extends java.util.LinkedList implements UndoRedoStack {
+import java.util.ListIterator;
+
+public class DefaultUndoRedoStack extends java.util.LinkedList<UndoableRedoable> implements UndoRedoStack {
 	/**
 	 *
 	 */
@@ -87,7 +89,7 @@ public class DefaultUndoRedoStack extends java.util.LinkedList implements UndoRe
 		}
 
 		UndoableRedoable removedItem = null;
-		final java.util.ListIterator iter = listIterator();
+		final ListIterator<UndoableRedoable> iter = listIterator();
 		while (iter.nextIndex() <= currentIndex) {
 			iter.next();
 		}

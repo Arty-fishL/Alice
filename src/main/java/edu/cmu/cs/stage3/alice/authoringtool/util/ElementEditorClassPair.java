@@ -23,14 +23,16 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import edu.cmu.cs.stage3.alice.authoringtool.Editor;
+
 /**
  * @author Jason Pratt
  */
 public class ElementEditorClassPair {
 	edu.cmu.cs.stage3.alice.core.Element element;
-	Class editorClass;
+	Class<? extends Editor> editorClass;
 
-	public ElementEditorClassPair(final edu.cmu.cs.stage3.alice.core.Element element, final Class editorClass) {
+	public ElementEditorClassPair(final edu.cmu.cs.stage3.alice.core.Element element, final Class<? extends Editor> editorClass) {
 		this.element = element;
 		this.editorClass = editorClass;
 	}
@@ -39,7 +41,7 @@ public class ElementEditorClassPair {
 		return element;
 	}
 
-	public Class getEditorClass() {
+	public Class<? extends Editor> getEditorClass() {
 		return editorClass;
 	}
 }

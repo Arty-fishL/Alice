@@ -28,7 +28,7 @@ import edu.cmu.cs.stage3.util.Enumerable;
 
 public class EnumerableProperty extends ObjectProperty {
 	public EnumerableProperty(final Element owner, final String name, final Enumerable defaultValue,
-			final Class valueClass) {
+			final Class<?> valueClass) {
 		super(owner, name, defaultValue, valueClass);
 	}
 

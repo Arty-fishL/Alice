@@ -32,7 +32,7 @@ public abstract class Enumerable implements java.io.Serializable {
 	private static final long serialVersionUID = -5624399045630086607L;
 	private String m_repr = null;
 
-	public static Enumerable[] getItems(final Class cls) {
+	public static Enumerable[] getItems(final Class<?> cls) {
 		final java.util.Vector<Object> v = new java.util.Vector<Object>();
 		final java.lang.reflect.Field[] fields = cls.getFields();
 		for (final Field field : fields) {
@@ -79,7 +79,7 @@ public abstract class Enumerable implements java.io.Serializable {
 		return getClass().getName() + "[" + getRepr() + "]";
 	}
 
-	protected static Enumerable valueOf(final String s, final Class cls) {
+	protected static Enumerable valueOf(final String s, final Class<?> cls) {
 		final String[] markers = { cls.getName() + "[", "]" };
 		final int begin = s.indexOf(markers[0]) + markers[0].length();
 		final int end = s.indexOf(markers[1]);

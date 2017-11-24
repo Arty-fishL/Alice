@@ -23,6 +23,9 @@
 
 package edu.cmu.cs.stage3.alice.core.question.userdefined;
 
+import java.util.Vector;
+
+import edu.cmu.cs.stage3.alice.core.Expression;
 import edu.cmu.cs.stage3.alice.core.property.ListProperty;
 import edu.cmu.cs.stage3.alice.core.property.VariableProperty;
 
@@ -33,7 +36,7 @@ public class ForEach extends Composite {
 	public final ListProperty list = new ListProperty(this, "list", null);
 
 	@Override
-	protected void internalFindAccessibleExpressions(final Class cls, final java.util.Vector v) {
+	protected void internalFindAccessibleExpressions(final Class<?> cls, final Vector<Expression> v) {
 		internalAddExpressionIfAssignableTo((edu.cmu.cs.stage3.alice.core.Expression) each.get(), cls, v);
 		super.internalFindAccessibleExpressions(cls, v);
 	}

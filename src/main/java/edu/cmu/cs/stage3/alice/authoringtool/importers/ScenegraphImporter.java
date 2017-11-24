@@ -53,8 +53,8 @@ public class ScenegraphImporter extends AbstractImporter {
 	}
 
 	@Override
-	public Map getExtensionMap() {
-		final java.util.HashMap map = new java.util.HashMap();
+	public Map<String, String> getExtensionMap() {
+		final java.util.HashMap<String, String> map = new java.util.HashMap<String, String>();
 		map.put("ASG", "Alice SceneGraph");
 		return map;
 	}

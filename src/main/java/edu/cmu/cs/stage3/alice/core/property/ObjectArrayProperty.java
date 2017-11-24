@@ -35,7 +35,7 @@ public class ObjectArrayProperty extends ObjectProperty {
 	private ObjectArrayPropertyListener[] m_objectArrayPropertyListenerArray = null;
 
 	public ObjectArrayProperty(final Element owner, final String name, final Object[] defaultValue,
-			final Class valueClass) {
+			final Class<?> valueClass) {
 		super(owner, name, defaultValue, valueClass);
 	}
 
@@ -66,11 +66,11 @@ public class ObjectArrayProperty extends ObjectProperty {
 		return m_objectArrayPropertyListenerArray;
 	}
 
-	public Class getComponentType() {
+	public Class<?> getComponentType() {
 		return getValueClass().getComponentType();
 	}
 
-	public void setComponentType(final Class componentType) {
+	public void setComponentType(final Class<?> componentType) {
 		final Object value = get();
 		Object[] prevArray = null;
 		int length = 0;
@@ -107,7 +107,7 @@ public class ObjectArrayProperty extends ObjectProperty {
 			final java.util.Vector<PropertyReference> referencesToBeResolved, final double version) throws java.io.IOException {
 		final String componentTypeName = node.getAttribute("componentClass");
 		try {
-			final Class arrayComponentCls = Class.forName(componentTypeName);
+			final Class<?> arrayComponentCls = Class.forName(componentTypeName);
 			final org.w3c.dom.NodeList itemNodeList = node.getElementsByTagName("item");
 			final Object[] array = (Object[]) java.lang.reflect.Array.newInstance(arrayComponentCls,
 					itemNodeList.getLength());
@@ -117,7 +117,7 @@ public class ObjectArrayProperty extends ObjectProperty {
 				final String criterionTypeName = itemNode.getAttribute("criterionClass");
 				if (criterionTypeName.length() > 0) {
 					try {
-						final Class criterionType = Class.forName(criterionTypeName);
+						final Class<?> criterionType = Class.forName(criterionTypeName);
 						final String text = getNodeText(itemNode);
 						edu.cmu.cs.stage3.util.Criterion criterion;
 						if (criterionType.isAssignableFrom(
@@ -140,7 +140,7 @@ public class ObjectArrayProperty extends ObjectProperty {
 					final String itemTypeName = itemNode.getAttribute("class");
 					if (itemTypeName.length() > 0) {
 						try {
-							final Class itemType = Class.forName(itemTypeName);
+							final Class<?> itemType = Class.forName(itemTypeName);
 							array[i] = getValueOf(itemType, getNodeText(itemNode));
 						} catch (final ClassNotFoundException cnfe) {
 							throw new RuntimeException(itemTypeName);

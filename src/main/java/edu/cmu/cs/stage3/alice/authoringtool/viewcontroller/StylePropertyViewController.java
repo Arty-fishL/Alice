@@ -32,7 +32,7 @@ public class StylePropertyViewController extends PropertyViewController {
 	 */
 	private static final long serialVersionUID = -8817642129015987438L;
 	protected javax.swing.JLabel styleLabel = new javax.swing.JLabel();
-	protected Class valueClass;
+	protected Class<?> valueClass;
 
 	// public StylePropertyViewController() {
 	// this.addMouseListener(
@@ -65,7 +65,7 @@ public class StylePropertyViewController extends PropertyViewController {
 	}
 
 	@Override
-	protected Class getNativeClass() {
+	protected Class<edu.cmu.cs.stage3.alice.core.Style> getNativeClass() {
 		return edu.cmu.cs.stage3.alice.core.Style.class;
 	}
 

@@ -30,7 +30,7 @@ public class StoreElementProgressPane extends edu.cmu.cs.stage3.progress.Progres
 	private static final long serialVersionUID = -5409929642670781075L;
 	private edu.cmu.cs.stage3.alice.core.Element m_element;
 	private java.io.File m_file;
-	private java.util.Dictionary m_filnameToByteArrayMap;
+	private java.util.Dictionary<String, byte[]> m_filnameToByteArrayMap;
 	private boolean m_wasSuccessful = false;
 
 	public StoreElementProgressPane(final String title, final String preDescription) {
@@ -78,7 +78,7 @@ public class StoreElementProgressPane extends edu.cmu.cs.stage3.progress.Progres
 		m_file = file;
 	}
 
-	public void setFilnameToByteArrayMap(final java.util.Dictionary filnameToByteArrayMap) {
+	public void setFilnameToByteArrayMap(final java.util.Dictionary<String, byte[]> filnameToByteArrayMap) {
 		m_filnameToByteArrayMap = filnameToByteArrayMap;
 	}
 }

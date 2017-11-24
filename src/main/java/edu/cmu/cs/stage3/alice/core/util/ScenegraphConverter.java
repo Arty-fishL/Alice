@@ -41,7 +41,7 @@ import edu.cmu.cs.stage3.alice.core.light.SpotLight;
 
 public class ScenegraphConverter {
 	private static edu.cmu.cs.stage3.alice.scenegraph.Component getFirstChildOfClass(
-			final edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer, final Class cls) {
+			final edu.cmu.cs.stage3.alice.scenegraph.Container sgContainer, final Class<?> cls) {
 		for (int i = 0; i < sgContainer.getChildCount(); i++) {
 			final edu.cmu.cs.stage3.alice.scenegraph.Component sgChild = sgContainer.getChildAt(i);
 			if (cls.isAssignableFrom(sgChild.getClass())) {

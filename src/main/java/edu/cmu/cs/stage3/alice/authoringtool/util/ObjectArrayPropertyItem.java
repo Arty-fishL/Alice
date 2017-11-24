@@ -31,11 +31,11 @@ import edu.cmu.cs.stage3.alice.core.event.PropertyListener;
 public class ObjectArrayPropertyItem extends edu.cmu.cs.stage3.alice.core.Property {
 	protected edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty objectArrayProperty;
 	protected int index;
-	protected Class type;
+	protected Class<?> type;
 
 	public ObjectArrayPropertyItem(final edu.cmu.cs.stage3.alice.core.Element element,
 			final edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty objectArrayProperty, final int index,
-			final Class type) {
+			final Class<?> type) {
 		super(element, "item " + index, null, objectArrayProperty.getComponentType());
 		// this.setIsAcceptingOfNull( true );
 		this.objectArrayProperty = objectArrayProperty;
@@ -62,7 +62,7 @@ public class ObjectArrayPropertyItem extends edu.cmu.cs.stage3.alice.core.Proper
 	}
 
 	@Override
-	public Class getValueClass() {
+	public Class<?> getValueClass() {
 		return type;
 	}
 

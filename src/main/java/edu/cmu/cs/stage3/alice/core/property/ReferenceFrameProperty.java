@@ -28,7 +28,7 @@ import edu.cmu.cs.stage3.alice.core.ReferenceFrame;
 
 public class ReferenceFrameProperty extends ElementProperty {
 	protected ReferenceFrameProperty(final Element owner, final String name, final ReferenceFrame defaultValue,
-			final Class valueClass) {
+			final Class<?> valueClass) {
 		super(owner, name, defaultValue, valueClass);
 	}
 

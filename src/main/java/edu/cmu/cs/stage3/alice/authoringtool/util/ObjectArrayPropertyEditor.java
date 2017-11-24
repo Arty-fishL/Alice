@@ -34,7 +34,7 @@ public class ObjectArrayPropertyEditor extends javax.swing.JPanel
 	private static final long serialVersionUID = 4186354765214260042L;
 	protected edu.cmu.cs.stage3.alice.core.property.ObjectArrayProperty objectArrayProperty;
 	protected javax.swing.JButton newItemButton = new javax.swing.JButton("new item");
-	protected Class type = Object.class; // hack
+	protected Class<?> type = Object.class; // hack
 
 	protected int lineLocation = -1;
 	protected int position = 0;
@@ -73,7 +73,7 @@ public class ObjectArrayPropertyEditor extends javax.swing.JPanel
 		refreshGUI();
 	}
 
-	public void setType(final Class type) {
+	public void setType(final Class<?> type) {
 		this.type = type;
 	}
 

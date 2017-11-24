@@ -34,7 +34,7 @@ package edu.cmu.cs.stage3.alice.scenegraph.util;
 
 import javax.vecmath.Point2d;
 
-public class PointComparator implements java.util.Comparator {
+public class PointComparator implements java.util.Comparator<Object> {
 
 	public PointComparator() {
 	}

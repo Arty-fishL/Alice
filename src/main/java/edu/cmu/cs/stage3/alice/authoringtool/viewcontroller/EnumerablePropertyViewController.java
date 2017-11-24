@@ -32,7 +32,7 @@ public class EnumerablePropertyViewController extends PropertyViewController {
 	 */
 	private static final long serialVersionUID = 8000514179799163953L;
 	protected javax.swing.JLabel enumerableLabel = new javax.swing.JLabel();
-	protected Class valueClass;
+	protected Class<?> valueClass;
 
 	// public EnumerablePropertyViewController(
 	// edu.cmu.cs.stage3.alice.core.Property property, boolean allowExpressions,
@@ -68,7 +68,7 @@ public class EnumerablePropertyViewController extends PropertyViewController {
 	}
 
 	@Override
-	protected Class getNativeClass() {
+	protected Class<edu.cmu.cs.stage3.util.Enumerable> getNativeClass() {
 		return edu.cmu.cs.stage3.util.Enumerable.class;
 	}
 

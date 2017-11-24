@@ -75,7 +75,7 @@ public abstract class Sandbox extends Element {
 	}
 
 	@Override
-	protected void internalFindAccessibleExpressions(final Class cls, final java.util.Vector v) {
+	protected void internalFindAccessibleExpressions(final Class<?> cls, final java.util.Vector<Expression> v) {
 		for (int i = 0; i < variables.size(); i++) {
 			internalAddExpressionIfAssignableTo((Expression) variables.get(i), cls, v);
 		}

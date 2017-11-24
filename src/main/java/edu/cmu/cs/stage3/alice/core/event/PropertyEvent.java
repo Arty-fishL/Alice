@@ -44,7 +44,7 @@ public class PropertyEvent extends java.util.EventObject {
 	}
 
 	// todo deprecate?
-	public boolean isSourceAlsoKnownAs(final Class cls, final String name) {
+	public boolean isSourceAlsoKnownAs(final Class<?> cls, final String name) {
 		final edu.cmu.cs.stage3.alice.core.Property property = getProperty();
 		final edu.cmu.cs.stage3.alice.core.Element element = property.getOwner();
 		if (cls.isAssignableFrom(element.getClass())) {

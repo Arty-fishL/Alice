@@ -5,7 +5,7 @@ import edu.cmu.cs.stage3.alice.core.Visualization;
 
 public class VisualizationProperty extends ModelProperty {
 	protected VisualizationProperty(final Element owner, final String name, final Visualization defaultValue,
-			final Class valueClass) {
+			final Class<?> valueClass) {
 		super(owner, name, defaultValue, valueClass);
 	}
 

@@ -28,7 +28,7 @@ import edu.cmu.cs.stage3.alice.core.Response;
 
 public class ResponseProperty extends ElementProperty {
 	protected ResponseProperty(final Element owner, final String name, final Response defaultValue,
-			final Class valueClass) {
+			final Class<?> valueClass) {
 		super(owner, name, defaultValue, valueClass);
 	}
 

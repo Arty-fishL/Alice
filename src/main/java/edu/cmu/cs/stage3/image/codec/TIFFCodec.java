@@ -60,12 +60,12 @@ public final class TIFFCodec extends ImageCodec {
 	}
 
 	@Override
-	public Class getEncodeParamClass() {
+	public Class<TIFFEncodeParam> getEncodeParamClass() {
 		return TIFFEncodeParam.class;
 	}
 
 	@Override
-	public Class getDecodeParamClass() {
+	public Class<TIFFDecodeParam> getDecodeParamClass() {
 		return TIFFDecodeParam.class;
 	}
 

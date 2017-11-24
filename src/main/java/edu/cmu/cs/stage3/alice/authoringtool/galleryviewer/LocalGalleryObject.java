@@ -73,19 +73,22 @@ public class LocalGalleryObject extends GalleryObject {
 				if (imageFilename.indexOf(".a2c") == imageFilename.length() - 4
 						|| imageFilename.indexOf(".a2w") == imageFilename.length() - 4) {
 					final java.util.zip.ZipFile zip = new java.util.zip.ZipFile(imageFilename);
-					final java.util.zip.ZipEntry entry = zip.getEntry(tumbnailFilename);
-					if (entry != null) {
-						final java.io.InputStream stream = zip.getInputStream(entry);
-						final java.awt.Image thumbImage = edu.cmu.cs.stage3.image.ImageIO.load("png", stream);
-						if (thumbImage != null) {
-							toReturn = new javax.swing.ImageIcon(thumbImage);
+					try {
+						final java.util.zip.ZipEntry entry = zip.getEntry(tumbnailFilename);
+						if (entry != null) {
+							final java.io.InputStream stream = zip.getInputStream(entry);
+							final java.awt.Image thumbImage = edu.cmu.cs.stage3.image.ImageIO.load("png", stream);
+							if (thumbImage != null) {
+								toReturn = new javax.swing.ImageIcon(thumbImage);
+							} else {
+								return null;
+							}
 						} else {
 							return null;
 						}
-					} else {
-						return null;
+					} finally {
+						zip.close();
 					}
-					zip.close();
 				} else {
 					toReturn = new javax.swing.ImageIcon(imageFilename);
 				}

@@ -50,12 +50,12 @@ public class ModelWrapper {
 																		// value
 																		// for
 																		// this?
-	protected Hashtable partsTable = new Hashtable();
+	protected Hashtable<String, Model> partsTable = new Hashtable<>();
 	protected java.net.URL url = null; // HACK
 
 	protected Vector<String> propertyNameList = new Vector<String>();
 	protected Vector<String> propertyValueList = new Vector<String>();
-	protected Vector propertyDescList = new Vector();
+	protected Vector<String> propertyDescList = new Vector<String>();
 	protected Vector<ItemChooser> itemChoosersWithAlts = new Vector<ItemChooser>();
 
 	public ModelWrapper(final Node root) {
@@ -135,7 +135,7 @@ public class ModelWrapper {
 	}
 
 	public void resetWorld() {
-		partsTable = new Hashtable();
+		partsTable = new Hashtable<>();
 		textureLayers = new java.awt.Image[10];
 		makeNewPerson();
 	}
@@ -189,6 +189,7 @@ public class ModelWrapper {
 		}
 	}
 
+	/* Unused ??
 	private void initializeModels(final Model part, final String parentName,
 			final edu.cmu.cs.stage3.math.Vector3 position) {
 		// check to see if anything should be parented to this
@@ -197,7 +198,9 @@ public class ModelWrapper {
 			addChildToModel(part, partsToAttach, position);
 		}
 	}
+	*/
 
+	/* Unused ??
 	private Element[] removeModelFromWorld(final Model model) {
 		if (model != null) {
 			final Element[] kids = model.getChildren();
@@ -207,7 +210,9 @@ public class ModelWrapper {
 		}
 		return null;
 	}
+	*/
 
+	/* Unused ??
 	private void removeAllKids(final Model parent) {
 		if (parent.getChildCount() > 0) {
 			final Element[] oldKids = parent.getChildren();
@@ -221,7 +226,9 @@ public class ModelWrapper {
 			}
 		}
 	}
+	*/
 
+	/* Unused ??
 	private void addKidsToModel(final Model newParent, final Element[] kids) {
 		// remove any old kids the newParent might already have
 		removeAllKids(newParent);
@@ -234,7 +241,9 @@ public class ModelWrapper {
 			}
 		}
 	}
+	*/
 
+	/* Unused ??
 	private void addChildToModel(final Model parent, final Model child, final edu.cmu.cs.stage3.math.Vector3 position) {
 		parent.addChild(child);
 		parent.parts.add(child);
@@ -245,6 +254,7 @@ public class ModelWrapper {
 			child.setPositionRightNow(position, parent);
 		}
 	}
+	*/
 
 	private void addModelToWorld(final Model model, final String parent,
 			final edu.cmu.cs.stage3.math.Vector3 position) {
@@ -358,18 +368,20 @@ public class ModelWrapper {
 		person.diffuseColorMap.set(tMap, edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_PARTS);
 	}
 
+	/* Unused ??
 	private void rootModelChanged() {
 		regenerateTexture();
 
 		for (int i = 0; i < propertyNameList.size(); i++) {
 			final String propName = propertyNameList.elementAt(i);
 			final String propValue = propertyValueList.elementAt(i);
-			final String propDesc = (String) propertyDescList.elementAt(i);
+			final String propDesc = propertyDescList.elementAt(i);
 
 			setPropertyValue(propName, propValue, propDesc);
 		}
 
 	}
+	*/
 
 	public String getModelName() {
 		if (person != null) {

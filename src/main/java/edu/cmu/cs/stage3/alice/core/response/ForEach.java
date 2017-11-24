@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.core.response;
 
+import java.util.Vector;
+
 import edu.cmu.cs.stage3.alice.core.Expression;
 import edu.cmu.cs.stage3.alice.core.property.ListProperty;
 import edu.cmu.cs.stage3.alice.core.property.VariableProperty;
@@ -34,7 +36,7 @@ public abstract class ForEach extends DoInOrder {
 	public final ListProperty list = new ListProperty(this, "list", null);
 
 	@Override
-	protected void internalFindAccessibleExpressions(final Class cls, final java.util.Vector v) {
+	protected void internalFindAccessibleExpressions(final Class<?> cls, final Vector<Expression> v) {
 		internalAddExpressionIfAssignableTo((Expression) each.get(), cls, v);
 		super.internalFindAccessibleExpressions(cls, v);
 	}

@@ -29,7 +29,7 @@ import java.util.Set;
  * @author Jason Pratt
  */
 public class GUIFactory {
-	public static java.util.HashMap<Class<? extends GUIElement>, Set> guiCache = new java.util.HashMap<Class<? extends GUIElement>, Set>();
+	public static java.util.HashMap<Class<? extends GUIElement>, Set<GUIElement>> guiCache = new java.util.HashMap<>();
 
 	protected static CollectionEditorPanel collectionEditorPanel;
 
@@ -281,8 +281,8 @@ public class GUIFactory {
 		// }
 	}
 
-	protected static javax.swing.JComponent getOrCreateGUI(final Class guiClass) {
-		final java.util.Set guiSet = guiCache.get(guiClass);
+	protected static javax.swing.JComponent getOrCreateGUI(final Class<? extends GUIElement> guiClass) {
+		final Set<GUIElement> guiSet = guiCache.get(guiClass);
 		if (guiSet != null && !guiSet.isEmpty()) {
 			final javax.swing.JComponent guiElement = (javax.swing.JComponent) guiSet.iterator().next();
 			if (guiElement.getParent() != null) {
@@ -414,7 +414,7 @@ public class GUIFactory {
 			final boolean includeDefaults, boolean allowExpressions, final boolean omitPropertyName,
 			final PopupItemFactory factory) {
 		javax.swing.JComponent viewController = null;
-		final Class desiredValueClass = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+		final Class<?> desiredValueClass = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 				.getDesiredValueClass(property);
 
 		if (property.getName().equals("keyCode") && Integer.class.isAssignableFrom(desiredValueClass)) {
@@ -674,7 +674,7 @@ public class GUIFactory {
 		return panel;
 	}
 
-	public static boolean isOtherDialogSupportedForClass(final Class valueClass) {
+	public static boolean isOtherDialogSupportedForClass(final Class<?> valueClass) {
 		if (Number.class.isAssignableFrom(valueClass)) {
 			return true;
 		} else if (edu.cmu.cs.stage3.alice.core.Style.class.isAssignableFrom(valueClass)) {
@@ -701,7 +701,7 @@ public class GUIFactory {
 	}
 
 	public static void showOtherPropertyDialog(final edu.cmu.cs.stage3.alice.core.Property property,
-			final PopupItemFactory factory, final java.awt.Point location, Class valueClass) {
+			final PopupItemFactory factory, final java.awt.Point location, Class<?> valueClass) {
 		if (valueClass == null) {
 			valueClass = property.getValueClass();
 		}
@@ -774,7 +774,7 @@ public class GUIFactory {
 	}
 
 	// this is not very clean
-	public static void showOtherDialog(final Class valueClass, Object initialValue, final PopupItemFactory factory,
+	public static void showOtherDialog(final Class<?> valueClass, Object initialValue, final PopupItemFactory factory,
 			final edu.cmu.cs.stage3.alice.core.Element anchorForAnonymousItems) {
 		if (initialValue != null && !valueClass.isAssignableFrom(initialValue.getClass())) {
 			initialValue = null;
@@ -846,7 +846,7 @@ public class GUIFactory {
 
 	public static void showScriptDefinedPropertyDialog(final edu.cmu.cs.stage3.alice.core.Property property,
 			final PopupItemFactory factory) {
-		final Class valueClass = property.getValueClass();
+		final Class<?> valueClass = property.getValueClass();
 		String initialValue = "";
 		if (property.get() instanceof edu.cmu.cs.stage3.alice.core.question.AbstractScriptDefinedObject) {
 			initialValue = ((edu.cmu.cs.stage3.alice.core.question.AbstractScriptDefinedObject) property

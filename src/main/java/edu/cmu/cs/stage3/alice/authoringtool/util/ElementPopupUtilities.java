@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import java.util.ListIterator;
+
 import edu.cmu.cs.stage3.alice.core.Element;
 import edu.cmu.cs.stage3.alice.core.Property;
 import edu.cmu.cs.stage3.alice.core.property.ObjectProperty;
@@ -37,7 +39,7 @@ public class ElementPopupUtilities {
 	protected static edu.cmu.cs.stage3.alice.authoringtool.util.Configuration authoringToolConfig = edu.cmu.cs.stage3.alice.authoringtool.util.Configuration
 			.getLocalConfiguration(edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.class.getPackage());
 
-	protected static Class[] elementPopupRunnableParams = new Class[] { edu.cmu.cs.stage3.alice.core.Element.class };
+	protected static Class<?>[] elementPopupRunnableParams = new Class[] { edu.cmu.cs.stage3.alice.core.Element.class };
 	private static Runnable emptyRunnable = new Runnable() {
 		@Override
 		public void run() {
@@ -45,7 +47,7 @@ public class ElementPopupUtilities {
 	};
 
 	public static void createAndShowElementPopupMenu(final edu.cmu.cs.stage3.alice.core.Element element,
-			final java.util.Vector structure, final java.awt.Component component, final int x, final int y) {
+			final java.util.Vector<?> structure, final java.awt.Component component, final int x, final int y) {
 		final javax.swing.JPopupMenu popup = makeElementPopupMenu(element, structure);
 		popup.show(component, x, y);
 		PopupMenuUtilities.ensurePopupIsOnScreen(popup);
@@ -56,12 +58,12 @@ public class ElementPopupUtilities {
 	 */
 	@Deprecated
 	public static javax.swing.JPopupMenu makeElementPopup(final edu.cmu.cs.stage3.alice.core.Element element,
-			final java.util.Vector structure) {
+			final java.util.Vector<Object> structure) {
 		return makeElementPopupMenu(element, structure);
 	}
 
 	public static javax.swing.JPopupMenu makeElementPopupMenu(final edu.cmu.cs.stage3.alice.core.Element element,
-			final java.util.Vector structure) {
+			final java.util.Vector<?> structure) {
 		if (element != null && structure != null) {
 			final Object[] initArgs = new Object[] { element };
 			substituteRunnables(initArgs, structure);
@@ -71,12 +73,13 @@ public class ElementPopupUtilities {
 		}
 	}
 
-	public static void substituteRunnables(final Object[] initArgs, final java.util.Vector structure) {
-		for (final java.util.ListIterator iter = structure.listIterator(); iter.hasNext();) {
+	@SuppressWarnings("unchecked")
+	public static void substituteRunnables(final Object[] initArgs, final java.util.Vector<?> structure) {
+		for (final java.util.ListIterator<Object> iter = (ListIterator<Object>) structure.listIterator(); iter.hasNext();) {
 			final Object o = iter.next();
-			if (o instanceof Class && ElementPopupRunnable.class.isAssignableFrom((Class) o)) {
+			if (o instanceof Class && ElementPopupRunnable.class.isAssignableFrom((Class<?>) o)) {
 				try {
-					final ElementPopupRunnable r = (ElementPopupRunnable) ((Class) o)
+					final ElementPopupRunnable r = (ElementPopupRunnable) ((Class<?>) o)
 							.getConstructor(elementPopupRunnableParams).newInstance(initArgs);
 					final edu.cmu.cs.stage3.util.StringObjectPair newPair = new edu.cmu.cs.stage3.util.StringObjectPair(
 							r.getDefaultLabel(), r);
@@ -98,10 +101,10 @@ public class ElementPopupUtilities {
 			} else if (o instanceof edu.cmu.cs.stage3.util.StringObjectPair) {
 				final edu.cmu.cs.stage3.util.StringObjectPair pair = (edu.cmu.cs.stage3.util.StringObjectPair) o;
 				if (pair.getObject() instanceof Class
-						&& ElementPopupRunnable.class.isAssignableFrom((Class) pair.getObject())) {
+						&& ElementPopupRunnable.class.isAssignableFrom((Class<?>) pair.getObject())) {
 					try {
 						final edu.cmu.cs.stage3.util.StringObjectPair newPair = new edu.cmu.cs.stage3.util.StringObjectPair(
-								pair.getString(), ((Class) pair.getObject()).getConstructor(elementPopupRunnableParams)
+								pair.getString(), ((Class<?>) pair.getObject()).getConstructor(elementPopupRunnableParams)
 										.newInstance(initArgs));
 						iter.set(newPair);
 						// pair.setObject(
@@ -118,20 +121,20 @@ public class ElementPopupUtilities {
 						edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool.showErrorDialog("Error building popup.", e);
 					}
 				} else if (pair.getObject() instanceof java.util.Vector) {
-					substituteRunnables(initArgs, (java.util.Vector) pair.getObject());
+					substituteRunnables(initArgs, (java.util.Vector<Object>) pair.getObject());
 				}
 			}
 		}
 	}
 
-	public static java.util.Vector makeCoerceToStructure(final edu.cmu.cs.stage3.alice.core.Element element) {
+	public static java.util.Vector<StringObjectPair> makeCoerceToStructure(final edu.cmu.cs.stage3.alice.core.Element element) {
 		if (element != null && element.isCoercionSupported()) {
-			final java.util.Vector structure = new java.util.Vector();
+			final java.util.Vector<StringObjectPair> structure = new java.util.Vector<StringObjectPair>();
 			final java.util.Vector<StringObjectPair> subStructure = new java.util.Vector<StringObjectPair>();
 
-			final Class[] classes = element.getSupportedCoercionClasses();
+			final Class<?>[] classes = element.getSupportedCoercionClasses();
 			if (classes != null) {
-				for (final Class c : classes) {
+				for (final Class<?> c : classes) {
 					if (element instanceof edu.cmu.cs.stage3.alice.core.response.TurnAnimation) {
 						final edu.cmu.cs.stage3.alice.core.response.TurnAnimation turnAnimation = (edu.cmu.cs.stage3.alice.core.response.TurnAnimation) element;
 						if (turnAnimation.direction.get() == edu.cmu.cs.stage3.alice.core.Direction.FORWARD
@@ -166,11 +169,11 @@ public class ElementPopupUtilities {
 		return null;
 	}
 
-	public static java.util.Vector getDefaultStructure(final edu.cmu.cs.stage3.alice.core.Element element) {
+	public static java.util.Vector<Object> getDefaultStructure(final edu.cmu.cs.stage3.alice.core.Element element) {
 		return getDefaultStructure(element, true, null, null, null);
 	}
 
-	public static java.util.Vector getDefaultStructure(final edu.cmu.cs.stage3.alice.core.Element element,
+	public static java.util.Vector<Object> getDefaultStructure(final edu.cmu.cs.stage3.alice.core.Element element,
 			final boolean elementEnabled, final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool,
 			final javax.swing.JTree jtree, final javax.swing.tree.TreePath treePath) {
 		if (element instanceof edu.cmu.cs.stage3.alice.core.Response) {
@@ -188,10 +191,10 @@ public class ElementPopupUtilities {
 		}
 	}
 
-	public static java.util.Vector getDefaultCharacterStructure(final edu.cmu.cs.stage3.alice.core.Element element,
+	public static java.util.Vector<Object> getDefaultCharacterStructure(final edu.cmu.cs.stage3.alice.core.Element element,
 			final boolean elementEnabled, final edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool,
 			final javax.swing.JTree jtree, final javax.swing.tree.TreePath treePath) {
-		final java.util.Vector popupStructure = new java.util.Vector();
+		final java.util.Vector<Object> popupStructure = new java.util.Vector<Object>();
 		popupStructure.add(new edu.cmu.cs.stage3.util.StringObjectPair(
 				edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(element), null));
 		popupStructure.add(new edu.cmu.cs.stage3.util.StringObjectPair("separator", javax.swing.JSeparator.class));
@@ -241,18 +244,18 @@ public class ElementPopupUtilities {
 		return popupStructure;
 	}
 
-	public static java.util.Vector getDefaultWorldStructure(final edu.cmu.cs.stage3.alice.core.World world) {
-		final java.util.Vector popupStructure = new java.util.Vector();
+	public static java.util.Vector<Object> getDefaultWorldStructure(final edu.cmu.cs.stage3.alice.core.World world) {
+		final java.util.Vector<Object> popupStructure = new java.util.Vector<Object>();
 		popupStructure.add(EditScriptRunnable.class);
 		return popupStructure;
 	}
 
-	public static java.util.Vector getDefaultResponseStructure(final edu.cmu.cs.stage3.alice.core.Response response) {
-		final java.util.Vector structure = new java.util.Vector();
+	public static java.util.Vector<Object> getDefaultResponseStructure(final edu.cmu.cs.stage3.alice.core.Response response) {
+		final java.util.Vector<Object> structure = new java.util.Vector<Object>();
 		structure.add(MakeCopyRunnable.class);
 		structure.add(DeleteRunnable.class);
 		structure.add(ToggleCommentingRunnable.class);
-		final java.util.Vector coerceToStructure = makeCoerceToStructure(response);
+		final java.util.Vector<StringObjectPair> coerceToStructure = makeCoerceToStructure(response);
 		if (coerceToStructure != null) {
 			structure.addAll(coerceToStructure);
 		}
@@ -260,12 +263,12 @@ public class ElementPopupUtilities {
 		return structure;
 	}
 
-	public static java.util.Vector getDefaultQuestionStructure(final edu.cmu.cs.stage3.alice.core.Question question) {
-		final java.util.Vector structure = new java.util.Vector();
+	public static java.util.Vector<Object> getDefaultQuestionStructure(final edu.cmu.cs.stage3.alice.core.Question question) {
+		final java.util.Vector<Object> structure = new java.util.Vector<Object>();
 		// structure.add( MakeCopyRunnable.class );
 		structure.add(DeleteRunnable.class);
 		// structure.add( ToggleCommentingRunnable.class );
-		final java.util.Vector coerceToStructure = makeCoerceToStructure(question);
+		final java.util.Vector<StringObjectPair> coerceToStructure = makeCoerceToStructure(question);
 		if (coerceToStructure != null) {
 			structure.addAll(coerceToStructure);
 		}
@@ -273,9 +276,9 @@ public class ElementPopupUtilities {
 		return structure;
 	}
 
-	public static java.util.Vector getDefaultGroupStructure(final edu.cmu.cs.stage3.alice.core.Group group,
+	public static java.util.Vector<Object> getDefaultGroupStructure(final edu.cmu.cs.stage3.alice.core.Group group,
 			final javax.swing.JTree jtree, final javax.swing.tree.TreePath treePath) {
-		final java.util.Vector structure = new java.util.Vector();
+		final java.util.Vector<Object> structure = new java.util.Vector<Object>();
 
 		structure.add(new edu.cmu.cs.stage3.util.StringObjectPair(
 				edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getReprForValue(group), emptyRunnable));
@@ -290,9 +293,9 @@ public class ElementPopupUtilities {
 		return structure;
 	}
 
-	public static java.util.Vector getDefaultElementStructure(final edu.cmu.cs.stage3.alice.core.Element element,
+	public static java.util.Vector<Object> getDefaultElementStructure(final edu.cmu.cs.stage3.alice.core.Element element,
 			final javax.swing.JTree jtree, final javax.swing.tree.TreePath treePath) {
-		final java.util.Vector structure = new java.util.Vector();
+		final java.util.Vector<Object> structure = new java.util.Vector<Object>();
 		if (jtree != null && treePath != null) {
 			final Runnable renameRunnable = new RenameRunnable(element, jtree, treePath);
 			structure.add(renameRunnable);
@@ -689,7 +692,7 @@ public class ElementPopupUtilities {
 	}
 
 	public static class MakeSharedCopyRunnable extends ElementPopupRunnable {
-		protected Class[] classesToShare = { edu.cmu.cs.stage3.alice.core.Geometry.class,
+		protected Class<?>[] classesToShare = { edu.cmu.cs.stage3.alice.core.Geometry.class,
 				edu.cmu.cs.stage3.alice.core.Sound.class, edu.cmu.cs.stage3.alice.core.TextureMap.class };
 
 		public MakeSharedCopyRunnable(final edu.cmu.cs.stage3.alice.core.Element element) {
@@ -1005,7 +1008,7 @@ public class ElementPopupUtilities {
 	}
 
 	public static class SortGroupAlphabeticallyRunnable extends ElementPopupRunnable {
-		protected java.util.Comparator<Object> sorter = new java.util.Comparator() {
+		protected java.util.Comparator<Object> sorter = new java.util.Comparator<Object>() {
 			@Override
 			public int compare(final Object o1, final Object o2) {
 				if (o1 instanceof edu.cmu.cs.stage3.alice.core.Element

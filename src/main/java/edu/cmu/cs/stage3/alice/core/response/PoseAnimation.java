@@ -23,6 +23,11 @@
 
 package edu.cmu.cs.stage3.alice.core.response;
 
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
+
 import edu.cmu.cs.stage3.alice.core.Transformable;
 import edu.cmu.cs.stage3.math.Quaternion;
 import edu.cmu.cs.stage3.math.Vector3;
@@ -59,23 +64,23 @@ public class PoseAnimation extends Animation {
 	public class RuntimePoseAnimation extends RuntimeAnimation {
 		protected edu.cmu.cs.stage3.alice.core.Transformable subject;
 		protected edu.cmu.cs.stage3.alice.core.Pose pose;
-		protected java.util.Dictionary poseStringMap;
-		protected java.util.Vector<Transformable> transformableKeys = new java.util.Vector<Transformable>();
-		protected java.util.Dictionary poseTransformableMap = new java.util.Hashtable();
-		protected java.util.Dictionary<Transformable, Vector3> sourcePositionMap = new java.util.Hashtable<Transformable, Vector3>();
-		protected java.util.Dictionary<Transformable, Vector3> targetPositionMap = new java.util.Hashtable<Transformable, Vector3>();
-		protected java.util.Dictionary<Transformable, Quaternion> sourceQuaternionMap = new java.util.Hashtable<Transformable, Quaternion>();
-		protected java.util.Dictionary<Transformable, Quaternion> targetQuaternionMap = new java.util.Hashtable<Transformable, Quaternion>();
-		protected java.util.Dictionary sourceScaleMap = new java.util.Hashtable();
-		protected java.util.Dictionary targetScaleMap = new java.util.Hashtable();
+		protected Dictionary<edu.cmu.cs.stage3.alice.core.Pose, String> poseStringMap;
+		protected Vector<Transformable> transformableKeys = new Vector<Transformable>();
+		protected Dictionary<edu.cmu.cs.stage3.alice.core.Pose, Transformable> poseTransformableMap = new Hashtable<>();
+		protected Dictionary<Transformable, Vector3> sourcePositionMap = new Hashtable<Transformable, Vector3>();
+		protected Dictionary<Transformable, Vector3> targetPositionMap = new Hashtable<Transformable, Vector3>();
+		protected Dictionary<Transformable, Quaternion> sourceQuaternionMap = new Hashtable<Transformable, Quaternion>();
+		protected Dictionary<Transformable, Quaternion> targetQuaternionMap = new Hashtable<Transformable, Quaternion>();
+		protected Dictionary<?, ?> sourceScaleMap = new Hashtable<Object, Object>(); // Unused ??
+		protected Dictionary<?, ?> targetScaleMap = new Hashtable<Object, Object>(); // Unused ??
 
 		@Override
 		public void prologue(final double t) {
 			super.prologue(t);
 			subject = PoseAnimation.this.subject.getTransformableValue();
 			pose = PoseAnimation.this.pose.getPoseValue();
-			final java.util.Dictionary poseStringMap = pose.poseMap.getDictionaryValue();
-			for (final java.util.Enumeration enum0 = poseStringMap.keys(); enum0.hasMoreElements();) {
+			final Dictionary<?, ?> poseStringMap = pose.poseMap.getDictionaryValue();
+			for (final Enumeration<?> enum0 = poseStringMap.keys(); enum0.hasMoreElements();) {
 				final String stringKey = (String) enum0.nextElement();
 				final edu.cmu.cs.stage3.alice.core.Transformable key = (edu.cmu.cs.stage3.alice.core.Transformable) subject
 						.getDescendantKeyed(stringKey);
@@ -97,7 +102,7 @@ public class PoseAnimation extends Animation {
 		public void update(final double t) {
 			super.update(t);
 			final double portion = getPortion(t);
-			for (final java.util.Enumeration<Transformable> enum0 = transformableKeys.elements(); enum0.hasMoreElements();) {
+			for (final Enumeration<Transformable> enum0 = transformableKeys.elements(); enum0.hasMoreElements();) {
 				final edu.cmu.cs.stage3.alice.core.Transformable key = enum0
 						.nextElement();
 
@@ -123,8 +128,8 @@ public class PoseAnimation extends Animation {
 		/*
 		 * private edu.cmu.cs.stage3.alice.core.Transformable
 		 * getDescendantFromKey( edu.cmu.cs.stage3.alice.core.Transformable
-		 * subject, String relativeKey ) { java.util.StringTokenizer tokenizer =
-		 * new java.util.StringTokenizer( relativeKey, ".", false ); while(
+		 * subject, String relativeKey ) { StringTokenizer tokenizer =
+		 * new StringTokenizer( relativeKey, ".", false ); while(
 		 * tokenizer.hasMoreTokens() ) { subject =
 		 * (edu.cmu.cs.stage3.alice.core.Transformable)subject.getChildNamed(
 		 * tokenizer.nextToken() ); } return subject; }

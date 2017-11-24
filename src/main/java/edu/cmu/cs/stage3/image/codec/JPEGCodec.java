@@ -64,12 +64,12 @@ public final class JPEGCodec extends ImageCodec {
 	}
 
 	@Override
-	public Class getEncodeParamClass() {
+	public Class<JPEGEncodeParam> getEncodeParamClass() {
 		return JPEGEncodeParam.class;
 	}
 
 	@Override
-	public Class getDecodeParamClass() {
+	public Class<Object> getDecodeParamClass() {
 		return Object.class;
 	}
 

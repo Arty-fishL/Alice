@@ -336,8 +336,8 @@ public class WorldTreeModel extends TreeModelSupport
 														// objectArrayProperty
 					startListeningToTree(element);
 
-					final int[] childIndices = { getIndexOfChild(parent, element) };
-					final Object[] children = { element };
+					/* Unused ?? final int[] childIndices = { */ getIndexOfChild(parent, element); /* }; */
+					// Unused ?? final Object[] children = { element };
 
 					// javax.swing.event.TreeModelEvent tmev = new
 					// javax.swing.event.TreeModelEvent( this, path,
@@ -457,12 +457,12 @@ public class WorldTreeModel extends TreeModelSupport
 	 * @returns the depth of the class hierarchy between the given superclass
 	 *          and subclass
 	 */
-	protected static int getClassDepth(final Class superclass, final Class subclass) {
+	protected static int getClassDepth(final Class<?> superclass, final Class<?> subclass) {
 		if (!superclass.isAssignableFrom(subclass)) {
 			return -1;
 		}
 
-		Class temp = subclass;
+		Class<?> temp = subclass;
 		int i = 0;
 		while (temp != superclass && superclass.isAssignableFrom(temp)) {
 			i++;

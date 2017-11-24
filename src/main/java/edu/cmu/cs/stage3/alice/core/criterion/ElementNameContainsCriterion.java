@@ -75,7 +75,7 @@ public class ElementNameContainsCriterion implements edu.cmu.cs.stage3.util.Crit
 		final int begin = s.indexOf(beginMarker) + beginMarker.length();
 		final int end = s.lastIndexOf(endMarker);
 		try {
-			final Class[] types = { String.class };
+			final Class<?>[] types = { String.class };
 			final Object[] values = { s.substring(begin, end) };
 			final java.lang.reflect.Constructor<ElementNameContainsCriterion> constructor = cls.getConstructor(types);
 			return constructor.newInstance(values);

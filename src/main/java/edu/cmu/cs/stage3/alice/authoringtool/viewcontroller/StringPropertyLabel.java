@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.viewcontroller;
 
+import edu.cmu.cs.stage3.alice.core.Element;
+
 /**
  * @author Jason Pratt
  */
@@ -36,6 +38,7 @@ public class StringPropertyLabel extends PropertyLabel {
 		super(property);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void update() {
 		String propertyName = ((edu.cmu.cs.stage3.alice.core.property.StringProperty) property).getStringValue();
@@ -44,7 +47,7 @@ public class StringPropertyLabel extends PropertyLabel {
 			final edu.cmu.cs.stage3.alice.core.Element element = ((edu.cmu.cs.stage3.alice.core.response.PropertyAnimation) property
 					.getOwner()).element.getElementValue();
 			if (element != null) {
-				Class elementClass = element.getClass();
+				Class<? extends Element> elementClass = element.getClass();
 				while (edu.cmu.cs.stage3.alice.core.Element.class.isAssignableFrom(elementClass)) {
 					final String propertyKey = elementClass.getName() + "." + propertyName;
 					if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getName(propertyKey) != null) {
@@ -52,7 +55,7 @@ public class StringPropertyLabel extends PropertyLabel {
 								.getName(propertyKey);
 						break;
 					}
-					elementClass = elementClass.getSuperclass();
+					elementClass = (Class<? extends Element>) elementClass.getSuperclass();
 				}
 			}
 		}

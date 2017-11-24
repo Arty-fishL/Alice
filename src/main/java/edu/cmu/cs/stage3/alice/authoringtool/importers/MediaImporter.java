@@ -29,7 +29,7 @@ package edu.cmu.cs.stage3.alice.authoringtool.importers;
 public class MediaImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractImporter {
 
 	@Override
-	public java.util.Map getExtensionMap() {
+	public java.util.Map<String, String> getExtensionMap() {
 		// java.util.HashMap knownCodecPrettyNames = new java.util.HashMap();
 		// knownCodecPrettyNames.put( "AUDIO.XMP3", "Mpeg layer 3" );
 		// knownCodecPrettyNames.put( "AUDIO.XWAV", "Windows sound" );
@@ -57,7 +57,7 @@ public class MediaImporter extends edu.cmu.cs.stage3.alice.authoringtool.Abstrac
 		// }
 		//
 		// return map;
-		final java.util.HashMap map = new java.util.HashMap();
+		final java.util.HashMap<String, String> map = new java.util.HashMap<String, String>();
 		map.put("WAV", "Windows sound");
 		map.put("MP3", "Mpeg layer 3");
 		return map;

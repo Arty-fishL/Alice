@@ -28,7 +28,7 @@ import edu.cmu.cs.stage3.alice.core.Transformable;
 
 public class TransformableProperty extends ReferenceFrameProperty {
 	protected TransformableProperty(final Element owner, final String name, final Transformable defaultValue,
-			final Class valueClass) {
+			final Class<?> valueClass) {
 		super(owner, name, defaultValue, valueClass);
 	}
 

@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.viewcontroller;
 
+import edu.cmu.cs.stage3.util.StringObjectPair;
+
 /**
  * @author Jason Pratt
  */
@@ -35,7 +37,7 @@ public class PropertyDnDPanel extends edu.cmu.cs.stage3.alice.authoringtool.util
 	protected edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool authoringTool;
 	protected edu.cmu.cs.stage3.alice.core.Property property;
 	protected javax.swing.JLabel nameLabel = new javax.swing.JLabel();
-	protected java.util.Vector popupStructure = new java.util.Vector();
+	protected java.util.Vector<StringObjectPair> popupStructure = new java.util.Vector<StringObjectPair>();
 
 	public PropertyDnDPanel() {
 		setBackground(edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.getColor("propertyDnDPanel"));

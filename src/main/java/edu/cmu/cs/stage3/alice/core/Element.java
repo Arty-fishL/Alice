@@ -24,7 +24,10 @@
 package edu.cmu.cs.stage3.alice.core;
 
 import java.lang.reflect.Field;
+import java.util.Dictionary;
 import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
 
 import edu.cmu.cs.stage3.alice.core.event.ChildrenListener;
 import edu.cmu.cs.stage3.alice.core.property.BooleanProperty;
@@ -38,7 +41,7 @@ import edu.cmu.cs.stage3.util.Criterion;
 import edu.cmu.cs.stage3.util.HowMuch;
 
 public abstract class Element {
-	private static java.util.Hashtable<String, Class<?>> s_classnameMap = new java.util.Hashtable<>();
+	private static Hashtable<String, Class<?>> s_classnameMap = new Hashtable<>();
 	static {
 		// s_classnameMap.put(
 		// "edu.cmu.cs.stage3.alice.core.behavior.SpacepadBehavior",
@@ -93,9 +96,9 @@ public abstract class Element {
 	public final DictionaryProperty data = new DictionaryProperty(this, "data", null);
 
 	private Element m_parent = null;
-	private final java.util.Vector<Element> m_children = new java.util.Vector<>();
+	private final Vector<Element> m_children = new Vector<>();
 	private Element[] m_childArray = null;
-	private final java.util.Vector<ChildrenListener> m_childrenListeners = new java.util.Vector<>();
+	private final Vector<ChildrenListener> m_childrenListeners = new Vector<>();
 	private ChildrenListener[] m_childrenListenerArray = null;
 
 	private Object m_xmlFileKeepKey = null;
@@ -412,7 +415,7 @@ public abstract class Element {
 	}
 
 	private void clearAllReferences(final Element[] originals, final Element[] replacements,
-			final Element[] childrenWithNoReplacements, final java.util.Vector<Property_Value> toBeResolved) {
+			final Element[] childrenWithNoReplacements, final Vector<Property_Value> toBeResolved) {
 		final Element root = getRoot();
 		final Element[] descendants = root.getDescendants(Element.class, HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
 		for (final Element descendant : descendants) {
@@ -489,7 +492,7 @@ public abstract class Element {
 	}
 
 	private Element[] getChildrenThatHaveNoReplacements(final Element[] originals, final Element[] replacements) {
-		final java.util.Vector<Element> vector = new java.util.Vector<>();
+		final Vector<Element> vector = new Vector<>();
 		for (int i = 0; i < originals.length; i++) {
 			final Element original = originals[i];
 			// Unused ?? final Element replacement = replacements[i];
@@ -541,7 +544,7 @@ public abstract class Element {
 		}
 
 		final Element[] childrenThatHaveNoReplacements = getChildrenThatHaveNoReplacements(originals, replacements);
-		final java.util.Vector<Property_Value> toBeResolved = new java.util.Vector<>();
+		final Vector<Property_Value> toBeResolved = new Vector<>();
 		clearAllReferences(originals, replacements, childrenThatHaveNoReplacements, toBeResolved);
 
 		replace(originals, replacements);
@@ -641,7 +644,7 @@ public abstract class Element {
 	public Property[] getProperties() {
 		if (m_propertyArray == null) {
 			final Class<? extends Element> cls = getClass();
-			final java.util.Vector<Property> properties = new java.util.Vector<>();
+			final Vector<Property> properties = new Vector<>();
 			final java.lang.reflect.Field[] fields = cls.getFields();
 			for (final Field field : fields) {
 				if (isPropertyField(field)) {
@@ -1006,7 +1009,7 @@ public abstract class Element {
 	}
 
 	public Element[] getChildren(final Class<?> cls) {
-		final java.util.Vector<Element> v = new java.util.Vector<>();
+		final Vector<Element> v = new Vector<>();
 		for (int i = 0; i < m_children.size(); i++) {
 			final Element child = m_children.elementAt(i);
 			if (cls.isAssignableFrom(child.getClass())) {
@@ -1041,7 +1044,7 @@ public abstract class Element {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void internalSearch(final Criterion criterion, final HowMuch howMuch, final java.util.Vector v) {
+	public void internalSearch(final Criterion criterion, final HowMuch howMuch, final Vector v) {
 		if (criterion.accept(this)) {
 			v.addElement(this);
 		}
@@ -1051,7 +1054,7 @@ public abstract class Element {
 	}
 
 	public Element[] search(final Criterion criterion, final HowMuch howMuch) {
-		final java.util.Vector<Object> v = new java.util.Vector<>();
+		final Vector<Object> v = new Vector<>();
 		internalSearch(criterion, howMuch, v);
 		final Element[] array = new Element[v.size()];
 		v.copyInto(array);
@@ -1217,7 +1220,7 @@ public abstract class Element {
 	}
 
 	protected void internalGetExternalPropertyReferences(final Element whom, final HowMuch howMuch,
-			final java.util.Vector<PropertyReference> references) {
+			final Vector<PropertyReference> references) {
 		final Property[] properties = getProperties();
 		for (final Property propertie : properties) {
 			if (propertie instanceof ObjectArrayProperty) {
@@ -1254,7 +1257,7 @@ public abstract class Element {
 	}
 
 	public PropertyReference[] getExternalPropertyReferences(final HowMuch howMuch) {
-		final java.util.Vector<PropertyReference> references = new java.util.Vector<>();
+		final Vector<PropertyReference> references = new Vector<>();
 		internalGetExternalPropertyReferences(this, howMuch, references);
 		final PropertyReference[] referencesArray = new PropertyReference[references.size()];
 		references.copyInto(referencesArray);
@@ -1267,7 +1270,7 @@ public abstract class Element {
 
 	protected void internalGetPropertyReferencesTo(final Element whom, final HowMuch howMuch,
 			final boolean excludeWhomsParent, final boolean excludeWhomAndItsDescendants,
-			final java.util.Vector<PropertyReference> references) {
+			final Vector<PropertyReference> references) {
 		if (excludeWhomAndItsDescendants && (this == whom || isDescendantOf(whom))) {
 			return;
 		} else if (this == whom.getParent() && excludeWhomsParent) {
@@ -1312,7 +1315,7 @@ public abstract class Element {
 
 	public PropertyReference[] getPropertyReferencesTo(final Element whom, final HowMuch howMuch,
 			final boolean excludeWhomsParent, final boolean excludeWhomAndItsDescendants) {
-		final java.util.Vector<PropertyReference> references = new java.util.Vector<>();
+		final Vector<PropertyReference> references = new Vector<>();
 		internalGetPropertyReferencesTo(whom, howMuch, excludeWhomsParent, excludeWhomAndItsDescendants, references);
 		final PropertyReference[] referencesArray = new PropertyReference[references.size()];
 		references.copyInto(referencesArray);
@@ -1465,7 +1468,7 @@ public abstract class Element {
 	}
 
 	protected void internalCopyOver(final Element dst, final boolean isTopLevel,
-			final java.util.Dictionary<CopyFactory, Element> childCopyFactoryToParentMap) {
+			final Dictionary<CopyFactory, Element> childCopyFactoryToParentMap) {
 		final Element[] children = getChildren();
 		for (final Element child : children) {
 			final String childName = child.name.getStringValue();
@@ -1522,7 +1525,7 @@ public abstract class Element {
 	}
 
 	protected void HACK_copyOverTextureMapReferences(final Element dst,
-			final java.util.Dictionary<TextureMap, TextureMap> srcTextureMapToDstTextureMapMap) {
+			final Dictionary<TextureMap, TextureMap> srcTextureMapToDstTextureMapMap) {
 		final Element[] children = getChildren();
 		for (final Element child : children) {
 			final Element dstChild = dst.getChildNamedIgnoreCase(child.name.getStringValue());
@@ -1533,9 +1536,9 @@ public abstract class Element {
 	}
 
 	public void copyOver(final Element dst) {
-		final java.util.Dictionary<CopyFactory, Element> childCopyFactoryToParentMap = new java.util.Hashtable<CopyFactory, Element>();
+		final Dictionary<CopyFactory, Element> childCopyFactoryToParentMap = new Hashtable<CopyFactory, Element>();
 		internalCopyOver(dst, true, childCopyFactoryToParentMap);
-		final java.util.Enumeration<CopyFactory> enum0 = childCopyFactoryToParentMap.keys();
+		final Enumeration<CopyFactory> enum0 = childCopyFactoryToParentMap.keys();
 		while (enum0.hasMoreElements()) {
 			final CopyFactory childCopyFactory = enum0.nextElement();
 			final Element parent = childCopyFactoryToParentMap.get(childCopyFactory);
@@ -1551,7 +1554,7 @@ public abstract class Element {
 		if (this instanceof Sandbox && dst instanceof Sandbox) {
 			final TextureMap[] srcTMs = (TextureMap[]) ((Sandbox) this).textureMaps.getArrayValue();
 			final TextureMap[] dstTMs = (TextureMap[]) ((Sandbox) dst).textureMaps.getArrayValue();
-			final java.util.Dictionary<TextureMap, TextureMap> srcTextureMapToDstTextureMapMap = new java.util.Hashtable<TextureMap, TextureMap>();
+			final Dictionary<TextureMap, TextureMap> srcTextureMapToDstTextureMapMap = new Hashtable<TextureMap, TextureMap>();
 			for (int i = 0; i < srcTMs.length; i++) {
 				final TextureMap srcTM = srcTMs[i];
 				for (@SuppressWarnings("unused") final TextureMap srcTM2 : srcTMs) {
@@ -1574,7 +1577,7 @@ public abstract class Element {
 
 	protected static Element load(final javax.xml.parsers.DocumentBuilder builder,
 			final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader, 
-			final java.util.Vector<PropertyReference> referencesToBeResolved,
+			final Vector<PropertyReference> referencesToBeResolved,
 			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver)
 			throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
 		final String currentDirectory = loader.getCurrentDirectory();
@@ -1656,8 +1659,8 @@ public abstract class Element {
 	public static Element load(final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader, final Element externalRoot,
 			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver) throws java.io.IOException,
 			edu.cmu.cs.stage3.progress.ProgressCancelException, UnresolvablePropertyReferencesException {
-		final java.util.Vector<PropertyReference> referencesToBeResolved = new java.util.Vector<>();
-		final java.util.Vector<PropertyReference> referencesLeftUnresolved = new java.util.Vector<>();
+		final Vector<PropertyReference> referencesToBeResolved = new Vector<>();
+		final Vector<PropertyReference> referencesLeftUnresolved = new Vector<>();
 		Element element;
 		try {
 			s_isLoading = true;
@@ -1859,7 +1862,7 @@ public abstract class Element {
 			// java.io.BufferedOutputStream bos = new
 			// java.io.BufferedOutputStream( os );
 			// try {
-			// Class cls = document.getClass();
+			// Class<?> cls = document.getClass();
 			// Class[] parameterTypes = { java.io.OutputStream.class };
 			// Object[] args = { bos };
 			// java.lang.reflect.Method method = cls.getMethod( "write",
@@ -1911,7 +1914,7 @@ public abstract class Element {
 	// public void store( javax.xml.parsers.DocumentBuilder builder,
 	// DirectoryTreeStorer storer, edu.cmu.cs.stage3.util.ProgressObserver
 	// progressObserver, HowMuch howMuch, ReferenceGenerator referenceGenerator,
-	// java.util.Dictionary map ) throws java.io.IOException {
+	// Dictionary map ) throws java.io.IOException {
 	// int elementCount = getElementCount( Element.class, howMuch );
 	// if( progressObserver!=null ) {
 	// progressObserver.progressUpdateTotal( elementCount );
@@ -1927,7 +1930,7 @@ public abstract class Element {
 
 	public void store(final DirectoryTreeStorer storer,
 			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver,
-			final java.util.Dictionary<String, byte[]> filnameToByteArrayMap, final HowMuch howMuch,
+			final Dictionary<String, byte[]> filnameToByteArrayMap, final HowMuch howMuch,
 			final ReferenceGenerator referenceGenerator)
 			throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
 		final int elementCount = getElementCount(Element.class, howMuch);
@@ -1974,7 +1977,7 @@ public abstract class Element {
 
 	public void store(final DirectoryTreeStorer storer,
 			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver,
-			final java.util.Dictionary<String, byte[]> filnameToByteArrayMap, final HowMuch howMuch)
+			final Dictionary<String, byte[]> filnameToByteArrayMap, final HowMuch howMuch)
 			throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
 		store(storer, progressObserver, filnameToByteArrayMap, howMuch,
 				new edu.cmu.cs.stage3.alice.core.reference.DefaultReferenceGenerator(this));
@@ -1982,7 +1985,7 @@ public abstract class Element {
 
 	public void store(final DirectoryTreeStorer storer,
 			final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver,
-			final java.util.Dictionary<String, byte[]> filnameToByteArrayMap)
+			final Dictionary<String, byte[]> filnameToByteArrayMap)
 			throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
 		store(storer, progressObserver, filnameToByteArrayMap, HowMuch.INSTANCE_AND_ALL_DESCENDANTS);
 	}
@@ -2002,7 +2005,7 @@ public abstract class Element {
 	}
 
 	public void store(final java.io.File file, final edu.cmu.cs.stage3.progress.ProgressObserver progressObserver,
-			final java.util.Dictionary<String, byte[]> filnameToByteArrayMap)
+			final Dictionary<String, byte[]> filnameToByteArrayMap)
 			throws java.io.IOException, edu.cmu.cs.stage3.progress.ProgressCancelException {
 		edu.cmu.cs.stage3.io.DirectoryTreeStorer storer;
 		if (file.isDirectory()) {
@@ -2118,7 +2121,7 @@ public abstract class Element {
 		System.err.println(o);
 	}
 
-	private static java.util.Hashtable<Class<?>, Element> s_classToElementCache = new java.util.Hashtable<>();
+	private static Hashtable<Class<?>, Element> s_classToElementCache = new Hashtable<>();
 
 	public static Class<?> getValueClassForPropertyNamed(final Class<?> elementClass, final String propertyName) {
 		Element element = s_classToElementCache.get(elementClass);
@@ -2141,7 +2144,7 @@ public abstract class Element {
 	}
 
 	protected void internalAddExpressionIfAssignableTo(final Expression expression, final Class<?> cls,
-			final java.util.Vector<Expression> v) {
+			final Vector<Expression> v) {
 		if (expression != null) {
 			if (cls.isAssignableFrom(expression.getValueClass())) {
 				v.addElement(expression);
@@ -2149,14 +2152,14 @@ public abstract class Element {
 		}
 	}
 
-	protected void internalFindAccessibleExpressions(final Class<?> cls, final java.util.Vector<Expression> v) {
+	protected void internalFindAccessibleExpressions(final Class<?> cls, final Vector<Expression> v) {
 		if (m_parent != null) {
 			m_parent.internalFindAccessibleExpressions(cls, v);
 		}
 	}
 
 	public Expression[] findAccessibleExpressions(final Class<?> cls) {
-		final java.util.Vector<Expression> v = new java.util.Vector<>();
+		final Vector<Expression> v = new Vector<>();
 		internalFindAccessibleExpressions(cls, v);
 		final Expression[] array = new Expression[v.size()];
 		v.copyInto(array);

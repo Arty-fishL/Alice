@@ -28,6 +28,7 @@ import java.awt.Component;
 import javax.swing.SwingConstants;
 
 import edu.cmu.cs.stage3.alice.core.Property;
+import edu.cmu.cs.stage3.util.StringObjectPair;
 
 /**
  * @author Jason Pratt
@@ -42,7 +43,7 @@ public class FormattedElementViewController extends edu.cmu.cs.stage3.alice.auth
 	protected java.util.List<Property> visibleProperties;
 	protected javax.swing.JPanel subPanel = new edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel();
 	protected String format;
-	protected java.util.HashMap guiMap = new java.util.HashMap();
+	protected java.util.HashMap<?, ?> guiMap = new java.util.HashMap<>(); // Unused ??
 	// protected edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel
 	// moreTile = new
 	// edu.cmu.cs.stage3.alice.authoringtool.util.GroupingPanel();
@@ -133,7 +134,7 @@ public class FormattedElementViewController extends edu.cmu.cs.stage3.alice.auth
 				if (ev.getX() >= 0 && ev.getX() < ev.getComponent().getWidth() && ev.getY() >= 0
 						&& ev.getY() < ev.getComponent().getHeight()) {
 					if (FormattedElementViewController.this.isEnabled()) {
-						final java.util.Vector structure = new java.util.Vector();
+						final java.util.Vector<StringObjectPair> structure = new java.util.Vector<StringObjectPair>();
 						final edu.cmu.cs.stage3.alice.core.Property[] properties = getUnsetProperties();
 						for (final Property propertie : properties) {
 							final SetPropertyImmediatelyFactory factory = new SetPropertyImmediatelyFactory(propertie,
@@ -630,7 +631,7 @@ public class FormattedElementViewController extends edu.cmu.cs.stage3.alice.auth
 
 		@Override
 		public void popupResponse(final java.awt.event.MouseEvent ev) {
-			final java.util.Vector structure = edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities
+			final java.util.Vector<Object> structure = edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities
 					.getDefaultStructure(element);
 			if (structure != null && !structure.isEmpty()) {
 				edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.createAndShowElementPopupMenu(element,

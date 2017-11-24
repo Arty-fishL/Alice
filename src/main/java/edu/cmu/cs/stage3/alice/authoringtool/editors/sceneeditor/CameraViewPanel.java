@@ -33,7 +33,15 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.ButtonGroup;
@@ -89,8 +97,8 @@ public class CameraViewPanel extends JPanel
 	protected edu.cmu.cs.stage3.alice.core.Transformable pickedTransformable = null;
 	protected edu.cmu.cs.stage3.alice.core.Transformable selectedTransformable = null;
 	protected edu.cmu.cs.stage3.alice.core.Transformable blankTransformable = new edu.cmu.cs.stage3.alice.core.Transformable();
-	protected java.util.HashMap resizeTable = new java.util.HashMap();
-	// protected java.util.HashMap povMap = new java.util.HashMap();
+	protected HashMap<?, ?> resizeTable = new HashMap<>(); // unused ??
+	// protected HashMap povMap = new HashMap();
 	// protected
 	// edu.cmu.cs.stage3.alice.authoringtool.util.FilteringElementTreeModel
 	// povTreeModel = new
@@ -198,7 +206,7 @@ public class CameraViewPanel extends JPanel
 			(int) (18 * fontSize / 12.0));
 	protected boolean originalTileDraggingOption;
 
-	protected javax.swing.ListCellRenderer enumerableComboRenderer = new javax.swing.DefaultListCellRenderer() {
+	protected javax.swing.ListCellRenderer<Object> enumerableComboRenderer = new javax.swing.DefaultListCellRenderer() {
 
 		/**
 		 *
@@ -206,7 +214,7 @@ public class CameraViewPanel extends JPanel
 		private static final long serialVersionUID = -6476930130937721746L;
 
 		@Override
-		public java.awt.Component getListCellRendererComponent(final javax.swing.JList list, Object value,
+		public java.awt.Component getListCellRendererComponent(final javax.swing.JList<?> list, Object value,
 				final int index, final boolean isSelected, final boolean cellHasFocus) {
 			if (value instanceof edu.cmu.cs.stage3.util.Enumerable) {
 				value = ((edu.cmu.cs.stage3.util.Enumerable) value).getRepr();
@@ -280,11 +288,13 @@ public class CameraViewPanel extends JPanel
 			return toReturn;
 		}
 
+		/* Unused ??
 		private void startDraggingFromGallery() {
 			final edu.cmu.cs.stage3.alice.authoringtool.galleryviewer.GalleryObject galleryObject = getGalleryObject(
 					edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager.getCurrentDragComponent());
 			startDraggingFromGallery(galleryObject);
 		}
+		*/
 
 		private void startDraggingFromGallery(
 				final edu.cmu.cs.stage3.alice.authoringtool.galleryviewer.GalleryObject galleryObject) {
@@ -632,13 +642,13 @@ public class CameraViewPanel extends JPanel
 				if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(dtde,
 						java.awt.datatransfer.DataFlavor.javaFileListFlavor)) {
 					dtde.acceptDrop(java.awt.dnd.DnDConstants.ACTION_COPY);
-					final java.util.Map imageImporterExtensionMap = imageImporter.getExtensionMap();
+					final Map<String, String> imageImporterExtensionMap = imageImporter.getExtensionMap();
 					final java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
-					final java.util.List fileList = (java.util.List) transferable
+					final List<?> fileList = (List<?>) transferable
 							.getTransferData(java.awt.datatransfer.DataFlavor.javaFileListFlavor);
 					if (!fileList.isEmpty()) {
-						for (final java.util.Iterator iter = fileList.iterator(); iter.hasNext();) {
-							final java.io.File file = (java.io.File) iter.next();
+						for (final Iterator<?> iter = fileList.iterator(); iter.hasNext();) {
+							final File file = (File) iter.next();
 							if (file.exists() && file.canRead() && !file.isDirectory()) {
 								// String pathName = file.getAbsolutePath();
 								final String fileName = file.getName();
@@ -716,7 +726,7 @@ public class CameraViewPanel extends JPanel
 					final edu.cmu.cs.stage3.alice.core.Transformable transformable = (edu.cmu.cs.stage3.alice.core.Transformable) transferable
 							.getTransferData(
 									edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementReferenceTransferable.transformableReferenceFlavor);
-					final java.util.Vector popupStructure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+					final Vector<?> popupStructure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 							.makeDefaultOneShotStructure(transformable);
 					edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.createAndShowPopupMenu(popupStructure,
 							dtde.getDropTargetContext().getComponent(), dtde.getLocation().x, dtde.getLocation().y);
@@ -729,7 +739,7 @@ public class CameraViewPanel extends JPanel
 							.getTransferData(
 									edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ResponsePrototypeReferenceTransferable.responsePrototypeReferenceFlavor);
 					if (responsePrototype.getDesiredProperties().length > 0) {
-						final java.util.Vector popupStructure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
+						final Vector<?> popupStructure = edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities
 								.makePrototypeStructure(responsePrototype,
 										edu.cmu.cs.stage3.alice.authoringtool.util.PopupMenuUtilities.oneShotFactory,
 										authoringTool.getWorld());
@@ -1034,7 +1044,7 @@ public class CameraViewPanel extends JPanel
 	}
 
 	// private void povInit() {
-	// java.util.LinkedList inclusionList = new java.util.LinkedList();
+	// LinkedList inclusionList = new LinkedList();
 	// inclusionList.add( new edu.cmu.cs.stage3.util.Criterion() {
 	// public boolean accept( Object o ) {
 	// return (o instanceof edu.cmu.cs.stage3.alice.core.Variable) &&
@@ -1091,7 +1101,7 @@ public class CameraViewPanel extends JPanel
 	// ((edu.cmu.cs.stage3.alice.core.Element)value).name.getStringValue(),
 	// isSelected, expanded, leaf, row );
 	// }
-	// public boolean shouldSelectCell( java.util.EventObject ev ) {
+	// public boolean shouldSelectCell( EventObject ev ) {
 	// return false;
 	// }
 	// } );
@@ -1343,7 +1353,7 @@ public class CameraViewPanel extends JPanel
 
 	public void setViewMode(final int viewMode) {
 		if (this.viewMode != viewMode) {
-			for (final java.util.Enumeration enum0 = mouseModeGroup.getElements(); enum0.hasMoreElements();) {
+			for (final Enumeration<AbstractButton> enum0 = mouseModeGroup.getElements(); enum0.hasMoreElements();) {
 				final ManipulatorModeButton b = (ManipulatorModeButton) enum0.nextElement();
 				if (b.isSelected()) {
 					if (viewMode == SINGLE_VIEW_MODE) {
@@ -1359,7 +1369,7 @@ public class CameraViewPanel extends JPanel
 			superRenderPanel.removeAll();
 			quadPanel.removeAll();
 			mouseModePanel.removeAll();
-			for (final java.util.Enumeration enum0 = mouseModeGroup.getElements(); enum0.hasMoreElements();) {
+			for (final Enumeration<AbstractButton> enum0 = mouseModeGroup.getElements(); enum0.hasMoreElements();) {
 				final ManipulatorModeButton b = (ManipulatorModeButton) enum0.nextElement();
 				b.setSelected(false);
 				mouseModeGroup.remove(b);
@@ -1727,7 +1737,7 @@ public class CameraViewPanel extends JPanel
 	// private javax.swing.JPopupMenu createPopup( final
 	// edu.cmu.cs.stage3.alice.core.Element element, javax.swing.tree.TreePath
 	// path ) {
-	// java.util.Vector popupStructure = new java.util.Vector();
+	// Vector popupStructure = new Vector();
 	// Runnable renameRunnable = new
 	// edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.RenameRunnable(
 	// element, povTree, path );

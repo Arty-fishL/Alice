@@ -159,7 +159,7 @@ public class AbstractFadeAnimation extends Animation {
 
 				// specular highlight color
 				for (int i = 0; i < specularProperties.size(); i++) {
-					final edu.cmu.cs.stage3.alice.core.property.ColorProperty colorProp = (edu.cmu.cs.stage3.alice.core.property.ColorProperty) specularProperties
+					final edu.cmu.cs.stage3.alice.core.property.ColorProperty colorProp = specularProperties
 							.elementAt(i);
 					m_beginSpecularColors.addElement(colorProp.getColorValue().createAWTColor());
 					m_endSpecularColors.addElement(new java.awt.Color(0, 0, 0));
@@ -187,7 +187,7 @@ public class AbstractFadeAnimation extends Animation {
 				}
 				// specular highlight color
 				for (int i = 0; i < specularProperties.size(); i++) {
-					final edu.cmu.cs.stage3.alice.core.property.ColorProperty colorProp = (edu.cmu.cs.stage3.alice.core.property.ColorProperty) specularProperties
+					final edu.cmu.cs.stage3.alice.core.property.ColorProperty colorProp = specularProperties
 							.elementAt(i);
 					m_beginSpecularColors.addElement(colorProp.getColorValue().createAWTColor());
 					m_endSpecularColors.addElement(origSpecularValues.elementAt(i));
@@ -240,7 +240,7 @@ public class AbstractFadeAnimation extends Animation {
 
 			// specular highlight Color that's not black
 			for (int i = 0; i < specularProperties.size(); i++) {
-				final edu.cmu.cs.stage3.alice.core.property.ColorProperty colorProp = (edu.cmu.cs.stage3.alice.core.property.ColorProperty) specularProperties
+				final edu.cmu.cs.stage3.alice.core.property.ColorProperty colorProp = specularProperties
 						.elementAt(i);
 				final java.awt.Color beginColor = m_beginSpecularColors.elementAt(i);
 				final java.awt.Color endColor = m_endSpecularColors.elementAt(i);

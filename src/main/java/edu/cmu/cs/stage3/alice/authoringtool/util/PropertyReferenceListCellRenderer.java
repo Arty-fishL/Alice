@@ -34,7 +34,7 @@ public class PropertyReferenceListCellRenderer extends javax.swing.DefaultListCe
 	private static final long serialVersionUID = -4665030661748314663L;
 
 	@Override
-	public java.awt.Component getListCellRendererComponent(final javax.swing.JList list, final Object value,
+	public java.awt.Component getListCellRendererComponent(final javax.swing.JList<?> list, final Object value,
 			final int index, final boolean isSelected, final boolean cellHasFocus) {
 		setComponentOrientation(list.getComponentOrientation());
 

@@ -35,7 +35,6 @@ import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.Hashtable;
 import java.util.Vector;
 
 import javax.accessibility.Accessible;
@@ -107,7 +106,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 * This is needed so that references can be cleaned up at remove time to
 	 * allow garbage collection Default is <code>null</code>.
 	 */
-	private static Hashtable listenerRegistry = null;
+	// Unused ?? private static Hashtable<?, ?> listenerRegistry = null;
 
 	/*
 	 * Used by the look and feel (L&F) code to handle implementation specific
@@ -125,8 +124,8 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	private boolean receivedKeyPressed;
 
 	/* Diagnostic aids -- should be false for production builds. */
-	private static final boolean TRACE = false; // trace creates and disposes
-	private static final boolean VERBOSE = false; // show reuse hits/misses
+	// unused ?? private static final boolean TRACE = false; // trace creates and disposes
+	// Unused ?? private static final boolean VERBOSE = false; // show reuse hits/misses
 	private static final boolean DEBUG = false; // show bad params, misc.
 
 	/**
@@ -466,7 +465,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 	private void ensurePopupMenuCreated() {
 		if (popupMenu == null) {
-			final AliceMenu thisMenu = this;
+			// unused ?? final AliceMenu thisMenu = this;
 			popupMenu = new AlicePopupMenu();
 			popupMenu.setInvoker(this);
 			popupListener = createWinListener(popupMenu);
@@ -1054,9 +1053,11 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 *
 	 * @return the point in the coordinate space of this menu's popupmenu
 	 */
+	/* Unused ??
 	private Point translateToPopupMenu(final Point p) {
 		return translateToPopupMenu(p.x, p.y);
 	}
+	*/
 
 	/*
 	 * Returns a point in the coordinate space of this menu's popupmenu which
@@ -1068,6 +1069,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 	 *
 	 * @return the point in the coordinate space of this menu's popupmenu
 	 */
+	/* Unused ??
 	private Point translateToPopupMenu(final int x, final int y) {
 		int newX;
 		int newY;
@@ -1082,6 +1084,7 @@ public class AliceMenu extends javax.swing.JMenu implements Accessible, MenuElem
 
 		return new Point(newX, newY);
 	}
+	*/
 
 	/**
 	 * Returns the popupmenu associated with this menu. If there is no

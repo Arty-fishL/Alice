@@ -29,10 +29,10 @@ import edu.cmu.cs.stage3.alice.core.property.ElementArrayProperty;
 import edu.cmu.cs.stage3.alice.core.property.IntegerProperty;
 
 public class KeyClickBehavior extends TriggerBehavior implements java.awt.event.KeyListener {
-	private static Class[] s_supportedCoercionClasses = { KeyIsPressedBehavior.class };
+	private static Class<?>[] s_supportedCoercionClasses = { KeyIsPressedBehavior.class };
 
 	@Override
-	public Class[] getSupportedCoercionClasses() {
+	public Class<?>[] getSupportedCoercionClasses() {
 		return s_supportedCoercionClasses;
 	}
 

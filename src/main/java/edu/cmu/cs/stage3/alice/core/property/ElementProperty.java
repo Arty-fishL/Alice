@@ -27,7 +27,7 @@ import edu.cmu.cs.stage3.alice.core.Element;
 
 public class ElementProperty extends ObjectProperty {
 	// todo: make protected?
-	public ElementProperty(final Element owner, final String name, final Element defaultValue, final Class valueClass) {
+	public ElementProperty(final Element owner, final String name, final Element defaultValue, final Class<?> valueClass) {
 		super(owner, name, defaultValue, valueClass);
 	}
 

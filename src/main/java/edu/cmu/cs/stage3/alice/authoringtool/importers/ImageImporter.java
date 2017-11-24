@@ -29,19 +29,19 @@ package edu.cmu.cs.stage3.alice.authoringtool.importers;
 public class ImageImporter extends edu.cmu.cs.stage3.alice.authoringtool.AbstractImporter {
 
 	@Override
-	public java.util.Map getExtensionMap() {
-		final java.util.HashMap knownCodecPrettyNames = new java.util.HashMap();
+	public java.util.Map<String, String> getExtensionMap() {
+		final java.util.HashMap<String, String> knownCodecPrettyNames = new java.util.HashMap<String, String>();
 		knownCodecPrettyNames.put("BMP", "Windows Bitmap");
 		knownCodecPrettyNames.put("GIF", "Graphic Interchange Format");
 		knownCodecPrettyNames.put("JPEG", "Joint Photographic Experts Group format");
 		knownCodecPrettyNames.put("PNG", "Portable Network Graphics format");
 		knownCodecPrettyNames.put("TIFF", "Tagged Image File Format");
 
-		final java.util.HashMap map = new java.util.HashMap();
+		final java.util.HashMap<String, String> map = new java.util.HashMap<String, String>();
 
 		final String[] codecNames = edu.cmu.cs.stage3.image.ImageIO.getCodecNames();
 		for (final String codecName : codecNames) {
-			String prettyName = (String) knownCodecPrettyNames.get(codecName.toUpperCase());
+			String prettyName = knownCodecPrettyNames.get(codecName.toUpperCase());
 			if (prettyName == null) {
 				prettyName = codecName;
 			}

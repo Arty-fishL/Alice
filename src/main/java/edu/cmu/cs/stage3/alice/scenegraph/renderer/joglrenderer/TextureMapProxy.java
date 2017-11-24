@@ -114,7 +114,7 @@ class TextureMapProxy extends ElementProxy {
 				final java.awt.image.WritableRaster raster = java.awt.image.Raster
 						.createInterleavedRaster(java.awt.image.DataBuffer.TYPE_BYTE, m_width2, m_height2, bands, null);
 				final java.awt.image.BufferedImage bufferedImage = new java.awt.image.BufferedImage(colorModel, raster,
-						false, new java.util.Hashtable());
+						false, new java.util.Hashtable<String, Object>());
 
 				final java.awt.Graphics g = bufferedImage.getGraphics();
 				g.drawImage(image, 0, 0, null);

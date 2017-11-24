@@ -28,12 +28,16 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.SystemColor;
+import java.util.Iterator;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.Border;
+
+import edu.cmu.cs.stage3.util.StringObjectPair;
 
 /**
  * @author Jason Pratt
@@ -78,13 +82,14 @@ public class PropertyPanel extends javax.swing.JPanel {
 		propertyManipulationPanel.removeAll();
 		propertyGroupCombo.removeAllItems();
 		if (element != null) {
-			final java.util.Vector structure = AuthoringToolResources.getPropertyStructure(element, false);
+			final Vector<StringObjectPair> structure = AuthoringToolResources.getPropertyStructure(element, false);
 			if (structure != null) {
-				for (final java.util.Iterator iter = structure.iterator(); iter.hasNext();) {
-					final edu.cmu.cs.stage3.util.StringObjectPair sop = (edu.cmu.cs.stage3.util.StringObjectPair) iter
+				for (final Iterator<StringObjectPair> iter = structure.iterator(); iter.hasNext();) {
+					final edu.cmu.cs.stage3.util.StringObjectPair sop = iter
 							.next();
 					final String groupName = sop.getString();
-					final java.util.Vector propertyNames = (java.util.Vector) sop.getObject();
+					@SuppressWarnings("unchecked")
+					final java.util.Vector<String> propertyNames = (java.util.Vector<String>) sop.getObject();
 
 					final javax.swing.JPanel subPanel = new javax.swing.JPanel();
 					subPanel.setBackground(java.awt.Color.white);
@@ -92,8 +97,8 @@ public class PropertyPanel extends javax.swing.JPanel {
 
 					if (propertyNames != null) {
 						int i = 0;
-						for (final java.util.Iterator jter = propertyNames.iterator(); jter.hasNext();) {
-							final String name = (String) jter.next();
+						for (final Iterator<String> jter = propertyNames.iterator(); jter.hasNext();) {
+							final String name = jter.next().toString();
 							final edu.cmu.cs.stage3.alice.core.Property property = element.getPropertyNamed(name);
 							if (property != null) {
 								final edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory factory = new edu.cmu.cs.stage3.alice.authoringtool.util.PopupItemFactory() {
@@ -170,7 +175,7 @@ public class PropertyPanel extends javax.swing.JPanel {
 	BorderLayout borderLayout1 = new BorderLayout();
 	JPanel propertySubPanel = new JPanel();
 	BorderLayout borderLayout2 = new BorderLayout();
-	JComboBox propertyGroupCombo = new JComboBox();
+	JComboBox<String> propertyGroupCombo = new JComboBox<>();
 	Border border1;
 	JScrollPane propertyScrollPane = new JScrollPane();
 	Border border2;

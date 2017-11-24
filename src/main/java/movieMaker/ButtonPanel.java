@@ -23,7 +23,7 @@ public class ButtonPanel extends JPanel {
 	private static final long serialVersionUID = 1914968679598319337L;
 	// ////////////// fields ////////////////////////
 	/** list for the frame rate */
-	private JList frameRateList = null;
+	private JList<String> frameRateList = null;
 	/** label for frame rate */
 	private JLabel frameRateLabel = null;
 	private final JButton nextButton = new JButton("Next");
@@ -51,7 +51,7 @@ public class ButtonPanel extends JPanel {
 		frameRateLabel = new JLabel("Frames per Second: ");
 		this.add(frameRateLabel);
 		final String[] rates = { "16", "24", "30" };
-		frameRateList = new JList(rates);
+		frameRateList = new JList<>(rates);
 		final JScrollPane scrollPane = new JScrollPane(frameRateList);
 		frameRateList.setSelectedIndex(0);
 		frameRateList.setVisibleRowCount(1);

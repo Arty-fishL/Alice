@@ -27,7 +27,7 @@ class PropertyReference {
 
 	private final edu.cmu.cs.stage3.alice.scenegraph.Property m_property;
 	private final edu.cmu.cs.stage3.alice.scenegraph.Element m_element;
-	private String m_mixedCasePropertyName;
+	// Unused ?? private String m_mixedCasePropertyName;
 	private final String m_key;
 }
 
@@ -161,7 +161,7 @@ public class XML {
 		return enumerable.getRepr();
 	}
 
-	private static edu.cmu.cs.stage3.util.Enumerable decodeEnumerable(final Class cls, final String s) {
+	private static edu.cmu.cs.stage3.util.Enumerable decodeEnumerable(final Class<?> cls, final String s) {
 		final edu.cmu.cs.stage3.util.Enumerable[] array = edu.cmu.cs.stage3.util.Enumerable.getItems(cls);
 		for (final Enumerable element : array) {
 			if (s.equals(element.getRepr())) {
@@ -182,10 +182,10 @@ public class XML {
 		final org.w3c.dom.Element xmlElement = document.createElement(s);
 		xmlElement.setAttribute("class", element.getClass().getName());
 		xmlElement.setAttribute("key", getKey(element));
-		final java.util.Enumeration enum0 = edu.cmu.cs.stage3.alice.scenegraph.Property
+		final java.util.Enumeration<edu.cmu.cs.stage3.alice.scenegraph.Property> enum0 = edu.cmu.cs.stage3.alice.scenegraph.Property
 				.getProperties(element.getClass()).elements();
 		while (enum0.hasMoreElements()) {
-			final edu.cmu.cs.stage3.alice.scenegraph.Property property = (edu.cmu.cs.stage3.alice.scenegraph.Property) enum0
+			final edu.cmu.cs.stage3.alice.scenegraph.Property property = enum0
 					.nextElement();
 			final String propertyName = property.getMixedCaseName();
 			if (propertyName.equals("Parent")) {
@@ -197,7 +197,7 @@ public class XML {
 				xmlProperty.setAttribute("name", propertyName);
 				final Object value = property.get(element);
 				if (value != null) {
-					final Class propertyValueClass = value.getClass();
+					final Class<? extends Object> propertyValueClass = value.getClass();
 					if (edu.cmu.cs.stage3.alice.scenegraph.Element.class.isAssignableFrom(propertyValueClass)) {
 						final String key = Integer.toString(value.hashCode());
 						xmlProperty.setAttribute("key", key);
@@ -472,7 +472,7 @@ public class XML {
 		document.getDocumentElement().normalize();
 
 		final Class<? extends Document> cls = document.getClass();
-		final Class[] parameterTypes = { java.io.OutputStream.class };
+		final Class<?>[] parameterTypes = { java.io.OutputStream.class };
 		final Object[] args = { os };
 		final java.lang.reflect.Method method = cls.getMethod("write", parameterTypes);
 		method.invoke(document, args);
@@ -563,7 +563,7 @@ public class XML {
 		return propertyTextBuffer.toString();
 	}
 
-	private static Object valueOf(final Class cls, final String text) {
+	private static Object valueOf(final Class<?> cls, final String text) {
 		if (String.class.isAssignableFrom(cls)) {
 			return text;
 		} else if (cls.equals(Double.class) && text.equals("Infinity")) {
@@ -571,7 +571,7 @@ public class XML {
 		} else if (cls.equals(Double.class) && text.equals("NaN")) {
 			return new Double(Double.NaN);
 		} else {
-			final Class[] parameterTypes = { String.class };
+			final Class<?>[] parameterTypes = { String.class };
 			try {
 				final java.lang.reflect.Method valueOfMethod = cls.getMethod("valueOf", parameterTypes);
 				final int modifiers = valueOfMethod.getModifiers();
@@ -597,7 +597,7 @@ public class XML {
 			final String classname = xmlElement.getAttribute("class");
 			final String elementKey = xmlElement.getAttribute("key");
 			final String elementName = xmlElement.getAttribute("name");
-			final Class cls = Class.forName(classname);
+			final Class<?> cls = Class.forName(classname);
 			final edu.cmu.cs.stage3.alice.scenegraph.Element sgElement = (edu.cmu.cs.stage3.alice.scenegraph.Element) cls
 					.newInstance();
 			sgElement.setName(elementName);
@@ -612,7 +612,7 @@ public class XML {
 				}
 				final String propertyValueClassname = xmlProperty.getAttribute("class");
 				if (propertyValueClassname.length() > 0) {
-					final Class propertyValueClass = Class.forName(propertyValueClassname);
+					final Class<?> propertyValueClass = Class.forName(propertyValueClassname);
 					Object value;
 					if (javax.vecmath.Matrix4d.class.isAssignableFrom(propertyValueClass)) {
 						final javax.vecmath.Matrix4d m = new javax.vecmath.Matrix4d();
@@ -827,11 +827,7 @@ public class XML {
 			} else {
 				zis = new java.util.zip.ZipInputStream(is);
 			}
-			final java.util.zip.ZipEntry zipEntry = zis.getNextEntry(); // todo:
-																		// check
-			// to ensure
-			// it is
-			// root.xml
+			/* Unused ?? final java.util.zip.ZipEntry zipEntry = */ zis.getNextEntry(); // TODO: check to ensure it is root.xml
 
 			final int BUFFER_SIZE = 2048;
 			final byte[] buffer = new byte[BUFFER_SIZE];

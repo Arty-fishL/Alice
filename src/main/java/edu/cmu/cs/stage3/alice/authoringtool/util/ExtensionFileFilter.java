@@ -26,7 +26,7 @@ package edu.cmu.cs.stage3.alice.authoringtool.util;
 /**
  * @author Jason Pratt
  */
-public class ExtensionFileFilter extends javax.swing.filechooser.FileFilter implements Comparable {
+public class ExtensionFileFilter extends javax.swing.filechooser.FileFilter implements Comparable<javax.swing.filechooser.FileFilter> {
 	private final String extension;
 	private final String description;
 
@@ -61,7 +61,7 @@ public class ExtensionFileFilter extends javax.swing.filechooser.FileFilter impl
 	}
 
 	@Override
-	public int compareTo(final Object o) {
+	public int compareTo(final javax.swing.filechooser.FileFilter o) {
 		if (o instanceof ExtensionFileFilter) {
 			return description.compareTo(((ExtensionFileFilter) o).getDescription());
 		}

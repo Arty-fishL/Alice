@@ -42,7 +42,7 @@ public class ElementListCellRenderer extends javax.swing.DefaultListCellRenderer
 	}
 
 	@Override
-	public java.awt.Component getListCellRendererComponent(final javax.swing.JList list, Object value, final int index,
+	public java.awt.Component getListCellRendererComponent(final javax.swing.JList<?> list, Object value, final int index,
 			final boolean isSelected, final boolean cellHasFocus) {
 		if (value instanceof edu.cmu.cs.stage3.alice.core.Element) {
 			final edu.cmu.cs.stage3.alice.core.Element element = (edu.cmu.cs.stage3.alice.core.Element) value;

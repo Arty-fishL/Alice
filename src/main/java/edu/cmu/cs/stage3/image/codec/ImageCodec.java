@@ -283,7 +283,7 @@ public abstract class ImageCodec {
 		final Enumeration<ImageCodec> enum0 = codecs.elements();
 		final Vector<String> nameVec = new Vector<String>();
 
-		final String opName = null;
+		// Unused ?? final String opName = null;
 		while (enum0.hasMoreElements()) {
 			final ImageCodec codec = enum0.nextElement();
 
@@ -334,7 +334,7 @@ public abstract class ImageCodec {
 		final Enumeration<ImageCodec> enum0 = codecs.elements();
 		final Vector<String> nameVec = new Vector<String>();
 
-		final String opName = null;
+		// Unused ?? final String opName = null;
 		while (enum0.hasMoreElements()) {
 			final ImageCodec codec = enum0.nextElement();
 
@@ -420,7 +420,7 @@ public abstract class ImageCodec {
 	 * object is not used during encoding, Object.class is returned to signal
 	 * this fact.
 	 */
-	protected abstract Class getEncodeParamClass();
+	protected abstract Class<?> getEncodeParamClass();
 
 	/**
 	 * Returns a <code>Class</code> object indicating the proper subclass of
@@ -430,7 +430,7 @@ public abstract class ImageCodec {
 	 * object is not used during decoding, Object.class is returned to signal
 	 * this fact.
 	 */
-	protected abstract Class getDecodeParamClass();
+	protected abstract Class<?> getDecodeParamClass();
 
 	/**
 	 * In a concrete subclass of <code>ImageCodec</code>, returns an

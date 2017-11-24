@@ -6,10 +6,7 @@
  */
 package edu.cmu.cs.stage3.alice.gallery;
 
-import java.io.File;
-
-import edu.cmu.cs.stage3.alice.core.Element;
-import edu.cmu.cs.stage3.alice.core.Model;
+// Whole class is unused ???
 
 /**
  * @author caitlin
@@ -18,8 +15,9 @@ import edu.cmu.cs.stage3.alice.core.Model;
  *         Window&gt;Preferences&gt;Java&gt;Code Generation&gt;Code and Comments
  */
 public class CaitlinFixer {
-	private static edu.cmu.cs.stage3.alice.core.World m_world = null;
+	// unused ?? private static edu.cmu.cs.stage3.alice.core.World m_world = null;
 
+	/* Unused ??
 	private static void clear(final edu.cmu.cs.stage3.alice.core.property.ElementArrayProperty eap) {
 		while (eap.size() > 0) {
 			final edu.cmu.cs.stage3.alice.core.Element element = (edu.cmu.cs.stage3.alice.core.Element) eap.get(0);
@@ -28,7 +26,9 @@ public class CaitlinFixer {
 		}
 		eap.clear();
 	}
+	*/
 
+	/* Unused ??
 	private static void removeAllMarkersAndLights(final edu.cmu.cs.stage3.alice.core.Element element) {
 		final java.util.Vector<Element> v = new java.util.Vector<Element>();
 		for (int i = 0; i < element.getChildCount(); i++) {
@@ -52,7 +52,9 @@ public class CaitlinFixer {
 			elementsToRemoveI.removeFromParent();
 		}
 	}
+	*/
 
+	/* Unused ??
 	private static void removeMethodsFromObject(final java.io.File srcRoot, final java.io.File dstRoot,
 			final java.io.File srcFile) {
 		try {
@@ -82,18 +84,22 @@ public class CaitlinFixer {
 
 				removeAllMarkersAndLights(e);
 
-				final java.util.Dictionary map = new java.util.Hashtable();
+				final java.util.Dictionary<String, byte[]> map = new java.util.Hashtable<String, byte[]>();
 				final String srcPath = srcFile.getAbsolutePath();
 				final java.io.File thumbnailFile = new java.io.File(srcPath.substring(0, srcPath.length() - 3) + "png");
 				if (thumbnailFile.exists()) {
 					final java.io.BufferedInputStream bis = new java.io.BufferedInputStream(
 							new java.io.FileInputStream(thumbnailFile));
-					final int n = bis.available();
-					final byte[] data = new byte[n];
-					if (bis.read(data, 0, n) == n) {
-						map.put("thumbnail.png", data);
-					} else {
-						System.err.println("did not read entire thumbnail: " + thumbnailFile);
+					try {
+						final int n = bis.available();
+						final byte[] data = new byte[n];
+						if (bis.read(data, 0, n) == n) {
+							map.put("thumbnail.png", data);
+						} else {
+							System.err.println("did not read entire thumbnail: " + thumbnailFile);
+						}
+					} finally {
+						bis.close();
 					}
 				}
 				e.store(dstFile, null, map);
@@ -108,7 +114,9 @@ public class CaitlinFixer {
 			System.exit(-1);
 		}
 	}
+	*/
 
+	/* Unused ??
 	private static void removeMethodsFromObjectsInDirectory(final java.io.File srcRoot, final java.io.File dstRoot,
 			final java.io.File srcDir) {
 		System.err.println("removeMethodsFromObjectsInDirectory: " + srcDir);
@@ -132,6 +140,8 @@ public class CaitlinFixer {
 			removeMethodsFromObject(srcRoot, dstRoot, file);
 		}
 	}
+	*/
+	
 	/*
 	 * public static void main( String[] args ) { try { m_world =
 	 * (edu.cmu.cs.stage3

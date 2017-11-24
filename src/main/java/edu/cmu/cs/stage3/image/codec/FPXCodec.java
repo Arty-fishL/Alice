@@ -60,12 +60,12 @@ public final class FPXCodec extends ImageCodec {
 	}
 
 	@Override
-	public Class getEncodeParamClass() {
+	public Class<?> getEncodeParamClass() {
 		return null;
 	}
 
 	@Override
-	public Class getDecodeParamClass() {
+	public Class<FPXDecodeParam> getDecodeParamClass() {
 		return FPXDecodeParam.class;
 	}
 

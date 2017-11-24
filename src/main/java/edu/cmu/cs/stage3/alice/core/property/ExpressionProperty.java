@@ -28,7 +28,7 @@ import edu.cmu.cs.stage3.alice.core.Expression;
 
 public class ExpressionProperty extends ElementProperty {
 	protected ExpressionProperty(final Element owner, final String name, final Expression defaultValue,
-			final Class valueClass) {
+			final Class<?> valueClass) {
 		super(owner, name, defaultValue, valueClass);
 	}
 

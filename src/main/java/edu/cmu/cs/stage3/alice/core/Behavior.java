@@ -81,7 +81,7 @@ public abstract class Behavior extends Element {
 		}
 	}
 
-	private abstract class Item {
+	public abstract class Item {
 		private Item m_prev;
 
 		public Item getPrev() {

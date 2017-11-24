@@ -24,9 +24,9 @@
 package edu.cmu.cs.stage3.util.criterion;
 
 public class InstanceOfCriterion implements edu.cmu.cs.stage3.util.Criterion {
-	private final Class m_class;
+	private final Class<?> m_class;
 
-	public InstanceOfCriterion(final Class _class) {
+	public InstanceOfCriterion(final Class<?> _class) {
 		m_class = _class;
 	}
 

@@ -23,7 +23,7 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
-public interface UndoRedoStack extends java.util.List {
+public interface UndoRedoStack extends java.util.List<UndoableRedoable> {
 	public void push(UndoableRedoable ur);
 
 	public UndoableRedoable pop_();
