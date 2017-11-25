@@ -5,8 +5,10 @@ public abstract class RenderCanvas extends java.awt.Canvas {
 	 *
 	 */
 	private static final long serialVersionUID = -6571403494219563648L;
-	// Unused ?? private int m_nativeInstance;
-	// Unused ?? private final int m_nativeDrawingSurfaceInfo;
+	@SuppressWarnings("unused")
+	private int m_nativeInstance;
+	@SuppressWarnings("unused")
+	private final int m_nativeDrawingSurfaceInfo;
 
 	protected abstract void createNativeInstance(RenderTargetAdapter renderTargetAdapter);
 
@@ -23,7 +25,7 @@ public abstract class RenderCanvas extends java.awt.Canvas {
 	private int count = 0;
 
 	protected RenderCanvas(final OnscreenRenderTarget onscreenRenderTarget) {
-		// Unused ?? m_nativeDrawingSurfaceInfo = 0;
+		m_nativeDrawingSurfaceInfo = 0;
 		m_onscreenRenderTarget = onscreenRenderTarget;
 		createNativeInstance(m_onscreenRenderTarget.getAdapter());
 

@@ -34,7 +34,8 @@ public abstract class Renderer extends edu.cmu.cs.stage3.alice.scenegraph.render
 			// pass
 		}
 	}
-	// Unused ?? private final int m_nativeInstance = 0;
+	@SuppressWarnings("unused")
+	private final int m_nativeInstance = 0;
 
 	protected abstract void createNativeInstance();
 

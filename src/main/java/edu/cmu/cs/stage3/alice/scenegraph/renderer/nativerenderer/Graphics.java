@@ -24,7 +24,8 @@
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer;
 
 public abstract class Graphics extends java.awt.Graphics {
-	// Unused ?? private final int m_nativeInstance = 0;
+	@SuppressWarnings("unused")
+	private final int m_nativeInstance = 0;
 
 	protected abstract void createNativeInstance(RenderTargetAdapter renderTargetAdapter);
 
