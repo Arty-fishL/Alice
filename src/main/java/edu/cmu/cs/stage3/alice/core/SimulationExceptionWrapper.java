@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.core;
 
+import edu.cmu.cs.stage3.alice.core.Behavior.Item;
+
 public class SimulationExceptionWrapper extends SimulationException {
 	/**
 	 *
@@ -30,7 +32,7 @@ public class SimulationExceptionWrapper extends SimulationException {
 	private static final long serialVersionUID = 2038943987764257407L;
 	private final Exception m_exception;
 
-	public SimulationExceptionWrapper(final String detail, final java.util.Stack stack, final Element element,
+	public SimulationExceptionWrapper(final String detail, final java.util.Stack<Item> stack, final Element element,
 			final Exception exception) {
 		super(detail, stack, element);
 		m_exception = exception;

@@ -27,7 +27,6 @@ import com.jamiegl.alicex.ui.JSystemFileChooser;
 import edu.cmu.cs.stage3.alice.authoringtool.util.CustomMouseAdapter;
 import edu.cmu.cs.stage3.caitlin.stencilhelp.application.StateCapsule;
 import edu.cmu.cs.stage3.caitlin.stencilhelp.application.StencilApplication;
-import edu.cmu.cs.stage3.caitlin.stencilhelp.client.StencilManager.Stencil;
 
 public class StencilManager
 		implements MouseListener, MouseMotionListener, KeyListener, StencilClient, StencilStackChangeListener {
@@ -1006,8 +1005,7 @@ public class StencilManager
 	@Override
 	public void numberOfStencilsChanged(final int newNumberOfStencils) {
 		if (writeEnabled) {
-			final StencilManager.Stencil currentStencil = stencilList
-					.elementAt(currentStencilIndex);
+			// Unused ?? final StencilManager.Stencil currentStencil = stencilList.elementAt(currentStencilIndex);
 			// System.out.println(" stencil number change: " + currentStencil);
 		}
 	}
@@ -1015,8 +1013,7 @@ public class StencilManager
 	@Override
 	public void currentStencilChanged(final int selectedStencil) {
 		if (writeEnabled) {
-			final StencilManager.Stencil currentStencil = stencilList
-					.elementAt(currentStencilIndex);
+			// unused ?? final StencilManager.Stencil currentStencil = stencilList.elementAt(currentStencilIndex);
 			// System.out.println(" stencil change: " + currentStencil);
 		}
 	}
@@ -1104,14 +1101,14 @@ public class StencilManager
 				for (int i = 0; i < stencilObjects.size(); i++) {
 					final StencilObject obj = stencilObjects.elementAt(i);
 					if (obj instanceof Hole) {
-						final boolean success = ((Hole) obj).layoutChanged();
+						/* Unused ?? final boolean success = */ ((Hole) obj).layoutChanged();
 						// if this comes back unsuccessful, then I need to check
 						// again in a second
 						final WaitAndUpdateThread godot = new WaitAndUpdateThread((long) 1250, this,
 								(LayoutChangeListener) obj);
 						godot.start();
 					} else if (obj instanceof Frame) {
-						final boolean success = ((Frame) obj).layoutChanged();
+						/* Unused ?? final boolean success = */ ((Frame) obj).layoutChanged();
 
 						// if this comes back unsuccessful, then I need to check
 						// again in a second

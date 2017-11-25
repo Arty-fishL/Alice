@@ -40,8 +40,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-
 import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
 import edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources;
 import edu.cmu.cs.stage3.alice.authoringtool.Editor;
@@ -162,8 +160,8 @@ public abstract class CompositeElementEditor extends GroupingPanel implements Ed
 				int x = 0;
 				int y = insets.top + vgap;
 				int rowh = 0;
-				int start = 0;
-				final boolean ltr = target.getComponentOrientation().isLeftToRight();
+				// Unused ?? int start = 0;
+				// Unused ?? final boolean ltr = target.getComponentOrientation().isLeftToRight();
 				for (int i = 0; i < nmembers; i++) {
 					final Component m = target.getComponent(i);
 					if (!m.isVisible()) {
@@ -181,7 +179,7 @@ public abstract class CompositeElementEditor extends GroupingPanel implements Ed
 						x = d.width;
 						y += vgap + rowh;
 						rowh = d.height;
-						start = i;
+						// Unused ?? start = i;
 					}
 				}
 
@@ -196,7 +194,7 @@ public abstract class CompositeElementEditor extends GroupingPanel implements Ed
 		});
 		initPrototypes();
 		addPrototypes(buttonPanel);
-		final JScrollPane buttonPanelScrollPane = new JScrollPane(buttonPanel, 20, 30);
+		// Unused ?? final JScrollPane buttonPanelScrollPane = new JScrollPane(buttonPanel, 20, 30);
 		mainElementContainer = new JPanel();
 		mainElementContainer.setLayout(new BorderLayout());
 		mainElementContainer.setMinimumSize(new Dimension(0, 0));

@@ -50,6 +50,7 @@ public class TempColorPicker extends javax.swing.JPanel {
 		public javax.swing.JButton openPicker;
 		public javax.swing.JButton openPicker2;
 		public String nameKey;
+		@SuppressWarnings("unused")
 		public Object classKey;
 		public String foregroundNameKey;
 

@@ -39,8 +39,7 @@ public class Media extends Element {
 		super.started(world, time);
 		final edu.cmu.cs.stage3.media.DataSource dataSourceValue = dataSource.getDataSourceValue();
 		// todo? wait for realized players
-		final int realizedPlayerCount = dataSourceValue.waitForRealizedPlayerCount(mediaLockCacheCountHint.intValue(),
-				0);
+		/* final int realizedPlayerCount = */ dataSourceValue.waitForRealizedPlayerCount(mediaLockCacheCountHint.intValue(), 0);
 	}
 }
 

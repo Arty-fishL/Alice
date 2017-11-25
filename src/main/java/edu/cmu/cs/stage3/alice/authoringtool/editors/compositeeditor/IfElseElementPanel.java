@@ -235,7 +235,7 @@ public abstract class IfElseElementPanel extends CompositeElementPanel {
 		}
 		if (elseLabel == null) {
 			elseLabel = new javax.swing.JLabel();
-			final java.awt.Font elseFont = elseLabel.getFont();
+			// Unused ?? final java.awt.Font elseFont = elseLabel.getFont();
 		}
 		if (ifElsePanel == null) {
 			ifElsePanel = new javax.swing.JPanel();

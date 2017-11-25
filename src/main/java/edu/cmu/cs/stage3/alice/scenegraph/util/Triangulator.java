@@ -138,7 +138,7 @@ public class Triangulator {
 			return;
 		}
 
-		final int curpoint = points.size();
+		// Unused ?? final int curpoint = points.size();
 
 		final PointNode first = new PointNode(contour[0]);
 		first.next = first;
@@ -159,7 +159,7 @@ public class Triangulator {
 			return;
 		}
 
-		final int curpoint = points.size();
+		// Unused ?? final int curpoint = points.size();
 
 		final PointNode first = new PointNode(contour.firstElement());
 		first.next = first;

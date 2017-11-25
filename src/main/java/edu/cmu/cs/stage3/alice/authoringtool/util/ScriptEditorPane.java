@@ -233,7 +233,7 @@ public class ScriptEditorPane extends javax.swing.JEditorPane {
 	}
 
 	public void setDefaultKeyBindingsEnabled(final boolean b, final javax.swing.Action[] whichActions) {
-		final javax.swing.text.Keymap keymap = getKeymap();
+		// Unused ?? final javax.swing.text.Keymap keymap = getKeymap();
 		if (b) {
 			for (final Action whichAction : whichActions) {
 				getInputMap().put((javax.swing.KeyStroke) whichAction.getValue(javax.swing.Action.ACCELERATOR_KEY),

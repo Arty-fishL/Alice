@@ -412,7 +412,7 @@ public class TIFFImageEncoder extends ImageEncoderImpl {
 			src.getPixels(minX, row, width, rows, pixels);
 
 			int index;
-			final int remainder;
+			// Unused ?? final int remainder;
 
 			int pixel = 0;
 			;

@@ -94,7 +94,7 @@ public class KeepTouchingAnimation extends AbstractBodyPositionAnimation {
 			lowerLimbLength = -1.0;
 
 			initialVector = null;
-			final javax.vecmath.Vector3d tmp = null;
+			// Unused ?? final javax.vecmath.Vector3d tmp = null;
 
 			/*
 			 * if (lowerLimb != null) { tmp =

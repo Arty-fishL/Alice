@@ -100,6 +100,7 @@ public class QuestionEditor
 				.getReprForValue(edu.cmu.cs.stage3.alice.core.response.LoopNInOrder.class);
 		final String forEachString = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
 				.getReprForValue(edu.cmu.cs.stage3.alice.core.response.ForEachInOrder.class);
+		@SuppressWarnings("unused")
 		final String scriptString = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
 				.getReprForValue(edu.cmu.cs.stage3.alice.core.response.ScriptResponse.class);
 		final String whileString = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
@@ -117,6 +118,7 @@ public class QuestionEditor
 				.getColor("IfElseInOrder");
 		final java.awt.Color FOR_EACH_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
 				.getColor("ForEachInOrder");
+		@SuppressWarnings("unused")
 		final java.awt.Color SCRIPT_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources
 				.getColor("ScriptResponse");
 		final java.awt.Color COMMENT_COLOR = edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources

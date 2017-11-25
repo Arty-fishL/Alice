@@ -62,7 +62,7 @@ import java.io.IOException;
 
 public class TIFFImage extends SimpleRenderedImage {
 
-	private static final boolean DEBUG = true;
+	// Unused ?? private static final boolean DEBUG = true;
 
 	SeekableStream stream;
 	int tileSize;
@@ -665,7 +665,7 @@ public class TIFFImage extends SimpleRenderedImage {
 		// Get the data array out of the DataBuffer
 		byte bdata[] = null;
 		short sdata[] = null;
-		final int idata[] = null;
+		// Unused ?? final int idata[] = null;
 		final DataBuffer buffer = sampleModel.createDataBuffer();
 
 		final int dataType = sampleModel.getDataType();

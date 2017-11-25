@@ -25,11 +25,13 @@ public class WalkAnimation extends AbstractWalkAnimation {
 	@Override
 	protected void propertyChanging(final edu.cmu.cs.stage3.alice.core.Property property, final Object value) {
 		if (property == distance) {
+			/* Unused ??
 			if (value instanceof Number) {
 				final double distance = ((Number) value).doubleValue();
 
 				// duration.set((new Double(distance * 3)));
 			}
+			*/
 		} else {
 			super.propertyChanging(property, value);
 		}
@@ -42,7 +44,7 @@ public class WalkAnimation extends AbstractWalkAnimation {
 		double numberOfSteps = -1.0;
 		double timePerStep = -1.0;
 
-		private boolean done = false;
+		// Unused ?? private boolean done = false;
 
 		protected double getActualStepLength() {
 			if (stepLength == -1) {
@@ -85,7 +87,7 @@ public class WalkAnimation extends AbstractWalkAnimation {
 			if (getTimeRemaining(t) > 0) {
 				super.update(t);
 
-				done = false;
+				// Unused ?? done = false;
 
 				if (timePerStep == -1) {
 					if (!Double.isNaN(duration.doubleValue())) {

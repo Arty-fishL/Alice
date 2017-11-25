@@ -500,6 +500,7 @@ public class TIFFDirectory extends Object {
 		}
 	}
 
+	/* Unused ??
 	private long readLong(final SeekableStream stream) throws IOException {
 		if (isBigEndian) {
 			return stream.readLong();
@@ -507,6 +508,7 @@ public class TIFFDirectory extends Object {
 			return stream.readLongLE();
 		}
 	}
+	*/
 
 	private float readFloat(final SeekableStream stream) throws IOException {
 		if (isBigEndian) {

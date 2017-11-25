@@ -69,7 +69,7 @@ public abstract class PropertyViewController extends edu.cmu.cs.stage3.alice.aut
 	private boolean popupEnabled = false;
 	protected boolean editingEnabled = true;
 	protected boolean sleeping = false;
-	protected java.util.Vector<Object> popupStructure;
+	protected java.util.Vector<?> popupStructure;
 	protected javax.swing.JButton popupButton = new javax.swing.JButton(new javax.swing.ImageIcon(
 			edu.cmu.cs.stage3.alice.authoringtool.JAlice.class.getResource("images/popupArrow.gif")));
 	protected edu.cmu.cs.stage3.alice.core.event.PropertyListener propertyListener = new edu.cmu.cs.stage3.alice.core.event.PropertyListener() {

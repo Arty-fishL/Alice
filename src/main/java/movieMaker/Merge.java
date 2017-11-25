@@ -106,7 +106,7 @@ public class Merge implements ControllerListener, DataSinkListener {
 		outputType = outputTy;
 	}
 
-	public void doMerge(final Vector sourcesURLs) {
+	public void doMerge(final Vector<String> sourcesURLs) {
 		processors = new Processor[sourcesURLs.size()];
 		dataOutputs = new DataSource[sourcesURLs.size()];
 
@@ -323,10 +323,12 @@ public class Merge implements ControllerListener, DataSinkListener {
 		}
 	}
 
+	/* Unused ??
 	private void showUsage() {
 		System.err.println(
 				"Usage: Merge <url1> <url2> [<url3> ... ] [-o <out URL>] [-v <video_encoding>] [-a <audio_encoding>] [-t <content_type>]");
 	}
+	*/
 
 	public void doSingle(final DataSource ds) {
 

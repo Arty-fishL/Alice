@@ -146,7 +146,7 @@ public class LieDownAnimation extends BetterStandUpAnimation {
 				final edu.cmu.cs.stage3.math.Matrix33 orient = quat.getMatrix33();
 				quat.setMatrix33(getGoalOrientation(orient, quat.getMatrix33().getRow(1)));
 			} else {
-				final edu.cmu.cs.stage3.math.Matrix33 orientSubject = quat.getMatrix33();
+				// Unused ?? final edu.cmu.cs.stage3.math.Matrix33 orientSubject = quat.getMatrix33();
 				final edu.cmu.cs.stage3.math.Matrix33 orientTarget = target.getOrientationAsAxes(target.getWorld());
 
 				quat.setMatrix33(getGoalOrientation(orientTarget, quat.getMatrix33().getRow(1)));

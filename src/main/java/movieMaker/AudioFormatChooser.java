@@ -351,7 +351,7 @@ public class AudioFormatChooser extends Panel implements ItemListener {
 	}
 
 	private void updateFields(final AudioFormat formatDefault) {
-		final Vector vectorEncoding = new Vector();
+		final Vector<String> vectorEncoding = new Vector<>();
 		boolean boolEnable;
 
 		boolEnable = comboEncoding.isEnabled();

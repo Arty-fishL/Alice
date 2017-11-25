@@ -130,7 +130,7 @@ public class RenderTargetOrbitManipulator extends RenderTargetPickManipulator {
 						final double objectRadius = ePickedTransformable.getBoundingSphere().getRadius();
 						final double objectDist = sgPickedTransformable.getPosition(sgCameraTransformable).getLength();
 						final double farDist = Math.max(objectDist * 3, objectDist + objectRadius);
-						final double nearDist = Math.max((objectDist - objectRadius) * .01, .0001);
+						// Unused ?? final double nearDist = Math.max((objectDist - objectRadius) * .01, .0001);
 						// System.out.println( "farDist: " + farDist +
 						// ", nearDist: " + nearDist );
 						sgCamera.setFarClippingPlaneDistance(farDist);

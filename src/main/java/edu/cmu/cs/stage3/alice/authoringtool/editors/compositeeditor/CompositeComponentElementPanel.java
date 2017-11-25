@@ -898,8 +898,7 @@ public abstract class CompositeComponentElementPanel extends edu.cmu.cs.stage3.a
 		}
 		inserting = false;
 		boolean isCopy = false;
-		final java.awt.Component sourceComponent = edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager
-				.getCurrentDragComponent();
+		// Unused ?? final java.awt.Component sourceComponent = edu.cmu.cs.stage3.alice.authoringtool.util.DnDManager.getCurrentDragComponent();
 		removeDropPanelFromCurrentComponent();
 		if ((dtde.getDropAction() & java.awt.dnd.DnDConstants.ACTION_COPY) > 0) {
 			// toDrop =

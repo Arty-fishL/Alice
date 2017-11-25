@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.viewcontroller;
 
+import edu.cmu.cs.stage3.util.StringObjectPair;
+
 /**
  * @author Jason Pratt
  * @deprecated use ElementNamePropertyViewController
@@ -46,8 +48,9 @@ public class RightClickNameEditor extends StringPropertyViewController {
 				};
 			}
 		});
-		popupStructure = new java.util.Vector();
-		popupStructure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Rename", new Runnable() {
+		final java.util.Vector<StringObjectPair> x;
+		popupStructure = x = new java.util.Vector<StringObjectPair>();
+		x.add(new edu.cmu.cs.stage3.util.StringObjectPair("Rename", new Runnable() {
 			@Override
 			public void run() {
 				RightClickNameEditor.this.editValue();

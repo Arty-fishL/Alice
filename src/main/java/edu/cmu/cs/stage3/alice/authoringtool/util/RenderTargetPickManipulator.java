@@ -302,11 +302,13 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 
 	// TODO: this should be handled elsewhere
 	protected final java.awt.event.MouseListener popupMouseListener = new edu.cmu.cs.stage3.alice.authoringtool.util.CustomMouseAdapter() {
+		/* Unused ??
 		Runnable emptyRunnable = new Runnable() {
 			@Override
 			public void run() {
 			}
 		};
+		*/
 
 		@Override
 		protected void popupResponse(final java.awt.event.MouseEvent e) {
@@ -318,7 +320,7 @@ public abstract class RenderTargetPickManipulator extends ScreenWrappingMouseLis
 		}
 
 		private javax.swing.JPopupMenu createPopup(final edu.cmu.cs.stage3.alice.core.Element element) {
-			final java.util.Vector popupStructure = ElementPopupUtilities.getDefaultStructure(element);
+			final java.util.Vector<?> popupStructure = ElementPopupUtilities.getDefaultStructure(element);
 			return edu.cmu.cs.stage3.alice.authoringtool.util.ElementPopupUtilities.makeElementPopupMenu(element,
 					popupStructure);
 		}

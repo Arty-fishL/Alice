@@ -23,6 +23,9 @@
 
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.joglrenderer;
 
+// Looks like everything in this class is unused too!
+
+@SuppressWarnings("unused")
 class SpotLightProxy extends PointLightProxy {
 	private float m_inner;
 	private float m_outer;

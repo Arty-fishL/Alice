@@ -67,6 +67,9 @@ class Property {
 	}
 }
 
+// Too much is unused here!!
+
+@SuppressWarnings("unused")
 class PropertySet {
 
 	private static final int TYPE_VT_EMPTY = -1;

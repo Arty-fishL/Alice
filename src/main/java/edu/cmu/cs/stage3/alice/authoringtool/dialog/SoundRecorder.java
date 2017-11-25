@@ -343,7 +343,7 @@ public class SoundRecorder extends edu.cmu.cs.stage3.swing.ContentPane {
 			if (m_jmfDataSource == null) {
 				final javax.media.format.AudioFormat format = new javax.media.format.AudioFormat(
 						javax.media.format.AudioFormat.LINEAR, Format.NOT_SPECIFIED, 16, 1);
-				final java.util.Vector captureDeviceList = javax.media.CaptureDeviceManager.getDeviceList(format);
+				final java.util.Vector<?> captureDeviceList = javax.media.CaptureDeviceManager.getDeviceList(format);
 				if (captureDeviceList.size() > 0) {
 					final javax.media.CaptureDeviceInfo captureDevice = (javax.media.CaptureDeviceInfo) captureDeviceList
 							.firstElement();

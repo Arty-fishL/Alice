@@ -82,7 +82,7 @@ public abstract class RenderTarget extends edu.cmu.cs.stage3.alice.scenegraph.re
 			// todo: use actual viewport
 			final CameraProxy cameraProxy = (CameraProxy) getProxyFor(sgCamera);
 			final java.awt.Rectangle viewport = cameraProxy.getActualViewport(width, height);
-			final int[] vp = { viewport.x, viewport.y, viewport.width, viewport.height };
+			// unused ?? final int[] vp = { viewport.x, viewport.y, viewport.width, viewport.height };
 			context.gl.glViewport(viewport.x, viewport.y, viewport.width, viewport.height);
 
 			context.gl.glMatrixMode(GL.GL_PROJECTION);
@@ -242,12 +242,14 @@ public abstract class RenderTarget extends edu.cmu.cs.stage3.alice.scenegraph.re
 		return 0;
 	}
 
+	/* Unused ??
 	private double[] getActualNearPlane(final edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera, final int width,
 			final int height) {
 		final CameraProxy cameraProxy = (CameraProxy) getProxyFor(sgCamera);
 		final double[] ret = new double[4];
 		return cameraProxy.getActualNearPlane(ret, width, height);
 	}
+	*/
 
 	private edu.cmu.cs.stage3.alice.scenegraph.Camera getCameraAtPixel(final int x, final int y) {
 		final edu.cmu.cs.stage3.alice.scenegraph.Camera[] sgCameras = getCameras();
@@ -261,6 +263,7 @@ public abstract class RenderTarget extends edu.cmu.cs.stage3.alice.scenegraph.re
 		return null;
 	}
 
+	/* Unused ??
 	private static boolean isNaN(final double[] array) {
 		for (final double element : array) {
 			if (Double.isNaN(element)) {
@@ -269,6 +272,8 @@ public abstract class RenderTarget extends edu.cmu.cs.stage3.alice.scenegraph.re
 		}
 		return false;
 	}
+	*/
+	
 	// public edu.cmu.cs.stage3.alice.scenegraph.renderer.PickInfo pick( int x,
 	// int y, boolean isSubElementRequired, boolean isOnlyFrontMostRequired ) {
 	// edu.cmu.cs.stage3.alice.scenegraph.Camera sgCamera = getCameraAtPixel( x,

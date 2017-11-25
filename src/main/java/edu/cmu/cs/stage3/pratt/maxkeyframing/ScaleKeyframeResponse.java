@@ -32,8 +32,7 @@ public class ScaleKeyframeResponse extends edu.cmu.cs.stage3.pratt.maxkeyframing
 			final double splineTimeElapsed = timeElapsed * timeFactor;
 
 			try {
-				final javax.vecmath.Vector3d scale = (javax.vecmath.Vector3d) runtimeSpline
-						.getSample(splineTimeElapsed);
+				/* Unused ?? final javax.vecmath.Vector3d scale = (javax.vecmath.Vector3d) */ runtimeSpline.getSample(splineTimeElapsed);
 				// TODO
 				// m_transformable.setScaledSpaceRightNow( scale.x, scale.y,
 				// scale.z );

@@ -101,7 +101,7 @@ public class Quaternion implements Cloneable, Interpolable {
 		final double halfAngle = aa.getAngle() * 0.5;
 		final double cosHalfAngle = Math.cos(halfAngle);
 		final double sinHalfAngle = Math.sin(halfAngle);
-		final javax.vecmath.Vector3d normalizedAxis = Vector3.normalizeV(aa.getAxis());
+		/* Unused ?? final javax.vecmath.Vector3d normalizedAxis = */ Vector3.normalizeV(aa.getAxis());
 		w = cosHalfAngle;
 		x = sinHalfAngle * aa.m_axis.x;
 		y = sinHalfAngle * aa.m_axis.y;

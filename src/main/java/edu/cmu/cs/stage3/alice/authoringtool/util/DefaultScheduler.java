@@ -24,20 +24,20 @@
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
 public class DefaultScheduler implements Runnable {
-	private static final long minDelay = 20;
+	// Unused ?? private static final long minDelay = 20;
 
 	private double simFPS = 0.0;
-	private final double renderFPS = 0.0;
+	// Unused ?? private final double renderFPS = 0.0;
 	private int simFrameCount = 0;
-	private final int renderFrameCount = 0;
+	// Unused ?? private final int renderFrameCount = 0;
 	private long simDT = 0;
-	private final long renderDT = 0;
+	// Unused ?? private final long renderDT = 0;
 	private long simLastTime = 0;
-	private final long renderLastTime = -1;
-	private final long lastRenderLastTime = 0;
-	private final long idleLastTime = 0;
+	// Unused ?? private final long renderLastTime = -1;
+	// Unused ?? private final long lastRenderLastTime = 0;
+	// Unused ?? private final long idleLastTime = 0;
 
-	private final boolean defaultThreadEnabled = false;
+	// Unused ?? private final boolean defaultThreadEnabled = false;
 
 	private final java.util.Set<Runnable> doOnceRunnables = new java.util.HashSet<Runnable>();
 	private final java.util.Set<Runnable> eachFrameRunnables = new java.util.HashSet<Runnable>();

@@ -50,7 +50,7 @@ public class TrackPanelAudio extends TrackPanel implements ActionListener {
 	 */
 	private static final long serialVersionUID = -1778411436763794964L;
 	private AudioFormat formatOld;
-	private String strContentType = null;
+	// Unused ?? private String strContentType = null;
 	private AudioFormatChooser chooserAudioFormat;
 
 	public TrackPanelAudio(final TrackControl trackControl, final ActionListener listenerEnableTrack) {
@@ -63,13 +63,14 @@ public class TrackPanelAudio extends TrackPanel implements ActionListener {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void setContentType(final String strContentType) {
 		int i;
 		int nSize;
 		AudioFormat formatAudio;
 
 		arrSupportedFormats = trackControl.getSupportedFormats();
-		this.strContentType = strContentType;
+		// Unused ?? this.strContentType = strContentType;
 		nSize = arrSupportedFormats.length;
 		vectorContSuppFormats = new Vector<Format>();
 

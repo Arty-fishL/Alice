@@ -183,8 +183,8 @@ public class ComponentSampleModelJAI extends ComponentSampleModel {
 
 	@Override
 	public SampleModel createCompatibleSampleModel(final int w, final int h) {
-		final SampleModel ret = null;
-		final long size;
+		// Unused ?? final SampleModel ret = null;
+		// Unused ?? final long size;
 		int minBandOff = bandOffsets[0];
 		int maxBandOff = bandOffsets[0];
 		for (int i = 1; i < bandOffsets.length; i++) {
@@ -832,7 +832,7 @@ public class ComponentSampleModelJAI extends ComponentSampleModel {
 	public void setDataElements(final int x, final int y, final int w, final int h, final Object obj,
 			final DataBuffer data) {
 		int cnt = 0;
-		final Object o = null;
+		// Unused ?? final Object o = null;
 		final int type = getTransferType();
 		final int numDataElems = getNumDataElements();
 

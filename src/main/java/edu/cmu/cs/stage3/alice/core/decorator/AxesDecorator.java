@@ -81,7 +81,7 @@ public class AxesDecorator extends Decorator {
 			requiresVerticesToBeUpdated = true;
 		}
 		if (requiresVerticesToBeUpdated) {
-			final edu.cmu.cs.stage3.alice.scenegraph.Color color = edu.cmu.cs.stage3.alice.scenegraph.Color.YELLOW;
+			// Unused ?? final edu.cmu.cs.stage3.alice.scenegraph.Color color = edu.cmu.cs.stage3.alice.scenegraph.Color.YELLOW;
 			final edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[] vertices = new edu.cmu.cs.stage3.alice.scenegraph.Vertex3d[6];
 			final javax.vecmath.Vector3d min = box.getMinimum();
 			final javax.vecmath.Vector3d max = box.getMaximum();

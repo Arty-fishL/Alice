@@ -48,11 +48,7 @@ import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
 /**
  * @author Jason Pratt
  */
-@SuppressWarnings("serial")
 public class JAliceFrame extends javax.swing.JFrame {
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 6934100997593326883L;
 
 	protected AuthoringTool authoringTool;

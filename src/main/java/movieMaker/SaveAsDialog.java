@@ -36,7 +36,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.FileDialog;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -106,7 +105,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 	private Processor processor = null;
 	private DataSink dataSink = null;
 	private TrackControl arrTrackControls[];
-	private int nAudioTrackCount = 0;
+	// Unused ?? private int nAudioTrackCount = 0;
 	private String strContentType = null;
 	// private String strContentTypeExt = null;
 	private boolean boolSaving = false;
@@ -231,7 +230,7 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 		for (i = 0; i < arrTrackControls.length; i++) {
 			format = arrTrackControls[i].getFormat();
 			if (format instanceof AudioFormat) {
-				nAudioTrackCount++;
+				// Unused ?? nAudioTrackCount++;
 			}
 		}
 
@@ -337,23 +336,23 @@ public class SaveAsDialog extends JMDialog implements ControllerListener, DataSi
 	 * thread to monitor the progress and update the Progress dialog.
 	 */
 	private void doSave() {
-		final int i;
+		// Unused ?? final int i;
 		MediaLocator mediaDest;
 		DataSource dataSource;
-		final Object arrControls[];
+		// Unused ?? final Object arrControls[];
 		MonitorControl monitorControl;
 		boolean boolResult;
-		final String strFileContentType = null;
-		final AudioFormat formatAudio;
-		final FileDialog dlgFile;
-		final String strDirName = null;
-		final String strFileName = null;
+		// Unused ?? final String strFileContentType = null;
+		// Unused ?? final AudioFormat formatAudio;
+		// Unused ?? final FileDialog dlgFile;
+		// Unused ?? final String strDirName = null;
+		// Unused ?? final String strFileName = null;
 		Enumeration<String> enumKeys;
 		String strPanel;
 		TrackPanelAudio panelAudio;
 		int nMediaDuration;
 		Component monitor = null;
-		final String strValue;
+		// Unused ?? final String strValue;
 		TrackControl trackControl;
 		JMAppsCfg.TrackData dataTrack;
 

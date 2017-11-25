@@ -23,15 +23,17 @@
 
 package edu.cmu.cs.stage3.alice.core;
 
+import edu.cmu.cs.stage3.alice.core.Behavior.Item;
+
 public class SimulationException extends RuntimeException {
 	/**
 	 *
 	 */
 	private static final long serialVersionUID = -2990273565255221005L;
 	private final Element m_element;
-	private final java.util.Stack m_stack;
+	private final java.util.Stack<Item> m_stack;
 
-	public SimulationException(final String detail, final java.util.Stack stack, final Element element) {
+	public SimulationException(final String detail, final java.util.Stack<Item> stack, final Element element) {
 		super(detail);
 		m_element = element;
 		m_stack = stack;
@@ -41,7 +43,7 @@ public class SimulationException extends RuntimeException {
 		return m_element;
 	}
 
-	public java.util.Stack getStack() {
+	public java.util.Stack<Item> getStack() {
 		return m_stack;
 	}
 }

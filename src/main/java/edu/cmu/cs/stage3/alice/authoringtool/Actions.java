@@ -30,7 +30,6 @@ import javax.swing.Action;
 /**
  * @author Jason Pratt
  */
-@SuppressWarnings("serial")
 public class Actions {
 	public javax.swing.AbstractAction newWorldAction;
 	public javax.swing.AbstractAction openWorldAction;

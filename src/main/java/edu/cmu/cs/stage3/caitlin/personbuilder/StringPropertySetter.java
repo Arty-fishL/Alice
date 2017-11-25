@@ -77,8 +77,8 @@ public class StringPropertySetter extends JPanel implements javax.swing.event.Do
 	}
 
 	protected Node loadPropertyXML(final Node propNode) {
-		final String path = "";
-		final java.net.URL propSetURL = null;
+		// Unused ?? final String path = "";
+		// Unused ?? final java.net.URL propSetURL = null;
 		final Node propSetNode = propNode;
 
 		// // get the top level prop set node

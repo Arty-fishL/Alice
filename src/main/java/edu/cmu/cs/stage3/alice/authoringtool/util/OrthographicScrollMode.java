@@ -116,7 +116,7 @@ public class OrthographicScrollMode extends RenderTargetManipulatorMode {
 																					// in
 																					// world
 																					// space
-			final double offsetDist = Math.min(Math.sqrt(dx * dx + dy * dy), scrollRampUpDistance); // mouse
+			// Unused ?? final double offsetDist = Math.min(Math.sqrt(dx * dx + dy * dy), scrollRampUpDistance); // mouse
 			// offset
 			// distance
 			// deltaFactor *= minScrollFactor + (maxScrollFactor -

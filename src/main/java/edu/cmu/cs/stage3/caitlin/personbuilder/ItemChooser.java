@@ -43,7 +43,6 @@ import org.w3c.dom.NodeList;
 
 import edu.cmu.cs.stage3.alice.core.Element;
 import edu.cmu.cs.stage3.alice.core.Model;
-import edu.cmu.cs.stage3.caitlin.personbuilder.ItemChooser.CommandInfo;
 
 /**
  * Title: Description: Copyright: Copyright (c) 2002 Company:
@@ -306,6 +305,7 @@ public class ItemChooser extends JPanel {
 		}
 	}
 
+	/* Unused ??
 	private Model reloadModel(final String modelString) {
 		Model part = null;
 		try {
@@ -317,6 +317,7 @@ public class ItemChooser extends JPanel {
 		}
 		return part;
 	}
+	*/
 
 	private void initializeChoices(final Node itemsNode) {
 		final Vector<Image> allImages = XMLDirectoryUtilities.getImages(itemsNode);

@@ -99,10 +99,12 @@ public class GroupingPanel extends javax.swing.JPanel
 			return insets;
 		}
 
+		@SuppressWarnings("unused")
 		public java.awt.Color getLineColor() {
 			return color;
 		}
 
+		@SuppressWarnings("unused")
 		public int getThickness() {
 			return thickness;
 		}

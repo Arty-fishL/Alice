@@ -6,6 +6,7 @@
  */
 package edu.cmu.cs.stage3.alice.core.bubble;
 
+import java.awt.Canvas;
 import java.awt.Graphics;
 
 /**
@@ -41,7 +42,8 @@ public class TitleBubble extends Bubble {
 			actualViewport = rt.getActualViewport(sgCamera);
 
 			final java.awt.Font font = getFont();
-			final java.awt.FontMetrics fontMetrics = java.awt.Toolkit.getDefaultToolkit().getFontMetrics(font);
+			final Canvas c = new Canvas();
+			final java.awt.FontMetrics fontMetrics = c.getFontMetrics(font);
 
 			final double charCnt = actualViewport.getWidth() / fontMetrics.charWidth('W');
 			setCharactersPerLine((int) charCnt * 2);
@@ -58,7 +60,7 @@ public class TitleBubble extends Bubble {
 
 	@Override
 	protected void paintBackground(final Graphics g) {
-		final java.awt.Point origin = getOrigin();
+		// unused ?? final java.awt.Point origin = getOrigin();
 
 		final int x = actualViewport.x;
 		final int y = actualViewport.y;
@@ -81,7 +83,7 @@ public class TitleBubble extends Bubble {
 				g.setColor(getForegroundColor());
 				if (m_subTexts.size() > 0) {
 					final SubText subText0 = m_subTexts.elementAt(0);
-					final int offsetX = m_pixelOffset.x;
+					// Unused ?? final int offsetX = m_pixelOffset.x;
 					final int offsetY = m_pixelOffset.y - (int) subText0.getBound().getY();
 					for (int i = 0; i < m_subTexts.size(); i++) {
 						final SubText subTextI = m_subTexts.elementAt(i);

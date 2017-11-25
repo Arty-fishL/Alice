@@ -78,7 +78,7 @@ public class ResizeMode extends RenderTargetManipulatorMode {
 
 	@Override
 	public void mouseDragged(final java.awt.event.MouseEvent ev, final int dx, final int dy) {
-		final javax.vecmath.Vector3d currentSize = pickedTransformable.getSize();
+		// Unused ?? final javax.vecmath.Vector3d currentSize = pickedTransformable.getSize();
 		// if ( (currentSize.x > 0 && currentSize.y > 0 ) || dy < 0 ) { //Aik
 		// Min
 		if (pickedTransformable != null && dy != 0) {

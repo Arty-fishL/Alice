@@ -35,17 +35,17 @@ public class WalkToAnimation extends AbstractWalkAnimation {
 		private edu.cmu.cs.stage3.math.HermiteCubic m_yHermite;
 		private edu.cmu.cs.stage3.math.HermiteCubic m_zHermite;
 
-		private boolean m_affectPosition;
-		private boolean m_affectQuaternion;
+		// Unused ?? private boolean m_affectPosition;
+		// Unused ?? private boolean m_affectQuaternion;
 
-		private boolean beginEqualsEnd = false;
+		// Unused ?? private boolean beginEqualsEnd = false;
 
 		double stepLength = -1.0;
 		double numberOfSteps = -1.0;
 		double currentPos = 0.0;
 		double timePerStep = -1.0;
 
-		private boolean done = false;
+		// Unused ?? private boolean done = false;
 
 		protected javax.vecmath.Vector3d getPositionEnd() {
 			if (m_subjectBoundingBox == null) {
@@ -138,8 +138,8 @@ public class WalkToAnimation extends AbstractWalkAnimation {
 		@Override
 		public void prologue(final double t) {
 
-			beginEqualsEnd = false;
-			done = false;
+			// Unused ?? beginEqualsEnd = false;
+			// Unused ?? done = false;
 
 			subject = WalkToAnimation.this.subject.getTransformableValue();
 			m_asSeenBy = asSeenBy.getReferenceFrameValue();

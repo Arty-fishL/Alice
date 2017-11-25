@@ -47,7 +47,7 @@ public class Vector3TCBKey extends TCBKey {
 	public static Vector3TCBKey valueOf(final String s) {
 		final java.util.StringTokenizer st = new java.util.StringTokenizer(s, " \t,[]");
 
-		final String className = st.nextToken(); // unused
+		/* unused ?? final String className = */ st.nextToken();
 		final double time = Double.parseDouble(st.nextToken());
 		final javax.vecmath.Vector3d value = new javax.vecmath.Vector3d(Double.parseDouble(st.nextToken()),
 				Double.parseDouble(st.nextToken()), Double.parseDouble(st.nextToken()));

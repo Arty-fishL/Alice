@@ -27,7 +27,7 @@ public class CharacterViewAnimation extends AbstractPositionAnimation {
 	}
 
 	public class RuntimeCloseUpAnimation extends RuntimeAbstractPositionAnimation {
-		private edu.cmu.cs.stage3.math.Box m_subjectBoundingBox;
+		// Unused ?? private edu.cmu.cs.stage3.math.Box m_subjectBoundingBox;
 		private edu.cmu.cs.stage3.alice.core.Model m_characterHead = null;
 		private Matrix33 m_orientationBegin = null;
 		private Matrix33 m_orientationEnd = null;

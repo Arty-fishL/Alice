@@ -68,7 +68,7 @@ public class StencilParser { // extends org.xml.sax.helpers.DefaultHandler{
 		// then we need to get the text of the note too....
 		String message = "hello world";
 		final Vector<String> msgs = new Vector<String>();
-		final Vector colors = new Vector();
+		final Vector<String> colors = new Vector<>();
 		String id = "id";
 		for (int i = 0; i < noteParts.getLength(); i++) {
 			final Node noteDetails = noteParts.item(i);

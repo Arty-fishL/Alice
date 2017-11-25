@@ -67,7 +67,7 @@ public class QuaternionTCBKey extends TCBKey {
 	public static QuaternionTCBKey valueOf(final String s) {
 		final java.util.StringTokenizer st = new java.util.StringTokenizer(s, " \t,[]");
 
-		final String className = st.nextToken(); // unused
+		/* Unused ?? final String className = */ st.nextToken();
 		final double time = Double.parseDouble(st.nextToken());
 		final edu.cmu.cs.stage3.math.Quaternion value = new edu.cmu.cs.stage3.math.Quaternion(
 				Double.parseDouble(st.nextToken()), Double.parseDouble(st.nextToken()),

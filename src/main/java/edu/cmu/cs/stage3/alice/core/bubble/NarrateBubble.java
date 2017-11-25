@@ -6,6 +6,7 @@
  */
 package edu.cmu.cs.stage3.alice.core.bubble;
 
+import java.awt.Canvas;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 
@@ -41,7 +42,8 @@ public class NarrateBubble extends Bubble {
 			actualViewport = rt.getActualViewport(sgCamera);
 
 			final java.awt.Font font = getFont();
-			final FontMetrics fontMetrics = java.awt.Toolkit.getDefaultToolkit().getFontMetrics(font);
+			final Canvas c = new Canvas();
+			final FontMetrics fontMetrics = c.getFontMetrics(font);
 			// System.out.println(fontMetrics.charWidth('W'));
 
 			final double charCnt = actualViewport.getWidth() / fontMetrics.charWidth('W');
@@ -75,7 +77,7 @@ public class NarrateBubble extends Bubble {
 	@Override
 	protected void paintBackground(final Graphics g) {
 		final java.awt.geom.Rectangle2D totalBound = getTotalBound();
-		final java.awt.Point origin = getOrigin();
+		// Unused ?? final java.awt.Point origin = getOrigin();
 		final java.awt.Point pixelOffset = getPixelOffset();
 
 		final int x = actualViewport.x;

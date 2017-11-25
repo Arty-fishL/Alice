@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.core;
 
+import edu.cmu.cs.stage3.alice.core.Behavior.Item;
+
 public class SimulationPropertyException extends SimulationException {
 	/**
 	 *
@@ -30,7 +32,7 @@ public class SimulationPropertyException extends SimulationException {
 	private static final long serialVersionUID = 4954898842294178298L;
 	private final Property m_property;
 
-	public SimulationPropertyException(final String detail, final java.util.Stack stack, final Property property) {
+	public SimulationPropertyException(final String detail, final java.util.Stack<Item> stack, final Property property) {
 		super(detail, stack, property.getOwner());
 		m_property = property;
 	}

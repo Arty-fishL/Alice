@@ -53,16 +53,16 @@ public class TraditionalAnimationStyle extends edu.cmu.cs.stage3.util.Enumerable
 
 	private final boolean m_beginGently;
 	private final boolean m_endGently;
-	private final boolean m_withAnticipation;
-	private final boolean m_withOvershoot;
+	// Unused ?? private final boolean m_withAnticipation;
+	// Unused ?? private final boolean m_withOvershoot;
 
 	// todo
 	public TraditionalAnimationStyle(final boolean beginGently, final boolean endGently, final boolean withAnticipation,
 			final boolean withOvershoot) {
 		m_beginGently = beginGently;
 		m_endGently = endGently;
-		m_withAnticipation = withAnticipation;
-		m_withOvershoot = withOvershoot;
+		// Unused ?? m_withAnticipation = withAnticipation;
+		// Unused ?? m_withOvershoot = withOvershoot;
 	}
 
 	// todo

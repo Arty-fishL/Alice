@@ -503,7 +503,7 @@ public class GuiNavigator extends javax.swing.JPanel implements Runnable {
 
 			super.mouseDragged(ev);
 
-			final edu.cmu.cs.stage3.alice.scenegraph.Container root = world.getSceneGraphScene();
+			// Unused ?? final edu.cmu.cs.stage3.alice.scenegraph.Container root = world.getSceneGraphScene();
 
 			coreHelper.vehicle.set(world);
 			coreHelper.setTransformationRightNow(objectToNavigate.getTransformation(world), world);

@@ -192,7 +192,7 @@ public class StructuredStorage {
 
 	private void getFat() throws IOException {
 		final int size = getSectorSize();
-		final int sectsPerFat = size / 4;
+		// Unused ?? final int sectsPerFat = size / 4;
 		final int fatsPerDif = size / 4 - 1;
 
 		final int numFATSectors = (int) (csectFat + csectDif * fatsPerDif);
@@ -327,9 +327,11 @@ public class StructuredStorage {
 		miniStream.read(buf, offset, length);
 	}
 
+	/* Unused ??
 	private void readMiniSector(final long sector, final byte[] buf, final int offset) throws IOException {
 		readMiniSector(sector, buf, offset, getMiniSectorSize());
 	}
+	*/
 
 	private void readSector(final long sector, final byte[] buf, final int offset, final int length)
 			throws IOException {
@@ -366,13 +368,17 @@ public class StructuredStorage {
 		return MINIFAT[(int) sector];
 	}
 
+	/* Unused ??
 	private int getCurrentIndex() {
 		return -1;
 	}
+	*/
 
+	/* Unused ??
 	private int getIndex(final String name, final int index) {
 		return -1;
 	}
+	*/
 
 	private long searchDirectory(final String name, final long index) {
 		if (index == 0xFFFFFFFFL) {
@@ -467,7 +473,7 @@ public class StructuredStorage {
 			// Assume ministream size < 2GB
 			int offset = 0;
 			for (int i = 0; i < sectors - 1; i++) {
-				final long miniSectorOffset = getOffsetOfMiniSector(sector);
+				// unused ?? final long miniSectorOffset = getOffsetOfMiniSector(sector);
 				readMiniSector(sector, buf, offset, sectorSize);
 				offset += sectorSize;
 				sector = getMiniFATSector(sector);

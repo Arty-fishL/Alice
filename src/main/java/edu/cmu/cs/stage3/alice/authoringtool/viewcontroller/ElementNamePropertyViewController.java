@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.viewcontroller;
 
+import edu.cmu.cs.stage3.util.StringObjectPair;
+
 /**
  * @author Jason Pratt
  */
@@ -63,8 +65,9 @@ public class ElementNamePropertyViewController extends StringPropertyViewControl
 	}
 
 	public void setDefaultPopupStructure() {
-		popupStructure = new java.util.Vector();
-		popupStructure.add(new edu.cmu.cs.stage3.util.StringObjectPair("Rename", new Runnable() {
+		final java.util.Vector<StringObjectPair> x;
+		popupStructure = x = new java.util.Vector<StringObjectPair>();
+		x.add(new edu.cmu.cs.stage3.util.StringObjectPair("Rename", new Runnable() {
 			@Override
 			public void run() {
 				ElementNamePropertyViewController.this.editValue();
@@ -72,7 +75,7 @@ public class ElementNamePropertyViewController extends StringPropertyViewControl
 		}));
 	}
 
-	public void setPopupStructure(final java.util.Vector structure) {
+	public void setPopupStructure(final java.util.Vector<?> structure) {
 		popupStructure = structure;
 	}
 

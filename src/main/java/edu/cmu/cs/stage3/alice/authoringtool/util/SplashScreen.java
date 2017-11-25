@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.util;
 
+import java.util.Calendar;
+
 /**
  * @author Jason Pratt
  */
@@ -104,8 +106,14 @@ public class SplashScreen extends java.awt.Frame {
 				final java.util.Date d = new java.util.Date(i);
 				final java.util.regex.Pattern p = java.util.regex.Pattern.compile("\\D");
 				final String oldVersion[] = p.split(edu.cmu.cs.stage3.alice.authoringtool.JAlice.getVersion());
-				if (Integer.valueOf(oldVersion[3]).compareTo(Integer.valueOf(d.getMonth() + 1)) < 0
-						&& Integer.valueOf(oldVersion[5]).compareTo(Integer.valueOf(d.getYear() + 1900)) <= 0) {
+				
+				final Calendar cal = Calendar.getInstance();
+				cal.setTime(d);
+				final int month = cal.get(Calendar.MONTH);
+				final int year = cal.get(Calendar.YEAR);
+				
+				if (Integer.valueOf(oldVersion[3]).compareTo(Integer.valueOf(month + 1)) < 0
+						&& Integer.valueOf(oldVersion[5]).compareTo(Integer.valueOf(year + 1900)) <= 0) {
 					return true;
 				}
 			} catch (final Exception e) {

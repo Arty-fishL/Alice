@@ -86,7 +86,7 @@ public class SoundResponse extends edu.cmu.cs.stage3.alice.core.Response {
 		private edu.cmu.cs.stage3.media.Player m_player = null;
 		private edu.cmu.cs.stage3.alice.core.Expression m_volumeLevelExpression = null;
 		private edu.cmu.cs.stage3.alice.core.Expression m_rateExpression = null;
-		private final edu.cmu.cs.stage3.alice.core.Expression m_panExpression = null;
+		// Unused ?? private final edu.cmu.cs.stage3.alice.core.Expression m_panExpression = null;
 		private final edu.cmu.cs.stage3.alice.core.event.ExpressionListener m_volumeLevelExpressionListener = new edu.cmu.cs.stage3.alice.core.event.ExpressionListener() {
 			@Override
 			public void expressionChanged(final edu.cmu.cs.stage3.alice.core.event.ExpressionEvent e) {
@@ -190,7 +190,7 @@ public class SoundResponse extends edu.cmu.cs.stage3.alice.core.Response {
 			if (m_rateExpression != null) {
 				m_rateExpression.removeExpressionListener(m_rateExpressionListener);
 			}
-			final edu.cmu.cs.stage3.alice.core.Sound soundValue = sound.getSoundValue();
+			// Unused ?? final edu.cmu.cs.stage3.alice.core.Sound soundValue = sound.getSoundValue();
 			if (m_player != null) {
 				m_player.stop();
 				m_player.setIsAvailable(true);

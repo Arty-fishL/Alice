@@ -65,12 +65,14 @@ public class BubbleManager implements edu.cmu.cs.stage3.alice.scenegraph.rendere
 					if (bubbleI.isShowing()) {
 						final java.awt.Point pixelOffset = bubbleI.getPixelOffset();
 						final java.awt.Point origin = bubbleI.getOrigin();
+						/* Unused ??
 						double half;
 						if (origin.x > actualViewport.width / 2) {
 							half = 0.5;
 						} else {
 							half = 0.0;
 						}
+						*/
 						if (pixelOffset == null) {
 							final java.awt.geom.Rectangle2D rect = bubbleI.getTotalBound();
 							// int x = (int)( ( ( Math.random()* 0.4 ) + 0.05 +

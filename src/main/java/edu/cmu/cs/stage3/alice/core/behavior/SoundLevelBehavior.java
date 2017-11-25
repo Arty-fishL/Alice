@@ -73,7 +73,8 @@ public class SoundLevelBehavior extends TriggerBehavior implements ControllerLis
 		super.started(world, time);
 
 		final AudioFormat format = new AudioFormat(AudioFormat.LINEAR, Format.NOT_SPECIFIED, 16, 1);
-		final java.util.Vector captureDeviceList = CaptureDeviceManager.getDeviceList(format);
+		@SuppressWarnings("unchecked")
+		final java.util.Vector<CaptureDeviceInfo> captureDeviceList = CaptureDeviceManager.getDeviceList(format);
 		if (captureDeviceList.size() <= 0) {
 			System.err.println("No Audio Capture Devices Detected");
 			return;
@@ -239,7 +240,7 @@ public class SoundLevelBehavior extends TriggerBehavior implements ControllerLis
 
 		final int numSamples = dataLength / 2;
 
-		final long start_t = input.getTimeStamp() / 1000000;
+		// Unused ?? final long start_t = input.getTimeStamp() / 1000000;
 
 		for (int i = 0; i < numSamples / ((AudioFormat) input.getFormat()).getChannels(); i++) {
 			// Left Channel

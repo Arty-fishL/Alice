@@ -25,7 +25,7 @@ package edu.cmu.cs.stage3.alice.scenegraph.renderer.nativerenderer;
 
 public abstract class ElementProxy extends edu.cmu.cs.stage3.alice.scenegraph.renderer.AbstractProxy {
 	private final int m_nativeInstance = 0;
-	private final int m_nativeTypeID = 0;
+	// Unused ?? private final int m_nativeTypeID = 0;
 
 	protected abstract void createNativeInstance();
 

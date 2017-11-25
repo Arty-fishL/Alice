@@ -155,6 +155,6 @@ public class AliceTabbedPaneUI extends javax.swing.plaf.metal.MetalTabbedPaneUI 
 	@Override
 	protected java.awt.FontMetrics getFontMetrics() {
 		final java.awt.Font font = tabPane.getFont().deriveFont(java.awt.Font.BOLD);
-		return java.awt.Toolkit.getDefaultToolkit().getFontMetrics(font);
+		return tabPane.getFontMetrics(font);
 	}
 }

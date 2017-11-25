@@ -25,11 +25,11 @@ package edu.cmu.cs.stage3.alice.core.criterion;
 
 //todo: deprecate?
 public class ExpressionIsAccessibleFromCriterion extends edu.cmu.cs.stage3.util.criterion.InstanceOfCriterion {
-	private final edu.cmu.cs.stage3.alice.core.Element m_from;
+	// Unused ?? private final edu.cmu.cs.stage3.alice.core.Element m_from;
 
 	public ExpressionIsAccessibleFromCriterion(final edu.cmu.cs.stage3.alice.core.Element from) {
 		super(edu.cmu.cs.stage3.alice.core.Expression.class);
-		m_from = from;
+		// Unused ?? m_from = from;
 	}
 
 	@Override

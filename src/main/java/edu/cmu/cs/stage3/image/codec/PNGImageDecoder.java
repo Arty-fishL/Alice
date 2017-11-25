@@ -174,9 +174,9 @@ class PNGImage extends SimpleRenderedImage {
 	public static final int PNG_FILTER_AVERAGE = 3;
 	public static final int PNG_FILTER_PAETH = 4;
 
-	private static final int RED_OFFSET = 2;
-	private static final int GREEN_OFFSET = 1;
-	private static final int BLUE_OFFSET = 0;
+	// Unused ?? private static final int RED_OFFSET = 2;
+	// Unused ?? private static final int GREEN_OFFSET = 1;
+	// Unused ?? private static final int BLUE_OFFSET = 0;
 
 	private final int[][] bandOffsets = { null, { 0 }, // G
 			{ 0, 1 }, // GA in GA order
@@ -210,7 +210,7 @@ class PNGImage extends SimpleRenderedImage {
 
 	private int[] significantBits = null;
 
-	private boolean hasBackground = false;
+	// Unused ?? private boolean hasBackground = false;
 
 	// Parameter information
 
@@ -496,7 +496,7 @@ class PNGImage extends SimpleRenderedImage {
 	private static String getChunkType(final DataInputStream distream) {
 		try {
 			distream.mark(8);
-			final int length = distream.readInt();
+			/* Unused ?? final int length = */ distream.readInt();
 			final int type = distream.readInt();
 			distream.reset();
 
@@ -828,7 +828,7 @@ class PNGImage extends SimpleRenderedImage {
 	}
 
 	private void parse_bKGD_chunk(final PNGChunk chunk) {
-		hasBackground = true;
+		// Unused ?? hasBackground = true;
 
 		switch (colorType) {
 		case PNG_COLOR_PALETTE:
@@ -952,12 +952,12 @@ class PNGImage extends SimpleRenderedImage {
 	}
 
 	private void parse_iCCP_chunk(final PNGChunk chunk) {
-		String name = new String();
-		byte b;
+		// Unused ?? String name = new String();
+		// Unused ?? byte b;
 
 		int textIndex = 0;
-		while ((b = chunk.getByte(textIndex++)) != 0) {
-			name += (char) b;
+		while ((/* Unused ?? b = */ chunk.getByte(textIndex++)) != 0) {
+			// Unused ?? name += (char) b;
 		}
 	}
 
@@ -1171,7 +1171,7 @@ class PNGImage extends SimpleRenderedImage {
 		while ((b = chunk.getByte(textIndex++)) != 0) {
 			key += (char) b;
 		}
-		final int method = chunk.getByte(textIndex++);
+		/* Unused ?? final int method = */ chunk.getByte(textIndex++);
 
 		try {
 			final int length = chunk.getLength() - textIndex;

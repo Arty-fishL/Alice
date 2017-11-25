@@ -69,7 +69,7 @@ public class StepPanel extends JPanel {
 		}
 
 		final Vector<Node> chooserNodes = XMLDirectoryUtilities.getDirectories(stepNode);
-		final double incr = 3.0 / chooserNodes.size();
+		// Unused ?? final double incr = 3.0 / chooserNodes.size();
 		for (int i = 0; i < chooserNodes.size(); i++) {
 			final Node chooserNode = chooserNodes.elementAt(i);
 			if (chooserNode.getNodeName().equals("directory")) {

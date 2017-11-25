@@ -120,7 +120,7 @@ public class OBJ {
 		final int[] indices = new int[fs.size() * 3];
 		int i = 0;
 		for (int f = 0; f < fs.size(); f++) {
-			final java.util.Vector face = fs.elementAt(f);
+			final Vector<Integer> face = fs.elementAt(f);
 			switch (face.size()) {
 			case 3:
 				indices[i++] = ((Integer) face.elementAt(0)).intValue();

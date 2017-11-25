@@ -27,9 +27,11 @@ class SymmetricPerspectiveCameraProxy extends CameraProxy {
 	private double m_vertical;
 	private double m_horizontal;
 
+	/* Unused ??
 	private static double radiansToDegrees(final double radians) {
 		return radians * 180.0 / Math.PI;
 	}
+	*/
 
 	@Override
 	protected java.awt.Rectangle getActualLetterboxedViewport(final int width, final int height) {

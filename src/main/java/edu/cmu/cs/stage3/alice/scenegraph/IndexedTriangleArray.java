@@ -42,8 +42,8 @@ public class IndexedTriangleArray extends VertexGeometry {
 	private int m_indexLowerBound = 0;
 	private int m_indexUpperBound = -1;
 
-	private final int[] m_edges = null;
-	private final int m_subdivisionRefinementLevel = 0;
+	// Unused ?? private final int[] m_edges = null;
+	// Unused ?? private final int m_subdivisionRefinementLevel = 0;
 
 	public int[] getIndices() {
 		return m_indices;
@@ -121,7 +121,7 @@ public class IndexedTriangleArray extends VertexGeometry {
 		final int version = dis.readInt();
 		if (version == 1) {
 			final int faceCount = dis.readInt();
-			final int verticesPerFace = dis.readInt();
+			/* Unused ?? final int verticesPerFace = */ dis.readInt();
 			indices = new int[faceCount * 3];
 			for (int i = 0; i < indices.length; i++) {
 				indices[i] = dis.readInt();

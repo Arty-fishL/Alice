@@ -29,6 +29,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
+import java.nio.charset.StandardCharsets;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -238,7 +239,7 @@ public abstract class AliceAlertContentPane extends edu.cmu.cs.stage3.swing.Cont
 			connection.setUseCaches(false);
 			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
-			String stacktrace = java.net.URLEncoder.encode(detailTextPane.getText());
+			String stacktrace = java.net.URLEncoder.encode(detailTextPane.getText(), StandardCharsets.UTF_8.toString());
 			while (stacktrace.indexOf("%0D") > -1) { // delete the carriage
 														// returns
 				final int i = stacktrace.indexOf("%0D");

@@ -48,7 +48,7 @@ class TIFFFaxDecoder {
 
 	private int bitPointer, bytePointer;
 	private byte[] data;
-	private final int w, h;
+	private final int w /* Unused ?? , h */;
 	private final int fillOrder;
 
 	// Data structures needed to store changing elements for the previous
@@ -63,7 +63,7 @@ class TIFFFaxDecoder {
 	private int compression = 2;
 
 	// Variables set by T4Options
-	private int uncompressedMode = 0;
+	// Unused ?? private int uncompressedMode = 0;
 	private int fillBits = 0;
 	private int oneD;
 
@@ -554,7 +554,7 @@ class TIFFFaxDecoder {
 	public TIFFFaxDecoder(final int fillOrder, final int w, final int h) {
 		this.fillOrder = fillOrder;
 		this.w = w;
-		this.h = h;
+		// Unused ?? this.h = h;
 
 		bitPointer = 0;
 		bytePointer = 0;
@@ -583,7 +583,7 @@ class TIFFFaxDecoder {
 		int bits = 0, code = 0, isT = 0;
 		int current, entry, twoBits;
 		boolean isWhite = true;
-		final int dstEnd = 0;
+		// Unused ?? final int dstEnd = 0;
 
 		// Initialize starting of the changing elements array
 		changingElemSize = 0;
@@ -731,6 +731,7 @@ class TIFFFaxDecoder {
 		int a0, a1, b1, b2;
 		final int[] b = new int[2];
 		int entry, code, bits;
+		@SuppressWarnings("unused")
 		final int color;
 		boolean isWhite;
 		int currIndex = 0;
@@ -743,7 +744,7 @@ class TIFFFaxDecoder {
 		// TODO: Deal with uncompressedMode, aastha 03/03/1999
 
 		oneD = (int) (tiffT4Options & 0x01);
-		uncompressedMode = (int) ((tiffT4Options & 0x02) >> 1);
+		// Unused ?? uncompressedMode = (int) ((tiffT4Options & 0x02) >> 1);
 		fillBits = (int) ((tiffT4Options & 0x04) >> 2);
 
 		// The data must start with an EOL code
@@ -874,11 +875,11 @@ class TIFFFaxDecoder {
 		bytePointer = 0;
 
 		final int scanlineStride = (w + 7) / 8;
-		final int bufferOffset = 0;
+		// Unused ?? final int bufferOffset = 0;
 
 		int a0, a1, b1, b2;
 		int entry, code, bits;
-		final byte color;
+		// Unused ?? final byte color;
 		boolean isWhite;
 		int currIndex;
 		int temp[];
@@ -889,7 +890,7 @@ class TIFFFaxDecoder {
 		// uncompressedMode - have written some code for this, but this
 		// has not been tested due to lack of test images using this optional
 		// extension. This code is when code == 11. aastha 03/03/1999
-		uncompressedMode = (int) ((tiffT6Options & 0x02) >> 1);
+		// Unused ?? uncompressedMode = (int) ((tiffT6Options & 0x02) >> 1);
 
 		// Local cached reference
 		int[] cce = currChangingElems;
@@ -1152,7 +1153,7 @@ class TIFFFaxDecoder {
 	// Returns run length
 	private int decodeBlackCodeWord() {
 		int current, entry, bits, isT;
-		final int twoBits;
+		// Unused ?? final int twoBits;
 		int code = -1;
 		int runLength = 0;
 		boolean isWhite = false;

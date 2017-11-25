@@ -86,8 +86,7 @@ public class StdErrOutContentPane extends edu.cmu.cs.stage3.alice.authoringtool.
 					public void run() {
 						if (!isShowing) {
 							isShowing = true;
-							final int result = edu.cmu.cs.stage3.swing.DialogManager
-									.showDialog(StdErrOutContentPane.this);
+							/* Unused ?? final int result = */ edu.cmu.cs.stage3.swing.DialogManager.showDialog(StdErrOutContentPane.this);
 						}
 					}
 				});
@@ -126,8 +125,7 @@ public class StdErrOutContentPane extends edu.cmu.cs.stage3.alice.authoringtool.
 					public void run() {
 						if (!isShowing) {
 							isShowing = true;
-							final int result = edu.cmu.cs.stage3.swing.DialogManager
-									.showDialog(StdErrOutContentPane.this);
+							/* Unused ?? final int result = */ edu.cmu.cs.stage3.swing.DialogManager.showDialog(StdErrOutContentPane.this);
 						}
 					}
 				});

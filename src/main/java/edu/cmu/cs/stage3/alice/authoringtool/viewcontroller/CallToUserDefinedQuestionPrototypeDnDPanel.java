@@ -23,8 +23,6 @@
 
 package edu.cmu.cs.stage3.alice.authoringtool.viewcontroller;
 
-import java.awt.Component;
-
 /**
  * @author Jason Pratt
  */
@@ -147,10 +145,12 @@ public class CallToUserDefinedQuestionPrototypeDnDPanel
 	}
 
 	public void refreshGUI() {
+		/* Unused ??
 		final java.awt.Component[] components = subPanel.getComponents();
 		for (final Component component2 : components) {
 			// components[i].removeMouseListener( mouseListener );
 		}
+		*/
 		if (nameViewController != null) {
 			// nameViewController.removeMouseListener( mouseListener );
 			removeDragSourceComponent(nameViewController);

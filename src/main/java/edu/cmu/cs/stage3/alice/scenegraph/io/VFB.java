@@ -72,7 +72,7 @@ public class VFB {
 			}
 
 			final int faceCount = dis.readInt();
-			final int faceDataCount = dis.readInt();
+			// Unused ?? final int faceDataCount = dis.readInt();
 			final int verticesPerFace = dis.readInt();
 			final int[] indices = new int[faceCount * 3];
 			int i = 0;

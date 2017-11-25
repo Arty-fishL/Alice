@@ -48,14 +48,14 @@ public class Note implements StencilObject, MouseEventListener, KeyEventListener
 	protected boolean isModified = true;
 	protected Rectangle rect = null;
 	protected Rectangle previousRect = null;
-	private boolean prevBlank = false;
+	// Unused ?? private boolean prevBlank = false;
 
-	private final ScreenShape currentShape = null;
-	private final boolean startNewLine = false;
+	// Unused ?? private final ScreenShape currentShape = null;
+	// Unused ?? private final boolean startNewLine = false;
 	protected boolean isInitialized = false;
 
 	private Point startDragging = null;
-	private final Point currentDragPosition = null;
+	// Unused ?? private final Point currentDragPosition = null;
 	private ScreenShape moveRect = null;
 	private int dragInProgress = 0;
 
@@ -107,10 +107,10 @@ public class Note implements StencilObject, MouseEventListener, KeyEventListener
 		}
 	}
 
-	public void setText(final Vector msgs) {
+	public void setText(final Vector<String> msgs) {
 		paragraph.clearText();
 		for (int i = 0; i < msgs.size(); i++) {
-			String text = (String) msgs.elementAt(i);
+			String text = msgs.elementAt(i).toString();
 			if (text.length() > 0) {
 				final char c = text.charAt(0);
 				if (Character.isDigit(c)) {
@@ -137,7 +137,7 @@ public class Note implements StencilObject, MouseEventListener, KeyEventListener
 		final Point side1Pt = new Point((int) (basePt.getX() + 10 * delY), (int) (basePt.getY() - 10 * delX));
 		final Point side2Pt = new Point((int) (basePt.getX() - 10 * delY), (int) (basePt.getY() + 10 * delX));
 
-		final Point junkPt = new Point((int) (holePoint.getX() + 20), (int) holePoint.getY());
+		// Unused ?? final Point junkPt = new Point((int) (holePoint.getX() + 20), (int) holePoint.getY());
 
 		triangle = new java.awt.Polygon();
 		triangle.addPoint((int) holePoint.getX(), (int) holePoint.getY());
@@ -214,9 +214,13 @@ public class Note implements StencilObject, MouseEventListener, KeyEventListener
 	}
 
 	protected Rectangle getBoundingRectangle() {
+		@SuppressWarnings("unused")
 		final double minX = 0;
+		@SuppressWarnings("unused")
 		final double minY = 0;
+		@SuppressWarnings("unused")
 		final double maxX = 0;
+		@SuppressWarnings("unused")
 		final double maxY = 0;
 
 		Rectangle area = bgRect.getBounds().union(underRect.getBounds());
@@ -485,10 +489,10 @@ public class Note implements StencilObject, MouseEventListener, KeyEventListener
 	@Override
 	public Vector<ScreenShape> getShapes() {
 		if (scrObject != null && scrObject.getRectangle() == null) {
-			prevBlank = true;
+			// Unused ?? prevBlank = true;
 			return null;
 		} else {
-			prevBlank = false;
+			// Unused ?? prevBlank = false;
 			return shapes;
 		}
 	}

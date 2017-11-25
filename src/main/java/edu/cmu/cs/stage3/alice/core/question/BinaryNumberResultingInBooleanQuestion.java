@@ -31,6 +31,7 @@ public abstract class BinaryNumberResultingInBooleanQuestion extends BooleanQues
 
 	protected abstract boolean getValue(double a, double b);
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public Object getValue() {
 		final double aValue = a.doubleValue();

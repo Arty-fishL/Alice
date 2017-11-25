@@ -23,6 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.joglrenderer;
 
+import java.awt.Canvas;
+
 import javax.media.opengl.GL;
 
 public class Graphics extends java.awt.Graphics {
@@ -117,7 +119,8 @@ public class Graphics extends java.awt.Graphics {
 
 	@Override
 	public java.awt.FontMetrics getFontMetrics(final java.awt.Font f) {
-		return java.awt.Toolkit.getDefaultToolkit().getFontMetrics(f);
+		Canvas c = new Canvas();
+		return c.getFontMetrics(f);
 	}
 
 	@Override

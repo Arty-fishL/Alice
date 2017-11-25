@@ -49,7 +49,7 @@ public class Vector3BezierKey extends BezierKey {
 	public static Vector3BezierKey valueOf(final String s) {
 		final java.util.StringTokenizer st = new java.util.StringTokenizer(s, " \t,[]");
 
-		final String className = st.nextToken(); // unused
+		/* Unused ?? final String className = */ st.nextToken();
 		final double time = Double.parseDouble(st.nextToken());
 		final javax.vecmath.Vector3d value = new javax.vecmath.Vector3d(Double.parseDouble(st.nextToken()),
 				Double.parseDouble(st.nextToken()), Double.parseDouble(st.nextToken()));

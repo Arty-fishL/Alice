@@ -79,9 +79,9 @@ public class Vertex extends Vertex3d {
 
 	public double[] getArray() {
 		byte xyzOffset = Byte.MIN_VALUE;
-		byte ijkOffset = Byte.MIN_VALUE;
-		byte uvOffset = Byte.MIN_VALUE;
-		byte rgbaOffset = Byte.MIN_VALUE;
+		// Unused ?? byte ijkOffset = Byte.MIN_VALUE;
+		// Unused ?? byte uvOffset = Byte.MIN_VALUE;
+		// Unused ?? byte rgbaOffset = Byte.MIN_VALUE;
 		byte size = 0;
 		final int format = getFormat();
 		if ((format & POSITION_XYZ) != 0) {
@@ -89,19 +89,19 @@ public class Vertex extends Vertex3d {
 			size += 3;
 		}
 		if ((format & NORMAL_IJK) != 0) {
-			ijkOffset = size;
+			// Unused ?? ijkOffset = size;
 			size += 3;
 		}
 		if ((format & DIFFUSE_RGBA) != 0) {
-			rgbaOffset = size;
+			// Unused ?? rgbaOffset = size;
 			size += 4;
 		}
 		if ((format & SPECULAR_RGBA) != 0) {
-			rgbaOffset = size;
+			// Unused ?? rgbaOffset = size;
 			size += 4;
 		}
 		if ((format & TEXTURE_COORDINATE_UV0) != 0) {
-			uvOffset = size;
+			// Unused ?? uvOffset = size;
 			size += 2;
 		}
 		final double[] array = new double[size];

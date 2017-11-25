@@ -140,9 +140,9 @@ public class Playback extends Thread {
 		}
 
 		// play back the captured data
-		final int frameSizeInBytes = audioFileFormat.getFormat().getFrameSize();
+		// Unused ?? final int frameSizeInBytes = audioFileFormat.getFormat().getFrameSize();
 		final int bufferLengthInBytes = line.getBufferSize();
-		final int bufferLengthInFrames = bufferLengthInBytes / frameSizeInBytes;
+		// Unused ?? final int bufferLengthInFrames = bufferLengthInBytes / frameSizeInBytes;
 		final byte[] data = new byte[bufferLengthInBytes];
 		int numBytesRead = 0;
 

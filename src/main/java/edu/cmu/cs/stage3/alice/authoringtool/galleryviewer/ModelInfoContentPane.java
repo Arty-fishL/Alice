@@ -127,7 +127,7 @@ public class ModelInfoContentPane extends edu.cmu.cs.stage3.swing.ContentPane {
 			if (!(current.getObject() instanceof java.util.Vector)) {
 				continue;
 			}
-			final java.util.Vector detailVector = (java.util.Vector) current.getObject();
+			final java.util.Vector<?> detailVector = (java.util.Vector<?>) current.getObject();
 			final javax.swing.JPanel detailContainer = new javax.swing.JPanel();
 			detailContainer.setOpaque(false);
 			detailContainer.setBorder(null);

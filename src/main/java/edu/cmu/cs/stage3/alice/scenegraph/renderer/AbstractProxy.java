@@ -49,7 +49,6 @@ public abstract class AbstractProxy {
 	}
 
 	protected void initializeProperties() {
-		@SuppressWarnings("unchecked")
 		final java.util.Enumeration<Property> enum0 = edu.cmu.cs.stage3.alice.scenegraph.Property
 				.getProperties(m_sgElement.getClass()).elements();
 		while (enum0.hasMoreElements()) {

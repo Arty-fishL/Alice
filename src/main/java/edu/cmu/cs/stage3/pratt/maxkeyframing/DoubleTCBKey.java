@@ -40,7 +40,7 @@ public class DoubleTCBKey extends TCBKey {
 	public static DoubleTCBKey valueOf(final String s) {
 		final java.util.StringTokenizer st = new java.util.StringTokenizer(s, " \t,[]");
 
-		final String className = st.nextToken(); // unused
+		/* Unused ?? final String className = */ st.nextToken();
 		final double time = Double.parseDouble(st.nextToken());
 		final double value = Double.parseDouble(st.nextToken());
 		final double tension = Double.parseDouble(st.nextToken());

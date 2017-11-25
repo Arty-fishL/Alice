@@ -174,7 +174,7 @@ public class StyledStreamTextPane extends javax.swing.JTextPane {
 		@Override
 		public void drop(final java.awt.dnd.DropTargetDropEvent dtde) {
 			final java.awt.datatransfer.Transferable transferable = dtde.getTransferable();
-			final java.awt.datatransfer.DataFlavor[] flavors = transferable.getTransferDataFlavors();
+			// Unused ?? final java.awt.datatransfer.DataFlavor[] flavors = transferable.getTransferDataFlavors();
 
 			if (edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources.safeIsDataFlavorSupported(transferable,
 					edu.cmu.cs.stage3.alice.authoringtool.datatransfer.ElementPrototypeReferenceTransferable.elementPrototypeReferenceFlavor)) {
@@ -206,7 +206,7 @@ public class StyledStreamTextPane extends javax.swing.JTextPane {
 								};
 							}
 						};
-						final java.util.Vector structure = PopupMenuUtilities.makePrototypeStructure(elementPrototype,
+						final java.util.Vector<?> structure = PopupMenuUtilities.makePrototypeStructure(elementPrototype,
 								factory, null);
 						final javax.swing.JPopupMenu popup = PopupMenuUtilities.makePopupMenu(structure);
 						popup.show(StyledStreamTextPane.this, (int) dtde.getLocation().getX(),

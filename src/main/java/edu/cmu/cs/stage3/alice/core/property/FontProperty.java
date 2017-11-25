@@ -38,11 +38,11 @@ public class FontProperty extends ObjectProperty {
 	@Override
 	protected void decodeObject(final org.w3c.dom.Element node, final edu.cmu.cs.stage3.io.DirectoryTreeLoader loader,
 			final java.util.Vector<PropertyReference> referencesToBeResolved, final double version) throws java.io.IOException {
-		final org.w3c.dom.Node familyNode = node.getElementsByTagName("family").item(0);
+		// Unused ?? final org.w3c.dom.Node familyNode = node.getElementsByTagName("family").item(0);
 		final org.w3c.dom.Node nameNode = node.getElementsByTagName("name").item(0);
 		final org.w3c.dom.Node styleNode = node.getElementsByTagName("style").item(0);
 		final org.w3c.dom.Node sizeNode = node.getElementsByTagName("size").item(0);
-		final String family = getNodeText(familyNode);
+		// Unused ?? final String family = getNodeText(familyNode);
 		final String name = getNodeText(nameNode);
 		final int style = Integer.parseInt(getNodeText(styleNode));
 		final int size = Integer.parseInt(getNodeText(sizeNode));

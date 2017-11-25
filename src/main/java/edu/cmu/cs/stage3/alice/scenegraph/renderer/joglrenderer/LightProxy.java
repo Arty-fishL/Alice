@@ -29,7 +29,7 @@ abstract class LightProxy extends AffectorProxy {
 	private final float[] m_colorTimesBrightness = new float[4];
 	private final float[] m_color = new float[4];
 	private float m_brightness;
-	private float m_range;
+	// Unused ?? private float m_range;
 
 	private final float[] reuse_position = new float[4];
 	private final float[] reuse_spotDirection = new float[3];
@@ -125,7 +125,7 @@ abstract class LightProxy extends AffectorProxy {
 			m_brightness = ((Number) value).floatValue();
 			updateColorTimesBrightness();
 		} else if (property == edu.cmu.cs.stage3.alice.scenegraph.Light.RANGE_PROPERTY) {
-			m_range = ((Number) value).floatValue();
+			// Unused ?? m_range = ((Number) value).floatValue();
 		} else {
 			super.changed(property, value);
 		}

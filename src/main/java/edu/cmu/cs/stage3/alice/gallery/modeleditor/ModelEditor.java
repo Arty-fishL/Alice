@@ -172,7 +172,7 @@ public class ModelEditor extends javax.swing.JFrame {
 		m_tree.addTreeSelectionListener(new javax.swing.event.TreeSelectionListener() {
 			@Override
 			public void valueChanged(final javax.swing.event.TreeSelectionEvent e) {
-				final javax.swing.tree.TreePath treePath = e.getPath();
+				// Unused ?? final javax.swing.tree.TreePath treePath = e.getPath();
 				onSelect((edu.cmu.cs.stage3.alice.core.Element) m_tree.getLastSelectedPathComponent());
 			}
 		});

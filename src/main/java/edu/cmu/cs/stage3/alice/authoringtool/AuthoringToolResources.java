@@ -710,7 +710,6 @@ public class AuthoringToolResources {
 		return !shouldGUIIncludeNone(property);
 	}
 
-	@SuppressWarnings("unchecked")
 	public static boolean shouldGUIIncludeNone(final edu.cmu.cs.stage3.alice.core.Property property) {
 		if (AuthoringToolResources.resources.propertiesToIncludeNoneFor != null) {
 			final Class<?> elementClass = property.getOwner().getClass();
@@ -724,7 +723,6 @@ public class AuthoringToolResources {
 		return false;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static boolean shouldGUIIncludeNone(final Class<?> elementClass, final String propertyName) {
 		if (AuthoringToolResources.resources.propertiesToIncludeNoneFor != null) {
 			for (final StringTypePair element : AuthoringToolResources.resources.propertiesToIncludeNoneFor) {
@@ -740,7 +738,6 @@ public class AuthoringToolResources {
 		AuthoringToolResources.resources.propertyNamesToOmit = propertyNamesToOmit;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static boolean shouldGUIOmitPropertyName(final edu.cmu.cs.stage3.alice.core.Property property) {
 		if (AuthoringToolResources.resources.propertyNamesToOmit != null) {
 			final Class<?> elementClass = property.getOwner().getClass();
@@ -759,7 +756,6 @@ public class AuthoringToolResources {
 		AuthoringToolResources.resources.propertiesToOmitScriptDefinedFor = propertiesToOmitScriptDefinedFor;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static boolean shouldGUIOmitScriptDefined(final edu.cmu.cs.stage3.alice.core.Property property) {
 		if (!authoringToolConfig.getValue("enableScripting").equalsIgnoreCase("true")) {
 			return true;

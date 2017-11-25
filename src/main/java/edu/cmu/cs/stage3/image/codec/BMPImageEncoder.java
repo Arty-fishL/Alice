@@ -75,7 +75,7 @@ public class BMPImageEncoder extends ImageEncoderImpl {
 
 	private final OutputStream output;
 	private final int version;
-	private final boolean isCompressed, isTopDown;
+	private final boolean /* Unused ?? isCompressed, */ isTopDown;
 	private int w, h;
 
 	/**
@@ -101,7 +101,7 @@ public class BMPImageEncoder extends ImageEncoderImpl {
 		}
 
 		version = bmpParam.getVersion();
-		isCompressed = bmpParam.isCompressed();
+		// unused ?? isCompressed = bmpParam.isCompressed();
 		isTopDown = bmpParam.isTopDown();
 	}
 

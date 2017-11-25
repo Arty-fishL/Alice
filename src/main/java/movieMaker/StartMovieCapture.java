@@ -20,7 +20,7 @@ public class StartMovieCapture implements Runnable {
 	private int framesPerSecond = 16;
 
 	/** the region to capture */
-	private final Rectangle region = null;
+	// Unused ?? private final Rectangle region = null;
 
 	/** the active thread */
 	private Thread active = null;

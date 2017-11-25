@@ -88,7 +88,7 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 	private final DigitalPicture picture;
 
 	/** The image icon used to display the picture */
-	private ImageIcon scrollImageIcon;
+	// Unused ?? private ImageIcon scrollImageIcon;
 
 	/** The image display */
 	private ImageDisplay imageDisplay;
@@ -453,12 +453,12 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 			// get the rectangle that defines the current view
 			final JViewport viewport = scrollPane.getViewport();
 			final Rectangle rect = viewport.getViewRect();
-			final int rectMinX = (int) rect.getX();
+			// Unused ?? final int rectMinX = (int) rect.getX();
 			final int rectWidth = (int) rect.getWidth();
-			final int rectMaxX = rectMinX + rectWidth - 1;
-			final int rectMinY = (int) rect.getY();
+			// Unused ?? final int rectMaxX = rectMinX + rectWidth - 1;
+			// Unused ?? final int rectMinY = (int) rect.getY();
 			final int rectHeight = (int) rect.getHeight();
-			final int rectMaxY = rectMinY + rectHeight - 1;
+			// Unused ?? final int rectMaxY = rectMinY + rectHeight - 1;
 
 			// get the maximum possible x and y index
 			final int maxIndexX = (int) (picture.getWidth() * zoomFactor) - rectWidth - 1;
@@ -783,7 +783,7 @@ public class PictureExplorer implements MouseMotionListener, ActionListener, Mou
 	 */
 	public static void main(final String args[]) {
 		final Picture p = new Picture(FileChooser.pickAFile());
-		final PictureExplorer test = new PictureExplorer(p);
+		/* Unused ?? final PictureExplorer test = */ new PictureExplorer(p);
 
 	}
 

@@ -68,7 +68,7 @@ public class GenericBehaviorPanel extends BasicBehaviorPanel {
 		addDragSourceComponent(m_containingPanel);
 		m_containingPanel.removeAll();
 		setBackground(COLOR);
-		final int base = 0;
+		// Unused ?? final int base = 0;
 		buildLabel(m_containingPanel);
 		final int x = m_containingPanel.getComponentCount();
 		final java.awt.Component glue = javax.swing.Box.createHorizontalGlue();

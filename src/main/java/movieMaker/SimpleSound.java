@@ -415,7 +415,7 @@ public class SimpleSound {
 	 * @see AudioInputStream
 	 */
 	public AudioInputStream makeAIS() {
-		final AudioFileFormat.Type fileType = audioFileFormat.getType();
+		// Unused ?? final AudioFileFormat.Type fileType = audioFileFormat.getType();
 		final ByteArrayInputStream bais = new ByteArrayInputStream(buffer);
 		final int frameSize = audioFileFormat.getFormat().getFrameSize();
 
@@ -1165,8 +1165,8 @@ public class SimpleSound {
 		}
 
 		final AudioFormat format = getAudioFileFormat().getFormat();
-		int channels;
-		if ((channels = format.getChannels()) == 1) {
+		// Unused ?? int channels;
+		if ((/* Unused ?? channels = */ format.getChannels()) == 1) {
 			printError("Only stereo sounds have different right and left"
 					+ " samples.  You are using a mono sound, try " + "getSample(" + frameNum + ") instead");
 			return -1;

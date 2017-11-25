@@ -112,8 +112,7 @@ public class SitAnimation extends AbstractBodyPositionAnimation {
 			if (m_target != null) {
 				final javax.vecmath.Vector3d centerTopFace = m_target.getBoundingBox(m_target).getCenterOfTopFace();
 				javax.vecmath.Vector3d endPos = m_target.getBoundingBox(m_target.getWorld()).getCenterOfTopFace();
-				final javax.vecmath.Vector3d[] forwardAndUp = m_target
-						.getOrientationAsForwardAndUpGuide(m_target.getWorld());
+				// Unused ?? final javax.vecmath.Vector3d[] forwardAndUp = m_target.getOrientationAsForwardAndUpGuide(m_target.getWorld());
 
 				if (leftUpper != null && leftLower == null || m_target.name.getStringValue().equals("ground")) {
 					final double xOffset = m_subject.getBoundingBox().getCenter().x;

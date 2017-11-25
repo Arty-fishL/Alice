@@ -1031,12 +1031,14 @@ class BMPImage extends SimpleRenderedImage {
 		return (b2 << 8 | b1) & 0xffff;
 	}
 
+	/* Unused ??
 	// Signed 16 bits
 	private int readShort(final InputStream stream) throws IOException {
 		final int b1 = readUnsignedByte(stream);
 		final int b2 = readUnsignedByte(stream);
 		return b2 << 8 | b1;
 	}
+	*/
 
 	// Unsigned 16 bits
 	private int readWord(final InputStream stream) throws IOException {

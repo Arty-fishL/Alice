@@ -67,8 +67,8 @@ public class TriggerBehaviorPanel extends BasicBehaviorPanel implements java.awt
 			strikeEnd = "</font></strike>";
 		}
 
-		final edu.cmu.cs.stage3.alice.core.Response response = (edu.cmu.cs.stage3.alice.core.Response) ((edu.cmu.cs.stage3.alice.core.behavior.TriggerBehavior) m_behavior).triggerResponse
-				.get();
+		/* Unused ?? final edu.cmu.cs.stage3.alice.core.Response response = (edu.cmu.cs.stage3.alice.core.Response) */ 
+			((edu.cmu.cs.stage3.alice.core.behavior.TriggerBehavior) m_behavior).triggerResponse.get();
 		toWriteTo.append("<tr>\n<td bgcolor=" + getHTMLColorString(bgColor) + " colspan=\"2\">" + strikeStart);
 		labelPanel.remove(lastLabel);
 		toWriteTo.append(edu.cmu.cs.stage3.alice.authoringtool.util.GUIFactory.getHTMLStringForComponent(labelPanel));

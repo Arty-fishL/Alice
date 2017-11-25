@@ -38,7 +38,7 @@ public abstract class AbstractBubbleAnimation extends edu.cmu.cs.stage3.alice.co
 	public final NumberProperty fontSize = new NumberProperty(this, "fontSize", new Integer(20));
 	public final StringProperty fontName = new StringProperty(this, "fontName", "Arial");
 
-	private edu.cmu.cs.stage3.alice.core.World m_world;
+	// unused ?? private edu.cmu.cs.stage3.alice.core.World m_world;
 
 	public abstract class RuntimeAbstractBubbleAnimation extends RuntimeResponse {
 		private edu.cmu.cs.stage3.alice.core.World m_world;
