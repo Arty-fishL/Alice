@@ -2,7 +2,8 @@
 A project that aims to take a forked version of Alice 2.2 and:
 - [x] Reformat the code to look nicer.
 - [x] Update the Java environment to Java 7.
-- [ ] Remove as many code warnings as possible (just 3000 to go!).
+- [x] Resolve all 4000+ code warnings!
+- [ ] Update 3rd party libraries, ie. OpenGL, where feasible.
 - [ ] Update the code to match the Alice 2.4 source code.
 
 __________
