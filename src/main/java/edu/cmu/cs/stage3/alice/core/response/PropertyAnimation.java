@@ -39,7 +39,7 @@ public class PropertyAnimation extends Animation {
 			edu.cmu.cs.stage3.util.HowMuch.INSTANCE_AND_PARTS, edu.cmu.cs.stage3.util.HowMuch.class);
 
 	private void updateOverrideValueClasses() {
-		Class<?> elementOverrideValueClass = null;
+		Class<? extends Element> elementOverrideValueClass = null;
 		Class<?> valueOverrideValueClass = null;
 		final String propertyNameValue = propertyName.getStringValue();
 		if (propertyNameValue != null) {
@@ -51,7 +51,8 @@ public class PropertyAnimation extends Animation {
 					valueOverrideValueClass = property.getValueClass();
 				} else {
 					if (elementValue instanceof Expression) {
-						final Class<?> cls = ((Expression) elementValue).getValueClass();
+						@SuppressWarnings("unchecked")
+						final Class<? extends Element> cls = (Class<? extends Element>) ((Expression) elementValue).getValueClass();
 						if (cls != null) {
 							elementOverrideValueClass = cls;
 							valueOverrideValueClass = Element.getValueClassForPropertyNamed(elementOverrideValueClass,

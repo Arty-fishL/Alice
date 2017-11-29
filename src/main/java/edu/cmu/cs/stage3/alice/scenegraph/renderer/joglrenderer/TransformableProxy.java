@@ -40,18 +40,18 @@ class TransformableProxy extends ReferenceFrameProxy {
 
 	@Override
 	public void render(final RenderContext context) {
-		context.gl.glPushMatrix();
-		context.gl.glMultMatrixd(m_localBuffer);
+		context.gl.getGL2().glPushMatrix();
+		context.gl.getGL2().glMultMatrixd(m_localBuffer);
 		super.render(context);
-		context.gl.glPopMatrix();
+		context.gl.getGL2().glPopMatrix();
 	}
 
 	@Override
 	public void pick(final PickContext context, final PickParameters pickParameters) {
-		context.gl.glPushMatrix();
-		context.gl.glMultMatrixd(m_localBuffer);
+		context.gl.getGL2().glPushMatrix();
+		context.gl.getGL2().glMultMatrixd(m_localBuffer);
 		super.pick(context, pickParameters);
-		context.gl.glPopMatrix();
+		context.gl.getGL2().glPopMatrix();
 	}
 
 }

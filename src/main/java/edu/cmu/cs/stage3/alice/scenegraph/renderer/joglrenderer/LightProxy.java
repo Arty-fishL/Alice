@@ -23,7 +23,7 @@
 
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.joglrenderer;
 
-import javax.media.opengl.GL;
+import com.jogamp.opengl.GL2;
 
 abstract class LightProxy extends AffectorProxy {
 	private final float[] m_colorTimesBrightness = new float[4];
@@ -80,23 +80,23 @@ abstract class LightProxy extends AffectorProxy {
 		// there should never be a need to set GL_AMBIENT
 		// context.gl.glLightfv( id, GL.GL_AMBIENT, { 0, 0, 0, 1 } );
 
-		context.gl.glLightfv(id, GL.GL_DIFFUSE, m_colorTimesBrightnessBuffer);
+		context.gl.getGL2().glLightfv(id, GL2.GL_DIFFUSE, m_colorTimesBrightnessBuffer);
 
 		// todo: should lights' diffuse and specular colors be separated in the
 		// scenegraph?
-		context.gl.glLightfv(id, GL.GL_SPECULAR, m_colorTimesBrightnessBuffer);
+		context.gl.getGL2().glLightfv(id, GL2.GL_SPECULAR, m_colorTimesBrightnessBuffer);
 
 		getPosition(reuse_position);
-		context.gl.glLightfv(id, GL.GL_POSITION, reuse_positionBuffer);
+		context.gl.getGL2().glLightfv(id, GL2.GL_POSITION, reuse_positionBuffer);
 
 		getSpotDirection(reuse_spotDirection);
-		context.gl.glLightfv(id, GL.GL_SPOT_DIRECTION, reuse_spotDirectionBuffer);
+		context.gl.getGL2().glLightfv(id, GL2.GL_SPOT_DIRECTION, reuse_spotDirectionBuffer);
 
-		context.gl.glLightf(id, GL.GL_SPOT_EXPONENT, getSpotExponent());
-		context.gl.glLightf(id, GL.GL_SPOT_CUTOFF, getSpotCutoff());
-		context.gl.glLightf(id, GL.GL_CONSTANT_ATTENUATION, getConstantAttenuation());
-		context.gl.glLightf(id, GL.GL_LINEAR_ATTENUATION, getLinearAttenuation());
-		context.gl.glLightf(id, GL.GL_QUADRATIC_ATTENUATION, getQuadraticAttenuation());
+		context.gl.getGL2().glLightf(id, GL2.GL_SPOT_EXPONENT, getSpotExponent());
+		context.gl.getGL2().glLightf(id, GL2.GL_SPOT_CUTOFF, getSpotCutoff());
+		context.gl.getGL2().glLightf(id, GL2.GL_CONSTANT_ATTENUATION, getConstantAttenuation());
+		context.gl.getGL2().glLightf(id, GL2.GL_LINEAR_ATTENUATION, getLinearAttenuation());
+		context.gl.getGL2().glLightf(id, GL2.GL_QUADRATIC_ATTENUATION, getQuadraticAttenuation());
 	}
 
 	@Override

@@ -46,7 +46,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import com.jamiegl.alicex.ui.JSystemFileChooser;
+import com.artyfishl.alicex.ui.JSystemFileChooser;
 
 import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
 import edu.cmu.cs.stage3.alice.authoringtool.util.ExtensionFileFilter;

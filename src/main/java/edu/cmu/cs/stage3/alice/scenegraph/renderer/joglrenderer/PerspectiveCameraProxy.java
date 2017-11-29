@@ -48,7 +48,7 @@ class PerspectiveCameraProxy extends CameraProxy {
 	protected void projection(final Context context, final int width, final int height, final float near,
 			final float far) {
 		getActualNearPlane(reuse_actualNearPlane, width, height, near);
-		context.gl.glFrustum(reuse_actualNearPlane[0], reuse_actualNearPlane[2], reuse_actualNearPlane[1],
+		context.gl.getGL2().glFrustum(reuse_actualNearPlane[0], reuse_actualNearPlane[2], reuse_actualNearPlane[1],
 				reuse_actualNearPlane[3], near, far);
 	}
 

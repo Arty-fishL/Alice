@@ -45,7 +45,7 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 
-import com.jamiegl.alicex.ui.JSystemFileChooser;
+import com.artyfishl.alicex.ui.JSystemFileChooser;
 
 import edu.cmu.cs.stage3.alice.authoringtool.AikMin;
 import edu.cmu.cs.stage3.util.StringObjectPair;

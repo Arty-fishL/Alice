@@ -9,7 +9,7 @@ import java.util.Properties;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
-import com.jamiegl.alicex.ui.JSystemFileChooser;
+import com.artyfishl.alicex.ui.JSystemFileChooser;
 
 /**
  * A class to make working with a file chooser easier for students. It uses a

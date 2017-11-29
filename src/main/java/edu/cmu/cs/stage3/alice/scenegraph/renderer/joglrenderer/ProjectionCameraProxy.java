@@ -46,7 +46,7 @@ class ProjectionCameraProxy extends CameraProxy {
 	@Override
 	protected void projection(final Context context, final int width, final int height, final float near,
 			final float far) {
-		context.gl.glLoadMatrixd(m_projectionBuffer);
+		context.gl.getGL2().glLoadMatrixd(m_projectionBuffer);
 	}
 
 	@Override

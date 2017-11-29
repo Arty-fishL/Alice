@@ -53,7 +53,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.event.ListDataListener;
 
-import com.jamiegl.alicex.ui.JSystemFileChooser;
+import com.artyfishl.alicex.ui.JSystemFileChooser;
 
 import edu.cmu.cs.stage3.alice.authoringtool.util.Configuration;
 

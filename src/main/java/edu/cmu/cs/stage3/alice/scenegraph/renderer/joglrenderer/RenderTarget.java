@@ -23,7 +23,8 @@
 
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.joglrenderer;
 
-import javax.media.opengl.GL;
+
+import com.jogamp.opengl.GL2;
 
 import edu.cmu.cs.stage3.alice.scenegraph.Camera;
 
@@ -72,10 +73,10 @@ public abstract class RenderTarget extends edu.cmu.cs.stage3.alice.scenegraph.re
 			} else {
 				m_pickBuffer.rewind();
 			}
-			context.gl.glSelectBuffer(CAPACITY, m_pickBuffer);
+			context.gl.getGL2().glSelectBuffer(CAPACITY, m_pickBuffer);
 
-			context.gl.glRenderMode(GL.GL_SELECT);
-			context.gl.glInitNames();
+			context.gl.getGL2().glRenderMode(GL2.GL_SELECT);
+			context.gl.getGL2().glInitNames();
 
 			final int width = context.getWidth();
 			final int height = context.getHeight();
@@ -85,8 +86,8 @@ public abstract class RenderTarget extends edu.cmu.cs.stage3.alice.scenegraph.re
 			// unused ?? final int[] vp = { viewport.x, viewport.y, viewport.width, viewport.height };
 			context.gl.glViewport(viewport.x, viewport.y, viewport.width, viewport.height);
 
-			context.gl.glMatrixMode(GL.GL_PROJECTION);
-			context.gl.glLoadIdentity();
+			context.gl.getGL2().glMatrixMode(GL2.GL_PROJECTION);
+			context.gl.getGL2().glLoadIdentity();
 
 			if (m_viewportBuffer == null) {
 				m_viewportBuffer = java.nio.IntBuffer.allocate(4);
@@ -98,8 +99,8 @@ public abstract class RenderTarget extends edu.cmu.cs.stage3.alice.scenegraph.re
 			m_viewportBuffer.put(viewport.width);
 			m_viewportBuffer.put(viewport.height);
 			m_viewportBuffer.rewind();
-			context.gl.glMatrixMode(GL.GL_PROJECTION);
-			context.gl.glLoadIdentity();
+			context.gl.getGL2().glMatrixMode(GL2.GL_PROJECTION);
+			context.gl.getGL2().glLoadIdentity();
 			context.glu.gluPickMatrix(x, height - y, 1, 1, m_viewportBuffer);
 
 			cameraProxy.performPick(context, pickParameters);

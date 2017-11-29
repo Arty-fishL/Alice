@@ -109,6 +109,7 @@ public class PropertyValue extends edu.cmu.cs.stage3.alice.core.Question {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Class<?> getValueClass() {
 		final Property property = getPropertyValue();
@@ -122,7 +123,8 @@ public class PropertyValue extends edu.cmu.cs.stage3.alice.core.Question {
 					try {
 						final java.lang.reflect.Field field = cls.getField(propertyNameValue);
 						if (field != null) {
-							return Element.getValueClassForPropertyNamed(field.getDeclaringClass(), propertyNameValue);
+							return Element.getValueClassForPropertyNamed(
+									(Class<? extends Element>) field.getDeclaringClass(), propertyNameValue);
 						}
 					} catch (final java.lang.NoSuchFieldException nsfe) {
 						// pass

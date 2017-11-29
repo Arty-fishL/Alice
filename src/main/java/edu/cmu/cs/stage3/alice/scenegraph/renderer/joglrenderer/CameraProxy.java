@@ -23,7 +23,7 @@
 
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.joglrenderer;
 
-import javax.media.opengl.GL;
+import com.jogamp.opengl.GL2;
 
 abstract class CameraProxy extends ComponentProxy {
 	private BackgroundProxy m_backgroundProxy = null;
@@ -88,27 +88,27 @@ abstract class CameraProxy extends ComponentProxy {
 			}
 			context.clear(backgroundProxy, actualViewport);
 			sceneProxy.setup(context);
-			context.gl.glMatrixMode(GL.GL_PROJECTION);
-			context.gl.glLoadIdentity();
+			context.gl.getGL2().glMatrixMode( GL2.GL_PROJECTION );
+			context.gl.getGL2().glLoadIdentity();
 			projection(context, actualViewport.width, actualViewport.height, m_near, m_far);
-			context.gl.glMatrixMode(GL.GL_MODELVIEW);
-			context.gl.glLoadIdentity();
-			context.gl.glLoadMatrixd(getInverseAbsoluteTransformationAsBuffer());
+			context.gl.getGL2().glMatrixMode( GL2.GL_MODELVIEW );
+			context.gl.getGL2().glLoadIdentity();
+			context.gl.getGL2().glLoadMatrixd( getInverseAbsoluteTransformationAsBuffer() );
 
 			// first color in opaque objects
-			context.gl.glDisable(GL.GL_BLEND);
+			context.gl.glDisable(GL2.GL_BLEND);
 
 			context.setRenderOpaque();
 			sceneProxy.render(context);
 
 			// next render transparent
-			context.gl.glEnable(GL.GL_BLEND);
-			context.gl.glEnable(GL.GL_DEPTH_TEST);
-			context.gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+			context.gl.glEnable(GL2.GL_BLEND);
+			context.gl.glEnable(GL2.GL_DEPTH_TEST);
+			context.gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 			context.setRenderTransparent();
 			sceneProxy.render(context);
-			context.gl.glDisable(GL.GL_BLEND);
-			context.gl.glDisable(GL.GL_DEPTH_TEST);
+			context.gl.glDisable(GL2.GL_BLEND);
+			context.gl.glDisable(GL2.GL_DEPTH_TEST);
 
 		}
 	}
@@ -119,9 +119,9 @@ abstract class CameraProxy extends ComponentProxy {
 			final int width = context.getWidth();
 			final int height = context.getHeight();
 			projection(context, width, height, m_near, m_far);
-			context.gl.glMatrixMode(GL.GL_MODELVIEW);
-			context.gl.glLoadIdentity();
-			context.gl.glLoadMatrixd(getInverseAbsoluteTransformationAsBuffer());
+			context.gl.getGL2().glMatrixMode( GL2.GL_MODELVIEW );
+			context.gl.getGL2().glLoadIdentity();
+			context.gl.getGL2().glLoadMatrixd( getInverseAbsoluteTransformationAsBuffer() );
 			sceneProxy.pick(context, pickParameters);
 		}
 	}

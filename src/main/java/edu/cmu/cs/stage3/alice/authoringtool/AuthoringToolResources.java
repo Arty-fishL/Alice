@@ -776,13 +776,14 @@ public class AuthoringToolResources {
 		return getReprForValue(value, property, null);
 	}
 
-	public static String getReprForValue(final Object value, final Class<?> elementClass, final String propertyName) {
+	public static String getReprForValue(final Object value, final Class<? extends Element> elementClass, final String propertyName) {
 		return getReprForValue(value, elementClass, propertyName, null);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static String getReprForValue(final Object value, final edu.cmu.cs.stage3.alice.core.Property property,
 			final Object extraContextInfo) {
-		Class<?> elementClass = property.getOwner().getClass();
+		Class<? extends Element> elementClass = property.getOwner().getClass();
 		String propertyName = property.getName();
 		if (property.getOwner() instanceof edu.cmu.cs.stage3.alice.core.response.PropertyAnimation
 				&& property.getName().equals("value")) {
@@ -790,11 +791,11 @@ public class AuthoringToolResources {
 					.getOwner();
 			final Object e = propertyAnimation.element.get();
 			if (e instanceof edu.cmu.cs.stage3.alice.core.Expression) {
-				elementClass = ((edu.cmu.cs.stage3.alice.core.Expression) e).getValueClass();
+				elementClass = (Class<? extends Element>) ((edu.cmu.cs.stage3.alice.core.Expression) e).getValueClass();
 			} else {
 				final Object elementValue = propertyAnimation.element.getElementValue();
 				if (elementValue != null) {
-					elementClass = elementValue.getClass();
+					elementClass = (Class<? extends Element>) elementValue.getClass();
 				} else {
 					elementClass = null;
 				}
@@ -810,7 +811,8 @@ public class AuthoringToolResources {
 		return getReprForValue(value, elementClass, propertyName, extraContextInfo);
 	}
 
-	public static String getReprForValue(final Object value, Class<?> elementClass, final String propertyName,
+	@SuppressWarnings("unchecked")
+	public static String getReprForValue(final Object value, Class<? extends Element> elementClass, final String propertyName,
 			final Object extraContextInfo) {
 		boolean verbose = false;
 		Class<?> valueClass = null;
@@ -949,7 +951,7 @@ public class AuthoringToolResources {
 					return reprString;
 				}
 
-				elementClass = elementClass.getSuperclass();
+				elementClass = (Class<? extends Element>) elementClass.getSuperclass();
 			}
 		} catch (final Throwable t) {
 			AuthoringTool.showErrorDialog("Error finding repr for " + value, t);

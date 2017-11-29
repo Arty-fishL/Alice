@@ -23,40 +23,46 @@
 
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.joglrenderer;
 
-abstract class Context implements javax.media.opengl.GLEventListener {
-	public javax.media.opengl.GL gl;
-	public javax.media.opengl.glu.GLU glu;
-	public com.sun.opengl.util.GLUT glut;
+import com.jogamp.opengl.GL;
+import com.jogamp.opengl.GLAutoDrawable;
+import com.jogamp.opengl.GLEventListener;
+import com.jogamp.opengl.glu.gl2.GLUgl2;
+import com.jogamp.opengl.util.gl2.GLUT;
+
+abstract class Context implements GLEventListener {
+	public GL gl;
+	public GLUgl2 glu;
+	public GLUT glut;
 
 	protected int m_width;
 	protected int m_height;
 
 	@Override
-	public void init(final javax.media.opengl.GLAutoDrawable drawable) {
-		// drawable.setGL( new javax.media.opengl.DebugGL( drawable.getGL() ) );
+	public void init(final GLAutoDrawable drawable) {
+		// drawable.setGL( new DebugGL( drawable.getGL() ) );
 	}
 
 	@Override
-	public void display(final javax.media.opengl.GLAutoDrawable drawable) {
+	public void display(final GLAutoDrawable drawable) {
 		gl = drawable.getGL();
-		glu = new javax.media.opengl.glu.GLU();
-		glut = new com.sun.opengl.util.GLUT();
+		glu = new GLUgl2();
+		glut = new GLUT();
 	}
 
 	@Override
-	public void reshape(final javax.media.opengl.GLAutoDrawable drawable, final int x, final int y, final int width,
+	public void reshape(final GLAutoDrawable drawable, final int x, final int y, final int width,
 			final int height) {
 		// System.err.println( "reshape: " + drawable );
 		m_width = width;
 		m_height = height;
 	}
 
-	@Override
-	public void displayChanged(final javax.media.opengl.GLAutoDrawable drawable, final boolean modeChanged,
+	/*@Override
+	public void displayChanged(final GLAutoDrawable drawable, final boolean modeChanged,
 			final boolean deviceChanged) {
 		// System.err.println( "displayChanged: " + drawable + " " + modeChanged
 		// + " " + deviceChanged );
-	}
+	}*/
 
 	public int getWidth() {
 		return m_width;

@@ -1241,7 +1241,7 @@ public class PopupMenuUtilities {
 			final InAppropriateObjectArrayPropertyCriterion inAppropriateOAPCriterion = new InAppropriateObjectArrayPropertyCriterion();
 			edu.cmu.cs.stage3.util.Criterion criterion = new edu.cmu.cs.stage3.util.criterion.MatchesAllCriterion(
 					new edu.cmu.cs.stage3.util.Criterion[] { instanceOf, elementIsNamed, inAppropriateOAPCriterion });
-			final Class<?> elementClass = elementPrototype.getElementClass();
+			final Class<? extends Element> elementClass = elementPrototype.getElementClass();
 			final StringObjectPair[] knownPropertyValues = elementPrototype
 					.getKnownPropertyValues();
 
@@ -2701,7 +2701,7 @@ public class PopupMenuUtilities {
 		}
 	}
 
-	public static Vector<Object> getDefaultValueStructureForProperty(final Class<?> elementClass,
+	public static Vector<Object> getDefaultValueStructureForProperty(final Class<? extends Element> elementClass,
 			final String propertyName) {
 		return getDefaultValueStructureForProperty(elementClass, propertyName, null);
 	}
@@ -2713,7 +2713,7 @@ public class PopupMenuUtilities {
 
 	// property may be null if it is not available. if it is available, though,
 	// it will be used to derive the value class.
-	public static Vector<Object> getDefaultValueStructureForProperty(final Class<?> elementClass,
+	public static Vector<Object> getDefaultValueStructureForProperty(final Class<? extends Element> elementClass,
 			final String propertyName, final edu.cmu.cs.stage3.alice.core.Property property) {
 		final Vector<Object> structure = new Vector<>(
 				getUnlabeledDefaultValueStructureForProperty(elementClass, propertyName, property));
@@ -2723,7 +2723,8 @@ public class PopupMenuUtilities {
 
 	// property may be null if it is not available. if it is available, though,
 	// it will be used to derive the value class.
-	public static Vector<Object> getUnlabeledDefaultValueStructureForProperty(Class<?> elementClass, String propertyName,
+	@SuppressWarnings("unchecked")
+	public static Vector<Object> getUnlabeledDefaultValueStructureForProperty(Class<? extends Element> elementClass, String propertyName,
 			final edu.cmu.cs.stage3.alice.core.Property property) {
 		if (property != null) {
 			if (property.getOwner() instanceof edu.cmu.cs.stage3.alice.core.response.PropertyAnimation
@@ -2734,7 +2735,7 @@ public class PopupMenuUtilities {
 				if (propertyAnimation.element.getElementValue() instanceof edu.cmu.cs.stage3.alice.core.Variable) {
 					final edu.cmu.cs.stage3.alice.core.Variable var = (edu.cmu.cs.stage3.alice.core.Variable) propertyAnimation.element
 							.getElementValue();
-					elementClass = var.getValueClass();
+					elementClass = (Class<? extends Element>) var.getValueClass();
 				}
 				propertyName = propertyAnimation.propertyName.getStringValue();
 
@@ -2747,7 +2748,7 @@ public class PopupMenuUtilities {
 				if (propertyAssignment.element.getElementValue() instanceof edu.cmu.cs.stage3.alice.core.Variable) {
 					final edu.cmu.cs.stage3.alice.core.Variable var = (edu.cmu.cs.stage3.alice.core.Variable) propertyAssignment.element
 							.getElementValue();
-					elementClass = var.getValueClass();
+					elementClass = (Class<? extends Element>) var.getValueClass();
 				}
 				propertyName = propertyAssignment.propertyName.getStringValue();
 			}
@@ -2959,6 +2960,7 @@ public class PopupMenuUtilities {
 	}
 
 	// have to special-case PropertyAnimations
+	@SuppressWarnings("unchecked")
 	private static Vector<Object> getDefaultValueStructureForPropertyAnimation(
 			final StringObjectPair[] knownPropertyValues) {
 		Vector<Object> structure = new Vector<>();
@@ -2977,9 +2979,9 @@ public class PopupMenuUtilities {
 			}
 		}
 		if (element != null && propertyName != null) {
-			Class<?> elementClass = element.getClass();
+			Class<? extends Element> elementClass = element.getClass();
 			if (element instanceof edu.cmu.cs.stage3.alice.core.Expression) {
-				elementClass = ((edu.cmu.cs.stage3.alice.core.Expression) element).getValueClass();
+				elementClass = (Class<? extends Element>) ((edu.cmu.cs.stage3.alice.core.Expression) element).getValueClass();
 			}
 			structure = getDefaultValueStructureForProperty(elementClass, propertyName,
 					element.getPropertyNamed(propertyName));
@@ -3008,7 +3010,7 @@ public class PopupMenuUtilities {
 	}
 
 	@SuppressWarnings("unchecked")
-	private static void addLabelsToValueStructure(final Vector<Object> structure, final Class<?> elementClass,
+	private static void addLabelsToValueStructure(final Vector<Object> structure, final Class<? extends Element> elementClass,
 			final String propertyName) {
 		for (final java.util.ListIterator<Object> iter = structure.listIterator(); iter.hasNext();) {
 			final Object item = iter.next();
@@ -3082,6 +3084,7 @@ public class PopupMenuUtilities {
 	}
 
 	// have to special-case PropertyAnimations
+	@SuppressWarnings("unchecked")
 	private static Class<?> getValueClassForPropertyAnimation(
 			final StringObjectPair[] knownPropertyValues) {
 		Class<?> valueClass = null;
@@ -3102,9 +3105,9 @@ public class PopupMenuUtilities {
 		if (element instanceof edu.cmu.cs.stage3.alice.core.Variable && "value".equals(propertyName)) {
 			valueClass = ((edu.cmu.cs.stage3.alice.core.Variable) element).getValueClass();
 		} else if (element != null && propertyName != null) {
-			Class<?> elementClass = element.getClass();
+			Class<? extends Element> elementClass = element.getClass();
 			if (element instanceof edu.cmu.cs.stage3.alice.core.Expression) {
-				elementClass = ((edu.cmu.cs.stage3.alice.core.Expression) element).getValueClass();
+				elementClass = (Class<? extends Element>) ((edu.cmu.cs.stage3.alice.core.Expression) element).getValueClass();
 			}
 			valueClass = edu.cmu.cs.stage3.alice.core.Element.getValueClassForPropertyNamed(elementClass, propertyName);
 		}

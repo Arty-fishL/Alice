@@ -27,7 +27,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 
-import com.jamiegl.alicex.ui.JSystemFileChooser;
+import com.artyfishl.alicex.ui.JSystemFileChooser;
 
 /**
  * @author Jason Pratt, Dennis Cosgrove

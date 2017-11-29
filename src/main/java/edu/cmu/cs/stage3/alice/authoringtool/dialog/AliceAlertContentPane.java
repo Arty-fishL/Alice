@@ -38,6 +38,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import edu.cmu.cs.stage3.alice.authoringtool.AuthoringToolResources;
+
 /**
  * @author Jason Pratt, David Culyba
  *
@@ -355,9 +357,7 @@ public abstract class AliceAlertContentPane extends edu.cmu.cs.stage3.swing.Cont
 		buttonPanel.setBorder(BorderFactory.createEmptyBorder(6, 0, 0, 0));
 		buttonPanel.setLayout(new GridBagLayout());
 
-		final java.net.URL errorImageResources = edu.cmu.cs.stage3.alice.authoringtool.JAlice.class
-				.getResource("images/errorDialogueIcon.png");
-		errorIconPanel.setImage(java.awt.Toolkit.getDefaultToolkit().createImage(errorImageResources));
+		errorIconPanel.setImage(AuthoringToolResources.getImageForString("errorDialogueIcon"));
 		messagePanel.add(errorIconPanel, java.awt.BorderLayout.WEST);
 		messagePanel.add(messageLabel, BorderLayout.CENTER);
 

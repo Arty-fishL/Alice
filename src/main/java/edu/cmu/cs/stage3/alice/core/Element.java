@@ -2123,7 +2123,7 @@ public abstract class Element {
 
 	private static Hashtable<Class<?>, Element> s_classToElementCache = new Hashtable<>();
 
-	public static Class<?> getValueClassForPropertyNamed(final Class<?> elementClass, final String propertyName) {
+	public static Class<?> getValueClassForPropertyNamed(final Class<? extends Element> elementClass, final String propertyName) {
 		Element element = s_classToElementCache.get(elementClass);
 		if (element == null) {
 			try {

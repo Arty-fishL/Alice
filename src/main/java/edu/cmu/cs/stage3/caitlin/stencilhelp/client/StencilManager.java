@@ -22,7 +22,7 @@ import org.w3c.dom.CDATASection;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.jamiegl.alicex.ui.JSystemFileChooser;
+import com.artyfishl.alicex.ui.JSystemFileChooser;
 
 import edu.cmu.cs.stage3.alice.authoringtool.util.CustomMouseAdapter;
 import edu.cmu.cs.stage3.caitlin.stencilhelp.application.StateCapsule;

@@ -42,7 +42,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.filechooser.FileFilter;
 
-import com.jamiegl.alicex.ui.JSystemFileChooser;
+import com.artyfishl.alicex.ui.JSystemFileChooser;
 
 import edu.cmu.cs.stage3.alice.authoringtool.AuthoringTool;
 import edu.cmu.cs.stage3.alice.core.Element;

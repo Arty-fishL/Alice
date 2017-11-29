@@ -77,7 +77,7 @@ public abstract class Property {
 
 	private static Dictionary<Class<?>, Dictionary<Class<?>, String[]>> s_ownerClassMap = new Hashtable<>();
 
-	public static String[] getPropertyNames(final Class<?> ownerClass, final Class<?> valueClass) {
+	public static String[] getPropertyNames(final Class<? extends Element> ownerClass, final Class<?> valueClass) {
 		Dictionary<Class<?>, String[]> valueClassMap = s_ownerClassMap.get(ownerClass);
 		if (valueClassMap == null) {
 			valueClassMap = new Hashtable<Class<?>, String[]>();
@@ -107,7 +107,7 @@ public abstract class Property {
 		return propertyNameArray;
 	}
 
-	public static String[] getPropertyNames(final Class<?> ownerClass) {
+	public static String[] getPropertyNames(final Class<? extends Element> ownerClass) {
 		return getPropertyNames(ownerClass, Object.class);
 	}
 
@@ -175,9 +175,10 @@ public abstract class Property {
 		return m_propertyListenerArray;
 	}
 
-	public Class<?> getDeclaredClass() {
+	@SuppressWarnings("unchecked")
+	public Class<? extends Element> getDeclaredClass() {
 		if (m_owner != null) {
-			Class<?> cls = m_owner.getClass();
+			Class<? extends Element> cls = m_owner.getClass();
 			while (cls != null) {
 				try {
 					final java.lang.reflect.Field field = cls.getDeclaredField(m_name);
@@ -187,7 +188,7 @@ public abstract class Property {
 						throw new RuntimeException(m_owner + " has field named " + m_name + " that is not " + this);
 					}
 				} catch (final NoSuchFieldException nsfe) {
-					cls = cls.getSuperclass();
+					cls = (Class<? extends Element>) cls.getSuperclass();
 				} catch (final IllegalAccessException iae) {
 					throw new ExceptionWrapper(iae, null);
 				}

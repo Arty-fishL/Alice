@@ -1,6 +1,6 @@
 package edu.cmu.cs.stage3.alice.gallery.modeleditor;
 
-import com.jamiegl.alicex.ui.JSystemFileChooser;
+import com.artyfishl.alicex.ui.JSystemFileChooser;
 
 import edu.cmu.cs.stage3.alice.core.Pose;
 import edu.cmu.cs.stage3.alice.core.reference.PropertyReference;

@@ -23,7 +23,7 @@
 
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.joglrenderer;
 
-import javax.media.opengl.GL;
+import com.jogamp.opengl.GL2;
 
 class AppearanceProxy extends ElementProxy {
 	private boolean m_isShaded;
@@ -47,20 +47,20 @@ class AppearanceProxy extends ElementProxy {
 		m_diffuse[3] = m_opacity;
 		if (m_isShaded) {
 			if (m_isAmbientLinkedToDiffuse) {
-				context.gl.glMaterialfv(face, GL.GL_AMBIENT_AND_DIFFUSE, m_diffuseBuffer);
+				context.gl.getGL2().glMaterialfv( face, GL2.GL_AMBIENT_AND_DIFFUSE, m_diffuseBuffer );
 			} else {
-				context.gl.glMaterialfv(face, GL.GL_AMBIENT, m_ambientBuffer);
-				context.gl.glMaterialfv(face, GL.GL_DIFFUSE, m_diffuseBuffer);
+				context.gl.getGL2().glMaterialfv( face, GL2.GL_AMBIENT, m_ambientBuffer );
+				context.gl.getGL2().glMaterialfv( face, GL2.GL_DIFFUSE, m_diffuseBuffer );
 			}
-			context.gl.glMaterialfv(face, GL.GL_SPECULAR, m_specularBuffer);
-			context.gl.glMaterialfv(face, GL.GL_EMISSION, m_emissiveBuffer);
-			context.gl.glMaterialf(face, GL.GL_SHININESS, m_shininess);
+			context.gl.getGL2().glMaterialfv( face, GL2.GL_SPECULAR, m_specularBuffer );
+			context.gl.getGL2().glMaterialfv( face, GL2.GL_EMISSION, m_emissiveBuffer );
+			context.gl.getGL2().glMaterialf( face, GL2.GL_SHININESS, m_shininess );
 		} else {
-			context.gl.glDisable(GL.GL_LIGHTING);
+			context.gl.glDisable( GL2.GL_LIGHTING );
 			// todo: color?
 		}
-		context.gl.glColor4f(m_diffuse[0], m_diffuse[1], m_diffuse[2], m_diffuse[3]);
-		context.gl.glPolygonMode(face, m_polygonMode);
+		context.gl.getGL2().glColor4f(m_diffuse[0],m_diffuse[1],m_diffuse[2],m_diffuse[3]);
+		context.gl.getGL2().glPolygonMode( face, m_polygonMode );
 
 		context.setTextureMapProxy(m_diffuseColorMapProxy);
 	}
@@ -78,11 +78,11 @@ class AppearanceProxy extends ElementProxy {
 			copy(m_diffuse, (edu.cmu.cs.stage3.alice.scenegraph.Color) value);
 		} else if (property == edu.cmu.cs.stage3.alice.scenegraph.Appearance.FILLING_STYLE_PROPERTY) {
 			if (value.equals(edu.cmu.cs.stage3.alice.scenegraph.FillingStyle.SOLID)) {
-				m_polygonMode = GL.GL_FILL;
+				m_polygonMode = GL2.GL_FILL;
 			} else if (value.equals(edu.cmu.cs.stage3.alice.scenegraph.FillingStyle.WIREFRAME)) {
-				m_polygonMode = GL.GL_LINE;
+				m_polygonMode = GL2.GL_LINE;
 			} else if (value.equals(edu.cmu.cs.stage3.alice.scenegraph.FillingStyle.POINTS)) {
-				m_polygonMode = GL.GL_POINT;
+				m_polygonMode = GL2.GL_POINT;
 			} else {
 				throw new RuntimeException();
 			}

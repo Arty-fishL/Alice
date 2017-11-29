@@ -36,7 +36,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.filechooser.FileFilter;
 
-import com.jamiegl.alicex.ui.JSystemFileChooser;
+import com.artyfishl.alicex.ui.JSystemFileChooser;
 
 import edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateChangedEvent;
 import edu.cmu.cs.stage3.alice.authoringtool.event.AuthoringToolStateListener;
