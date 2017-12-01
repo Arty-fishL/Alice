@@ -68,7 +68,7 @@ public class OnscreenRenderTarget extends RenderTarget
 			// m_glCanvas =
 			// javax.media.opengl.GLDrawableFactory.getFactory().createGLCanvas(
 			// glCaps );
-			m_glCanvas = new GLCanvas();
+			m_glCanvas = new GLCanvas(glCaps);
 			m_renderContext = new RenderContext(this);
 			m_glCanvas.addGLEventListener(m_renderContext);
 			m_pickContext = new PickContext(this);

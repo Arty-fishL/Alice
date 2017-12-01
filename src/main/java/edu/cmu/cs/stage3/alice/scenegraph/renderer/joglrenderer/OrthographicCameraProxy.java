@@ -69,7 +69,7 @@ class OrthographicCameraProxy extends CameraProxy {
 		// System.err.println( reuse_actualNearPlane[ 0 ] + " " +
 		// reuse_actualNearPlane[ 2 ] + " " + reuse_actualNearPlane[ 1 ] + " " +
 		// reuse_actualNearPlane[ 3 ] );
-		context.gl.getGL2().glOrtho(reuse_actualNearPlane[0], reuse_actualNearPlane[2], reuse_actualNearPlane[1],
+		context.gl.glOrtho(reuse_actualNearPlane[0], reuse_actualNearPlane[2], reuse_actualNearPlane[1],
 				reuse_actualNearPlane[3], near, far);
 	}
 

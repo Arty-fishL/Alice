@@ -31,8 +31,8 @@ class ExponentialSquaredFogProxy extends FogProxy {
 	@Override
 	public void setup(final RenderContext context) {
 		super.setup(context);
-		context.gl.getGL2().glFogi( GL2.GL_FOG_MODE, GL2.GL_EXP2 );
-		context.gl.getGL2().glFogf( GL2.GL_FOG_DENSITY, m_density );
+		context.gl.glFogi( GL2.GL_FOG_MODE, GL2.GL_EXP2 );
+		context.gl.glFogf( GL2.GL_FOG_DENSITY, m_density );
 	}
 
 	@Override

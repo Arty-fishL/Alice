@@ -35,17 +35,17 @@ class LineArrayProxy extends VertexGeometryProxy {
 			setIsGeometryChanged(true);
 		}
 		if (isGeometryChanged()) {
-			context.gl.getGL2().glNewList(id.intValue(), GL2.GL_COMPILE_AND_EXECUTE);
-			context.gl.getGL2().glBegin(GL2.GL_LINES);
+			context.gl.glNewList(id.intValue(), GL2.GL_COMPILE_AND_EXECUTE);
+			context.gl.glBegin(GL2.GL_LINES);
 			for (int i = 0; i < getNumVertices(); i += 2) {
 				context.renderVertex(getVertexAt(i));
 				context.renderVertex(getVertexAt(i + 1));
 			}
-			context.gl.getGL2().glEnd();
-			context.gl.getGL2().glEndList();
+			context.gl.glEnd();
+			context.gl.glEndList();
 			setIsGeometryChanged(false);
 		} else {
-			context.gl.getGL2().glCallList(id.intValue());
+			context.gl.glCallList(id.intValue());
 		}
 	}
 

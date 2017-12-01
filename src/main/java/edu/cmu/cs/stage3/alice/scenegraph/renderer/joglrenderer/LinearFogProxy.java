@@ -32,9 +32,9 @@ class LinearFogProxy extends FogProxy {
 	@Override
 	public void setup(final RenderContext context) {
 		super.setup(context);
-		context.gl.getGL2().glFogi(GL2.GL_FOG_MODE, GL2.GL_LINEAR);
-		context.gl.getGL2().glFogf(GL2.GL_FOG_START, m_near);
-		context.gl.getGL2().glFogf(GL2.GL_FOG_END, m_far);
+		context.gl.glFogi(GL2.GL_FOG_MODE, GL2.GL_LINEAR);
+		context.gl.glFogf(GL2.GL_FOG_START, m_near);
+		context.gl.glFogf(GL2.GL_FOG_END, m_far);
 	}
 
 	@Override

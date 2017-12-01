@@ -88,12 +88,12 @@ abstract class CameraProxy extends ComponentProxy {
 			}
 			context.clear(backgroundProxy, actualViewport);
 			sceneProxy.setup(context);
-			context.gl.getGL2().glMatrixMode( GL2.GL_PROJECTION );
-			context.gl.getGL2().glLoadIdentity();
+			context.gl.glMatrixMode( GL2.GL_PROJECTION );
+			context.gl.glLoadIdentity();
 			projection(context, actualViewport.width, actualViewport.height, m_near, m_far);
-			context.gl.getGL2().glMatrixMode( GL2.GL_MODELVIEW );
-			context.gl.getGL2().glLoadIdentity();
-			context.gl.getGL2().glLoadMatrixd( getInverseAbsoluteTransformationAsBuffer() );
+			context.gl.glMatrixMode( GL2.GL_MODELVIEW );
+			context.gl.glLoadIdentity();
+			context.gl.glLoadMatrixd( getInverseAbsoluteTransformationAsBuffer() );
 
 			// first color in opaque objects
 			context.gl.glDisable(GL2.GL_BLEND);
@@ -119,9 +119,9 @@ abstract class CameraProxy extends ComponentProxy {
 			final int width = context.getWidth();
 			final int height = context.getHeight();
 			projection(context, width, height, m_near, m_far);
-			context.gl.getGL2().glMatrixMode( GL2.GL_MODELVIEW );
-			context.gl.getGL2().glLoadIdentity();
-			context.gl.getGL2().glLoadMatrixd( getInverseAbsoluteTransformationAsBuffer() );
+			context.gl.glMatrixMode( GL2.GL_MODELVIEW );
+			context.gl.glLoadIdentity();
+			context.gl.glLoadMatrixd( getInverseAbsoluteTransformationAsBuffer() );
 			sceneProxy.pick(context, pickParameters);
 		}
 	}

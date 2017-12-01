@@ -106,7 +106,7 @@ class RenderContext extends Context {
 	}
 
 	public void endAffectorSetup() {
-		gl.getGL2().glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT, m_ambientBuffer);
+		gl.glLightModelfv(GL2.GL_LIGHT_MODEL_AMBIENT, m_ambientBuffer);
 		for (int id = m_nextLightID; id < m_lastTime_nextLightID; id++) {
 			gl.glDisable(id);
 		}
@@ -183,7 +183,7 @@ class RenderContext extends Context {
 	}
 
 	public Integer generateDisplayListID(final GeometryProxy geometryProxy) {
-		final Integer id = new Integer(gl.getGL2().glGenLists(1));
+		final Integer id = new Integer(gl.glGenLists(1));
 		m_displayListMap.put(geometryProxy, id);
 		return id;
 	}
@@ -199,7 +199,7 @@ class RenderContext extends Context {
 	public void forgetGeometryProxy(final GeometryProxy geometryProxy, final boolean removeFromMap) {
 		final Integer value = m_displayListMap.get(geometryProxy);
 		if (value != null) {
-			gl.getGL2().glDeleteLists(value.intValue(), 1);
+			gl.glDeleteLists(value.intValue(), 1);
 			if (removeFromMap) {
 				m_displayListMap.remove(geometryProxy);
 			}
@@ -295,9 +295,9 @@ class RenderContext extends Context {
 			gl.glDisable(GL2.GL_TEXTURE_2D);
 		}
 		// if( textureMapProxy != null ) {
-		// gl.getGL2().glEnable( GL2.GL_TEXTURE_2D );
+		// gl.glEnable( GL2.GL_TEXTURE_2D );
 		// } else {
-		// gl.getGL2().glDisable( GL2.GL_TEXTURE_2D );
+		// gl.glDisable( GL2.GL_TEXTURE_2D );
 		// }
 		// if( m_currTextureMapProxy != textureMapProxy ) {
 		// if( textureMapProxy != null ) {
@@ -308,21 +308,21 @@ class RenderContext extends Context {
 		// );
 		// // if( value == null ) {
 		// // java.nio.IntBuffer atID = java.nio.IntBuffer.allocate( 1 );
-		// // gl.getGL2().glGenTextures( atID.limit(), atID );
+		// // gl.glGenTextures( atID.limit(), atID );
 		// // value = new Integer( atID.get() );
 		// // m_textureBindingMap.put( textureMapProxy, value );
-		// // gl.getGL2().glBindTexture( GL2.GL_TEXTURE_2D, value.intValue() );
-		// // gl.getGL2().glTexImage2D( GL2.GL_TEXTURE_2D, 0, GL.GL_RGBA,
+		// // gl.glBindTexture( GL2.GL_TEXTURE_2D, value.intValue() );
+		// // gl.glTexImage2D( GL2.GL_TEXTURE_2D, 0, GL.GL_RGBA,
 		// textureMapProxy.getWidthPowerOf2(),
 		// textureMapProxy.getHeightPowerOf2(), 0, GL.GL_RGB,
 		// GL2.GL_UNSIGNED_BYTE, textureMapProxy.getPixels() );
-		// // gl.getGL2().glTexParameterf( GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S,
+		// // gl.glTexParameterf( GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S,
 		// GL2.GL_REPEAT );
-		// // gl.getGL2().glTexParameterf( GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T,
+		// // gl.glTexParameterf( GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T,
 		// GL2.GL_REPEAT );
-		// // gl.getGL2().glTexParameterf( GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
+		// // gl.glTexParameterf( GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
 		// GL2.GL_LINEAR );
-		// // gl.getGL2().glTexParameterf( GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
+		// // gl.glTexParameterf( GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,
 		// GL2.GL_LINEAR );
 		// // textureMapProxy.setIsChanged( false );
 		// // } else {
@@ -352,19 +352,19 @@ class RenderContext extends Context {
 
 			final double u = m_currTextureMapProxy.mapU(vertex.textureCoordinate0.x);
 			final double v = m_currTextureMapProxy.mapV(vertex.textureCoordinate0.y);
-			gl.getGL2().glTexCoord2d(u, v);
+			gl.glTexCoord2d(u, v);
 
 		}
 
 		if (vertex.diffuseColor != null) {
-			gl.getGL2().glColor4f(vertex.diffuseColor.red, vertex.diffuseColor.green, vertex.diffuseColor.blue,
+			gl.glColor4f(vertex.diffuseColor.red, vertex.diffuseColor.green, vertex.diffuseColor.blue,
 					vertex.diffuseColor.alpha);
 		}
 
 		if (m_isShadingEnabled) {
-			gl.getGL2().glNormal3d(vertex.normal.x, vertex.normal.y, -vertex.normal.z);
+			gl.glNormal3d(vertex.normal.x, vertex.normal.y, -vertex.normal.z);
 		}
-		gl.getGL2().glVertex3d(vertex.position.x, vertex.position.y, -vertex.position.z);
+		gl.glVertex3d(vertex.position.x, vertex.position.y, -vertex.position.z);
 	}
 
 	@Override

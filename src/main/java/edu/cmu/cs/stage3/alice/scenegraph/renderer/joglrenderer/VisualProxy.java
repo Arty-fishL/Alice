@@ -115,10 +115,10 @@ class VisualProxy extends ComponentProxy {
 				}
 			}
 
-			context.gl.getGL2().glPushMatrix();
-			context.gl.getGL2().glMultMatrixd(m_scaleBuffer);
+			context.gl.glPushMatrix();
+			context.gl.glMultMatrixd(m_scaleBuffer);
 			m_geometryProxy.render(context);
-			context.gl.getGL2().glPopMatrix();
+			context.gl.glPopMatrix();
 
 			context.gl.glDepthMask(true);
 
@@ -128,25 +128,25 @@ class VisualProxy extends ComponentProxy {
 	@Override
 	public void pick(final PickContext context, final PickParameters pickParameters) {
 		if (opacity() > 0.0) {
-			context.gl.getGL2().glPushMatrix();
-			context.gl.getGL2().glMultMatrixd(m_scaleBuffer);
+			context.gl.glPushMatrix();
+			context.gl.glMultMatrixd(m_scaleBuffer);
 
-			context.gl.getGL2().glPushName(context.getPickNameForVisualProxy(this));
+			context.gl.glPushName(context.getPickNameForVisualProxy(this));
 			context.gl.glEnable(GL2.GL_CULL_FACE);
 			if (m_backFacingAppearanceProxy != null) {
 				context.gl.glCullFace(GL2.GL_FRONT);
-				context.gl.getGL2().glPushName(0);
+				context.gl.glPushName(0);
 				m_geometryProxy.pick(context, pickParameters.isSubElementRequired());
-				context.gl.getGL2().glPopName();
+				context.gl.glPopName();
 			}
 			if (m_frontFacingAppearanceProxy != null) {
 				context.gl.glCullFace(GL2.GL_BACK);
-				context.gl.getGL2().glPushName(1);
+				context.gl.glPushName(1);
 				m_geometryProxy.pick(context, pickParameters.isSubElementRequired());
-				context.gl.getGL2().glPopName();
+				context.gl.glPopName();
 			}
-			context.gl.getGL2().glPopName();
-			context.gl.getGL2().glPopMatrix();
+			context.gl.glPopName();
+			context.gl.glPopMatrix();
 		}
 	}
 }

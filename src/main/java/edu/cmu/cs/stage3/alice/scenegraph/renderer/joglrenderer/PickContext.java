@@ -88,7 +88,7 @@ class PickContext extends Context {
 	}
 
 	protected void renderPickVertex(final edu.cmu.cs.stage3.alice.scenegraph.Vertex3d vertex) {
-		gl.getGL2().glVertex3d(vertex.position.x, vertex.position.y, -vertex.position.z);
+		gl.glVertex3d(vertex.position.x, vertex.position.y, -vertex.position.z);
 	}
 
 	@Override

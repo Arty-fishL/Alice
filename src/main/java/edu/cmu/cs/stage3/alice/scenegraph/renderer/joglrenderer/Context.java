@@ -24,13 +24,15 @@
 package edu.cmu.cs.stage3.alice.scenegraph.renderer.joglrenderer;
 
 import com.jogamp.opengl.GL;
+import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.glu.gl2.GLUgl2;
 import com.jogamp.opengl.util.gl2.GLUT;
 
 abstract class Context implements GLEventListener {
-	public GL gl;
+	public GL2 gl;
+	public GL gl2;
 	public GLUgl2 glu;
 	public GLUT glut;
 
@@ -44,7 +46,7 @@ abstract class Context implements GLEventListener {
 
 	@Override
 	public void display(final GLAutoDrawable drawable) {
-		gl = drawable.getGL();
+		gl = drawable.getGL().getGL2();
 		glu = new GLUgl2();
 		glut = new GLUT();
 	}

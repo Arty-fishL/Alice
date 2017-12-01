@@ -55,12 +55,12 @@ public class Graphics extends java.awt.Graphics {
 
 		final int width = m_renderContext.getWidth();
 		final int height = m_renderContext.getHeight();
-		m_renderContext.gl.getGL2().glMatrixMode( GL2.GL_PROJECTION );
-		m_renderContext.gl.getGL2().glLoadIdentity();
-		m_renderContext.gl.getGL2().glOrtho( 0, width-1, height-1, 0, -1, 1 );
+		m_renderContext.gl.glMatrixMode( GL2.GL_PROJECTION );
+		m_renderContext.gl.glLoadIdentity();
+		m_renderContext.gl.glOrtho( 0, width-1, height-1, 0, -1, 1 );
 		// m_renderContext.gl.glViewport( 0, 0, width, height );
-		m_renderContext.gl.getGL2().glMatrixMode( GL2.GL_MODELVIEW );
-		m_renderContext.gl.getGL2().glLoadIdentity();
+		m_renderContext.gl.glMatrixMode( GL2.GL_MODELVIEW );
+		m_renderContext.gl.glLoadIdentity();
 
 		m_renderContext.gl.glDisable( GL2.GL_DEPTH_TEST );
 		m_renderContext.gl.glDisable( GL2.GL_LIGHTING );
@@ -82,7 +82,7 @@ public class Graphics extends java.awt.Graphics {
 
 	@Override
 	public void translate(final int x, final int y) {
-		m_renderContext.gl.getGL2().glTranslatef( x, y, 0 );
+		m_renderContext.gl.glTranslatef( x, y, 0 );
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class Graphics extends java.awt.Graphics {
 	@Override
 	public void setColor(final java.awt.Color c) {
 		m_color = c;
-		m_renderContext.gl.getGL2().glColor3ub( (byte)m_color.getRed(), (byte)m_color.getGreen(), (byte)m_color.getBlue() );
+		m_renderContext.gl.glColor3ub( (byte)m_color.getRed(), (byte)m_color.getGreen(), (byte)m_color.getBlue() );
 	}
 
 	@Override
@@ -156,20 +156,20 @@ public class Graphics extends java.awt.Graphics {
 
 	@Override
 	public void drawLine(final int x1, final int y1, final int x2, final int y2) {
-		m_renderContext.gl.getGL2().glBegin( GL2.GL_LINES );
-		m_renderContext.gl.getGL2().glVertex2i( x1, y1 );
-		m_renderContext.gl.getGL2().glVertex2i( x2, y2 );
-		m_renderContext.gl.getGL2().glEnd();
+		m_renderContext.gl.glBegin( GL2.GL_LINES );
+		m_renderContext.gl.glVertex2i( x1, y1 );
+		m_renderContext.gl.glVertex2i( x2, y2 );
+		m_renderContext.gl.glEnd();
 	}
 
 	@Override
 	public void fillRect(final int x, final int y, final int width, final int height) {
-		m_renderContext.gl.getGL2().glBegin( GL2.GL_POLYGON );
-		m_renderContext.gl.getGL2().glVertex2i( x, y );
-		m_renderContext.gl.getGL2().glVertex2i( x+width, y );
-		m_renderContext.gl.getGL2().glVertex2i( x+width, y+height );
-		m_renderContext.gl.getGL2().glVertex2i( x, y+height );
-		m_renderContext.gl.getGL2().glEnd();
+		m_renderContext.gl.glBegin( GL2.GL_POLYGON );
+		m_renderContext.gl.glVertex2i( x, y );
+		m_renderContext.gl.glVertex2i( x+width, y );
+		m_renderContext.gl.glVertex2i( x+width, y+height );
+		m_renderContext.gl.glVertex2i( x, y+height );
+		m_renderContext.gl.glEnd();
 	}
 
 	@Override
@@ -204,7 +204,7 @@ public class Graphics extends java.awt.Graphics {
 			default:
 				throw new IllegalArgumentException();
 			}
-			m_renderContext.gl.getGL2().glVertex2d( centerX + cos * radiusX, centerY + sin * radiusY );
+			m_renderContext.gl.glVertex2d( centerX + cos * radiusX, centerY + sin * radiusY );
 		}
 	}
 
@@ -235,17 +235,17 @@ public class Graphics extends java.awt.Graphics {
 	@Override
 	public void drawRoundRect(final int x, final int y, final int width, final int height, final int arcWidth,
 			final int arcHeight) {
-		m_renderContext.gl.getGL2().glBegin( GL2.GL_LINE_LOOP );
+		m_renderContext.gl.glBegin( GL2.GL_LINE_LOOP );
 		glRoundRect(x, y, width, height, arcWidth, arcHeight);
-		m_renderContext.gl.getGL2().glEnd();
+		m_renderContext.gl.glEnd();
 	}
 
 	@Override
 	public void fillRoundRect(final int x, final int y, final int width, final int height, final int arcWidth,
 			final int arcHeight) {
-		m_renderContext.gl.getGL2().glBegin( GL2.GL_TRIANGLE_FAN );
+		m_renderContext.gl.glBegin( GL2.GL_TRIANGLE_FAN );
 		glRoundRect(x, y, width, height, arcWidth, arcHeight);
-		m_renderContext.gl.getGL2().glEnd();
+		m_renderContext.gl.glEnd();
 	}
 
 	private void glOval(final int x, final int y, final int width, final int height) {
@@ -262,16 +262,16 @@ public class Graphics extends java.awt.Graphics {
 
 	@Override
 	public void drawOval(final int x, final int y, final int width, final int height) {
-		m_renderContext.gl.getGL2().glBegin( GL2.GL_LINE_LOOP );
+		m_renderContext.gl.glBegin( GL2.GL_LINE_LOOP );
 		glOval(x, y, width, height);
-		m_renderContext.gl.getGL2().glEnd();
+		m_renderContext.gl.glEnd();
 	}
 
 	@Override
 	public void fillOval(final int x, final int y, final int width, final int height) {
-		m_renderContext.gl.getGL2().glBegin(GL2.GL_TRIANGLE_FAN);
+		m_renderContext.gl.glBegin(GL2.GL_TRIANGLE_FAN);
 		glOval(x, y, width, height);
-		m_renderContext.gl.getGL2().glEnd();
+		m_renderContext.gl.glEnd();
 	}
 
 	@Override
@@ -288,39 +288,39 @@ public class Graphics extends java.awt.Graphics {
 
 	private void glPoly(final int xPoints[], final int yPoints[], final int nPoints) {
 		for (int i = 0; i < nPoints; i++) {
-			m_renderContext.gl.getGL2().glVertex2i(xPoints[i], yPoints[i]);
+			m_renderContext.gl.glVertex2i(xPoints[i], yPoints[i]);
 		}
 	}
 
 	@Override
 	public void drawPolyline(final int xPoints[], final int yPoints[], final int nPoints) {
-		m_renderContext.gl.getGL2().glBegin(GL2.GL_LINE_STRIP);
+		m_renderContext.gl.glBegin(GL2.GL_LINE_STRIP);
 		glPoly(xPoints, yPoints, nPoints);
-		m_renderContext.gl.getGL2().glEnd();
+		m_renderContext.gl.glEnd();
 	}
 
 	@Override
 	public void drawPolygon(final int xPoints[], final int yPoints[], final int nPoints) {
-		m_renderContext.gl.getGL2().glBegin(GL2.GL_LINE_LOOP);
+		m_renderContext.gl.glBegin(GL2.GL_LINE_LOOP);
 		glPoly(xPoints, yPoints, nPoints);
-		m_renderContext.gl.getGL2().glEnd();
+		m_renderContext.gl.glEnd();
 	}
 
 	@Override
 	public void fillPolygon(final int xPoints[], final int yPoints[], final int nPoints) {
-		m_renderContext.gl.getGL2().glBegin(GL2.GL_POLYGON);
+		m_renderContext.gl.glBegin(GL2.GL_POLYGON);
 		glPoly(xPoints, yPoints, nPoints);
-		m_renderContext.gl.getGL2().glEnd();
+		m_renderContext.gl.glEnd();
 	}
 
 	@Override
 	public void drawString(final String str, final int x, final int y) {
 		final float scale = m_font.getSize() / 170.0f;
-		m_renderContext.gl.getGL2().glPushMatrix();
-		m_renderContext.gl.getGL2().glTranslatef(x, y, 0);
-		m_renderContext.gl.getGL2().glScalef(scale, -scale, 1.0f);
+		m_renderContext.gl.glPushMatrix();
+		m_renderContext.gl.glTranslatef(x, y, 0);
+		m_renderContext.gl.glScalef(scale, -scale, 1.0f);
 		m_renderContext.glut.glutStrokeString(GLUT.STROKE_ROMAN, str);
-		m_renderContext.gl.getGL2().glPopMatrix();
+		m_renderContext.gl.glPopMatrix();
 	}
 
 	@Override

@@ -36,44 +36,44 @@ class IndexedTriangleArrayProxy extends VertexGeometryProxy {
 			setIsGeometryChanged(true);
 		}
 		if (isGeometryChanged()) {
-			context.gl.getGL2().glNewList(id.intValue(), GL2.GL_COMPILE_AND_EXECUTE);
-			context.gl.getGL2().glBegin(GL2.GL_TRIANGLES);
+			context.gl.glNewList(id.intValue(), GL2.GL_COMPILE_AND_EXECUTE);
+			context.gl.glBegin(GL2.GL_TRIANGLES);
 			for (int i = 0; i < m_indices.length; i += 3) {
 				context.renderVertex(getVertexAt(m_indices[i + 2]));
 				context.renderVertex(getVertexAt(m_indices[i + 1]));
 				context.renderVertex(getVertexAt(m_indices[i + 0]));
 			}
-			context.gl.getGL2().glEnd();
-			context.gl.getGL2().glEndList();
+			context.gl.glEnd();
+			context.gl.glEndList();
 			setIsGeometryChanged(false);
 		} else {
-			context.gl.getGL2().glCallList(id.intValue());
+			context.gl.glCallList(id.intValue());
 		}
 	}
 
 	@Override
 	public void pick(final PickContext context, final boolean isSubElementRequired) {
-		context.gl.getGL2().glPushName(-1);
+		context.gl.glPushName(-1);
 		if (isSubElementRequired) {
-			context.gl.getGL2().glBegin(GL2.GL_TRIANGLES);
+			context.gl.glBegin(GL2.GL_TRIANGLES);
 			for (int i = 0; i < m_indices.length; i += 3) {
 				context.renderPickVertex(getVertexAt(m_indices[i + 2]));
 				context.renderPickVertex(getVertexAt(m_indices[i + 1]));
 				context.renderPickVertex(getVertexAt(m_indices[i + 0]));
 			}
-			context.gl.getGL2().glEnd();
+			context.gl.glEnd();
 		} else {
 			int id = 0;
 			for (int i = 0; i < m_indices.length; i += 3) {
-				context.gl.getGL2().glLoadName(id++);
-				context.gl.getGL2().glBegin(GL2.GL_TRIANGLES);
+				context.gl.glLoadName(id++);
+				context.gl.glBegin(GL2.GL_TRIANGLES);
 				context.renderPickVertex(getVertexAt(m_indices[i + 2]));
 				context.renderPickVertex(getVertexAt(m_indices[i + 1]));
 				context.renderPickVertex(getVertexAt(m_indices[i + 0]));
-				context.gl.getGL2().glEnd();
+				context.gl.glEnd();
 			}
 		}
-		context.gl.getGL2().glPopName();
+		context.gl.glPopName();
 	}
 
 	@Override
